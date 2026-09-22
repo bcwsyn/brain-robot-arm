@@ -86,6 +86,20 @@ wait_for_tf_validated_pointcloud() {
   fail "未收到具有完整同时间戳机器人 TF 的深度点云；未建立 Octomap。请查看 /brain_robot_vision/tf_gate_diagnostic。"
 }
 
+wait_for_filtered_pointcloud() {
+  local deadline=$((SECONDS + WAIT_SECONDS)) result
+  while (( SECONDS < deadline )); do
+    result=$(timeout 5s ros2 topic echo --once \
+      /brain_robot_vision/filtered_points \
+      --qos-reliability best_effort 2>&1) || result=""
+    if grep -Fq 'header:' <<<"$result"; then
+      return 0
+    fi
+    sleep 1
+  done
+  fail "未收到 MoveIt 自体过滤后的点云；拒绝开始使用可能含有机械臂自体点的 Octomap。"
+}
+
 trim_application_logs() {
   find "$LOG_DIR" -type f -name '*.log' -mtime +3 -delete 2>/dev/null || true
   find "$LOG_DIR" -type f \( -name '*.log' -o -name '*.log.*' \) \
@@ -488,6 +502,7 @@ echo "[5/7] 检查完整 MoveIt 反馈和自体过滤 TF..."
 wait_for topic /piper_moveit_joint_states
 wait_for topic /brain_robot_vision/tf_gate_diagnostic
 wait_for_tf_validated_pointcloud
+wait_for_filtered_pointcloud
 wait_for service /clear_octomap
 timeout 5s ros2 service call /clear_octomap std_srvs/srv/Empty '{}' >/dev/null 2>&1 ||
   fail "无法清除旧 Octomap；拒绝使用可能含有机械臂自体点的地图。"

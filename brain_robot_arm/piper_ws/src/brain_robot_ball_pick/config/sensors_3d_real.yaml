@@ -9,7 +9,11 @@ astra_depth_pointcloud:
   point_cloud_topic: /brain_robot_vision/tf_validated_points
   max_range: 2.0
   point_subsample: 2
+  queue_size: 5
+  # Match the vendor MoveIt self-filter envelope.  The physical depth stream
+  # has enough calibration/noise error that a 1.0 scale leaves link2 returns
+  # in the occupancy map even when the TF gate is valid.
   padding_offset: 0.03
-  padding_scale: 1.0
+  padding_scale: 4.0
   max_update_rate: 5.0
   filtered_cloud_topic: /brain_robot_vision/filtered_points
