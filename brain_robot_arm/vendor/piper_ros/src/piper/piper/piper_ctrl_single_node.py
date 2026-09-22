@@ -127,7 +127,6 @@ class PiperRosNode(Node):
                         self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status and \
                         self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status
                     self.get_logger().info(f"Enable status:{enable_flag}")
-                    self.configure_joint_control_mode()
                     self.enable_arm_motors()
                     self.piper.GripperCtrl(0, 1000, 0x01, 0)
                     if(enable_flag):
@@ -381,7 +380,6 @@ class PiperRosNode(Node):
         self.get_logger().info(f"enable_flag: {enable_flag.data}")
         if enable_flag.data:
             self.__enable_flag = True
-            self.configure_joint_control_mode()
             self.enable_arm_motors()
             if self.gripper_exist:
                 self.piper.GripperCtrl(0, 1000, 0x02, 0)
@@ -413,7 +411,6 @@ class PiperRosNode(Node):
             enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status)
 
             if req.enable_request:
-                self.configure_joint_control_mode()
                 self.enable_arm_motors()
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
                 time.sleep(0.1)
@@ -426,6 +423,8 @@ class PiperRosNode(Node):
                     self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status,
                 ]
                 enable_flag = all(enable_list)
+                if enable_flag:
+                    self.configure_joint_control_mode()
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
