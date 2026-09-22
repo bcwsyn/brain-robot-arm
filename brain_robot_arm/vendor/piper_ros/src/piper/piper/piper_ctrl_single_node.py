@@ -10,7 +10,7 @@ import threading
 import argparse
 import math
 from piper_sdk import *
-from piper_sdk import C_PiperInterface_V2
+from piper_sdk import C_PiperInterface
 from piper_msgs.msg import PiperStatusMsg, PosCmd
 from piper_msgs.srv import Enable
 from geometry_msgs.msg import Pose, PoseStamped
@@ -69,7 +69,7 @@ class PiperRosNode(Node):
         # Enable flag
         self.__enable_flag = False
         # Create piper class and open CAN interface
-        self.piper = C_PiperInterface_V2(self.can_port)
+        self.piper = C_PiperInterface(can_name=self.can_port)
         self.piper.ConnectPort()
 
         # Start subscription thread
@@ -82,28 +82,6 @@ class PiperRosNode(Node):
 
     def GetEnableFlag(self):
         return self.__enable_flag
-
-    def configure_joint_control_mode(self):
-        """Put the V2 controller into host/CAN joint-position control mode."""
-        self.piper.MotionCtrl_1(0x02, 0, 0)
-        self.piper.MotionCtrl_2(0x01, 0x01, 50)
-
-    def enable_arm_motors(self):
-        """Enable the arm, with a per-motor fallback for V2 firmware."""
-        self.piper.EnableArm(7)
-        time.sleep(0.1)
-        enable_list = [
-            self.piper.GetArmLowSpdInfoMsgs().motor_1.foc_status.driver_enable_status,
-            self.piper.GetArmLowSpdInfoMsgs().motor_2.foc_status.driver_enable_status,
-            self.piper.GetArmLowSpdInfoMsgs().motor_3.foc_status.driver_enable_status,
-            self.piper.GetArmLowSpdInfoMsgs().motor_4.foc_status.driver_enable_status,
-            self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status,
-            self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status,
-        ]
-        if not all(enable_list):
-            for motor_num in range(1, 7):
-                self.piper.EnableArm(motor_num)
-                time.sleep(0.05)
 
     def publish_thread(self):
         """Publish messages from the robotic arm
@@ -127,7 +105,7 @@ class PiperRosNode(Node):
                         self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status and \
                         self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status
                     self.get_logger().info(f"Enable status:{enable_flag}")
-                    self.enable_arm_motors()
+                    self.piper.EnableArm(7)
                     self.piper.GripperCtrl(0, 1000, 0x01, 0)
                     if(enable_flag):
                         self.__enable_flag = True
@@ -380,7 +358,7 @@ class PiperRosNode(Node):
         self.get_logger().info(f"enable_flag: {enable_flag.data}")
         if enable_flag.data:
             self.__enable_flag = True
-            self.enable_arm_motors()
+            self.piper.EnableArm(7)
             if self.gripper_exist:
                 self.piper.GripperCtrl(0, 1000, 0x02, 0)
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
@@ -411,20 +389,9 @@ class PiperRosNode(Node):
             enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status)
 
             if req.enable_request:
-                self.enable_arm_motors()
-                self.piper.GripperCtrl(0, 1000, 0x01, 0)
-                time.sleep(0.1)
-                enable_list = [
-                    self.piper.GetArmLowSpdInfoMsgs().motor_1.foc_status.driver_enable_status,
-                    self.piper.GetArmLowSpdInfoMsgs().motor_2.foc_status.driver_enable_status,
-                    self.piper.GetArmLowSpdInfoMsgs().motor_3.foc_status.driver_enable_status,
-                    self.piper.GetArmLowSpdInfoMsgs().motor_4.foc_status.driver_enable_status,
-                    self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status,
-                    self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status,
-                ]
                 enable_flag = all(enable_list)
-                if enable_flag:
-                    self.configure_joint_control_mode()
+                self.piper.EnableArm(7)
+                self.piper.GripperCtrl(0, 1000, 0x01, 0)
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
