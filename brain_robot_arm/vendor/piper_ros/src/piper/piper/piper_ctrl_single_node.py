@@ -88,6 +88,23 @@ class PiperRosNode(Node):
         self.piper.MotionCtrl_1(0x02, 0, 0)
         self.piper.MotionCtrl_2(0x01, 0x01, 50)
 
+    def enable_arm_motors(self):
+        """Enable the arm, with a per-motor fallback for V2 firmware."""
+        self.piper.EnableArm(7)
+        time.sleep(0.1)
+        enable_list = [
+            self.piper.GetArmLowSpdInfoMsgs().motor_1.foc_status.driver_enable_status,
+            self.piper.GetArmLowSpdInfoMsgs().motor_2.foc_status.driver_enable_status,
+            self.piper.GetArmLowSpdInfoMsgs().motor_3.foc_status.driver_enable_status,
+            self.piper.GetArmLowSpdInfoMsgs().motor_4.foc_status.driver_enable_status,
+            self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status,
+            self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status,
+        ]
+        if not all(enable_list):
+            for motor_num in range(1, 7):
+                self.piper.EnableArm(motor_num)
+                time.sleep(0.05)
+
     def publish_thread(self):
         """Publish messages from the robotic arm
         """
@@ -111,7 +128,7 @@ class PiperRosNode(Node):
                         self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status
                     self.get_logger().info(f"Enable status:{enable_flag}")
                     self.configure_joint_control_mode()
-                    self.piper.EnableArm(7)
+                    self.enable_arm_motors()
                     self.piper.GripperCtrl(0, 1000, 0x01, 0)
                     if(enable_flag):
                         self.__enable_flag = True
@@ -365,7 +382,7 @@ class PiperRosNode(Node):
         if enable_flag.data:
             self.__enable_flag = True
             self.configure_joint_control_mode()
-            self.piper.EnableArm(7)
+            self.enable_arm_motors()
             if self.gripper_exist:
                 self.piper.GripperCtrl(0, 1000, 0x02, 0)
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
@@ -397,7 +414,7 @@ class PiperRosNode(Node):
 
             if req.enable_request:
                 self.configure_joint_control_mode()
-                self.piper.EnableArm(7)
+                self.enable_arm_motors()
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
                 time.sleep(0.1)
                 enable_list = [
