@@ -52,7 +52,7 @@ pip3 install scipy
 ```
 
 ```shell
-pip3 install piper_sdk
+pip3 install -r requirements-piper-driver.txt
 ```
 
 ```shell
