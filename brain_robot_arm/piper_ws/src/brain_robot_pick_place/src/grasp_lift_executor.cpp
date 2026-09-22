@@ -253,6 +253,9 @@ private:
     real_grasp_enabled_ = ParameterOr<bool>("real_grasp_enabled", false);
     auto_execute_ = ParameterOr<bool>("auto_execute", true);
     prepare_on_grasp_ready_ = ParameterOr<bool>("prepare_on_grasp_ready", false);
+    candidate_grasp_enabled_ = ParameterOr<bool>("candidate_grasp_enabled", false);
+    candidate_grasp_order_ = ParameterOr<std::vector<std::string>>(
+      "candidate_grasp_order", {"TOP_DOWN", "DIAGONAL_LEFT", "DIAGONAL_RIGHT"});
     top_down_grasp_enabled_ = ParameterOr<bool>("top_down_grasp_enabled", false);
     diagonal_side_grasp_enabled_ = ParameterOr<bool>("diagonal_side_grasp_enabled", false);
     grasp_contact_check_enabled_ = ParameterOr<bool>("grasp_contact_check_enabled", false);
@@ -303,6 +306,7 @@ private:
       "diagonal_pregrasp_lift_m", 0.10);
     diagonal_grasp_lift_m_ = ParameterOr<double>(
       "diagonal_grasp_lift_m", 0.04);
+    diagonal_lateral_offset_m_ = ParameterOr<double>("diagonal_lateral_offset_m", 0.06);
     pregrasp_standoff_m_ = ParameterOr<double>("pregrasp_standoff_m", 0.16);
     grasp_depth_m_ = ParameterOr<double>("grasp_depth_m", 0.08);
     approach_microstep_m_ = ParameterOr<double>("approach_microstep_m", 0.008);
@@ -353,9 +357,10 @@ private:
       top_down_grasp_clearance_m_ >= 0.0 &&
       top_down_pregrasp_clearance_m_ > top_down_grasp_clearance_m_ &&
       !top_down_yaw_candidates_.empty() &&
+      (!candidate_grasp_enabled_ || !candidate_grasp_order_.empty()) &&
       diagonal_pregrasp_standoff_m_ > diagonal_grasp_standoff_m_ &&
       diagonal_grasp_standoff_m_ > 0.0 && diagonal_pregrasp_lift_m_ >= 0.0 &&
-      diagonal_grasp_lift_m_ >= 0.0 &&
+      diagonal_grasp_lift_m_ >= 0.0 && diagonal_lateral_offset_m_ >= 0.0 &&
       target_timeout_s_ > 0.0 &&
       min_object_size_m_ > 0.0 && max_object_size_m_ >= min_object_size_m_ &&
       planning_time_s_ > 0.0 && planning_attempts_ > 0 && velocity_scaling_ > 0.0 &&
@@ -531,6 +536,10 @@ private:
       RequestVisualReacquire("GRASP_TARGET_SHIFT_BEFORE_PREGRASP");
       return;
     }
+    if (candidate_grasp_enabled_) {
+      CandidatePointGraspAndLift();
+      return;
+    }
     if (diagonal_side_grasp_enabled_) {
       DiagonalSidePointGraspAndLift();
       return;
@@ -562,6 +571,111 @@ private:
       return;
     }
     FinishGraspAndLift();
+  }
+
+  void CandidatePointGraspAndLift()
+  {
+    for (const auto & candidate : candidate_grasp_order_) {
+      if (!TargetStillAligned()) {
+        RequestVisualReacquire("GRASP_TARGET_SHIFT_DURING_CANDIDATE_SELECTION");
+        return;
+      }
+
+      bool accepted = false;
+      if (candidate == "TOP_DOWN") {
+        accepted = TryTopDownCandidate();
+      } else if (candidate == "DIAGONAL_LEFT") {
+        accepted = TryDiagonalCandidate(candidate, diagonal_lateral_offset_m_);
+      } else if (candidate == "DIAGONAL_RIGHT") {
+        accepted = TryDiagonalCandidate(candidate, -diagonal_lateral_offset_m_);
+      } else {
+        PublishDiagnostic("CANDIDATE_REJECTED_UNKNOWN_" + candidate);
+      }
+
+      if (cancel_requested_) {
+        return;
+      }
+      if (accepted) {
+        PublishDiagnostic("CANDIDATE_SELECTED_" + candidate);
+        FinishGraspAndLift();
+        return;
+      }
+    }
+    PublishState("ALL_GRASP_CANDIDATES_FAILED");
+    PublishDiagnostic("ALL_GRASP_CANDIDATES_FAILED");
+  }
+
+  bool TryTopDownCandidate()
+  {
+    const std::string name = "TOP_DOWN";
+    for (const double yaw : top_down_yaw_candidates_) {
+      selected_top_down_yaw_ = yaw;
+      selected_top_down_yaw_valid_ = true;
+      PublishDiagnostic("CANDIDATE_TOP_DOWN_YAW_" + std::to_string(yaw));
+      PublishState("CANDIDATE_" + name + "_PREGRASP_PLANNING");
+      geometry_msgs::msg::PoseStamped pregrasp_target;
+      if (!BuildTopDownPointGrasp(top_down_pregrasp_clearance_m_, pregrasp_target)) {
+        PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_TARGET_UNAVAILABLE");
+        break;
+      }
+      if (!MoveArmToPose(pregrasp_target, "CANDIDATE_" + name + "_PREGRASP")) {
+        PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_PREGRASP_PLAN_FAILED");
+        continue;
+      }
+      PublishState("CANDIDATE_" + name + "_PREGRASP_REACHED");
+      if (!TargetStillAligned()) {
+        RequestVisualReacquire("GRASP_TARGET_SHIFT_AFTER_" + name + "_PREGRASP");
+        return false;
+      }
+      PublishState("CANDIDATE_" + name + "_APPROACH_PLANNING");
+      geometry_msgs::msg::PoseStamped grasp_target;
+      if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, grasp_target)) {
+        PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_APPROACH_TARGET_UNAVAILABLE");
+        break;
+      }
+      if (!MoveArmCartesianToPose(grasp_target, "CANDIDATE_" + name + "_APPROACH")) {
+        PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_APPROACH_FAILED");
+        continue;
+      }
+      return true;
+    }
+    selected_top_down_yaw_valid_ = false;
+    return false;
+  }
+
+  bool TryDiagonalCandidate(const std::string & name, double pregrasp_lateral_offset_m)
+  {
+    PublishState("CANDIDATE_" + name + "_PREGRASP_PLANNING");
+    geometry_msgs::msg::PoseStamped pregrasp_target;
+    if (!BuildDiagonalSidePointGrasp(
+        diagonal_pregrasp_standoff_m_, diagonal_pregrasp_lift_m_,
+        pregrasp_lateral_offset_m, pregrasp_target))
+    {
+      PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_TARGET_UNAVAILABLE");
+      return false;
+    }
+    if (!MoveArmToPose(pregrasp_target, "CANDIDATE_" + name + "_PREGRASP")) {
+      PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_PREGRASP_PLAN_FAILED");
+      return false;
+    }
+    PublishState("CANDIDATE_" + name + "_PREGRASP_REACHED");
+    if (!TargetStillAligned()) {
+      RequestVisualReacquire("GRASP_TARGET_SHIFT_AFTER_" + name + "_PREGRASP");
+      return false;
+    }
+    PublishState("CANDIDATE_" + name + "_APPROACH_PLANNING");
+    geometry_msgs::msg::PoseStamped grasp_target;
+    if (!BuildDiagonalSidePointGrasp(
+        diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, 0.0, grasp_target))
+    {
+      PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_APPROACH_TARGET_UNAVAILABLE");
+      return false;
+    }
+    if (!MoveArmCartesianToPose(grasp_target, "CANDIDATE_" + name + "_APPROACH")) {
+      PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_APPROACH_FAILED");
+      return false;
+    }
+    return true;
   }
 
   bool ClosedLoopMicroApproach()
@@ -643,7 +757,7 @@ private:
     PublishState("DIAGONAL_SIDE_PREGRASP_PLANNING");
     geometry_msgs::msg::PoseStamped pregrasp_target;
     if (!BuildDiagonalSidePointGrasp(
-        diagonal_pregrasp_standoff_m_, diagonal_pregrasp_lift_m_, pregrasp_target))
+        diagonal_pregrasp_standoff_m_, diagonal_pregrasp_lift_m_, 0.0, pregrasp_target))
     {
       Fail("DIAGONAL_SIDE_PREGRASP_TARGET_UNAVAILABLE");
       return;
@@ -657,7 +771,7 @@ private:
     PublishState("DIAGONAL_SIDE_APPROACH_PLANNING");
     geometry_msgs::msg::PoseStamped grasp_target;
     if (!BuildDiagonalSidePointGrasp(
-        diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, grasp_target))
+        diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, 0.0, grasp_target))
     {
       Fail("DIAGONAL_SIDE_GRASP_TARGET_UNAVAILABLE");
       return;
@@ -671,7 +785,7 @@ private:
 
   bool BuildDiagonalSidePointGrasp(
     double camera_standoff_m, double vertical_clearance_m,
-    geometry_msgs::msg::PoseStamped & grasp_target)
+    double lateral_offset_m, geometry_msgs::msg::PoseStamped & grasp_target)
   {
     geometry_msgs::msg::PointStamped target_point_camera;
     double object_size_m = 0.0;
@@ -727,14 +841,22 @@ private:
         return false;
       }
       camera_forward.normalize();
+      tf2::Vector3 camera_left = tf2::quatRotate(
+        camera_orientation, tf2::Vector3(-1.0, 0.0, 0.0));
+      if (camera_left.length2() < 1e-4) {
+        RCLCPP_ERROR(get_logger(), "Camera lateral axis is invalid for a diagonal side grasp.");
+        return false;
+      }
+      camera_left.normalize();
 
       // The wrist camera and jaws share a forward direction.  Retreating along
       // -forward and adding world-Z clearance gives a reachable, slanted approach.
-      const tf2::Vector3 desired_camera_position(
+      tf2::Vector3 desired_camera_position(
         object_world.point.x - camera_forward.x() * effective_standoff,
         object_world.point.y - camera_forward.y() * effective_standoff,
         object_world.point.z - camera_forward.z() * effective_standoff +
         grasp_height_offset_m_ + effective_clearance);
+      desired_camera_position += camera_left * lateral_offset_m;
       const auto current_gripper = CurrentPoseInFrame(lift_reference_frame_);
       const tf2::Vector3 current_camera_position(
         world_from_camera.transform.translation.x,
@@ -754,9 +876,9 @@ private:
       RCLCPP_INFO(
         get_logger(),
         "Diagonal side grasp target: object=(%.3f, %.3f, %.3f), stand-off=%.3f m, "
-        "vertical-clearance=%.3f m; gripper_base=(%.3f, %.3f, %.3f).",
+        "vertical-clearance=%.3f m, lateral-offset=%.3f m; gripper_base=(%.3f, %.3f, %.3f).",
         object_world.point.x, object_world.point.y, object_world.point.z,
-        effective_standoff, effective_clearance,
+        effective_standoff, effective_clearance, lateral_offset_m,
         grasp_target.pose.position.x, grasp_target.pose.position.y, grasp_target.pose.position.z);
       return true;
     } catch (const tf2::TransformException & exception) {
@@ -1561,6 +1683,8 @@ private:
   bool real_grasp_enabled_{false};
   bool auto_execute_{true};
   bool prepare_on_grasp_ready_{false};
+  bool candidate_grasp_enabled_{false};
+  std::vector<std::string> candidate_grasp_order_;
   bool top_down_grasp_enabled_{false};
   bool diagonal_side_grasp_enabled_{false};
   bool grasp_contact_check_enabled_{false};
@@ -1600,6 +1724,7 @@ private:
   double diagonal_grasp_standoff_m_{0.045};
   double diagonal_pregrasp_lift_m_{0.10};
   double diagonal_grasp_lift_m_{0.04};
+  double diagonal_lateral_offset_m_{0.06};
   double pregrasp_standoff_m_{0.16};
   double grasp_depth_m_{0.08};
   double approach_microstep_m_{0.008};

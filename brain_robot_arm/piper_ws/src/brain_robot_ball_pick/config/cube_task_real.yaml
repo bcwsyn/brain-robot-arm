@@ -104,6 +104,10 @@ grasp_lift_executor:
     simulation_only: false
     real_grasp_enabled: true
     auto_execute: false
+    # Try a bounded set of coarse, collision-checked grasp candidates.  A
+    # rejected candidate keeps the gripper open and advances to the next one.
+    candidate_grasp_enabled: true
+    candidate_grasp_order: [TOP_DOWN, DIAGONAL_LEFT, DIAGONAL_RIGHT]
     gripper_open_value: 50000
     gripper_close_value: 40000
     gripper_settle_s: 2.0
@@ -113,6 +117,7 @@ grasp_lift_executor:
     prepare_on_grasp_ready: true
     top_down_grasp_enabled: false
     diagonal_side_grasp_enabled: false
+    diagonal_lateral_offset_m: 0.06
     use_sim_time: false
     lift_reference_frame: base_link
     camera_optical_frame: camera_color_optical_frame
