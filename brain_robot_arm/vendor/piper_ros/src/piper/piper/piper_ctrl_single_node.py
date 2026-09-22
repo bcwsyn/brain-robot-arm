@@ -10,7 +10,7 @@ import threading
 import argparse
 import math
 from piper_sdk import *
-from piper_sdk import C_PiperInterface
+from piper_sdk import C_PiperInterface_V2
 from piper_msgs.msg import PiperStatusMsg, PosCmd
 from piper_msgs.srv import Enable
 from geometry_msgs.msg import Pose, PoseStamped
@@ -69,7 +69,8 @@ class PiperRosNode(Node):
         # Enable flag
         self.__enable_flag = False
         # Create piper class and open CAN interface
-        self.piper = C_PiperInterface(can_name=self.can_port)
+        # gs_usb is an external USB-CAN adapter, not PiPER's built-in CAN device.
+        self.piper = C_PiperInterface_V2(can_name=self.can_port, judge_flag=False)
         self.piper.ConnectPort()
 
         # Start subscription thread
@@ -82,6 +83,17 @@ class PiperRosNode(Node):
 
     def GetEnableFlag(self):
         return self.__enable_flag
+
+    def set_motion_mode(self, move_mode, speed_percent):
+        """Select PiPER V2 CAN position control with explicit installation fields."""
+        self.piper.MotionCtrl_2(
+            0x01,
+            move_mode,
+            int(max(1, min(speed_percent, 100))),
+            0x00,
+            0,
+            0x01,
+        )
 
     def publish_thread(self):
         """Publish messages from the robotic arm
@@ -108,6 +120,7 @@ class PiperRosNode(Node):
                     self.piper.EnableArm(7)
                     self.piper.GripperCtrl(0, 1000, 0x01, 0)
                     if(enable_flag):
+                        self.set_motion_mode(0x01, 50)
                         self.__enable_flag = True
                     self.get_logger().info("--------------------")
                     # Check if the timeout has been exceeded
@@ -272,7 +285,7 @@ class PiperRosNode(Node):
         ry = round(pos_data.pitch*1000*factor)
         rz = round(pos_data.yaw*1000*factor)
         if(self.GetEnableFlag()):
-            self.piper.MotionCtrl_2(0x01, 0x00, 50)
+            self.set_motion_mode(0x00, 50)
             self.piper.EndPoseCtrl(x, y, z, rx, ry, rz)
             gripper = round(pos_data.gripper * 1000 * 1000)
             if pos_data.gripper > 80000:
@@ -317,11 +330,11 @@ class PiperRosNode(Node):
                 if lens == 7:
                     vel_all = clip(round(joint_data.velocity[6]), 1, 100)
                     self.get_logger().info(f"vel_all: {vel_all}")
-                    self.piper.MotionCtrl_2(0x01, 0x01, vel_all)
+                    self.set_motion_mode(0x01, vel_all)
                 else:
-                    self.piper.MotionCtrl_2(0x01, 0x01, 100)
+                    self.set_motion_mode(0x01, 100)
             else:
-                self.piper.MotionCtrl_2(0x01, 0x01, 100)
+                self.set_motion_mode(0x01, 100)
 
             # 使用关节名称来动态控制关节
             self.piper.JointCtrl(
@@ -359,6 +372,7 @@ class PiperRosNode(Node):
         if enable_flag.data:
             self.__enable_flag = True
             self.piper.EnableArm(7)
+            self.set_motion_mode(0x01, 50)
             if self.gripper_exist:
                 self.piper.GripperCtrl(0, 1000, 0x02, 0)
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
@@ -392,6 +406,8 @@ class PiperRosNode(Node):
                 enable_flag = all(enable_list)
                 self.piper.EnableArm(7)
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                if enable_flag:
+                    self.set_motion_mode(0x01, 50)
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
