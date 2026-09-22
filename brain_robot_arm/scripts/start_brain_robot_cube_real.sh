@@ -71,6 +71,21 @@ wait_for() {
   fail "等待 $name 超时。"
 }
 
+wait_for_tf_validated_pointcloud() {
+  local deadline=$((SECONDS + WAIT_SECONDS)) result
+  while (( SECONDS < deadline )); do
+    result=$(timeout 3s ros2 topic echo --once \
+      --qos-reliability reliable \
+      --qos-durability transient_local \
+      /brain_robot_vision/tf_gate_diagnostic 2>&1) || result=""
+    if grep -Fq 'state=FORWARDED' <<<"$result"; then
+      return 0
+    fi
+    sleep 1
+  done
+  fail "未收到具有完整同时间戳机器人 TF 的深度点云；未建立 Octomap。请查看 /brain_robot_vision/tf_gate_diagnostic。"
+}
+
 trim_application_logs() {
   find "$LOG_DIR" -type f -name '*.log' -mtime +3 -delete 2>/dev/null || true
   find "$LOG_DIR" -type f \( -name '*.log' -o -name '*.log.*' \) \
@@ -464,12 +479,19 @@ wait_for node /move_group
 wait_for node /servo_node
 wait_for node /piper_jog_adapter
 wait_for node /grasp_lift_executor
+wait_for node /pointcloud_tf_gate
 wait_for service /piper_jog_adapter/arm
 wait_for service /visual_search_controller/reset
 wait_for service /grasp_lift_executor/execute
 
-echo "[5/7] 检查完整 MoveIt 反馈..."
+echo "[5/7] 检查完整 MoveIt 反馈和自体过滤 TF..."
 wait_for topic /piper_moveit_joint_states
+wait_for topic /brain_robot_vision/tf_gate_diagnostic
+wait_for_tf_validated_pointcloud
+wait_for service /clear_octomap
+timeout 5s ros2 service call /clear_octomap std_srvs/srv/Empty '{}' >/dev/null 2>&1 ||
+  fail "无法清除旧 Octomap；拒绝使用可能含有机械臂自体点的地图。"
+echo "[地图] 已验证同时间戳 TF，并清除旧 Octomap；开始建立当前环境地图。"
 echo "[6/7] 打开识别窗口..."
 start_group debug_image_view ros2 run image_view image_view --ros-args -r image:=/brain_robot_vision/debug_image
 wait_for_actual_frame /brain_robot_vision/debug_image "调试图像"

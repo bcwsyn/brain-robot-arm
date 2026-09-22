@@ -55,6 +55,10 @@ def generate_launch_description():
     return LaunchDescription([
         robot_state_publisher,
         camera_mount_tf,
+        Node(package='brain_robot_pick_place', executable='pointcloud_tf_gate',
+             name='pointcloud_tf_gate', output='screen', parameters=[
+                 os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
+                 {'use_sim_time': False}]),
         Node(package='moveit_ros_move_group', executable='move_group', name='move_group',
              output='screen', parameters=move_group_params,
              remappings=[('/joint_states', '/piper_moveit_joint_states')]),

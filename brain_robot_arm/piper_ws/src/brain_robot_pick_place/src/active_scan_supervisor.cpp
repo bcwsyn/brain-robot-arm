@@ -139,7 +139,11 @@ private:
   {
     if (cloud.header.frame_id.empty() || !HasXyzFields(cloud)) return;
     geometry_msgs::msg::TransformStamped transform;
-    try {transform = tf_buffer_.lookupTransform(reference_frame_, cloud.header.frame_id, tf2::TimePointZero);}
+    try {
+      transform = tf_buffer_.lookupTransform(
+        reference_frame_, cloud.header.frame_id, rclcpp::Time(cloud.header.stamp),
+        tf2::durationFromSec(0.05));
+    }
     catch (const tf2::TransformException &) {return;}
     tf2::Transform base_from_cloud;
     base_from_cloud.setOrigin(tf2::Vector3(

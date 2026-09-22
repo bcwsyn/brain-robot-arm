@@ -107,13 +107,22 @@ ament_target_dependencies(active_scan_supervisor
   tf2_ros
 )
 
+add_executable(pointcloud_tf_gate src/pointcloud_tf_gate.cpp)
+ament_target_dependencies(pointcloud_tf_gate
+  rclcpp
+  sensor_msgs
+  std_msgs
+  tf2
+  tf2_ros
+)
+
 install(TARGETS cup_pose_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
 
-install(TARGETS pick_place_node cup_detector_node visual_search_controller grasp_lift_executor active_scan_supervisor
+install(TARGETS pick_place_node cup_detector_node visual_search_controller grasp_lift_executor active_scan_supervisor pointcloud_tf_gate
   DESTINATION lib/${PROJECT_NAME}
 )
 

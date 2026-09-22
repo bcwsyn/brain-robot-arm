@@ -142,7 +142,7 @@ grasp_lift_executor:
 
 active_scan_supervisor:
   ros__parameters:
-    point_cloud_topic: /camera/depth/points
+    point_cloud_topic: /brain_robot_vision/tf_validated_points
     # MoveIt has removed robot returns from this cloud.  It is used only to
     # build this run's temporary free/occupied voxel evidence; no map is saved.
     evidence_point_cloud_topic: /brain_robot_vision/filtered_points
@@ -158,3 +158,11 @@ active_scan_supervisor:
     voxel_size_m: 0.03
     evidence_window_s: 10.0
     max_evidence_points_per_frame: 3000
+
+pointcloud_tf_gate:
+  ros__parameters:
+    input_topic: /camera/depth/points
+    output_topic: /brain_robot_vision/tf_validated_points
+    reference_frame: base_link
+    required_frames: [base_link, link1, link2, link3, link4, link5, link6, gripper_base, link7, link8]
+    transform_timeout_s: 0.05
