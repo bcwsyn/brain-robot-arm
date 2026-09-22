@@ -88,14 +88,15 @@ class PiperRosNode(Node):
         return self.__enable_flag
 
     def set_motion_mode(self, move_mode, speed_percent):
-        """Select PiPER V2 CAN position control with explicit installation fields."""
-        self.piper.MotionCtrl_2(
+        """Select PiPER CAN position control using the firmware-compatible API."""
+        # Keep the mode frame compatible with the official V2 joint demo.
+        # The optional residence/installation fields are omitted here because
+        # some PiPER firmware versions do not accept the extended form.
+        self.piper.ModeCtrl(
             0x01,
             move_mode,
             int(max(1, min(speed_percent, 100))),
             0x00,
-            0,
-            0x01,
         )
         now = time.monotonic()
         if now - self._last_motion_debug_log_time >= 1.0:
