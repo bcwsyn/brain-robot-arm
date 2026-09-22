@@ -68,6 +68,9 @@ class PiperRosNode(Node):
         self.joint_ctrl.effort = [0.0] * 7
         # Enable flag
         self.__enable_flag = False
+        # Throttled diagnostics for separating ROS callbacks from CAN writes.
+        self._last_motion_debug_log_time = 0.0
+        self._last_joint_debug_log_time = 0.0
         # Create piper class and open CAN interface
         # gs_usb is an external USB-CAN adapter, not PiPER's built-in CAN device.
         self.piper = C_PiperInterface_V2(can_name=self.can_port, judge_flag=False)
@@ -94,6 +97,13 @@ class PiperRosNode(Node):
             0,
             0x01,
         )
+        now = time.monotonic()
+        if now - self._last_motion_debug_log_time >= 1.0:
+            self.get_logger().info(
+                f"CAN MotionCtrl_2 dispatched: move_mode=0x{move_mode:02X}, "
+                f"speed={int(max(1, min(speed_percent, 100)))}"
+            )
+            self._last_motion_debug_log_time = now
 
     def publish_thread(self):
         """Publish messages from the robotic arm
@@ -320,7 +330,17 @@ class PiperRosNode(Node):
             joint_6 = joint_6 * self.gripper_val_mutiple
 
         # 控制电机速度
-        if self.GetEnableFlag():
+        enabled = self.GetEnableFlag()
+        now = time.monotonic()
+        joint_debug_log_due = now - self._last_joint_debug_log_time >= 1.0
+        if joint_debug_log_due:
+            self.get_logger().info(
+                f"Joint command received: enable_flag={enabled}, "
+                f"joint2={joint_positions.get('joint2', 0) / factor:.6f}"
+            )
+            self._last_joint_debug_log_time = now
+
+        if enabled:
             if joint_data.velocity != []:
                 all_zeros = all(v == 0 for v in joint_data.velocity)
             else:
@@ -345,6 +365,8 @@ class PiperRosNode(Node):
                 joint_positions.get('joint5', 0),
                 joint_positions.get('joint6', 0)
             )
+            if joint_debug_log_due:
+                self.get_logger().info("CAN JointCtrl dispatched")
 
             # 夹爪控制
             if self.gripper_exist:
