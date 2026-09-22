@@ -659,13 +659,21 @@ private:
 
   void PrepareWorker()
   {
-    CallServoService(servo_stop_client_, "stop", false);
+    // The PiPER adapter executes the fixed reset/observation trajectory
+    // directly.  Humble Servo's legacy stop service can accept a request but
+    // never reply, so it must not hold up the real-arm preparation sequence.
+    if (backend_ != "piper") {
+      CallServoService(servo_stop_client_, "stop", false);
+    }
     if (cancel_requested_) {
       return;
     }
 
     if (skip_prepare_) {
-      if (!CallServoService(servo_start_client_, "start", true)) {
+      if (
+        backend_ != "piper" &&
+        !CallServoService(servo_start_client_, "start", true))
+      {
         FailPrepare("SERVO_START_FAILED");
         return;
       }
@@ -807,7 +815,10 @@ private:
       }
     }
 
-    if (!CallServoService(servo_start_client_, "start", true)) {
+    if (
+      backend_ != "piper" &&
+      !CallServoService(servo_start_client_, "start", true))
+    {
       FailPrepare("SERVO_START_FAILED");
       return;
     }
