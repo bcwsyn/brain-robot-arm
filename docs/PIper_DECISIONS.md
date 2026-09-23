@@ -4,7 +4,7 @@
 
 1. `/mnt/hgfs/ub` 是唯一规范 Git 仓库；`/home/johnwick/piper_ros`、`/home/johnwick/piper_ws` 和 `/home/johnwick` 下的副本是运行时路径，不能替代规范仓库的进度文件。
 2. 低层控制必须遵守：`ConnectPort`，等待新鲜 `GetArmHighSpdInfoMsgs()`，发送 `EnableArm(7)`/确认六轴使能，再发送 `MotionCtrl_2(0x01,0x01,...,installation_pos=0x01)` 和持续 `JointCtrl`。`GetArmStatus()`、`GetArmJointMsgs()`、`GetArmModeCtrl()` 的零时间戳不作为实时确认。
-3. 单关节诊断使用当前高速反馈构造目标：保持 J1/J3/J4/J5/J6 当前值，只给 J2 增加 250 个 `0.001°` 单位（0.25°）。没有新鲜反馈时禁止发送目标。
+3. 不得把高速电机反馈 `pos` 直接作为 `JointCtrl` 目标：官方 V2 文档将高速 `pos` 定义为 `0.001 rad`，而 `JointCtrl` 使用 `0.001°`。单关节诊断必须从经验证的关节状态源取得当前六轴角度，并显式换算到 `0.001°`；保持 J1/J3/J4/J5/J6 当前值，只给 J2 增加 250 个 `0.001°` 单位（0.25°）。没有新鲜反馈或未验证单位映射时禁止发送目标。
 4. 不再反复执行 `MasterSlaveConfig(0xFA/0xFC)`，不执行 `ResetPiper`，不执行固件升级/降级；单臂官方顺序不需要主从配置。
 5. 必须保证每轮只有一个 `piper_single_ctrl`、一个检测器和一个视觉控制栈；不能只停止 launch 父进程而留下子节点。CAN 高速反馈、ROS `/joint_states`、视觉适配器状态是独立验收链路。
 6. 点云/TF 验收必须同时检查 cloud stamp、TF stamp、`frame_id`、`/clock`、`use_sim_time`、QoS 和旧 `pointcloud_tf_gate` 实例；当前时间能查到 TF 不代表历史 cloud stamp 一定可查。
@@ -38,3 +38,9 @@
 
 - 23:13 的 V2 SDK 查询显示高速反馈 200 Hz 且固件为 `S-V1.8-2`，但六轴角度/速度限位为 `-1/65535`、加速度为 `65535`。在重新得到可信限位前，不得 Enable 后发送任何关节/笛卡尔运动目标。
 - 不重复执行 ResetPiper、MasterSlaveConfig、固件变更或未经确认的参数写入；后续若要恢复官方默认限位，必须先记录精确 API、目标值、持久化影响、回读结果和用户旁站/急停确认。
+
+## 2026-09-23 限位查询诊断顺序
+
+- `GetAllMotorAngleLimitMaxSpd()` 和 `GetAllMotorMaxAccLimit()` 是主动查询后的响应缓存；`-1/65535` 不能单独证明六轴参数同时损坏，必须先用单电机 `SearchMotorMaxAngleSpdAccLimit(motor, 0x01/0x02)` 与 `GetCurrent...` 逐轴回读，并抓取 CAN `0x472` 查询和相应反馈，确认请求、响应和 SDK 解码三者一致。
+- 该逐轴查询为无使能、无运动、无参数写入的最小诊断。若原始响应就是全 `FF` 或没有对应响应，记录为协议/固件配置问题；若原始响应正常而 SDK 仍显示无效，定位 V2 SDK 解析或查询时序问题。
+- 只有逐轴原始响应确认参数确实无效，且用户明确授权恢复厂家默认关节限位、最大速度和加速度后，才考虑官方 `ArmParamEnquiryAndConfig(..., param_setting=0x02, ...)`；恢复后必须逐轴回读、记录持久化影响并再次验证，未通过不得运动。
