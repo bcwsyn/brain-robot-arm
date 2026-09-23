@@ -101,7 +101,7 @@ ip -details -statistics link show can0
 
 必要时只按硬件排查结果重新加载 gs_usb、配置 can0 为 1 Mbps、sample-point 0.75，并用接口 RX 计数、candump 或等价只读方式确认持续反馈。判断分支是：看不到 USB-CAN＝USB/虚拟机映射/适配器；看到 USB 但没有 can0＝驱动模块；can0 DOWN＝接口配置；can0 UP 但 RX 为 0＝PiPER 供电、控制器、CAN_H/CAN_L、终端电阻、线缆或位速率。无 RX 时禁止 EnablePiper、EnableArm、MotionCtrl_2、JointCtrl 和完整启动脚本真机阶段。
 
-若 root 密码缓存失效，只记录权限阻断并请求用户重新完成一次 sudo -v；不要绕过 sudo、保存密码或把权限错误误判成机械臂软件故障。
+`sudo -n -v` 只检查当前 Codex PTY 的 sudo 时间戳，不是 CAN 健康检查；用户在另一个终端输入密码，不保证 Codex 的另一个 PTY 也能通过。先检查 `can0` 状态、RX 计数和 0x251～0x256 反馈：如果接口已经 `ERROR-ACTIVE` 且 RX 持续增长，`sudo -n -v` 非零只能记录为“当前不能重新配置接口”，不得因此阻断只读诊断、ROS 检查、构建、进度记录或已经授权的后续工作。只有确实要执行特权命令（例如接口 DOWN、重新加载驱动或安装系统服务）时，才请求用户在 Codex 实际使用的同一个终端完成一次 `sudo -v`；不要绕过 sudo、保存密码或把权限错误误判成 CAN/机械臂故障。
 
 ## 8. 已验证的 PiPER 事实和参数陷阱
 
@@ -152,7 +152,7 @@ GitHub remote 只用于读取供应商源码、成功提交、分支和修复记
 
 ## 14. 一次性接管协议
 
-当本轮开始时发现 can0 为 DOWN/STOPPED、candump 报 Network is down，或 sudo 非交互认证失败，代理不得反复要求用户执行零散命令，也不得伪造“已恢复”。先把任务状态写入进度文件，并向用户只提出一次明确的接管准备：确认机械臂旁边有人看护、USB-CAN 已插入、机械臂电源和急停可用，然后在同一个 Ubuntu/VS Code 远程终端输入密码执行：
+当本轮开始时发现 can0 为 DOWN/STOPPED、candump 报 Network is down，或某个确实需要特权的 CAN 操作因 sudo 非交互认证失败，代理不得反复要求用户执行零散命令，也不得伪造“已恢复”。如果 can0 已经 `ERROR-ACTIVE` 且 RX 持续增长，不能仅因为 `sudo -n -v` 非零而停在这里；先继续所有不需要特权的诊断和软件工作，并把“无法重新配置接口”作为条件性风险记录。只有在确实需要重新配置接口时，才向用户只提出一次明确的接管准备：确认机械臂旁边有人看护、USB-CAN 已插入、机械臂电源和急停可用，然后要求用户在 Codex 实际使用的同一个 Ubuntu/VS Code 远程终端输入密码执行：
 
 ~~~bash
 sudo -v
