@@ -85,3 +85,4 @@
 - 不能以高速电机 `pos` 和 ROS `/joint_states` 的数值不逐项相等本身建立新的运动阻断。源码和同实例只读实测已确认数据源链路：CAN 聚合帧经驱动翻译进入官方 SDK `GetArmJointMsgs()`（`.001°`），驱动将其按 `pi/(180*1000)` 发布为 `/joint_states`（rad）；高速 `GetArmHighSpdInfoMsgs().motor_i.pos` 是独立 `.001 rad` 电机反馈。
 - 因此，高速 `pos` 仍不能直接作为 `JointCtrl` 绝对目标；它与聚合关节反馈可能包含不同的电机/关节语义、减速比、零位偏移或方向定义。无需为了无运动验收重复推导这些参数，或因两套读数不同否定已验证的聚合→ROS 反馈链路。若进入真实运动目标构造，则以官方聚合关节反馈/ROS 来源为候选，并在动作前按既有安全清单记录单位、目标、限位与停止条件。
 - 已实跑运行时 `/home/johnwick/start_brain_robot_cube_real.sh` 至 `[7/7] 全部组件已就绪`，保持 `IDLE/WAITING_FOR_START`，未触发任何搜索、抓取、使能或关节目标。用 `TERM` 退出会走脚本“保持”清理路径，不调用 `DisableArm(7)`；不得以 `ResetPiper` 或自动失能作为该脚本的普通收尾。
+- 后续无运动目标观察确认：检测器、目标主题与下游订阅均正常，但连续 10 秒 `target_valid=false`，无 `target_pixel`/`target_point_camera`，日志为 `PURPLE_CUBE target LOST`。在相机视野内提供可检测紫色方块并得到稳定目标前，不发送搜索或抓取按键；不要以重复 CAN、限位或高速/ROS 比较来替代这一外部场景条件。
