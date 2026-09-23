@@ -284,6 +284,23 @@ configure_can() {
   ip link show can0 >/dev/null 2>&1 ||
     fail "未找到 can0；请确认 USB-CAN 已连接并已透传到虚拟机。"
 
+  # Reuse an already healthy interface without requiring a second terminal's
+  # sudo timestamp.  Privileged reconfiguration remains the fallback when the
+  # link is down, misconfigured, or not receiving frames.
+  can_details=$(ip -details link show can0)
+  if grep -Eq 'state (UP|UNKNOWN)' <<<"$can_details" &&
+    grep -Fq 'bitrate 1000000' <<<"$can_details" &&
+    grep -Fq 'sample-point 0.750' <<<"$can_details" &&
+    [[ -r "$rx_path" ]]; then
+    rx_before=$(<"$rx_path")
+    sleep 1
+    rx_now=$(<"$rx_path")
+    if (( rx_now > rx_before )); then
+      echo "[CAN] 复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0（无需重新配置）。"
+      return 0
+    fi
+  fi
+
   echo "[CAN] 复用现有 USB-CAN，配置 can0 为 1 Mbps、采样点 0.75..."
   sudo ip link set can0 down 2>/dev/null || true
   sudo ip link set can0 type can bitrate 1000000 sample-point 0.75 2>/dev/null ||

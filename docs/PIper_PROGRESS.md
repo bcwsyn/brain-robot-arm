@@ -125,3 +125,19 @@
 - 用户再次表示“完成”，但当前代理终端 `sudo -n -v` 仍返回 1（需要密码）。因此仍不能运行需要 sudo 的一键脚本，也不能把接管视为完成。
 - 只读 CAN 反馈继续正常：`ERROR-ACTIVE`、1 Mbps、sample-point 0.750、错误计数 0；2 秒内 `0x251..0x256` 各 400 帧（约 200 Hz）。未发送运动命令。
 - 未启动 PiPER 控制器、MoveIt/Servo/视觉栈，未使能六轴；安全闸门仍未通过。下一步仍需让 `sudo -n -v` 在代理实际执行命令的终端返回 0。
+
+## 2026-09-23 23:05：健康 CAN 复用与一键无运动验收
+
+- 规范脚本 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` 增加最小可逆逻辑：若 `can0` 已为 `UP/UNKNOWN`、1 Mbps、sample-point 0.750 且 1 秒 RX 计数增长，则直接复用并跳过 sudo；接口异常时仍走原有特权重配置。`bash -n` 和该文件范围的 `git diff --check` 通过。
+- 运行 `brain_robot_arm/scripts/install_piper_cube_pick.sh` 返回 0：`piper`、`brain_robot_pick_place`、`brain_robot_ball_pick` 均构建通过；运行时启动脚本已同步。脚本内磁盘清理保持根分区 55%，apt 清理由于 sudo 不可见而跳过，但未达到 85% 阈值，不构成磁盘阻断。
+- 实际运行 `/home/johnwick/start_brain_robot_cube_real.sh` 返回至 `[7/7] 全部组件已就绪`，CAN 阶段输出“复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0（无需重新配置）”，未要求 sudo、未自动按键、未使能或发送运动命令。
+- 无运动 PiPER 驱动：唯一 `/piper_ctrl_single_node`，`/joint_states` 有效消息时间戳；实测平均约 170 Hz（窗口曾见 140–170 Hz，存在约 0.333 秒间隔），`/piper_moveit_joint_states` 持续发布。未调用 `/enable_srv`。
+- Astra/视觉链路：唯一 Astra 容器、检测器、MoveIt、Servo、TF gate、自体过滤和抓取节点均存在；RGB 首帧和深度首帧收到，`/camera/depth/image_raw` 约 29 Hz，`/camera/color/image_raw` 实测约 8.6 Hz（有 USB/JPEG 丢帧迹象），原始点云约 6.5 Hz。`/brain_robot_vision/tf_gate_diagnostic` 为 `state=FORWARDED accepted_frames=380 rejected_frames=115 detail=TF_COMPLETE frame=camera_depth_optical_frame`；`/brain_robot_vision/filtered_points` 存在且带同一深度 frame/stamp；MoveIt `clear_octomap` 服务可用并已成功清图。
+- 视觉状态保持安全等待：`/brain_robot_visual_control/state=IDLE`、`reason=WAITING_FOR_START`，`/brain_robot_grasp/scene_ready=false`、`state=WAITING_FOR_LEVEL_ALIGN`，目标 `target_valid=false`；未进入搜索、`GRASP_READY` 或抓取。停止脚本后发现其子进程短暂孤儿化，已按明确 PID 全部 TERM/KILL 清理；当前无 PiPER/相机/MoveIt/视觉残留。
+- 证据路径：`/home/johnwick/brain_robot_logs/piper_driver.log`、`astra_camera.log`、`cube_detector.log`、`visual_stack.log`、`debug_image_view.log` 及其 `ros/` 子日志；本轮未提交大型日志、构建产物或 Debian 包。
+
+### 本轮结论与下一步
+
+- 已验证：健康 CAN 可在无 sudo PTY 时启动；一键流程可无运动到完整组件就绪；ROS 关节、RGB-D、点云 TF gate、自体过滤、Octomap、MoveIt/Servo 服务链路成立。
+- 未验证：六轴使能后的真实小幅运动、限位/速度/加速度当前值复查、紫色目标稳定检测、视觉搜索/对齐进入 `GRASP_READY`、抓取/抬升/释放。RGB 仅约 8.6 Hz 且有 JPEG 错误，需后续优化或确认是否足够稳定。
+- 当前不允许真机运动：本轮仅完成无运动链路验收，尚未打印并确认真实运动安全清单，也未得到本轮明确的运动授权。下一轮第一条命令：`cd /mnt/hgfs/ub && git status --short && sha256sum /home/johnwick/start_brain_robot_cube_real.sh brain_robot_arm/scripts/start_brain_robot_cube_real.sh`。
