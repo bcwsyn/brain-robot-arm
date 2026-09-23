@@ -79,7 +79,6 @@ def generate_launch_description():
                  # while the driver is still publishing feedback.  Keep a
                  # bounded but realistic timeout for the physical adapter.
                  'joint_state_timeout_s': 2.0,
-                 'initial_gripper_position': 0.05,
                  # Expanded real-arm J1 envelope; J1/J5 scan the configured
                  # bounds while J2/J3/J4/J6 retain their existing limits.
                  'visual_joint_max_delta_rad': [1.50, 0.20, 0.20, 0.05, 0.95, 0.05],

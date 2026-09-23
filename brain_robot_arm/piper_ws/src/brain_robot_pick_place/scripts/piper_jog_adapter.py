@@ -38,7 +38,6 @@ class PiperJogAdapter(Node):
             'visual_joint_max_delta_rad', [0.12, 0.02, 0.02, 0.05, 0.10, 0.05])
         self.declare_parameter('arm_trajectory_topic', '/brain_robot_grasp/arm_trajectory')
         self.declare_parameter('gripper_command_topic', '/brain_robot_grasp/gripper_command')
-        self.declare_parameter('initial_gripper_position', 0.05)
 
         self.joint_names = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6']
         # The physical driver exposes one vendor-specific "gripper" value,
@@ -52,8 +51,6 @@ class PiperJogAdapter(Node):
         self.joint_state_timeout_s = float(self.get_parameter('joint_state_timeout_s').value)
         self.publish_rate_hz = float(self.get_parameter('publish_rate_hz').value)
         self.max_velocity = float(self.get_parameter('max_velocity_rad_s').value)
-        self.initial_gripper_position = float(
-            self.get_parameter('initial_gripper_position').value)
         self.joint_min = list(self.get_parameter('joint_min').value)
         self.joint_max = list(self.get_parameter('joint_max').value)
         self.visual_joint_max_delta = list(
@@ -65,13 +62,11 @@ class PiperJogAdapter(Node):
             raise ValueError('visual_joint_max_delta_rad must contain six non-negative values')
         if self.max_velocity <= 0.0 or self.publish_rate_hz <= 0.0:
             raise ValueError('max_velocity_rad_s and publish_rate_hz must be positive')
-        if not 0.0 <= self.initial_gripper_position <= 0.08:
-            raise ValueError('initial_gripper_position must be between 0.0 and 0.08')
 
         self.positions = {}
         self.targets = {}
         self.visual_baseline = {}
-        self.gripper_target = None
+        self.pending_gripper_target = None
         self.trajectory = None
         self.trajectory_start = 0.0
         self.velocities = {name: 0.0 for name in self.joint_names}
@@ -168,7 +163,7 @@ class PiperJogAdapter(Node):
         if not self.armed or not self._state_fresh() or not message.position:
             return
         value = float(message.position[0])
-        self.gripper_target = max(0.0, min(0.08, value))
+        self.pending_gripper_target = max(0.0, min(0.08, value))
         self.last_command_time = time.monotonic()
 
     def _state_fresh(self):
@@ -186,10 +181,9 @@ class PiperJogAdapter(Node):
         self.targets = {name: self.positions[name] for name in self.joint_names}
         self.visual_baseline = {name: self.positions[name] for name in self.joint_names}
         self.velocities = {name: 0.0 for name in self.joint_names}
-        # Start every enabled run with the physical gripper open.  This is
-        # set when arming (not as a one-shot message) so the first command is
-        # delivered after the adapter is ready to publish.
-        self.gripper_target = self.initial_gripper_position
+        # Arming the six-axis motion path must not move the gripper. The grasp
+        # executor sends an explicit one-shot open/close command when needed.
+        self.pending_gripper_target = None
         self.last_command_time = 0.0
         self.armed = True
         response.success = True
@@ -220,7 +214,7 @@ class PiperJogAdapter(Node):
     def _disarm_internal(self, reason):
         self.armed = False
         self.trajectory = None
-        self.gripper_target = None
+        self.pending_gripper_target = None
         self.velocities = {name: 0.0 for name in self.joint_names}
         self.targets.update(self.positions)
         self.get_logger().warn(f'PHYSICAL MOTION DISARMED: {reason}')
@@ -255,10 +249,13 @@ class PiperJogAdapter(Node):
         command.header.stamp = self.get_clock().now().to_msg()
         command.name = list(self.joint_names)
         command.position = [self.targets[name] for name in self.joint_names]
-        if self.gripper_target is not None:
+        gripper_pending = self.pending_gripper_target is not None
+        if gripper_pending:
             command.name.append('gripper')
-            command.position.append(self.gripper_target)
+            command.position.append(self.pending_gripper_target)
         self.command_publisher.publish(command)
+        if gripper_pending:
+            self.pending_gripper_target = None
 
     def _limit_visual_target(self, index, name, desired):
         baseline = self.visual_baseline.get(name, self.positions.get(name, desired))
