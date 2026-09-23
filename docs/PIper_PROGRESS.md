@@ -339,3 +339,16 @@
 - `P2` 小幅可逆动作已通过“目标在限位内、反馈持续、非目标轴无持续漂移、六轴保持使能”的实测门控；`P0/P1/P2/P3` 现可继续。单样本聚合反馈瞬态作为剩余风险保留，不能重复同一直接目标实验。
 - 当前主要阻断转为视觉外部输入：视觉控制器仍未进入搜索，检测器此前连续 `target_valid=false`；这不再阻断低层运动恢复。
 - 下一最小动作：通过已运行脚本的实体运动门和 `visual_search_controller/reset`，先将六轴按配置安全复位到全零，再启动观测姿态；全程监测关节限位、反馈新鲜度和状态机，若无紫色目标则停在安全等待，不盲动抓取。
+
+## 2026-09-24 01:14：视觉复位后 PiPER/CAN 反馈丢失阻断
+
+- `visual_search_controller/reset` 在实体运动门和适配器 arm 后返回成功，第二次持久在线程监测得到 `STATE=STOPPED/RESET_COMPLETE`；随后 `/joint_states` 全零（含 J2/J3/J5），限位内。第一次监控会话提前终止曾触发 `USER_STOP`，未调用 PiPER 失能；第二次复位完成后未再发送视觉目标。
+- 调用 `/visual_search_controller/start` 时返回失败：`No fresh joint state; the robot controller is not ready.`。随后实际驱动日志记录 `0x151 send failed: SendCanMessage(SEND_MESSAGE_FAILED (100017))`，`can0 feedback lost`，约两秒后 `can0 is loss` 并退出；运行时 `/piper_ctrl_single_node` 已不存在。
+- 只读 CAN 复核：接口仍 `UP/ERROR-ACTIVE`、1 Mbps、sample-point `0.750`，但 bus-errors=`700`、arbit-lost=`9`、dropped=`9`，3 秒 RX 增量 `0`；USB-CAN `1d50:606f` 和 `gs_usb/can_dev` 仍枚举。`sudo -n -v` 返回 `1`（需要密码），不能由当前会话执行接口重配/驱动重载。
+- 已按安全路径停止残留脚本进程组、Astra、检测器、MoveIt、Servo、TF、适配器和视觉控制器；未调用 `ResetPiper` 或 `/enable_srv false`，未在反馈丢失后继续发送目标。证据日志：`/home/johnwick/brain_robot_logs/piper_driver.log`、`visual_stack.log`；当前无 PiPER/视觉控制栈残留。
+
+### 本轮结论与下一步
+
+- `P0/P1/P2/P3` 的此前证据仍保留；P4 仅完成全零复位，观测姿态/搜索未启动，`GRASP_READY`、抓取、抬升、释放均未验证。
+- 当前硬阻断升级为真实 CAN RX 丢失和发送失败，不是视觉目标缺失。无持续 `0x251..0x256` 反馈前禁止重新启动 PiPER、调用 `/enable_srv`、`MotionCtrl_2`、`JointCtrl` 或视觉搜索。
+- 下一最小动作：操作者在同一 Ubuntu/Codex 终端完成一次 `sudo -v`，然后按接管协议重置 `can0`（必要时重载 `gs_usb`），用 `ip -details -statistics link show can0` 和 `candump -n 10 can0` 确认 RX 恢复；恢复前不重复本轮动作。
