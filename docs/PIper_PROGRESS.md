@@ -213,3 +213,16 @@
 - 已验证：运行时脚本已同步、CAN 持续接收、残留的可发布 Servo 增量的视觉控制器和同组静态 TF 已清除，下一次启动可从唯一干净栈开始。
 - 未验证/阻断：未确认 SDK 当前六轴状态和逐轴限位回读；未完成 TX 帧编码/保持目标的无运动审计；单关节独立性、观测姿态、紫色检测、`GRASP_READY`、抓取/抬升/释放均未验证。因既有非目标关节位移，禁止 EnableArm、MotionCtrl_2、JointCtrl 和视觉搜索运动。
 - 下一名代理第一条命令：`cd /mnt/hgfs/ub && git status --short && pgrep -af 'piper_single_ctrl|piper_jog_adapter|visual_search_controller|grasp_lift_executor|move_group|servo_node|astra_camera|cube_detector|pointcloud_tf_gate|piper_camera_mount_tf' || true`；随后仅做 SDK `JointCtrl` TX 编码与 ROS 关节状态来源的无运动审计。
+
+## 2026-09-23 23:59：SDK TX 与完整六轴命令审计（无运动）
+
+- 只读检查安装的 `piper_sdk 0.6.2`、运行时 PiPER 驱动及运行时 jog 适配器；未实例化 SDK、未打开 SocketCAN、未启动 ROS 节点、未发送 CAN 帧或使能命令。SDK 文档/实现确认：`MotionCtrl_2` 编为 `0x151`；`JointCtrl` 将六个 `0.001°` 整数经软件限位后无条件发送 `0x155`（J1/J2）、`0x156`（J3/J4）、`0x157`（J5/J6）。官方 `demo/detect_arm.py` 将高速 `pos * 1e-3` 显示为 rad，继续佐证高频 `pos` 是 `0.001 rad` 而不是 `0.001°`。
+- 运行时与规范 PiPER 驱动哈希相同（`7846be...3f96f`），jog 适配器哈希也相同（`29d369...1e11f`）。适配器只有在已 armed、关节反馈新鲜且完整时才以明确顺序发布 `joint1..joint6`；它不解释或修复其他发布者的截断 `JointState`。
+- 发现驱动 `joint_callback()` 在使能且反馈新鲜时对缺失名称使用 `joint_positions.get('jointN', 0)`，随后调用完整六轴 `JointCtrl`。这会把不完整命令变成对缺失关节的绝对零位目标，正是此前“保持目标”不能靠猜测构造的同类风险。`docs/PIper_DECISIONS.md` 已新增完整六轴门控：不完整、重复、未知或 name/position 不匹配的命令必须无输出拒绝。
+- 未直接修改驱动：其规范副本已有用户未提交差异 `443 insertions/391 deletions`，并带 CRLF/尾随空白，使 `git diff --check` 对整文件报错；危险回调位于该用户改动范围。为不覆盖或混入用户改动，本轮仅记录，未构建、未部署、未格式化该文件。
+
+### 本轮结论与下一步
+
+- 已验证：SDK 控制帧 ID、单位、完整 jog 发布路径，以及驱动的零位回退缺陷；这解释了为什么不能仅凭 J2 目标假定其余关节会保持不动。
+- 阻断：必须先把用户已有 `piper_ctrl_single_node.py` 改动的来源和意图与用户确认，或由其作者完成/授权最小的完整六轴拒绝补丁；在此之前，真实运动及视觉搜索/抓取保持冻结。
+- 下一名代理第一条命令：`cd /mnt/hgfs/ub && git diff --numstat -- brain_robot_arm/vendor/piper_ros/src/piper/piper/piper_ctrl_single_node.py && sed -n '340,410p' /home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py`。
