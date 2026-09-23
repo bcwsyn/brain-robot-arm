@@ -16,13 +16,13 @@ internal monitor is not incremented even while the bus remains active.
 
 ## Goal and success criteria
 
-Use fresh, successfully decoded PiPER joint feedback as the driver's health
-criterion, without weakening the fail-safe response to a real loss of usable
-arm feedback.
+Use fresh, successfully decoded PiPER high-speed motor feedback as the
+driver's health criterion, without weakening the fail-safe response to a real
+loss of usable arm feedback.
 
-* Continuous decoded joint feedback keeps the driver active even if the SDK
+* Continuous decoded high-speed motor feedback keeps the driver active even if the SDK
   FPS monitor reports false.
-* A stale decoded joint-feedback timestamp immediately suppresses new pose and
+* A stale decoded high-speed-feedback timestamp immediately suppresses new pose and
   joint commands.
 * If that timestamp remains stale for 2.0 seconds, the driver shuts down as
   before and the existing adapter disarms.
@@ -37,9 +37,10 @@ Only `vendor/piper_ros/src/piper/piper/piper_ctrl_single_node.py` changes.
 
 The existing `_can_feedback_available()` helper will replace its
 `piper.isOk()` check with the timestamp from
-`piper.GetArmJointMsgs().time_stamp`.  The timestamp is set by the SDK only
-after it has decoded PiPER joint feedback, so it validates the exact data that
-the ROS driver converts into `/joint_states`.
+`piper.GetArmHighSpdInfoMsgs().time_stamp`.  On the affected arm the joint
+feedback timestamp remains zero, while the high-speed feedback timestamp
+refreshes at 200 Hz with an age of 0--5 ms.  This is a decoded PiPER feedback
+message, not a raw SocketCAN packet count.
 
 The helper considers feedback current while its age is at most 0.5 seconds.
 This permits normal scheduler jitter but is far below the existing two-second
@@ -49,7 +50,7 @@ and guarded pose/joint output remain unchanged.
 
 The deliberate separation is:
 
-1. **0.5 s freshness threshold**: detect that decoded arm state has stopped
+1. **0.5 s freshness threshold**: detect that decoded high-speed arm feedback has stopped
    advancing.
 2. **2.0 s stop threshold**: give an intermittent schedule delay time to
    recover, then retain the existing safe exit.
@@ -60,9 +61,14 @@ The deliberate separation is:
    reports failure.
 2. Use raw SocketCAN packet arrival: unsuitable as a motion authorization
    signal, since it does not prove those packets are valid PiPER joint state.
-3. Use decoded joint-feedback timestamp with the existing grace timer:
-   directly tests fresh arm state and preserves safe failure behavior;
+3. Use decoded high-speed-feedback timestamp with the existing grace timer:
+   directly tests fresh motor feedback and preserves safe failure behavior;
    selected.
+
+The zero joint-feedback timestamp is intentionally out of scope.  Official
+SDK documentation ties those frames to master/slave-arm roles, and the current
+role/configuration must be investigated separately before changing how ROS
+joint angles are calculated.
 
 ## Verification
 
@@ -71,7 +77,6 @@ The deliberate separation is:
 2. Rebuild only the `piper` package in the VM.
 3. Run one-key startup and press `1`; verify the driver stays alive through
    PREPARE and the arm reaches the observation pose.
-4. Confirm `/joint_states` timestamps advance while the arm is moving.
-5. For a real loss of decoded feedback, verify command suppression and the
+4. Confirm the decoded high-speed timestamp advances while the arm is moving.
+5. For a real loss of decoded high-speed feedback, verify command suppression and the
    existing two-second shutdown/disarm behavior.
-
