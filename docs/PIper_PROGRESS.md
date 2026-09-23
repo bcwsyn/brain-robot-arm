@@ -141,3 +141,10 @@
 - 已验证：健康 CAN 可在无 sudo PTY 时启动；一键流程可无运动到完整组件就绪；ROS 关节、RGB-D、点云 TF gate、自体过滤、Octomap、MoveIt/Servo 服务链路成立。
 - 未验证：六轴使能后的真实小幅运动、限位/速度/加速度当前值复查、紫色目标稳定检测、视觉搜索/对齐进入 `GRASP_READY`、抓取/抬升/释放。RGB 仅约 8.6 Hz 且有 JPEG 错误，需后续优化或确认是否足够稳定。
 - 当前不允许真机运动：本轮仅完成无运动链路验收，尚未打印并确认真实运动安全清单，也未得到本轮明确的运动授权。下一轮第一条命令：`cd /mnt/hgfs/ub && git status --short && sha256sum /home/johnwick/start_brain_robot_cube_real.sh brain_robot_arm/scripts/start_brain_robot_cube_real.sh`。
+
+## 2026-09-23 23:13：真实运动安全清单只读复查
+
+- 为准备而非执行真实运动，使用 `C_PiperInterface_V2(can0, judge_flag=False, can_auto_init=True)` 后显式 `ConnectPort()`；未调用 Enable、MotionCtrl_2、JointCtrl 或任何写入限位 API。SDK/协议/接口版本为 `0.6.2`/V2/V2，固件查询为 `S-V1.8-2`。
+- 高速反馈新鲜：timestamp `1790176313.8304694`、`200.0 Hz`，六轴当前位置 `[0,-1,-10,-29,291,0]`（0.001°），速度/电流均为 0。`GetArmStatus()` 缓存的时间戳仍为 0，显示 STANDBY/NORMAL、无角度限位状态，不用作实时使能确认。
+- 控制器限位响应仍不可用于安全运动：`GetAllMotorAngleLimitMaxSpd()` timestamp 虽更新，但六项均为 `max=-1,min=-1,max_joint_spd=65535`；加速度六项均 `65535`。这与历史已记录的默认 `±1500/0..1800/...`、最大速度 300、最大加速度 500 不一致，且本轮没有执行任何恢复或写入。按照安全闸门，不能据此形成真实关节目标或速度/加速度限位。
+- 结论：CAN/固件/当前位置和静止状态已复核，但本轮不允许真实运动；必须先定位为何实际限位查询仍为无效值，或在用户确认和明确恢复计划后按官方最小步骤恢复并重新查询。此限制不阻断后续无运动视觉诊断。
