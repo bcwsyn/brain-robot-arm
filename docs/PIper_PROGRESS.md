@@ -95,3 +95,10 @@
 
 - 已验证 CAN RX 和六条高速反馈持续存在，硬件安全前置（反馈层）通过；未验证固件版本、六轴使能、关节限位/速度/加速度复查、`/joint_states`、Astra 帧、点云自体过滤、TF/Octomap、视觉 `GRASP_READY` 或抓取。
 - 不允许继续真机运动：六轴尚未使能，且完整脚本被 sudo 凭据阻断。操作者先在同一 Ubuntu 终端执行固定接管命令并确认 `sudo -n -v` 返回 0；下一轮第一条命令为：`cd /mnt/hgfs/ub && sudo -n -v && ip -details -statistics link show can0 && timeout 10s candump -n 10 can0`。
+
+## 2026-09-23 22:31：用户声称接管后复核仍未获 sudo
+
+- 用户要求代理代输入密码并声称“接管完成”；代理不接受、存储或代输入聊天中的密码，仅在当前终端执行无密码验证。
+- `sudo -n -v` 返回 1（`sudo: 需要密码`），因此接管尚未进入代理可见的 sudo 会话；未重配 CAN、未运行一键脚本、未使能六轴、未发送运动命令。
+- 只读复核仍显示 `can0` 为 `ERROR-ACTIVE`、1 Mbps、sample-point 0.750，错误计数为 0；`timeout 10s candump -n 10 can0` 返回 0，并捕获 `0x251`、`0x252` 及状态帧。由于仅取 10 帧，本次不宣称六条反馈完整覆盖。
+- 阻断：必须由操作者在同一 Ubuntu 终端交互式输入 sudo 密码，使随后 `sudo -n -v` 返回 0。安全闸门未通过前不允许真机运动。
