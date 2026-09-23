@@ -199,3 +199,17 @@
 - 用户要求停止同一项小幅真机测试的重复确认，并明确要求复位时避免机械臂失能/坠落。本轮只修改固定任务规则与决策文档，未发送运动命令。
 - 已将规则写入 `CODEX_TASK_PROMPT.md` 和 `docs/PIper_DECISIONS.md`：一次性授权通过后不重复阻断；测试收尾默认回到测试前已验证的安全目标并保持使能；不得自动 `DisableArm(7)`；`ResetPiper` 禁止用于停止、复位或异常收尾，因为会立即掉电并可能造成下坠。
 - 碰撞、持续震动、反馈丢失或位置异常时，只停止新的位移目标并按安全停机/物理急停路径处理，不继续对障碍物施力，也不自动掉电。以上是规则更新，尚未证明任何新的真机运动结果。
+
+## 2026-09-23 23:55：恢复运行时基线并清理孤儿视觉栈（无运动）
+
+- 本轮恢复前 HEAD 为 `4591754`。规范运行时路径均存在；`/home/johnwick/start_brain_robot_cube_real.sh` 与 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` 的 SHA-256 同为 `70eb2b981c94d305ffa1b87a7a30ed09c20b613b6a8b78176804aeaff132d872`。`/home/johnwick/piper_ros` 和 `/home/johnwick/piper_ws` 不是独立 Git 仓库，规范副本位于 `brain_robot_arm/vendor/piper_ros`、`brain_robot_arm/piper_ws`、`brain_robot_arm/scripts`。
+- 根分区为 55%，未触发 85% 清理阈值。`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750、错误/丢包为 0；2 秒 RX 增量为 6095。此次未连接 SDK、未使能、未调用 `MotionCtrl_2`、`JointCtrl`、`ResetPiper` 或任何参数写入 API。
+- 发现 PPID 1 的孤儿 `/visual_search_controller`（PID 36742，原启动组 36715）。节点仍发布 `/servo_node/delta_joint_cmds`，但没有 PiPER 驱动、Servo 或 jog adapter 接收；为防止下次一键启动形成视觉/TF 竞争，仅发送 `TERM`。同一启动组遗留的 `piper_camera_mount_tf` 静态 TF（PID 36728）也已 `TERM`。两项均为启动/停止 ROS 节点，不涉及真机控制。
+- 已用 `pgrep` 确认没有 `piper_single_ctrl`、`piper_jog_adapter`、`visual_search_controller`、`grasp_lift_executor`、`move_group`、`servo_node`、Astra、检测器、TF gate 或相机挂载 TF 进程。`ros2 node list` 在进程退出后短暂显示陈旧 DDS 发现；执行 `ros2 daemon stop` 清除 CLI 缓存后图为空。未停止或修改用户已有工作树改动及未跟踪 Debian 包。
+- 源码只读审计确认实际 PiPER 节点使用 `GetArmHighSpdInfoMsgs()` 作新鲜度门控，而常规 ROS 位置反馈取自 `GetArmJointMsgs()`；此前目标构造必须继续遵守高频 `pos` 为 `0.001 rad`、`JointCtrl` 为 `0.001°` 的隔离规则。当前真实运动仍冻结，不能启动搜索或抓取运动。
+
+### 本轮结论与下一步
+
+- 已验证：运行时脚本已同步、CAN 持续接收、残留的可发布 Servo 增量的视觉控制器和同组静态 TF 已清除，下一次启动可从唯一干净栈开始。
+- 未验证/阻断：未确认 SDK 当前六轴状态和逐轴限位回读；未完成 TX 帧编码/保持目标的无运动审计；单关节独立性、观测姿态、紫色检测、`GRASP_READY`、抓取/抬升/释放均未验证。因既有非目标关节位移，禁止 EnableArm、MotionCtrl_2、JointCtrl 和视觉搜索运动。
+- 下一名代理第一条命令：`cd /mnt/hgfs/ub && git status --short && pgrep -af 'piper_single_ctrl|piper_jog_adapter|visual_search_controller|grasp_lift_executor|move_group|servo_node|astra_camera|cube_detector|pointcloud_tf_gate|piper_camera_mount_tf' || true`；随后仅做 SDK `JointCtrl` TX 编码与 ROS 关节状态来源的无运动审计。
