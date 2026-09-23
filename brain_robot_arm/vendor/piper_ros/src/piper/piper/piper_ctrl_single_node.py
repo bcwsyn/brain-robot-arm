@@ -17,6 +17,7 @@ from geometry_msgs.msg import Pose, PoseStamped
 from scipy.spatial.transform import Rotation as R  # For Euler angle to quaternion conversion
 from numpy import clip
 from builtin_interfaces.msg import Time
+from piper.command_validation import ARM_JOINT_NAMES, validate_absolute_joint_state
 
 class PiperRosNode(Node):
     """ROS2 node for the robotic arm"""
@@ -288,6 +289,13 @@ class PiperRosNode(Node):
         Args:
             joint_data (): The joint data
         """
+        command_positions, rejection_reason = validate_absolute_joint_state(
+            joint_data.name, joint_data.position)
+        if rejection_reason is not None:
+            self.get_logger().warning(
+                f"Rejecting incomplete joint command before CAN output: {rejection_reason}")
+            return
+
         factor = 57324.840764  # 1000*180/3.14
         # self.get_logger().info(f"Received Joint States:")
 
@@ -295,15 +303,15 @@ class PiperRosNode(Node):
         joint_positions = {}
         joint_6 = 0
 
-        # 遍历joint_data.name来映射位置
-        for idx, joint_name in enumerate(joint_data.name):
-            self.get_logger().info(f"{joint_name}: {joint_data.position[idx]}")
-            joint_positions[joint_name] = round(joint_data.position[idx] * factor)
-        
+        # The SDK transmits all six absolute targets.  Validation above has
+        # proved every arm joint is present exactly once before conversion.
+        for joint_name in ARM_JOINT_NAMES:
+            self.get_logger().info(f"{joint_name}: {command_positions[joint_name]}")
+            joint_positions[joint_name] = round(command_positions[joint_name] * factor)
+
         # 获取第7个关节的位置
-        if len(joint_data.position) >= 7:
-            # self.get_logger().info(f"joint_7: {joint_data.position[6]}")
-            joint_6 = round(joint_data.position[6] * 1000 * 1000)
+        if 'gripper' in command_positions:
+            joint_6 = round(command_positions['gripper'] * 1000 * 1000)
             joint_6 = joint_6 * self.gripper_val_mutiple
 
         # 控制电机速度
@@ -325,16 +333,16 @@ class PiperRosNode(Node):
 
             # 使用关节名称来动态控制关节
             self.piper.JointCtrl(
-                joint_positions.get('joint1', 0),
-                joint_positions.get('joint2', 0),
-                joint_positions.get('joint3', 0),
-                joint_positions.get('joint4', 0),
-                joint_positions.get('joint5', 0),
-                joint_positions.get('joint6', 0)
+                joint_positions['joint1'],
+                joint_positions['joint2'],
+                joint_positions['joint3'],
+                joint_positions['joint4'],
+                joint_positions['joint5'],
+                joint_positions['joint6']
             )
 
             # 夹爪控制
-            if self.gripper_exist:
+            if self.gripper_exist and 'gripper' in command_positions:
                 if len(joint_data.effort) >= 7:
                     gripper_effort = clip(joint_data.effort[6], 0.5, 3)
                     # self.get_logger().info(f"gripper_effort: {gripper_effort}")

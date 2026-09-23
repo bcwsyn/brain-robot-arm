@@ -71,3 +71,4 @@
 - SDK V2 的 `JointCtrl()` 会无条件序列化并发送三帧绝对位置目标：`0x155`（J1/J2）、`0x156`（J3/J4）、`0x157`（J5/J6）。因此单个 ROS `JointState` 中任意一个六轴名称/位置缺失，都不能以零位或缓存猜测补齐后发送。
 - 当前运行时/规范副本的 `piper_ctrl_single_node.py` 确实使用 `joint_positions.get('jointN', 0)`。正常 `piper_jog_adapter` 在已臂控且关节反馈完整时发布全部 `joint1` 至 `joint6`，但该行为不足以保护其他发布者或截断消息。
 - 在清楚审查并最小修改用户已有驱动改动前，禁止启动会使能或发送 `/joint_commands` 的视觉/抓取链路。后续驱动修复必须拒绝（不调用 `MotionCtrl_2`、`JointCtrl` 或 `GripperCtrl`）任何 `name`/`position` 长度不匹配、重复/未知名称、或缺少任一六轴的命令；用无 CAN 的单元测试证明拒绝路径和完整六轴路径。
+- 2026-09-24 已在用户授权后实现该门控：`piper.command_validation.validate_absolute_joint_state()` 先验证完整六轴、可选夹爪、唯一名称和有限数值；`joint_callback()` 在调用模式控制或任何 SDK 输出前拒绝无效输入。夹爪仅在消息显式包含 `gripper` 时才发送。纯单元测试覆盖完整乱序六轴、显式夹爪及缺轴/重复/未知/长度不匹配/NaN 拒绝；`colcon build --symlink-install --packages-select piper` 通过。此改动不能替代真实使能、当前限位和单位映射的安全闸门。

@@ -226,3 +226,16 @@
 - 已验证：SDK 控制帧 ID、单位、完整 jog 发布路径，以及驱动的零位回退缺陷；这解释了为什么不能仅凭 J2 目标假定其余关节会保持不动。
 - 阻断：必须先把用户已有 `piper_ctrl_single_node.py` 改动的来源和意图与用户确认，或由其作者完成/授权最小的完整六轴拒绝补丁；在此之前，真实运动及视觉搜索/抓取保持冻结。
 - 下一名代理第一条命令：`cd /mnt/hgfs/ub && git diff --numstat -- brain_robot_arm/vendor/piper_ros/src/piper/piper/piper_ctrl_single_node.py && sed -n '340,410p' /home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py`。
+
+## 2026-09-24 00:02：完整六轴命令门控实现与无 CAN 验证
+
+- 用户明确授权在已有驱动改动上继续完成。本轮起点为 `64bb67b`；只修改规范副本 `brain_robot_arm/vendor/piper_ros/src/piper` 和相同的实际运行源 `/home/johnwick/piper_ros/src/piper`，没有覆盖其他用户修改、没有格式化 CRLF 文件，也没有启动 ROS、实例化 SDK、打开 SocketCAN、使能或发送 CAN。
+- 新增纯模块 `piper.command_validation`。它要求 `JointState.name` 与 `position` 等长，六个 `joint1..joint6` 各出现一次，只允许可选 `gripper`，并拒绝重复/未知名称、非数值和非有限位置。`joint_callback()` 在任何 `_set_joint_control_mode()`、`JointCtrl()` 或 `GripperCtrl()` 前调用该验证；有效消息按名称映射为 `0.001°`，不再以 `.get(..., 0)` 填充缺轴。夹爪只有显式 `gripper` 名称时才发控制帧。
+- 新增 `test_command_validation.py`，以 `PYTHONPATH=brain_robot_arm/vendor/piper_ros/src/piper python3 -m unittest discover -s brain_robot_arm/vendor/piper_ros/src/piper/test -p 'test_command_validation.py' -v` 通过 3/3：完整乱序六轴、带显式夹爪、以及缺轴/重复/未知/长度不匹配/NaN 均符合预期。`python3 -m py_compile` 对驱动和验证模块通过。
+- 在 `/home/johnwick/piper_ros` 执行 `source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select piper`，返回 0（2.69 秒）；`source install/setup.bash` 后可从 `build/piper/piper/command_validation.py` 成功导入。规范/运行时驱动 SHA-256 同为 `e5ad444c...46e90c`，验证模块同为 `162f3968...ee3bde`。
+
+### 本轮结论与下一步
+
+- 已验证：不完整 ROS 关节消息现在能在 CAN 输出前被纯逻辑拒绝；完整六轴和显式夹爪消息仍被接受；运行时 `piper` 构建与导入成功。
+- 未验证/阻断：未在运行节点中观察拒绝日志，未复查 SDK 当前六轴使能/限位，未测试正确单位目标的真实独立运动；观测姿态、相机、紫色检测、`GRASP_READY`、抓取/抬升/释放均尚未运行。真实运动和视觉搜索保持冻结。
+- 下一名代理第一条命令：`cd /mnt/hgfs/ub && git status --short && PYTHONPATH=brain_robot_arm/vendor/piper_ros/src/piper python3 -m unittest discover -s brain_robot_arm/vendor/piper_ros/src/piper/test -p 'test_command_validation.py' -v`；随后只读复查 SDK 的当前六轴使能、逐轴限位和正确单位的 ROS `/joint_states` 来源，再决定是否能进行无运动节点验收。
