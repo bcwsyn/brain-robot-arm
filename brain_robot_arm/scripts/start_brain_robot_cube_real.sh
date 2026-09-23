@@ -14,6 +14,7 @@ WAIT_SECONDS="${BRAIN_ROBOT_WAIT_SECONDS:-45}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
+CAMERA_STARTED_BY_SCRIPT=0
 DISABLE_REQUESTED=0
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -34,7 +35,9 @@ cleanup() {
   if [[ -n "$CAMERA_HEALTH_PID" ]]; then
     kill "$CAMERA_HEALTH_PID" 2>/dev/null || true
   fi
-  stop_astra_camera || true
+  if (( CAMERA_STARTED_BY_SCRIPT )); then
+    stop_astra_camera || true
+  fi
   for pid in "${PIDS[@]:-}"; do kill -TERM -- "-$pid" 2>/dev/null || true; done
   sleep 1
   for pid in "${PIDS[@]:-}"; do kill -KILL -- "-$pid" 2>/dev/null || true; done
@@ -202,6 +205,7 @@ stop_astra_camera() {
 
 start_astra_camera() {
   start_group astra_camera ros2 launch astra_camera astra.launch.py
+  CAMERA_STARTED_BY_SCRIPT=1
 }
 
 camera_has_rgb_frame() {
@@ -359,6 +363,37 @@ stop_stale_visual_stack() {
   fail "旧 MoveIt/Servo/视觉控制栈未完全退出；拒绝启动第二套控制器。"
 }
 
+stop_stale_low_level_stack() {
+  local pattern="$1" label="$2" deadline pid pgid
+  if ! pgrep -f "$pattern" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo "[清理] 检测到遗留的 ${label}，正在停止..."
+  while read -r pid; do
+    [[ "$pid" =~ ^[0-9]+$ ]] || continue
+    pgid=$(ps -o pgid= -p "$pid" 2>/dev/null | tr -d ' ')
+    if [[ -n "$pgid" && "$pgid" == "$pid" ]]; then
+      kill -TERM -- "-$pgid" 2>/dev/null || true
+    else
+      kill -TERM "$pid" 2>/dev/null || true
+    fi
+  done < <(pgrep -f "$pattern" || true)
+
+  deadline=$((SECONDS + 15))
+  while (( SECONDS < deadline )); do
+    if ! pgrep -f "$pattern" >/dev/null 2>&1; then
+      echo "[清理] 遗留的 ${label} 已退出。"
+      return 0
+    fi
+    sleep 1
+  done
+  echo "[清理] ${label} 未响应 TERM，发送 KILL..."
+  pkill -KILL -f "$pattern" 2>/dev/null || true
+  sleep 1
+  pgrep -f "$pattern" >/dev/null 2>&1 && fail "遗留的 ${label} 未完全退出；拒绝启动第二套控制器。"
+}
+
 topic_exists() {
   timeout 5s ros2 topic list 2>/dev/null | grep -Fxq "$1"
 }
@@ -485,6 +520,8 @@ prepare_logs
 bash "$SCRIPT_DIR/clean_disk_space.sh" || true
 check_disk_headroom
 start_log_guard
+stop_stale_low_level_stack '/piper_single_ctrl([[:space:]]|$)' 'PiPER 低层驱动'
+stop_stale_low_level_stack 'ros2 launch brain_robot_ball_pick cube_detector\.launch\.py' '紫色方块检测器'
 echo "[1/7] 检查并初始化实体 CAN/机械臂..."
 configure_can
 if ! node_exists /piper_ctrl_single_node; then
