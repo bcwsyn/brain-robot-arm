@@ -49,6 +49,11 @@
 - J2 `+250` 小幅测试中，J3/J4/J5 发生超出允许阈值的同步位移；已立即失能并确认六轴 False。该事实推翻“可直接把当前六轴反馈作为保持目标”的未验证假设。
 - 在完成 TX 帧编码核对、控制器模式/安装姿态反馈审计及无运动复现前，不得再次 EnableArm、MotionCtrl_2、JointCtrl 或启动视觉搜索/抓取运动。不得用重复实验替代原因分析。
 
+## 2026-09-23 高速反馈与 JointCtrl 单位隔离
+
+- 高速 `GetArmHighSpdInfoMsgs().motor_i.pos` 使用 `0.001 rad`；`JointCtrl()` 使用 `0.001°`。两者禁止直接复用，必须显式换算：`joint_ctrl = round(high_pos * 0.001 * 180/pi * 1000)`，或使用已验证 `/joint_states` 弧度值后乘 `180/pi*1000`。
+- 23:38 的非目标关节位移由该单位误用充分解释；在换算、TX 帧和目标保持逻辑完成无运动审计并获得新的现场确认前，继续冻结真实运动。
+
 ## 2026-09-23 限位查询诊断顺序
 
 - `GetAllMotorAngleLimitMaxSpd()` 和 `GetAllMotorMaxAccLimit()` 是主动查询后的响应缓存；`-1/65535` 不能单独证明六轴参数同时损坏，必须先用单电机 `SearchMotorMaxAngleSpdAccLimit(motor, 0x01/0x02)` 与 `GetCurrent...` 逐轴回读，并抓取 CAN `0x472` 查询和相应反馈，确认请求、响应和 SDK 解码三者一致。
