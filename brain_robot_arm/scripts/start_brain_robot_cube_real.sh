@@ -265,19 +265,48 @@ start_camera_health_guard() {
 }
 
 configure_can() {
+  local can_details rx_before rx_now deadline attempt
+  local rx_path=/sys/class/net/can0/statistics/rx_packets
+
   command -v ip >/dev/null 2>&1 || fail "未找到 ip 命令。"
-  ip link show can0 >/dev/null 2>&1 || fail "未找到 can0；请确认 USB-CAN 已连接。"
-  echo "[CAN] 重载 gs_usb 并配置 can0 为 1 Mbps..."
+  if ! ip link show can0 >/dev/null 2>&1; then
+    echo "[CAN] 未找到 can0，尝试加载 gs_usb..."
+    sudo modprobe gs_usb || fail "无法加载 gs_usb 驱动。"
+    for attempt in {1..5}; do
+      ip link show can0 >/dev/null 2>&1 && break
+      sleep 1
+    done
+  fi
+  ip link show can0 >/dev/null 2>&1 ||
+    fail "未找到 can0；请确认 USB-CAN 已连接并已透传到虚拟机。"
+
+  echo "[CAN] 复用现有 USB-CAN，配置 can0 为 1 Mbps、采样点 0.75..."
   sudo ip link set can0 down 2>/dev/null || true
-  sudo modprobe -r gs_usb 2>/dev/null || true
-  sudo modprobe gs_usb || fail "无法加载 gs_usb 驱动。"
-  sleep 1
-  sudo ip link set can0 down 2>/dev/null || true
-  sudo ip link set can0 type can bitrate 1000000 2>/dev/null ||
+  sudo ip link set can0 type can bitrate 1000000 sample-point 0.75 2>/dev/null ||
     fail "无法配置 can0；请检查 USB-CAN 连接。"
   sudo ip link set can0 up || fail "无法启动 can0。"
-  ip -details link show can0 | grep -E 'state (UP|UNKNOWN)|bitrate 1000000' >/dev/null ||
+
+  can_details=$(ip -details link show can0)
+  grep -Eq 'state (UP|UNKNOWN)' <<<"$can_details" &&
+    grep -Fq 'bitrate 1000000' <<<"$can_details" &&
+    grep -Fq 'sample-point 0.750' <<<"$can_details" ||
     fail "can0 未处于 1 Mbps 工作状态。"
+
+  [[ -r "$rx_path" ]] || fail "无法读取 can0 RX 计数器。"
+  rx_before=$(<"$rx_path")
+  deadline=$((SECONDS + 5))
+  while (( SECONDS < deadline )); do
+    sleep 1
+    rx_now=$(<"$rx_path")
+    if (( rx_now > rx_before )); then
+      echo "[CAN] 已收到机械臂反馈（RX 增量 $((rx_now - rx_before))）。"
+      return 0
+    fi
+  done
+
+  echo "[CAN] can0 状态与计数：" >&2
+  ip -details -statistics link show can0 >&2 || true
+  fail "can0 已启动但 5 秒内没有收到机械臂反馈；请检查机械臂电源、USB 透传和 CAN 接线。"
 }
 
 node_exists() {
