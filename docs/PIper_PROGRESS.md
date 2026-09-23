@@ -287,3 +287,16 @@
 - 已验证：SDK 软件钳位、控制器逐轴限位和视觉适配器软范围是三种独立机制；真实动作必须显式检查并记录控制器限位内目标，不能依赖任一方静默修正。
 - 阻断：仍缺现场确认（人员/障碍/急停）及明确边界容差后的完整六轴内限位回退计划；在其前禁止 Enable、模式切换、`JointCtrl`、视觉搜索和抓取。
 - 下一名代理第一条命令：`cd /mnt/hgfs/ub && git status --short && tail -n 55 docs/PIper_PROGRESS.md`；随后输出（不执行）完整真机动作安全清单和由聚合关节反馈换算的六轴目标，等待现场条件确认。
+
+## 2026-09-24 00:13：一键脚本完整无运动验收
+
+- 从无 PiPER、相机、MoveIt、Servo、检测器或视觉控制器残留的状态，以标准输入 `/dev/null` 启动实际运行时脚本 `/home/johnwick/start_brain_robot_cube_real.sh`；未输入 `1`、`2` 或 `0`，未调用使能服务、`EnableArm`、`MotionCtrl_2`、`JointCtrl`、`DisableArm(7)` 或 `ResetPiper`。
+- 脚本依次通过 `[1/7]` 健康 `can0` 复用、RGB 首帧、紫色方块 RGB-D 检测器、MoveIt/Servo/保护适配器、同时间戳 TF/Octomap、调试图像首帧，并到达 `[7/7] 全部组件已就绪`。apt 缓存清理因无交互 sudo 被跳过；根分区仍为 55%、可用 16981 MB，不影响启动。
+- 就绪期间的只读验收：`/joint_states` 只有 `/piper_ctrl_single_node` 一个发布者和两个订阅者，消息为 `joint1..joint6,gripper`，当前位置为 `[0,-0.002930592,0.004291224,0,0.264869696,0,0.00007]` rad；`/brain_robot_vision/tf_gate_diagnostic` 为 `state=FORWARDED ... detail=TF_COMPLETE`；视觉控制器状态为 `IDLE`、原因为 `WAITING_FOR_START`。未进入搜索、`GRASP_READY` 或抓取。
+- 为验证正常退出而非触发危险的 Ctrl+C 分支，仅向脚本父进程发送 `TERM`。清理日志明确为“未收到 Ctrl+C；不发送 PiPER 失能命令”，随后所有本脚本启动的 PiPER、相机、检测、MoveIt/Servo、TF gate 与视觉进程均已退出；没有残留 scoped 进程。
+- 高速电机 `pos` 与 `/joint_states` 不逐项相等在本轮不构成新的运动阻断：已证明 `/joint_states` 直接来自官方 SDK 聚合 `GetArmJointMsgs()`（`.001°` 经 `pi/(180*1000)` 转 rad），而高速 `pos` 是独立的 `.001 rad` 电机反馈。尚未单独推导减速比、零位偏移或方向映射，故高速 `pos` 仍不得直接作 `JointCtrl` 目标；但已证明的聚合→ROS 链路足以继续本一键脚本的无运动验收，不重复同类诊断。
+
+### 本轮结论与下一步
+
+- 已验证：实际运行时一键脚本能在不使能、不运动的情况下完整到达待命状态，且启动、反馈、TF/点云门控、视觉控制器空闲状态与无掉电的 TERM 清理路径均符合预期。
+- 下一最小动作：在相同无运动启动方式下，仅观察紫色目标 `target_valid`、像素/相机点和调试图像是否稳定；仍不发送搜索或抓取按键。只有进入真实运动阶段时才按既有一次性授权打印完整安全清单，测试后回到测试前安全姿态并保持使能。
