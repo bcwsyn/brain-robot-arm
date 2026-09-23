@@ -239,3 +239,15 @@
 - 已验证：不完整 ROS 关节消息现在能在 CAN 输出前被纯逻辑拒绝；完整六轴和显式夹爪消息仍被接受；运行时 `piper` 构建与导入成功。
 - 未验证/阻断：未在运行节点中观察拒绝日志，未复查 SDK 当前六轴使能/限位，未测试正确单位目标的真实独立运动；观测姿态、相机、紫色检测、`GRASP_READY`、抓取/抬升/释放均尚未运行。真实运动和视觉搜索保持冻结。
 - 下一名代理第一条命令：`cd /mnt/hgfs/ub && git status --short && PYTHONPATH=brain_robot_arm/vendor/piper_ros/src/piper python3 -m unittest discover -s brain_robot_arm/vendor/piper_ros/src/piper/test -p 'test_command_validation.py' -v`；随后只读复查 SDK 的当前六轴使能、逐轴限位和正确单位的 ROS `/joint_states` 来源，再决定是否能进行无运动节点验收。
+
+## 2026-09-24 00:04：SDK 逐轴限位与静止反馈复查（无运动）
+
+- 使用 `C_PiperInterface_V2(can0, judge_flag=False, can_auto_init=True)` 后仅 `ConnectPort()`；没有调用 Enable/Disable、`MotionCtrl_2`、`JointCtrl`、`GripperCtrl`、`ResetPiper` 或任何参数写入 API。仅向 `0x472` 发送逐轴限位/加速度查询并读取相应响应；脚本返回 0。
+- 高速反馈新鲜：timestamp `1790179515.008173`、`200.0 Hz`，原始位置 `[0,0,-2,-1,256,0]`（`0.001 rad`）；`GetArmEnableStatus()` 为六轴全 `False`。CAN 保持 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750，错误/丢包为 0。
+- 每轴查询响应有效：J1 `-1500..1500`、J2 `0..1800`、J3 `-1700..0`、J4 `-1000..1000`、J5 `-700..700`、J6 `-1800..1800`（`0.001°`）；最大速度均 300、最大加速度均 500。响应时间戳随每次查询更新，排除了全轴缓存 `-1/65535` 的旧阻断。
+
+### 本轮结论与下一步
+
+- 已验证：CAN、高速反馈、六轴未使能状态及逐轴限位/速度/加速度都可由当前 SDK 直接复现；本轮无关节或夹爪运动。
+- 未验证：运行时驱动发布的 `/joint_states` 是否使用新鲜/正确的 `0.001°` 聚合反馈并与高速 `0.001 rad` 换算一致；完整启动栈、紫色检测和任何真实运动仍未运行。
+- 下一名代理第一条命令：`cd /mnt/hgfs/ub && pgrep -af 'piper_single_ctrl|piper_jog_adapter|visual_search_controller|grasp_lift_executor|move_group|servo_node' || true`；随后只启动一个 `auto_enable:=false` PiPER 驱动，采样 `/joint_states` 后立即停止，不调用 `/enable_srv`。
