@@ -80,3 +80,18 @@
 - 用户回复已完成接管后，重新执行 `sudo -n -v` 仍返回码 `1`（需要密码）；因此代理终端没有可用 sudo 时间戳。未读取或代输入密码。
 - 只读硬件复核通过：3 秒 `can0` RX 增量 `9136`，状态 `ERROR-ACTIVE`、1 Mbps、sample-point 0.750、错误计数为 0；当前无 PiPER、MoveIt、Servo 或视觉控制器残留。
 - 未重复运行必然在 CAN 配置阶段失败的一键脚本，未启用机械臂、未发送运动命令。下一步仍需在代理可见的同一终端完成 `sudo -v`，并用 `sudo -n -v` 验证返回码 0 后再运行脚本。
+
+## 2026-09-23 22:17：接力复核（无运动）
+
+- 规范仓库仍为 `/mnt/hgfs/ub`；本轮开始工作树保留已有的大量供应商/相机/安装脚本修改和未跟踪 Debian 包，未覆盖、未暂存、未提交这些用户修改。根分区 `df -P /` 为 55%，未执行清理脚本。
+- 实际路径均存在：`/home/johnwick/piper_ros`、`/home/johnwick/piper_ws`、`/home/johnwick/start_brain_robot_cube_real.sh`、`/home/johnwick/brain_robot_logs`；运行脚本与规范源 SHA-256 均为 `da9838e47fca452ab983c480f23f412905cdfe22327eb025fc43a1b621674230`。
+- 只读硬件复核：USB-CAN `1d50:606f`、Astra `2bc5:0557/0657` 和内核模块 `gs_usb`/`can_dev` 均可见；`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750，错误/丢包为 0。3 秒 SocketCAN 原始接收统计为 `0x251..0x256` 各 600 帧（约 200 Hz），位置原始值保持 `[0,-1,-10,-29,290,0]`（0.001°）；未发送任何运动命令。
+- 当前 SDK 只读导入为 `piper_sdk 0.6.2`，路径 `/home/johnwick/.local/lib/python3.10/site-packages/piper_sdk`，类 `C_PiperInterface_V2`。本轮未调用固件查询或任何控制 API；交接记录中的 `S-V1.8-2` 仍是历史事实，当前固件版本未重新验证。
+- `sudo -n -v` 返回 1（需要密码），因此未重配 CAN、未运行完整一键脚本、未使能六轴。现有 `can0` 虽健康，但脚本 `configure_can()` 仍无条件调用 sudo；不以修改脚本绕过权限作为本轮动作，等待操作者在同一终端完成一次 `sudo -v`。
+- 发现仅有 `/usr/bin/python3 ... ros2 launch astra_camera astra.launch.py` 的孤立 launch 父进程（无子进程，ROS 仅有 `/launch_ros_29887`，无相机话题）；已发送 TERM 停止该残留父进程，未停止其他控制器。停止后无 PiPER/MoveIt/Servo/视觉控制栈残留。
+- 证据：本轮终端输出（未写入仓库的大型日志）、`/home/johnwick/brain_robot_logs/astra_camera.log` 及历史相机恢复日志；原始 CAN 统计可由同一命令复现。阻断仍为代理终端无 sudo 凭据，且相机需由一键脚本重新启动后再验收真实帧/点云/TF。
+
+### 本轮结论与下一步
+
+- 已验证 CAN RX 和六条高速反馈持续存在，硬件安全前置（反馈层）通过；未验证固件版本、六轴使能、关节限位/速度/加速度复查、`/joint_states`、Astra 帧、点云自体过滤、TF/Octomap、视觉 `GRASP_READY` 或抓取。
+- 不允许继续真机运动：六轴尚未使能，且完整脚本被 sudo 凭据阻断。操作者先在同一 Ubuntu 终端执行固定接管命令并确认 `sudo -n -v` 返回 0；下一轮第一条命令为：`cd /mnt/hgfs/ub && sudo -n -v && ip -details -statistics link show can0 && timeout 10s candump -n 10 can0`。
