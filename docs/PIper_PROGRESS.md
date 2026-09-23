@@ -313,3 +313,16 @@
 
 - 已验证：一键启动后的紫色目标检测主题和下游订阅关系完整；当前相机视野/实际场景没有获得可用紫色方块目标。这是继续搜索、对齐、`GRASP_READY` 与抓取前的外部视觉输入阻断，不能通过重复关节反馈、限位或启动诊断解决。
 - 该视觉观察记录仍然有效，但属于 `P4` 的后续待办；不能覆盖当前 `P2` 运动恢复阶段。待 `P2` 通过后，再在相机视野内提供可检测目标并验证 `target_valid=true`、`target_pixel` 和 `target_point_camera` 稳定发布，然后才进入 `P4/P5`。
+
+## 2026-09-24 00:58：运行时完整六轴门控无运动复核
+
+- 实际运行栈由 `/home/johnwick/start_brain_robot_cube_real.sh` 的同一父进程保持：唯一 `piper_single_ctrl`、Astra、`cube_detector`、MoveIt/Servo、TF gate、`piper_jog_adapter`、`visual_search_controller` 和 `grasp_lift_executor` 均存在；没有第二个 PiPER 驱动。CAN 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point `0.750`，两秒 RX 增量 `6141`；根分区使用率 `55%`；运行时与规范启动脚本 SHA-256 均为 `70eb2b981c94d305ffa1b87a7a30ed09c20b613b6a8b78176804aeaff132d872`。
+- 只读 ROS 状态确认视觉控制器 `IDLE/WAITING_FOR_START`，`scene_ready=false`，`target_valid=false`；`/arm_status` 为 `arm_status=0`，六轴通信/限位错误均为 false；`/joint_states` 只有 `piper_ctrl_single_node` 一个发布者，当前位置约 `[0,-0.002930592,0.004291224,0,0.266474544,0]` rad。
+- 最小无运动动作：向实际 `/joint_commands` 发布一条仅含 `joint1` 的缺轴 `sensor_msgs/msg/JointState`。运行时 `joint_callback()` 返回校验拒绝；CAN TX 计数 `588→588`（增量 `0`），前后 `/arm_status` 完全相同且仍未使能。命令发布返回码 `0`，未调用 `/enable_srv`、`EnableArm`、`MotionCtrl_2`、`JointCtrl` 或任何夹爪控制。该证据补齐了 P1 静态单元测试之外的实际 ROS→驱动拒绝路径。
+- 环境/证据：ROS 2 Humble、`/home/johnwick/piper_ros/install/piper`；只读进程/话题检查和 TX 计数如上，未写入大型日志。当前脚本仍在安全待命，未进入搜索或抓取。
+
+### 本轮结论与下一步
+
+- `P1` 运行时完整六轴门控已通过；`P0`、`P1`、`P3` 保持通过，`P2` 仍未通过，`P4/P5` 尚未开始。
+- 当前阻断不是目标缺失，而是安全目标构造：聚合 `/joint_states` 的 J2≈`-0.168°`（控制器下限 `0°`）和 J3≈`+0.246°`（控制器上限 `0°`）仍在边界外。不能发送包含越界保持值的六轴绝对目标，也不能重复此前高速反馈单位误用实验。
+- 下一最小动作：在不使能、不发送目标的前提下，保存一份同一 SDK/ROS 实例的聚合关节值与逐轴限位回读；然后由现场安全清单确认机械支撑、障碍和急停，制定并审查仅将 J2/J3 带回限位内的最小双关节回退目标。未完成该审查前，禁止 EnableArm、MotionCtrl_2、JointCtrl、视觉搜索或抓取运动。

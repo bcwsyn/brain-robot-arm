@@ -92,3 +92,8 @@
 - 因此，高速 `pos` 仍不能直接作为 `JointCtrl` 绝对目标；它与聚合关节反馈可能包含不同的电机/关节语义、减速比、零位偏移或方向定义。无需为了无运动验收重复推导这些参数，或因两套读数不同否定已验证的聚合→ROS 反馈链路。若进入真实运动目标构造，则以官方聚合关节反馈/ROS 来源为候选，并在动作前按既有安全清单记录单位、目标、限位与停止条件。
 - 已实跑运行时 `/home/johnwick/start_brain_robot_cube_real.sh` 至 `[7/7] 全部组件已就绪`，保持 `IDLE/WAITING_FOR_START`，未触发任何搜索、抓取、使能或关节目标。用 `TERM` 退出会走脚本“保持”清理路径，不调用 `DisableArm(7)`；不得以 `ResetPiper` 或自动失能作为该脚本的普通收尾。
 - 后续无运动目标观察确认：检测器、目标主题与下游订阅均正常，但连续 10 秒 `target_valid=false`，无 `target_pixel`/`target_point_camera`，日志为 `PURPLE_CUBE target LOST`。在相机视野内提供可检测紫色方块并得到稳定目标前，不发送搜索或抓取按键；不要以重复 CAN、限位或高速/ROS 比较来替代这一外部场景条件。
+
+## 2026-09-24 运行时完整六轴门控复核
+
+- 实际运行的唯一 `piper_single_ctrl` 已用一条仅含 `joint1` 的 `/joint_commands` 消息复核：驱动在 `joint_callback()` 的校验阶段拒绝缺轴输入，`can0` TX 计数保持 `588`（增量 `0`），`/arm_status` 前后均为未使能；因此 P1 的“无效消息不得进入任何 CAN 控制输出”不仅由单元测试证明，也由运行时 ROS 链路证明。
+- 本复核未调用 `/enable_srv`、`EnableArm`、`MotionCtrl_2`、`JointCtrl`、`GripperCtrl` 或 `ResetPiper`，不改变真实机械状态。后续仍必须把六轴完整消息的单位和所有目标逐轴检查在控制器限位内，才能进入 P2。
