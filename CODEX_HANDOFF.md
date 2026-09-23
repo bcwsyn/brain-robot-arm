@@ -698,3 +698,42 @@ sed -n '1,240p' docs/PIper_DECISIONS.md 2>/dev/null || true
 ```
 
 切换账号后不依赖聊天历史；只依赖规范仓库中已经提交的文件和 Git 历史。远程 GitHub 如果存在，只作为同步/审查来源；在提交成功前，不能把只存在于 GitHub 工作区、聊天内容或虚拟机未提交目录中的信息当作已保存进度。
+
+## 23. 无 CAN RX 时的硬件优先检查
+
+如果启动脚本停在 `[1/7]`，并同时出现“sudo 凭据缓存失效”“can0 没有新 RX”“SDK 没有高速反馈”，必须先停止所有运动和 ROS 控制器，把问题分成权限、USB-CAN、CAN 接口和机械臂物理链路四层检查。不能直接重启视觉流程，也不能发送运动命令。
+
+先刷新 sudo 凭据，但不要把 sudo 错误误判为机械臂故障：
+
+```bash
+sudo -v
+```
+
+然后只读检查：
+
+```bash
+lsusb | grep -Ei '1d50:606f|OpenMoko|CAN' || true
+lsmod | grep gs_usb || true
+ip -brief link show can0 || true
+ip -details -statistics link show can0 || true
+```
+
+解释顺序：
+
+- `lsusb` 看不到 `1d50:606f`：优先检查 USB-CAN 是否插好、VMware USB 设备是否仍连接到虚拟机、USB 线和适配器指示灯；
+- `lsusb` 能看到但没有 `can0`：检查 `gs_usb`/`can_dev` 模块和接口枚举；
+- `can0` 存在但为 DOWN：只在确认 USB-CAN 已识别后配置 1 Mbps、sample-point 0.75；
+- `can0` 为 UP 但 3～5 秒 RX 增量为 0：检查 PiPER 主电源、机械臂控制器是否启动、CAN_H/CAN_L 是否接反/松动、USB-CAN 到机械臂的连接、终端电阻和 CAN bitrate；
+- `can0` RX 恢复后才允许启动 SDK 或 ROS 驱动；
+- RX 恢复但 SDK 无高速反馈：再检查 SDK 接口、进程竞争和反馈 ID，不要先改主从配置。
+
+RX 只读测试：
+
+```bash
+RX1=$(< /sys/class/net/can0/statistics/rx_packets)
+timeout 5s candump -L can0
+RX2=$(< /sys/class/net/can0/statistics/rx_packets)
+echo "RX 增量：$((RX2-RX1))"
+```
+
+如果机械臂主电源已确认开启、USB-CAN 已识别、can0 已配置但 RX 仍为 0，必须让用户检查实际 CAN 线缆、供电和适配器连接，必要时在机械臂安全静止状态下重新插拔/重新上电。未恢复 RX 之前，不得运行 `EnablePiper`、`MotionCtrl_2`、`JointCtrl` 或完整视觉启动脚本。
