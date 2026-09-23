@@ -72,3 +72,8 @@
 - 当前运行时/规范副本的 `piper_ctrl_single_node.py` 确实使用 `joint_positions.get('jointN', 0)`。正常 `piper_jog_adapter` 在已臂控且关节反馈完整时发布全部 `joint1` 至 `joint6`，但该行为不足以保护其他发布者或截断消息。
 - 在清楚审查并最小修改用户已有驱动改动前，禁止启动会使能或发送 `/joint_commands` 的视觉/抓取链路。后续驱动修复必须拒绝（不调用 `MotionCtrl_2`、`JointCtrl` 或 `GripperCtrl`）任何 `name`/`position` 长度不匹配、重复/未知名称、或缺少任一六轴的命令；用无 CAN 的单元测试证明拒绝路径和完整六轴路径。
 - 2026-09-24 已在用户授权后实现该门控：`piper.command_validation.validate_absolute_joint_state()` 先验证完整六轴、可选夹爪、唯一名称和有限数值；`joint_callback()` 在调用模式控制或任何 SDK 输出前拒绝无效输入。夹爪仅在消息显式包含 `gripper` 时才发送。纯单元测试覆盖完整乱序六轴、显式夹爪及缺轴/重复/未知/长度不匹配/NaN 拒绝；`colcon build --symlink-install --packages-select piper` 通过。此改动不能替代真实使能、当前限位和单位映射的安全闸门。
+
+## 2026-09-24 ROS 关节状态映射待验证
+
+- 无运动采样已证明 `/joint_states` 有唯一发布者、当前 ROS 时间戳和约 200 Hz 频率，但消息的 J2/J3/J5 与同期高速电机 `pos * 0.001 rad` 不能逐项直接等同。高速帧是电机反馈，ROS 位置来自经 ID 翻译的聚合关节反馈；符号、偏置、减速比或帧语义都尚未被本轮证明。
+- 在通过同一 SDK 实例对比 `GetArmJointMsgs()`、原始 `0x3A0..0x3A7` 聚合帧和 ROS 消息，并建立明确的关节名称/单位映射前，禁止从其中任一单独来源构造真实 `JointCtrl` 的六轴绝对保持目标。此限制不影响只读相机/TF/检测诊断。

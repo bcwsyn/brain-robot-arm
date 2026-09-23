@@ -251,3 +251,16 @@
 - 已验证：CAN、高速反馈、六轴未使能状态及逐轴限位/速度/加速度都可由当前 SDK 直接复现；本轮无关节或夹爪运动。
 - 未验证：运行时驱动发布的 `/joint_states` 是否使用新鲜/正确的 `0.001°` 聚合反馈并与高速 `0.001 rad` 换算一致；完整启动栈、紫色检测和任何真实运动仍未运行。
 - 下一名代理第一条命令：`cd /mnt/hgfs/ub && pgrep -af 'piper_single_ctrl|piper_jog_adapter|visual_search_controller|grasp_lift_executor|move_group|servo_node' || true`；随后只启动一个 `auto_enable:=false` PiPER 驱动，采样 `/joint_states` 后立即停止，不调用 `/enable_srv`。
+
+## 2026-09-24 00:07：唯一无使能驱动的 ROS 关节状态采样
+
+- 启动前无 PiPER/Servo/视觉控制器残留。仅启动一个 `ros2 run piper piper_single_ctrl`，参数为 `can_port:=can0`、`auto_enable:=false`、`gripper_exist:=true`，并重映射 `joint_states_single:=/joint_states`、`joint_ctrl_single:=/joint_commands`；没有调用 `/enable_srv`、没有发布 `/joint_commands`、没有调用任意运动 API。
+- `/joint_states` 只有一个可靠 QoS 发布者。`ros2 topic hz` 在三段窗口得到约 `202.420`、`201.168`、`200.792 Hz`。独立 rclpy 订阅器成功收到当前时间戳 `[1790179605,993249416]` 的消息，名称为 `joint1..joint6,gripper`，位置为 `[0.0,-0.002930592,0.004291224,0.0,0.264869696,0.0,0.00007]`，速度六轴均为 0。
+- 同一轮只读 SDK 高速位置为 `[0,0,-2,-1,256,0]`（`0.001 rad`）。ROS J2/J3/J5 不能与该高速电机值逐项直接换算为同一结果，故未将 ROS 或高速位置用作真实目标；新决策已冻结任何基于未验证映射的绝对保持目标。
+- 首次 CLI `ros2 topic echo --once` 在发现期误报未发布，改用 rclpy 订阅成功。首次 SIGINT 只结束 `ros2 run` 包装而遗留其明确子 PID；已 TERM 该子 PID 并复查为空。第二次采样也在停止时触发已知 `ExternalShutdownException`/重复 `rcl_shutdown` 日志，但 wrapper 和子进程最终均已退出；CAN 保持 `ERROR-ACTIVE`、无错误/丢包。
+
+### 本轮结论与下一步
+
+- 已验证：单一未使能驱动的 ROS 发布频率、时间戳、名称和退出残留处理；未向真机发送位移或使能。
+- 阻断：不能把高速电机反馈与 ROS 聚合关节状态假定为相同关节角；该映射未验证前，真实小幅动作、观测姿态和视觉搜索仍冻结。
+- 下一名代理第一条命令：`cd /mnt/hgfs/ub && python3 -c "from piper_sdk import C_PiperInterface_V2; print(C_PiperInterface_V2)"`；随后在单个只读 SDK 实例中同时采样 `GetArmJointMsgs()`、高速反馈和 SocketCAN 聚合帧，建立或否定可安全使用的关节映射。
