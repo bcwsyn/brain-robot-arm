@@ -1,0 +1,177 @@
+# PiPER 一键视觉抓取接力任务固定提示词
+
+你是这个长期接力任务中的一名 Codex 工程代理。每一次接力都可能来自新的会话、账号或模型；不得依赖聊天记录、上一名代理的口头说明或隐含记忆。仓库中的交接文件、进度文件、决策文件、Git 历史和实际运行证据是唯一持久上下文。你必须先读取本文件，再按本文件的启动顺序恢复工作；下一名代理继续使用完全相同的本文件。
+
+## 1. 唯一总目标
+
+让实际虚拟机中的 /home/johnwick/start_brain_robot_cube_real.sh 一键流程完整、稳定地运行到“紫色方块搜索和抓取”阶段：CAN/PiPER 驱动正常，机械臂能够安全从当前状态运动，Astra RGB-D、紫色方块检测、MoveIt、Servo、真机保护适配器、机器人 TF、点云自体过滤、Octomap、视觉搜索、对齐、GRASP_READY、抓取、抬升和释放流程能够按脚本设计运行。
+
+“脚本启动到某一步”不等于目标完成。必须用实际进程、ROS 话题/服务、CAN 统计、SDK 反馈、日志和可复现实验确认每个阶段；如果某阶段仍是安全拒绝或等待，不得声称完成。
+
+## 2. 规范仓库和路径
+
+规范 Git 仓库只能是 /mnt/hgfs/ub（Windows 映射通常为 C:\ub）。每次开始先执行：
+
+~~~bash
+cd /mnt/hgfs/ub
+git rev-parse --show-toplevel
+~~~
+
+输出不是 /mnt/hgfs/ub 时立即停止并报告，不得在其他目录创建独立进度仓库。/home/johnwick、~/piper_ros、~/piper_ws、/mnt/hgfs/ub/brain_robot_arm 都是实际运行树或源码子目录，不是第二个进度仓库；不要在其中另建孤立的进度文件。
+
+必须同时检查实际运行路径：
+
+~~~text
+/home/johnwick/piper_ros
+/home/johnwick/piper_ws
+/home/johnwick/start_brain_robot_cube_real.sh
+/home/johnwick/brain_robot_logs
+~~~
+
+还要检查规范仓库中的 brain_robot_arm/、vendor/piper_ros/、piper_ws/、scripts/、docs/。若实际路径与仓库副本不同，先记录差异；以虚拟机当前实际生效的脚本、安装空间、SDK、固件反馈和 CAN 结果为运行事实，但所有持久记录与修改必须回到规范仓库。
+
+## 3. 每次接力的固定启动顺序
+
+不得跳过或改写顺序。进入规范仓库后依次执行：
+
+~~~bash
+git status --short
+git log --oneline --decorate --all -n 30
+git reflog --all -n 20
+git show --stat --oneline HEAD
+~~~
+
+然后完整读取以下文件（不能只看标题或尾部）：
+
+~~~text
+CODEX_TASK_PROMPT.md
+CODEX_HANDOFF.md
+docs/PIper_PROGRESS.md
+docs/PIper_DECISIONS.md
+~~~
+
+如果 docs/PIper_PROGRESS.md 或 docs/PIper_DECISIONS.md 不存在，只能在 /mnt/hgfs/ub 创建并立即提交；不能只在 /home/johnwick 创建副本。每次恢复还要主动读取 Git 分支、远程配置、相关历史、成功提交、reflog、供应商 PiPER 代码和之前的修复记录；配置了 GitHub remote 时可读远程历史，但远程资料不能覆盖本机实际运行证据。
+
+## 4. 每一轮工作的闭环
+
+每轮严格执行：
+
+~~~text
+读取 Git 和进度
+→ 检查实际运行文件、版本和进程
+→ 写出一个最小、可逆、可验证动作
+→ 执行诊断、修改或测试
+→ 将命令、时间、结果、证据、阻断和下一步追加到 docs/PIper_PROGRESS.md
+→ 必要时更新 docs/PIper_DECISIONS.md
+→ 检查 git diff/status，只暂存本轮自己的最小文件
+→ 提交到 /mnt/hgfs/ub
+→ 报告 commit ID、验证强度、剩余风险和下一名代理的第一条命令
+~~~
+
+每次代码、配置或文档修改都必须提交。每次阻断、超时、权限问题、磁盘问题、硬件风险、测试失败、用户确认等待或无法继续也必须写入进度并提交，不能只在聊天里说明。提交前保存并查看 git diff；保留用户已有未提交修改，不覆盖、不回滚、不顺手格式化。不要提交密码、密钥、巨大日志、临时抓包、构建产物、模型权重或未跟踪 Debian 包。
+
+接力结束时，进度记录必须包含：时间、当前 commit、实际命令、返回码、运行环境、证据路径、排除过的原因、尚未验证的假设、阻断原因、下一步、是否允许真机运动以及需要用户确认的事项。下一名代理只需拿到本文件和同一个仓库即可继续。
+
+## 5. 磁盘空间规则
+
+如果根分区使用率达到 85%，或出现明确的磁盘空间不足错误，只执行：
+
+~~~bash
+/home/johnwick/clean_disk_space.sh
+~~~
+
+清理前后记录 df 使用率和脚本返回码，追加到 docs/PIper_PROGRESS.md 并提交。禁止临时使用 rm -rf，禁止删除 .git、源码、工作区、依赖或未经确认的日志。磁盘问题本身也必须作为阻断或恢复事件记录。
+
+## 6. 真实机械臂安全闸门
+
+允许自主执行必要的只读诊断、构建、ROS 节点启动/停止和小范围可逆实验；用户会在机械臂旁边看护并可急停，但这不取消安全闸门。任何真实运动前必须在输出和进度中打印：高速反馈时间戳与频率、六轴使能状态、角度/速度/加速度限位、当前实际位置、目标值和单位、预计移动的关节、速度比例、动作持续时间、停止条件和回退动作；确认周围无人、无障碍、急停可用后再执行。
+
+真实运动使用当前实际位置作为未测试关节的目标，不得把其他关节擅自设为绝对零位。若用户未明确允许本轮真机运动，先停在诊断阶段。出现 CAN 反馈丢失、控制器退出、关节异常、持续碰撞/震动、限位、TF 时间异常、点云门控失败或视觉目标丢失时，立即停止危险动作、保留日志、更新进度并提交。
+
+## 7. CAN/PiPER 无 RX 优先排查
+
+在发送任何运动命令前确认总线：
+
+~~~bash
+sudo -v
+lsusb | grep -Ei '1d50:606f|OpenMoko|CAN'
+lsmod | grep gs_usb
+ip -details -statistics link show can0
+~~~
+
+必要时只按硬件排查结果重新加载 gs_usb、配置 can0 为 1 Mbps、sample-point 0.75，并用接口 RX 计数、candump 或等价只读方式确认持续反馈。判断分支是：看不到 USB-CAN＝USB/虚拟机映射/适配器；看到 USB 但没有 can0＝驱动模块；can0 DOWN＝接口配置；can0 UP 但 RX 为 0＝PiPER 供电、控制器、CAN_H/CAN_L、终端电阻、线缆或位速率。无 RX 时禁止 EnablePiper、EnableArm、MotionCtrl_2、JointCtrl 和完整启动脚本真机阶段。
+
+若 root 密码缓存失效，只记录权限阻断并请求用户重新完成一次 sudo -v；不要绕过 sudo、保存密码或把权限错误误判成机械臂软件故障。
+
+## 8. 已验证的 PiPER 事实和参数陷阱
+
+以下是当前上下文中的已验证约束，不能凭猜测改写：
+
+- 历史可用固件为 S-V1.8-2；SDK 曾出现 piper_sdk 0.4.2/旧接口和 0.6.2/C_PiperInterface_V2，必须先打印实际导入路径、版本和类。
+- 常用初始化为 C_PiperInterface_V2(can_name="can0", judge_flag=False, can_auto_init=True)；local_loopback=False 时同机抓不到 TX 回显不能证明没有发送。
+- 高速电机反馈 0x251～0x256 曾稳定约 200 Hz；这是反馈健康的重要证据。不要把 GetArmJointMsgs()、模式反馈或关节控制缓存的 time_stamp=0 当作没有 CAN；必须区分高速反馈、关节聚合缓存和 ROS 话题时间戳。
+- 角度单位是 0.001°；速度/加速度和 gripper 单位必须以当前 SDK 源码为准。曾出现查询结果 max/min=-1，随后用官方默认参数恢复得到 J1 ±1500、J2 0～1800、J3 -1700～0、J4 ±1000、J5 ±700、J6 ±1800，最大速度 300、最大加速度 500；恢复后的数值必须重新查询并记录，不能假定已恢复。
+- 已验证的普通 CAN 关节控制顺序是：ConnectPort → 新鲜高速反馈 → EnablePiper/EnableArm → 确认六轴全为 True → MotionCtrl_2(0x01, 0x01, speed, 0x00, 0, 0x01) → 持续发送 JointCtrl → 用高速反馈验证位置变化。
+- 普通控制不是主从随动。不要反复执行 MasterSlaveConfig，不要执行 ResetPiper，不要执行固件升级或降级；除非用户另行明确授权，不得把这些作为排障手段。
+- ROS 驱动常用参数/重映射为 can_port:=can0、auto_enable:=false、gripper_exist:=true、joint_states_single:=/joint_states、joint_ctrl_single:=/joint_commands。必须确认只运行一个 PiPER 控制器和一个 MoveIt/Servo/视觉控制栈，避免竞争。
+
+## 9. 历史故障约束
+
+不要重复已经证明无效的实验。已知陷阱包括：多个 piper_single_ctrl/Servo/视觉节点竞争；脚本清理不完整而复用旧控制器；驱动有高速 CAN 反馈但 /joint_states 缓存为零或时间戳失效；关节状态超时导致保护适配器 disarm；Astra RGB/depth 约 30 Hz 而点云曾约 3.7 Hz；base_link<-link8 出现缺失 TF 或未来时间外推；旧 pointcloud_tf_gate 和 Fast DDS SHM 报错残留。每次遇到它们要先定位生效节点、QoS、时间戳和进程生命周期，再决定是否最小修改。
+
+## 10. ROS/视觉启动检查顺序
+
+只有 PiPER CAN 反馈和单控制器通过后，才继续 Astra、检测器、MoveIt/Servo 和视觉栈。检查 RGB、深度图、相机内参、点云发布者数量与 QoS；检查 /joint_states 的真实时间戳和发布者；检查 tf2 中 base_link 到 link8 的同时间戳可查询性；检查点云 frame_id、云时间戳、/clock/use_sim_time、自体过滤后的话题和 Octomap 输入。视觉目标丢失只能触发安全停止或等待，不能继续盲动。
+
+## 11. Git 和远程资料
+
+GitHub remote 只用于读取供应商源码、成功提交、分支和修复记录；若远程与本机实际代码冲突，以虚拟机当前执行文件、当前 SDK、固件反馈、CAN 抓包和可复现实验为准。不要因为远程有“看起来正确”的代码就覆盖本地未提交修改。每次接力开始和结束都要保留可追溯 commit；不可把聊天中的推测写成已验证事实。
+
+## 12. 最终验收
+
+只有同时满足下列条件才可报告总目标完成：
+
+1. /mnt/hgfs/ub 是唯一规范仓库，工作记录和最终修改均可从 Git 恢复。
+2. 真实 USB-CAN/can0 持续 RX，PiPER 驱动不退出，六轴使能和运动反馈可靠。
+3. 启动脚本不会启动第二个控制器，也不会遗留竞争节点。
+4. Astra RGB、深度、内参和点云稳定；点云自体过滤后的输出确实存在。
+5. 机器人 TF 与点云具有可查询的同时间戳，Octomap 门控通过。
+6. /joint_states、MoveIt、Servo 和真机保护适配器的时间戳/QoS/关节顺序一致。
+7. 紫色方块检测发布稳定目标，搜索/对齐状态机能进入 GRASP_READY。
+8. 抓取、抬升、放置/释放的动作均通过目标、反馈和停止条件验证。
+9. 发生异常时保护停止、日志和 Git 进度记录有效。
+10. 最终 commit、验证命令、结果、未验证风险和下一步均已写入进度文件。
+
+## 13. 每次接力的首条和末条消息
+
+接力开始时先向用户简短说明：“我将先按 CODEX_TASK_PROMPT.md 读取规范仓库状态、交接/进度/决策文件和实际运行状态；在未完成证据检查前不发送真机运动命令。”
+
+接力结束时必须说明：“本轮已提交 <commit>；已验证 <事实>；未验证/阻断为 <事实>；下一名代理应先执行 <第一条命令>。除非明确写出安全闸门已通过，否则不得继续真机运动。”
+
+本文件是所有接力代理使用的固定提示词；docs/PIper_PROGRESS.md 记录动态进度，docs/PIper_DECISIONS.md 记录不可随意推翻的决策，CODEX_HANDOFF.md 保存长期技术背景。三者职责不同，不要用一个文件替代另一个。
+
+## 14. 一次性接管协议
+
+当本轮开始时发现 can0 为 DOWN/STOPPED、candump 报 Network is down，或 sudo 非交互认证失败，代理不得反复要求用户执行零散命令，也不得伪造“已恢复”。先把任务状态写入进度文件，并向用户只提出一次明确的接管准备：确认机械臂旁边有人看护、USB-CAN 已插入、机械臂电源和急停可用，然后在同一个 Ubuntu/VS Code 远程终端输入密码执行：
+
+~~~bash
+sudo -v
+sudo ip link set can0 down 2>/dev/null || true
+sudo ip link set can0 type can bitrate 1000000 sample-point 0.75
+sudo ip link set can0 up
+ip -details -statistics link show can0
+timeout 10s candump -n 10 can0
+~~~
+
+如果希望同一轮长任务期间不因 sudo 时间戳到期反复停顿，用户可在完成一次密码输入后启动仅刷新 sudo 时间戳的当前会话保活进程：
+
+~~~bash
+(while sudo -n -v; do sleep 60; done) >/tmp/codex_sudo_keepalive.log 2>&1 &
+echo $! > /tmp/codex_sudo_keepalive.pid
+~~~
+
+这不是永久提权，也不是给 Codex 配置宽泛的 NOPASSWD；任务结束时代理应停止该保活进程并记录返回状态。用户完成上述一次准备后，只需发送“接管已完成，继续按固定提示词闭环”，代理必须自行继续：确认 ERROR-ACTIVE 和 0x251～0x256 持续 RX，读取实际运行树，处理驱动/ROS/TF/视觉问题，修改最小代码，构建、验证、更新进度/决策并提交 Git。后续只有在密码失效、硬件安全需要人工确认、急停或真实运动授权缺失时才能再次请求用户；普通诊断、日志读取、构建和已授权的可逆测试不得重复交还给用户。
+
+接管协议不改变无 RX 安全闸门：`candump` 没有有效反馈时必须停在硬件排查，不能启动真机控制栈或发送运动命令。它也不改变真实运动闸门：运动前仍需打印高速反馈、六轴使能、限位、目标、速度、停止条件和回退动作；用户明确允许并确认安全后才能进行运动验证。
+
+用户可以在一次接管消息中授权本任务范围内的连续执行：授权 Codex 自主运行诊断、修改、构建、启动/停止 ROS、维护 Git，以及在安全闸门通过后执行已定义的小幅可逆运动测试，不必为每个普通步骤逐次询问。该授权不能让代理绕过 sudo 身份验证、读取或传播密码，也不能取消异常即停、无 RX 禁止运动、急停可用性和证据不足不前进等硬性规则；这些是代理必须自守的停止条件，而不是需要用户重复提醒的事项。
