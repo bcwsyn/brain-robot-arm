@@ -406,7 +406,8 @@ class PiperRosNode(Node):
                 joint_positions['joint6']
             )
 
-            # 夹爪控制
+            # 夹爪只在命令明确包含 gripper 目标时发送；六轴观测轨迹
+            # 不应在每个周期重复注入夹爪帧。
             if self.gripper_exist and 'gripper' in command_positions:
                 if len(joint_data.effort) >= 7:
                     gripper_effort = clip(joint_data.effort[6], 0.5, 3)
@@ -417,8 +418,6 @@ class PiperRosNode(Node):
                         # self.get_logger().warning("Gripper effort is NaN, using default value.")
                         gripper_effort = 1000  # 设置默认值
                     self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x01, 0)
-                else:
-                    self.piper.GripperCtrl(abs(joint_6), 1000, 0x01, 0)
 
 
     def enable_callback(self, enable_flag: Bool):
