@@ -726,3 +726,13 @@
 
 - 适配器闭环修复已落库，但尚未获得一次通过 TF 门控后的实机运动验证；当前最新阻断是相机/机器人 TF 心跳缺失，不是点云障碍或抓取逻辑。
 - 下一次仅复用同一默认脚本，在 TF 心跳恢复后验证 `OBSERVE_POSE_REACHED`；若轨迹仍不收敛，再根据闭环命令与实测反馈差值继续定位。
+
+## 2026-09-24 继续执行前的 USB-CAN 实际阻断
+
+- 实际检查根分区可用 `6.3G`、日志目录 `62M`，磁盘不再是阻断；唯一遗留进程为 Astra 相机。USB-CAN 仍以 `1d50:606f` 枚举，`gs_usb` 模块已加载，`can0` 列表中短暂存在但处于 `DOWN/STOPPED`。
+- 按现有受限免密 sudo 执行两次最小恢复 `sudo -n ip link set can0 up`，均返回 `RTNETLINK answers: No such device`。同一时段内核持续记录 VMware xHCI `ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 1`。因此不能取得 RX 增量，也不能启动 PiPER 驱动或任何运动。
+- 未执行重载、刷写、`MasterSlaveConfig`、`ResetPiper` 或 ROS 运动命令。当前最新阻断是 USB-CAN 虚拟机传输/接口消失，而不是闭环轨迹、点云或紫色目标算法。
+
+### 本轮结论与下一步
+
+- 必须等 `can0` 能稳定 `UP` 且 RX 持续增长后，才能复用已提交的闭环轨迹修复运行默认脚本；在此之前禁止启动实体运动。
