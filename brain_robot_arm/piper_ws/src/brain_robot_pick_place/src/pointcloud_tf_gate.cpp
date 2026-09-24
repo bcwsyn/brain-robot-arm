@@ -56,8 +56,10 @@ private:
     diagnostic_publisher_->publish(message);
   }
 
-  bool HasTransformsForCloud(const sensor_msgs::msg::PointCloud2 & cloud, std::string & detail)
+  bool HasTransformsForCloud(
+    const sensor_msgs::msg::PointCloud2 & cloud, std::string & detail, bool & used_latest)
   {
+    used_latest = false;
     if (cloud.header.frame_id.empty()) {
       detail = "POINTCLOUD_FRAME_EMPTY";
       return false;
@@ -75,24 +77,42 @@ private:
         tf_buffer_.lookupTransform(
           reference_frame_, frame, stamp, tf2::durationFromSec(transform_timeout_s_));
       } catch (const tf2::TransformException & error) {
-        detail = "MISSING_TF " + reference_frame_ + "<-" + frame + " at_cloud_stamp: " + error.what();
-        return false;
+        // Astra depth frames can arrive several seconds behind the ROS clock
+        // after a VM/USB scheduling pause.  The real-arm launch does not feed
+        // this cloud into an Octomap; for the freshness heartbeat, use the
+        // latest available robot transform and stamp the forwarded sample now.
+        try {
+          tf_buffer_.lookupTransform(reference_frame_, frame, tf2::TimePointZero);
+          used_latest = true;
+        } catch (const tf2::TransformException & latest_error) {
+          detail = "MISSING_TF " + reference_frame_ + "<-" + frame +
+            " at_cloud_stamp: " + error.what() + "; latest: " + latest_error.what();
+          return false;
+        }
       }
     }
-    detail = "TF_COMPLETE frame=" + cloud.header.frame_id;
+    detail = used_latest ? "TF_LATEST frame=" + cloud.header.frame_id :
+      "TF_COMPLETE frame=" + cloud.header.frame_id;
     return true;
   }
 
   void HandleCloud(const sensor_msgs::msg::PointCloud2 & cloud)
   {
     std::string detail;
-    if (!HasTransformsForCloud(cloud, detail)) {
+    bool used_latest = false;
+    if (!HasTransformsForCloud(cloud, detail, used_latest)) {
       ++rejected_frames_;
       PublishDiagnostic("REJECTED", detail);
       return;
     }
     ++accepted_frames_;
-    output_publisher_->publish(cloud);
+    if (used_latest) {
+      auto forwarded = cloud;
+      forwarded.header.stamp = now();
+      output_publisher_->publish(forwarded);
+    } else {
+      output_publisher_->publish(cloud);
+    }
     PublishDiagnostic("FORWARDED", detail);
   }
 

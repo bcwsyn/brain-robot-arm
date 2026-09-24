@@ -277,3 +277,10 @@
 
 - 将已实测的约 18 秒反馈切换窗口纳入 25 秒有界等待后，默认自动脚本实机证据完整出现：`RESET_COMPLETE`、观测轨迹接受、`OBSERVE_POSE_REACHED`、`STATE -> SEARCH`。这取代“复位阶段必然失败”的临时判断。
 - 空窗期间仍禁止驱动发送新 CAN 目标；搜索阶段若反馈/规划场景再次过期则进入保护故障。当前不再重复 P0/P1 或旧固件排查，后续只处理搜索稳定性和真实紫色方块输入，再进入 `GRASP_READY`/抓取。
+
+## 2026-09-24 腕部相机不写入实体 Octomap
+
+- 用户报告点云扫描时机械臂持续抖动，现场假设为夹爪回波被加入障碍模型。只读运行诊断同时显示 TF gate 因 `link8` 在旧点云时间戳不可用而拒绝绝大多数帧；MoveIt 的 PointCloudOctomapUpdater 虽具备 self-filter，但本机腕部相机/VM 时间错位使该链路不适合作为实体腕部相机的世界障碍源。
+- 决策：实体 `cube_visual_search` 保留 MoveIt 感知插件初始化但把 `point_cloud_topic` 指向不存在的 `disabled_octomap_points`，禁止腕部 RGB-D 云进入 Octomap；视觉控制器仅把 `tf_validated_points` 当新鲜度心跳，抓取目标仍来自 RGB-D 检测器。TF gate 只验证 `base_link`，精确时间 TF 不可用时用最新 TF 重打当前时间，避免 VM 延迟把所有云静默丢弃。
+- 禁止把该调整扩展为关闭机器人碰撞模型或绕过反馈保护；它只移除腕部相机的自体/环境占据图输入。默认脚本仍必须逐级取得 `RESET_COMPLETE`、`OBSERVE_POSE_REACHED` 和 `SEARCH`，在 `GRASP_READY` 之前不得发送抓取请求。
+- 本轮构建和一次默认实跑已验证启动门控不再卡在 `/filtered_points`，但 reset 仍在零点附近未收敛；后续优先定位实体轨迹反馈收敛，不恢复 Octomap 输入，也不执行固件/`MasterSlaveConfig`/`ResetPiper`。

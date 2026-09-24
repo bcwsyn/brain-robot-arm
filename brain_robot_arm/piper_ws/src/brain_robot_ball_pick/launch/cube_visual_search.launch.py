@@ -16,6 +16,12 @@ def _load_yaml(path):
 def generate_launch_description():
     cube_share = get_package_share_directory('brain_robot_ball_pick')
     base_share = get_package_share_directory('brain_robot_pick_place')
+    # The Astra is mounted on the gripper. Feeding its depth cloud into
+    # MoveIt's world-geometry updater makes the moving gripper part of the
+    # obstacle map whenever camera/joint timestamps are skewed, which can
+    # produce collision-planning oscillation on the physical arm. The
+    # detector still consumes RGB-D; the corresponding sensor configuration
+    # keeps the updater loaded but disconnects the wrist cloud from Octomap.
     moveit = MoveItConfigsBuilder(
         'piper', package_name='piper_with_gripper_moveit').sensors_3d(
             os.path.join(cube_share, 'config', 'sensors_3d_real.yaml')).to_moveit_configs()

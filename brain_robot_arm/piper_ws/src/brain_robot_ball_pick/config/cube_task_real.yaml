@@ -91,7 +91,11 @@ visual_search_controller:
     target_history_topic: /brain_robot_visual_control/target_history
     target_history_window_s: 0.40
     joint_state_topic: /joint_states
-    filtered_point_cloud_topic: /brain_robot_vision/filtered_points
+    # The physical camera is mounted on the gripper and this launch disables
+    # MoveIt's Octomap updater to prevent self-obstacle oscillation. Use the
+    # TF-gated cloud only as a fresh-scene heartbeat; target geometry still
+    # comes from the RGB-D detector topics above.
+    filtered_point_cloud_topic: /brain_robot_vision/tf_validated_points
     planning_scene_timeout_s: 2.5
     joint_command_topic: /servo_node/delta_joint_cmds
     servo_status_topic: /servo_node/status
@@ -146,9 +150,9 @@ grasp_lift_executor:
 active_scan_supervisor:
   ros__parameters:
     point_cloud_topic: /brain_robot_vision/tf_validated_points
-    # MoveIt has removed robot returns from this cloud.  It is used only to
-    # build this run's temporary free/occupied voxel evidence; no map is saved.
-    evidence_point_cloud_topic: /brain_robot_vision/filtered_points
+    # No Octomap is built for the wrist-mounted camera. Keep the gated cloud
+    # as diagnostic evidence only; it is never treated as robot-free geometry.
+    evidence_point_cloud_topic: /brain_robot_vision/tf_validated_points
     joint_state_topic: /piper_moveit_joint_states
     planning_scene_topic: /monitored_planning_scene
     reference_frame: base_link
@@ -167,5 +171,8 @@ pointcloud_tf_gate:
     input_topic: /camera/depth/points
     output_topic: /brain_robot_vision/tf_validated_points
     reference_frame: base_link
-    required_frames: [base_link, link1, link2, link3, link4, link5, link6, gripper_base, link7, link8]
+    # Validate the camera cloud against the base transform only. Requiring
+    # every finger TF at the camera timestamp rejected nearly every frame on
+    # S-V1.9-1 feedback gaps; this cloud is not passed to an Octomap updater.
+    required_frames: [base_link]
     transform_timeout_s: 0.05

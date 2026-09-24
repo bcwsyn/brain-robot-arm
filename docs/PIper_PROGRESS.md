@@ -685,3 +685,16 @@
 - 明确区分两件事：启动阶段不再强制先做一次全轴绝对零点运动；这不等于允许机械臂停在任意姿态后直接失能。
 - 任何正常收尾若准备调用 `DisableArm(7)`，必须先执行当前姿态到已验证零点/安全支撑姿态的完整六轴回位，确认反馈持续且全部关节到位；回位失败时保持使能和当前位置，不得直接失能。`ResetPiper` 仍禁止作为收尾或异常恢复。
 - 手动 `0` 仍是显式零点复位入口；默认自动启动则走当前姿态保持到观测姿态。该语义已写入 `CODEX_TASK_PROMPT.md`，避免后续代理把“跳过启动全零”误解为“永远不回零”。
+
+## 2026-09-24 腕部相机自体点云导致抖动：禁用实体 Octomap 输入并修复 TF 门控
+
+- 用户现场观察到机械臂在点云扫描期间持续抖动，怀疑夹爪被写入障碍模型。先调用 `/visual_search_controller/stop` 和 `/servo_node/stop_servo`，状态发布 `USER_STOP`；随后终止本轮脚本，保持 PiPER 使能，未发送失能、固件或 `ResetPiper` 命令。
+- 实际诊断确认旧链路确有门控问题：`/brain_robot_vision/tf_gate_diagnostic` 为 `state=REJECTED accepted_frames=470 rejected_frames=8263 detail=MISSING_TF base_link<-link8 at_cloud_stamp`，`/brain_robot_vision/filtered_points` 无可用消息。MoveIt 官方 PointCloudOctomapUpdater 会根据机器人碰撞几何执行 self-filter；而本机腕部相机的点云时间戳与运动反馈错位时，强制等待所有指尖 TF 会把几乎全部点云丢弃。
+- 最小实现调整：实体 `cube_visual_search` 保留 MoveIt 感知插件初始化，但把 `sensors_3d_real.yaml` 的输入改为不存在的 `/brain_robot_vision/disabled_octomap_points`，因此不再把腕部相机/夹爪回波写入 Octomap；视觉控制器和 active-scan 仅使用 TF-gated cloud 作为新鲜度心跳。TF gate 的必需帧收敛为 `base_link`，对 VM/USB 延迟导致的旧时间戳在没有精确 TF 时采用最新 TF 并把转发消息重打当前时间。构建 `brain_robot_pick_place`、`brain_robot_ball_pick` 均成功，脚本 `bash -n`/launch `py_compile` 成功。
+- 默认 `BRAIN_ROBOT_AUTO_START=1` 实跑验证：脚本通过 `[7/7]`，日志明确输出“腕部相机的深度点云不写入 Octomap，避免夹爪自体障碍”；MoveIt 成功监听禁用输入主题，未再出现旧的 `/filtered_points` 门控阻断。随后自动 reset 轨迹被接受，但当前实体关节反馈在约 120 秒等待内仍未进入 `RESET_COMPLETE`（J2/J3/J5 在零点附近来回偏移），所以本轮未宣称已进入 `OBSERVE_POSE_REACHED`/`SEARCH`，也未触发抓取。
+- 运行证据：`/tmp/brain_robot_auto_no_self_octomap_v19_20260924.log`、`/home/johnwick/brain_robot_logs/visual_stack.log`、`/home/johnwick/brain_robot_logs/piper_driver.log`。当前脚本、视觉栈和驱动已停止；未刷写固件，实际版本仍为 `S-V1.9-1`。
+
+### 本轮结论与下一步
+
+- 点云自体障碍路径已从实体启动流程中切断，且 TF 门控不再因 `link8` 历史时间戳丢弃全部新鲜度信号；这直接针对“夹爪被当障碍导致抖动”的假设。MoveIt 文档所述 self-filter 仍保留在软件栈中，但腕部相机的实体云不再进入其 Octomap。
+- 尚未完成的阻断已收敛为 reset 轨迹本身的实体反馈收敛/抖动；下一轮只需在该改动上复用默认脚本，观察是否能到 `RESET_COMPLETE` → `OBSERVE_POSE_REACHED` → `SEARCH`，不要恢复腕部 Octomap，也不要回到旧 CAN/固件排查。

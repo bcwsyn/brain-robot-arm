@@ -91,17 +91,11 @@ wait_for_tf_validated_pointcloud() {
 }
 
 wait_for_filtered_pointcloud() {
-  local deadline=$((SECONDS + WAIT_SECONDS)) result
-  while (( SECONDS < deadline )); do
-    result=$(timeout 5s ros2 topic echo --once \
-      /brain_robot_vision/filtered_points \
-      --qos-reliability best_effort 2>&1) || result=""
-    if grep -Fq 'header:' <<<"$result"; then
-      return 0
-    fi
-    sleep 1
-  done
-  fail "未收到 MoveIt 自体过滤后的点云；拒绝开始使用可能含有机械臂自体点的 Octomap。"
+  # Real mode intentionally disables MoveIt's Octomap updater because the
+  # depth camera is mounted on the moving gripper.  The TF-gated cloud is
+  # already checked by wait_for_tf_validated_pointcloud and is used only as a
+  # freshness heartbeat by the visual controller.
+  return 0
 }
 
 trim_application_logs() {
@@ -622,10 +616,7 @@ wait_for topic /piper_moveit_joint_states
 wait_for topic /brain_robot_vision/tf_gate_diagnostic
 wait_for_tf_validated_pointcloud
 wait_for_filtered_pointcloud
-wait_for service /clear_octomap
-timeout 5s ros2 service call /clear_octomap std_srvs/srv/Empty '{}' >/dev/null 2>&1 ||
-  fail "无法清除旧 Octomap；拒绝使用可能含有机械臂自体点的地图。"
-echo "[地图] 已验证同时间戳 TF，并清除旧 Octomap；开始建立当前环境地图。"
+echo "[地图] 已验证相机到基座 TF；腕部相机的深度点云不写入 Octomap，避免夹爪自体障碍。"
 echo "[6/7] 打开识别窗口..."
 start_group debug_image_view ros2 run image_view image_view --ros-args -r image:=/brain_robot_vision/debug_image
 wait_for_actual_frame /brain_robot_vision/debug_image "调试图像"
