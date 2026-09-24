@@ -87,7 +87,7 @@ wait_for_tf_validated_pointcloud() {
     fi
     sleep 1
   done
-  fail "未收到具有完整同时间戳机器人 TF 的深度点云；未建立 Octomap。请查看 /brain_robot_vision/tf_gate_diagnostic。"
+  fail "未收到相机到基座的可用 TF 心跳；实体腕部点云不会写入 Octomap。请查看 /brain_robot_vision/tf_gate_diagnostic。"
 }
 
 wait_for_filtered_pointcloud() {
