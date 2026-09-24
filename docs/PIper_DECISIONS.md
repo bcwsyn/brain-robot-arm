@@ -180,3 +180,5 @@
 - 当前主线必须从“继续底层只读审计”切换为“让 `/home/johnwick/start_brain_robot_cube_real.sh` 按键 1 完成复位/保持、观测姿态轨迹并进入 `SEARCH` 或明确安全等待”。`[7/7]`、CAN 健康、TF/点云通过都不是观测姿态完成证据。
 - 若观测姿态未到达，下一步只能定位配置加载、实际安装空间不同步、运动门/适配器、轨迹插值、六轴命令映射、PiPER 三帧发送或反馈判定中的具体断点；不得把视觉目标缺失、重复 P0/P1 查询或泛化安全提醒作为替代进展。
 - 观测姿态完成必须记录实际运行参数、六轴起点/目标及单位、适配器接受轨迹、反馈到位、非目标轴无持续漂移和 `OBSERVE_POSE_REACHED`/等价状态。
+
+- 实际一键启动路径 `cube_visual_search.launch.py` 将真实视觉控制器、`piper_jog_adapter`、抓取执行器和点云门控统一加载 `cube_task_real.yaml`；`visual_search_piper_gemini2.yaml` 不是该脚本的生效配置。不得依据备用配置的 `real_motion_enabled: false` 或全零观测姿态判断当前真实流程。修改后必须核对实际安装空间的 ROS 参数来源。

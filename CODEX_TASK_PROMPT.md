@@ -32,6 +32,8 @@
 
 观测姿态的完成证据必须包含：实际运行参数、当前六轴起点、目标六轴值和单位、轨迹已被适配器接受、六轴反馈在容差内到达、非目标轴没有持续漂移，以及控制器状态从 `PREPARE` 进入 `SEARCH` 或明确的安全等待。若这一链路失败，下一步必须定位失败发生在配置加载、服务门控、轨迹插值、`/joint_commands` 映射、PiPER 三帧发送还是反馈判断，不得退回去重复已经通过的 P0/P1 只读检查。
 
+实际一键启动路径的配置约束：`cube_visual_search.launch.py` 为 `visual_search_controller`、`piper_jog_adapter`、抓取执行器和点云门控加载 `cube_task_real.yaml`。`visual_search_piper_gemini2.yaml` 是备用/诊断配置，不得把它的 `real_motion_enabled: false` 或全零观测姿态误认为当前一键脚本的生效配置；每次修改必须先确认实际安装空间和 ROS 参数来源。
+
 ## 2. 规范仓库和路径
 
 规范 Git 仓库只能是 /mnt/hgfs/ub（Windows 映射通常为 C:\ub）。每次开始先执行：
