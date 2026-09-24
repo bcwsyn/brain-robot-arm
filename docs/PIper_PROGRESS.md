@@ -579,6 +579,12 @@
 - 当前会话 `sudo -n -v` 返回 `1`；无特权执行 `ip link set can0 type/up/txqueuelen` 均被 `Operation not permitted` 拒绝。因此不能伪造“can0 已恢复”，也没有启动驱动或运动流程。
 - 下一步固定为在同一终端完成 `sudo -v` 后配置 `can0` 为 1 Mbps/0.75、TX 队列 1000，再验证 RX；这不是重复基础巡检，而是 USB reset 后必需的接口恢复动作。
 
+## 2026-09-24 sudo 恢复完成但 USB-CAN 无 RX
+
+- 当前会话 `sudo -n true` 返回 `0`；已完成 `can0` down、`gs_usb` 卸载/重载、1 Mbps/0.75、TX 队列 1000 和 up。接口为 `ERROR-ACTIVE`，但 5 秒 RX 增量仍为 `0`。
+- 已终止遗留暂停的 `sudo timeout 6s tcpdump -i can0 ...` 进程；无 `piper_single_ctrl`、`candump` 或视觉控制进程。USB 设备仍枚举，但 PiPER 反馈未恢复，未启动驱动/运动流程。
+- 当前证据表明仅重置 Linux `gs_usb`/接口不足以恢复总线反馈；下一步需要现场恢复 USB-CAN 物理/VM 透传或重启机械臂控制器电源后再验证 RX，不执行任何自动运动。
+
 ## 2026-09-24 按用户要求停止监测驱动
 
 - 直接停止当前监测驱动进程组 `PGID 74632`；其子进程 `74633` 未响应 TERM，随后仅对该 ROS 驱动进程发送 KILL。未调用 `DisableArm`、`ResetPiper` 或任何运动命令。

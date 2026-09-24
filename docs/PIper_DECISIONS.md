@@ -223,3 +223,7 @@
 ## 2026-09-24 USB reset 后接口配置需要特权
 
 - `usbreset 003/013` 已成功执行，但会使 `can0` 处于 `DOWN/STOPPED`；只有在同一终端完成 sudo 后才能重新设置 bitrate、sample-point、TX 队列并拉起接口。未获得特权前禁止启动 PiPER 驱动或自动运动。
+
+## 2026-09-24 gs_usb 重载后仍无 PiPER RX
+
+- sudo 已恢复并完成接口/模块重置，但 `can0` 仍 RX=0；不得把 `ERROR-ACTIVE` 单独当作总线健康。需要现场 USB-CAN/VM 透传或机械臂控制器电源恢复后再继续，期间禁止启动 PiPER 或发送运动命令。
