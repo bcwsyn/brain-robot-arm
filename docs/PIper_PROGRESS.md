@@ -604,3 +604,15 @@
 
 - 实际检查：根分区 `/dev/sda3` 39G 总量、20G 已用、17G 可用、使用率 55%；inode 使用率 17%。`/home/johnwick/brain_robot_logs` 94M、`~/.ros/log` 132K。
 - 磁盘空间不是本次 `can0 RX=0` 或 xHCI/CAN 反馈丢失原因；未运行清理脚本，也未删除任何日志/源码。当前阻断仍为 USB-CAN/机械臂控制器反馈链路。
+
+## 2026-09-24 默认自动脚本复跑：MoveIt 自体过滤点云门控失败
+
+- 用户现场恢复后，先按实际状态将 `can0` 配置为 1 Mbps、sample-point 0.75、`txqueuelen=1000`；接口为 `ERROR-ACTIVE`，5 秒 RX 增量 `15215`，随后直接运行默认实体脚本：`setsid env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh </dev/null >/tmp/brain_robot_auto_observe_recovered_20260924.log 2>&1 &`。
+- 本次实际流程完成 `[1/7]` CAN 复用、`[2/7]` 相机首帧、`[3/7]` 紫色检测器、`[4/7]` MoveIt/Servo/保护适配器，并进入 `[5/7] 检查完整 MoveIt 反馈和自体过滤 TF`；最终门控输出：`未收到 MoveIt 自体过滤后的点云；拒绝开始使用可能含有机械臂自体点的 Octomap`。因此没有执行 reset、观测轨迹或抓取。
+- 同一运行的 `/home/johnwick/brain_robot_logs/piper_driver.log` 在 `1790232385..2387` 记录 `can0 feedback lost`、`can0 is loss` 并退出；视觉日志显示 MoveIt 订阅 `/brain_robot_vision/tf_validated_points`，但本次未产生 `/brain_robot_vision/filtered_points`。脚本已按保持路径清理自身启动的视觉、相机和驱动进程，未发送失能或复位命令。
+- 当前工作树仅保留既有用户改动；本轮未修改运行代码。该结果把当前可复现门控断点定位为“MoveIt 自体过滤点云未到达”，其上游同时存在本轮 PiPER 反馈退出，不能宣称已进入 `SEARCH`。
+
+### 本轮结论与下一步
+
+- 已完成一次新的默认自动启动验证，实际阻断在 `[5/7]` 点云自体过滤反馈门控，不是按键等待、磁盘空间或重复的 CAN/限位基础问题。
+- 下一最小动作：只针对运行时 `/brain_robot_vision/tf_validated_points` → MoveIt 自体过滤 `/brain_robot_vision/filtered_points` 的发布链和同一时段驱动反馈退出做修复/验证；修复后再沿同一默认脚本门控重跑，必须取得 `OBSERVE_POSE_REACHED` 才能进入 `SEARCH`。

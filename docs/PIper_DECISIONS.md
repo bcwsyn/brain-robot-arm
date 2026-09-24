@@ -240,3 +240,9 @@
 ## 2026-09-24 磁盘空间不是当前阻断
 
 - 根分区可用 17G、使用率 55%，日志目录仅约 94M；无需磁盘清理。不得把当前 USB-CAN 无 RX/xHCI 错误归因于磁盘空间。
+
+## 2026-09-24 默认自动复跑的实际门控断点
+
+- 在现场恢复后，`can0` 已实测 `ERROR-ACTIVE` 且 5 秒 RX 增量 `15215`；默认实体脚本真实通过 `[1/7]` 至 `[4/7]`，但 `[5/7]` 因未收到 `/brain_robot_vision/filtered_points` 拒绝建立可能含自体点的 Octomap。这是本轮脚本报告的直接阻断，未执行 reset/observe/search。
+- 同时段 PiPER 驱动记录 `can0 feedback lost` → `can0 is loss` → 退出，说明过滤点云缺失与上游实时关节反馈中断同现。不得把这次失败归因于按键、磁盘或已完成的 CAN/限位/单位基线，也不得绕过自体过滤门控继续运动。
+- 决策：下一轮只审计并修复 `tf_validated_points` 到 MoveIt 自体过滤点云的运行时发布链及其关节状态依赖；验证条件仍是脚本输出 `OBSERVE_POSE_REACHED`，未达到前不进入 `SEARCH`。
