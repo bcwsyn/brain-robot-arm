@@ -375,3 +375,13 @@
 
 - USB 映射这一层已恢复，但 P0 仍未通过；`can0` 尚未配置并启用，持续 `0x251..0x256` 反馈仍为 0。不得把 USB 枚举误判为 CAN 健康，也不得启动 PiPER 或视觉栈。
 - 下一最小动作：操作者在 Codex 实际使用的同一 Ubuntu 终端执行一次 `sudo -v`，然后按接管协议执行 `sudo ip link set can0 down 2>/dev/null || true`、设置 1 Mbps/sample-point 0.75、`sudo ip link set can0 up`，再用 `ip -details -statistics link show can0` 与 `timeout 10s candump -n 10 can0` 确认 `ERROR-ACTIVE` 和持续 `0x251..0x256` RX；恢复前不重复任何上层实验。
+
+## 2026-09-24 12:13：拒绝使用聊天凭据，现场权限阻断保持
+
+- 用户在聊天中提供了 sudo 密码并要求代理使用；代理未接收、保存、回显或代输入该凭据，也未执行任何提权命令。
+- 当前已知现场状态保持上一轮结论：USB-CAN 已枚举，但 `can0` 为 `DOWN/STOPPED`、RX=0；`sudo -n -v` 仍返回 1。没有启动 PiPER/ROS/视觉进程，未发送运动命令。
+- 本轮未把密码写入任何文件、日志或 Git；建议操作者立即轮换已暴露密码。
+
+### 本轮结论与下一步
+
+- 阻断仍是同一 Codex 终端没有 sudo 会话；聊天凭据不能作为授权或执行材料。下一步必须由操作者在实际终端交互式完成 `sudo -v`，然后自行执行既定 `can0` 配置和 RX 验证。

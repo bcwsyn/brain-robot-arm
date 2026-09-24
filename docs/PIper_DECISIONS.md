@@ -122,3 +122,8 @@
 
 - `lsusb` 已重新看到 `1d50:606f`，但 `can0` 为 `DOWN/STOPPED` 且 RX=0；`candump` 报 `Network is down`。这只证明 USB 映射恢复，不证明 CAN 链路恢复。
 - 在 `can0` 配置为 1 Mbps、sample-point 0.75、`ERROR-ACTIVE` 且持续收到 `0x251..0x256` 前，继续禁止 PiPER/ROS 驱动、使能、运动和视觉搜索；必须先由操作者在同一终端完成 sudo 接管并按协议配置接口。
+
+## 2026-09-24 凭据安全与 sudo 阻断
+
+- 用户曾在聊天中提供 sudo 密码；代理不得接收、保存、回显或代输入密码，因此该凭据未被使用，也未写入仓库或日志。
+- 继续要求操作者在同一实际终端交互式完成 `sudo -v`；在 `can0` 为 `ERROR-ACTIVE` 且持续 RX 前，禁止上层 PiPER/ROS 运动操作。
