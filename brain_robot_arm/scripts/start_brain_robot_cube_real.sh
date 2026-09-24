@@ -409,7 +409,10 @@ stop_stale_low_level_stack() {
   echo "[清理] ${label} 未响应 TERM，发送 KILL..."
   pkill -KILL -f "$pattern" 2>/dev/null || true
   sleep 1
-  pgrep -f "$pattern" >/dev/null 2>&1 && fail "遗留的 ${label} 未完全退出；拒绝启动第二套控制器。"
+  if pgrep -f "$pattern" >/dev/null 2>&1; then
+    fail "遗留的 ${label} 未完全退出；拒绝启动第二套控制器。"
+  fi
+  return 0
 }
 
 topic_exists() {
