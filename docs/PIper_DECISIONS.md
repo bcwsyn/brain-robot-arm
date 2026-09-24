@@ -215,3 +215,7 @@
 ## 2026-09-24 USB-CAN 重置权限限制
 
 - USB-CAN 当前为 VMware USB hub 下的 `1d50:606f`，无 sudo 时间戳时 `usbreset` 无权限；不得把工具返回码或设备枚举误报为已完成 reset。必须先在同一实际终端完成受限 USB/CAN 恢复，再继续自动运动。
+
+## 2026-09-24 监测驱动已停止等待 USB-CAN 恢复
+
+- 用户要求停止当前监测驱动；已停止 `piper_single_ctrl` 进程组，未执行机械臂失能或复位。USB-CAN/xHCI 恢复前保持无 ROS PiPER 驱动、无新运动命令。
