@@ -270,7 +270,14 @@ class PiperJogAdapter(Node):
         max_step = self.max_velocity * max(dt, 0.0)
 
         def limit_target(name, desired):
-            current = self.targets.get(name, self.positions[name])
+            # Track the measured physical joint rather than only the previous
+            # software target.  During S-V1.9-1 feedback gaps the open-loop
+            # target can run ahead of the arm; when feedback resumes the arm
+            # then remains short of the trajectory endpoint.  Re-anchoring
+            # each bounded step to the latest measured position lets the
+            # trajectory converge without increasing speed or bypassing the
+            # feedback watchdog.
+            current = self.positions.get(name, self.targets.get(name, 0.0))
             delta = max(-max_step, min(max_step, desired - current))
             joint_index = self.joint_names.index(name)
             return max(self.joint_min[joint_index], min(self.joint_max[joint_index], current + delta))
