@@ -698,3 +698,9 @@
 
 - 点云自体障碍路径已从实体启动流程中切断，且 TF 门控不再因 `link8` 历史时间戳丢弃全部新鲜度信号；这直接针对“夹爪被当障碍导致抖动”的假设。MoveIt 文档所述 self-filter 仍保留在软件栈中，但腕部相机的实体云不再进入其 Octomap。
 - 尚未完成的阻断已收敛为 reset 轨迹本身的实体反馈收敛/抖动；下一轮只需在该改动上复用默认脚本，观察是否能到 `RESET_COMPLETE` → `OBSERVE_POSE_REACHED` → `SEARCH`，不要恢复腕部 Octomap，也不要回到旧 CAN/固件排查。
+
+## 2026-09-24 默认自动路径落实“当前姿态直达观测”
+
+- 上一轮实跑表明自动绝对零点轨迹在当前实体反馈上反复偏移，120 秒内没有 `RESET_COMPLETE`；这与仓库前述“默认自动启动不把绝对零点作为观测必经步骤、仅手动 `0` 才复位”决策一致。
+- 已将 `/home/johnwick/start_brain_robot_cube_real.sh` 的 `restart_visual_sequence` 改为：停止旧视觉/Servo → 使能运动门 → 从当前反馈姿态直接发布观测轨迹；`reset_zero_sequence` 仍保留给显式 `0` 操作。未改变抓取、CAN 或固件路径。
+- 下一次默认实跑验收改为 `[7/7]` → 当前姿态保持/观测轨迹 → `OBSERVE_POSE_REACHED` → `SEARCH`；若观测仍抖动，阻断直接归入轨迹反馈收敛而非点云障碍。

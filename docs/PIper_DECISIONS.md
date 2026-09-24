@@ -284,3 +284,8 @@
 - 决策：实体 `cube_visual_search` 保留 MoveIt 感知插件初始化但把 `point_cloud_topic` 指向不存在的 `disabled_octomap_points`，禁止腕部 RGB-D 云进入 Octomap；视觉控制器仅把 `tf_validated_points` 当新鲜度心跳，抓取目标仍来自 RGB-D 检测器。TF gate 只验证 `base_link`，精确时间 TF 不可用时用最新 TF 重打当前时间，避免 VM 延迟把所有云静默丢弃。
 - 禁止把该调整扩展为关闭机器人碰撞模型或绕过反馈保护；它只移除腕部相机的自体/环境占据图输入。默认脚本仍必须逐级取得 `RESET_COMPLETE`、`OBSERVE_POSE_REACHED` 和 `SEARCH`，在 `GRASP_READY` 之前不得发送抓取请求。
 - 本轮构建和一次默认实跑已验证启动门控不再卡在 `/filtered_points`，但 reset 仍在零点附近未收敛；后续优先定位实体轨迹反馈收敛，不恢复 Octomap 输入，也不执行固件/`MasterSlaveConfig`/`ResetPiper`。
+
+## 2026-09-24 默认自动启动不再强制绝对零点
+
+- 依据既有任务决策，自动路径不得把绝对零点复位当成进入观测姿态的必经步骤；本轮已移除 `restart_visual_sequence` 中的自动 `request_zero_reset`，改为当前反馈姿态直接到观测姿态。手动 `0` 仍可显式请求零点复位。
+- 该改动只规避已实测的零点轨迹收敛/抖动门控，不绕过反馈新鲜度、运动门或任何目标/抓取安全状态。验收顺序固定为 `OBSERVE_POSE_REACHED` → `SEARCH`，随后才允许等待 `GRASP_READY`。

@@ -513,13 +513,12 @@ request_zero_reset() {
 }
 
 restart_visual_sequence() {
-  echo "[重启] 停止当前视觉流程，先执行六轴零点复位..."
+  echo "[重启] 停止当前视觉流程，保持当前姿态并直接移动到观测姿态..."
   timeout 5s ros2 service call /visual_search_controller/stop \
     std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
   timeout 5s ros2 service call /servo_node/stop_servo \
     std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
   enable_physical_motion || return 1
-  request_zero_reset || return 1
   start_visual_sequence
 }
 
