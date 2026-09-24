@@ -207,3 +207,7 @@
 
 - `txqueuelen=1000` 后，自动 reset 已完成，观测轨迹已被适配器接受；约 4 秒后仍出现 `can0 feedback lost`，并伴随 `arbit-lost=1093`/`dropped=10`。因此不得继续扩大队列或重复运动作为猜测性修复。
 - 当前要定位的是观测运动期间 CAN 反馈停止/总线仲裁的时序或物理控制器响应；保持监测驱动，禁止继续进入 `OBSERVE_POSE_REACHED`/搜索，直到有新的可验证发送/反馈修复。
+## 2026-09-24 USB-CAN xHCI 传输错误为当前阻断
+
+- 自动观测实跑期间，内核同时记录连续 `xhci_hcd ... Transfer event TRB DMA ptr not part of current TD`，并出现 CAN `arbit-lost`、`dropped` 和 PiPER 高速反馈丢失。当前应优先恢复 USB-CAN/虚拟机 xHCI 传输，不再通过重复运动或扩大 TX 队列猜测修复。
+- 在该 USB 传输错误消失、反馈持续稳定前，禁止再次自动 reset/observe；软件观测链路已验证到“轨迹被适配器接受”，后续只需复用同一脚本门控验证。

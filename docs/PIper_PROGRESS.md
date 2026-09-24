@@ -556,3 +556,14 @@
 
 - 已验证 `[7/7] → 自动 reset → RESET_COMPLETE → 自动 observe trajectory → 适配器 accepted`；未通过的是 PiPER 在观测运动期间维持反馈，故不能进入 `OBSERVE_POSE_REACHED` 或 `SEARCH`。
 - 下一最小动作：只审计观测运动期间 CAN RX 停止与 `arbit-lost` 的时序/发送所有权，禁止再次自动运动直到该反馈丢失原因有可验证修复。
+## 2026-09-24 观测运动期间发现 USB-CAN/xHCI 传输错误
+
+- 本轮提交：`78c42bd`。
+- 对第二次自动运行失败时段读取内核日志，发现与 `can0 feedback lost` 同时出现连续 `xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 1`；这发生在 USB-CAN 设备的 USB 传输层，而不是 ROS 观测控制器日志。
+- 该证据与同一时段 `arbit-lost=1093`、`dropped=10`、PiPER 驱动反馈保护退出相互吻合；`txqueuelen=1000` 已排除为唯一修复。当前阻断具体化为 USB-CAN/虚拟机 xHCI 传输异常，不能通过重复自动运动或修改观测目标解决。
+- 当前保持单一 `auto_enable=false` 监测驱动（PID 74632），视觉栈已停止；未执行 USB 重置、`ResetPiper` 或新的运动命令。运行日志仍为 `/tmp/brain_robot_auto_observe_txqueue_20260924.log` 和 `/home/johnwick/brain_robot_logs/piper_driver.log`。
+
+### 本轮结论与下一步
+
+- `[7/7] → reset → RESET_COMPLETE → observe trajectory accepted` 已验证；`OBSERVE_POSE_REACHED` 的唯一阻断是观测运动期间 USB-CAN/xHCI 传输错误导致的反馈丢失。
+- 下一最小动作：在不发送运动的前提下恢复/稳定 USB-CAN 虚拟机传输（确认 USB 设备映射或宿主/虚拟机 xHCI 状态）后，再沿同一默认脚本门控重跑；无需重复 CAN、限位、单位或 TF 基线。
