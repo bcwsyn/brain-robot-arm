@@ -522,3 +522,15 @@
 
 - 已推进观测姿态执行链路并定位第一个可复现启动断点；该断点发生在运动前，与 CAN/限位/观测轨迹无关。
 - 下一最小动作：提交该修复后立即重新运行默认自动脚本，跟随日志验证 `[7/7] → reset → observe trajectory → OBSERVE_POSE_REACHED → SEARCH`；若失败，只沿该门控输出定位下一断点。
+
+## 2026-09-24 默认自动流程实跑：PiPER TX 发送失败
+
+- 实际运行命令：`setsid env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh </dev/null > /tmp/brain_robot_auto_observe_retry_20260924.log 2>&1 &`。流程已真实通过 `[7/7]`，自动调用 `/visual_search_controller/reset` 返回 `success=True`，然后执行 `enable_motion`、适配器 `arm`，控制器进入 `PREPARE (RESET_AUTHORIZED)` 并发布 `20.0 s` 两点复位轨迹；适配器日志确认 `REAL ARM trajectory accepted: 2 points`。
+- 失败定位：轨迹接受约 6 秒后，`/home/johnwick/brain_robot_logs/piper_driver.log` 连续记录 `0x151 send failed: SEND_MESSAGE_FAILED`、`JointCtrl_J12/J34/J56 send failed`；随后驱动记录 `can0 feedback lost`，2 秒保护窗口后 `can0 is loss` 并退出。适配器随即 `PHYSICAL MOTION DISARMED: joint state timeout`，脚本等待门控报告“复位反馈超时”，未进入观测轨迹或 `OBSERVE_POSE_REACHED`。
+- 本次 CAN 统计新增 `arbit-lost=683`、`dropped=5`，但接口仍 `ERROR-ACTIVE`、RX 持续；因此断点是实际 PiPER TX/反馈在复位命令阶段失效，不是配置加载、轨迹插值或反馈到位判断。完整日志保留在 `/tmp/brain_robot_auto_observe_retry_20260924.log`、`/home/johnwick/brain_robot_logs/piper_driver.log`、`/home/johnwick/brain_robot_logs/visual_stack.log`。
+- 按保护路径停止残留视觉栈并启动单一 `auto_enable=false` 监测驱动（PID 72129/72130）；`/joint_states` 已恢复，当前未发送新运动目标、未调用 `ResetPiper` 或自动失能。
+
+### 本轮结论与下一步
+
+- 自动启动链路已被真实执行并推进到“轨迹被适配器接受”；当前阻断明确在 PiPER 控制命令发送/反馈丢失阶段，脚本门控正确阻止了继续进入观测和搜索。
+- 下一最小动作：只针对本次 `SEND_MESSAGE_FAILED`/`arbit-lost` 事件审计运行时 TX 所属和 CAN 发送失败原因，保持监测驱动、禁止重复自动运动；修复后再沿同一脚本门控重跑。
