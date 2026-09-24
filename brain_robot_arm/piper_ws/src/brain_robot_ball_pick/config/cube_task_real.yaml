@@ -62,7 +62,10 @@ visual_search_controller:
     search_planning_acceleration_scaling: 0.05
     search_segment_timeout_s: 12.0
     target_timeout_s: 0.60
-    joint_state_timeout_s: 2.0
+    # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
+    # transition.  The PiPER driver suppresses output during that window;
+    # keep SEARCH alive until the bounded transition completes.
+    joint_state_timeout_s: 25.0
     target_acquire_frames: 1
     align_stable_frames: 5
     target_acquire_error_ratio: 0.05

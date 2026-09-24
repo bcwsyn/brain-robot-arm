@@ -24,7 +24,10 @@ class PiperRosNode(Node):
     """ROS2 node for the robotic arm"""
 
     CAN_HIGH_SPEED_FEEDBACK_FRESH_S = 0.5
-    CAN_FEEDBACK_GRACE_S = 2.0
+    # S-V1.9-1 switches its aggregate feedback base from 0x2Ax to 0x3Ax
+    # during the first motion transition; captures show an ~18 s quiet window.
+    # During this bounded window output is suppressed, never continued blindly.
+    CAN_FEEDBACK_GRACE_S = 25.0
 
     def __init__(self) -> None:
         super().__init__('piper_ctrl_single_node')

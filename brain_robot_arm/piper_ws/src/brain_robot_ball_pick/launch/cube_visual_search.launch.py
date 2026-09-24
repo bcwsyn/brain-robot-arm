@@ -5,6 +5,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from moveit_configs_utils import MoveItConfigsBuilder
+from moveit_configs_utils.launches import generate_static_virtual_joint_tfs_launch
 
 
 def _load_yaml(path):
@@ -52,7 +53,8 @@ def generate_launch_description():
         name='piper_camera_mount_tf', output='screen',
         arguments=['0.0', '-0.05', '-0.10', '0.0', '0.0', '0.0',
                    'gripper_base', 'camera_link'])
-    return LaunchDescription([
+    static_virtual_joint_tfs = generate_static_virtual_joint_tfs_launch(moveit)
+    return LaunchDescription(static_virtual_joint_tfs.entities + [
         robot_state_publisher,
         camera_mount_tf,
         Node(package='brain_robot_pick_place', executable='pointcloud_tf_gate',
@@ -78,7 +80,11 @@ def generate_launch_description():
                  # The VM can briefly delay ROS subscription callbacks even
                  # while the driver is still publishing feedback.  Keep a
                  # bounded but realistic timeout for the physical adapter.
-                 'joint_state_timeout_s': 2.0,
+                 # S-V1.9-1 can pause feedback for about 18 s while switching
+                 # 0x2Ax -> 0x3Ax on the first motion transition.  The driver
+                 # suppresses output during that bounded window; do not disarm
+                 # the adapter before the verified transition can complete.
+                 'joint_state_timeout_s': 25.0,
                  # Expanded real-arm J1 envelope; J1/J5 scan the configured
                  # bounds while J2/J3/J4/J6 retain their existing limits.
                  'visual_joint_max_delta_rad': [1.50, 0.20, 0.20, 0.05, 0.95, 0.05],
