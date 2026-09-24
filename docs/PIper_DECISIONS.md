@@ -168,3 +168,8 @@
 
 - `GetArmStatus()`/`GetArmModeCtrl()` 时间戳为 0，不能证明实时安装姿态或模式；ROS 状态无错误也不能替代该证据。
 - J2/J3/J5 高速电流仍偏高，需先确认机械支撑/受力和实时模式语义；继续禁止真实运动、视觉搜索和抓取，不调用自动掉电路径。
+
+## 2026-09-24 一键观测阶段必须等待异步结果
+
+- `/visual_search_controller/start` 仅表示请求被接受，不表示固定观测轨迹已经执行完成。启动脚本必须等待 `/brain_robot_visual_control/reason` 的 `OBSERVE_POSE_REACHED`（或仿真路径的 `CURRENT_POSE_ACCEPTED`），并把 `PREPARE_*` 失败原因直接报告；不得继续打印“已进入搜索”或允许后续抓取请求。
+- 已在规范脚本中实现该门控并同步实际启动脚本；默认等待 320 秒，可用 `BRAIN_ROBOT_PREPARE_WAIT_SECONDS` 缩短无运动测试等待。该软件门控不解除 P2 的真实运动安全冻结，也不替代高速反馈、限位和非目标轴漂移检查。

@@ -477,3 +477,16 @@
 ### 本轮结论与下一步
 
 - P2 继续冻结：模式/安装姿态的实时反馈未验证，且高电流提示需要现场机械状态确认；不能安全重试动作或启动视觉运动。
+
+## 2026-09-24 代码路径修复：一键脚本等待观测姿态结果
+
+- 本轮提交：`dfbbc83`。
+- 当前实际运行树核对：`/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/visual_search_controller` 是 symlink-install，实际目标为 `/home/johnwick/piper_ws/build/brain_robot_pick_place/visual_search_controller`；应用工作空间执行 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回码 `0`。因此本轮没有把安装产物误判为旧版本，也没有发送 ROS/CAN 运动命令。
+- 发现一键脚本的真实可观测性缺陷：`start_visual_sequence()` 只检查 `/visual_search_controller/start` 服务返回后立即打印“已开始”，没有等待异步 `PREPARE` 到达观测姿态，也没有把 `PREPARE_EXECUTION_FAILED`、`PREPARE_JOINT_STATE_MISSING` 等结果反馈给操作者。该行为会把“请求已接受”误显示成“观测位已达到”。
+- 最小修复已写入规范源 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` 并同步到实际 `/home/johnwick/start_brain_robot_cube_real.sh`：服务成功后轮询 transient-local `/brain_robot_visual_control/reason`，仅在 `OBSERVE_POSE_REACHED`/`CURRENT_POSE_ACCEPTED` 时报告进入搜索；失败原因或默认 320 秒超时则返回失败。`bash -n`、`git diff --check` 和两路径 SHA-256 一致性均通过。
+- 当前硬件仍由单一 `auto_enable=false` 监测驱动保持反馈；P2 仍冻结，高电流/非目标漂移风险未消除，本轮没有调用 Enable、MotionCtrl、JointCtrl、ResetPiper 或任何视觉启动服务。
+
+### 本轮结论与下一步
+
+- 脚本现在不会再把“异步启动请求成功”冒充为“机械臂已到观测位”，下一次实际按键 1 时会明确暴露真实失败状态或确认 `OBSERVE_POSE_REACHED`。
+- 下一最小动作：在 P2 安全阻断解除后运行更新后的脚本，使用一次真实观测流程验证该等待门控和观测位反馈；在此之前只可做无运动构建/静态检查，不得重复此前导致非目标轴漂移的动作。

@@ -452,7 +452,24 @@ start_visual_sequence() {
     echo "[错误] 视觉复位/搜索启动失败。"
     return 1
   fi
-  echo "[启动] 已开始观测姿态复位；完成后自动进入紫色方块搜索。"
+  local deadline=$((SECONDS + ${BRAIN_ROBOT_PREPARE_WAIT_SECONDS:-320})) status
+  while (( SECONDS < deadline )); do
+    status=$(timeout 4s ros2 topic echo --once \
+      --qos-reliability reliable \
+      --qos-durability transient_local \
+      /brain_robot_visual_control/reason 2>&1) || status=""
+    if grep -Eq 'OBSERVE_POSE_REACHED|CURRENT_POSE_ACCEPTED' <<<"$status"; then
+      echo "[启动] 观测姿态已达到；已进入紫色方块搜索。"
+      return 0
+    fi
+    if grep -Eq 'PREPARE_(EXECUTION_FAILED|JOINT_STATE_MISSING|CANCELLED)|SERVO_START_FAILED' <<<"$status"; then
+      echo "[错误] 观测姿态执行失败：${status//$'\n'/ }" >&2
+      return 1
+    fi
+    sleep 1
+  done
+  echo "[错误] 等待观测姿态完成超时；未进入紫色方块搜索。" >&2
+  return 1
 }
 
 wait_for_zero_reset() {
