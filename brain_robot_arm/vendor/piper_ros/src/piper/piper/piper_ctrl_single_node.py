@@ -9,8 +9,9 @@ import time
 import threading
 import argparse
 import math
+from can import Message
 from piper_sdk import *
-from piper_sdk import C_PiperInterface
+from piper_sdk import C_PiperInterface_V2
 from piper_msgs.msg import PiperStatusMsg, PosCmd
 from piper_msgs.srv import Enable
 from geometry_msgs.msg import Pose, PoseStamped
@@ -21,6 +22,9 @@ from piper.command_validation import ARM_JOINT_NAMES, validate_absolute_joint_st
 
 class PiperRosNode(Node):
     """ROS2 node for the robotic arm"""
+
+    CAN_HIGH_SPEED_FEEDBACK_FRESH_S = 0.5
+    CAN_FEEDBACK_GRACE_S = 2.0
 
     def __init__(self) -> None:
         super().__init__('piper_ctrl_single_node')
@@ -69,9 +73,23 @@ class PiperRosNode(Node):
         self.joint_ctrl.effort = [0.0] * 7
         # Enable flag
         self.__enable_flag = False
+        self._can_feedback_lost_at = None
         # Create piper class and open CAN interface
-        self.piper = C_PiperInterface(can_name=self.can_port)
+        # S-V1.9-1 firmware uses the V2 protocol. The USB gs_usb adapter is
+        # an external SocketCAN interface, so skip the SDK's built-in CAN
+        # hardware check and use the already configured can0 device.
+        self.piper = C_PiperInterface_V2(can_name=self.can_port, judge_flag=False)
         self.piper.ConnectPort()
+        # Use local receive time for the watchdog.  SocketCAN timestamps can
+        # lag while the VM/USB queue is busy even though high-speed frames are
+        # still arriving; the safety grace period below still trips when the
+        # frames actually stop.
+        self._last_high_speed_feedback_monotonic = None
+        # This controller emits its V2 aggregate feedback at 0x3A0..0x3A7.
+        # The stock SDK only decodes the equivalent 0x2A1..0x2A8 range, so
+        # pass a receive-only ID translation to its parser.  No CAN frame is
+        # sent and no persistent controller configuration is changed here.
+        self.piper.GetCanBus().callback_function = self._parse_can_feedback
 
         # Start subscription thread
         self.create_subscription(PosCmd, 'pos_cmd', self.pos_callback, 1)
@@ -83,6 +101,63 @@ class PiperRosNode(Node):
 
     def GetEnableFlag(self):
         return self.__enable_flag
+
+    def _parse_can_feedback(self, message):
+        """Decode the controller's shifted V2 feedback IDs without altering CAN."""
+        if 0x251 <= message.arbitration_id <= 0x256:
+            self._last_high_speed_feedback_monotonic = time.monotonic()
+        if 0x3A0 <= message.arbitration_id <= 0x3A7:
+            message = Message(
+                timestamp=message.timestamp,
+                arbitration_id=message.arbitration_id - 0xFF,
+                is_extended_id=message.is_extended_id,
+                is_remote_frame=message.is_remote_frame,
+                is_error_frame=message.is_error_frame,
+                channel=message.channel,
+                dlc=message.dlc,
+                data=message.data,
+            )
+        self.piper.ParseCANFrame(message)
+
+    def _set_joint_control_mode(self, speed=50):
+        """Select CAN joint control before sending targets."""
+        # S-V1.9-1 V2 control path retains the horizontal-installation byte
+        # verified V2 control sequence.  ModeCtrl() silently supplies 0x00.
+        self.piper.MotionCtrl_2(
+            0x01, 0x01, int(clip(speed, 1, 100)), 0x00, 0x00, 0x01)
+
+    def _enable_for_joint_control(self, speed=50):
+        """Enable all motors before selecting CAN joint-control mode."""
+        if not self.piper.EnablePiper():
+            return False
+        self._set_joint_control_mode(speed)
+        return True
+
+    def _can_feedback_available(self):
+        """Return whether fresh CAN feedback is available within the safety grace period."""
+        feedback_age = None
+        if self._last_high_speed_feedback_monotonic is not None:
+            feedback_age = time.monotonic() - self._last_high_speed_feedback_monotonic
+        feedback_is_fresh = feedback_age is not None and feedback_age <= self.CAN_HIGH_SPEED_FEEDBACK_FRESH_S
+        if feedback_is_fresh:
+            if self._can_feedback_lost_at is not None:
+                elapsed = time.monotonic() - self._can_feedback_lost_at
+                self.get_logger().warning(
+                    f"{self.can_port} feedback recovered after {elapsed:.2f}s")
+                self._can_feedback_lost_at = None
+            return True
+
+        now = time.monotonic()
+        if self._can_feedback_lost_at is None:
+            self._can_feedback_lost_at = now
+            self.get_logger().warning(
+                f"{self.can_port} feedback lost; suppressing output for up to "
+                f"{self.CAN_FEEDBACK_GRACE_S:.1f}s")
+        elif now - self._can_feedback_lost_at >= self.CAN_FEEDBACK_GRACE_S:
+            self.get_logger().error(f"{self.can_port} is loss")
+            self.get_logger().error("exit...")
+            rclpy.shutdown()
+        return False
 
     def publish_thread(self):
         """Publish messages from the robotic arm
@@ -99,14 +174,8 @@ class PiperRosNode(Node):
                 while not (enable_flag):
                     elapsed_time = time.time() - start_time
                     self.get_logger().info("--------------------")
-                    enable_flag = self.piper.GetArmLowSpdInfoMsgs().motor_1.foc_status.driver_enable_status and \
-                        self.piper.GetArmLowSpdInfoMsgs().motor_2.foc_status.driver_enable_status and \
-                        self.piper.GetArmLowSpdInfoMsgs().motor_3.foc_status.driver_enable_status and \
-                        self.piper.GetArmLowSpdInfoMsgs().motor_4.foc_status.driver_enable_status and \
-                        self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status and \
-                        self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status
+                    enable_flag = self._enable_for_joint_control(50)
                     self.get_logger().info(f"Enable status:{enable_flag}")
-                    self.piper.EnableArm(7)
                     self.piper.GripperCtrl(0, 1000, 0x01, 0)
                     if(enable_flag):
                         self.__enable_flag = True
@@ -122,16 +191,12 @@ class PiperRosNode(Node):
             if(elapsed_time_flag):
                 self.get_logger().info("Automatic enable timeout, exiting program")
                 rclpy.shutdown()
-            
-            if self.piper.isOk():
+
+            if self._can_feedback_available():
                 self.PublishArmState()
                 self.PublishArmJointAndGripper()
                 self.PublishArmCtrlAndGripper()
                 self.PublishArmEndPose()
-            else:
-                self.get_logger().error(f"{self.can_port} is loss")
-                self.get_logger().error(f"exit...")
-                rclpy.shutdown() 
 
             rate.sleep()
 
@@ -194,7 +259,7 @@ class PiperRosNode(Node):
         self.joint_states.position = [joint_0,joint_1, joint_2, joint_3, joint_4, joint_5,joint_6]
         self.joint_states.velocity = [vel_0, vel_1, vel_2, vel_3, vel_4, vel_5]
         self.joint_states.effort = [effort_0, effort_1, effort_2, effort_3, effort_4, effort_5, effort_6]
-        
+
         self.joint_states_feedback.position = [joint_0,joint_1, joint_2, joint_3, joint_4, joint_5,joint_6]
         self.joint_states_feedback.velocity = [vel_0, vel_1, vel_2, vel_3, vel_4, vel_5]
         self.joint_states_feedback.effort = [effort_0, effort_1, effort_2, effort_3, effort_4, effort_5, effort_6]
@@ -222,7 +287,7 @@ class PiperRosNode(Node):
             self.get_logger().warn("Joint state abnormal: value exceeds ±3.5 rad")
         else:
             self.joint_ctrl_pub.publish(self.joint_ctrl)
-    
+
     def PublishArmEndPose(self):
         new_time = self.piper.GetArmEndPoseMsgs().time_stamp
         # End effector pose
@@ -272,8 +337,8 @@ class PiperRosNode(Node):
         rx = round(pos_data.roll*1000*factor)
         ry = round(pos_data.pitch*1000*factor)
         rz = round(pos_data.yaw*1000*factor)
-        if(self.GetEnableFlag()):
-            self.piper.MotionCtrl_2(0x01, 0x00, 50)
+        if self.GetEnableFlag() and self._can_feedback_available():
+            self.piper.MotionCtrl_2(0x01, 0x00, 50, 0x00, 0, 0x01)
             self.piper.EndPoseCtrl(x, y, z, rx, ry, rz)
             gripper = round(pos_data.gripper * 1000 * 1000)
             if pos_data.gripper > 80000:
@@ -315,7 +380,7 @@ class PiperRosNode(Node):
             joint_6 = joint_6 * self.gripper_val_mutiple
 
         # 控制电机速度
-        if self.GetEnableFlag():
+        if self.GetEnableFlag() and self._can_feedback_available():
             if joint_data.velocity != []:
                 all_zeros = all(v == 0 for v in joint_data.velocity)
             else:
@@ -325,11 +390,11 @@ class PiperRosNode(Node):
                 if lens == 7:
                     vel_all = clip(round(joint_data.velocity[6]), 1, 100)
                     self.get_logger().info(f"vel_all: {vel_all}")
-                    self.piper.MotionCtrl_2(0x01, 0x01, vel_all)
+                    self._set_joint_control_mode(vel_all)
                 else:
-                    self.piper.MotionCtrl_2(0x01, 0x01, 100)
+                    self._set_joint_control_mode(100)
             else:
-                self.piper.MotionCtrl_2(0x01, 0x01, 100)
+                self._set_joint_control_mode(100)
 
             # 使用关节名称来动态控制关节
             self.piper.JointCtrl(
@@ -365,9 +430,8 @@ class PiperRosNode(Node):
         self.get_logger().info(f"Received enable flag:")
         self.get_logger().info(f"enable_flag: {enable_flag.data}")
         if enable_flag.data:
-            self.__enable_flag = True
-            self.piper.EnableArm(7)
-            if self.gripper_exist:
+            self.__enable_flag = self._enable_for_joint_control(50)
+            if self.__enable_flag and self.gripper_exist:
                 self.piper.GripperCtrl(0, 1000, 0x02, 0)
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
         else:
@@ -388,18 +452,12 @@ class PiperRosNode(Node):
         while not loop_flag:
             elapsed_time = time.time() - start_time
             self.get_logger().info(f"--------------------")
-            enable_list = []
-            enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_1.foc_status.driver_enable_status)
-            enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_2.foc_status.driver_enable_status)
-            enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_3.foc_status.driver_enable_status)
-            enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_4.foc_status.driver_enable_status)
-            enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_5.foc_status.driver_enable_status)
-            enable_list.append(self.piper.GetArmLowSpdInfoMsgs().motor_6.foc_status.driver_enable_status)
+            enable_list = self.piper.GetArmEnableStatus()
 
             if req.enable_request:
-                enable_flag = all(enable_list)
-                self.piper.EnableArm(7)
-                self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                enable_flag = self._enable_for_joint_control(50)
+                if enable_flag:
+                    self.piper.GripperCtrl(0, 1000, 0x01, 0)
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
