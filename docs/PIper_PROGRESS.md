@@ -600,3 +600,7 @@
 
 - 直接停止当前监测驱动进程组 `PGID 74632`；其子进程 `74633` 未响应 TERM，随后仅对该 ROS 驱动进程发送 KILL。未调用 `DisableArm`、`ResetPiper` 或任何运动命令。
 - 复核 `pgrep -af 'piper_single_ctrl|piper_ctrl_single_node'` 无残留。当前 USB-CAN/xHCI 恢复前不启动新的 PiPER 驱动或自动运动流程。
+## 2026-09-24 磁盘空间排除
+
+- 实际检查：根分区 `/dev/sda3` 39G 总量、20G 已用、17G 可用、使用率 55%；inode 使用率 17%。`/home/johnwick/brain_robot_logs` 94M、`~/.ros/log` 132K。
+- 磁盘空间不是本次 `can0 RX=0` 或 xHCI/CAN 反馈丢失原因；未运行清理脚本，也未删除任何日志/源码。当前阻断仍为 USB-CAN/机械臂控制器反馈链路。
