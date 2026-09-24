@@ -197,3 +197,8 @@
 
 - 默认自动脚本已实际通过 `[7/7]`、复位服务、运动门、适配器臂控和两点复位轨迹接受；失败发生在轨迹执行期间的 PiPER `0x151`/`0x155..0x157` 发送，SDK 返回 `SEND_MESSAGE_FAILED`，随后驱动反馈保护退出，适配器报告 `joint state timeout`。因此不得把本次失败归因于观测配置或 `OBSERVE_POSE_REACHED` 判断。
 - 运行日志显示 CAN `arbit-lost`/`dropped` 增长；在明确发送失败原因前禁止重复自动运动。保留单一 `auto_enable=false` 监测驱动和当前使能状态，后续只做针对 TX 发送所有权/错误原因的最小诊断。
+
+## 2026-09-24 SocketCAN TX 队列设置
+
+- 自动脚本在复用或重新配置 can0 后必须确保 `txqueuelen=1000`（可由 `BRAIN_ROBOT_CAN_TX_QUEUE` 覆盖）；默认 `10` 在本次真实复位轨迹期间伴随 `arbit-lost`/`dropped` 和 SDK `SEND_MESSAGE_FAILED`，需先扩大队列再重跑同一门控。
+- 队列调整是可逆的接口参数，不等价于运动授权；设置失败时脚本不得进入 Enable/Reset/Observe。

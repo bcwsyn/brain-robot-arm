@@ -269,6 +269,17 @@ start_camera_health_guard() {
   echo "[相机] 已启用无帧自动恢复；仅重启 Astra，不影响机械臂控制栈。"
 }
 
+configure_can_tx_queue() {
+  local can_tx_queue="${BRAIN_ROBOT_CAN_TX_QUEUE:-1000}" can_details
+  can_details=$(ip -details link show can0 2>/dev/null || true)
+  if grep -Fq "qlen ${can_tx_queue}" <<<"$can_details"; then
+    return 0
+  fi
+  sudo ip link set can0 txqueuelen "$can_tx_queue" ||
+    fail "无法将 can0 TX 队列设置为 ${can_tx_queue}；拒绝进入运动流程。"
+  echo "[CAN] 已将 can0 TX 队列设置为 ${can_tx_queue}，避免反馈高峰时发送队列溢出。"
+}
+
 configure_can() {
   local can_details rx_before rx_now deadline attempt
   local rx_path=/sys/class/net/can0/statistics/rx_packets
@@ -297,7 +308,8 @@ configure_can() {
     sleep 1
     rx_now=$(<"$rx_path")
     if (( rx_now > rx_before )); then
-      echo "[CAN] 复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0（无需重新配置）。"
+      configure_can_tx_queue
+      echo "[CAN] 复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0。"
       return 0
     fi
   fi
@@ -307,6 +319,7 @@ configure_can() {
   sudo ip link set can0 type can bitrate 1000000 sample-point 0.75 2>/dev/null ||
     fail "无法配置 can0；请检查 USB-CAN 连接。"
   sudo ip link set can0 up || fail "无法启动 can0。"
+  configure_can_tx_queue
 
   can_details=$(ip -details link show can0)
   grep -Eq 'state (UP|UNKNOWN)' <<<"$can_details" &&

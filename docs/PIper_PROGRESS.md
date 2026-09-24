@@ -534,3 +534,14 @@
 
 - 自动启动链路已被真实执行并推进到“轨迹被适配器接受”；当前阻断明确在 PiPER 控制命令发送/反馈丢失阶段，脚本门控正确阻止了继续进入观测和搜索。
 - 下一最小动作：只针对本次 `SEND_MESSAGE_FAILED`/`arbit-lost` 事件审计运行时 TX 所属和 CAN 发送失败原因，保持监测驱动、禁止重复自动运动；修复后再沿同一脚本门控重跑。
+
+## 2026-09-24 TX 队列针对性修复
+
+- 针对本次实跑新增的 `arbit-lost=683`/`dropped=5` 与 `SEND_MESSAGE_FAILED`，只做 TX 队列的最小可逆修复：实测 `can0` 默认 `txqueuelen=10`，当前通过 `sudo -n ip link set can0 txqueuelen 1000` 成功设置为 `1000`，接口仍 `ERROR-ACTIVE`，未发送运动命令。
+- 规范启动脚本新增 `configure_can_tx_queue()`，默认在复用或重新配置 can0 后确保 `BRAIN_ROBOT_CAN_TX_QUEUE`（默认 `1000`）；设置失败直接拒绝进入运动流程。实际脚本已同步，`bash -n`、`git diff --check`、两路径 SHA-256 一致性通过。
+- 本修复只针对 SocketCAN 发送队列溢出风险，不改变 bitrate、限位、SDK、目标姿态或控制器逻辑；当前仍保持单一 `auto_enable=false` 监测驱动，无新增运动目标。
+
+### 本轮结论与下一步
+
+- 已对自动实跑暴露的发送层具体条件做最小修复；下一次实际运行应验证 `txqueuelen=1000` 后 `0x151/0x155..0x157` 是否能持续发送并让复位轨迹完成。
+- 若仍出现 `SEND_MESSAGE_FAILED`，继续依据驱动返回和 CAN 错误计数定位，不回退到已通过的基础巡检。
