@@ -352,3 +352,15 @@
 - `P0/P1/P2/P3` 的此前证据仍保留；P4 仅完成全零复位，观测姿态/搜索未启动，`GRASP_READY`、抓取、抬升、释放均未验证。
 - 当前硬阻断升级为真实 CAN RX 丢失和发送失败，不是视觉目标缺失。无持续 `0x251..0x256` 反馈前禁止重新启动 PiPER、调用 `/enable_srv`、`MotionCtrl_2`、`JointCtrl` 或视觉搜索。
 - 下一最小动作：操作者在同一 Ubuntu/Codex 终端完成一次 `sudo -v`，然后按接管协议重置 `can0`（必要时重载 `gs_usb`），用 `ip -details -statistics link show can0` 和 `candump -n 10 can0` 确认 RX 恢复；恢复前不重复本轮动作。
+
+## 2026-09-24 11:14：现场只读复核确认 USB-CAN/接口仍不可用
+
+- 当前 commit：`77b3443`；实际命令为 `sudo -n -v`、`lsusb | grep -Ei '1d50:606f|OpenMoko|CAN'`、`lsmod | grep -E 'gs_usb|can_dev'`、`ip -details -statistics link show can0`、3 秒 RX 计数、`timeout 10s candump -n 10 can0`、目标进程 `pgrep`、路径存在性、启动脚本 SHA-256 和 `df -P /`。
+- 返回结果：`sudo -n -v` 返回 1（需要密码）；USB-CAN grep 无匹配；`gs_usb` 与 `can_dev` 模块仍加载；`can0` 不存在，`ip` 返回 1，RX 计数文件不存在，`candump` 返回 1（`No such device`）。没有 `piper_single_ctrl`、视觉、相机或 MoveIt 残留进程。
+- 运行时路径 `/home/johnwick/piper_ros`、`/home/johnwick/piper_ws`、`/home/johnwick/start_brain_robot_cube_real.sh`、`/home/johnwick/brain_robot_logs` 均存在；运行时脚本与规范源 SHA-256 都为 `70eb2b981c94d305ffa1b87a7a30ed09c20b613b6a8b78176804aeaff132d872`。根分区使用率 55%（未达到清理阈值）。
+- 本轮未启动任何 ROS/PiPER 进程，未调用 `/enable_srv`、`EnableArm`、`MotionCtrl_2`、`JointCtrl`、`ResetPiper`，未发送 CAN/运动命令。证据为本轮终端只读输出；历史发送失败日志仍在 `/home/johnwick/brain_robot_logs/piper_driver.log`。
+
+### 本轮结论与下一步
+
+- 当前实际状态比上一条记录更早：不仅无 RX，`can0` 和 USB-CAN 枚举本身也不存在；`gs_usb/can_dev` 仅表示内核模块尚在，不能证明硬件链路健康。P0 未恢复，P2/P4/P5 均继续禁止。
+- 阻断为操作者侧 USB/虚拟机映射、机械臂供电/CAN 线缆或需要特权的接口重新枚举/配置；不能靠重启驱动或视觉栈绕过。下一最小动作必须由操作者在同一 Ubuntu/Codex 终端完成一次 `sudo -v`，确认 USB-CAN 已连接且机械臂电源/CAN 线稳定后，按接管协议恢复并验证 `can0`、持续 `0x251..0x256` RX；在此之前不重复任何上层实验。

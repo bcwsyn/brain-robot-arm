@@ -107,3 +107,8 @@
 
 - 实体全零复位曾返回 `RESET_COMPLETE`，但随后 PiPER 驱动记录 `0x151 SendCanMessage(SEND_MESSAGE_FAILED)`、高速反馈丢失并退出；`can0` RX 归零且错误/仲裁丢失/丢包计数上升。该事件按硬件/CAN 阻断处理，不归因于视觉目标或 ROS 状态机。
 - 在持续 `0x251..0x256` RX 恢复前，禁止重新启动驱动、调用使能或任何运动/视觉搜索；必须先由操作者在同一终端完成 sudo 接管并重置/复核 `can0`。已停止残留视觉栈，保持不执行自动失能或 `ResetPiper`。
+
+## 2026-09-24 现场复核：USB-CAN 与 can0 不存在
+
+- 只读复核发现 `lsusb` 无 `1d50:606f`/CAN 设备匹配，`ip -details -statistics link show can0` 返回 `Device "can0" does not exist`，`candump` 返回 `No such device`；仅 `gs_usb`/`can_dev` 内核模块仍加载。
+- 因此将当前 P0 阻断具体化为 USB-CAN/虚拟机映射、机械臂供电/CAN 物理链路或需特权的接口重新枚举配置问题；模块存在不构成 CAN 健康证据。恢复 `can0` 且连续收到 `0x251..0x256` 前，禁止启动 PiPER、调用 `/enable_srv`、`MotionCtrl_2`、`JointCtrl` 或视觉搜索/抓取。
