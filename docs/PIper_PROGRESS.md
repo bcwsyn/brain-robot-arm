@@ -704,3 +704,14 @@
 - 上一轮实跑表明自动绝对零点轨迹在当前实体反馈上反复偏移，120 秒内没有 `RESET_COMPLETE`；这与仓库前述“默认自动启动不把绝对零点作为观测必经步骤、仅手动 `0` 才复位”决策一致。
 - 已将 `/home/johnwick/start_brain_robot_cube_real.sh` 的 `restart_visual_sequence` 改为：停止旧视觉/Servo → 使能运动门 → 从当前反馈姿态直接发布观测轨迹；`reset_zero_sequence` 仍保留给显式 `0` 操作。未改变抓取、CAN 或固件路径。
 - 下一次默认实跑验收改为 `[7/7]` → 当前姿态保持/观测轨迹 → `OBSERVE_POSE_REACHED` → `SEARCH`；若观测仍抖动，阻断直接归入轨迹反馈收敛而非点云障碍。
+
+## 2026-09-24 当前姿态直达观测实跑结果
+
+- 默认脚本实跑已按新路径通过 `[7/7]`，输出“腕部相机的深度点云不写入 Octomap，避免夹爪自体障碍”，并进入 `STATE -> PREPARE (START_AUTHORIZED)`；适配器接受 46.3 秒当前姿态→观测轨迹。
+- 运行期间 `/joint_commands` 约 50 Hz、`/piper_moveit_joint_states` 约 200 Hz，反馈持续出现 0.01–15 秒间歇但未退出；实体关节停在约 `[J2=0.786, J3=-0.666, J5=0.177]`，距离观测目标 `[0.98,-0.75,0.30]` 仍超出 0.01 rad 容差，未发布 `OBSERVE_POSE_REACHED`，因此没有进入 `SEARCH` 或触发抓取。
+- 已通过 `/visual_search_controller/stop`、`/servo_node/stop_servo` 停止运动并结束脚本，保持使能；未发送 `DisableArm`、固件命令、`ResetPiper` 或抓取请求。日志：`/tmp/brain_robot_auto_current_to_observe_v19_20260924.log`、`/home/johnwick/brain_robot_logs/visual_stack.log`。
+
+### 本轮结论与下一步
+
+- “夹爪进入 Octomap 导致抖动”路径已从默认实体启动中移除；当前可复现阻断是观测轨迹在新固件间歇反馈下未收敛，而不是点云障碍门控。
+- 下一步应只修复适配器/驱动在反馈间歇期间的轨迹目标保持与收敛判断，再复用当前姿态直达观测路径；不得恢复实体腕部 Octomap 输入或回到旧底层巡检。
