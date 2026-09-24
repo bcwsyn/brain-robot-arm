@@ -573,6 +573,12 @@
 - 设备仍枚举为 `Bus 003 Device 013: 1d50:606f`，`gs_usb` 绑定在 VMware USB hub 下；`usbreset 003/013` 仅返回设备权限错误，`sudo -n -v` 返回 `1`（当前会话无 sudo 凭据）。因此无法从该会话安全执行 USB reset/rebind，也未尝试保存或代用密码。
 - 当前不再重跑自动脚本；保持单一监测驱动和完整日志，等待 USB-CAN 在宿主/虚拟机侧恢复或同一终端完成受限恢复后，再复用已验证的自动观测门控。
 
+## 2026-09-24 USB reset 已执行，can0 配置等待 sudo
+
+- 已直接执行 `/usr/bin/usbreset 003/013`，USB-CAN `1d50:606f` reset 返回成功；随后 `can0` 已重新枚举但处于 `DOWN/STOPPED`、RX=0。
+- 当前会话 `sudo -n -v` 返回 `1`；无特权执行 `ip link set can0 type/up/txqueuelen` 均被 `Operation not permitted` 拒绝。因此不能伪造“can0 已恢复”，也没有启动驱动或运动流程。
+- 下一步固定为在同一终端完成 `sudo -v` 后配置 `can0` 为 1 Mbps/0.75、TX 队列 1000，再验证 RX；这不是重复基础巡检，而是 USB reset 后必需的接口恢复动作。
+
 ## 2026-09-24 按用户要求停止监测驱动
 
 - 直接停止当前监测驱动进程组 `PGID 74632`；其子进程 `74633` 未响应 TERM，随后仅对该 ROS 驱动进程发送 KILL。未调用 `DisableArm`、`ResetPiper` 或任何运动命令。
