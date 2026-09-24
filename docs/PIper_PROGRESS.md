@@ -364,3 +364,14 @@
 
 - 当前实际状态比上一条记录更早：不仅无 RX，`can0` 和 USB-CAN 枚举本身也不存在；`gs_usb/can_dev` 仅表示内核模块尚在，不能证明硬件链路健康。P0 未恢复，P2/P4/P5 均继续禁止。
 - 阻断为操作者侧 USB/虚拟机映射、机械臂供电/CAN 线缆或需要特权的接口重新枚举/配置；不能靠重启驱动或视觉栈绕过。下一最小动作必须由操作者在同一 Ubuntu/Codex 终端完成一次 `sudo -v`，确认 USB-CAN 已连接且机械臂电源/CAN 线稳定后，按接管协议恢复并验证 `can0`、持续 `0x251..0x256` RX；在此之前不重复任何上层实验。
+
+## 2026-09-24 现场修复后复核：USB-CAN 已枚举但 can0 仍 DOWN
+
+- 当前 commit：`c09706e`；复核命令为 `sudo -n -v`、`lsusb`、`lsmod`、`ip -details -statistics link show can0`、3 秒 RX 计数、`timeout 10s candump -n 10 can0` 和目标进程检查。
+- USB-CAN 已恢复枚举：`1d50:606f OpenMoko, Inc. Geschwister Schneider CAN adapter`；`gs_usb`/`can_dev` 已加载。但 `can0` 为 `state DOWN`、`can state STOPPED`、RX/TX/错误/丢包全为 0；`candump` 返回 `Network is down`，3 秒 RX 增量为 0。
+- 当前 Codex 终端 `sudo -n -v` 仍返回 1（需要密码）；没有 `piper_single_ctrl`、Astra、检测器、MoveIt、Servo 或视觉残留进程。本轮未启动上层控制，未调用使能、模式、关节、复位或任何运动 API。
+
+### 本轮结论与下一步
+
+- USB 映射这一层已恢复，但 P0 仍未通过；`can0` 尚未配置并启用，持续 `0x251..0x256` 反馈仍为 0。不得把 USB 枚举误判为 CAN 健康，也不得启动 PiPER 或视觉栈。
+- 下一最小动作：操作者在 Codex 实际使用的同一 Ubuntu 终端执行一次 `sudo -v`，然后按接管协议执行 `sudo ip link set can0 down 2>/dev/null || true`、设置 1 Mbps/sample-point 0.75、`sudo ip link set can0 up`，再用 `ip -details -statistics link show can0` 与 `timeout 10s candump -n 10 can0` 确认 `ERROR-ACTIVE` 和持续 `0x251..0x256` RX；恢复前不重复任何上层实验。

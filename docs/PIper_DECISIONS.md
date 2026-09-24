@@ -112,3 +112,13 @@
 
 - 只读复核发现 `lsusb` 无 `1d50:606f`/CAN 设备匹配，`ip -details -statistics link show can0` 返回 `Device "can0" does not exist`，`candump` 返回 `No such device`；仅 `gs_usb`/`can_dev` 内核模块仍加载。
 - 因此将当前 P0 阻断具体化为 USB-CAN/虚拟机映射、机械臂供电/CAN 物理链路或需特权的接口重新枚举配置问题；模块存在不构成 CAN 健康证据。恢复 `can0` 且连续收到 `0x251..0x256` 前，禁止启动 PiPER、调用 `/enable_srv`、`MotionCtrl_2`、`JointCtrl` 或视觉搜索/抓取。
+
+## 2026-09-24 现场修复后复核：USB 已恢复但 can0 仍 DOWN
+
+- `lsusb` 已重新看到 `1d50:606f`，但 `can0` 为 `DOWN/STOPPED` 且 RX=0；`candump` 报 `Network is down`。这只证明 USB 映射恢复，不证明 CAN 链路恢复。
+- 在 `can0` 配置为 1 Mbps、sample-point 0.75、`ERROR-ACTIVE` 且持续收到 `0x251..0x256` 前，继续禁止 PiPER/ROS 驱动、使能、运动和视觉搜索；必须先由操作者在同一终端完成 sudo 接管并按协议配置接口。
+
+## 2026-09-24 现场修复后复核：USB 已恢复但 can0 仍 DOWN
+
+- `lsusb` 已重新看到 `1d50:606f`，但 `can0` 为 `DOWN/STOPPED` 且 RX=0；`candump` 报 `Network is down`。这只证明 USB 映射恢复，不证明 CAN 链路恢复。
+- 在 `can0` 配置为 1 Mbps、sample-point 0.75、`ERROR-ACTIVE` 且持续收到 `0x251..0x256` 前，继续禁止 PiPER/ROS 驱动、使能、运动和视觉搜索；必须先由操作者在同一终端完成 sudo 接管并按协议配置接口。
