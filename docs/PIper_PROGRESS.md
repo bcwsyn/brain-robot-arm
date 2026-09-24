@@ -144,7 +144,7 @@
 
 ## 2026-09-23 23:13：真实运动安全清单只读复查
 
-- 为准备而非执行真实运动，使用 `C_PiperInterface_V2(can0, judge_flag=False, can_auto_init=True)` 后显式 `ConnectPort()`；未调用 Enable、MotionCtrl_2、JointCtrl 或任何写入限位 API。SDK/协议/接口版本为 `0.6.2`/V2/V2，固件查询为 `S-V1.8-2`。
+- 为准备而非执行真实运动，使用 `C_PiperInterface_V2(can0, judge_flag=False, can_auto_init=True)` 后显式 `ConnectPort()`；未调用 Enable、MotionCtrl_2、JointCtrl 或任何写入限位 API。该次历史 SDK/协议/接口版本为 `0.6.2`/V2/V2，固件查询为 `S-V1.8-2`，已由本轮实体 `S-V1.9-1` 查询取代。
 - 高速反馈新鲜：timestamp `1790176313.8304694`、`200.0 Hz`，六轴当前位置 `[0,-1,-10,-29,291,0]`（0.001°），速度/电流均为 0。`GetArmStatus()` 缓存的时间戳仍为 0，显示 STANDBY/NORMAL、无角度限位状态，不用作实时使能确认。
 - 控制器限位响应仍不可用于安全运动：`GetAllMotorAngleLimitMaxSpd()` timestamp 虽更新，但六项均为 `max=-1,min=-1,max_joint_spd=65535`；加速度六项均 `65535`。这与历史已记录的默认 `±1500/0..1800/...`、最大速度 300、最大加速度 500 不一致，且本轮没有执行任何恢复或写入。按照安全闸门，不能据此形成真实关节目标或速度/加速度限位。
 - 结论：CAN/固件/当前位置和静止状态已复核，但本轮不允许真实运动；必须先定位为何实际限位查询仍为无效值，或在用户确认和明确恢复计划后按官方最小步骤恢复并重新查询。此限制不阻断后续无运动视觉诊断。
@@ -412,7 +412,7 @@
 ## 2026-09-24 12:28：当前固件版本只读确认
 
 - 当前 commit：`113ff6c`。使用当前运行时 `/home/johnwick/.local/lib/python3.10/site-packages/piper_sdk` 的 `C_PiperInterface_V2(can0, judge_flag=False, can_auto_init=True)` 连接并调用 `SearchPiperFirmwareVersion()` 后读取版本。
-- 结果：固件 `S-V1.8-2`，与 `CODEX_HANDOFF.md`/历史决策记录一致；SDK `PIPER_SDK_VERSION_0_6_2 (0.6.2)`，接口 `INTERFACE_V2 (0x2)`，协议 `ARM_PROROCOL_V2 (0x2)`。
+- 历史结果：固件 `S-V1.8-2`，与当时的交接记录一致；SDK `PIPER_SDK_VERSION_0_6_2 (0.6.2)`，接口 `INTERFACE_V2 (0x2)`，协议 `ARM_PROROCOL_V2 (0x2)`。该版本假设已由本轮实体 `S-V1.9-1` 查询取代。
 - 查询后高速反馈仍为约 200 Hz，位置 `[3,-5,9,32,132,0]`（0.001 rad），六轴使能 `[False,False,False,False,False,False]`；未调用固件更新、使能、模式或关节控制 API。
 - 前一项原始抓包持续看到 `0x251..0x256`/聚合反馈，但未看到查询 TX 回显；由于 SDK/接口可能 `local_loopback=false`，该现象不作为查询失败证据。
 
