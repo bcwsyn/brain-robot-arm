@@ -182,3 +182,8 @@
 - 观测姿态完成必须记录实际运行参数、六轴起点/目标及单位、适配器接受轨迹、反馈到位、非目标轴无持续漂移和 `OBSERVE_POSE_REACHED`/等价状态。
 
 - 实际一键启动路径 `cube_visual_search.launch.py` 将真实视觉控制器、`piper_jog_adapter`、抓取执行器和点云门控统一加载 `cube_task_real.yaml`；`visual_search_piper_gemini2.yaml` 不是该脚本的生效配置。不得依据备用配置的 `real_motion_enabled: false` 或全零观测姿态判断当前真实流程。修改后必须核对实际安装空间的 ROS 参数来源。
+
+## 2026-09-24 启动后默认自动进入观测姿态
+
+- 根据用户明确指令，`/home/johnwick/start_brain_robot_cube_real.sh` 在 `[7/7]` 后默认自动执行原按键 1 流程（复位 → 观测姿态 → 搜索），避免脚本仅完成组件启动却停在等待输入。
+- `BRAIN_ROBOT_AUTO_START=0` 是无运动诊断的显式回退；普通现场运行不需要再手动按 1。自动流程仍必须经过 `OBSERVE_POSE_REACHED` 门控，失败时不得继续宣称进入搜索；按键 1 仅作为失败后的重试入口。

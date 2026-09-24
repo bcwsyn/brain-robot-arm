@@ -11,6 +11,7 @@ LOG_MAX_MB="${BRAIN_ROBOT_LOG_MAX_MB:-20}"
 LOG_TOTAL_MAX_MB="${BRAIN_ROBOT_LOG_TOTAL_MAX_MB:-100}"
 MIN_FREE_MB="${BRAIN_ROBOT_MIN_FREE_MB:-2048}"
 WAIT_SECONDS="${BRAIN_ROBOT_WAIT_SECONDS:-45}"
+AUTO_START="${BRAIN_ROBOT_AUTO_START:-1}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
@@ -614,7 +615,15 @@ start_group debug_image_view ros2 run image_view image_view --ros-args -r image:
 wait_for_actual_frame /brain_robot_vision/debug_image "调试图像"
 echo "[7/7] 全部组件已就绪。"
 echo
-echo "操作：按 1 从六轴零点开始搜索/对齐；2=GRASP_READY 后抓取；0=仅零点复位；Ctrl+C=失能并退出。"
+if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" ]]; then
+  echo "[自动] 组件就绪，自动执行六轴复位、观测姿态和紫色方块搜索。"
+  if ! restart_visual_sequence; then
+    echo "[保持] 自动观测姿态启动失败；PiPER 保持当前使能状态，可按 1 重试。" >&2
+  fi
+else
+  echo "[手动] 自动运动已关闭；按 1 从六轴零点开始搜索/对齐。"
+fi
+echo "操作：1=重试复位/观测/搜索；2=GRASP_READY 后抓取；0=仅零点复位；Ctrl+C=失能并退出。"
 while true; do
   if [[ -t 0 ]] && read -r -s -n 1 -t 1 key; then
     case "$key" in

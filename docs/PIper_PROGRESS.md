@@ -501,3 +501,13 @@
 ## 2026-09-24 配置路径纠偏：避免读取未生效配置
 
 - 实际一键启动的 `cube_visual_search.launch.py` 对真实控制器链加载 `cube_task_real.yaml`；`visual_search_piper_gemini2.yaml` 仅为备用/诊断配置。后续代理必须先核对实际安装空间和 ROS 参数来源，不能因备用文件中的真实运动关闭或全零观测姿态而错误阻断或修改主流程。
+## 2026-09-24 自动执行观测姿态入口
+
+- 本轮提交：`75d382e`。用户明确要求不再等待按键 1；规范脚本现将 `BRAIN_ROBOT_AUTO_START` 默认设为 `1`，在 `[7/7]` 组件就绪后自动调用既有 `restart_visual_sequence()`，即执行复位、观测姿态和搜索。`BRAIN_ROBOT_AUTO_START=0` 仅保留给无运动诊断。
+- 实际脚本 `/home/johnwick/start_brain_robot_cube_real.sh` 已从规范源同步，SHA-256 与 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` 一致；`bash -n`、`git diff --check` 通过。本轮未启动脚本、未发送真实运动命令。
+- 自动入口仍受观测完成门控：只有收到 `OBSERVE_POSE_REACHED`/`CURRENT_POSE_ACCEPTED` 才报告进入搜索；失败或超时留在使能保持状态并保留按键 1 重试入口。
+
+### 本轮结论与下一步
+
+- 已推进脚本主线：从“启动后等待人工按键”改为“组件就绪后自动进入观测姿态流程”，不再因为交互输入遗漏而停在 `[7/7]`。
+- 下一最小动作：在现场安全确认已复用、CAN/RX 仍正常且单一驱动条件满足时运行实际脚本，记录自动流程的起点、轨迹接受、反馈到位和 `OBSERVE_POSE_REACHED` 证据；若失败，依据脚本输出定位到具体阶段。
