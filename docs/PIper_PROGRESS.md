@@ -585,6 +585,11 @@
 - 已终止遗留暂停的 `sudo timeout 6s tcpdump -i can0 ...` 进程；无 `piper_single_ctrl`、`candump` 或视觉控制进程。USB 设备仍枚举，但 PiPER 反馈未恢复，未启动驱动/运动流程。
 - 当前证据表明仅重置 Linux `gs_usb`/接口不足以恢复总线反馈；下一步需要现场恢复 USB-CAN 物理/VM 透传或重启机械臂控制器电源后再验证 RX，不执行任何自动运动。
 
+## 2026-09-24 再次 USB reset/gs_usb 重绑仍无 RX
+
+- 在无驱动、无视觉、无运动命令状态下再次执行 `usbreset 003/013`、`modprobe -r/gs_usb`、重新配置 can0 和 `txqueuelen=1000`；接口最终 `ERROR-ACTIVE`、1 Mbps/0.75，但 10 秒 RX 增量仍为 `0`。
+- 该 USB-CAN 适配器不支持 `restart-ms`，因此未强行设置自动 Bus-Off 恢复；没有发送任何 CAN 控制帧。软件侧可安全执行的恢复路径已耗尽，当前需要机械臂控制器或现场 USB/VM 链路重新产生反馈。
+
 ## 2026-09-24 按用户要求停止监测驱动
 
 - 直接停止当前监测驱动进程组 `PGID 74632`；其子进程 `74633` 未响应 TERM，随后仅对该 ROS 驱动进程发送 KILL。未调用 `DisableArm`、`ResetPiper` 或任何运动命令。
