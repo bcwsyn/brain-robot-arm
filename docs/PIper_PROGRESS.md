@@ -408,3 +408,15 @@
 
 - P0 的 CAN/高速反馈与 P1 的 ROS 反馈链路保持通过；P2 不能因 CAN 恢复直接放行，因为控制器角度限位回读再次无效。此前历史默认限位恢复结果不能替代当前回读。
 - 下一最小动作：在不使能、不运动前提下，审计/确认限位参数查询与持久化行为（包括原始 `0x472/0x473/0x47C` 响应和实际运行 SDK），再决定是否需要一次用户已授权的官方默认参数恢复；恢复前禁止真实目标和视觉运动。
+
+## 2026-09-24 12:28：当前固件版本只读确认
+
+- 当前 commit：`113ff6c`。使用当前运行时 `/home/johnwick/.local/lib/python3.10/site-packages/piper_sdk` 的 `C_PiperInterface_V2(can0, judge_flag=False, can_auto_init=True)` 连接并调用 `SearchPiperFirmwareVersion()` 后读取版本。
+- 结果：固件 `S-V1.8-2`，与 `CODEX_HANDOFF.md`/历史决策记录一致；SDK `PIPER_SDK_VERSION_0_6_2 (0.6.2)`，接口 `INTERFACE_V2 (0x2)`，协议 `ARM_PROROCOL_V2 (0x2)`。
+- 查询后高速反馈仍为约 200 Hz，位置 `[3,-5,9,32,132,0]`（0.001 rad），六轴使能 `[False,False,False,False,False,False]`；未调用固件更新、使能、模式或关节控制 API。
+- 前一项原始抓包持续看到 `0x251..0x256`/聚合反馈，但未看到查询 TX 回显；由于 SDK/接口可能 `local_loopback=false`，该现象不作为查询失败证据。
+
+### 本轮结论与下一步
+
+- 固件版本与交接记录相符，排除“当前固件版本未知”这一不确定性，但不解除角度限位 `-1/-1` 的 P2 阻断。
+- 下一最小动作仍是无运动审计限位查询/持久化；在得到当前有效角度上下限前，禁止真实运动、视觉搜索和抓取。
