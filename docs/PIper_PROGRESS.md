@@ -507,6 +507,12 @@
 - 实际脚本 `/home/johnwick/start_brain_robot_cube_real.sh` 已从规范源同步，SHA-256 与 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` 一致；`bash -n`、`git diff --check` 通过。本轮未启动脚本、未发送真实运动命令。
 - 自动入口仍受观测完成门控：只有收到 `OBSERVE_POSE_REACHED`/`CURRENT_POSE_ACCEPTED` 才报告进入搜索；失败或超时留在使能保持状态并保留按键 1 重试入口。
 
+## 2026-09-24 自动化 sudo 前置条件补充
+
+- 用户要求后续自动化接力具备非交互 sudo。规范要求当前 Codex/Agent 实际终端执行 `sudo -n true; echo $?` 返回 `0`，否则不能自行重配 `can0` 或执行其他特权动作。
+- 本轮只修改文档，未修改系统 sudoers、未写入密码、未启动 CAN/驱动、未发送运动命令。
+- 后续优先使用受限 CAN 恢复 helper/systemd 入口；`NOPASSWD: ALL` 不作为默认方案。
+
 ### 本轮结论与下一步
 
 - 已推进脚本主线：从“启动后等待人工按键”改为“组件就绪后自动进入观测姿态流程”，不再因为交互输入遗漏而停在 `[7/7]`。

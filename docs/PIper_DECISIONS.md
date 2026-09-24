@@ -118,6 +118,12 @@
 - `lsusb` 已重新看到 `1d50:606f`，但 `can0` 为 `DOWN/STOPPED` 且 RX=0；`candump` 报 `Network is down`。这只证明 USB 映射恢复，不证明 CAN 链路恢复。
 - 在 `can0` 配置为 1 Mbps、sample-point 0.75、`ERROR-ACTIVE` 且持续收到 `0x251..0x256` 前，继续禁止 PiPER/ROS 驱动、使能、运动和视觉搜索；必须先由操作者在同一终端完成 sudo 接管并按协议配置接口。
 
+## 2026-09-24 自动化权限前置条件：必须支持非交互 sudo
+
+- 需要代理自行恢复 USB-CAN、配置 `can0` 或执行受限系统维护时，Codex/Agent 实际使用的终端必须通过 `sudo -n true; echo $?` 返回 `0`。用户手动终端中能够输入密码，不代表自动化 PTY 具有同样权限。
+- 若 `sudo -n true` 返回非零，记录为自动化权限阻断，停止需要特权的动作；不得反复要求零散 CAN 命令，也不得把权限失败误报为 CAN 或机械臂故障。
+- 优先部署只允许固定 CAN 恢复动作的 root helper/systemd 入口；不把 `NOPASSWD: ALL` 作为默认方案，不保存密码，不自动修改 sudoers。
+
 ## 2026-09-24 现场修复后复核：USB 已恢复但 can0 仍 DOWN
 
 - `lsusb` 已重新看到 `1d50:606f`，但 `can0` 为 `DOWN/STOPPED` 且 RX=0；`candump` 报 `Network is down`。这只证明 USB 映射恢复，不证明 CAN 链路恢复。

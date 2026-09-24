@@ -137,6 +137,17 @@ ip -details -statistics link show can0
 
 如果 `can0` 为 `DOWN/STOPPED`、不存在，或 `candump` 返回 `Network is down/No such device`，不能把“请在 Codex 当前 PTY 输入 sudo 密码”当成长期解决方案；文档本身不能授予特权。规范部署必须预先安装一个只允许执行 PiPER CAN 恢复动作的受限 root helper 或 systemd 服务，例如固定执行 `gs_usb` 绑定和 `can0` 的 1 Mbps、sample-point 0.75 配置，代理只调用该固定入口并验证 `ERROR-ACTIVE` 与持续 RX。禁止授予任意 `ip`、任意 `modprobe` 或 shell 的免密权限，也禁止保存密码。若该受限入口尚未安装，记录为“特权恢复基础设施缺失”，继续只读诊断和 Git 记录，但不得假装已经修复 CAN。
 
+自动化运行的权限硬门槛：在需要代理自行恢复 USB-CAN、配置 `can0`、清理系统日志或执行其他受限特权动作的环境中，当前 Codex/Agent 实际使用的终端必须满足：
+
+~~~bash
+whoami
+sudo -n true; echo $?
+~~~
+
+第二条必须返回 `0`。`sudo` 能在用户手动终端中输入密码，不代表 Codex/Agent 的另一个 PTY 具备非交互权限；不能把这两种会话混为一谈。若返回非零，代理必须把它记录为“自动化权限前置条件未满足”，停止需要特权的动作，不得反复要求零散 CAN 命令，也不得声称 CAN 已恢复。
+
+权限实现优先使用只允许固定 CAN 恢复动作的 root helper/systemd 入口；只有在用户明确选择并完成系统审查时才使用 sudoers NOPASSWD 规则。禁止把密码写入仓库、环境变量、脚本或日志，禁止自动修改 `/etc/sudoers`。
+
 ## 8. 已验证的 PiPER 事实和参数陷阱
 
 以下是当前上下文中的已验证约束，不能凭猜测改写：
