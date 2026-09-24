@@ -202,3 +202,8 @@
 
 - 自动脚本在复用或重新配置 can0 后必须确保 `txqueuelen=1000`（可由 `BRAIN_ROBOT_CAN_TX_QUEUE` 覆盖）；默认 `10` 在本次真实复位轨迹期间伴随 `arbit-lost`/`dropped` 和 SDK `SEND_MESSAGE_FAILED`，需先扩大队列再重跑同一门控。
 - 队列调整是可逆的接口参数，不等价于运动授权；设置失败时脚本不得进入 Enable/Reset/Observe。
+
+## 2026-09-24 队列修复后仍在观测运动期间丢反馈
+
+- `txqueuelen=1000` 后，自动 reset 已完成，观测轨迹已被适配器接受；约 4 秒后仍出现 `can0 feedback lost`，并伴随 `arbit-lost=1093`/`dropped=10`。因此不得继续扩大队列或重复运动作为猜测性修复。
+- 当前要定位的是观测运动期间 CAN 反馈停止/总线仲裁的时序或物理控制器响应；保持监测驱动，禁止继续进入 `OBSERVE_POSE_REACHED`/搜索，直到有新的可验证发送/反馈修复。

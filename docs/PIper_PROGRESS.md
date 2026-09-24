@@ -545,3 +545,14 @@
 
 - 已对自动实跑暴露的发送层具体条件做最小修复；下一次实际运行应验证 `txqueuelen=1000` 后 `0x151/0x155..0x157` 是否能持续发送并让复位轨迹完成。
 - 若仍出现 `SEND_MESSAGE_FAILED`，继续依据驱动返回和 CAN 错误计数定位，不回退到已通过的基础巡检。
+
+## 2026-09-24 TX 队列修复后自动流程复跑结果
+
+- 第二次实际运行命令：`setsid env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh </dev/null > /tmp/brain_robot_auto_observe_txqueue_20260924.log 2>&1 &`；脚本通过 `[7/7]`，自动 reset 返回成功并记录 `STATE -> STOPPED (RESET_COMPLETE)`，随后自动 start 发布 `49.0 s` 观测轨迹，适配器记录 `REAL ARM trajectory accepted: 2 points`。
+- `txqueuelen=1000` 后未再出现首轮的立即 `SEND_MESSAGE_FAILED`，但约 4 秒后驱动仍记录 `can0 feedback lost` 并退出；适配器再次因 `joint state timeout` 失能，脚本未收到 `OBSERVE_POSE_REACHED`。运行后 CAN 仍 `ERROR-ACTIVE`，统计 `arbit-lost=1093`、`dropped=10`。
+- 结论：队列设置不是根因，但已证明脚本自动 reset/observe 轨迹链路本身正常到达驱动和适配器；当前唯一阻断仍是观测运动期间 CAN 反馈丢失/总线仲裁错误。视觉栈已停止，单一 `auto_enable=false` 监测驱动已恢复（PID 74632），未继续发送新目标。
+
+### 本轮结论与下一步
+
+- 已验证 `[7/7] → 自动 reset → RESET_COMPLETE → 自动 observe trajectory → 适配器 accepted`；未通过的是 PiPER 在观测运动期间维持反馈，故不能进入 `OBSERVE_POSE_REACHED` 或 `SEARCH`。
+- 下一最小动作：只审计观测运动期间 CAN RX 停止与 `arbit-lost` 的时序/发送所有权，禁止再次自动运动直到该反馈丢失原因有可验证修复。
