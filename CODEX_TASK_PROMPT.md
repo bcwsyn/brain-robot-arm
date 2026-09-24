@@ -120,6 +120,8 @@ ip -details -statistics link show can0
 
 `sudo -n -v` 只检查当前 Codex PTY 的 sudo 时间戳，不是 CAN 健康检查；用户在另一个终端输入密码，不保证 Codex 的另一个 PTY 也能通过。先检查 `can0` 状态、RX 计数和 0x251～0x256 反馈：如果接口已经 `ERROR-ACTIVE` 且 RX 持续增长，`sudo -n -v` 非零只能记录为“当前不能重新配置接口”，不得因此阻断只读诊断、ROS 检查、构建、进度记录或已经授权的后续工作。只有确实要执行特权命令（例如接口 DOWN、重新加载驱动或安装系统服务）时，才请求用户在 Codex 实际使用的同一个终端完成一次 `sudo -v`；不要绕过 sudo、保存密码或把权限错误误判成 CAN/机械臂故障。
 
+如果 `can0` 为 `DOWN/STOPPED`、不存在，或 `candump` 返回 `Network is down/No such device`，不能把“请在 Codex 当前 PTY 输入 sudo 密码”当成长期解决方案；文档本身不能授予特权。规范部署必须预先安装一个只允许执行 PiPER CAN 恢复动作的受限 root helper 或 systemd 服务，例如固定执行 `gs_usb` 绑定和 `can0` 的 1 Mbps、sample-point 0.75 配置，代理只调用该固定入口并验证 `ERROR-ACTIVE` 与持续 RX。禁止授予任意 `ip`、任意 `modprobe` 或 shell 的免密权限，也禁止保存密码。若该受限入口尚未安装，记录为“特权恢复基础设施缺失”，继续只读诊断和 Git 记录，但不得假装已经修复 CAN。
+
 ## 8. 已验证的 PiPER 事实和参数陷阱
 
 以下是当前上下文中的已验证约束，不能凭猜测改写：
