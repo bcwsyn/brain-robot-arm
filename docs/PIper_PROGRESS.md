@@ -616,3 +616,20 @@
 
 - 已完成一次新的默认自动启动验证，实际阻断在 `[5/7]` 点云自体过滤反馈门控，不是按键等待、磁盘空间或重复的 CAN/限位基础问题。
 - 下一最小动作：只针对运行时 `/brain_robot_vision/tf_validated_points` → MoveIt 自体过滤 `/brain_robot_vision/filtered_points` 的发布链和同一时段驱动反馈退出做修复/验证；修复后再沿同一默认脚本门控重跑，必须取得 `OBSERVE_POSE_REACHED` 才能进入 `SEARCH`。
+
+## 2026-09-24 新固件资料与实体版本只读确认
+
+- 按新规范读取了 `reference/piper_firmware_2026-09/`。资料文件及 SHA-256：`固件+上位机.txt`=`333ca20075c458d8a79b2527c33152900fa66efd1c65188626d354d69a120c19`；`ArmRobotUA_V1.6.3.260828_release.exe`=`ac9c88f9cbe013251e8b4b3124b18b88eb62ea6143a915b211be13df5cac1dd6`；`PIPER合并固件_MC(S-V1.9-1)_DRV(V2.0.8).bin`=`e34b0f6c508db0c98f5c5fc702532e3a40902256bf1082667ecebe73d5a9014a`。
+- 不刷写、不执行 `MasterSlaveConfig`、不执行 `ResetPiper`；单一 `C_PiperInterface_V2` 只读 `GetPiperFirmwareVersion()` 返回实体 `S-V1.9-1`。同次 SDK=`0.6.2`、协议/接口=`V2/V2`，CAN=`ERROR-ACTIVE` 且 RX 持续增长（查询后 1835 包）。
+- SDK 当前只暴露 `S-V1.9-1` 的固件读取接口，没有独立 DRV 子版本字段；`DRV(V2.0.8)` 作为用户官方上位机升级记录和资料包记录保存，不把文件名冒充控制器独立实测值。历史实体 `S-V1.8-2` 假设已作废。
+
+## 2026-09-24 S-V1.9-1 下默认自动流程复跑
+
+- 命令：`setsid env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh </dev/null >/tmp/brain_robot_auto_firmware_v19_20260924.log 2>&1 &`。实际通过 `[1/7]` 至 `[7/7]`，包括自体过滤点云门控；自动零点复位服务返回 `success=True`。
+- 复位启动约 7 秒后，`piper_driver.log` 记录 `can0 feedback lost`、保护窗口后 `can0 is loss` 并退出；适配器记录 `PHYSICAL MOTION DISARMED: joint state timeout`，脚本输出六轴零点反馈超时，未发布观测轨迹，也没有 `OBSERVE_POSE_REACHED`/`SEARCH`。
+- 仅用 TERM 保持路径清理脚本进程，未发送 `DisableArm`、未调用 `ResetPiper`、未执行固件操作。证据：`/tmp/brain_robot_auto_firmware_v19_20260924.log`、`/home/johnwick/brain_robot_logs/piper_driver.log`。
+
+### 本轮结论与下一步
+
+- 已完成新固件实体版本确认，并推进到 S-V1.9-1 下的真实自动复位门控；尚未到达观测姿态。旧 `S-V1.8-2` 结论不再作为版本前提，但新版本仍复现复位期间反馈丢失。
+- 下一最小动作：只定位 S-V1.9-1 下复位阶段 `can0 feedback lost` 的驱动/USB-CAN 反馈生命周期；修复后复用默认 `AUTO_START=1`，以 `OBSERVE_POSE_REACHED` → `SEARCH` 为验收。不得刷写、降级、执行 `MasterSlaveConfig` 或 `ResetPiper`。

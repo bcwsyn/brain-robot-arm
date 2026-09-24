@@ -246,3 +246,14 @@
 - 在现场恢复后，`can0` 已实测 `ERROR-ACTIVE` 且 5 秒 RX 增量 `15215`；默认实体脚本真实通过 `[1/7]` 至 `[4/7]`，但 `[5/7]` 因未收到 `/brain_robot_vision/filtered_points` 拒绝建立可能含自体点的 Octomap。这是本轮脚本报告的直接阻断，未执行 reset/observe/search。
 - 同时段 PiPER 驱动记录 `can0 feedback lost` → `can0 is loss` → 退出，说明过滤点云缺失与上游实时关节反馈中断同现。不得把这次失败归因于按键、磁盘或已完成的 CAN/限位/单位基线，也不得绕过自体过滤门控继续运动。
 - 决策：下一轮只审计并修复 `tf_validated_points` 到 MoveIt 自体过滤点云的运行时发布链及其关节状态依赖；验证条件仍是脚本输出 `OBSERVE_POSE_REACHED`，未达到前不进入 `SEARCH`。
+
+## 2026-09-24 实体固件版本更新为 S-V1.9-1
+
+- 单一 `C_PiperInterface_V2` 的只读 `GetPiperFirmwareVersion()` 在 `can0 ERROR-ACTIVE`、RX 持续增长时返回 `S-V1.9-1`；SDK/协议/接口为 `0.6.2`/V2/V2，取代历史实体 `S-V1.8-2` 假设。
+- 上位机 `1.6.3.260828` 与合并包 `MC(S-V1.9-1)_DRV(V2.0.8)` 的 SHA-256 已记录；SDK 没有独立 DRV 子版本读取接口，不能把文件名当成 DRV 实测值。
+- 禁止因版本更新再次刷写、降级、执行 `MasterSlaveConfig` 或 `ResetPiper`；后续按当前 S-V1.9-1 的实际运行证据判断。
+
+## 2026-09-24 S-V1.9-1 默认自动复位门控仍失败
+
+- 新固件下默认脚本真实通过 `[7/7]`、自动零点复位服务请求和自体过滤点云门控；复位期间仍出现 `can0 feedback lost` → `can0 is loss`，适配器因关节状态超时失能，未进入观测轨迹/`OBSERVE_POSE_REACHED`。
+- 这是当前版本的新运行时反馈生命周期阻断，不沿用旧 `S-V1.8-2` 固件归因，也不回到按键、点云或普通基础巡检。下一步只定位复位期间反馈中断的具体驱动/USB-CAN 事件，修复后复用同一默认脚本门控。
