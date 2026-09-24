@@ -567,3 +567,8 @@
 
 - `[7/7] → reset → RESET_COMPLETE → observe trajectory accepted` 已验证；`OBSERVE_POSE_REACHED` 的唯一阻断是观测运动期间 USB-CAN/xHCI 传输错误导致的反馈丢失。
 - 下一最小动作：在不发送运动的前提下恢复/稳定 USB-CAN 虚拟机传输（确认 USB 设备映射或宿主/虚拟机 xHCI 状态）后，再沿同一默认脚本门控重跑；无需重复 CAN、限位、单位或 TF 基线。
+
+## 2026-09-24 USB-CAN 恢复权限阻断
+
+- 设备仍枚举为 `Bus 003 Device 013: 1d50:606f`，`gs_usb` 绑定在 VMware USB hub 下；`usbreset 003/013` 仅返回设备权限错误，`sudo -n -v` 返回 `1`（当前会话无 sudo 凭据）。因此无法从该会话安全执行 USB reset/rebind，也未尝试保存或代用密码。
+- 当前不再重跑自动脚本；保持单一监测驱动和完整日志，等待 USB-CAN 在宿主/虚拟机侧恢复或同一终端完成受限恢复后，再复用已验证的自动观测门控。

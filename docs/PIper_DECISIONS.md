@@ -211,3 +211,7 @@
 
 - 自动观测实跑期间，内核同时记录连续 `xhci_hcd ... Transfer event TRB DMA ptr not part of current TD`，并出现 CAN `arbit-lost`、`dropped` 和 PiPER 高速反馈丢失。当前应优先恢复 USB-CAN/虚拟机 xHCI 传输，不再通过重复运动或扩大 TX 队列猜测修复。
 - 在该 USB 传输错误消失、反馈持续稳定前，禁止再次自动 reset/observe；软件观测链路已验证到“轨迹被适配器接受”，后续只需复用同一脚本门控验证。
+
+## 2026-09-24 USB-CAN 重置权限限制
+
+- USB-CAN 当前为 VMware USB hub 下的 `1d50:606f`，无 sudo 时间戳时 `usbreset` 无权限；不得把工具返回码或设备枚举误报为已完成 reset。必须先在同一实际终端完成受限 USB/CAN 恢复，再继续自动运动。
