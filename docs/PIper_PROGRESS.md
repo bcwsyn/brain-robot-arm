@@ -1072,3 +1072,9 @@
 - 代码审计发现：适配器以50 Hz发送绝对关节目标，而 `piper_ctrl_single_node.joint_callback()` 每次都重复发送 `MotionCtrl_2`。这会在每个关节目标周期额外占用CAN总线，能够解释“RX计数持续但运动反馈出现长空窗”。
 - 最小修复：驱动缓存当前关节控制速度，只在速度变化时发送一次 `MotionCtrl_2`；绝对 `JointCtrl` 仍由既有适配器唯一输出，反馈保护和单位转换不变。
 - 已同步规范源码与 `/home/johnwick/piper_ros`，`colcon build --packages-select piper --symlink-install` 和 `py_compile` 均成功。
+
+## 2026-09-25 CAN模式去重后进入GRASP_READY，暴露出抓取Z几何错误
+
+- `c601cc8` 生效后，默认链在约15秒观测轨迹后稳定进入 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`；驱动本轮仅出现一次0.09秒反馈恢复，未再出现10--17秒空窗。
+- 单一路径确实调用了 `ALIGNED_PREGRASP`，但目标日志显示 `target z=0.038 m`，明显低于桌面；MoveIt 正确返回 `IK_ERROR_CODE_-31`，不是点云碰撞。
+- 最小修复：实体配置加入 `grasp_height_offset_m: 0.16`，使侧向预抓取保持在桌面上方；已构建 `brain_robot_ball_pick`。

@@ -122,6 +122,9 @@ grasp_lift_executor:
     gripper_open_value: 50000
     gripper_close_value: 40000
     gripper_settle_s: 2.0
+    # Side approach: keep the gripper base above the tabletop while the
+    # camera optical axis provides the horizontal standoff.
+    grasp_height_offset_m: 0.16
     gripper_feedback_topic: /joint_states_feedback
     gripper_feedback_timeout_s: 3.0
     min_gripper_feedback_motion_rad: 0.001
