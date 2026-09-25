@@ -913,3 +913,16 @@
 ### 本轮结论与下一步
 
 - 本轮未执行抓取或失能；视觉 stop、Servo stop、适配器 disarm 已调用。
+
+## 2026-09-25 轮廓阈值修复后的首次默认启动被 TF 门控阻断
+
+- 实际命令：`timeout --signal=INT --kill-after=180s 360s env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh`；返回码 `1`。
+- `can0` 当时为 `ERROR-ACTIVE`、1 Mbps/sample-point 0.75，RX 持续增长；无新的 CAN/固件/限位排查。
+- 启动输出完成相机、检测器和 MoveIt 初始化，但在 `[5/7]` 报“未收到相机到基座的可用 TF 心跳”，未进入观测运动、SEARCH 或抓取；本轮没有发送抓取动作，也没有发送失能命令。
+- `visual_stack.log` 显示 `robot_state_publisher` 曾成功加载 `base_link`，MoveGroup context 初始化完成；`/brain_robot_vision/disabled_octomap_points` 无发布者，故没有证据表明夹爪点云进入实体 Octomap。
+- 运行结束后残留 `/camera/camera`、`astra_camera_container` 和多个调试图像查看节点；相机 TF 只能看到 camera 内部帧，`base_link` 不存在。`piper_driver.log` 的 `publisher's context is invalid` 出现在脚本清理阶段，属于退出竞态，不能作为初始 TF 失败的证据。
+
+### 本轮结论与下一步
+
+- `min_rectangularity: 0.40` 尚未在完整默认链上验证，因为 TF 门控先行失败；不能宣称已修复搜索或抓取。
+- 下一步只清理明确残留的 Astra/调试节点，重新运行同一默认脚本，验证新启动的 `robot_state_publisher + pointcloud_tf_gate` 是否产生有效 TF 心跳；若通过，再读取 `IK_*` 规划诊断决定预抓取姿态调整。
