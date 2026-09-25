@@ -973,3 +973,12 @@
 ### 本轮结论与下一步
 
 - 依照无 RX 规则，禁止自动启动真实运动和速度调整。下一步只等 `can0` 在 5 秒采样内 RX 再次增长后，先以 `BRAIN_ROBOT_AUTO_START=0` 验证 `target_valid`，再执行受控默认链。
+## 2026-09-25 自动断电报告与接收型生命周期回归
+
+- 用户报告机械臂“恢复后自动断电”。本轮开始前实际没有 `start_brain_robot_cube_real.sh`、`piper_single_ctrl` 或视觉控制进程；残留的 MoveIt/Servo/视觉节点也未发送 CAN。`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps/sample-point 0.75，5 秒 RX 从 `13216606` 增至 `13228273`，`candump` 持续看到 `3A0..3A7` 与 `251..256`；因此当前不是“接口无 RX”。
+- `/home/johnwick/brain_robot_logs/piper_driver.log` 的旧故障证据为反馈丢失 25 秒后驱动保持 receive-only，随后在 ROS context 已被外部关闭时再次调用 `rclpy.shutdown()`，产生 `RCLError: rcl_shutdown already called`。反馈丢失分支本身没有 `DisableArm(7)`；本轮没有发新的使能、失能或运动命令，不能把物理断电未经证据归因给脚本。
+- 最小修复：在规范驱动 `brain_robot_arm/vendor/piper_ros/src/piper/piper/piper_ctrl_single_node.py` 的自动使能超时和 `main()` 收尾中，仅当 `rclpy.ok()` 时调用 `rclpy.shutdown()`；同步到 `/home/johnwick/piper_ros` 并构建 `piper`。
+- 验证命令：`colcon build --packages-select piper --symlink-install` 返回 0；`python3 -m py_compile /home/johnwick/piper_ros/build/piper/piper/piper_ctrl_single_node.py` 返回 0；`BRAIN_ROBOT_AUTO_START=0 timeout ... 150s /home/johnwick/start_brain_robot_cube_real.sh` 返回 124（外部超时），但完整到达 `[7/7]`，在 150 秒无运动等待期间未出现 `feedback absent for 25.0s` 或重复 `rcl_shutdown`，清理后无 PiPER/视觉控制进程遗留。当前运行树日志只剩受控终止产生的 `ExternalShutdownException`，不是重复 shutdown。
+- 该回归未调用 `EnablePiper`、观测轨迹、`DisableArm` 或 `ResetPiper`；TX 仅从 492759 增至 492785，未观察到运动阶段命令。根分区仍约 28%，没有磁盘不足证据。
+- 当前阻断：CAN 接收持续但实体“使能/供电状态”尚未从新的状态反馈中独立确认；在自动断电原因与机械支撑状态明确前，不启动 `BRAIN_ROBOT_AUTO_START=1` 的真实运动。下一步先读取 3A/251 状态映射和实际使能反馈，确认驱动保持接收型后再进行一次受控当前姿态→观测姿态验证。
+

@@ -217,7 +217,8 @@ class PiperRosNode(Node):
                     pass
             if(elapsed_time_flag):
                 self.get_logger().info("Automatic enable timeout, exiting program")
-                rclpy.shutdown()
+                if rclpy.ok():
+                    rclpy.shutdown()
 
             if self._can_feedback_available():
                 self.PublishArmState()
@@ -524,4 +525,5 @@ def main(args=None):
         pass
     finally:
         piper_single_node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
