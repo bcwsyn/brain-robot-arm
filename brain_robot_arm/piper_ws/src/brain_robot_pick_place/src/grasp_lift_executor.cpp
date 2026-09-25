@@ -1505,7 +1505,16 @@ private:
       RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for planning.", stage.c_str());
       return false;
     }
-    arm_->setStartStateToCurrentState();
+    // Capture the freshly observed state into the request.  Calling
+    // setStartStateToCurrentState() makes MoveGroup query its monitor again
+    // during planning; a USB/firmware feedback gap can then replace the valid
+    // state with a stale/default zero state while RRT is sampling.
+    const auto fresh_state = arm_->getCurrentState(0.5);
+    if (!fresh_state) {
+      RCLCPP_WARN(get_logger(), "%s skipped: MoveIt current state became stale before planning.", stage.c_str());
+      return false;
+    }
+    arm_->setStartState(*fresh_state);
     arm_->setPoseReferenceFrame(target.header.frame_id);
     if (!arm_->setPoseTarget(target, end_effector_link_)) {
       RCLCPP_ERROR(get_logger(), "%s rejected the requested end-effector pose.", stage.c_str());
@@ -1546,7 +1555,12 @@ private:
       RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for Cartesian planning.", stage.c_str());
       return false;
     }
-    arm_->setStartStateToCurrentState();
+    const auto fresh_state = arm_->getCurrentState(0.5);
+    if (!fresh_state) {
+      RCLCPP_WARN(get_logger(), "%s skipped: MoveIt current state became stale before Cartesian planning.", stage.c_str());
+      return false;
+    }
+    arm_->setStartState(*fresh_state);
     arm_->setPoseReferenceFrame(target.header.frame_id);
     std::vector<geometry_msgs::msg::Pose> waypoints{target.pose};
     moveit_msgs::msg::RobotTrajectory trajectory;

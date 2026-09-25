@@ -859,6 +859,18 @@
 - 当前阻断是反馈空窗造成的 TF/MoveIt 状态源退出，不是点云碰撞。驱动保持接收态后，下一轮可在同一 CAN 链路恢复时继续等待 TF 并进入观测，不必重启整套视觉栈。
 - 下一步复跑默认自动脚本，验收 `OBSERVE_POSE_REACHED → SEARCH → GRASP_READY`；若抓取候选仍失败，再读取 IK/规划失败诊断。
 
+## 2026-09-25 自动链推进到 GRASP_READY：显式预抓取状态修复
+
+- 第二次默认自动实跑已完整出现 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，检测器持续报告紫色目标；日志显示 MoveGroup 正常规划搜索段，且没有腕部点云进入实体 Octomap。
+- 抓取执行器按既有顺序生成 `TOP_DOWN`、`DIAGONAL_LEFT`、`DIAGONAL_RIGHT` 候选，不把视觉对齐姿态直接当作最终抓取；预抓取后仍使用受限笛卡尔下降。失败日志显示在预抓取规划期间 MoveIt 当前状态再次过期并出现全零起点，故尚未进入靠近/夹爪闭合。
+- 最小修复：`grasp_lift_executor` 在等待新鲜反馈后调用 `getCurrentState(0.5)`，把该真实状态显式写入 `MoveGroupInterface::setStartState`；不再让 `setStartStateToCurrentState()` 在 USB/CAN 空窗期间重新抓取陈旧/默认状态。笛卡尔下降同样使用显式起始状态。
+- `brain_robot_pick_place` 与 `brain_robot_ball_pick` 构建均返回 `0`；上一轮实体流程已停止并调用视觉 stop/Servo stop/适配器 disarm，未发送失能命令。
+
+### 本轮结论与下一步
+
+- 现阶段“对齐后无法靠近”的直接软件阻断是预抓取请求起点被反馈空窗污染，不是夹爪点云障碍；候选角度/方向策略已存在但此前未真正执行到靠近段。
+- 下一步复跑验证显式起点是否让 TOP_DOWN 预抓取成功；若仍失败，读取新增加的 IK 诊断返回码，区分目标姿态不可达与实体自碰撞，再调整候选方向/偏移。
+
 ## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
 
 - 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。
