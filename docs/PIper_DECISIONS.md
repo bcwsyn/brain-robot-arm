@@ -384,3 +384,8 @@
 
 - `RRTConnect Unable to sample any valid states for goal tree` 本身不能证明夹爪点云碰撞；同一错误可能由目标姿态无 IK、实体自碰撞、起始状态过期或目标约束过严导致。
 - 决策：每次预抓取计划失败都记录 `DiagnoseIk`（关闭碰撞检查仅用于诊断，不用于执行）。只有 `IK_OK_PLAN_FAILED` 才允许调整候选的预抓取角度/侧向偏移；`IK_ERROR_CODE_*` 优先修正姿态几何；`IK_CURRENT_STATE_STALE` 继续等待真实反馈。
+
+## 2026-09-25 搜索门控覆盖连续反馈空窗
+
+- 默认运行在观测后搜索段达到规划成功，但因约 10 秒级反馈空窗累计超过 30 秒而进入 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT`。
+- 决策：实体搜索段门控暂设 60 秒；反馈空窗期间仍禁止运动输出，恢复完整反馈后才继续测量。该调整只延长等待，不放宽碰撞、IK 或反馈安全条件。

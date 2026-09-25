@@ -63,7 +63,7 @@ visual_search_controller:
     # S-V1.9-1 feedback gaps measured during motion reach about 17.4 s;
     # keep a bounded segment timeout above that window while retaining the
     # driver's 25 s feedback protection.
-    search_segment_timeout_s: 30.0
+    search_segment_timeout_s: 60.0
     target_timeout_s: 0.60
     # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
     # transition.  The PiPER driver suppresses output during that window;
