@@ -23,12 +23,21 @@ fail() { echo "[错误] $*" >&2; exit 1; }
 cleanup() {
   trap - EXIT INT TERM
   if (( DISABLE_REQUESTED )); then
-    echo; echo "[关闭] Ctrl+C 已请求，关闭实体运动门并失能 PiPER..."
-    timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
-    timeout 5s ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
-    timeout 5s ros2 service call /piper_jog_adapter/disable_motion std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
-    timeout 8s ros2 service call /enable_srv piper_msgs/srv/Enable \
-      '{enable_request: false}' >/dev/null 2>&1 || true
+    echo; echo "[关闭] 退出请求；失能前先执行六轴安全/零点回位..."
+    # Never disable an arm at an arbitrary pose.  request_zero_reset() keeps
+    # the motion gate enabled while it drives to the validated zero pose and
+    # waits for RESET_COMPLETE.  If feedback or the reset service is missing,
+    # leave the arm enabled rather than issuing DisableArm(7).
+    if request_zero_reset; then
+      echo "[关闭] 已确认 RESET_COMPLETE，允许关闭实体运动门并失能 PiPER。"
+      timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
+      timeout 5s ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
+      timeout 5s ros2 service call /piper_jog_adapter/disable_motion std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
+      timeout 8s ros2 service call /enable_srv piper_msgs/srv/Enable \
+        '{enable_request: false}' >/dev/null 2>&1 || true
+    else
+      echo "[保护] 未确认 RESET_COMPLETE；保持 PiPER 使能，不发送失能命令。" >&2
+    fi
   else
     echo; echo "[保持] 未收到 Ctrl+C；不发送 PiPER 失能命令。"
   fi

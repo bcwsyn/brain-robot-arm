@@ -759,6 +759,29 @@
 - 本轮已完成用户要求的断点清理验证；清理没有改变 USB-CAN 接口状态，当前最大阻断仍是 USB-CAN/VMware 链路未提供可用 `can0` 反馈。
 - 下一步门槛不变：先取得稳定 `can0 UP`、正确 CAN 参数和持续 RX 增长，再复用默认 `AUTO_START=1` 流程验证观测、搜索、定位和抓取；在 RX=0 时不发送运动命令。
 
+## 2026-09-25 恢复 CAN 后默认自动观测实跑：卡顿根因是反馈保护停发
+
+- 受限恢复命令后 `can0` 实际为 `UP/LOWER_UP`、`ERROR-ACTIVE`、1 Mbps/0.75；5 秒 RX 从 `182240` 增长到 `193853`，满足启动门槛。默认 `BRAIN_ROBOT_AUTO_START=1` 已实际通过 `[1/7]` 至 `[7/7]`，收到相机和调试图像首帧并接受 49 秒当前姿态→观测轨迹。
+- 卡顿期间 `piper_driver.log` 连续记录 `can0 feedback lost; suppressing output for up to 25.0s`，随后反馈恢复间隔为约 `2.57`、`10.00`、`17.43` 秒等；因此适配器按保护策略停发目标，机械臂表现为走走停停。总 RX 仍增长，但关节反馈不是连续的。
+- MoveIt 日志确认实体 Octomap 监听 `/brain_robot_vision/disabled_octomap_points`，并报告 `No 3D sensor plugin(s) defined for octomap updates`；没有证据表明夹爪点云被写入碰撞模型。另有相机时间戳落后导致的 `Lookup would require extrapolation into the past`，属于 TF 时间同步问题，不是夹爪自体碰撞。
+- 该次运行在 300 秒受控超时后由脚本执行关闭运动门、停止视觉/相机/驱动并失能 PiPER；未进入 `OBSERVE_POSE_REACHED`、`SEARCH` 或抓取。日志：`/tmp/brain_robot_auto_resume_20260925.log`、`/home/johnwick/brain_robot_logs/piper_driver.log`、`visual_stack.log`。
+
+### 本轮结论与下一步
+
+- “夹爪被加入障碍模型导致基本观测卡顿”不是本轮实跑的根因；自体 Octomap 输入已禁用。当前可复现根因是运动期间关节反馈间歇，触发驱动保护停发，造成轨迹无法连续收敛。
+- 下一步只针对反馈间歇的 USB-CAN/VMware 传输或 S-V1.9-1 运动态反馈生命周期做最小定位；不降低保护门槛、不恢复腕部 Octomap，不在反馈断续时强行继续运动。
+
+## 2026-09-25 收尾安全修复：失能前强制确认回位
+
+- 本轮 300 秒外层超时发送 `SIGINT` 后，旧版 `cleanup()` 直接调用 `/enable_srv {enable_request: false}`，没有先请求 `RESET_COMPLETE`；这违反了既定“失能前必须回到已验证零点/安全支撑姿态”的规则。该行为已确认是脚本缺陷，不能再重复。
+- 最小修复：`cleanup()` 现在先调用已有 `request_zero_reset()`，仅在确认 `RESET_COMPLETE` 后才执行 `disarm`、关闭运动门和 `enable_request: false`。如果复位服务、反馈或到位确认失败，则跳过全部失能命令，保持 PiPER 使能并报告保护阻断。
+- 已通过 `bash -n`，并将修复后的启动脚本同步到 `/home/johnwick/start_brain_robot_cube_real.sh`；未发送新的运动或失能命令。当前上一轮流程已结束、无残留控制进程。
+
+### 本轮结论与下一步
+
+- 之前的直接失能属于必须修复的安全违规；今后任何 Ctrl+C、超时或异常收尾都不能在未确认回位时失能。
+- 下一次实跑必须先验证该收尾门控，再继续反馈间歇定位；若回位失败，保持使能而不是强制关闭。
+
 ## 2026-09-25 清理后通信因果复核
 
 - 按当前断点执行一次完整的 `/home/johnwick/clean_disk_space.sh`，受限 helper 和 `apt clean` 均成功；根分区由 28% 保持 28%（可用空间约 55G），定时器仍为 `active`。
