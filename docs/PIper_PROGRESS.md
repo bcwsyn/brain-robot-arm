@@ -1013,3 +1013,15 @@
 - 观测失败后的静态关节为 `[0, 0.930306, -0.772263, 0, 0.284320, 0]`，配置目标 `[0, 0.98, -0.75, 0, 0.30, 0]`，最大误差约 0.0497 rad，说明失败不是全零反馈；仍需在下一次受控运行中记录轨迹期间误差和反馈空窗。
 - 最小代码动作：`visual_search_controller` 在 `PREPARE_EXECUTION_FAILED` 前增加只读 `max_joint_error`/最差关节日志；未改变目标、速度、反馈保护或停止逻辑。实际空间构建 `colcon build --packages-select brain_robot_pick_place --symlink-install` 返回 0。
 
+
+## 2026-09-25 默认链首次完整进入 SEARCH/GRASP_READY，阻断定位到 MoveIt 抓取起始状态
+
+- 实际命令：`timeout --signal=INT --kill-after=45s 360s env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh`；脚本完成 `[7/7]`，输出“从当前反馈姿态移动到观测姿态”，随后实际日志出现 `OBSERVE_POSE_REACHED`、`STATE -> SEARCH (OBSERVE_POSE_REACHED)`、`STATE -> ALIGN (TARGET_ACQUIRED)` 和多次 `STATE -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。这证明当前观测姿态、目标三维门控和搜索链已贯通，本轮不是点云/夹爪自体障碍阻断。
+- 抓取执行器确实启动了多方向候选，但 MoveIt/IK 返回 `IK_ERROR_CODE_-31`，并伴随 `Unable to sample any valid states for goal tree`。失败日志中的 `current=(0.000, 0.000, 0.000)` 与真实反馈不一致；同一日志还报告 current-state 时间戳落后数秒，说明抓取规划读取了过期/默认状态。没有执行夹爪闭合、下降、抬升或释放。
+- 驱动仍记录 2.6--10.2 秒级反馈空窗并在恢复后继续输出；无 `feedback absent for 25.0s`，can0 保持 `ERROR-ACTIVE`、RX 持续增长，根分区 28%。脚本结束时按保护逻辑停止视觉/Servo、disarm 适配器，明确未发送 `DisableArm`，未自动复位。
+- 最小代码修复：抓取执行器的 IK、预抓取和笛卡尔规划不再直接采用 MoveIt 可能过期的 `getCurrentState()`；在已有 1 秒新鲜反馈门控后，从最近的六轴 `/piper_moveit_joint_states` 构造 `moveit::core::RobotState` 作为规划起始状态，缺少六轴或过期则拒绝规划。未改变候选姿态、碰撞检查、piper_jog_adapter 或反馈保护。
+- 验证：同步规范源码与实际 `/home/johnwick/piper_ws`，`colcon build --packages-select brain_robot_pick_place --symlink-install` 返回 0，生成 `grasp_lift_executor`。
+
+### 本轮结论与下一步
+
+- 已把主要阻断从“未到观测/点云碰撞”缩小为“抓取规划起始状态与实体反馈不同步”。下一步运行同一默认自动链一次；只接受新鲜六轴状态下的候选 IK/规划结果，若仍为 `IK_ERROR_CODE_-31`，再按具体候选姿态几何调整，不能关闭碰撞检查或恢复腕部点云。

@@ -1134,7 +1134,7 @@ private:
     if (!WaitForFreshJointState("TOP_DOWN_IK")) {
       return false;
     }
-    const auto current_state = arm_->getCurrentState(1.0);
+    const auto current_state = FreshMeasuredState("CURRENT_STATE_IK");
     if (!current_state) {
       return false;
     }
@@ -1509,7 +1509,7 @@ private:
     // setStartStateToCurrentState() makes MoveGroup query its monitor again
     // during planning; a USB/firmware feedback gap can then replace the valid
     // state with a stale/default zero state while RRT is sampling.
-    const auto fresh_state = arm_->getCurrentState(0.5);
+    const auto fresh_state = FreshMeasuredState(stage);
     if (!fresh_state) {
       RCLCPP_WARN(get_logger(), "%s skipped: MoveIt current state became stale before planning.", stage.c_str());
       return false;
@@ -1558,7 +1558,7 @@ private:
       RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for Cartesian planning.", stage.c_str());
       return false;
     }
-    const auto fresh_state = arm_->getCurrentState(0.5);
+    const auto fresh_state = FreshMeasuredState(stage);
     if (!fresh_state) {
       RCLCPP_WARN(get_logger(), "%s skipped: MoveIt current state became stale before Cartesian planning.", stage.c_str());
       return false;
@@ -1594,7 +1594,7 @@ private:
     if (!WaitForFreshJointState("IK_DIAGNOSTIC")) {
       return "IK_CURRENT_STATE_STALE";
     }
-    const auto current_state = arm_->getCurrentState(1.0);
+    const auto current_state = FreshMeasuredState("CURRENT_STATE_IK");
     if (!current_state) {
       return "IK_CURRENT_STATE_UNAVAILABLE";
     }
@@ -1638,6 +1638,45 @@ private:
       get_logger(), "%s waiting for fresh joint feedback timed out after %.1f s.",
       stage.c_str(), joint_state_wait_timeout_s_);
     return false;
+  }
+
+  std::shared_ptr<moveit::core::RobotState> FreshMeasuredState(const std::string & stage)
+  {
+    sensor_msgs::msg::JointState measured;
+    {
+      std::lock_guard<std::mutex> lock(feedback_mutex_);
+      if (joint_state_received_time_ == std::chrono::steady_clock::time_point{}) {
+        return nullptr;
+      }
+      const double age_s = std::chrono::duration<double>(
+        std::chrono::steady_clock::now() - joint_state_received_time_).count();
+      if (age_s > 1.0) {
+        RCLCPP_WARN(get_logger(), "%s measured joint state is %.3f s old.", stage.c_str(), age_s);
+        return nullptr;
+      }
+      measured = latest_joint_state_;
+    }
+    if (!arm_ || !arm_->getRobotModel()) {
+      return nullptr;
+    }
+    auto state = std::make_shared<moveit::core::RobotState>(arm_->getRobotModel());
+    state->setToDefaultValues();
+    std::size_t found = 0;
+    for (std::size_t i = 0; i < measured.name.size() && i < measured.position.size(); ++i) {
+      if (measured.name[i] == "joint1" || measured.name[i] == "joint2" ||
+        measured.name[i] == "joint3" || measured.name[i] == "joint4" ||
+        measured.name[i] == "joint5" || measured.name[i] == "joint6")
+      {
+        state->setVariablePosition(measured.name[i], measured.position[i]);
+        ++found;
+      }
+    }
+    if (found != 6) {
+      RCLCPP_WARN(get_logger(), "%s measured state has only %zu/6 arm joints.", stage.c_str(), found);
+      return nullptr;
+    }
+    state->update();
+    return state;
   }
 
   bool SetCupFollowing(bool enabled)
