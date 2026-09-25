@@ -23,21 +23,13 @@ fail() { echo "[错误] $*" >&2; exit 1; }
 cleanup() {
   trap - EXIT INT TERM
   if (( DISABLE_REQUESTED )); then
-    echo; echo "[关闭] 退出请求；失能前先执行六轴安全/零点回位..."
-    # Never disable an arm at an arbitrary pose.  request_zero_reset() keeps
-    # the motion gate enabled while it drives to the validated zero pose and
-    # waits for RESET_COMPLETE.  If feedback or the reset service is missing,
-    # leave the arm enabled rather than issuing DisableArm(7).
-    if request_zero_reset; then
-      echo "[关闭] 已确认 RESET_COMPLETE，允许关闭实体运动门并失能 PiPER。"
-      timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
-      timeout 5s ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
-      timeout 5s ros2 service call /piper_jog_adapter/disable_motion std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
-      timeout 8s ros2 service call /enable_srv piper_msgs/srv/Enable \
-        '{enable_request: false}' >/dev/null 2>&1 || true
-    else
-      echo "[保护] 未确认 RESET_COMPLETE；保持 PiPER 使能，不发送失能命令。" >&2
-    fi
+    echo; echo "[保护] 收到退出/故障信号；停止控制输出并保持当前位置，不自动发起零点复位。"
+    # A fault/timeout must not create an unexpected long trajectory.  The
+    # explicit 0 command remains the only zero-reset entry point.
+    timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
+    timeout 5s ros2 service call /servo_node/stop_servo std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
+    timeout 5s ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
+    echo "[保护] 未发送 DisableArm；PiPER 保持使能，等待操作者确认。"
   else
     echo; echo "[保持] 未收到 Ctrl+C；不发送 PiPER 失能命令。"
   fi

@@ -87,6 +87,12 @@ public:
     max_depth_mad_m_ = declare_parameter<double>("max_depth_mad_m", 0.012);
     max_depth_frame_delta_m_ = declare_parameter<double>("max_depth_frame_delta_m", 0.030);
     required_depth_stable_frames_ = declare_parameter<int>("required_depth_stable_frames", 3);
+    require_depth_for_target_valid_ = declare_parameter<bool>(
+      "require_depth_for_target_valid", false);
+    min_target_size_m_ = declare_parameter<double>("min_target_size_m", 0.0);
+    max_target_size_m_ = declare_parameter<double>("max_target_size_m", 0.0);
+    max_target_size_aspect_ratio_ = declare_parameter<double>(
+      "max_target_size_aspect_ratio", 0.0);
     clamp_parameters();
 
     const auto output_qos = rclcpp::QoS(rclcpp::KeepLast(1)).reliable();
@@ -183,6 +189,12 @@ private:
     max_depth_mad_m_ = std::max(0.0, max_depth_mad_m_);
     max_depth_frame_delta_m_ = std::max(0.0, max_depth_frame_delta_m_);
     required_depth_stable_frames_ = std::max(1, required_depth_stable_frames_);
+    min_target_size_m_ = std::max(0.0, min_target_size_m_);
+    max_target_size_m_ = std::max(0.0, max_target_size_m_);
+    if (max_target_size_m_ > 0.0 && max_target_size_m_ < min_target_size_m_) {
+      max_target_size_m_ = min_target_size_m_;
+    }
+    max_target_size_aspect_ratio_ = std::max(0.0, max_target_size_aspect_ratio_);
     if (input_reliability_ != "reliable" && input_reliability_ != "best_effort") {
       RCLCPP_WARN(
         get_logger(), "Unknown input_reliability '%s'; using reliable.",
@@ -570,6 +582,22 @@ private:
       depth.frame_delta_valid && depth.stable_frame_count >= required_depth_stable_frames_ &&
       !clipped && camera_info_ready_;
     const std::string depth_reason = depth_quality_reason(depth, clipped, camera_info_ready_);
+    double target_width_m = 0.0;
+    double target_height_m = 0.0;
+    bool target_size_valid = false;
+    if (depth.valid && camera_info_ready_) {
+      target_width_m = static_cast<double>(target_box.width) * depth.meters / camera_fx_;
+      target_height_m = static_cast<double>(target_box.height) * depth.meters / camera_fy_;
+      const double largest_size_m = std::max(target_width_m, target_height_m);
+      const double smallest_size_m = std::max(1e-6, std::min(target_width_m, target_height_m));
+      const double size_aspect_ratio = largest_size_m / smallest_size_m;
+      target_size_valid = largest_size_m >= min_target_size_m_ &&
+        (max_target_size_m_ <= 0.0 || largest_size_m <= max_target_size_m_) &&
+        (max_target_size_aspect_ratio_ <= 0.0 ||
+        size_aspect_ratio <= max_target_size_aspect_ratio_);
+    }
+    const bool target_confirmed = !require_depth_for_target_valid_ ||
+      (depth_grasp_allowed && target_size_valid);
 
     geometry_msgs::msg::PointStamped target_message;
     target_message.header = rgb_message->header;
@@ -608,9 +636,10 @@ private:
     // z carries the resolution-independent largest image-axis error ratio.
     error_message.vector.z = normalized_error;
     error_publisher_->publish(error_message);
-    publish_valid(true);
-    // target_valid intentionally remains a colour/shape signal so visual tracking can
-    // continue while depth is unstable. depth_valid is the stricter grasp authorization.
+    publish_valid(target_confirmed);
+    // The physical profile requires depth-stable, size-consistent geometry before
+    // target_valid may command ALIGN. Colour-only candidates stay on their separate
+    // reacquisition topic and cannot move the real arm.
     publish_depth_valid(depth_grasp_allowed);
     publish_depth_diagnostic(depth_reason);
 
@@ -710,6 +739,10 @@ private:
   double max_depth_mad_m_;
   double max_depth_frame_delta_m_;
   int required_depth_stable_frames_;
+  bool require_depth_for_target_valid_;
+  double min_target_size_m_;
+  double max_target_size_m_;
+  double max_target_size_aspect_ratio_;
   double camera_fx_{0.0};
   double camera_fy_{0.0};
   double camera_cx_{0.0};

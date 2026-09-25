@@ -31,9 +31,9 @@ cube_detector:
     min_area_px: 40.0
     max_area_px: 0.0
     min_circularity: 0.0
-    min_rectangularity: 0.40
+    min_rectangularity: 0.58
     min_aspect_ratio: 1.0
-    max_aspect_ratio: 2.8
+    max_aspect_ratio: 1.45
     target_label: PURPLE_CUBE
     morphology_kernel: 3
     sync_queue_size: 10
@@ -47,3 +47,9 @@ cube_detector:
     max_depth_mad_m: 0.012
     max_depth_frame_delta_m: 0.030
     required_depth_stable_frames: 3
+    # Real-arm ALIGN is forbidden for colour-only candidates: require stable depth
+    # and a plausible physical square size before target_valid becomes true.
+    require_depth_for_target_valid: true
+    min_target_size_m: 0.015
+    max_target_size_m: 0.120
+    max_target_size_aspect_ratio: 1.45

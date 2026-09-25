@@ -69,7 +69,7 @@ visual_search_controller:
     # transition.  The PiPER driver suppresses output during that window;
     # keep SEARCH alive until the bounded transition completes.
     joint_state_timeout_s: 25.0
-    target_acquire_frames: 1
+    target_acquire_frames: 6
     align_stable_frames: 5
     target_acquire_error_ratio: 0.05
     grasp_reacquire_topic: /brain_robot_grasp/reacquire
