@@ -982,3 +982,9 @@
 - 该回归未调用 `EnablePiper`、观测轨迹、`DisableArm` 或 `ResetPiper`；TX 仅从 492759 增至 492785，未观察到运动阶段命令。根分区仍约 28%，没有磁盘不足证据。
 - 当前阻断：CAN 接收持续但实体“使能/供电状态”尚未从新的状态反馈中独立确认；在自动断电原因与机械支撑状态明确前，不启动 `BRAIN_ROBOT_AUTO_START=1` 的真实运动。下一步先读取 3A/251 状态映射和实际使能反馈，确认驱动保持接收型后再进行一次受控当前姿态→观测姿态验证。
 
+## 2026-09-25 只读确认当前使能状态
+
+- 使用官方 `C_PiperInterface_V2(can_name=can0, judge_flag=False)` 的接收线程读取 2 秒，未调用 `EnablePiper`、`MotionCtrl_2`、`JointCtrl` 或 `DisableArm`：高速反馈时间戳持续更新，但 stock SDK 的聚合关节时间戳为 0、`GetArmEnableStatus()` 六轴全为 `False`。
+- 启动规范驱动 `auto_enable=false` 后，3A→2A 接收映射能发布真实 `/joint_states`（J1..J6 非全零，时间戳新鲜），但 `/arm_status` 仍显示六轴通信/使能状态为 false；无控制进程已清理，can0 TX 仅增加启动/收尾少量帧。
+- 结论：当前机械臂确实处于未使能/可能掉电状态，不能把它当作视觉碰撞或磁盘问题；但本轮没有证据表明脚本主动发出了 `DisableArm`。在机械臂支撑和供电状态未由现场确认前，保持禁止自动使能与真实运动。
+
