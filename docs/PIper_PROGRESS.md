@@ -988,3 +988,11 @@
 - 启动规范驱动 `auto_enable=false` 后，3A→2A 接收映射能发布真实 `/joint_states`（J1..J6 非全零，时间戳新鲜），但 `/arm_status` 仍显示六轴通信/使能状态为 false；无控制进程已清理，can0 TX 仅增加启动/收尾少量帧。
 - 结论：当前机械臂确实处于未使能/可能掉电状态，不能把它当作视觉碰撞或磁盘问题；但本轮没有证据表明脚本主动发出了 `DisableArm`。在机械臂支撑和供电状态未由现场确认前，保持禁止自动使能与真实运动。
 
+## 2026-09-25 默认自动链恢复使能后仍在观测轨迹失败
+
+- 受控命令：`timeout --signal=INT --kill-after=45s 360s env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh`。脚本复用 `can0` UP/1 Mbps/0.75/RX 增长，调用 `/enable_srv {enable_request: true}` 与 `/piper_jog_adapter/enable_motion`、`/arm` 成功；适配器记录 `PHYSICAL MOTION ARMED`，视觉控制器发布当前姿态→观测姿态 2 点轨迹并接受。
+- 实际状态序列为 `STATE -> PREPARE`，未出现 `OBSERVE_POSE_REACHED` 或 `SEARCH`；约 320 秒后发布 `PREPARE_EXECUTION_FAILED`，脚本保护收尾停止视觉/Servo、disarm 适配器并明确未发送 `DisableArm`，返回 124（外部 timeout）。
+- 驱动日志在轨迹期间反复出现 `feedback lost`，恢复间隔约 2.6、10.0、10.2、24.9 秒；没有 `feedback absent for 25.0s`，但该间歇反馈使观测门控无法确认收敛。MoveIt/视觉日志同时有 camera→base_link 的过去时间外推警告；实体 Octomap 仍监听无发布者的 disabled topic。
+- 重要新假设：S-V1.9-1 运动期间 3A 聚合关节帧可能间歇，而 251..256 高速帧持续；直接把高速帧位置替代聚合位置会改变安全关键反馈语义，本轮未写入、未绕过反馈保护。下一步必须先用原始 CAN 抓包逐 ID 对齐位置/时间，再由用户确认后才考虑最小映射修复。
+- 当前无控制进程遗留，can0 仍有 RX；机械臂未被脚本自动失能。目标仍阻断在真实观测姿态到达，未进入搜索/抓取。
+
