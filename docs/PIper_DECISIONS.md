@@ -351,3 +351,8 @@
 
 - `GRASP_READY` 后的候选规划曾在当前姿态和全零姿态间跳变；MoveIt 的 1 秒 current-state 等待在 S-V1.9-1 反馈空窗下不足，造成无有效 goal tree。该现象不能归因于腕部点云，因为实体 Octomap 输入 topic 无发布者。
 - 决策：抓取 executor 的所有 IK/预抓取规划入口先等待最多 25 秒的新鲜关节状态；没有新鲜反馈就不规划、不发送抓取运动。保持既有碰撞检查、自动 `GRASP_READY` 触发和安全收尾，不恢复实体腕部 Octomap。
+
+## 2026-09-25 官方 SDK 默认零反馈不得发布到 MoveIt
+
+- AgileX 官方 SDK 说明第一帧关节数据默认为零；本机驱动原先只检查高速反馈就发布 JointState，可能在聚合关节帧未完整时把 SDK 默认值交给 MoveIt。官方关节控制循环持续发送模式和六轴绝对关节目标，本机仍通过既有 `piper_jog_adapter` 驱动这一语义。
+- 决策：必须同时确认高速和六轴聚合反馈新鲜后再发布 JointState，发布时使用本机 ROS 时间戳；这防止 MoveIt 从零姿态或过期 CAN 时间戳规划。禁止借此放宽反馈保护、执行 MasterSlaveConfig/ResetPiper 或恢复腕部点云。

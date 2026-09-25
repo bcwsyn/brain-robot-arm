@@ -815,6 +815,17 @@
 - 本修复针对实测的规划状态过期，保留 MoveIt 正常碰撞检查。官方 MoveIt 资料说明 occupancy updater 的自体过滤只处理实际接入的传感器点云；本实体配置的 disabled topic 无发布者，因此没有夹爪点云进入 Octomap 的证据。
 - 下一步在 CAN RX 恢复后复用同一自动链验证：`GRASP_READY` → 新鲜状态等待 → 候选预抓取 → 抓取/抬升/释放；失败时保持安全回位规则。
 
+## 2026-09-25 官方 SDK 对照：阻止默认零反馈污染 MoveIt
+
+- 查阅 AgileX 官方 PiPER V2 SDK demo 与 README：官方明确说明未初始化的第一帧关节反馈为默认零值，官方关节控制示例持续发送 `MotionCtrl_2` 与 `JointCtrl`；未采用其 `MasterSlaveConfig`/复位建议，仍遵守本任务禁令。
+- 最小驱动修复：`piper_ctrl_single_node` 现在要求高速反馈 `0x251..0x256` 与六轴聚合反馈（`0x2A1..0x2A8` 或 S-V1.9-1 映射前的 `0x3A0..0x3A7`）同时新鲜，才发布 ROS JointState；已验证反馈改用本机 ROS 时钟作为 header stamp，避免 USB/VM 批量延迟造成 MoveIt 当前状态过期或 SDK 默认全零进入规划。
+- `py_compile` 与 `/home/johnwick/piper_ros` 的 `piper` 重建均成功；实际 `can0` 为 UP/ERROR-ACTIVE，5 秒 RX 从 `1514241` 增至 `1525877`，且无残留 PiPER/视觉控制进程。
+
+### 本轮结论与下一步
+
+- 已同时处理“SDK 默认零反馈”和“MoveIt 使用陈旧 CAN 时间戳”两条导致抓取候选规划从错误起始状态出发的路径；不改变碰撞模型或腕部 Octomap 禁用决策。
+- 下一步直接复用默认自动链实测此驱动修复，验收 `GRASP_READY` 后的候选预抓取是否获得有效规划并继续抓取。
+
 ## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
 
 - 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。

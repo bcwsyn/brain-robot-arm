@@ -88,6 +88,11 @@ class PiperRosNode(Node):
         # still arriving; the safety grace period below still trips when the
         # frames actually stop.
         self._last_high_speed_feedback_monotonic = None
+        # The official SDK documents that an uninitialized joint feedback
+        # message reads as all zeroes.  Do not publish a ROS JointState merely
+        # because a high-speed frame arrived: require a fresh V2 aggregate
+        # joint frame as well, otherwise MoveIt can plan from the SDK default.
+        self._last_joint_feedback_monotonic = None
         # This controller emits its V2 aggregate feedback at 0x3A0..0x3A7.
         # The stock SDK only decodes the equivalent 0x2A1..0x2A8 range, so
         # pass a receive-only ID translation to its parser.  No CAN frame is
@@ -109,6 +114,9 @@ class PiperRosNode(Node):
         """Decode the controller's shifted V2 feedback IDs without altering CAN."""
         if 0x251 <= message.arbitration_id <= 0x256:
             self._last_high_speed_feedback_monotonic = time.monotonic()
+        if (0x2A1 <= message.arbitration_id <= 0x2A8 or
+                0x3A0 <= message.arbitration_id <= 0x3A7):
+            self._last_joint_feedback_monotonic = time.monotonic()
         if 0x3A0 <= message.arbitration_id <= 0x3A7:
             message = Message(
                 timestamp=message.timestamp,
@@ -137,11 +145,17 @@ class PiperRosNode(Node):
         return True
 
     def _can_feedback_available(self):
-        """Return whether fresh CAN feedback is available within the safety grace period."""
+        """Return whether complete fresh CAN feedback is available within the safety grace period."""
         feedback_age = None
         if self._last_high_speed_feedback_monotonic is not None:
             feedback_age = time.monotonic() - self._last_high_speed_feedback_monotonic
-        feedback_is_fresh = feedback_age is not None and feedback_age <= self.CAN_HIGH_SPEED_FEEDBACK_FRESH_S
+        joint_age = None
+        if self._last_joint_feedback_monotonic is not None:
+            joint_age = time.monotonic() - self._last_joint_feedback_monotonic
+        feedback_is_fresh = (
+            feedback_age is not None and joint_age is not None and
+            feedback_age <= self.CAN_HIGH_SPEED_FEEDBACK_FRESH_S and
+            joint_age <= self.CAN_HIGH_SPEED_FEEDBACK_FRESH_S)
         if feedback_is_fresh:
             if self._can_feedback_lost_at is not None:
                 elapsed = time.monotonic() - self._can_feedback_lost_at
@@ -233,10 +247,11 @@ class PiperRosNode(Node):
         return ros_time
 
     def PublishArmJointAndGripper(self):
-        # Assign timestamp
-        # self.joint_states.header.stamp = self.get_clock().now().to_msg()
-        new_time = max(self.piper.GetArmJointMsgs().time_stamp, self.piper.GetArmHighSpdInfoMsgs().time_stamp)
-        self.joint_states.header.stamp = self.float_to_ros_time(new_time)
+        # The CAN/VM receive path can batch delayed frames.  Once both raw
+        # feedback families have passed _can_feedback_available(), stamp the
+        # ROS message at local receipt/publication time so MoveIt measures its
+        # freshness against the same clock rather than an old CAN timestamp.
+        self.joint_states.header.stamp = self.get_clock().now().to_msg()
         # Here, you can set the joint positions to any value you want
         # The raw data obtained is in degrees multiplied by 1000. To convert to radians, divide by 1000, multiply by π/180, and limit to 5 decimal places
         joint_0: float = (self.piper.GetArmJointMsgs().joint_state.joint_1 / 1000) * 0.017444
