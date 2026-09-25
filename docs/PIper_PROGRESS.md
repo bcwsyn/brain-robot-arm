@@ -1104,3 +1104,10 @@
 - 本轮检测器只报告 `PURPLE_CUBE target LOST`，没有颜色/矩形/稳定深度/尺寸同时满足的目标帧，因此没有 `ALIGN`、`GRASP_READY`、`GRASP_TARGET_MODEL_LOCKED` 或任何靠近/闭合动作；不能把背景紫色误当成方块。
 - 本轮 CAN 仅有一次 0.48 秒反馈恢复，未出现 25 秒反馈故障；脚本在 360 秒上限后按保护逻辑保持位置与使能，未发送 `DisableArm`、`ResetPiper` 或 `MasterSlaveConfig`。根分区 28%。
 - 下一步仍是同一主线：在目标进入视野并通过三维门控后验证 `GRASP_READY → GRASP_TARGET_MODEL_LOCKED → ALIGNED_PREGRASP → MICRO_APPROACH → GRIPPER_CLOSED → LIFT`；不再因腕部相机视差重定位。
+
+## 2026-09-25 搜索实体运动证据与新一轮启动阻断
+
+- 用户指出“规划接受”不等于肉眼看到关节扫动。现有日志能确认适配器收到多次 `REAL ARM trajectory accepted: 7 points`，但未保存最终 J1/J5 目标与反馈误差；因此后续验证必须同时采集 `/brain_robot_visual_control/command_diagnostic`，不能仅凭 `SEARCH_PLAN_ACCEPTED` 宣称实体扫动。
+- 上一轮 `auto9` 明确出现 `SEARCH (OBSERVE_POSE_REACHED)`、`FULL_SEARCH_CYCLE_RESTART` 和多次搜索轨迹接受，未出现 `GRASP_READY`；检测器全程只有 `PURPLE_CUBE target LOST`。该轮按 360 秒保护上限结束，未失能。
+- 随后的诊断轮未进入运动：启动阶段相机到基座 TF 心跳超时，脚本在 `[5/7]` 安全停止，未发送运动或失能命令。
+- 下一步只在 TF 心跳恢复后，采集搜索诊断中的实际关节目标/反馈，再决定是否修正搜索执行；不把接受消息当作完成证据。
