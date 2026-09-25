@@ -1161,3 +1161,12 @@
 ### 本轮阻断
 
 - 当前尚未达到 `ALIGN/GRASP_READY`：现场帧未通过紫色方块颜色/矩形/稳定深度/尺寸门控；上一轮反馈保护在搜索段超时。下一轮必须验证连续反向搜索和目标门控，不得把背景紫色当作方块。
+
+
+## 2026-09-25 连续搜索修复实体验证
+
+- 提交 `f530041` 后默认脚本再次完整通过 `[7/7]`、`OBSERVE_POSE_REACHED`、`SEARCH`；RGB/深度首帧与调试图像首帧均通过。
+- 搜索日志连续出现大量 `SEARCH_PLAN_ACCEPTED`（每段 7/8 点），并出现 `SEARCH_SEGMENT_TIMEOUT_CONTINUE` 与 `FULL_SEARCH_CYCLE_RESTART`，证明 J1/J5 已按有限 MoveIt 轨迹持续扫动，不再固定停在第一组角度。
+- 本轮检测器仍只有 `PURPLE_CUBE target LOST`，没有 `target_valid`、`ALIGN` 或 `GRASP_READY`；未发送靠近、闭合、抬升或释放。
+- 最终阻断是 `can0 feedback lost` 持续 25 s，驱动按保护策略停发，控制器进入 `JOINT_STATE_TIMEOUT`。这发生在连续搜索已生效之后，不是碰撞模型或搜索停滞。
+- 复跑结束后已停止脚本启动的视觉/驱动进程，保持现有安全收尾规则；未调用 `DisableArm`、`ResetPiper` 或 `MasterSlaveConfig`。
