@@ -304,3 +304,10 @@
 
 - USB-CAN 虽仍在 VMware 中枚举，但 `can0` 处于停止/短暂消失状态；两次受限 sudo `ip link set can0 up` 均返回 `No such device`，并伴随 xHCI 传输错误。决策：不重试默认运动脚本、不加载旧点云路径，也不把接口名短暂显示误报为可用链路。
 - 唯一允许的后续门槛是 `can0` 稳定 UP、1 Mbps/0.75 且 RX 实测增长；达到后才复用当前闭环观测代码。无需重新刷写或执行任何 PiPER 控制器复位操作。
+
+## 2026-09-25 磁盘维护必须脱离启动脚本持续运行
+
+- 旧清理仅由 `start_brain_robot_cube_real.sh` 的后台看门狗触发；脚本退出、异常中止或尚未启动时，日志没有持续上限。该设计不再接受为长期方案。
+- 决策：使用固定路径、无参数、受 sudoers 严格限制的 `/usr/local/sbin/brain-robot-log-maintenance`，由 `brain-robot-log-maintenance.timer` 在开机 2 分钟后及其后每 10 分钟调用；维护系统 journal/轮转日志和固定机器人应用日志目录，并以锁避免并发。不得删除源代码、ROS build/install、Conda 或未知路径。
+- 已验证 timer 为 `enabled/active`，service 最近一次 `status=0/SUCCESS`，免密 helper 执行返回 0。磁盘当前 28% 使用率，因此不做额外大范围删除。
+- 该决策只解决日志增长风险，不改变 CAN/USB/反馈保护门控；`can0` 消失或 RX=0 时仍禁止启动任何实体运动。

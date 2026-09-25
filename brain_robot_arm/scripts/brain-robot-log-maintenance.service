@@ -1,0 +1,11 @@
+[Unit]
+Description=Bound PiPER robot and system logs
+ConditionPathExists=/usr/local/sbin/brain-robot-log-maintenance
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/brain-robot-log-maintenance
+Nice=19
+IOSchedulingClass=idle
+TimeoutStartSec=2min

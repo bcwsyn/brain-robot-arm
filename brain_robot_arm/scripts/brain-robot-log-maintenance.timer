@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodic PiPER robot log maintenance
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+Persistent=true
+Unit=brain-robot-log-maintenance.service
+
+[Install]
+WantedBy=timers.target

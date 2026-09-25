@@ -736,3 +736,15 @@
 ### 本轮结论与下一步
 
 - 必须等 `can0` 能稳定 `UP` 且 RX 持续增长后，才能复用已提交的闭环轨迹修复运行默认脚本；在此之前禁止启动实体运动。
+
+## 2026-09-25 磁盘维护改为持久 systemd 定时任务
+
+- 实际状态：根分区 `/` 为 `78G` 总量、`21G` 已用、`54G` 可用（28%）；`/home/johnwick/brain_robot_logs` 约 `62M`。原有清理只在启动脚本运行期间每 30 秒执行，`systemctl list-timers` 中没有 PiPER 专用维护任务，因此无法覆盖脚本退出或异常中止后的日志增长。
+- 最小修复：扩展固定路径的受限 root helper，继续限制系统日志/journal 上限，同时固定清理 `/home/johnwick/brain_robot_logs`（单日志 20MiB、超过 3 天删除）；增加 `brain-robot-log-maintenance.service` 与 `brain-robot-log-maintenance.timer`，启动后 2 分钟运行、之后每 10 分钟运行、`Persistent=true`。加入 `/run/lock` 非阻塞锁，避免启动脚本看门狗与 timer 并发清理。
+- 已从规范仓库脚本安装并实际启用：`sudo -n bash brain_robot_arm/scripts/install_brain_robot_log_maintenance.sh`；`visudo -cf` 通过，helper 一次执行返回 0，systemd service 返回 `status=0/SUCCESS`。
+- 验证：`systemctl is-enabled`=`enabled`、`is-active`=`active`，下一次触发时间约 10 分钟后；安装文件均为 root 所有，sudoers 为 0440；当前磁盘仍为 28%，无删除源代码、ROS build/install 或 Conda。
+
+### 本轮结论与下一步
+
+- 磁盘清理已从“依赖机器人脚本存活”改为系统级持续维护，能覆盖脚本退出、重启和异常中止；后续不再把“没有定时清理”作为启动阻断。
+- 机械臂当前仍不可运动：最近实测 `can0` 为 `DOWN/STOPPED`，`ip link set can0 up` 返回 `No such device`，并伴随 VMware xHCI 传输错误。下一步只在 `can0` 稳定 `UP` 且 RX 持续增长后复用默认自动路径，验证 `OBSERVE_POSE_REACHED` → `SEARCH`，不得在接口消失时启动运动。
