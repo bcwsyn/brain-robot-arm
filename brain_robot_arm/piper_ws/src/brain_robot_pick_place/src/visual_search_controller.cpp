@@ -774,6 +774,26 @@ private:
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
       }
       if (!reached || cancel_requested_) {
+        double max_error = 0.0;
+        std::string worst_joint = "none";
+        {
+          std::lock_guard<std::mutex> lock(mutex_);
+          for (std::size_t index = 0; index < joint_names_.size(); ++index) {
+            const auto current = CurrentJointLocked(joint_names_[index]);
+            if (!current) {
+              continue;
+            }
+            const double error = std::abs(*current - prepare_positions[index]);
+            if (error > max_error) {
+              max_error = error;
+              worst_joint = joint_names_[index];
+            }
+          }
+        }
+        RCLCPP_ERROR(
+          get_logger(),
+          "Prepare execution did not converge: max_joint_error=%.6f rad worst_joint=%s",
+          max_error, worst_joint.c_str());
         FailPrepare(cancel_requested_ ? "PREPARE_CANCELLED" : "PREPARE_EXECUTION_FAILED");
         return;
       }
