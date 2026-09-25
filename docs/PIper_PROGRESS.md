@@ -1066,3 +1066,9 @@
 ### 结论
 
 - 单一路径骨架已经接通到可启动状态，但当前更早的观测反馈误差仍阻断主线；不能把观测误差容差放宽来伪造到达。下一步应优先修复运动期间聚合反馈连续性，再验证 `GRASP_READY → ALIGNED_PREGRASP → MICRO_APPROACH`。
+
+## 2026-09-25 修复运动期间CAN模式帧重复发送
+
+- 代码审计发现：适配器以50 Hz发送绝对关节目标，而 `piper_ctrl_single_node.joint_callback()` 每次都重复发送 `MotionCtrl_2`。这会在每个关节目标周期额外占用CAN总线，能够解释“RX计数持续但运动反馈出现长空窗”。
+- 最小修复：驱动缓存当前关节控制速度，只在速度变化时发送一次 `MotionCtrl_2`；绝对 `JointCtrl` 仍由既有适配器唯一输出，反馈保护和单位转换不变。
+- 已同步规范源码与 `/home/johnwick/piper_ros`，`colcon build --packages-select piper --symlink-install` 和 `py_compile` 均成功。

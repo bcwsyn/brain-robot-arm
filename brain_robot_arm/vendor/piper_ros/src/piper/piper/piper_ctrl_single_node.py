@@ -78,6 +78,7 @@ class PiperRosNode(Node):
         self.__enable_flag = False
         self._can_feedback_lost_at = None
         self._can_feedback_loss_escalated = False
+        self._joint_mode_speed = None
         # Create piper class and open CAN interface
         # S-V1.9-1 firmware uses the V2 protocol. The USB gs_usb adapter is
         # an external SocketCAN interface, so skip the SDK's built-in CAN
@@ -132,11 +133,12 @@ class PiperRosNode(Node):
         self.piper.ParseCANFrame(message)
 
     def _set_joint_control_mode(self, speed=50):
-        """Select CAN joint control before sending targets."""
-        # S-V1.9-1 V2 control path retains the horizontal-installation byte
-        # verified V2 control sequence.  ModeCtrl() silently supplies 0x00.
-        self.piper.MotionCtrl_2(
-            0x01, 0x01, int(clip(speed, 1, 100)), 0x00, 0x00, 0x01)
+        """Select CAN joint control once per speed, not once per target."""
+        speed = int(clip(speed, 1, 100))
+        if self._joint_mode_speed == speed:
+            return
+        self.piper.MotionCtrl_2(0x01, 0x01, speed, 0x00, 0x00, 0x01)
+        self._joint_mode_speed = speed
 
     def _enable_for_joint_control(self, speed=50):
         """Enable all motors before selecting CAN joint-control mode."""
