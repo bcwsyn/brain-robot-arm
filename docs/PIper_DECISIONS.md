@@ -456,3 +456,8 @@
 - `grasp_lift_executor` 的 MoveIt current-state 在 CAN 反馈空窗时可返回默认零位/旧时间戳，导致合法目标被诊断为 `IK_ERROR_CODE_-31`。
 - 决策：保留现有新鲜反馈等待和反馈保护；规划前用最近 1 秒内、包含 joint1..joint6 的实际反馈构造 RobotState，缺失则跳过候选。该修复不放宽碰撞检查、不发送盲动作、不混用 251..256 高速位置单位。
 - 下一轮只验证同一默认自动链是否能从 GRASP_READY 进入预抓取；若失败，按候选姿态的明确 IK/碰撞诊断调整抓取角度或位置。
+
+## 2026-09-25 新鲜 RobotState 修复尚未完成实体验证
+
+- 第二次默认实跑已到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN`，但在目标稳定前因 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT` 停止，未到 `GRASP_READY`。
+- 决策：保留 `FreshMeasuredState` 修复，下一轮仅在完整新鲜反馈窗口下验证候选预抓取；反馈空窗期间继续禁止输出，不把超时误判为点云碰撞或 IK 失败。

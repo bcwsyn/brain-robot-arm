@@ -1025,3 +1025,13 @@
 ### 本轮结论与下一步
 
 - 已把主要阻断从“未到观测/点云碰撞”缩小为“抓取规划起始状态与实体反馈不同步”。下一步运行同一默认自动链一次；只接受新鲜六轴状态下的候选 IK/规划结果，若仍为 `IK_ERROR_CODE_-31`，再按具体候选姿态几何调整，不能关闭碰撞检查或恢复腕部点云。
+
+## 2026-09-25 新鲜状态修复后的默认链复核仍被反馈空窗阻断
+
+- 实际再次运行 `timeout --signal=INT --kill-after=45s 360s env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh`。本轮通过 `[7/7]`、观测轨迹并实际出现 `STATE -> SEARCH (OBSERVE_POSE_REACHED)`、`SEARCH_PLAN_ACCEPTED`、`STATE -> ALIGN (TARGET_ACQUIRED)`；随后目标短暂丢失并进入 `LAST_PATH_REACQUIRE/LOCAL_SEARCH`。
+- 驱动反馈空窗持续到搜索段门限，最终 `STATE -> FAULT (SEARCH_SEGMENT_FEEDBACK_TIMEOUT)`；没有进入 GRASP_READY，因此本轮没有执行候选 IK，也没有验证新鲜 RobotState 修复。
+- can0 仍为 1 Mbps/0.75、RX 持续增长；根分区 28%，脚本保护收尾停止控制并保持使能，未发送 DisableArm/ResetPiper。
+
+### 本轮结论与下一步
+
+- 观测→搜索链仍可复现，当前直接阻断是实体反馈空窗，而不是点云自碰撞。新鲜状态修复已构建但需要下一次达到 GRASP_READY 才能验证；不通过提高速度或关闭碰撞绕过。
