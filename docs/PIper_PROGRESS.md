@@ -1056,3 +1056,13 @@
 
 - 实跑在启动阶段未进入 `[7/7]`：`grasp_lift_executor` 因 ROS 参数 `candidate_grasp_order: []` 被解析为“未设置”而退出，脚本报告等待 `/grasp_lift_executor` 超时。没有发送观测或抓取动作。
 - 最小修复：候选分支仍保持 `candidate_grasp_enabled=false`，将参数改为非空占位 `[NONE]`，以满足 ROS 参数类型/存在性要求；候选代码不会被调用。`brain_robot_ball_pick` 构建成功。
+
+## 2026-09-25 单一路径配置后的实体复跑：观测反馈误差仍未收敛
+
+- 抓取节点已正常启动，说明单一路径配置和 `[NONE]` 参数修复生效。默认自动链启动并接受当前姿态→观测姿态轨迹。
+- 300 秒观测门控后仍失败：`Prepare execution did not converge: max_joint_error=0.037086 rad worst_joint=joint1`，随后 `STATE -> FAULT (PREPARE_EXECUTION_FAILED)`；因此本轮尚未进入 SEARCH/GRASP_READY，单一路径抓取未执行。
+- 驱动期间仍有约 2.6、10、17 秒反馈空窗；脚本随后按保护逻辑停止控制、保持 PiPER 使能并未发送 DisableArm/ResetPiper。
+
+### 结论
+
+- 单一路径骨架已经接通到可启动状态，但当前更早的观测反馈误差仍阻断主线；不能把观测误差容差放宽来伪造到达。下一步应优先修复运动期间聚合反馈连续性，再验证 `GRASP_READY → ALIGNED_PREGRASP → MICRO_APPROACH`。
