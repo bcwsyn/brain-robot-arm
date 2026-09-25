@@ -76,14 +76,50 @@ wait_for() {
   fail "等待 $name 超时。"
 }
 
+wait_for_joint_feedback() {
+  local topic="$1" deadline=$((SECONDS + WAIT_SECONDS)) result consecutive=0
+  # One DDS sample is not enough: a stale/transient sample can create a
+  # robot_state_publisher topic while the CAN feedback has already stopped.
+  # Require three consecutive complete six-axis samples before allowing TF or
+  # any physical motion stage to continue.
+  while (( SECONDS < deadline )); do
+    result=$(timeout 3s ros2 topic echo --once "$topic" 2>&1) || result=""
+    if grep -Fq "joint1" <<<"$result" && grep -Fq "joint6" <<<"$result"; then
+      consecutive=$((consecutive + 1))
+      if (( consecutive >= 3 )); then
+        return 0
+      fi
+    else
+      consecutive=0
+    fi
+    sleep 1
+  done
+  fail "等待 $topic 的连续新鲜六轴反馈超时；拒绝进入运动流程。"
+}
+
 wait_for_tf_validated_pointcloud() {
   local deadline=$((SECONDS + WAIT_SECONDS)) result
   while (( SECONDS < deadline )); do
     result=$(timeout 3s ros2 topic echo --once \
       --qos-reliability reliable \
-      --qos-durability volatile \
+      --qos-durability transient_local \
       /brain_robot_vision/tf_gate_diagnostic 2>&1) || result=""
     if grep -Fq 'state=FORWARDED' <<<"$result"; then
+      return 0
+    fi
+    # The real profile intentionally disables the wrist point-cloud input to
+    # Octomap. Validate the actual camera TF directly instead of requiring a
+    # cloud frame that the camera may not publish.
+    local robot_tf_result
+    # The wrist cloud is deliberately disconnected from Octomap.  Its
+    # diagnostic topic may therefore stay silent; the only required startup
+    # condition here is a live robot TF edge backed by the continuous
+    # /piper_moveit_joint_states gate above.  Camera image/info gates already
+    # prove the optical stream is present, and target transforms are checked
+    # again by the controller before any target motion.
+    robot_tf_result=$(timeout 4s ros2 topic echo --once /tf 2>&1) || robot_tf_result=""
+    if grep -Fq 'frame_id: base_link' <<<"$robot_tf_result" \
+      && grep -Fq 'child_frame_id: link1' <<<"$robot_tf_result"; then
       return 0
     fi
     sleep 1
@@ -348,7 +384,7 @@ visual_stack_processes_exist() {
   # retain nodes from a just-terminated launch for longer than this script's
   # startup window. Match executable paths, not service-client arguments.
   pgrep -f \
-    'ros2 launch brain_robot_ball_pick cube_visual_search\.launch\.py|/brain_robot_pick_place/(piper_jog_adapter\.py|visual_search_controller|grasp_lift_executor|active_scan_supervisor|pointcloud_tf_gate)([[:space:]]|$)|/moveit_servo/servo_node_main([[:space:]]|$)|/moveit_ros_move_group/move_group([[:space:]]|$)|/robot_state_publisher/robot_state_publisher.*piper_moveit_joint_states' \
+    'ros2 launch brain_robot_ball_pick cube_visual_search\.launch\.py|/brain_robot_pick_place/(piper_jog_adapter\.py|visual_search_controller|grasp_lift_executor|active_scan_supervisor|pointcloud_tf_gate)([[:space:]]|$)|/moveit_servo/servo_node_main([[:space:]]|$)|/moveit_ros_move_group/move_group([[:space:]]|$)|/robot_state_publisher/robot_state_publisher.*piper_moveit_joint_states|/tf2_ros/static_transform_publisher.*piper_camera_mount_tf' \
     >/dev/null 2>&1
 }
 
@@ -375,6 +411,8 @@ stop_stale_visual_stack() {
     pkill -TERM -f '/moveit_servo/servo_node_main' 2>/dev/null || true
     pkill -TERM -f '/moveit_ros_move_group/move_group' 2>/dev/null || true
     pkill -TERM -f '/robot_state_publisher/robot_state_publisher.*piper_moveit_joint_states' \
+      2>/dev/null || true
+    pkill -TERM -f '/tf2_ros/static_transform_publisher.*piper_camera_mount_tf' \
       2>/dev/null || true
   fi
 
@@ -582,6 +620,7 @@ else
   echo "[复用] 已检测到 /piper_ctrl_single_node"
 fi
 wait_for topic /joint_states
+wait_for_joint_feedback /joint_states
 wait_for service /enable_srv
 
 echo "[2/7] 检查并启动 RGB-D 相机..."
@@ -594,6 +633,7 @@ wait_for topic /camera/color/image_raw
 wait_for topic /camera/depth/image_raw
 start_camera_health_guard
 wait_for_actual_frame /camera/color/image_raw "RGB 图像"
+wait_for_actual_frame /camera/depth/image_raw "深度图像"
 
 echo "[3/7] 启动紫色方块 RGB-D 检测..."
 start_group cube_detector ros2 launch brain_robot_ball_pick cube_detector.launch.py
@@ -613,6 +653,7 @@ wait_for service /grasp_lift_executor/execute
 
 echo "[5/7] 检查完整 MoveIt 反馈和自体过滤 TF..."
 wait_for topic /piper_moveit_joint_states
+wait_for_joint_feedback /piper_moveit_joint_states
 wait_for topic /brain_robot_vision/tf_gate_diagnostic
 wait_for_tf_validated_pointcloud
 wait_for_filtered_pointcloud

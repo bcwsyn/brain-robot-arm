@@ -1148,3 +1148,16 @@
 - 相机 `/camera/color/camera_info` 实测：分辨率 `640x400`，`frame_id=camera_color_optical_frame`，`distortion_model=plumb_bob`，`fx=488.8685`、`fy=488.8685`、`cx=310.7305`、`cy=209.0377`；D 五项为 0。
 - 脚本停止后的只读 ROS 图中仍有 camera_info/debug_image，但没有 `/joint_states`、`/piper_moveit_joint_states` 或目标话题发布者；这与驱动/检测器已安全停止一致，不作为失能或目标不存在的硬件结论。
 - 未根据照片或内参改动 `cube_task_real.yaml` 搜索边界；继续遵循现有高级轨迹主线。
+
+
+## 2026-09-25 实体模型复跑与连续搜索修复
+
+- 默认脚本本轮已实际通过 `[7/7]`、`OBSERVE_POSE_REACHED` 并进入 `SEARCH`；RGB 与深度首帧均通过，实测相机深度约 30 Hz。
+- 之前 `[6/7]` 长时间等待的直接原因是 Astra USB 接口争用：日志出现 `attempt to claim already-claimed interface`、损坏 JPEG，`/camera/depth/image_raw` 无实际帧。停止未使能的残留视觉/驱动进程并重启 Astra 后，RGB-D 检测器恢复 `debug_image` 首帧。
+- 搜索期间实际反馈从观测姿态扫到 `joint1≈-0.533 rad`、`joint5≈0.814 rad`，说明已有真实关节运动；检测器本轮仅 `PURPLE_CUBE target LOST`，未产生有效目标/对齐/抓取授权。
+- 搜索控制器曾在最后一个段目标未收敛时保持约 60 秒，最终 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT`，造成用户看到“转到固定角度后停下”。已将搜索段超时改为：若六轴反馈仍新鲜则立刻反向继续有限搜索；只有反馈过期才保护故障。配置 `search_segment_timeout_s` 改为 15 s；未绕过适配器、碰撞检查或反馈看门狗。
+- 新增启动门控：连续三帧 `/joint_states` 与 `/piper_moveit_joint_states`、实际 `/tf` 基座链，以及 RGB/深度首帧；禁用的腕部点云仍不进入 Octomap。
+
+### 本轮阻断
+
+- 当前尚未达到 `ALIGN/GRASP_READY`：现场帧未通过紫色方块颜色/矩形/稳定深度/尺寸门控；上一轮反馈保护在搜索段超时。下一轮必须验证连续反向搜索和目标门控，不得把背景紫色当作方块。

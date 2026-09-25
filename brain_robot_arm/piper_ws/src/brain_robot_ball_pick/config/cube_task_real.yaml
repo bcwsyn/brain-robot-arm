@@ -61,10 +61,10 @@ visual_search_controller:
     search_planning_attempts: 2
     search_planning_velocity_scaling: 0.05
     search_planning_acceleration_scaling: 0.05
-    # S-V1.9-1 feedback gaps measured during motion reach about 17.4 s;
-    # keep a bounded segment timeout above that window while retaining the
-    # driver's 25 s feedback protection.
-    search_segment_timeout_s: 60.0
+    # A segment must not park the physical arm at one angle.  Continue the
+    # sweep after this bounded target timeout only when six-axis feedback is
+    # fresh; stale feedback still faults and the driver watchdog stops output.
+    search_segment_timeout_s: 15.0
     target_timeout_s: 0.60
     # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
     # transition.  The PiPER driver suppresses output during that window;
@@ -100,6 +100,10 @@ visual_search_controller:
     # TF-gated cloud only as a fresh-scene heartbeat; target geometry still
     # comes from the RGB-D detector topics above.
     filtered_point_cloud_topic: /brain_robot_vision/tf_validated_points
+    # The wrist point cloud is intentionally not fed to Octomap. MoveIt still
+    # collision-checks against its current static scene; do not block search
+    # when the disabled wrist cloud has no fresh frame.
+    require_fresh_planning_scene: false
     planning_scene_timeout_s: 2.5
     joint_command_topic: /servo_node/delta_joint_cmds
     servo_status_topic: /servo_node/status

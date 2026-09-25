@@ -289,6 +289,8 @@ private:
     filtered_point_cloud_topic_ = ParameterOr<std::string>(
       "filtered_point_cloud_topic", "/brain_robot_vision/filtered_points");
     planning_scene_timeout_s_ = ParameterOr<double>("planning_scene_timeout_s", 2.5);
+    require_fresh_planning_scene_ = ParameterOr<bool>(
+      "require_fresh_planning_scene", true);
     joint_command_topic_ = ParameterOr<std::string>(
       "joint_command_topic", "/servo_node/delta_joint_cmds");
     servo_status_topic_ = ParameterOr<std::string>(
@@ -966,7 +968,8 @@ private:
     if (!search_plan_done_.load()) {
       return true;
     }
-    if (point_cloud_count_ == 0U || !Fresh(point_cloud_received_time_, planning_scene_timeout_s_)) {
+    if (require_fresh_planning_scene_ &&
+      (point_cloud_count_ == 0U || !Fresh(point_cloud_received_time_, planning_scene_timeout_s_))) {
       PublishZeroLocked();
       if (!planning_scene_stale_reported_) {
         PublishControlDetailLocked("SEARCH_HOLD_PLANNING_SCENE_STALE");
@@ -1095,10 +1098,13 @@ private:
       scene_fresh = point_cloud_count_ > 0U &&
         Fresh(point_cloud_received_time_, planning_scene_timeout_s_);
     }
-    if (success && !search_plan_cancel_ && scene_fresh) {
+    const bool scene_usable = !require_fresh_planning_scene_ || scene_fresh;
+    if (success && !search_plan_cancel_ && scene_usable) {
       arm_trajectory_publisher_->publish(trajectory);
-      PublishTrajectoryDiagnostic("COLLISION_CHECKED_" + source, trajectory);
-    } else if (success && !scene_fresh) {
+      const std::string diagnostic_source = require_fresh_planning_scene_ ?
+        "COLLISION_CHECKED_" + source : "COLLISION_CHECKED_STATIC_SCENE_" + source;
+      PublishTrajectoryDiagnostic(diagnostic_source, trajectory);
+    } else if (success && require_fresh_planning_scene_ && !scene_fresh) {
       success = false;
       failure_reason = "SEARCH_PLAN_PLANNING_SCENE_STALE";
     }
@@ -1190,8 +1196,19 @@ private:
         {
           search_trajectory_active_ = false;
         } else if (SteadyClock::now() >= search_segment_deadline_) {
-          CancelPlannedSearchLocked();
-          StopLocked(ControlState::FAULT, "SEARCH_SEGMENT_FEEDBACK_TIMEOUT");
+          // A reachable target that stalls must not leave the real arm parked
+          // at one search angle.  Continue the bounded sweep only while the
+          // six-axis feedback itself is fresh; stale feedback still faults and
+          // the adapter's watchdog remains the final motion stop.
+          if (!JointStateFreshLocked()) {
+            CancelPlannedSearchLocked();
+            StopLocked(ControlState::FAULT, "SEARCH_SEGMENT_FEEDBACK_TIMEOUT");
+            return;
+          }
+          search_trajectory_active_ = false;
+          search_horizontal_direction_ *= -1;
+          search_plan_retry_time_ = SteadyClock::now() + std::chrono::milliseconds(100);
+          PublishControlDetailLocked("SEARCH_SEGMENT_TIMEOUT_CONTINUE");
           return;
         } else {
           return;
@@ -1246,8 +1263,19 @@ private:
         {
           search_trajectory_active_ = false;
         } else if (SteadyClock::now() >= search_segment_deadline_) {
-          CancelPlannedSearchLocked();
-          StopLocked(ControlState::FAULT, "SEARCH_SEGMENT_FEEDBACK_TIMEOUT");
+          // A reachable target that stalls must not leave the real arm parked
+          // at one search angle.  Continue the bounded sweep only while the
+          // six-axis feedback itself is fresh; stale feedback still faults and
+          // the adapter's watchdog remains the final motion stop.
+          if (!JointStateFreshLocked()) {
+            CancelPlannedSearchLocked();
+            StopLocked(ControlState::FAULT, "SEARCH_SEGMENT_FEEDBACK_TIMEOUT");
+            return;
+          }
+          search_trajectory_active_ = false;
+          search_horizontal_direction_ *= -1;
+          search_plan_retry_time_ = SteadyClock::now() + std::chrono::milliseconds(100);
+          PublishControlDetailLocked("SEARCH_SEGMENT_TIMEOUT_CONTINUE");
           return;
         } else {
           return;
@@ -2293,6 +2321,7 @@ private:
   std::string joint_state_topic_;
   std::string filtered_point_cloud_topic_;
   double planning_scene_timeout_s_{2.5};
+  bool require_fresh_planning_scene_{true};
   std::string joint_command_topic_;
   std::string servo_status_topic_;
   std::string servo_start_service_;
