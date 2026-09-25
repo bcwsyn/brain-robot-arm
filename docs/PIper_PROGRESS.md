@@ -804,6 +804,16 @@
 - 观测后确实已经自动进入 `SEARCH`；抓取骨架的两个软件门控已修复，但当前最新阻断重新是 USB-CAN 无 RX。
 - 下一步必须先恢复持续 RX，再复用已构建的 30 秒搜索门控和自动抓取链；不在 RX=0 时启动实体运动。
 
+## 2026-09-25 实体 MoveIt 3D updater 彻底停用
+
+- 为排除任何残留/陈旧 occupancy updater 状态，实体 `sensors_3d_real.yaml` 的 `sensors` 列表改为空并重建 `brain_robot_ball_pick`；RGB-D 检测、TF-gated freshness 和机器人自碰撞检查仍保留，腕部点云不再有任何 MoveIt Octomap 接入口。
+- 该调整符合 MoveIt 官方 occupancy map 插件架构：未注册 3D sensor 时不会接收点云更新；它不关闭 PlanningScene 自碰撞检查，也不绕过 `piper_jog_adapter`。安装配置已确认 `sensors: []`。
+
+### 本轮结论与下一步
+
+- “夹爪点云进入 Octomap”现在在配置层和运行层都被切断；后续若候选规划仍失败，应只检查 IK/关节反馈/URDF 自碰撞，不再反复修改点云过滤参数。
+- 下一步在稳定 CAN RX 后复用默认链，验证 `GRASP_READY` 后候选规划和自动抓取。
+
 ## 2026-09-25 预抓取规划新鲜状态等待修复
 
 - 依据上一轮 `GRASP_READY` 后的实际日志，问题不是夹爪点云碰撞：MoveIt 报告当前关节状态超过 1 秒未更新，grasp executor 在真实反馈和全零状态之间交替取值，导致 RRT 无法建立有效 goal tree。

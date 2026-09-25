@@ -1,5 +1,10 @@
-sensors:
-  - astra_depth_pointcloud
+# The physical wrist camera remains an RGB-D target sensor, but it is not a
+# world-occupancy sensor.  Register no MoveIt 3D updater here: this prevents
+# stale/self-returned wrist points from becoming Octomap obstacles.  The
+# visual controller and active-scan supervisor still use their TF-gated cloud
+# topic as a freshness signal, while robot self-collision checking remains
+# enabled in the PlanningScene.
+sensors: []
 
 astra_depth_pointcloud:
   sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater

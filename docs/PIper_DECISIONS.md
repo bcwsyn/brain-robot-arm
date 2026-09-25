@@ -335,6 +335,11 @@
 - 清理后立即检查 `can0`，状态仍为 `DOWN/STOPPED`、RX=0；因此清理并未恢复接口，当前证据不支持把 USB-CAN 阻断全部归因于磁盘。
 - 决策：不因该假设重复 CAN 模块重载或启动运动；保持 `can0 UP + RX 增长` 为实体运行硬门槛。点云/碰撞修复继续保留，待链路恢复后再做实际闭环验证。
 
+## 2026-09-25 实体腕部点云不注册 MoveIt 3D updater
+
+- 仅把 point cloud topic 指向不存在的名称仍会初始化 updater；为彻底避免陈旧 occupancy 或误接入，实体 `sensors_3d_real.yaml` 现在使用 `sensors: []`。MoveIt 仍使用 URDF/SRDF 自碰撞检查，RGB-D 目标检测不受影响。
+- 决策：禁止恢复腕部点云到实体 Octomap；候选规划失败不得再归因于该点云路径，必须基于新鲜关节状态、IK、规划场景或机器人模型证据定位。
+
 ## 2026-09-25 自动抓取骨架必须从 GRASP_READY 继续
 
 - 实体链实跑已达到 `OBSERVE_POSE_REACHED → SEARCH`，但搜索段 12 秒门控在新固件反馈空窗期间触发 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT`；同时真实抓取执行器仍为 `auto_execute=false`，与配置注释不一致。
