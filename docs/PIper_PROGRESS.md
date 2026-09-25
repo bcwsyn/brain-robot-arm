@@ -804,6 +804,17 @@
 - 观测后确实已经自动进入 `SEARCH`；抓取骨架的两个软件门控已修复，但当前最新阻断重新是 USB-CAN 无 RX。
 - 下一步必须先恢复持续 RX，再复用已构建的 30 秒搜索门控和自动抓取链；不在 RX=0 时启动实体运动。
 
+## 2026-09-25 预抓取规划新鲜状态等待修复
+
+- 依据上一轮 `GRASP_READY` 后的实际日志，问题不是夹爪点云碰撞：MoveIt 报告当前关节状态超过 1 秒未更新，grasp executor 在真实反馈和全零状态之间交替取值，导致 RRT 无法建立有效 goal tree。
+- 在既有 `grasp_lift_executor.cpp` 中增加 `joint_state_wait_timeout_s`（实体 YAML 明确为 25 秒），所有 TOP_DOWN IK、预抓取关节规划、笛卡尔规划和 IK 诊断在调用 MoveIt 前都等待最近 1 秒内的新鲜关节反馈；超时只报告规划失败，不使用旧/零填充状态。
+- `brain_robot_pick_place`、`brain_robot_ball_pick` 构建成功；未恢复腕部点云输入，未关闭碰撞检查，未绕过 `piper_jog_adapter`。
+
+### 本轮结论与下一步
+
+- 本修复针对实测的规划状态过期，保留 MoveIt 正常碰撞检查。官方 MoveIt 资料说明 occupancy updater 的自体过滤只处理实际接入的传感器点云；本实体配置的 disabled topic 无发布者，因此没有夹爪点云进入 Octomap 的证据。
+- 下一步在 CAN RX 恢复后复用同一自动链验证：`GRASP_READY` → 新鲜状态等待 → 候选预抓取 → 抓取/抬升/释放；失败时保持安全回位规则。
+
 ## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
 
 - 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。

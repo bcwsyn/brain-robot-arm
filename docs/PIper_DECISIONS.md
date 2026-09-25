@@ -346,3 +346,8 @@
 - CAN 恢复后的实跑完整达到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN/LOCAL_SEARCH → GRASP_READY`，并自动进入既有抓取候选流程。所有候选预抓取规划失败时，MoveIt 报告当前关节状态超过 1 秒未更新，grasp executor 读到真实姿态与全零姿态交替。
 - 只读运行检查显示 `/brain_robot_vision/disabled_octomap_points` 无发布者，实体 Octomap 输入仍被切断；MoveIt 官方自体过滤机制不会凭空制造未发布的点云障碍。不得为本次规划失败恢复腕部点云或关闭碰撞检查。
 - 决策：下一步只修复抓取规划前的新鲜关节状态等待/一致性，稳定后重试现有候选抓取；保持自动 `GRASP_READY` 触发、`piper_jog_adapter` 保护和安全回位收尾。
+
+## 2026-09-25 抓取规划不得使用过期关节状态
+
+- `GRASP_READY` 后的候选规划曾在当前姿态和全零姿态间跳变；MoveIt 的 1 秒 current-state 等待在 S-V1.9-1 反馈空窗下不足，造成无有效 goal tree。该现象不能归因于腕部点云，因为实体 Octomap 输入 topic 无发布者。
+- 决策：抓取 executor 的所有 IK/预抓取规划入口先等待最多 25 秒的新鲜关节状态；没有新鲜反馈就不规划、不发送抓取运动。保持既有碰撞检查、自动 `GRASP_READY` 触发和安全收尾，不恢复实体腕部 Octomap。

@@ -330,6 +330,8 @@ private:
       "trajectory_feedback_tolerance_rad", 0.04);
     trajectory_feedback_timeout_s_ = ParameterOr<double>(
       "trajectory_feedback_timeout_s", 12.0);
+    joint_state_wait_timeout_s_ = ParameterOr<double>(
+      "joint_state_wait_timeout_s", 25.0);
     visual_state_topic_ = ParameterOr<std::string>(
       "visual_state_topic", "/brain_robot_visual_control/state");
     scene_ready_topic_ = ParameterOr<std::string>(
@@ -368,7 +370,8 @@ private:
       acceleration_scaling_ <= 1.0 && linear_approach_velocity_scaling_ > 0.0 &&
       linear_approach_velocity_scaling_ <= velocity_scaling_ && gripper_settle_s_ > 0.0 &&
       gripper_feedback_timeout_s_ > 0.0 && min_gripper_feedback_motion_rad_ >= 0.0 &&
-      trajectory_feedback_tolerance_rad_ > 0.0 && trajectory_feedback_timeout_s_ > 0.0;
+      trajectory_feedback_tolerance_rad_ > 0.0 && trajectory_feedback_timeout_s_ > 0.0 &&
+      joint_state_wait_timeout_s_ > 0.0;
     if (!configuration_ok_) {
       RCLCPP_ERROR(
         get_logger(),
@@ -1128,6 +1131,9 @@ private:
     if (!compute_ik_client_->wait_for_service(std::chrono::seconds(2))) {
       return false;
     }
+    if (!WaitForFreshJointState("TOP_DOWN_IK")) {
+      return false;
+    }
     const auto current_state = arm_->getCurrentState(1.0);
     if (!current_state) {
       return false;
@@ -1495,6 +1501,10 @@ private:
   bool MoveArmToPose(
     const geometry_msgs::msg::PoseStamped & target, const std::string & stage)
   {
+    if (!WaitForFreshJointState(stage)) {
+      RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for planning.", stage.c_str());
+      return false;
+    }
     arm_->setStartStateToCurrentState();
     arm_->setPoseReferenceFrame(target.header.frame_id);
     if (!arm_->setPoseTarget(target, end_effector_link_)) {
@@ -1532,6 +1542,10 @@ private:
   bool MoveArmCartesianToPose(
     const geometry_msgs::msg::PoseStamped & target, const std::string & stage)
   {
+    if (!WaitForFreshJointState(stage)) {
+      RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for Cartesian planning.", stage.c_str());
+      return false;
+    }
     arm_->setStartStateToCurrentState();
     arm_->setPoseReferenceFrame(target.header.frame_id);
     std::vector<geometry_msgs::msg::Pose> waypoints{target.pose};
@@ -1560,6 +1574,9 @@ private:
     if (!compute_ik_client_->wait_for_service(std::chrono::seconds(2))) {
       return "IK_SERVICE_UNAVAILABLE";
     }
+    if (!WaitForFreshJointState("IK_DIAGNOSTIC")) {
+      return "IK_CURRENT_STATE_STALE";
+    }
     const auto current_state = arm_->getCurrentState(1.0);
     if (!current_state) {
       return "IK_CURRENT_STATE_UNAVAILABLE";
@@ -1580,6 +1597,30 @@ private:
       return "IK_OK_PLAN_FAILED";
     }
     return "IK_ERROR_CODE_" + std::to_string(response->error_code.val);
+  }
+
+  bool WaitForFreshJointState(const std::string & stage)
+  {
+    const auto deadline = std::chrono::steady_clock::now() +
+      std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+      std::chrono::duration<double>(joint_state_wait_timeout_s_));
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      {
+        std::lock_guard<std::mutex> lock(feedback_mutex_);
+        if (joint_state_received_time_ != std::chrono::steady_clock::time_point{}) {
+          const double age_s = std::chrono::duration<double>(
+            std::chrono::steady_clock::now() - joint_state_received_time_).count();
+          if (age_s <= 1.0) {
+            return true;
+          }
+        }
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    RCLCPP_WARN(
+      get_logger(), "%s waiting for fresh joint feedback timed out after %.1f s.",
+      stage.c_str(), joint_state_wait_timeout_s_);
+    return false;
   }
 
   bool SetCupFollowing(bool enabled)
@@ -1743,6 +1784,7 @@ private:
   double scene_wait_s_{10.0};
   double trajectory_feedback_tolerance_rad_{0.04};
   double trajectory_feedback_timeout_s_{12.0};
+  double joint_state_wait_timeout_s_{25.0};
   std::string visual_state_topic_;
   std::string scene_ready_topic_;
   std::string state_topic_;

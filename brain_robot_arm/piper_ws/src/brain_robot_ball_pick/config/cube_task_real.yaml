@@ -147,6 +147,9 @@ grasp_lift_executor:
     approach_max_target_speed_m_s: 0.30
     trajectory_feedback_tolerance_rad: 0.04
     trajectory_feedback_timeout_s: 12.0
+    # Wait through the bounded S-V1.9-1 feedback gap before asking MoveIt for
+    # a pregrasp plan; never plan from a stale or zero-filled joint state.
+    joint_state_wait_timeout_s: 25.0
     grasp_reacquire_topic: /brain_robot_grasp/reacquire
     emergency_stop_topic: /brain_robot_control/emergency_stop
 
