@@ -117,7 +117,7 @@ grasp_lift_executor:
     # Try a bounded set of coarse, collision-checked grasp candidates.  A
     # rejected candidate keeps the gripper open and advances to the next one.
     candidate_grasp_enabled: true
-    candidate_grasp_order: [TOP_DOWN, DIAGONAL_LEFT, DIAGONAL_RIGHT]
+    candidate_grasp_order: [DIAGONAL_LEFT, DIAGONAL_RIGHT, TOP_DOWN]
     gripper_open_value: 50000
     gripper_close_value: 40000
     gripper_settle_s: 2.0
