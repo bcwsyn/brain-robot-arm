@@ -311,3 +311,9 @@
 - 决策：使用固定路径、无参数、受 sudoers 严格限制的 `/usr/local/sbin/brain-robot-log-maintenance`，由 `brain-robot-log-maintenance.timer` 在开机 2 分钟后及其后每 10 分钟调用；维护系统 journal/轮转日志和固定机器人应用日志目录，并以锁避免并发。不得删除源代码、ROS build/install、Conda 或未知路径。
 - 已验证 timer 为 `enabled/active`，service 最近一次 `status=0/SUCCESS`，免密 helper 执行返回 0。磁盘当前 28% 使用率，因此不做额外大范围删除。
 - 该决策只解决日志增长风险，不改变 CAN/USB/反馈保护门控；`can0` 消失或 RX=0 时仍禁止启动任何实体运动。
+
+## 2026-09-25 清理后仍无 CAN：拒绝错误归因
+
+- 针对“未定期清理磁盘导致 CAN 失效”的判断，实际运行 `/home/johnwick/clean_disk_space.sh`，helper、journal vacuum 和 `apt clean` 均成功，根分区仍为 28%。
+- 清理后立即检查 `can0`，状态仍为 `DOWN/STOPPED`、RX=0；因此清理并未恢复接口，当前证据不支持把 USB-CAN 阻断全部归因于磁盘。
+- 决策：不因该假设重复 CAN 模块重载或启动运动；保持 `can0 UP + RX 增长` 为实体运行硬门槛。点云/碰撞修复继续保留，待链路恢复后再做实际闭环验证。
