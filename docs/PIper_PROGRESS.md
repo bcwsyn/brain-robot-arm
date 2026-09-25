@@ -749,6 +749,16 @@
 - 磁盘清理已从“依赖机器人脚本存活”改为系统级持续维护，能覆盖脚本退出、重启和异常中止；后续不再把“没有定时清理”作为启动阻断。
 - 机械臂当前仍不可运动：最近实测 `can0` 为 `DOWN/STOPPED`，`ip link set can0 up` 返回 `No such device`，并伴随 VMware xHCI 传输错误。下一步只在 `can0` 稳定 `UP` 且 RX 持续增长后复用默认自动路径，验证 `OBSERVE_POSE_REACHED` → `SEARCH`，不得在接口消失时启动运动。
 
+## 2026-09-25 断点复核：磁盘清理后 CAN 状态未改变
+
+- 按用户要求在断点执行 `/home/johnwick/clean_disk_space.sh`；受限 helper、journal 清理和 `apt clean` 均成功，退出码为 0。根分区由清理前后均为 28%（可用空间约 55G），说明当前不存在磁盘耗尽门控。
+- 清理后只读检查显示 `can0` 仍为 `DOWN/STOPPED`，RX/TX 均为 0；因此不能把清理成功误报为 CAN 已恢复，也没有启动默认实体运动脚本。
+
+### 本轮结论与下一步
+
+- 本轮已完成用户要求的断点清理验证；清理没有改变 USB-CAN 接口状态，当前最大阻断仍是 USB-CAN/VMware 链路未提供可用 `can0` 反馈。
+- 下一步门槛不变：先取得稳定 `can0 UP`、正确 CAN 参数和持续 RX 增长，再复用默认 `AUTO_START=1` 流程验证观测、搜索、定位和抓取；在 RX=0 时不发送运动命令。
+
 ## 2026-09-25 清理后通信因果复核
 
 - 按当前断点执行一次完整的 `/home/johnwick/clean_disk_space.sh`，受限 helper 和 `apt clean` 均成功；根分区由 28% 保持 28%（可用空间约 55G），定时器仍为 `active`。

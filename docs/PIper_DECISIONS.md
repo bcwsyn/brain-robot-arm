@@ -312,6 +312,11 @@
 - 已验证 timer 为 `enabled/active`，service 最近一次 `status=0/SUCCESS`，免密 helper 执行返回 0。磁盘当前 28% 使用率，因此不做额外大范围删除。
 - 该决策只解决日志增长风险，不改变 CAN/USB/反馈保护门控；`can0` 消失或 RX=0 时仍禁止启动任何实体运动。
 
+## 2026-09-25 断点清理不能替代 CAN 链路恢复
+
+- 断点执行清理脚本成功且退出码为 0，磁盘维持 28% 使用率；随后 `can0` 仍为 `DOWN/STOPPED`、RX=0。
+- 决策：不把“清理成功”当作 CAN 恢复证据，不在 RX=0 时启动实体运动；继续以稳定 `can0 UP` 和 RX 增长作为默认抓取流程的唯一前置门槛。
+
 ## 2026-09-25 清理后仍无 CAN：拒绝错误归因
 
 - 针对“未定期清理磁盘导致 CAN 失效”的判断，实际运行 `/home/johnwick/clean_disk_space.sh`，helper、journal vacuum 和 `apt clean` 均成功，根分区仍为 28%。
