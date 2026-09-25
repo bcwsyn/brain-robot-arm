@@ -456,7 +456,7 @@ enable_physical_motion() {
 }
 
 start_visual_sequence() {
-  echo "[启动] 从零点移动到观测姿态..."
+  echo "[启动] 从当前反馈姿态移动到观测姿态..."
   local result
   result=$(timeout 8s ros2 service call /visual_search_controller/start \
     std_srvs/srv/Trigger '{}' 2>&1) || result=""
