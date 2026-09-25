@@ -1045,3 +1045,9 @@
 ### 下一步
 
 - 继续等待/复核实体聚合反馈在运动期间稳定后再跑一次；不把高速 0.001 rad 电机位置未经偏置/齿比验证替代聚合关节角，不关闭点云碰撞或反馈保护。
+
+## 2026-09-25 抓取骨架收缩为单一路径
+
+- 按目标将实体配置从多候选抓取切换为确定性主线：`candidate_grasp_enabled=false`、候选列表为空；保留视觉对齐点位、固定预抓取距离、受限微步靠近、闭合、抬升和释放。
+- 已同步到 `/home/johnwick/piper_ws` 并构建 `brain_robot_ball_pick` 成功；未启动实体运动。
+- 这样下一次实跑的验证目标明确为：`GRASP_READY → ALIGNED_PREGRASP → MICRO_APPROACH → GRIPPER_CLOSED → LIFT`，失败时只定位单一路径，不再在多个姿态候选间来回扭转。
