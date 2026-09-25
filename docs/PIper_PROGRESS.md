@@ -803,3 +803,15 @@
 
 - 观测后确实已经自动进入 `SEARCH`；抓取骨架的两个软件门控已修复，但当前最新阻断重新是 USB-CAN 无 RX。
 - 下一步必须先恢复持续 RX，再复用已构建的 30 秒搜索门控和自动抓取链；不在 RX=0 时启动实体运动。
+
+## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
+
+- 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。
+- `auto_execute=true` 已生效，`grasp_lift_executor` 自动尝试 TOP_DOWN、DIAGONAL_LEFT、DIAGONAL_RIGHT 候选；三类预抓取 MoveIt 规划均失败。日志同时显示 MoveIt 当前关节状态过期（`Didn't receive robot state ... within 1.000000 seconds`），grasp executor 看到的 current 在 `[0.193,0.030,0.313]` 与 `[0,0,0]` 间跳变，随后 `Unable to sample any valid states for goal tree`。
+- 运行时 MoveIt 仍监听 `/brain_robot_vision/disabled_octomap_points`；只读查询确认该 topic 无发布者，`/brain_robot_vision/filtered_points` 也无发布者，不能把本次预抓取失败归因于腕部点云写入 Octomap。依据 MoveIt 官方文档，点云自体过滤只处理实际接入 occupancy updater 的传感器输入；本配置已切断该输入。
+- 已停止视觉/Servo 并 disarm 适配器；未发送失能命令、未执行抓取动作。残留启动/驱动/视觉进程已清理，保持当前安全状态。运行日志：`/tmp/brain_robot_auto_grasp_20260925.log`、`/home/johnwick/brain_robot_logs/visual_stack.log`。
+
+### 本轮结论与下一步
+
+- 目标链已推进到 `GRASP_READY`，证明观测、搜索、目标定位和自动抓取触发均已连通；当前最大阻断是反馈间歇造成的 MoveIt 当前状态过期/跳变，不是夹爪点云障碍。
+- 下一步应在稳定反馈下让抓取规划等待新鲜关节状态后重试既有候选；保持禁用实体腕部 Octomap，不绕过 `piper_jog_adapter` 或碰撞检查。

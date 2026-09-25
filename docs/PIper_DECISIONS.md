@@ -340,3 +340,9 @@
 - 实体链实跑已达到 `OBSERVE_POSE_REACHED → SEARCH`，但搜索段 12 秒门控在新固件反馈空窗期间触发 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT`；同时真实抓取执行器仍为 `auto_execute=false`，与配置注释不一致。
 - 决策：搜索段超时设为 30 秒以覆盖已测 17.4 秒反馈空窗；`grasp_lift_executor.auto_execute=true`，达到 `GRASP_READY` 后自动走已有对齐/抓取/抬升/释放流程。不得绕过 `piper_jog_adapter` 或恢复腕部实体 Octomap。
 - 修复已构建但尚未在第二次实跑验证，原因是前置 CAN RX 又为 0；恢复 RX 后只验证该高级链。
+
+## 2026-09-25 GRASP_READY 后失败归因于过期关节状态，不是夹爪点云
+
+- CAN 恢复后的实跑完整达到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN/LOCAL_SEARCH → GRASP_READY`，并自动进入既有抓取候选流程。所有候选预抓取规划失败时，MoveIt 报告当前关节状态超过 1 秒未更新，grasp executor 读到真实姿态与全零姿态交替。
+- 只读运行检查显示 `/brain_robot_vision/disabled_octomap_points` 无发布者，实体 Octomap 输入仍被切断；MoveIt 官方自体过滤机制不会凭空制造未发布的点云障碍。不得为本次规划失败恢复腕部点云或关闭碰撞检查。
+- 决策：下一步只修复抓取规划前的新鲜关节状态等待/一致性，稳定后重试现有候选抓取；保持自动 `GRASP_READY` 触发、`piper_jog_adapter` 保护和安全回位收尾。
