@@ -525,6 +525,7 @@ private:
   void PointGraspAndLift()
   {
     approach_locked_ = false;
+    target_model_locked_ = false;
     if (!StopServo()) {
       Fail("SERVO_STOP_FAILED");
       return;
@@ -538,6 +539,10 @@ private:
     }
     if (!TargetStillAligned()) {
       RequestVisualReacquire("GRASP_TARGET_SHIFT_BEFORE_PREGRASP");
+      return;
+    }
+    if (!CaptureTargetModel()) {
+      RequestVisualReacquire("GRASP_TARGET_MODEL_UNAVAILABLE");
       return;
     }
     if (candidate_grasp_enabled_) {
@@ -1215,6 +1220,10 @@ private:
   bool PredictedTargetInReference(geometry_msgs::msg::PointStamped & predicted_target)
   {
     std::lock_guard<std::mutex> lock(target_mutex_);
+    if (target_model_locked_) {
+      predicted_target = locked_target_reference_;
+      return true;
+    }
     const auto now = std::chrono::steady_clock::now();
     const double age_s = std::chrono::duration<double>(now - target_reference_received_time_).count();
     if (target_reference_received_time_ == std::chrono::steady_clock::time_point{} ||
@@ -1267,16 +1276,10 @@ private:
   bool TargetStillAligned()
   {
     if (approach_locked_) {
-      std::lock_guard<std::mutex> lock(target_mutex_);
-      const auto now = std::chrono::steady_clock::now();
-      const auto target_age = std::chrono::duration<double>(now - target_point_received_time_).count();
-      const auto valid_age = std::chrono::duration<double>(now - target_valid_received_time_).count();
-      const auto depth_valid_age = std::chrono::duration<double>(now - depth_valid_received_time_).count();
-      return target_point_received_time_ != std::chrono::steady_clock::time_point{} &&
-             target_valid_received_time_ != std::chrono::steady_clock::time_point{} &&
-             depth_valid_received_time_ != std::chrono::steady_clock::time_point{} &&
-             target_age <= target_timeout_s_ && valid_age <= target_timeout_s_ &&
-             depth_valid_age <= target_timeout_s_ && target_valid_ && depth_valid_;
+      // Once the pregrasp is reached, the arm is moving relative to a static
+      // base-frame target model. Do not let wrist-camera parallax or a transient
+      // colour/depth drop restart visual ALIGN/SEARCH.
+      return target_model_locked_;
     }
     std::lock_guard<std::mutex> lock(target_mutex_);
     const auto now = std::chrono::steady_clock::now();
@@ -1303,9 +1306,34 @@ private:
       age_s <= target_timeout_s_ && depth_valid_;
   }
 
+  bool CaptureTargetModel()
+  {
+    std::lock_guard<std::mutex> lock(target_mutex_);
+    const auto now = std::chrono::steady_clock::now();
+    const auto age_s = std::chrono::duration<double>(now - target_reference_received_time_).count();
+    if (target_reference_received_time_ == std::chrono::steady_clock::time_point{} ||
+      age_s > target_timeout_s_ || !target_valid_ || !depth_valid_ ||
+      !std::isfinite(target_point_reference_.point.x) ||
+      !std::isfinite(target_point_reference_.point.y) ||
+      !std::isfinite(target_point_reference_.point.z))
+    {
+      RCLCPP_WARN(get_logger(), "Cannot lock base-frame target model (age %.3f s).", age_s);
+      return false;
+    }
+    locked_target_reference_ = target_point_reference_;
+    target_model_locked_ = true;
+    PublishDiagnostic("GRASP_TARGET_MODEL_LOCKED_BASE_FRAME");
+    RCLCPP_INFO(
+      get_logger(), "Locked base-frame target model: (%.3f, %.3f, %.3f).",
+      locked_target_reference_.point.x, locked_target_reference_.point.y,
+      locked_target_reference_.point.z);
+    return true;
+  }
+
   void RequestVisualReacquire(const std::string & reason)
   {
     approach_locked_ = false;
+    target_model_locked_ = false;
     cancel_requested_ = true;
     PublishDiagnostic(reason);
     std_msgs::msg::Bool message;
@@ -1878,6 +1906,7 @@ private:
   geometry_msgs::msg::PointStamped target_point_camera_;
   geometry_msgs::msg::PointStamped target_point_reference_;
   geometry_msgs::msg::PointStamped previous_target_point_reference_;
+  geometry_msgs::msg::PointStamped locked_target_reference_;
   geometry_msgs::msg::Vector3Stamped target_size_;
   std::chrono::steady_clock::time_point target_point_received_time_{};
   std::chrono::steady_clock::time_point target_size_received_time_{};
@@ -1892,6 +1921,7 @@ private:
   bool target_valid_{false};
   bool depth_valid_{false};
   std::atomic_bool approach_locked_{false};
+  std::atomic_bool target_model_locked_{false};
   sensor_msgs::msg::JointState latest_joint_state_;
   sensor_msgs::msg::JointState latest_gripper_feedback_;
 

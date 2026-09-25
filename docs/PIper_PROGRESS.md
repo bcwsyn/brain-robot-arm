@@ -1091,3 +1091,16 @@
 - 本轮检测器在启动阶段短暂 `PURPLE_CUBE target DETECTED`，进入观测运动后变为 `target LOST`；之后没有达到目标稳定帧、`ALIGN` 或 `GRASP_READY`。因此没有下发预抓取、微步、闭合、抬升或释放动作，不能把背景颜色当成抓取授权。
 - 搜索轨迹规划本身多次成功并由适配器接受；但驱动在搜索中再次出现连续反馈空窗，最终日志给出 `can0 feedback absent for 25.0s`、`STATE -> FAULT (SEARCH_SEGMENT_FEEDBACK_TIMEOUT)`，适配器随后 `PHYSICAL MOTION DISARMED: joint state timeout`。这次阻断是实际反馈新鲜度门控，磁盘使用率仅 28%，不是磁盘空间或点云自碰撞证据。
 - 保护收尾停止视觉/Servo/适配器并保持当前位置，未发送 `DisableArm`、`ResetPiper` 或 `MasterSlaveConfig`。保留 `freeze_grasp_tracking` 与 `FreshMeasuredState` 修复，待下一次稳定反馈窗口再验证 `GRASP_READY → ALIGNED_PREGRASP → MICRO_APPROACH`。
+
+## 2026-09-25 搜索循环与基座三维目标锁定修复
+
+- 用户反馈要求目标丢失后必须继续搜索，且腕部相机随抓取运动时不能把目标视差当成目标移动。代码复核确认搜索状态本来会在 `SEARCH` 段完成后 `FULL_SEARCH_CYCLE_RESTART`；上一轮“没有动”实际是搜索段等待真实六轴反馈，反馈失效后安全停止。
+- 最小实现：抓取执行器在 `GRASP_READY` 启动确定性抓取时，将最新稳定的目标点变换并快照到 `lift_reference_frame`；`BuildAlignedPointGrasp` 和微步预测在模型锁定后只使用该基座三维点，不再读取腕部相机移动后的新点。到达预抓取后，对齐判断只验证已锁模型，不因视差/短时颜色深度丢帧重新 ALIGN/SEARCH；锁模前仍要求真实目标、稳定深度和尺寸门控。
+- 同步规范源码与 `/home/johnwick/piper_ws`，`colcon build --packages-select brain_robot_pick_place --symlink-install` 成功；未关闭碰撞检查、未恢复腕部点云、未改变适配器唯一输出。
+
+## 2026-09-25 新锁模代码后的默认自动链实跑
+
+- 新轮脚本实际通过 `[7/7]`、`OBSERVE_POSE_REACHED` 并进入 `SEARCH`；日志出现多次 `SEARCH_PLAN_ACCEPTED` 和 `FULL_SEARCH_CYCLE_RESTART`，证明目标丢失后的搜索运动链在工作。
+- 本轮检测器只报告 `PURPLE_CUBE target LOST`，没有颜色/矩形/稳定深度/尺寸同时满足的目标帧，因此没有 `ALIGN`、`GRASP_READY`、`GRASP_TARGET_MODEL_LOCKED` 或任何靠近/闭合动作；不能把背景紫色误当成方块。
+- 本轮 CAN 仅有一次 0.48 秒反馈恢复，未出现 25 秒反馈故障；脚本在 360 秒上限后按保护逻辑保持位置与使能，未发送 `DisableArm`、`ResetPiper` 或 `MasterSlaveConfig`。根分区 28%。
+- 下一步仍是同一主线：在目标进入视野并通过三维门控后验证 `GRASP_READY → GRASP_TARGET_MODEL_LOCKED → ALIGNED_PREGRASP → MICRO_APPROACH → GRIPPER_CLOSED → LIFT`；不再因腕部相机视差重定位。
