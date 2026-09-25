@@ -792,3 +792,14 @@
 
 - 磁盘维护已执行且结果可验证；当前阻断仍是 USB-CAN/VMware 接口未形成可用 `can0`，而非清理动作未执行。
 - 下一步必须是外部链路重新枚举/透传后，确认 `can0 UP`、1 Mbps/0.75 且 RX 持续增长；达到该门槛后立即复用默认自动脚本，验证 `OBSERVE_POSE_REACHED` → `SEARCH`，再继续点云碰撞和紫色方块抓取闭环。
+
+## 2026-09-25 高级实体链骨架推进与最新阻断
+
+- 复用既有 `cube_visual_search.launch.py → cube_task_real.yaml → visual_search_controller → piper_jog_adapter → grasp_lift_executor → start_brain_robot_cube_real.sh`，未另写基础运动程序。默认实跑实际完成 `OBSERVE_POSE_REACHED → SEARCH`；紫色检测器产生 `PURPLE_CUBE target DETECTED`，但搜索第一段因 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT` 进入保护故障。
+- 依据已实测最长约 17.4 秒反馈空窗，将 `search_segment_timeout_s` 从 12 秒调整为 30 秒；将实体 `grasp_lift_executor.auto_execute` 从 `false` 调为 `true`，使 `GRASP_READY` 自动进入既有抓取骨架。`brain_robot_ball_pick` 构建成功，安装 YAML 已确认同步。
+- 第二次默认复跑在脚本重新配置 CAN 后 5 秒 RX=0，于 `[1/7]` 安全退出，未发送运动命令；随后 USB-CAN reset 与 6 秒只读 `candump` 仍 RX=0。因此新搜索门控和自动抓取尚未获得第二次实机验证。
+
+### 本轮结论与下一步
+
+- 观测后确实已经自动进入 `SEARCH`；抓取骨架的两个软件门控已修复，但当前最新阻断重新是 USB-CAN 无 RX。
+- 下一步必须先恢复持续 RX，再复用已构建的 30 秒搜索门控和自动抓取链；不在 RX=0 时启动实体运动。

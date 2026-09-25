@@ -334,3 +334,9 @@
 - 针对“未定期清理磁盘导致 CAN 失效”的判断，实际运行 `/home/johnwick/clean_disk_space.sh`，helper、journal vacuum 和 `apt clean` 均成功，根分区仍为 28%。
 - 清理后立即检查 `can0`，状态仍为 `DOWN/STOPPED`、RX=0；因此清理并未恢复接口，当前证据不支持把 USB-CAN 阻断全部归因于磁盘。
 - 决策：不因该假设重复 CAN 模块重载或启动运动；保持 `can0 UP + RX 增长` 为实体运行硬门槛。点云/碰撞修复继续保留，待链路恢复后再做实际闭环验证。
+
+## 2026-09-25 自动抓取骨架必须从 GRASP_READY 继续
+
+- 实体链实跑已达到 `OBSERVE_POSE_REACHED → SEARCH`，但搜索段 12 秒门控在新固件反馈空窗期间触发 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT`；同时真实抓取执行器仍为 `auto_execute=false`，与配置注释不一致。
+- 决策：搜索段超时设为 30 秒以覆盖已测 17.4 秒反馈空窗；`grasp_lift_executor.auto_execute=true`，达到 `GRASP_READY` 后自动走已有对齐/抓取/抬升/释放流程。不得绕过 `piper_jog_adapter` 或恢复腕部实体 Octomap。
+- 修复已构建但尚未在第二次实跑验证，原因是前置 CAN RX 又为 0；恢复 RX 后只验证该高级链。

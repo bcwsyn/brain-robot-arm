@@ -60,7 +60,10 @@ visual_search_controller:
     search_planning_attempts: 2
     search_planning_velocity_scaling: 0.05
     search_planning_acceleration_scaling: 0.05
-    search_segment_timeout_s: 12.0
+    # S-V1.9-1 feedback gaps measured during motion reach about 17.4 s;
+    # keep a bounded segment timeout above that window while retaining the
+    # driver's 25 s feedback protection.
+    search_segment_timeout_s: 30.0
     target_timeout_s: 0.60
     # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
     # transition.  The PiPER driver suppresses output during that window;
@@ -110,7 +113,7 @@ grasp_lift_executor:
     # retry after a stopped sequence.
     simulation_only: false
     real_grasp_enabled: true
-    auto_execute: false
+    auto_execute: true
     # Try a bounded set of coarse, collision-checked grasp candidates.  A
     # rejected candidate keeps the gripper open and advances to the next one.
     candidate_grasp_enabled: true
