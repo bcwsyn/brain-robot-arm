@@ -1084,3 +1084,10 @@
 - `c601cc8` 后实跑稳定到达 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`；本轮单一路径的 `ALIGNED_PREGRASP` 已多次成功规划并由 `piper_jog_adapter` 接受（21/56/32个轨迹点）。
 - 轨迹刚接受后，视觉控制器因腕部相机运动产生的目标视差触发 `GRASP_READY_TARGET_SHIFT`，重新进入 ALIGN/SEARCH，抓取执行器因此收到 `ALIGNED_PREGRASP_PLAN_FAILED`，尚未进入微步靠近、闭合或抬升。
 - 最小修复：加入 `freeze_grasp_tracking=true`；GRASP_READY 后视觉控制器不再抢回对齐控制。抓取执行器在预抓取到达后使用 `approach_locked_`，只要求目标点/深度/有效标志新鲜，不再把正常视差当成对齐误差。已构建 `brain_robot_pick_place` 与 `brain_robot_ball_pick` 成功。
+
+## 2026-09-25 f7059ce 后默认自动链实跑：观测已达，搜索被反馈门控安全停止
+
+- 实际命令仍为 `BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh`，单一运行完成 `[7/7]`，并明确记录 `STATE -> SEARCH (OBSERVE_POSE_REACHED)`。
+- 本轮检测器在启动阶段短暂 `PURPLE_CUBE target DETECTED`，进入观测运动后变为 `target LOST`；之后没有达到目标稳定帧、`ALIGN` 或 `GRASP_READY`。因此没有下发预抓取、微步、闭合、抬升或释放动作，不能把背景颜色当成抓取授权。
+- 搜索轨迹规划本身多次成功并由适配器接受；但驱动在搜索中再次出现连续反馈空窗，最终日志给出 `can0 feedback absent for 25.0s`、`STATE -> FAULT (SEARCH_SEGMENT_FEEDBACK_TIMEOUT)`，适配器随后 `PHYSICAL MOTION DISARMED: joint state timeout`。这次阻断是实际反馈新鲜度门控，磁盘使用率仅 28%，不是磁盘空间或点云自碰撞证据。
+- 保护收尾停止视觉/Servo/适配器并保持当前位置，未发送 `DisableArm`、`ResetPiper` 或 `MasterSlaveConfig`。保留 `freeze_grasp_tracking` 与 `FreshMeasuredState` 修复，待下一次稳定反馈窗口再验证 `GRASP_READY → ALIGNED_PREGRASP → MICRO_APPROACH`。
