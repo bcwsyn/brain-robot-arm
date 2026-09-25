@@ -847,6 +847,18 @@
 - `sensors: []` 在当前 MoveIt/无显示环境组合下不可作为实体默认配置；已回退到“插件初始化 + 不存在 topic”的稳定方案。官方 MoveIt occupancy updater 只有在实际订阅到传感器输入时才更新 Octomap，因此该方案仍排除夹爪点云障碍。
 - 下一步重新运行默认 `BRAIN_ROBOT_AUTO_START=1` 脚本；若到达 `GRASP_READY` 后预抓取仍失败，增加并读取 MoveIt IK/规划诊断，区分 URDF 自碰撞、目标不可达与反馈状态问题，不再修改点云过滤参数。
 
+## 2026-09-25 默认链复跑：反馈空窗导致 TF 门控失败，驱动改为安全保持
+
+- 配置回退后的默认脚本实跑中，`move_group` 已正常完成 OMPL/Pilz 初始化，没有再次出现无 3D updater 的崩溃；脚本在 `[5/7]` 等待 TF 门控时停止。视觉日志明确为 `base_link` 与 `camera_color_optical_frame` 不在同一 TF 树，原因是 PiPER 驱动日志显示反馈丢失满 25 秒后进程退出，动态 `robot_state_publisher` 随之失去关节状态。
+- 相机/点云只读复核确认 `/camera/depth/points` 有真实 publisher；因此本轮没有“夹爪被点云加入障碍模型”的证据。实体 Octomap 仍只指向无发布者的 disabled topic。
+- 最小安全修复：`piper_ctrl_single_node` 在反馈空窗超过 25 秒后不再 `rclpy.shutdown()`，改为保持 ROS/TF 节点存活并永久抑制 CAN 输出，直到完整高速与聚合反馈恢复；恢复时清除该状态并重新发布新鲜 JointState。该路径不会在反馈丢失期间发送运动命令。
+- `py_compile` 通过，`/home/johnwick/piper_ros` 的 `piper` 包构建返回 `0`，运行时源已同步。
+
+### 本轮结论与下一步
+
+- 当前阻断是反馈空窗造成的 TF/MoveIt 状态源退出，不是点云碰撞。驱动保持接收态后，下一轮可在同一 CAN 链路恢复时继续等待 TF 并进入观测，不必重启整套视觉栈。
+- 下一步复跑默认自动脚本，验收 `OBSERVE_POSE_REACHED → SEARCH → GRASP_READY`；若抓取候选仍失败，再读取 IK/规划失败诊断。
+
 ## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
 
 - 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。

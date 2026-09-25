@@ -367,3 +367,9 @@
 - 实跑证明在当前无显示环境和 MoveIt 版本组合下，完全不注册 3D sensor 会让 `move_group` 伴随 freeglut/display 错误崩溃，不能作为默认实体配置。
 - 决策：实体配置恢复 `astra_depth_pointcloud` updater，但 `point_cloud_topic` 固定为无发布者的 `/brain_robot_vision/disabled_octomap_points`；这保留 MoveGroup 启动兼容性，同时不把腕部 RGB-D/夹爪回波送入 Octomap。不得因该回退重新归因于夹爪点云。
 - 后续预抓取失败必须从新鲜关节状态、IK 返回码、URDF/SRDF 自碰撞或规划器采样日志定位；不关闭碰撞检查、不绕过 `piper_jog_adapter`。
+
+## 2026-09-25 反馈空窗不得摧毁 TF/MoveIt 状态源
+
+- 默认链复跑显示 MoveGroup 本身启动正常；PiPER 驱动在约 25 秒反馈空窗后调用 `rclpy.shutdown()`，导致机器人状态发布和相机到 `base_link` 的 TF 一起消失，脚本在 `[5/7]` 被门控阻断。
+- 决策：反馈丢失超过宽限期时仅保持“输出抑制/接收等待”状态，不退出驱动、不发送零值或旧值；完整反馈恢复后才继续发布新鲜 JointState。该策略沿用官方 SDK 对反馈有效性和 JointCtrl 前置模式的要求，并保留运动保护。
+- 点云决策不变：`/camera/depth/points` 可作为视觉输入和 TF 心跳，但实体 MoveIt updater 只监听无发布者 disabled topic；不得把本轮 TF 断开归因于夹爪点云。

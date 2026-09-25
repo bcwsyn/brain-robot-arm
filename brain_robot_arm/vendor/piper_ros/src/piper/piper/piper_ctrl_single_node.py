@@ -77,6 +77,7 @@ class PiperRosNode(Node):
         # Enable flag
         self.__enable_flag = False
         self._can_feedback_lost_at = None
+        self._can_feedback_loss_escalated = False
         # Create piper class and open CAN interface
         # S-V1.9-1 firmware uses the V2 protocol. The USB gs_usb adapter is
         # an external SocketCAN interface, so skip the SDK's built-in CAN
@@ -162,6 +163,7 @@ class PiperRosNode(Node):
                 self.get_logger().warning(
                     f"{self.can_port} feedback recovered after {elapsed:.2f}s")
                 self._can_feedback_lost_at = None
+                self._can_feedback_loss_escalated = False
             return True
 
         now = time.monotonic()
@@ -170,10 +172,18 @@ class PiperRosNode(Node):
             self.get_logger().warning(
                 f"{self.can_port} feedback lost; suppressing output for up to "
                 f"{self.CAN_FEEDBACK_GRACE_S:.1f}s")
-        elif now - self._can_feedback_lost_at >= self.CAN_FEEDBACK_GRACE_S:
-            self.get_logger().error(f"{self.can_port} is loss")
-            self.get_logger().error("exit...")
-            rclpy.shutdown()
+        elif (now - self._can_feedback_lost_at >= self.CAN_FEEDBACK_GRACE_S and
+              not self._can_feedback_loss_escalated):
+            # Do not tear down the ROS state/TF source on a delayed V2 feedback
+            # transition.  Command publication remains strictly suppressed by
+            # this method, so retaining the receive loop cannot move the arm;
+            # it lets a recovered CAN stream repopulate MoveIt with real joint
+            # states rather than forcing the whole visual stack to restart.
+            self._can_feedback_loss_escalated = True
+            self.get_logger().error(
+                f"{self.can_port} feedback absent for "
+                f"{self.CAN_FEEDBACK_GRACE_S:.1f}s; holding all output and "
+                "waiting for recovery (driver stays receive-only).")
         return False
 
     def publish_thread(self):
