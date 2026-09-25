@@ -1051,3 +1051,8 @@
 - 按目标将实体配置从多候选抓取切换为确定性主线：`candidate_grasp_enabled=false`、候选列表为空；保留视觉对齐点位、固定预抓取距离、受限微步靠近、闭合、抬升和释放。
 - 已同步到 `/home/johnwick/piper_ws` 并构建 `brain_robot_ball_pick` 成功；未启动实体运动。
 - 这样下一次实跑的验证目标明确为：`GRASP_READY → ALIGNED_PREGRASP → MICRO_APPROACH → GRIPPER_CLOSED → LIFT`，失败时只定位单一路径，不再在多个姿态候选间来回扭转。
+
+## 2026-09-25 单一路径首次启动被空列表参数阻断
+
+- 实跑在启动阶段未进入 `[7/7]`：`grasp_lift_executor` 因 ROS 参数 `candidate_grasp_order: []` 被解析为“未设置”而退出，脚本报告等待 `/grasp_lift_executor` 超时。没有发送观测或抓取动作。
+- 最小修复：候选分支仍保持 `candidate_grasp_enabled=false`，将参数改为非空占位 `[NONE]`，以满足 ROS 参数类型/存在性要求；候选代码不会被调用。`brain_robot_ball_pick` 构建成功。

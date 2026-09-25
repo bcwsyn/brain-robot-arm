@@ -118,7 +118,7 @@ grasp_lift_executor:
     # bounded approach -> close -> lift. Candidate search stays disabled until
     # this single path completes on the physical arm.
     candidate_grasp_enabled: false
-    candidate_grasp_order: []
+    candidate_grasp_order: [NONE]
     gripper_open_value: 50000
     gripper_close_value: 40000
     gripper_settle_s: 2.0
