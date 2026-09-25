@@ -461,3 +461,8 @@
 
 - 第二次默认实跑已到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN`，但在目标稳定前因 `SEARCH_SEGMENT_FEEDBACK_TIMEOUT` 停止，未到 `GRASP_READY`。
 - 决策：保留 `FreshMeasuredState` 修复，下一轮仅在完整新鲜反馈窗口下验证候选预抓取；反馈空窗期间继续禁止输出，不把超时误判为点云碰撞或 IK 失败。
+
+## 2026-09-25 第二次实跑未到抓取阶段
+
+- `FreshMeasuredState` 代码已构建，但本轮在 SEARCH 段因聚合反馈空窗超时，未进入 GRASP_READY。
+- 决策：不据此修改抓取几何；先解决/复核运动期间聚合反馈连续性，再验证真实候选 IK。
