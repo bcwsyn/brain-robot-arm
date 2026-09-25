@@ -938,3 +938,16 @@
 
 - 本轮不继续启动真机运动；异常行为的直接记录是视觉状态机在反馈保护故障后仍等待脚本收尾，现已清理。不得把它解释为夹爪点云碰撞。
 - 下一步必须先由操作者确认机械臂当前姿态/使能状态，再决定是否进行一次受控重试；在此之前只做文档和静态代码检查。
+
+## 2026-09-25 用户报告“对齐后扭头并小幅震动”的命令还原
+
+- 实际运行命令是：`timeout --signal=INT --kill-after=180s 360s env BRAIN_ROBOT_AUTO_START=1 /home/johnwick/start_brain_robot_cube_real.sh`。这不是只读诊断；它启动了 PiPER 驱动、Astra、检测器、MoveIt、Servo、`piper_jog_adapter`、视觉控制器和抓取执行器，并因 `BRAIN_ROBOT_AUTO_START=1` 自动发送了真实轨迹。
+- 运行先接受当前姿态到观测姿态的 52.9 秒轨迹，随后进入 `OBSERVE_POSE_REACHED → SEARCH → ALIGN`。目标检测在 `DETECTED/LOST` 间快速切换，控制器反复进入 `LAST_PATH_REACQUIRE`，每次向适配器提交 2 点小轨迹；这就是用户看到的小幅抖动来源。
+- 首次运行达到 `GRASP_READY` 后，抓取执行器对 TOP_DOWN 目标（`(-0.120,-0.077,0.367)`）调用 MoveIt 规划，返回 `IK_ERROR_CODE_-31`；这次没有执行抓取闭合。
+- 随后目标发生偏移，视觉状态回到 `ALIGN` 再次 `GRASP_READY`。脚本超时触发 SIGINT 后，`cleanup()` 调用了 `/visual_search_controller/reset`；日志明确出现 `STATE -> PREPARE (RESET_AUTHORIZED)` 和新的 49.0 秒 `REAL ARM trajectory accepted`。这条收尾复位轨迹就是“突然扭头转向别处”的直接来源，属于脚本收尾逻辑，不是用户按键，也不是夹爪点云碰撞。
+- 该命令已停止；当前没有脚本、PiPER 驱动、MoveIt、Servo、视觉或抓取进程，未发送失能命令。运行日志：`/home/johnwick/brain_robot_logs/ros/visual_search_controller_44404_1790312868377.log`、`/home/johnwick/brain_robot_logs/visual_stack.log`。
+
+### 本轮结论与下一步
+
+- 已确认此前的自动收尾复位轨迹超出了用户期望的“当前姿态→观测姿态”路径；在用户确认前不再启动任何真实运动。
+- 后续若修复，必须把“抓取/搜索故障后的脚本收尾”与“用户明确请求的零点复位”分开：故障时先停止发送目标并保持使能，不得静默发起新的长复位轨迹。
