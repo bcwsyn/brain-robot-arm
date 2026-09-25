@@ -361,3 +361,9 @@
 
 - AgileX 官方 SDK 说明第一帧关节数据默认为零；本机驱动原先只检查高速反馈就发布 JointState，可能在聚合关节帧未完整时把 SDK 默认值交给 MoveIt。官方关节控制循环持续发送模式和六轴绝对关节目标，本机仍通过既有 `piper_jog_adapter` 驱动这一语义。
 - 决策：必须同时确认高速和六轴聚合反馈新鲜后再发布 JointState，发布时使用本机 ROS 时间戳；这防止 MoveIt 从零姿态或过期 CAN 时间戳规划。禁止借此放宽反馈保护、执行 MasterSlaveConfig/ResetPiper 或恢复腕部点云。
+
+## 2026-09-25 `sensors: []` 启动回归后的实体配置决策
+
+- 实跑证明在当前无显示环境和 MoveIt 版本组合下，完全不注册 3D sensor 会让 `move_group` 伴随 freeglut/display 错误崩溃，不能作为默认实体配置。
+- 决策：实体配置恢复 `astra_depth_pointcloud` updater，但 `point_cloud_topic` 固定为无发布者的 `/brain_robot_vision/disabled_octomap_points`；这保留 MoveGroup 启动兼容性，同时不把腕部 RGB-D/夹爪回波送入 Octomap。不得因该回退重新归因于夹爪点云。
+- 后续预抓取失败必须从新鲜关节状态、IK 返回码、URDF/SRDF 自碰撞或规划器采样日志定位；不关闭碰撞检查、不绕过 `piper_jog_adapter`。

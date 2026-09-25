@@ -836,6 +836,17 @@
 - 已同时处理“SDK 默认零反馈”和“MoveIt 使用陈旧 CAN 时间戳”两条导致抓取候选规划从错误起始状态出发的路径；不改变碰撞模型或腕部 Octomap 禁用决策。
 - 下一步直接复用默认自动链实测此驱动修复，验收 `GRASP_READY` 后的候选预抓取是否获得有效规划并继续抓取。
 
+## 2026-09-25 实体感知配置回退：无插件配置触发 MoveGroup 崩溃
+
+- 上一轮为彻底排除任何残留 occupancy updater，把实体 `sensors_3d_real.yaml` 改为 `sensors: []` 后启动默认脚本；实际日志显示 `move_group` 在无显示环境中因 `freeglut failed to open display` 退出码 `-11`，导致视觉启动失败。这是当前配置组合的启动回归，不是机械臂或夹爪碰撞证据。
+- 已停止残留视觉/相机/检测进程，调用 `/piper_jog_adapter/disarm` 与 `/servo_node/stop_servo` 成功；未发送失能命令。随后将 `sensors` 恢复为已验证的 `astra_depth_pointcloud`，但继续指向无发布者的 `/brain_robot_vision/disabled_octomap_points`，因此腕部点云仍不会进入实体 Octomap。
+- 重新同步运行时工作区并构建 `brain_robot_ball_pick`，`colcon build --symlink-install --packages-select brain_robot_ball_pick` 返回 `0`。本次修复只恢复 MoveGroup 启动兼容性，不恢复任何真实点云输入，也不关闭 URDF/SRDF 自碰撞检查。
+
+### 本轮结论与下一步
+
+- `sensors: []` 在当前 MoveIt/无显示环境组合下不可作为实体默认配置；已回退到“插件初始化 + 不存在 topic”的稳定方案。官方 MoveIt occupancy updater 只有在实际订阅到传感器输入时才更新 Octomap，因此该方案仍排除夹爪点云障碍。
+- 下一步重新运行默认 `BRAIN_ROBOT_AUTO_START=1` 脚本；若到达 `GRASP_READY` 后预抓取仍失败，增加并读取 MoveIt IK/规划诊断，区分 URDF 自碰撞、目标不可达与反馈状态问题，不再修改点云过滤参数。
+
 ## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
 
 - 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。
