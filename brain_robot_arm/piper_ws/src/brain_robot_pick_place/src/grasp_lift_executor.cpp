@@ -524,6 +524,7 @@ private:
 
   void PointGraspAndLift()
   {
+    approach_locked_ = false;
     if (!StopServo()) {
       Fail("SERVO_STOP_FAILED");
       return;
@@ -564,6 +565,7 @@ private:
       return;
     }
     PublishState("ALIGNED_PREGRASP_REACHED");
+    approach_locked_ = true;
 
     if (!TargetStillAligned()) {
       RequestVisualReacquire("GRASP_TARGET_SHIFT_AFTER_PREGRASP");
@@ -1264,6 +1266,18 @@ private:
 
   bool TargetStillAligned()
   {
+    if (approach_locked_) {
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      const auto now = std::chrono::steady_clock::now();
+      const auto target_age = std::chrono::duration<double>(now - target_point_received_time_).count();
+      const auto valid_age = std::chrono::duration<double>(now - target_valid_received_time_).count();
+      const auto depth_valid_age = std::chrono::duration<double>(now - depth_valid_received_time_).count();
+      return target_point_received_time_ != std::chrono::steady_clock::time_point{} &&
+             target_valid_received_time_ != std::chrono::steady_clock::time_point{} &&
+             depth_valid_received_time_ != std::chrono::steady_clock::time_point{} &&
+             target_age <= target_timeout_s_ && valid_age <= target_timeout_s_ &&
+             depth_valid_age <= target_timeout_s_ && target_valid_ && depth_valid_;
+    }
     std::lock_guard<std::mutex> lock(target_mutex_);
     const auto now = std::chrono::steady_clock::now();
     const auto target_age = std::chrono::duration<double>(now - target_point_received_time_).count();
@@ -1291,6 +1305,7 @@ private:
 
   void RequestVisualReacquire(const std::string & reason)
   {
+    approach_locked_ = false;
     cancel_requested_ = true;
     PublishDiagnostic(reason);
     std_msgs::msg::Bool message;
@@ -1876,6 +1891,7 @@ private:
   double target_error_ratio_{1.0};
   bool target_valid_{false};
   bool depth_valid_{false};
+  std::atomic_bool approach_locked_{false};
   sensor_msgs::msg::JointState latest_joint_state_;
   sensor_msgs::msg::JointState latest_gripper_feedback_;
 

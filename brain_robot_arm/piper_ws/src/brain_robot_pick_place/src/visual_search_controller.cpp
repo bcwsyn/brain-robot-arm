@@ -186,6 +186,7 @@ private:
     }
     level_align_enabled_ = ParameterOr<bool>("level_align_enabled", false);
     direct_grasp_after_align_ = ParameterOr<bool>("direct_grasp_after_align", false);
+    freeze_grasp_tracking_ = ParameterOr<bool>("freeze_grasp_tracking", false);
     level_joint2_name_ = ParameterOr<std::string>("level_joint2_name", "joint2");
     level_joint3_name_ = ParameterOr<std::string>("level_joint3_name", "joint3");
     level_joint2_target_ = ParameterOr<double>("level_joint2_target", 1.35);
@@ -1480,6 +1481,9 @@ private:
 
   void HandleGraspReadyLocked()
   {
+    if (freeze_grasp_tracking_) {
+      return;
+    }
     // GRASP_READY is externally visible to the grasp executor, but it must
     // not freeze visual tracking.  Keep Servo stopped while the target stays
     // inside the acquisition tolerance; resume closed-loop alignment as soon
@@ -2201,6 +2205,7 @@ private:
   bool horizon_lock_enabled_{true};
   bool level_align_enabled_{false};
   bool direct_grasp_after_align_{false};
+  bool freeze_grasp_tracking_{false};
   std::string level_joint2_name_;
   std::string level_joint3_name_;
   double level_joint2_target_{1.35};

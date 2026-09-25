@@ -1078,3 +1078,9 @@
 - `c601cc8` 生效后，默认链在约15秒观测轨迹后稳定进入 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`；驱动本轮仅出现一次0.09秒反馈恢复，未再出现10--17秒空窗。
 - 单一路径确实调用了 `ALIGNED_PREGRASP`，但目标日志显示 `target z=0.038 m`，明显低于桌面；MoveIt 正确返回 `IK_ERROR_CODE_-31`，不是点云碰撞。
 - 最小修复：实体配置加入 `grasp_height_offset_m: 0.16`，使侧向预抓取保持在桌面上方；已构建 `brain_robot_ball_pick`。
+
+## 2026-09-25 预抓取已规划成功，视觉重捕获抢占抓取控制
+
+- `c601cc8` 后实跑稳定到达 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`；本轮单一路径的 `ALIGNED_PREGRASP` 已多次成功规划并由 `piper_jog_adapter` 接受（21/56/32个轨迹点）。
+- 轨迹刚接受后，视觉控制器因腕部相机运动产生的目标视差触发 `GRASP_READY_TARGET_SHIFT`，重新进入 ALIGN/SEARCH，抓取执行器因此收到 `ALIGNED_PREGRASP_PLAN_FAILED`，尚未进入微步靠近、闭合或抬升。
+- 最小修复：加入 `freeze_grasp_tracking=true`；GRASP_READY 后视觉控制器不再抢回对齐控制。抓取执行器在预抓取到达后使用 `approach_locked_`，只要求目标点/深度/有效标志新鲜，不再把正常视差当成对齐误差。已构建 `brain_robot_pick_place` 与 `brain_robot_ball_pick` 成功。
