@@ -871,6 +871,16 @@
 - 现阶段“对齐后无法靠近”的直接软件阻断是预抓取请求起点被反馈空窗污染，不是夹爪点云障碍；候选角度/方向策略已存在但此前未真正执行到靠近段。
 - 下一步复跑验证显式起点是否让 TOP_DOWN 预抓取成功；若仍失败，读取新增加的 IK 诊断返回码，区分目标姿态不可达与实体自碰撞，再调整候选方向/偏移。
 
+## 2026-09-25 预抓取失败诊断可见化
+
+- 显式起始状态版本的实跑再次达到 `GRASP_READY`，但 TOP_DOWN 四个 yaw 候选均出现 `Unable to sample any valid states for goal tree`；代码日志中的 current pose 在反馈空窗时仍可能显示零值，不能据此判定为碰撞。
+- 已在 `grasp_lift_executor` 的每次预抓取规划失败处直接输出 `DiagnoseIk` 结果。该诊断使用 `avoid_collisions=false` 的 `GetPositionIK`：`IK_OK_PLAN_FAILED` 表示 IK 可达但规划/碰撞失败；`IK_ERROR_CODE_*` 表示姿态/模型不可达；`IK_CURRENT_STATE_STALE` 表示反馈仍不满足安全门槛。
+- 两个工作区包构建返回 `0`；未关闭碰撞检查、未把腕部点云接入实体 Octomap、未绕过适配器。
+
+### 本轮结论与下一步
+
+- 目前尚无依据把“无法靠近”归因于夹爪点云；下一次短实跑只需读取上述诊断结果即可选择修正方向：若 IK 可达则优化预抓取空间/自碰撞；若 IK 错误则调整 TOP_DOWN/DIAGONAL 末端姿态与偏移；若状态过期则继续反馈门控修复。
+
 ## 2026-09-25 自动抓取实跑：已到 GRASP_READY，预抓取规划被反馈状态过期阻断
 
 - 用户确认 CAN 恢复后，实测 `can0` 5 秒 RX 从 `68199` 增至 `79819`，默认脚本通过 `[7/7]`，完成 `OBSERVE_POSE_REACHED → SEARCH`；检测器实际报告紫色目标，视觉链随后经历 `ALIGN`、`LOCAL_SEARCH`、目标重捕获，并达到 `GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。

@@ -1527,7 +1527,10 @@ private:
       const auto current = arm_->getCurrentPose(end_effector_link_);
       current_pose_publisher_->publish(current);
       if (!planned) {
-        PublishDiagnostic(stage + ":" + DiagnoseIk(target));
+        const auto diagnosis = DiagnoseIk(target);
+        PublishDiagnostic(stage + ":" + diagnosis);
+        RCLCPP_WARN(
+          get_logger(), "%s planning diagnosis: %s", stage.c_str(), diagnosis.c_str());
       }
       RCLCPP_ERROR(
         get_logger(),
