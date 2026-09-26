@@ -1315,3 +1315,10 @@
 - 验证命令/结果：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回 0；`cmp` 确认规范与实际抓取源码/配置一致；运行日志见 `/home/johnwick/brain_robot_logs/visual_stack.log`、`cube_detector.log`、`piper_driver.log`。
 - 当前状态：无一键脚本、PiPER 驱动或视觉栈残留；can0 需要下次启动前复核 RX。允许继续真实运动的前提仍是反馈新鲜、适配器 arm 已通过；抓取姿态必须先得到 MoveIt IK/规划通过证据。
 - 下一步：优先在不发送运动的前提下针对锁定目标筛选可达末端姿态/路径（确认 `gripper_base` 工具轴与目标 base_link 几何）；然后只在 MoveIt 规划成功后再次运行默认链验证 `GRASP_READY -> PREGRASP -> CLOSE -> LIFT -> RELEASE`。
+
+## 2026-09-26 提交后收尾
+
+- 本轮提交：`c23fcbc fix: avoid DDS SHM startup deadlock and lock grasp target`。
+- 提交后实测：`can0` 当前 `ERROR-ACTIVE`、1 Mbps/0.750、RX 10,375,341 packets、errors/dropped 0；`sudo -n true` 返回 0；无 `start_brain_robot_cube_real`、PiPER 驱动或视觉栈残留进程。
+- 工作区仍有 123 个既有用户/供应商映射文件修改和 `reference/`/deb 未跟踪项，本轮未暂存、未覆盖、未回滚；本提交仅包含 7 个本轮文件。
+- 下一次第一条命令：`cd /mnt/hgfs/ub && git show --stat --oneline HEAD && ip -details -statistics link show can0`；随后在不运动的前提下先对锁定目标执行 MoveIt 只读 IK/规划筛选，再决定是否保留顶部抓取配置。
