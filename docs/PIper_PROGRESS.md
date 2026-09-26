@@ -1271,3 +1271,7 @@
 - 最小改动：真实配置 align_stable_frames=1、target_loss_grace_s=2.0；抓取执行器新增 static_target_lock=true，锁定后跳过预抓取后的 TargetStillAligned 检查和视觉重捕获，仅按锁定模型完成预抓取/微接近。
 - 本轮实体运行已达到 OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY，目标基座模型成功锁定；失败发生在锁定预抓取执行反馈未收敛，未出现碰撞或视觉重规划证据。
 ## 2026-09-26 静止目标单次锁定抓取简化
+## 2026-09-26 静态锁定验证与 CAN 瞬时重枚举
+
+- 新静态锁定代码已成功构建；首次重跑在 CAN 初始化阶段遇到 USB-CAN 瞬时 No such device，脚本未发送运动命令。
+- 一键脚本加入 5 次有限 can0 重枚举/配置重试；恢复后仍必须通过持续 RX 门控，才允许进入运动。

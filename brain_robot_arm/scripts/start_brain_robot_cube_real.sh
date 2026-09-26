@@ -346,10 +346,18 @@ configure_can() {
   fi
 
   echo "[CAN] 复用现有 USB-CAN，配置 can0 为 1 Mbps、采样点 0.75..."
-  sudo ip link set can0 down 2>/dev/null || true
-  sudo ip link set can0 type can bitrate 1000000 sample-point 0.75 2>/dev/null ||
-    fail "无法配置 can0；请检查 USB-CAN 连接。"
-  sudo ip link set can0 up || fail "无法启动 can0。"
+  local configured=1
+  for attempt in {1..5}; do
+    if ip link show can0 >/dev/null 2>&1; then
+      sudo ip link set can0 down 2>/dev/null || true
+      if sudo ip link set can0 type can bitrate 1000000 sample-point 0.75 2>/dev/null && sudo ip link set can0 up 2>/dev/null; then
+        configured=0
+        break
+      fi
+    fi
+    sleep 1
+  done
+  (( configured == 0 )) || fail "无法配置或启动 can0；请检查 USB-CAN 连接。"
   configure_can_tx_queue
 
   can_details=$(ip -details link show can0)
