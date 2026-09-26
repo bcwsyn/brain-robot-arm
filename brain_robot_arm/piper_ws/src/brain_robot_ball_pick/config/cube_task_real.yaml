@@ -141,8 +141,14 @@ grasp_lift_executor:
     top_down_pregrasp_clearance_m: 0.08
     top_down_grasp_clearance_m: 0.018
     top_down_yaw_candidates: [0.0, 1.57079632679, -1.57079632679, 3.14159265359]
+    # Sweep from vertical to a 57-degree slanted approach; each candidate
+    # offsets the wrist along its own tool axis and must pass MoveIt IK.
+    top_down_tilt_candidates: [0.0, 0.35, 0.70, 1.00]
     diagonal_side_grasp_enabled: false
     diagonal_lateral_offset_m: 0.06
+    # The MoveIt arm group is declared as base_link -> link6; gripper_base
+    # is fixed at the same origin but lies outside that semantic chain.
+    end_effector_link: link6
     use_sim_time: false
     lift_reference_frame: base_link
     camera_optical_frame: camera_color_optical_frame

@@ -299,6 +299,8 @@ private:
     top_down_grasp_yaw_ = ParameterOr<double>("top_down_grasp_yaw", 0.0);
     top_down_yaw_candidates_ = ParameterOr<std::vector<double>>(
       "top_down_yaw_candidates", {0.0, 1.57079632679, -1.57079632679, 3.14159265359});
+    top_down_tilt_candidates_ = ParameterOr<std::vector<double>>(
+      "top_down_tilt_candidates", {0.0, 0.35, 0.70, 1.00});
     diagonal_pregrasp_standoff_m_ = ParameterOr<double>(
       "diagonal_pregrasp_standoff_m", 0.17);
     diagonal_grasp_standoff_m_ = ParameterOr<double>(
@@ -1099,48 +1101,66 @@ private:
       RCLCPP_ERROR(get_logger(), "Locked top-down target is unavailable.");
       return false;
     }
-    try {
-      grasp_target.header.frame_id = lift_reference_frame_;
-      grasp_target.header.stamp = now();
-      grasp_target.pose.position.x = object_world.point.x;
-      grasp_target.pose.position.y = object_world.point.y;
-      grasp_target.pose.position.z = object_world.point.z + gripper_tip_offset_m_ +
-        grasp_height_offset_m_ + vertical_clearance_m;
-      if (!selected_top_down_yaw_valid_) {
+    if (!selected_top_down_yaw_valid_) {
+      for (const double tilt : top_down_tilt_candidates_) {
         for (const double yaw : top_down_yaw_candidates_) {
-          grasp_target.pose.orientation = TopDownOrientation(yaw);
+          PopulateTopDownPose(object_world, vertical_clearance_m, tilt, yaw, grasp_target);
           if (TopDownPoseHasIk(grasp_target)) {
             selected_top_down_yaw_ = yaw;
+            selected_top_down_tilt_ = tilt;
             selected_top_down_yaw_valid_ = true;
             break;
           }
         }
-        if (!selected_top_down_yaw_valid_) {
-          RCLCPP_ERROR(get_logger(), "No top-down yaw candidate has an IK solution.");
-          return false;
+        if (selected_top_down_yaw_valid_) {
+          break;
         }
       }
-      grasp_target.pose.orientation = TopDownOrientation(selected_top_down_yaw_);
-      target_pose_publisher_->publish(grasp_target);
-      RCLCPP_INFO(
-        get_logger(),
-        "Top-down grasp target: object=(%.3f, %.3f, %.3f), clearance=%.3f m, "
-        "gripper_base=(%.3f, %.3f, %.3f).",
-        object_world.point.x, object_world.point.y, object_world.point.z,
-        vertical_clearance_m, grasp_target.pose.position.x, grasp_target.pose.position.y,
-        grasp_target.pose.position.z);
-      RCLCPP_INFO(get_logger(), "Top-down yaw selected: %.3f rad.", selected_top_down_yaw_);
-      return true;
-    } catch (const tf2::TransformException & exception) {
-      RCLCPP_ERROR(get_logger(), "Cannot construct top-down grasp target: %s", exception.what());
-      return false;
+      if (!selected_top_down_yaw_valid_) {
+        RCLCPP_ERROR(get_logger(), "No top-down/tilted yaw candidate has an IK solution.");
+        return false;
+      }
     }
+    PopulateTopDownPose(
+      object_world, vertical_clearance_m, selected_top_down_tilt_,
+      selected_top_down_yaw_, grasp_target);
+    target_pose_publisher_->publish(grasp_target);
+    RCLCPP_INFO(
+      get_logger(),
+      "Top-down grasp target: object=(%.3f, %.3f, %.3f), clearance=%.3f m, "
+      "gripper_base=(%.3f, %.3f, %.3f).",
+      object_world.point.x, object_world.point.y, object_world.point.z,
+      vertical_clearance_m, grasp_target.pose.position.x, grasp_target.pose.position.y,
+      grasp_target.pose.position.z);
+    RCLCPP_INFO(
+      get_logger(), "Top-down approach selected: tilt=%.3f yaw=%.3f rad.",
+      selected_top_down_tilt_, selected_top_down_yaw_);
+    return true;
   }
 
-  geometry_msgs::msg::Quaternion TopDownOrientation(double yaw) const
+  void PopulateTopDownPose(
+    const geometry_msgs::msg::PointStamped & object_world, double vertical_clearance_m,
+    double tilt, double yaw, geometry_msgs::msg::PoseStamped & grasp_target)
+  {
+    const auto orientation = TopDownOrientation(yaw, tilt);
+    tf2::Quaternion rotation;
+    tf2::fromMsg(orientation, rotation);
+    tf2::Vector3 tool_axis = tf2::quatRotate(rotation, tf2::Vector3(0.0, 0.0, 1.0));
+    tool_axis.normalize();
+    const double tip_distance = gripper_tip_offset_m_ + grasp_height_offset_m_ +
+      vertical_clearance_m;
+    grasp_target.header.frame_id = lift_reference_frame_;
+    grasp_target.header.stamp = now();
+    grasp_target.pose.position.x = object_world.point.x - tool_axis.x() * tip_distance;
+    grasp_target.pose.position.y = object_world.point.y - tool_axis.y() * tip_distance;
+    grasp_target.pose.position.z = object_world.point.z - tool_axis.z() * tip_distance;
+    grasp_target.pose.orientation = orientation;
+  }
+
+  geometry_msgs::msg::Quaternion TopDownOrientation(double yaw, double tilt) const
   {
     tf2::Quaternion orientation;
-    orientation.setRPY(0.0, std::acos(-1.0), yaw);
+    orientation.setRPY(0.0, std::acos(-1.0) - tilt, yaw);
     orientation.normalize();
     return tf2::toMsg(orientation);
   }
@@ -1166,9 +1186,20 @@ private:
     moveit::core::robotStateToRobotStateMsg(*current_state, request->ik_request.robot_state);
     auto future = compute_ik_client_->async_send_request(request);
     if (future.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
+      RCLCPP_WARN(get_logger(), "Top-down IK request timed out for link %s.", end_effector_link_.c_str());
       return false;
     }
-    return future.get()->error_code.val == moveit_msgs::msg::MoveItErrorCodes::SUCCESS;
+    const auto response = future.get();
+    if (response->error_code.val != moveit_msgs::msg::MoveItErrorCodes::SUCCESS) {
+      RCLCPP_WARN(
+        get_logger(),
+        "Top-down IK rejected link=%s frame=%s pose=(%.3f, %.3f, %.3f) code=%d.",
+        end_effector_link_.c_str(), target.header.frame_id.c_str(),
+        target.pose.position.x, target.pose.position.y, target.pose.position.z,
+        response->error_code.val);
+      return false;
+    }
+    return true;
   }
 
   bool BuildAlignedPointGrasp(
@@ -1874,7 +1905,9 @@ private:
   double top_down_grasp_clearance_m_{0.005};
   double top_down_grasp_yaw_{0.0};
   std::vector<double> top_down_yaw_candidates_;
+  std::vector<double> top_down_tilt_candidates_;
   double selected_top_down_yaw_{0.0};
+  double selected_top_down_tilt_{0.0};
   bool selected_top_down_yaw_valid_{false};
   double diagonal_pregrasp_standoff_m_{0.17};
   double diagonal_grasp_standoff_m_{0.045};

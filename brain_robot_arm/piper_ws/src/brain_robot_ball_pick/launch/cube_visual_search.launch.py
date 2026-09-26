@@ -52,12 +52,16 @@ def generate_launch_description():
         name='robot_state_publisher', output='screen',
         parameters=[moveit.robot_description, {'use_sim_time': False}],
         remappings=[('/joint_states', '/piper_moveit_joint_states')])
-    # Calibrated physical mount: the gripper is 10 cm forward and 5 cm below
-    # the camera optical origin; camera axes are parallel to gripper_base.
+    # Physical wrist mount: camera optical +Z looks along gripper_base +Z,
+    # the jaw/tool centreline defined by joint7/joint8 in the PiPER URDF.
+    # camera_link +X is the optical-frame +Z axis, so rotate camera_link -90
+    # degrees about gripper_base Y.  Keeping both frames parallel incorrectly
+    # maps camera depth onto gripper +X and places tabletop targets behind the
+    # wrist in base_link.
     camera_mount_tf = Node(
         package='tf2_ros', executable='static_transform_publisher',
         name='piper_camera_mount_tf', output='screen',
-        arguments=['0.0', '-0.05', '-0.10', '0.0', '0.0', '0.0',
+        arguments=['0.0', '-0.05', '-0.10', '0.0', '-1.57079632679', '0.0',
                    'gripper_base', 'camera_link'])
     static_virtual_joint_tfs = generate_static_virtual_joint_tfs_launch(moveit)
     return LaunchDescription(static_virtual_joint_tfs.entities + [

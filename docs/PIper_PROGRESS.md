@@ -1322,3 +1322,16 @@
 - 提交后实测：`can0` 当前 `ERROR-ACTIVE`、1 Mbps/0.750、RX 10,375,341 packets、errors/dropped 0；`sudo -n true` 返回 0；无 `start_brain_robot_cube_real`、PiPER 驱动或视觉栈残留进程。
 - 工作区仍有 123 个既有用户/供应商映射文件修改和 `reference/`/deb 未跟踪项，本轮未暂存、未覆盖、未回滚；本提交仅包含 7 个本轮文件。
 - 下一次第一条命令：`cd /mnt/hgfs/ub && git show --stat --oneline HEAD && ip -details -statistics link show can0`；随后在不运动的前提下先对锁定目标执行 MoveIt 只读 IK/规划筛选，再决定是否保留顶部抓取配置。
+
+## 2026-09-26 相机轴修正与倾斜抓取可达性闭环
+
+- 本轮首先复核实际状态：根分区 40%（约 46 GB 可用）；无 PiPER/视觉控制残留进程；`can0` 保持 1 Mbps / sample-point 0.750 / `ERROR-ACTIVE`，但连续 3 秒 RX packets 固定为 `14088555`，增量为 0。因此未启动 PiPER 驱动、未使能、未发送实体运动或夹爪命令。
+- URDF 明确事实：`joint7`/`joint8` 的指尖原点均位于 `gripper_base +Z` 方向 0.1358 m。上一轮实测 TF 矩阵则显示旧静态安装定义把 `camera_color_optical_frame +Z` 映射到 `gripper_base +X`；这使相机点 `(-0.008,-0.005,0.298)` 被错误变换到基座后方 `(-0.138,-0.050,0.236)`。
+- 最小 TF 修正：`cube_visual_search.launch.py` 将 `gripper_base -> camera_link` 的 pitch 从 0 改为 `-1.57079632679`。矩阵复核后相机光轴与夹爪 `+Z` 同向，同一历史点变为前方 `(0.254,0.053,0.119)`；实际/规范 launch 一致，Python 语法通过，`brain_robot_ball_pick` 构建成功。该结果是基于 URDF、历史实体 TF 与现场安装照片的几何校核，仍需 CAN 恢复后用实时目标作一次无运动复核。
+- 抓取执行器改用 SRDF `arm` 链的真实 tip `link6`（与固定 `gripper_base` 同原点），并保留每个候选必须通过 `/compute_ik` 的门槛。新增日志记录 IK link/frame/pose/error code。
+- 固定垂直抓取的四个 yaw 对修正后目标仍全部返回 MoveIt `-31`。没有关闭碰撞检查、没有硬编码关节角，也没有把失败当成功。
+- 最小算法修复：新增 `top_down_tilt_candidates=[0.0,0.35,0.70,1.00]`。每个候选根据自身工具 `+Z` 轴计算 wrist 位置，预抓取与下降阶段锁定同一 tilt/yaw；这对应“先在斜上方对齐，再按机械限位选择正上方或倾斜方向靠近”，而不是保持相机对齐角直冲目标。
+- 失能离线复核复用了真实 `grasp_lift_executor`、MoveIt 和生效 YAML，注入观测姿态六轴 `[0.0,0.98,-0.75,0.0,0.30,0.0]` 与修正目标 `(0.254,0.053,0.119)`。结果：`tilt=0.350 rad, yaw=0` 首次通过 IK，生成预抓取 `link6=(0.180,0.053,0.322)`，MoveIt 成功规划 39 点（复跑 41 点）轨迹。随后 `TOP_DOWN_PREGRASP_PLAN_FAILED` 是适配器刻意保持 disarmed、没有实体反馈导致的 45 秒反馈超时，符合本次无运动测试预期。
+- 构建验证：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回 0；实际与规范抓取源码、YAML、launch 一致；`git diff --check` 返回 0。临时探针日志为 `/tmp/piper_tilt_ik_probe.log`，未加入 Git。
+- 当前推进结论：观测、连续 SEARCH、ALIGN、GRASP_READY 已有上一轮实体证据；本轮首次取得修正目标上的可达抓取预姿态和完整 MoveIt 规划证据。剩余实体阻断只有当前 CAN RX=0，按规范不能运行默认一键运动。
+- 下一步：只要 `can0` RX 再次持续增长，直接运行 `/home/johnwick/start_brain_robot_cube_real.sh` 默认自动链；重点验证实时目标 base 坐标、`tilt=0.35` 候选、`TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT -> CLOSE -> LIFT -> RELEASE`，不重复 CAN/限位/固件/点云基础排查。

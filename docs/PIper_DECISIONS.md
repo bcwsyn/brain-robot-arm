@@ -664,3 +664,10 @@
 - 决策：静态方块在 `GRASP_READY` 后继续使用一次 base-frame 目标锁定，任何相机丢帧不得触发二次 ALIGN/SEARCH；当前修改仅跳过锁定后的视觉 freshness 判断，不降低 CAN/反馈/MoveIt 碰撞门。
 - 决策：顶部抓取候选虽已复用现有官方实现并编译，但本轮实测四 yaw 均未给出 IK，不能通过关闭碰撞检查、硬发关节值或把 IK 失败当成功。下一轮只做只读几何/IK/规划筛选，再决定是否保留 `top_down_grasp_enabled`。
 - 禁止改变：不刷写 S-V1.9-1 固件，不执行 MasterSlaveConfig/ResetPiper，不向 `piper_jog_adapter` 外发送运动命令；无新鲜六轴反馈时停止发送。
+
+## 2026-09-26 相机工具轴与倾斜接近决策
+
+- URDF 的夹爪/指尖工作轴是 `gripper_base +Z`；腕部相机光学 `+Z` 必须映射到该轴。旧的“camera_link 与 gripper_base 平行”会把标准光学轴映射到夹爪 `+X`，产生位于机械臂后方的错误目标。实体 launch 采用 `gripper_base -> camera_link` pitch `-pi/2`；恢复 CAN 后只需一次实时无运动坐标复核，不再回到旧平行轴假设。
+- `arm` 规划组的语义链 tip 是 `link6`；抓取 IK 使用 `link6`，其与 `gripper_base` 由零位姿固定关节连接。不得因 `gripper_base` 名称更直观而忽略 SRDF 组末端。
+- 垂直向下不是唯一抓取姿态。候选姿态按工具轴同步计算 wrist 位置，并依次筛选 tilt/yaw；只有 MoveIt IK 与规划成功的候选才可发送给唯一 `piper_jog_adapter`。当前离线证据选择 `tilt=0.35 rad/yaw=0`，但实体执行仍须以实时目标和新鲜六轴反馈重新规划。
+- 禁止通过关闭 IK/规划/反馈门控来获得“抓取”；CAN RX=0 时即使离线规划成功也不得启动实体驱动或运动。
