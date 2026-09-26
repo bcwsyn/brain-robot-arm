@@ -635,3 +635,7 @@
 
 - 第二次默认脚本未发送运动命令；CAN 初始化时 USB-CAN 节点瞬时失活，有限重试后仍无法启动。
 - 受限重载 xhci_pci 后 candleLight 重新枚举，can0 恢复 ERROR-ACTIVE/1 Mbps，但 5 秒 RX 增量为 0；按硬门控不启动 PiPER 驱动或静态抓取链。
+## 2026-09-26 静态锁定验证被反馈门控阻断
+
+- CAN 初始化通过且 5 秒 RX 增加 93004 bytes；自动链接受观测轨迹，但 300 秒后 J2 最大误差 0.210580 rad，进入 PREPARE_EXECUTION_FAILED。
+- 同期 PiPER 驱动记录 can0 feedback lost 25.0s，随后保持 receive-only；适配器因 joint state timeout 失能。未进入 SEARCH/GRASP，未发送额外运动命令。
