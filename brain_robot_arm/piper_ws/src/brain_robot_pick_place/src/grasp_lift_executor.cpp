@@ -531,6 +531,13 @@ private:
       Fail("SERVO_STOP_FAILED");
       return;
     }
+    // A tabletop cube is static. Capture its base-frame pose immediately
+    // after visual alignment, before opening the gripper can occlude the
+    // wrist camera; static mode never reacquires from later image motion.
+    if (static_target_lock_ && !CaptureTargetModel()) {
+      Fail("STATIC_TARGET_MODEL_UNAVAILABLE");
+      return;
+    }
     if (!simulation_only_) {
       if (!CommandRealGripper(true) || cancel_requested_) {
         Fail("OPEN_GRIPPER_FAILED");
@@ -538,13 +545,15 @@ private:
       }
       std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
     }
-    if (!TargetStillAligned()) {
-      RequestVisualReacquire("GRASP_TARGET_SHIFT_BEFORE_PREGRASP");
-      return;
-    }
-    if (!CaptureTargetModel()) {
-      RequestVisualReacquire("GRASP_TARGET_MODEL_UNAVAILABLE");
-      return;
+    if (!static_target_lock_) {
+      if (!TargetStillAligned()) {
+        RequestVisualReacquire("GRASP_TARGET_SHIFT_BEFORE_PREGRASP");
+        return;
+      }
+      if (!CaptureTargetModel()) {
+        RequestVisualReacquire("GRASP_TARGET_MODEL_UNAVAILABLE");
+        return;
+      }
     }
     if (candidate_grasp_enabled_) {
       CandidatePointGraspAndLift();

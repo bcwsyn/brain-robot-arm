@@ -1287,3 +1287,7 @@
 
 - 已验证运行入口 /home/johnwick/start_brain_robot_cube_real.sh 语法通过，默认 BRAIN_ROBOT_AUTO_START=1；[1/7] 至 [7/7] 门控完整，自动路径调用 visual_search_controller/start，从当前反馈姿态移动到观测姿态，不调用零点 reset。
 - 当前脚本无残留控制进程；演示校验未发送运动命令。
+## 2026-09-26 静态锁模提前到夹爪动作前
+
+- 实跑曾在 GRASP_READY 后因夹爪打开等待期间的 TargetStillAligned 检查重新进入 ALIGN；这与静止目标策略冲突。
+- 修复：static_target_lock=true 时在打开夹爪前立即保存 base-frame 目标，后续不再执行预抓取前视觉校验或重捕获；运行时已在 piper_ws 正确工作区成功构建。
