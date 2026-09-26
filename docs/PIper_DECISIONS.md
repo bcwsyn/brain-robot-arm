@@ -605,3 +605,8 @@
 
 - 预抓取失败窗口与官方速度控制语义不匹配：MoveIt 轨迹按缩放时间生成，而唯一实体适配器将每个关节步限制为 0.189 rad/s。
 - 决策：只把 `trajectory_feedback_timeout_s` 从 12 s 延长到 45 s；保持 0.189 rad/s 限速、连续反馈和锁定目标重试，不盲目提速。
+
+## 2026-09-26 xHCI host-controller failure supersedes motion testing
+
+- `can0` 消失并非脚本重载或碰撞：内核明确报告 xHCI TRB DMA 错误、主控停止响应并清理全部 USB 设备。
+- 决策：在 USB 主控恢复、USB-CAN 重新枚举且 RX 持续增长前，禁止任何运动/使能尝试；不重复刷固件、点云或 MoveIt 实验。恢复后直接验证已提交的锁定预抓取与 45 秒反馈等待。
