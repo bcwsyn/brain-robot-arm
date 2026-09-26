@@ -1291,3 +1291,7 @@
 
 - 实跑曾在 GRASP_READY 后因夹爪打开等待期间的 TargetStillAligned 检查重新进入 ALIGN；这与静止目标策略冲突。
 - 修复：static_target_lock=true 时在打开夹爪前立即保存 base-frame 目标，后续不再执行预抓取前视觉校验或重捕获；运行时已在 piper_ws 正确工作区成功构建。
+## 2026-09-26 新构建验证再次被 CAN 失活阻断
+
+- 新构建已加载到正确的 piper_ws 工作区；旧实例曾实际达到 GRASP_READY，但第一次锁模前视觉校验触发回退，已在 025597f 修复。
+- 重启新实例前 USB-CAN 再次出现 lsusb 可见但 can0 无法 up 的失活；xHCI 重载后接口 ERROR-ACTIVE 但 5 秒 RX=0，因此未启动新运动链。
