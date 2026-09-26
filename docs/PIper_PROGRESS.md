@@ -1228,3 +1228,8 @@
 
 - 执行环境许可恢复后只读复核：`can0` 为 1 Mbps / sample-point 0.75 / `UP,ERROR-ACTIVE`，无 bus-off/error-pass；RX 在 3 秒内从 `7836366` 持续增长 `56068`。
 - 已满足实体运动反馈门槛；下一动作是一次 420 秒上限的默认自动链，验证慢速 current-pose→observe 轨迹是否收敛，然后验证已编译的 ALIGN 丢帧保持逻辑。
+
+## 2026-09-26 自动链启动门控复核
+
+- 420 秒链本轮未发送运动：脚本在 `[4/7]` 等待 `/pointcloud_tf_gate` 超时。随后对同一 launch 做了 12 秒 disarmed 诊断，确认 `pointcloud_tf_gate`、`/brain_robot_vision/tf_gate_diagnostic` 和 `/brain_robot_vision/tf_validated_points` 均能正常出现。
+- 诊断发现此前遗留的 MoveIt/视觉进程造成 ROS 图重复节点；已仅停止这些 disarmed 诊断进程，未停止 PiPER 驱动、未发送 CAN 运动命令。下一步复用默认脚本，避免重复启动栈。
