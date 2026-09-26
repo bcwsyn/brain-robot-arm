@@ -563,9 +563,26 @@ private:
       RequestVisualReacquire("ALIGNED_PREGRASP_TARGET_UNAVAILABLE");
       return;
     }
-    if (!MoveArmToPose(pregrasp_target, "ALIGNED_PREGRASP") || cancel_requested_) {
+    bool pregrasp_reached = false;
+    // Once the base-frame model is locked, a failed execution must not clear
+    // that model and re-enter wrist-camera ALIGN: camera parallax can produce
+    // a different Z estimate and an IK failure. Retry the same fixed target
+    // from the latest measured state once, then fail safely if it still does
+    // not converge.
+    for (int attempt = 1; attempt <= 2 && !cancel_requested_; ++attempt) {
+      if (MoveArmToPose(pregrasp_target, "ALIGNED_PREGRASP")) {
+        pregrasp_reached = true;
+        break;
+      }
+      if (attempt < 2) {
+        RCLCPP_WARN(
+          get_logger(), "ALIGNED_PREGRASP execution did not converge; retrying locked target.");
+        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+      }
+    }
+    if (!pregrasp_reached || cancel_requested_) {
       if (!cancel_requested_) {
-        RequestVisualReacquire("ALIGNED_PREGRASP_PLAN_FAILED");
+        Fail("ALIGNED_PREGRASP_EXECUTION_FAILED_LOCKED_TARGET");
       }
       return;
     }

@@ -1233,3 +1233,9 @@
 
 - 420 秒链本轮未发送运动：脚本在 `[4/7]` 等待 `/pointcloud_tf_gate` 超时。随后对同一 launch 做了 12 秒 disarmed 诊断，确认 `pointcloud_tf_gate`、`/brain_robot_vision/tf_gate_diagnostic` 和 `/brain_robot_vision/tf_validated_points` 均能正常出现。
 - 诊断发现此前遗留的 MoveIt/视觉进程造成 ROS 图重复节点；已仅停止这些 disarmed 诊断进程，未停止 PiPER 驱动、未发送 CAN 运动命令。下一步复用默认脚本，避免重复启动栈。
+
+## 2026-09-26 GRASP_READY 后预抓取执行失败修复
+
+- 清理重复栈后默认链已实际达到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，并发布/接受 `ALIGNED_PREGRASP` 22 点轨迹。
+- 失败发生在轨迹执行反馈确认窗口：`ALIGNED_PREGRASP_PLAN_FAILED` 后日志出现 `IK_ERROR_CODE_-31`，随后原代码清除基座目标锁并重新读取腕部相机点，导致目标从 z≈0.186 m 跳到 z≈0.068 m，形成反复重规划；没有 Servo `HALT_FOR_COLLISION` 或关节碰撞状态。
+- 最小修复：GRASP_READY 后保持已锁定的 base-frame 目标；预抓取执行失败时最多从最新实测关节状态重试同一目标一次，第二次才安全 `FAIL`，不再请求视觉 ALIGN/SEARCH。已同步运行时工作区并成功构建 `brain_robot_pick_place`。
