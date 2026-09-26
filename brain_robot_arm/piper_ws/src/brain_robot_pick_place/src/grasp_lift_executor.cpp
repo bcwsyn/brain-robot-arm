@@ -278,6 +278,7 @@ private:
     min_object_size_m_ = ParameterOr<double>("min_object_size_m", 0.01);
     max_object_size_m_ = ParameterOr<double>("max_object_size_m", 0.25);
     target_timeout_s_ = ParameterOr<double>("target_timeout_s", 0.60);
+    static_target_lock_ = ParameterOr<bool>("static_target_lock", false);
     grasp_height_offset_m_ = ParameterOr<double>("grasp_height_offset_m", 0.0);
     gripper_tip_offset_m_ = ParameterOr<double>("gripper_tip_offset_m", 0.1358);
     grasp_center_offset_m_ = ParameterOr<double>(
@@ -589,7 +590,7 @@ private:
     PublishState("ALIGNED_PREGRASP_REACHED");
     approach_locked_ = true;
 
-    if (!TargetStillAligned()) {
+    if (!static_target_lock_ && !TargetStillAligned()) {
       RequestVisualReacquire("GRASP_TARGET_SHIFT_AFTER_PREGRASP");
       return;
     }
@@ -709,7 +710,7 @@ private:
   {
     double standoff_m = pregrasp_standoff_m_;
     for (int step = 1; step <= approach_max_steps_; ++step) {
-      if (!TargetStillAligned()) {
+      if (!static_target_lock_ && !TargetStillAligned()) {
         RequestVisualReacquire("MICRO_APPROACH_TARGET_SHIFT_BEFORE_STEP");
         return false;
       }
@@ -735,7 +736,7 @@ private:
         }
         return false;
       }
-      if (!TargetStillAligned()) {
+      if (!static_target_lock_ && !TargetStillAligned()) {
         RequestVisualReacquire("MICRO_APPROACH_TARGET_SHIFT_AFTER_STEP");
         return false;
       }
@@ -1861,6 +1862,7 @@ private:
   double min_object_size_m_{0.01};
   double max_object_size_m_{0.25};
   double target_timeout_s_{0.60};
+  bool static_target_lock_{false};
   double grasp_height_offset_m_{0.0};
   double gripper_tip_offset_m_{0.1358};
   double grasp_center_offset_m_{0.1358};

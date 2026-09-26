@@ -68,13 +68,13 @@ visual_search_controller:
     target_timeout_s: 0.60
     # Hold the aligned pose through short wrist-camera detector flicker.
     # Reversing immediately into LAST_PATH_REACQUIRE caused a retreat loop.
-    target_loss_grace_s: 0.80
+    target_loss_grace_s: 2.0
     # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
     # transition.  The PiPER driver suppresses output during that window;
     # keep SEARCH alive until the bounded transition completes.
     joint_state_timeout_s: 25.0
     target_acquire_frames: 6
-    align_stable_frames: 5
+    align_stable_frames: 1
     target_acquire_error_ratio: 0.05
     grasp_reacquire_topic: /brain_robot_grasp/reacquire
     horizontal_kp: 0.00675
@@ -150,6 +150,8 @@ grasp_lift_executor:
     min_object_size_m: 0.01
     max_object_size_m: 0.25
     target_timeout_s: 0.60
+    # Static tabletop target: capture one base-frame model and never reacquire after lock.
+    static_target_lock: true
     grasp_alignment_error_ratio: 0.05
     # The planned pregrasp is followed by bounded Cartesian microsteps. Every
     # step sees a fresh RGB-D target and measured joint feedback before continuing.
