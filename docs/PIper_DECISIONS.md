@@ -620,3 +620,10 @@
 
 - 只读复核确认 `can0` 由内核 `gs_usb` 绑定，接口为 1 Mbps / sample-point 0.75、`ERROR-ACTIVE`，错误计数全为 0；但被动 `candump` 8 秒无帧且 RX 仍为 0。
 - 决策：USB 枚举和驱动绑定不等于 PiPER 反馈已恢复；继续禁止启动驱动、使能和运动命令。下一步只能检查控制器供电、VMware USB 透传及实体 CAN 接线，待 RX 持续增长后再运行默认自动链。
+-
+- 运行时 brain_robot_pick_place 已成功构建；未刷写固件、未执行 MasterSlaveConfig/ResetPiper。
+- 最小改动：真实配置 align_stable_frames=1、target_loss_grace_s=2.0；抓取执行器新增 static_target_lock=true，锁定后跳过预抓取后的 TargetStillAligned 检查和视觉重捕获，仅按锁定模型完成预抓取/微接近。
+- 本轮实体运行已达到 OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY，目标基座模型成功锁定；失败发生在锁定预抓取执行反馈未收敛，未出现碰撞或视觉重规划证据。
+## 2026-09-26 静止目标抓取锁定决策
+- 锁定基座坐标后，抓取器不得因腕部相机目标丢帧或位置抖动重新 ALIGN/SEARCH；只允许沿同一锁定目标执行预抓取、微接近、闭合和抬升。若实体关节反馈不收敛，安全失败并保持，不回退到视觉重规划。
+- 紫色方块在桌面上按静态目标处理；首次满足对齐门槛后立即进入 GRASP_READY，不等待多帧重新追踪。

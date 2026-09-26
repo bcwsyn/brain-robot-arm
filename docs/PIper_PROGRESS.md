@@ -1266,3 +1266,8 @@
 - `can0` 的 sysfs 设备路径为 `/sys/devices/.../usb3/3-1.2:1.0`，`udevadm` 显示 `DRIVER=gs_usb`，USB power control 为 `on`。
 - 复核快照：`ERROR-ACTIVE`、1 Mbps / sample-point 0.750，错误计数全 0，RX/TX bytes 与 packets 均为 0；未启动 PiPER 驱动或一键运动脚本。
 - 判断：Linux 端设备已恢复但实体控制器没有反馈，当前不能安全验证观测/搜索/抓取；待 CAN RX 持续增长后再运行默认链。
+-
+- 运行时 brain_robot_pick_place 已成功构建；未刷写固件、未执行 MasterSlaveConfig/ResetPiper。
+- 最小改动：真实配置 align_stable_frames=1、target_loss_grace_s=2.0；抓取执行器新增 static_target_lock=true，锁定后跳过预抓取后的 TargetStillAligned 检查和视觉重捕获，仅按锁定模型完成预抓取/微接近。
+- 本轮实体运行已达到 OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY，目标基座模型成功锁定；失败发生在锁定预抓取执行反馈未收敛，未出现碰撞或视觉重规划证据。
+## 2026-09-26 静止目标单次锁定抓取简化
