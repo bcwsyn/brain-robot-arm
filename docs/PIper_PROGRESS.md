@@ -1335,3 +1335,9 @@
 - 构建验证：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回 0；实际与规范抓取源码、YAML、launch 一致；`git diff --check` 返回 0。临时探针日志为 `/tmp/piper_tilt_ik_probe.log`，未加入 Git。
 - 当前推进结论：观测、连续 SEARCH、ALIGN、GRASP_READY 已有上一轮实体证据；本轮首次取得修正目标上的可达抓取预姿态和完整 MoveIt 规划证据。剩余实体阻断只有当前 CAN RX=0，按规范不能运行默认一键运动。
 - 下一步：只要 `can0` RX 再次持续增长，直接运行 `/home/johnwick/start_brain_robot_cube_real.sh` 默认自动链；重点验证实时目标 base 坐标、`tilt=0.35` 候选、`TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT -> CLOSE -> LIFT -> RELEASE`，不重复 CAN/限位/固件/点云基础排查。
+
+## 2026-09-26 倾斜抓取提交后收尾
+
+- 本轮代码提交：`72648e5 fix: align wrist camera and plan tilted grasps`。
+- 提交后状态：失能探针已退出，无一键脚本、PiPER 驱动、MoveIt、适配器或抓取执行器残留；`can0` 仍为 `ERROR-ACTIVE` 但 3 秒 RX 增量为 0，故不允许实体运动。
+- 下一次第一条命令：`cd /mnt/hgfs/ub && git show --stat --oneline HEAD && ip -details -statistics link show can0`。若 RX 持续增长，直接执行默认一键链验证实时 TF 与 `tilt=0.35` 抓取；若仍为 0，保持不运动，不重复固件/限位/点云实验。
