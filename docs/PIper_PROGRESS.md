@@ -1239,3 +1239,8 @@
 - 清理重复栈后默认链已实际达到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，并发布/接受 `ALIGNED_PREGRASP` 22 点轨迹。
 - 失败发生在轨迹执行反馈确认窗口：`ALIGNED_PREGRASP_PLAN_FAILED` 后日志出现 `IK_ERROR_CODE_-31`，随后原代码清除基座目标锁并重新读取腕部相机点，导致目标从 z≈0.186 m 跳到 z≈0.068 m，形成反复重规划；没有 Servo `HALT_FOR_COLLISION` 或关节碰撞状态。
 - 最小修复：GRASP_READY 后保持已锁定的 base-frame 目标；预抓取执行失败时最多从最新实测关节状态重试同一目标一次，第二次才安全 `FAIL`，不再请求视觉 ALIGN/SEARCH。已同步运行时工作区并成功构建 `brain_robot_pick_place`。
+
+## 2026-09-26 预抓取反馈等待与官方速度上限对齐
+
+- 锁定目标重试实跑显示两次轨迹均被 `trajectory_feedback_timeout_s=12.0` 截止；适配器仍只按实测 `0.189 rad/s` 限速输出，日志没有碰撞/Servo hard-stop。
+- 根据 AgileX 官方 Piper MoveIt 文档的速度参数语义，最小调整实体抓取反馈等待为 `45.0 s`，不提高实体速度、不绕过反馈，只给保守限速轨迹足够完成时间；`brain_robot_ball_pick` 已成功构建。

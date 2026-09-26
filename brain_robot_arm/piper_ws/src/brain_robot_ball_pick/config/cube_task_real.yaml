@@ -158,7 +158,10 @@ grasp_lift_executor:
     approach_prediction_horizon_s: 0.08
     approach_max_target_speed_m_s: 0.30
     trajectory_feedback_tolerance_rad: 0.04
-    trajectory_feedback_timeout_s: 12.0
+    # The physical adapter caps streamed trajectory steps at 0.189 rad/s;
+    # allow the official MoveIt-planned pregrasp to finish at that measured
+    # rate before declaring execution failure.
+    trajectory_feedback_timeout_s: 45.0
     # Wait through the bounded S-V1.9-1 feedback gap before asking MoveIt for
     # a pregrasp plan; never plan from a stale or zero-filled joint state.
     joint_state_wait_timeout_s: 25.0
