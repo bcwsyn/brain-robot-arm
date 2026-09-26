@@ -1184,3 +1184,10 @@
 - 按规范恢复读取后，当前 `can0` 为 `UP/ERROR-ACTIVE`、1 Mbps/0.75，但 3 秒 RX 增量仍为 `0`；没有 `/piper_single_ctrl`，无实体运动命令。
 - 清理了上一轮遗留的无驱动 MoveIt/Servo/适配器/图像查看进程；未调用 Enable/Disable、ResetPiper 或 MasterSlaveConfig。
 - 本轮未启动默认脚本，原因是 RX=0 硬门槛未满足。目标仍停在“连续搜索已验证、等待物理反馈恢复”，尚未进入紫色方块抓取。
+
+## 2026-09-26 定向 USB-CAN 复位后的实测
+
+- 新增证据：内核在 `xhci_hcd 0000:03:00.0` 持续报告 event-DMA/TRB 错误；USB-CAN 仍枚举为 `1d50:606f candleLight`，因此只做了一次针对 `003/011` 的设备级 USB reset，未启动驱动、未发送运动命令。
+- reset 后按规范恢复 `can0`：1 Mbps、sample-point 0.75、txqueuelen 1000；接口回到 `UP/ERROR-ACTIVE`，但连续 5 秒 RX 增量仍为 `0`（reset 前累计计数 `16141632`，reset 后新计数从 0 起）。
+- 结论：定向 USB reset 没有恢复实体反馈；当前阻断仍是 USB-CAN/VMware 透传或机械臂控制器物理链路，而不是搜索轨迹、点云碰撞或目标算法。按硬门槛不启动默认脚本，避免无反馈运动。
+- 下一步：保留此次唯一新复位证据；只有 `can0` RX 持续增长才复用既有自动链，不能再次重复同类 reset 或刷写固件。
