@@ -18,6 +18,17 @@ CAMERA_HEALTH_PID=""
 CAMERA_STARTED_BY_SCRIPT=0
 DISABLE_REQUESTED=0
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DDS_PROFILE="${BRAIN_ROBOT_DDS_PROFILE:-$SCRIPT_DIR/fastdds_udp_only.xml}"
+
+# Fast DDS shared-memory locks can survive an interrupted or disk-full run and
+# block node construction before the PiPER process even opens its CAN socket.
+# This single-host stack needs no SHM transport; force the supported UDPv4
+# transport for every child so stale /dev/shm state cannot stall one-key start.
+[[ -r "$DDS_PROFILE" ]] || {
+  echo "[错误] Fast DDS UDP-only 配置不存在：$DDS_PROFILE" >&2
+  exit 1
+}
+export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILE"
 
 fail() { echo "[错误] $*" >&2; exit 1; }
 cleanup() {
@@ -606,6 +617,7 @@ reset_zero_sequence() {
 echo "=================================================="
 echo " PiPER 实体紫色方块视觉抓取（一键保护模式）"
 echo " 自动启动 CAN、PiPER 驱动、相机、MoveIt、Servo 和检测器"
+echo " DDS 使用 UDPv4（禁用易残留锁的 Fast DDS 共享内存传输）"
 echo "=================================================="
 prepare_logs
 bash "$SCRIPT_DIR/clean_disk_space.sh" || true

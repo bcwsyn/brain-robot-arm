@@ -132,12 +132,15 @@ grasp_lift_executor:
     gripper_settle_s: 2.0
     # Side approach: keep the gripper base above the tabletop while the
     # camera optical axis provides the horizontal standoff.
-    grasp_height_offset_m: 0.16
+    grasp_height_offset_m: 0.0
     gripper_feedback_topic: /joint_states_feedback
     gripper_feedback_timeout_s: 3.0
     min_gripper_feedback_motion_rad: 0.001
     prepare_on_grasp_ready: true
-    top_down_grasp_enabled: false
+    top_down_grasp_enabled: true
+    top_down_pregrasp_clearance_m: 0.08
+    top_down_grasp_clearance_m: 0.018
+    top_down_yaw_candidates: [0.0, 1.57079632679, -1.57079632679, 3.14159265359]
     diagonal_side_grasp_enabled: false
     diagonal_lateral_offset_m: 0.06
     use_sim_time: false

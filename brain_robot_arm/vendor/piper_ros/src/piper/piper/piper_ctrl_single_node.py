@@ -84,7 +84,6 @@ class PiperRosNode(Node):
         # an external SocketCAN interface, so skip the SDK's built-in CAN
         # hardware check and use the already configured can0 device.
         self.piper = C_PiperInterface_V2(can_name=self.can_port, judge_flag=False)
-        self.piper.ConnectPort()
         # Use local receive time for the watchdog.  SocketCAN timestamps can
         # lag while the VM/USB queue is busy even though high-speed frames are
         # still arriving; the safety grace period below still trips when the
@@ -99,8 +98,11 @@ class PiperRosNode(Node):
         # The stock SDK only decodes the equivalent 0x2A1..0x2A8 range, so
         # pass a receive-only ID translation to its parser.  No CAN frame is
         # sent and no persistent controller configuration is changed here.
+        # Install the shifted-ID parser before the SDK receive threads start.
+        # Installing it after ConnectPort() races the first 0x3A0..0x3A7
+        # burst and can leave the ROS node alive without usable joint state.
         self.piper.GetCanBus().callback_function = self._parse_can_feedback
-
+        self.piper.ConnectPort()
         # Start subscription thread
         self.create_subscription(PosCmd, 'pos_cmd', self.pos_callback, 1)
         self.create_subscription(JointState, 'joint_ctrl_single', self.joint_callback, 1)

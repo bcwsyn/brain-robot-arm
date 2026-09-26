@@ -1300,3 +1300,18 @@
 - 本轮恢复 can0 后，5 秒 RX 增加 97052 bytes，ERROR-ACTIVE；一键脚本通过 [1/7] 并启动 PiPER 驱动。
 - 随后监测调用被外部中断，当前无 start_brain_robot_cube_real、驱动、视觉控制器、抓取执行器或适配器残留进程；日志没有本新实例的观测/搜索/抓取轨迹记录。
 - 决策：不把中断误报为抓取失败；下次仅在 CAN RX 持续增长时启动唯一默认链，验证 025597f 的夹爪前静态锁模。
+
+## 2026-09-26 默认链实际推进：DDS 初始化修复、SEARCH/GRASP_READY 已复现，抓取姿态仍需可达解
+
+- 实际环境：`/mnt/hgfs/ub`；根分区 28%，约 55 GB 可用；`sudo -n true` 返回 0；`can0` 经一次 `gs_usb` 重枚举后恢复 `ERROR-ACTIVE`、1 Mbps、sample-point 0.750；5 秒 RX 从 123 增至 12326，未发送运动命令期间 TX 为 0。
+- 直接阻断定位：此前 PiPER 驱动 Python 进程存活但无 AF_CAN 描述符；`gdb` 线程栈显示主线程卡在 Fast DDS SHM participant 建构，`/proc/<pid>/fd` 只有 UDP/共享内存描述符，没有 CAN。磁盘实际 28%，排除磁盘不足。
+- 最小修复：新增 `brain_robot_arm/scripts/fastdds_udp_only.xml`，并在规范/实际 `/home/johnwick/start_brain_robot_cube_real.sh` 导出 `FASTRTPS_DEFAULT_PROFILES_FILE`，禁用 Fast DDS SHM、仅使用 UDPv4；无运动 `auto_enable=false` 驱动探针首次发布完整非零 `/joint_states`，`/enable_srv` 在重建 ROS CLI daemon 后可发现。
+- PiPER 驱动接收回调仍保持此前 S-V1.9-1 `3A0..3A7 -> 2A1..2A8` 映射，未刷写固件、未执行 MasterSlaveConfig/ResetPiper；实际运行脚本使用 `piper_jog_adapter`，没有绕过控制链。
+- 一键脚本实际证据（`timeout 600s /home/johnwick/start_brain_robot_cube_real.sh`）：两次完整通过 `[1/7]`、相机 RGB/深度门控、`[7/7]`、当前反馈姿态→观测轨迹、`OBSERVE_POSE_REACHED`、`STATE -> SEARCH`、连续 `SEARCH_PLAN_ACCEPTED`、`STATE -> ALIGN (TARGET_ACQUIRED)`、`STATE -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。搜索轨迹确实由适配器连续接受，非固定角度停住。
+- 目标证据：检测器日志出现 `PURPLE_CUBE target DETECTED`；抓取执行器锁定 base-frame 静态目标，如 `(-0.117,-0.039,0.252)`，未因腕部相机丢帧重新对齐。
+- 本轮抓取阻断：历史“保持观测姿态方向的侧向预抓取”返回 `IK_ERROR_CODE_-31`；将已存在的 `BuildTopDownPointGrasp` 接到静态 base-frame 锁定目标并启用四 yaw 候选后，实跑仍报告 `No top-down yaw candidate has an IK solution`。没有发送闭合、下降、抬升或释放命令；脚本保护退出保持使能，未调用 `DisableArm`。
+- 为避免错误的视觉重对齐，抓取源码新增 `static_target_lock_ && target_model_locked_` 短路；顶部构造改用 `PredictedTargetInReference()` 的锁定 base-frame 点。顶部配置当前显式为 `top_down_grasp_enabled: true`、`top_down_pregrasp_clearance_m: 0.08`、`top_down_grasp_clearance_m: 0.018`、四 yaw 候选；该路径已编译但实体 IK 尚未通过，不能宣称抓取完成。
+- 相机曾有一次旧 Astra 组件导致深度首帧延迟；停止旧 component container 后由脚本健康守护恢复，随后深度门控通过。不是点云写入 Octomap：MoveIt 日志显示 `No 3D sensor plugin(s) defined for octomap updates`，腕部点云仍为诊断心跳。
+- 验证命令/结果：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回 0；`cmp` 确认规范与实际抓取源码/配置一致；运行日志见 `/home/johnwick/brain_robot_logs/visual_stack.log`、`cube_detector.log`、`piper_driver.log`。
+- 当前状态：无一键脚本、PiPER 驱动或视觉栈残留；can0 需要下次启动前复核 RX。允许继续真实运动的前提仍是反馈新鲜、适配器 arm 已通过；抓取姿态必须先得到 MoveIt IK/规划通过证据。
+- 下一步：优先在不发送运动的前提下针对锁定目标筛选可达末端姿态/路径（确认 `gripper_base` 工具轴与目标 base_link 几何）；然后只在 MoveIt 规划成功后再次运行默认链验证 `GRASP_READY -> PREGRASP -> CLOSE -> LIFT -> RELEASE`。

@@ -656,3 +656,11 @@
 - 本轮恢复 can0 后，5 秒 RX 增加 97052 bytes，ERROR-ACTIVE；一键脚本通过 [1/7] 并启动 PiPER 驱动。
 - 随后监测调用被外部中断，当前无 start_brain_robot_cube_real、驱动、视觉控制器、抓取执行器或适配器残留进程；日志没有本新实例的观测/搜索/抓取轨迹记录。
 - 决策：不把中断误报为抓取失败；下次仅在 CAN RX 持续增长时启动唯一默认链，验证 025597f 的夹爪前静态锁模。
+
+## 2026-09-26 Fast DDS 与静态抓取姿态决策
+
+- 事实：根分区 28% 且可用约 55 GB；PiPER 驱动无 joint_states 的一次卡死来自 Fast DDS SHM participant 初始化，不是 CAN RX 或磁盘不足。默认启动脚本统一导出规范仓库中的 `fastdds_udp_only.xml`，只启用 UDPv4，避免陈旧 `/dev/shm` 锁阻塞节点建构。
+- 事实：禁用 SHM 后，真实默认链复现 `OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY`；检测器确实发布紫色目标，适配器连续接受搜索轨迹；不得再把“机械臂停在固定角度”或“夹爪点云碰撞”作为当前解释。
+- 决策：静态方块在 `GRASP_READY` 后继续使用一次 base-frame 目标锁定，任何相机丢帧不得触发二次 ALIGN/SEARCH；当前修改仅跳过锁定后的视觉 freshness 判断，不降低 CAN/反馈/MoveIt 碰撞门。
+- 决策：顶部抓取候选虽已复用现有官方实现并编译，但本轮实测四 yaw 均未给出 IK，不能通过关闭碰撞检查、硬发关节值或把 IK 失败当成功。下一轮只做只读几何/IK/规划筛选，再决定是否保留 `top_down_grasp_enabled`。
+- 禁止改变：不刷写 S-V1.9-1 固件，不执行 MasterSlaveConfig/ResetPiper，不向 `piper_jog_adapter` 外发送运动命令；无新鲜六轴反馈时停止发送。

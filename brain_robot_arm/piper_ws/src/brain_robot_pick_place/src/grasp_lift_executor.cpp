@@ -1094,27 +1094,12 @@ private:
   bool BuildTopDownPointGrasp(
     double vertical_clearance_m, geometry_msgs::msg::PoseStamped & grasp_target)
   {
-    geometry_msgs::msg::PointStamped target_point_camera;
-    {
-      std::lock_guard<std::mutex> lock(target_mutex_);
-      const double age_s = std::chrono::duration<double>(
-        std::chrono::steady_clock::now() - target_point_received_time_).count();
-      if (target_point_received_time_ == std::chrono::steady_clock::time_point{} ||
-        age_s > target_timeout_s_)
-      {
-        RCLCPP_ERROR(get_logger(), "Camera target point is missing or stale (age %.3f s).", age_s);
-        return false;
-      }
-      target_point_camera = target_point_camera_;
+    geometry_msgs::msg::PointStamped object_world;
+    if (!PredictedTargetInReference(object_world)) {
+      RCLCPP_ERROR(get_logger(), "Locked top-down target is unavailable.");
+      return false;
     }
-    const std::string target_frame = target_point_camera.header.frame_id.empty() ?
-      camera_optical_frame_ : target_point_camera.header.frame_id;
     try {
-      const auto world_from_target = tf_buffer_->lookupTransform(
-        lift_reference_frame_, target_frame, tf2::TimePointZero);
-      geometry_msgs::msg::PointStamped object_world;
-      tf2::doTransform(target_point_camera, object_world, world_from_target);
-
       grasp_target.header.frame_id = lift_reference_frame_;
       grasp_target.header.stamp = now();
       grasp_target.pose.position.x = object_world.point.x;
@@ -1302,6 +1287,9 @@ private:
 
   bool TargetStillAligned()
   {
+    if (static_target_lock_ && target_model_locked_) {
+      return true;
+    }
     if (approach_locked_) {
       // Once the pregrasp is reached, the arm is moving relative to a static
       // base-frame target model. Do not let wrist-camera parallax or a transient
