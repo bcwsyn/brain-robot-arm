@@ -1210,3 +1210,9 @@
 - 用户中止后脚本明确记录“保持当前位置、未发送 DisableArm”；适配器日志的 `PHYSICAL MOTION DISARMED: operator disarm` 对应本次 Ctrl+C 收尾，不是代码检测到的关节碰撞失能。
 - 最小修复：`visual_search_controller` 在 ALIGN 丢帧后新增 `target_loss_grace_s=0.80`，短暂 RGB-D 丢帧只发布零速度保持当前对齐姿态；超过该窗口才允许 LAST_PATH_REACQUIRE。已同步运行时工作区，`colcon build --packages-select brain_robot_pick_place brain_robot_ball_pick --symlink-install` 成功。
 - 下一步：在 CAN RX 持续窗口重跑同一自动链；验证目标稳定时是否从 ALIGN 进入 `GRASP_READY`，不再因单帧丢失立即缩回。
+
+## 2026-09-26 修复后复跑的实际阻断
+
+- 修复后的第二轮已通过 `[7/7]`，适配器日志确认先 `PHYSICAL MOTION ARMED` 并接受观测轨迹；但从当前姿态到观测姿态的 `PREPARE` 在本轮 300 秒保护上限内未发布 `OBSERVE_POSE_REACHED`，因此没有进入搜索或抓取。
+- 结束时脚本保护清理产生 `PHYSICAL MOTION DISARMED: operator disarm`；日志没有 MoveIt 碰撞失败、Servo hard stop 或关节碰撞故障。该失能是超时/退出收尾，不是目标靠近阶段触发的碰撞结论。
+- `target_loss_grace_s=0.80` 已构建生效，但本轮尚未到 ALIGN，尚未验证其对回退环的效果。下一步先在现有反馈窗口完成观测姿态，再观察 `ALIGN → GRASP_READY`。
