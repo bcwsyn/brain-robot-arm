@@ -1261,4 +1261,8 @@
 - 被动 `candump -L can0` 8 秒无任何帧，RX bytes/packets 仍为 0。说明问题不在 Linux 驱动绑定或 CAN 参数，而在控制器/供电/实体 CAN 总线没有发送反馈。
 - 继续禁止启动 PiPER 驱动和运动命令；只有总线出现持续 RX 才继续既有自动抓取链。
 
-## 2026-09-26 USB-CAN 被动诊断补充\n\n- `can0` 的 sysfs 设备路径为 `/sys/devices/.../usb3/3-1.2:1.0`，`udevadm` 显示 `DRIVER=gs_usb`，USB power control 为 `on`。\n- 复核快照：`ERROR-ACTIVE`、1 Mbps / sample-point 0.750，错误计数全 0，RX/TX bytes 与 packets 均为 0；未启动 PiPER 驱动或一键运动脚本。\n- 判断：Linux 端设备已恢复但实体控制器没有反馈，当前不能安全验证观测/搜索/抓取；待 CAN RX 持续增长后再运行默认链。
+## 2026-09-26 USB-CAN 被动诊断补充
+
+- `can0` 的 sysfs 设备路径为 `/sys/devices/.../usb3/3-1.2:1.0`，`udevadm` 显示 `DRIVER=gs_usb`，USB power control 为 `on`。
+- 复核快照：`ERROR-ACTIVE`、1 Mbps / sample-point 0.750，错误计数全 0，RX/TX bytes 与 packets 均为 0；未启动 PiPER 驱动或一键运动脚本。
+- 判断：Linux 端设备已恢复但实体控制器没有反馈，当前不能安全验证观测/搜索/抓取；待 CAN RX 持续增长后再运行默认链。
