@@ -1216,3 +1216,10 @@
 - 修复后的第二轮已通过 `[7/7]`，适配器日志确认先 `PHYSICAL MOTION ARMED` 并接受观测轨迹；但从当前姿态到观测姿态的 `PREPARE` 在本轮 300 秒保护上限内未发布 `OBSERVE_POSE_REACHED`，因此没有进入搜索或抓取。
 - 结束时脚本保护清理产生 `PHYSICAL MOTION DISARMED: operator disarm`；日志没有 MoveIt 碰撞失败、Servo hard stop 或关节碰撞故障。该失能是超时/退出收尾，不是目标靠近阶段触发的碰撞结论。
 - `target_loss_grace_s=0.80` 已构建生效，但本轮尚未到 ALIGN，尚未验证其对回退环的效果。下一步先在现有反馈窗口完成观测姿态，再观察 `ALIGN → GRASP_READY`。
+
+## 2026-09-26 官方/GitHub 资料核对
+
+- AgileX 官方 `agx_arm_ros` 文档明确：Piper 通过 `feedback_topic` 接入 MoveIt，`control_topic` 只能保持单一控制源；启动参数包含 `speed_percent`，默认自动使能，且 `can_port:=can0`、`arm_type:=piper` 是实体启动参数（https://github.com/agilexrobotics/agx_arm_ros）。现有链路遵守单一 `piper_jog_adapter` 输出与真实反馈门控。
+- AgileX 官方 `piper_ros` MoveIt 文档列出实体关节限位与速度上限（J1/J2/J3/J4/J5/J6 最高 3 rad/s），并说明 MoveIt 的 `Plan&Execute`/关节目标路径；现有适配器的 0.189 rad/s 是保守软件上限，不是固件限位（https://github.com/agilexrobotics/piper_ros/blob/noetic/src/piper_moveit/README.md）。
+- 官方 MoveIt Servo 文档定义 `DECELERATE_FOR_COLLISION`、`HALT_FOR_COLLISION`、`JOINT_BOUND` 状态；本轮日志未出现这些状态，故不能把回退环归因于 Servo 碰撞（https://moveit.picknik.ai/humble/api/html/status__codes_8h.html）。
+- 官方 `pyAgxArm` 固件参考要求按实际固件选择 SDK 路由；S-V1.8-9 及以上使用 `v189`，并明确通过 `get_firmware()` 读取版本。当前仓库仍以已记录的 S-V1.9-1/DRV 2.0.8 为准，不执行刷写或旧版本实验（https://github.com/agilexrobotics/pyAgxArm/blob/master/docs/piper/firmware_reference.md）。
