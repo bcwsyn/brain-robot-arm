@@ -17,6 +17,7 @@ LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
 CAMERA_STARTED_BY_SCRIPT=0
 DISABLE_REQUESTED=0
+SUCCESSFUL_CYCLE_COMPLETE=0
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DDS_PROFILE="${BRAIN_ROBOT_DDS_PROFILE:-$SCRIPT_DIR/fastdds_udp_only.xml}"
 
@@ -33,7 +34,9 @@ export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILE"
 fail() { echo "[错误] $*" >&2; exit 1; }
 cleanup() {
   trap - EXIT INT TERM
-  if (( DISABLE_REQUESTED )); then
+  if (( SUCCESSFUL_CYCLE_COMPLETE )); then
+    echo; echo "[完成] 成功路径已安全回位并失能；仅清理本脚本进程。"
+  elif (( DISABLE_REQUESTED )); then
     echo; echo "[保护] 收到退出/故障信号；停止控制输出并保持当前位置，不自动发起零点复位。"
     # A fault/timeout must not create an unexpected long trajectory.  The
     # explicit 0 command remains the only zero-reset entry point.
@@ -614,6 +617,57 @@ reset_zero_sequence() {
   request_zero_reset
 }
 
+disable_after_confirmed_reset() {
+  local result
+  result=$(timeout 5s ros2 service call /piper_jog_adapter/disarm \
+    std_srvs/srv/Trigger '{}' 2>&1) || result=""
+  if ! grep -Eq 'success=True' <<<"$result"; then
+    echo "[收尾] 适配器 disarm 未确认；保持 PiPER 使能。" >&2
+    return 1
+  fi
+  result=$(timeout 5s ros2 service call /piper_jog_adapter/disable_motion \
+    std_srvs/srv/Trigger '{}' 2>&1) || result=""
+  if ! grep -Eq 'success=True' <<<"$result"; then
+    echo "[收尾] 运动门关闭未确认；保持 PiPER 使能。" >&2
+    return 1
+  fi
+  result=$(timeout 8s ros2 service call /enable_srv piper_msgs/srv/Enable \
+    '{enable_request: false}' 2>&1) || result=""
+  if ! grep -Eq 'enable_response=True' <<<"$result"; then
+    echo "[收尾] 六轴失能反馈未确认；机械臂已回零但按保持使能处理。" >&2
+    return 1
+  fi
+  echo "[收尾] RESET_COMPLETE 后六轴失能已确认。"
+  return 0
+}
+
+wait_for_grasp_release_and_finalize() {
+  local deadline=$((SECONDS + ${BRAIN_ROBOT_GRASP_WAIT_SECONDS:-900})) status
+  echo "[自动] 等待目标锁定、预抓取、闭爪、抬升、释放和撤离完成..."
+  while (( SECONDS < deadline )); do
+    status=$(timeout 4s ros2 topic echo --once \
+      --qos-reliability reliable \
+      --qos-durability transient_local \
+      /brain_robot_grasp/state 2>&1) || status=""
+    if grep -Fq 'RELEASE_COMPLETE_HOLDING_SAFE_RETREAT' <<<"$status"; then
+      echo "[收尾] 释放与撤离已确认；开始成功路径的安全零点回位。"
+      if ! reset_zero_sequence; then
+        echo "[收尾] 安全回位失败；保持当前位置和使能，禁止失能。" >&2
+        return 1
+      fi
+      disable_after_confirmed_reset
+      return $?
+    fi
+    if grep -Fq 'FAULT_' <<<"$status"; then
+      echo "[抓取] 抓取执行器报告故障：${status//$'\n'/ }" >&2
+      return 1
+    fi
+    sleep 1
+  done
+  echo "[抓取] 等待完整抓取/释放超时；保持当前流程和使能。" >&2
+  return 1
+}
+
 echo "=================================================="
 echo " PiPER 实体紫色方块视觉抓取（一键保护模式）"
 echo " 自动启动 CAN、PiPER 驱动、相机、MoveIt、Servo 和检测器"
@@ -684,14 +738,20 @@ wait_for_actual_frame /brain_robot_vision/debug_image "调试图像"
 echo "[7/7] 全部组件已就绪。"
 echo
 if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" ]]; then
-  echo "[自动] 组件就绪，自动执行六轴复位、观测姿态和紫色方块搜索。"
+  echo "[自动] 组件就绪，从当前反馈姿态进入观测、搜索和完整抓取流程。"
   if ! restart_visual_sequence; then
     echo "[保持] 自动观测姿态启动失败；PiPER 保持当前使能状态，可按 1 重试。" >&2
+  elif wait_for_grasp_release_and_finalize; then
+    SUCCESSFUL_CYCLE_COMPLETE=1
+    echo "[完成] 紫色方块抓取、抬升、同位释放、安全回位和失能均已确认。"
+    exit 0
+  else
+    echo "[保持] 自动抓取未完整成功；不自动回零或失能，可按 1 重试。" >&2
   fi
 else
-  echo "[手动] 自动运动已关闭；按 1 从六轴零点开始搜索/对齐。"
+  echo "[手动] 自动运动已关闭；按 1 从当前反馈姿态开始观测/搜索。"
 fi
-echo "操作：1=重试复位/观测/搜索；2=GRASP_READY 后抓取；0=仅零点复位；Ctrl+C=失能并退出。"
+echo "操作：1=重试观测/搜索；2=GRASP_READY 后抓取；0=显式零点复位；Ctrl+C=停止控制并保持使能退出。"
 while true; do
   if [[ -t 0 ]] && read -r -s -n 1 -t 1 key; then
     case "$key" in

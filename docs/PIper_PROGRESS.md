@@ -1371,3 +1371,16 @@
 
 - 软件链的目标序列现已补齐为 `TOP_DOWN_PREGRASP -> TOP_DOWN_DESCENT -> CLOSE -> LIFT -> RELEASE_LOWER -> OPEN -> RELEASE_RETREAT`，但实体验收仍必须等待 CAN RX 持续增长。
 - RX 恢复后直接运行默认一键链，按顺序验证实时相机 TF、倾斜候选、预抓取/下降、闭爪反馈、抬升、同位放回释放和安全撤离；撤离完成后保持使能，不在缺少已验证支撑姿态时自动失能。
+
+## 2026-09-27 01:27：一键成功路径接入安全回位与确认失能
+
+- 继续审计发现：抓取执行器现在能发布 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT`，但一键脚本原先不会监听该终态，也不会在成功后自动回到已验证零点并失能；因此“安全返回后再失能”仍不完整。
+- 最小脚本修复：默认自动路径在达到观测姿态后持续监听 transient-local `/brain_robot_grasp/state`。只有收到 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT` 才调用既有 `reset_zero_sequence()`；只有新的 `RESET_COMPLETE` 门控返回成功，才依次确认适配器 `disarm`、`disable_motion` 和 `/enable_srv {enable_request: false}` 的 `enable_response=True`，然后以成功码退出并清理本轮进程。
+- 任意 `FAULT_*`、抓取等待超时、回位失败、disarm/运动门/六轴失能反馈未确认均返回保持路径：不自动回零、不调用硬件失能；Ctrl+C 文案也已修正为“停止控制并保持使能退出”。默认启动文案改为“当前反馈姿态进入观测、搜索和完整抓取流程”，不再错误声称先自动零点复位。
+- 验证：规范和实际脚本 `bash -n` 均通过，`cmp` 一致；本机未安装 shellcheck。离线 mock 覆盖两个关键分支：释放完成状态实际调用 `MOCK_RESET_COMPLETE -> MOCK_DISABLE_CONFIRMED`；`FAULT_TOP_DOWN_DESCENT_FAILED` 只输出故障并返回保持，未调用 mock reset/disable。
+- 本轮开始的 CAN 复核仍为 `can0 UP/ERROR-ACTIVE`、1 Mbps/0.75、5 秒 RX `14088555 -> 14088555`（增量 0）；没有启动 PiPER/视觉栈或发送运动/夹爪/失能命令。根分区 28%，磁盘不是阻断。
+
+### 本轮结论与下一步
+
+- 一键脚本现在具备完整成功闭环的控制骨架：当前姿态→观测→搜索→定位/锁模→预抓取→下降→闭爪→抬升→同位释放→撤离→零点回位确认→失能确认→退出。实体证据仍缺，不能宣称总目标完成。
+- 下一步保持不变：CAN RX 持续增长后直接运行唯一默认脚本；按实际状态逐段验收，任一步失败都保持使能而不进入成功失能分支。

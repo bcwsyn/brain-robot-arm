@@ -678,3 +678,9 @@
 - 决策：实体 profile 明确启用“同位放回”——保存闭爪前的实测抓取位姿，抬升确认后沿同一条启用碰撞检查的路径下降，张爪反馈确认后撤离回抬升位姿。该顺序复用仓库仿真放置的 `LOWER -> open -> RETREAT` 结构，但不引入仿真的横向 transfer。
 - 任一返回/释放阶段缺少新鲜关节或夹爪反馈时立即失败并保持当前安全状态；下降失败时继续夹持，禁止盲目张爪。撤离完成只表示回到抓取上方的安全保持位，不授权自动 `DisableArm`；只有另有已验证支撑姿态和到位反馈时才能失能。
 - 该骨架已编译并由实体 YAML 启用，仍需在 CAN RX 恢复后依次取得真实 `CLOSE -> LIFT -> RELEASE_LOWER -> OPEN -> RELEASE_RETREAT` 证据才能视为完成。
+
+## 2026-09-27 只有完整成功终态允许自动回位失能
+
+- 成功路径与异常路径必须分离：只有抓取执行器已确认 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT`，且随后视觉控制器重新完成本次 `RESET_COMPLETE`，才允许关闭适配器运动门并请求六轴失能。
+- `FAULT_*`、等待超时、反馈丢失、回位失败或任一服务反馈未确认时，禁止把自动零点轨迹或 `DisableArm(7)` 当作 cleanup；停止新增输出并保持当前位置/使能。Ctrl+C 仍属于异常/人工中止路径，不触发自动失能。
+- 成功失能必须逐层有响应证据：adapter `disarm success=True`、`disable_motion success=True`、PiPER `/enable_srv false` 返回 `enable_response=True`。任一缺失均不得把一键任务报告为完成。
