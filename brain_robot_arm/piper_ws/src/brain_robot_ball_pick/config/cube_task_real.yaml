@@ -66,6 +66,9 @@ visual_search_controller:
     # fresh; stale feedback still faults and the driver watchdog stops output.
     search_segment_timeout_s: 15.0
     target_timeout_s: 0.60
+    # Hold the aligned pose through short wrist-camera detector flicker.
+    # Reversing immediately into LAST_PATH_REACQUIRE caused a retreat loop.
+    target_loss_grace_s: 0.80
     # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
     # transition.  The PiPER driver suppresses output during that window;
     # keep SEARCH alive until the bounded transition completes.

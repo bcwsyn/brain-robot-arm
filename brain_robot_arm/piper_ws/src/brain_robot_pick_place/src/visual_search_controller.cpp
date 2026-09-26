@@ -243,6 +243,7 @@ private:
     search_segment_timeout_s_ = ParameterOr<double>("search_segment_timeout_s", 12.0);
 
     target_timeout_s_ = ParameterOr<double>("target_timeout_s", 0.60);
+    target_loss_grace_s_ = ParameterOr<double>("target_loss_grace_s", 0.80);
     joint_state_timeout_s_ = ParameterOr<double>("joint_state_timeout_s", 0.50);
     target_acquire_frames_ = ParameterOr<int>("target_acquire_frames", 3);
     align_stable_frames_ = ParameterOr<int>("align_stable_frames", 5);
@@ -586,6 +587,7 @@ private:
       last_path_reacquire_max_joint_step_rad_ <= 0.0 ||
       last_path_reacquire_max_steps_ < 1 ||
       last_path_min_predicted_depth_m_ <= 0.0 ||
+      target_loss_grace_s_ < 0.0 ||
       search_planning_step_rad_ <= 0.0 || search_planning_time_s_ <= 0.0 ||
       search_planning_attempts_ < 1 || search_planning_velocity_scaling_ <= 0.0 ||
       search_planning_velocity_scaling_ > 1.0 ||
@@ -1474,9 +1476,22 @@ private:
   {
     const bool confirmed = TargetFreshLocked();
     if (!confirmed) {
+      if (align_target_lost_since_ == SteadyTime{}) {
+        align_target_lost_since_ = SteadyClock::now();
+      }
+      const double lost_s = std::chrono::duration<double>(
+        SteadyClock::now() - align_target_lost_since_).count();
+      if (lost_s <= target_loss_grace_s_) {
+        // A wrist-camera frame can briefly fail while the arm is moving. Hold
+        // the aligned pose during this grace period; immediately reversing
+        // into LAST_PATH_REACQUIRE turns detector flicker into a retreat loop.
+        PublishZeroLocked();
+        return;
+      }
       BeginLastPathReacquireLocked("TARGET_LOST_DURING_ALIGN");
       return;
     }
+    align_target_lost_since_ = SteadyTime{};
     const double error_x = error_x_px_;
     const double error_y = error_y_px_;
     const double horizontal_velocity = std::clamp(
@@ -2265,6 +2280,7 @@ private:
   double last_path_reacquire_max_joint_step_rad_{0.60};
   int last_path_reacquire_max_steps_{2};
   double last_path_min_predicted_depth_m_{0.05};
+  double target_loss_grace_s_{0.80};
   double horizontal_search_speed_{0.12};
   double vertical_search_speed_{0.08};
   double joint_position_tolerance_{0.01};
@@ -2288,6 +2304,7 @@ private:
   std::string last_path_camera_frame_;
   bool last_path_prediction_valid_{false};
   int last_path_reacquire_steps_{0};
+  SteadyTime align_target_lost_since_{};
   double target_timeout_s_{0.60};
   double target_history_window_s_{0.40};
   double joint_state_timeout_s_{0.50};

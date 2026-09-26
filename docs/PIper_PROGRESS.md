@@ -1202,3 +1202,11 @@
 
 - 适配器已重新枚举为 USB `003/014`；恢复 can0 为 1 Mbps、sample-point 0.75、txqueuelen 1000 后，8 秒 RX 从 `724` 增至 `149612`（增量 `148888`）。接口 `UP/ERROR-ACTIVE`，无 bus-off/error-pass 计数。
 - 反馈硬门槛已满足；下一步直接运行 `/home/johnwick/start_brain_robot_cube_real.sh` 默认自动路径，验证 `OBSERVE_POSE_REACHED → SEARCH → ALIGN/GRASP_READY`，不重复底层实验。
+
+## 2026-09-26 自动链实跑：目标抖动触发回退环
+
+- CAN 恢复后默认脚本实际通过 `[7/7]`、观测姿态并进入 `SEARCH`；检测器确实反复报告 `PURPLE_CUBE target DETECTED/LOST`。
+- 日志没有 `MOVEIT_SERVO_HARD_STOP`、碰撞规划失败或硬件碰撞故障；相反，控制器连续执行 `ALIGN (TARGET_REACQUIRED_ON_LAST_PATH)` → `LAST_PATH_REACQUIRE`，适配器反复接受 2 点回退轨迹。目标帧在运动期间抖动，未满足连续 `align_stable_frames`，所以没有进入 `GRASP_READY`。
+- 用户中止后脚本明确记录“保持当前位置、未发送 DisableArm”；适配器日志的 `PHYSICAL MOTION DISARMED: operator disarm` 对应本次 Ctrl+C 收尾，不是代码检测到的关节碰撞失能。
+- 最小修复：`visual_search_controller` 在 ALIGN 丢帧后新增 `target_loss_grace_s=0.80`，短暂 RGB-D 丢帧只发布零速度保持当前对齐姿态；超过该窗口才允许 LAST_PATH_REACQUIRE。已同步运行时工作区，`colcon build --packages-select brain_robot_pick_place brain_robot_ball_pick --symlink-install` 成功。
+- 下一步：在 CAN RX 持续窗口重跑同一自动链；验证目标稳定时是否从 ALIGN 进入 `GRASP_READY`，不再因单帧丢失立即缩回。
