@@ -639,3 +639,7 @@
 
 - CAN 初始化通过且 5 秒 RX 增加 93004 bytes；自动链接受观测轨迹，但 300 秒后 J2 最大误差 0.210580 rad，进入 PREPARE_EXECUTION_FAILED。
 - 同期 PiPER 驱动记录 can0 feedback lost 25.0s，随后保持 receive-only；适配器因 joint state timeout 失能。未进入 SEARCH/GRASP，未发送额外运动命令。
+## 2026-09-26 一键启动脚本演示校验
+
+- 已验证运行入口 /home/johnwick/start_brain_robot_cube_real.sh 语法通过，默认 BRAIN_ROBOT_AUTO_START=1；[1/7] 至 [7/7] 门控完整，自动路径调用 visual_search_controller/start，从当前反馈姿态移动到观测姿态，不调用零点 reset。
+- 当前脚本无残留控制进程；演示校验未发送运动命令。
