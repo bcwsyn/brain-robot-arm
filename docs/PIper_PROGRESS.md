@@ -1254,3 +1254,9 @@
 
 - 只执行一次 `modprobe -r xhci_pci` / `modprobe xhci_pci`。USB 总线重新枚举，candleLight `1d50:606f` 回到 `003/006`，Astra 设备也回到 `003/007`、`003/009`；`can0` 恢复为 1 Mbps/0.75 `ERROR-ACTIVE`。
 - 但恢复后的 5 秒 CAN RX 仍为 `0`，只读 `candump` 也无帧；因此没有启动驱动或运动。当前剩余阻断是实体 PiPER 控制器/供电/CAN 总线未产生反馈，不能把 USB 枚举误当成可运动。
+
+## 2026-09-26 USB-CAN 绑定与被动总线复核
+
+- `can0` 已确认绑定内核 `gs_usb`，设备为 `1d50:606f candleLight`，接口 `UP/ERROR-ACTIVE`、1 Mbps/0.75；错误计数和 bus-off/error-pass 均为 0。
+- 被动 `candump -L can0` 8 秒无任何帧，RX bytes/packets 仍为 0。说明问题不在 Linux 驱动绑定或 CAN 参数，而在控制器/供电/实体 CAN 总线没有发送反馈。
+- 继续禁止启动 PiPER 驱动和运动命令；只有总线出现持续 RX 才继续既有自动抓取链。
