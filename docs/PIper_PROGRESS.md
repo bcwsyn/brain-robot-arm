@@ -1249,3 +1249,8 @@
 
 - 45 秒配置后的下一轮在启动前即发现 `can0` 不存在，未发送运动命令。内核新增明确证据：`ERROR Transfer event TRB DMA ptr not part of current TD`，随后 `xHCI host not responding to stop endpoint command`、`HC died; cleaning up`；USB-CAN `1d50:606f` 与相机设备同时断开。
 - 脚本按 RX/接口硬门槛安全停止，未进入 `[2/7]` 之后的机械臂控制。当前最大阻断是 VMware/USB xHCI 主控失效，不能靠视觉、MoveIt 或抓取代码修复；恢复 USB 主控和 `can0` 持续 RX 后再复用 `2856a48` 之后的抓取链。
+
+## 2026-09-26 xHCI 驱动重载后的恢复结果
+
+- 只执行一次 `modprobe -r xhci_pci` / `modprobe xhci_pci`。USB 总线重新枚举，candleLight `1d50:606f` 回到 `003/006`，Astra 设备也回到 `003/007`、`003/009`；`can0` 恢复为 1 Mbps/0.75 `ERROR-ACTIVE`。
+- 但恢复后的 5 秒 CAN RX 仍为 `0`，只读 `candump` 也无帧；因此没有启动驱动或运动。当前剩余阻断是实体 PiPER 控制器/供电/CAN 总线未产生反馈，不能把 USB 枚举误当成可运动。
