@@ -1191,3 +1191,9 @@
 - reset 后按规范恢复 `can0`：1 Mbps、sample-point 0.75、txqueuelen 1000；接口回到 `UP/ERROR-ACTIVE`，但连续 5 秒 RX 增量仍为 `0`（reset 前累计计数 `16141632`，reset 后新计数从 0 起）。
 - 结论：定向 USB reset 没有恢复实体反馈；当前阻断仍是 USB-CAN/VMware 透传或机械臂控制器物理链路，而不是搜索轨迹、点云碰撞或目标算法。按硬门槛不启动默认脚本，避免无反馈运动。
 - 下一步：保留此次唯一新复位证据；只有 `can0` RX 持续增长才复用既有自动链，不能再次重复同类 reset 或刷写固件。
+
+## 2026-09-26 RX=0 只读链路确认
+
+- `candump -L can0` 监听 5 秒无任何帧；`ip -details -statistics` 显示 RX bytes/packets/errors 全为 0，CAN 仍 `ERROR-ACTIVE` 且无 bus-off/error-warn/error-pass 计数。
+- reset 后 xHCI event-DMA/TRB 错误仍持续出现。USB 设备虽枚举、接口虽 UP，但当前没有机械臂控制器反馈帧；不是视觉检测器或点云碰撞阻断运动。
+- 继续保持 RX=0 硬门槛：不启动默认脚本、不使能/失能、不发送 CAN 运动命令；待透传/控制器链路恢复并出现持续 RX 后再执行高级主线。
