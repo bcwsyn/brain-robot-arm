@@ -684,3 +684,8 @@
 - 成功路径与异常路径必须分离：只有抓取执行器已确认 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT`，且随后视觉控制器重新完成本次 `RESET_COMPLETE`，才允许关闭适配器运动门并请求六轴失能。
 - `FAULT_*`、等待超时、反馈丢失、回位失败或任一服务反馈未确认时，禁止把自动零点轨迹或 `DisableArm(7)` 当作 cleanup；停止新增输出并保持当前位置/使能。Ctrl+C 仍属于异常/人工中止路径，不触发自动失能。
 - 成功失能必须逐层有响应证据：adapter `disarm success=True`、`disable_motion success=True`、PiPER `/enable_srv false` 返回 `enable_response=True`。任一缺失均不得把一键任务报告为完成。
+
+## 2026-09-27 连续 CAN 静默后的阻断判定
+
+- `can0` 在接口存在、参数正确且 `ERROR-ACTIVE` 的情况下连续三个目标轮次 RX 增量均为 0；孤立 Astra 清理后仍无帧。按照实体反馈硬门槛，将总目标标记为外部状态阻断，而不是继续用控制帧试探或重复已证明无效的底层恢复操作。
+- 恢复判据只有一个：PiPER 控制器的 CAN RX 计数持续增长。满足后直接运行唯一默认一键脚本，从现有倾斜预抓取和完整释放/安全收尾断点续跑；不重做固件、MasterSlaveConfig、ResetPiper、限位、点云、USB reset、xHCI/gs_usb 或离线 IK 排查。
