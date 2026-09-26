@@ -1341,3 +1341,8 @@
 - 本轮代码提交：`72648e5 fix: align wrist camera and plan tilted grasps`。
 - 提交后状态：失能探针已退出，无一键脚本、PiPER 驱动、MoveIt、适配器或抓取执行器残留；`can0` 仍为 `ERROR-ACTIVE` 但 3 秒 RX 增量为 0，故不允许实体运动。
 - 下一次第一条命令：`cd /mnt/hgfs/ub && git show --stat --oneline HEAD && ip -details -statistics link show can0`。若 RX 持续增长，直接执行默认一键链验证实时 TF 与 `tilt=0.35` 抓取；若仍为 0，保持不运动，不重复固件/限位/点云实验。
+
+## 2026-09-26 提交后被动 CAN 等待
+
+- `timeout 55s candump -n 1 can0` 返回 124，55 秒内没有收到任何帧；未发送 CAN、使能、夹爪或运动命令。
+- 结论不变：软件侧已取得可达预抓取和 MoveIt 规划证据，但实体控制器当前没有反馈，不能安全启动一键运动。待供电/实体链路恢复且 RX 持续增长后，直接复用 `72648e5`，不重复本轮离线实验。
