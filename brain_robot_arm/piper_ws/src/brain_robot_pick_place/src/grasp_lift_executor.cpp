@@ -292,6 +292,8 @@ private:
     gripper_feedback_timeout_s_ = ParameterOr<double>("gripper_feedback_timeout_s", 3.0);
     min_gripper_feedback_motion_rad_ = ParameterOr<double>(
       "min_gripper_feedback_motion_rad", 0.001);
+    auto_release_after_lift_ = ParameterOr<bool>("auto_release_after_lift", false);
+    hold_after_lift_s_ = ParameterOr<double>("hold_after_lift_s", 1.0);
     top_down_pregrasp_clearance_m_ = ParameterOr<double>(
       "top_down_pregrasp_clearance_m", 0.12);
     top_down_grasp_clearance_m_ = ParameterOr<double>(
@@ -372,6 +374,7 @@ private:
       velocity_scaling_ <= 1.0 && acceleration_scaling_ > 0.0 &&
       acceleration_scaling_ <= 1.0 && linear_approach_velocity_scaling_ > 0.0 &&
       linear_approach_velocity_scaling_ <= velocity_scaling_ && gripper_settle_s_ > 0.0 &&
+      hold_after_lift_s_ >= 0.0 &&
       gripper_feedback_timeout_s_ > 0.0 && min_gripper_feedback_motion_rad_ >= 0.0 &&
       trajectory_feedback_tolerance_rad_ > 0.0 && trajectory_feedback_timeout_s_ > 0.0 &&
       joint_state_wait_timeout_s_ > 0.0;
@@ -956,6 +959,14 @@ private:
 
   void FinishGraspAndLift()
   {
+    geometry_msgs::msg::PoseStamped grasp_pose;
+    if (!simulation_only_) {
+      grasp_pose = CurrentPoseInFrame(lift_reference_frame_);
+      if (grasp_pose.header.frame_id.empty()) {
+        Fail("GRASP_POSE_UNAVAILABLE");
+        return;
+      }
+    }
     const double gripper_before_close = LatestGripperPosition();
     PublishState("CLOSING_GRIPPER");
     if (!CommandRealGripper(false) || cancel_requested_) {
@@ -972,14 +983,9 @@ private:
       // confirms jaw actuation before lifting; object retention remains an
       // entity-level result to validate on the real cube.
       PublishDiagnostic("GRIPPER_CLOSE_FEEDBACK_CONFIRMED_NO_FORCE_SENSOR");
-    }
-    if (!simulation_only_) {
+
       PublishState("LIFTING");
-      auto lift_target = CurrentPoseInFrame(lift_reference_frame_);
-      if (lift_target.header.frame_id.empty()) {
-        Fail("CURRENT_POSE_UNAVAILABLE");
-        return;
-      }
+      auto lift_target = grasp_pose;
       lift_target.header.stamp = now();
       lift_target.pose.position.z += lift_distance_m_;
       if (!MoveArmToPose(lift_target, "LIFT") || cancel_requested_) {
@@ -987,6 +993,41 @@ private:
         return;
       }
       PublishState("HOLDING");
+      if (!auto_release_after_lift_) {
+        return;
+      }
+      if (hold_after_lift_s_ > 0.0) {
+        std::this_thread::sleep_for(std::chrono::duration<double>(hold_after_lift_s_));
+      }
+
+      // Return along the already traversed vertical path and release at the
+      // measured grasp pose. This avoids inventing an uncalibrated transfer
+      // location, then retreats to the collision-checked lifted pose.
+      PublishState("RELEASE_LOWERING");
+      grasp_pose.header.stamp = now();
+      if (!MoveArmCartesianToPose(grasp_pose, "RELEASE_LOWER") || cancel_requested_) {
+        Fail("RELEASE_LOWER_FAILED_HOLDING_CUBE");
+        return;
+      }
+      const double gripper_before_open = LatestGripperPosition();
+      PublishState("RELEASING");
+      if (!CommandRealGripper(true) || cancel_requested_) {
+        Fail("RELEASE_GRIPPER_OPEN_FAILED");
+        return;
+      }
+      std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
+      if (!WaitForGripperMotion(gripper_before_open)) {
+        Fail("RELEASE_GRIPPER_FEEDBACK_UNCONFIRMED");
+        return;
+      }
+      PublishState("RELEASED");
+      PublishState("RELEASE_RETREATING");
+      lift_target.header.stamp = now();
+      if (!MoveArmCartesianToPose(lift_target, "RELEASE_RETREAT") || cancel_requested_) {
+        Fail("RELEASE_RETREAT_FAILED");
+        return;
+      }
+      PublishState("RELEASE_COMPLETE_HOLDING_SAFE_RETREAT");
       return;
     }
     PublishState("VERIFYING_GRASP_CONTACT");
@@ -1901,6 +1942,8 @@ private:
   std::string gripper_feedback_topic_;
   double gripper_feedback_timeout_s_{3.0};
   double min_gripper_feedback_motion_rad_{0.001};
+  bool auto_release_after_lift_{false};
+  double hold_after_lift_s_{1.0};
   double top_down_pregrasp_clearance_m_{0.12};
   double top_down_grasp_clearance_m_{0.005};
   double top_down_grasp_yaw_{0.0};

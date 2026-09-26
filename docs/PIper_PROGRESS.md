@@ -1358,3 +1358,16 @@
 
 - 本轮没有推进实体预抓取，因为真实 CAN RX 仍为 0；按硬门槛禁止启动 `/home/johnwick/start_brain_robot_cube_real.sh` 或用控制帧试探。软件断点仍是 `tilt=0.35 rad, yaw=0` 已通过 IK/MoveIt 规划，实体 `TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT -> CLOSE -> LIFT -> RELEASE` 尚未验证。
 - 下一步第一条命令：`ip -details -statistics link show can0`；只有 RX 计数持续增长后，才直接运行默认一键链验证实时 TF 与倾斜抓取，不再重复底层恢复实验。
+
+## 2026-09-27 01:18：补全真实抓取后的放回、释放与撤离骨架
+
+- 只读审计确认真实 `FinishGraspAndLift()` 在抬升后仅发布 `HOLDING` 并返回，默认一键链没有释放实现；这与总目标中的“抓取、抬升、释放”不一致。仓库历史只有仿真 `LOWER -> open -> RETREAT`，没有可直接复用的真实投放位姿。
+- 最小实现不引入未经标定的横向放置点：闭爪前记录实际抓取位姿；闭爪反馈确认后沿基座 `+Z` 抬升；短暂保持后，沿启用碰撞检查的同一笛卡尔路径下降到该实测抓取位姿，张爪并确认反馈，再沿同一路径撤离到已规划的抬升位姿。新增状态为 `RELEASE_LOWERING -> RELEASING -> RELEASED -> RELEASE_RETREATING -> RELEASE_COMPLETE_HOLDING_SAFE_RETREAT`。
+- 实体配置新增 `auto_release_after_lift: true`、`hold_after_lift_s: 1.0`；默认代码参数仍为关闭，避免其他配置未经明确启用自动释放。失败时保持既有语义：下降失败时保持夹持，张爪反馈未确认或撤离失败时进入明确 `FAIL`，不自动失能、不执行 reset。
+- 实际 `/home/johnwick/piper_ws` 构建：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回 0（两包成功）；实体 YAML 解析断言输出 `YAML_RELEASE_PROFILE_OK`。规范/实际源码和 YAML 已同步一致，`git diff --check` 通过。
+- 本轮未启动 PiPER/视觉栈，未发送使能、失能、夹爪或运动命令；CAN RX 仍为 0，因此新增骨架只完成编译/配置验证，尚无实体释放证据。
+
+### 本轮结论与下一步
+
+- 软件链的目标序列现已补齐为 `TOP_DOWN_PREGRASP -> TOP_DOWN_DESCENT -> CLOSE -> LIFT -> RELEASE_LOWER -> OPEN -> RELEASE_RETREAT`，但实体验收仍必须等待 CAN RX 持续增长。
+- RX 恢复后直接运行默认一键链，按顺序验证实时相机 TF、倾斜候选、预抓取/下降、闭爪反馈、抬升、同位放回释放和安全撤离；撤离完成后保持使能，不在缺少已验证支撑姿态时自动失能。

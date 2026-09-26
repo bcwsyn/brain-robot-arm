@@ -130,6 +130,11 @@ grasp_lift_executor:
     gripper_open_value: 50000
     gripper_close_value: 40000
     gripper_settle_s: 2.0
+    # After confirming the lift, return along the same collision-checked
+    # vertical path, release at the measured grasp pose, and retreat upward.
+    # No uncalibrated lateral transfer or automatic motor disable is used.
+    auto_release_after_lift: true
+    hold_after_lift_s: 1.0
     # Side approach: keep the gripper base above the tabletop while the
     # camera optical axis provides the horizontal standoff.
     grasp_height_offset_m: 0.0
