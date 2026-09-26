@@ -1197,3 +1197,8 @@
 - `candump -L can0` 监听 5 秒无任何帧；`ip -details -statistics` 显示 RX bytes/packets/errors 全为 0，CAN 仍 `ERROR-ACTIVE` 且无 bus-off/error-warn/error-pass 计数。
 - reset 后 xHCI event-DMA/TRB 错误仍持续出现。USB 设备虽枚举、接口虽 UP，但当前没有机械臂控制器反馈帧；不是视觉检测器或点云碰撞阻断运动。
 - 继续保持 RX=0 硬门槛：不启动默认脚本、不使能/失能、不发送 CAN 运动命令；待透传/控制器链路恢复并出现持续 RX 后再执行高级主线。
+
+## 2026-09-26 用户修复后的 CAN 反馈恢复
+
+- 适配器已重新枚举为 USB `003/014`；恢复 can0 为 1 Mbps、sample-point 0.75、txqueuelen 1000 后，8 秒 RX 从 `724` 增至 `149612`（增量 `148888`）。接口 `UP/ERROR-ACTIVE`，无 bus-off/error-pass 计数。
+- 反馈硬门槛已满足；下一步直接运行 `/home/johnwick/start_brain_robot_cube_real.sh` 默认自动路径，验证 `OBSERVE_POSE_REACHED → SEARCH → ALIGN/GRASP_READY`，不重复底层实验。
