@@ -1223,3 +1223,8 @@
 - AgileX 官方 `piper_ros` MoveIt 文档列出实体关节限位与速度上限（J1/J2/J3/J4/J5/J6 最高 3 rad/s），并说明 MoveIt 的 `Plan&Execute`/关节目标路径；现有适配器的 0.189 rad/s 是保守软件上限，不是固件限位（https://github.com/agilexrobotics/piper_ros/blob/noetic/src/piper_moveit/README.md）。
 - 官方 MoveIt Servo 文档定义 `DECELERATE_FOR_COLLISION`、`HALT_FOR_COLLISION`、`JOINT_BOUND` 状态；本轮日志未出现这些状态，故不能把回退环归因于 Servo 碰撞（https://moveit.picknik.ai/humble/api/html/status__codes_8h.html）。
 - 官方 `pyAgxArm` 固件参考要求按实际固件选择 SDK 路由；S-V1.8-9 及以上使用 `v189`，并明确通过 `get_firmware()` 读取版本。当前仓库仍以已记录的 S-V1.9-1/DRV 2.0.8 为准，不执行刷写或旧版本实验（https://github.com/agilexrobotics/pyAgxArm/blob/master/docs/piper/firmware_reference.md）。
+
+## 2026-09-26 执行权限恢复前的反馈复核
+
+- 执行环境许可恢复后只读复核：`can0` 为 1 Mbps / sample-point 0.75 / `UP,ERROR-ACTIVE`，无 bus-off/error-pass；RX 在 3 秒内从 `7836366` 持续增长 `56068`。
+- 已满足实体运动反馈门槛；下一动作是一次 420 秒上限的默认自动链，验证慢速 current-pose→observe 轨迹是否收敛，然后验证已编译的 ALIGN 丢帧保持逻辑。
