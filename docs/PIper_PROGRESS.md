@@ -1346,3 +1346,15 @@
 
 - `timeout 55s candump -n 1 can0` 返回 124，55 秒内没有收到任何帧；未发送 CAN、使能、夹爪或运动命令。
 - 结论不变：软件侧已取得可达预抓取和 MoveIt 规划证据，但实体控制器当前没有反馈，不能安全启动一键运动。待供电/实体链路恢复且 RX 持续增长后，直接复用 `72648e5`，不重复本轮离线实验。
+
+## 2026-09-27 01:10：断点续跑与孤立 Astra 排除
+
+- 本轮按固定顺序完整读取规范仓库四份文档；起点提交为 `37066ab`。根分区使用率 `41%`、可用约 `46 GB`，未达到清理阈值；`sudo -n true` 返回 `0`。
+- 实际控制进程检查仅发现一个已运行约 5 小时 40 分钟、父进程为 PID 1 的旧 Astra 进程组 `PGID 175276`；没有一键脚本、PiPER 驱动、MoveIt、Servo、视觉控制器、适配器或抓取执行器。只向该明确进程组发送 `TERM`，相机父子进程均退出；未调用 PiPER 使能/失能、`ResetPiper`、`MasterSlaveConfig` 或任何运动/夹爪命令。
+- 停止旧 Astra 前，`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point `0.750`、txqueuelen `1000`，但 3 秒 RX 固定为 `14088555`、增量 `0`。停止后执行一次 8 秒被动 `candump -n 1 can0` 仍返回 `124`，RX 仍固定为 `14088555`，错误/丢包/bus-off 均为 0。
+- 该最小动作排除了“孤立 Astra 占用同一 VMware USB 主控”作为当前 CAN 静默的直接原因；没有重复已证明无效的固件、限位、点云、USB reset、xHCI/gs_usb 重载或离线 IK 实验。
+
+### 本轮结论与下一步
+
+- 本轮没有推进实体预抓取，因为真实 CAN RX 仍为 0；按硬门槛禁止启动 `/home/johnwick/start_brain_robot_cube_real.sh` 或用控制帧试探。软件断点仍是 `tilt=0.35 rad, yaw=0` 已通过 IK/MoveIt 规划，实体 `TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT -> CLOSE -> LIFT -> RELEASE` 尚未验证。
+- 下一步第一条命令：`ip -details -statistics link show can0`；只有 RX 计数持续增长后，才直接运行默认一键链验证实时 TF 与倾斜抓取，不再重复底层恢复实验。
