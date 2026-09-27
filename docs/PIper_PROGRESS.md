@@ -1430,3 +1430,17 @@
 - 找到当前一键脚本仍有风险：只要 1 秒 RX 未增长，即使 `can0` 已正确处于 1 Mbps/0.75/UP，也会最多 5 次执行 `ip link down/up`。现已改为对正确配置的接口只做 5 秒被动 RX 门控；无反馈立即分类退出，绝不 bounce 接口。只有接口本身 down 或参数错误才允许配置。
 - 规范与实际脚本 `bash -n` 通过且 `cmp` 一致。无运动回归返回 `1`，明确打印“不执行 down/up”；执行前后 RX `14088555 -> 14088555`、TX `205863 -> 205863`，接口仍 `UP/ERROR-ACTIVE`，所有错误计数仍为 0；未启动 PiPER 驱动、视觉控制器或适配器。
 - 当前仍不能从 guest 内恢复 PiPER 侧零帧状态。长期消除同类问题的首选结构是让低带宽 USB-CAN 与高带宽 Orbbec 相机不共享 VMware 虚拟 xHCI 数据路径：CAN 使用独立物理 USB 控制器/端口并在 VM 中固定透传，或验证后使用单独 USB 2.0 虚拟控制器；这需要关闭 VM 修改 VMware 硬件配置，不在运行中的 guest 内盲改。
+
+## 2026-09-27 12:39：一键自动抓取骨架失败路径收口
+
+- 实际状态：根分区使用率 28%、可用约 54 GB；无一键脚本、PiPER 驱动、MoveIt、Servo、视觉控制器、适配器或抓取执行器残留进程。`can0` 仍为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750，RX 固定在 14088555、TX 固定在 205863，错误、丢包和 bus-off 均为 0。因此本轮没有启动驱动、使能、夹爪或运动命令。
+- 代码审计确认真实抓取执行器和实体配置已有完整主骨架且 `auto_execute: true`：`TOP_DOWN_PREGRASP -> TOP_DOWN_DESCENT -> CLOSING -> LIFTING -> RELEASE_LOWERING -> RELEASING -> RELEASE_RETREATING -> RELEASE_COMPLETE_HOLDING_SAFE_RETREAT`；一键脚本随后监听释放终态，成功复位确认后才执行逐层失能。
+- 找到的一键缺口：默认 `BRAIN_ROBOT_AUTO_START=1` 下，观测启动失败或抓取失败后原先会落入手动 `while/read` 循环，违反“默认自动流程不等待按键”；同时 TERM 没有标记异常清理，已 arm 后的非预期退出不一定显式停止视觉/Servo/适配器输出。
+- 最小修复：增加 `MOTION_ARMED` 生命周期锁存。适配器 arm 成功后置 1，只有完整释放、安全复位以及硬件失能均确认后才清零；cleanup 在 `DISABLE_REQUESTED` 或 `MOTION_ARMED` 为真时停止视觉、Servo 和适配器输出，但不发送硬件失能、不自动回零。TERM 也进入该保持使能的异常路径。
+- 默认自动模式现在在观测启动失败或抓取/释放/收尾失败时设置异常标志并立即返回 1，不再进入按键循环；手动按键循环只在显式关闭 `BRAIN_ROBOT_AUTO_START` 时可达。只有完整成功路径返回 0。
+- 验证：规范脚本与 `/home/johnwick/start_brain_robot_cube_real.sh` 的 `bash -n` 均通过，`cmp` 完全一致；自动分支静态断言 `AUTO_BRANCH_ASSERT=0`，确认两条失败路径均 `exit 1`、成功路径 `exit 0`，均不会落入手动循环。抓取状态和实体 `auto_execute` 配置的源码核查通过。
+
+### 当前阻断与下一步
+
+- 软件骨架现已闭合，但没有新鲜 CAN 反馈，不能用实体运动宣称抓取目标已完成；本轮仅完成无运动可验证修复。
+- 唯一下一步：CAN RX 持续增长后直接运行默认 `/home/johnwick/start_brain_robot_cube_real.sh`，无需按键，按顺序验收 `OBSERVE_POSE_REACHED -> SEARCH -> GRASP_READY -> TOP_DOWN_PREGRASP -> DESCENT -> CLOSE -> LIFT -> RELEASE -> RESET_COMPLETE -> confirmed disable`。若任一步失败，脚本现在停止新增输出、保持硬件使能并以非零码退出，不会静默等待输入。

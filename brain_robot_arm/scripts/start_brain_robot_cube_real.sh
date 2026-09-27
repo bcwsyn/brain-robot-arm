@@ -17,6 +17,7 @@ LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
 CAMERA_STARTED_BY_SCRIPT=0
 DISABLE_REQUESTED=0
+MOTION_ARMED=0
 SUCCESSFUL_CYCLE_COMPLETE=0
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DDS_PROFILE="${BRAIN_ROBOT_DDS_PROFILE:-$SCRIPT_DIR/fastdds_udp_only.xml}"
@@ -36,8 +37,8 @@ cleanup() {
   trap - EXIT INT TERM
   if (( SUCCESSFUL_CYCLE_COMPLETE )); then
     echo; echo "[完成] 成功路径已安全回位并失能；仅清理本脚本进程。"
-  elif (( DISABLE_REQUESTED )); then
-    echo; echo "[保护] 收到退出/故障信号；停止控制输出并保持当前位置，不自动发起零点复位。"
+  elif (( DISABLE_REQUESTED || MOTION_ARMED )); then
+    echo; echo "[保护] 异常退出或运动已启动；停止控制输出并保持当前位置，不自动发起零点复位。"
     # A fault/timeout must not create an unexpected long trajectory.  The
     # explicit 0 command remains the only zero-reset entry point.
     timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
@@ -65,7 +66,7 @@ cleanup() {
 }
 trap cleanup EXIT
 trap 'DISABLE_REQUESTED=1; exit 130' INT
-trap 'exit 143' TERM
+trap 'DISABLE_REQUESTED=1; exit 143' TERM
 if [[ -n "${CONDA_PREFIX:-}" ]] && command -v conda >/dev/null 2>&1; then
   eval "$(conda shell.bash hook)"
   while [[ -n "${CONDA_PREFIX:-}" ]]; do conda deactivate; done
@@ -511,6 +512,7 @@ enable_physical_motion() {
       result=$(timeout 5s ros2 service call /piper_jog_adapter/arm \
         std_srvs/srv/Trigger '{}' 2>&1) || result=""
       if grep -Eq 'success=True' <<<"$result"; then
+        MOTION_ARMED=1
         return 0
       fi
     fi
@@ -643,6 +645,7 @@ disable_after_confirmed_reset() {
     echo "[收尾] 六轴失能反馈未确认；机械臂已回零但按保持使能处理。" >&2
     return 1
   fi
+  MOTION_ARMED=0
   echo "[收尾] RESET_COMPLETE 后六轴失能已确认。"
   return 0
 }
@@ -746,14 +749,18 @@ echo
 if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" ]]; then
   echo "[自动] 组件就绪，从当前反馈姿态进入观测、搜索和完整抓取流程。"
   if ! restart_visual_sequence; then
-    echo "[保持] 自动观测姿态启动失败；PiPER 保持当前使能状态，可按 1 重试。" >&2
-  elif wait_for_grasp_release_and_finalize; then
-    SUCCESSFUL_CYCLE_COMPLETE=1
-    echo "[完成] 紫色方块抓取、抬升、同位释放、安全回位和失能均已确认。"
-    exit 0
-  else
-    echo "[保持] 自动抓取未完整成功；不自动回零或失能，可按 1 重试。" >&2
+    DISABLE_REQUESTED=1
+    echo "[保持] 自动观测姿态启动失败；停止新增输出、保持 PiPER 使能并退出，不等待按键。" >&2
+    exit 1
   fi
+  if ! wait_for_grasp_release_and_finalize; then
+    DISABLE_REQUESTED=1
+    echo "[保持] 自动抓取未完整成功；不自动回零或失能，退出且不等待按键。" >&2
+    exit 1
+  fi
+  SUCCESSFUL_CYCLE_COMPLETE=1
+  echo "[完成] 紫色方块抓取、抬升、同位释放、安全回位和失能均已确认。"
+  exit 0
 else
   echo "[手动] 自动运动已关闭；按 1 从当前反馈姿态开始观测/搜索。"
 fi

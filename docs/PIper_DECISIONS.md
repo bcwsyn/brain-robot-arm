@@ -701,3 +701,9 @@
 - 现有证据不支持“脚本发了 DisableArm/ResetPiper/MasterSlaveConfig”这一解释；但历史 USB reset/xHCI 重载和旧脚本 RX 暂停后的 link bounce 确实会中断数据通道，属于必须消除的代理侧风险。
 - `ERROR-ACTIVE` 且 bus-off/error-pass 计数为 0 时，不得称为 SocketCAN bus-off，也不得用 restart-ms 掩盖 PiPER 零反馈。若 USB 枚举正常而 RX 仍为 0，只能等待/恢复端到端实体数据链。
 - 稳定化方向：USB-CAN 与 Orbbec 相机应隔离到不同物理/虚拟 USB 控制器；优先为 CAN 使用固定透传的独立端口或经过验证的 USB 2.0 虚拟控制器。该 VMware 设置需要停机变更，不由运行中的一键脚本自动实施。
+
+## 2026-09-27 默认自动模式不得回落到交互等待
+
+- `BRAIN_ROBOT_AUTO_START=1` 是无人值守的完整抓取事务：观测启动失败、抓取状态 `FAULT_*`、超时或安全收尾失败时必须停止新增控制输出、保持硬件使能并返回非零码；禁止落入 `read`/按键重试循环。交互循环只属于显式关闭自动模式的人工调试入口。
+- 一旦 `piper_jog_adapter/arm` 成功，启动脚本必须锁存“运动已启动”状态；直到 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT -> RESET_COMPLETE -> adapter disarm -> disable_motion -> /enable_srv false` 全部确认后才能清除。锁存期间无论普通错误、TERM 还是 EXIT，都必须请求视觉/Servo/适配器停止输出，但禁止把硬件失能或零点复位当作 cleanup。
+- 此规则只收口一键编排和异常控制流，不修改已有搜索轨迹、倾斜抓取候选、碰撞检查、反馈门控或静态目标模型。
