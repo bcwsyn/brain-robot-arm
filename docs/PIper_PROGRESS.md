@@ -1408,3 +1408,25 @@
 
 - 这是用户恢复目标后的第一次同类复核。Linux/VM 侧 USB 设备在线且活跃，但 PiPER 控制器侧仍未产生反馈；磁盘、USB autosuspend、接口参数和控制进程占用均不是本次原因。
 - 唯一续跑门槛仍为 CAN RX 持续增长；满足后不做其他巡检，立即执行 `/home/johnwick/start_brain_robot_cube_real.sh` 验证完整抓取闭环。
+
+## 2026-09-27 12:28：CAN 静默因果审计与禁止接口 bounce 修复
+
+### 资料明确事实
+
+- AgileX 官方 `piper_sdk` README 明确：读取关节反馈要求机械臂处于从臂模式；如果 CAN 发送失败，应检查连接并给机械臂重新上电后重试。来源：<https://github.com/agilexrobotics/piper_sdk/blob/master/README.MD>。这解释了为什么某些控制器/连接故障超出 guest 软件重开 socket 的恢复范围，但不等于本机已证明处于主臂模式。
+- 官方 Interface V2 文档把 `DisableArm` 定义为显式 `0x471` 命令，把 `ResetPiper` 描述为会立即掉电并清除错误/内部标志；`DisconnectPort` 只断开 CAN 端口。来源：<https://github.com/agilexrobotics/piper_sdk/blob/master/asserts/V2/INTERFACE_V2.MD>。
+- Linux SocketCAN 文档明确区分 `ERROR-ACTIVE` 与 `BUS-OFF`；只有 bus-off 时停止收发，`ip -details -statistics` 的 bus-off/error-pass 计数用于判断。来源：<https://docs.kernel.org/networking/can.html>。
+- Broadcom/VMware 官方排障要求物理 USB、虚拟 USB 控制器和 guest 驱动三层都必须正常；“guest 能枚举设备”本身不足以证明持续数据通道正常。对兼容性问题，官方资料列出改用 USB 2.0 控制器/端口作为排障方案。来源：<https://knowledge.broadcom.com/external/article/307966>、<https://knowledge.broadcom.com/external/article/315312>。
+- AgileX 官方仓库 issue #109 报告 SDK 在 CAN 异常后没有自动重连、部分场景需物理重连/重新上电；这是用户提交的开放 issue，不作为厂商已确认结论。来源：<https://github.com/agilexrobotics/piper_sdk/issues/109>。
+
+### 本机证据与判断
+
+- 最后一轮实体日志只记录 `piper_jog_adapter` 连续接受轨迹、视觉链到达 `GRASP_READY`，之后节点收到 SIGTERM；全局日志没有 `ResetPiper`、`MasterSlaveConfig`、硬件 `DisableArm` 或 `/enable_srv false` 的调用证据。当时提交 `c23fcbc`/`72648e5` 的 cleanup 仅调用适配器软件 `/disarm`，然后 TERM/KILL 本轮进程，明确不发送 `DisableArm`；实际 PiPER 节点的 `finally` 也只 destroy ROS node/shutdown，不失能硬件。
+- Linux 当前为 `ERROR-ACTIVE`，bus-off/error-pass/bus-error 均为 0，因此不是 SocketCAN bus-off；也没有证据表明脚本把机械臂切为主臂模式。根分区 28%，磁盘不是原因。
+- 历史上确实由代理执行过一次定向 USB reset 和一次 xHCI 模块重载；内核随后长期出现 xHCI event-DMA/TRB 异常。当前 USB-CAN 虽重新枚举并 active，但 PiPER 不再发帧。可以确认这些动作打断过 USB 数据通道，不能证明它们单独改变了 PiPER 控制器模式；最符合现有证据的是 VMware xHCI/USB-CAN 数据路径异常后，适配器或控制器一侧没有完成端到端恢复。
+
+### 最小修复与验证
+
+- 找到当前一键脚本仍有风险：只要 1 秒 RX 未增长，即使 `can0` 已正确处于 1 Mbps/0.75/UP，也会最多 5 次执行 `ip link down/up`。现已改为对正确配置的接口只做 5 秒被动 RX 门控；无反馈立即分类退出，绝不 bounce 接口。只有接口本身 down 或参数错误才允许配置。
+- 规范与实际脚本 `bash -n` 通过且 `cmp` 一致。无运动回归返回 `1`，明确打印“不执行 down/up”；执行前后 RX `14088555 -> 14088555`、TX `205863 -> 205863`，接口仍 `UP/ERROR-ACTIVE`，所有错误计数仍为 0；未启动 PiPER 驱动、视觉控制器或适配器。
+- 当前仍不能从 guest 内恢复 PiPER 侧零帧状态。长期消除同类问题的首选结构是让低带宽 USB-CAN 与高带宽 Orbbec 相机不共享 VMware 虚拟 xHCI 数据路径：CAN 使用独立物理 USB 控制器/端口并在 VM 中固定透传，或验证后使用单独 USB 2.0 虚拟控制器；这需要关闭 VM 修改 VMware 硬件配置，不在运行中的 guest 内盲改。

@@ -341,22 +341,28 @@ configure_can() {
   ip link show can0 >/dev/null 2>&1 ||
     fail "未找到 can0；请确认 USB-CAN 已连接并已透传到虚拟机。"
 
-  # Reuse an already healthy interface without requiring a second terminal's
-  # sudo timestamp.  Privileged reconfiguration remains the fallback when the
-  # link is down, misconfigured, or not receiving frames.
+  # Reuse an already configured interface without disturbing the USB-CAN data
+  # path. Privileged reconfiguration is allowed only when the link is down or
+  # misconfigured; missing robot feedback must never bounce a healthy link.
   can_details=$(ip -details link show can0)
   if grep -Eq 'state (UP|UNKNOWN)' <<<"$can_details" &&
     grep -Fq 'bitrate 1000000' <<<"$can_details" &&
     grep -Fq 'sample-point 0.750' <<<"$can_details" &&
     [[ -r "$rx_path" ]]; then
+    configure_can_tx_queue
     rx_before=$(<"$rx_path")
-    sleep 1
-    rx_now=$(<"$rx_path")
-    if (( rx_now > rx_before )); then
-      configure_can_tx_queue
-      echo "[CAN] 复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0。"
-      return 0
-    fi
+    deadline=$((SECONDS + 5))
+    while (( SECONDS < deadline )); do
+      sleep 1
+      rx_now=$(<"$rx_path")
+      if (( rx_now > rx_before )); then
+        echo "[CAN] 复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0。"
+        return 0
+      fi
+    done
+    echo "[CAN] can0 已正确配置但 RX 未增长；保持接口不变，不执行 down/up。" >&2
+    ip -details -statistics link show can0 >&2 || true
+    fail "PiPER 控制器没有 CAN 反馈；请检查控制器供电、VMware 实体透传和 CAN 实体链路。"
   fi
 
   echo "[CAN] 复用现有 USB-CAN，配置 can0 为 1 Mbps、采样点 0.75..."

@@ -694,3 +694,10 @@
 
 - candleLight 父设备已处于 `runtime_status=active`，`power/control=on`、autosuspend 禁用且从未累计挂起时间；近期无 USB-CAN 内核错误。禁止为了“试一下”改写 USB 电源管理或再次重载/复位设备。
 - `can0 ERROR-ACTIVE` 但 RX 不增长仍按控制器供电、VMware 实体透传或 CAN 实体链路未恢复处理；Linux 端不得以发送控制帧作为连通性探针。
+
+## 2026-09-27 禁止因 RX 暂停 bounce 正确配置的 can0
+
+- 只要 `can0` 已 UP、1 Mbps、sample-point 0.750，启动脚本只能被动等待 RX；RX=0 必须保持接口不变并退出，禁止自动 `ip link down/up`、USB reset、gs_usb/xHCI 重载。只有接口 down 或参数错误时才允许配置接口。
+- 现有证据不支持“脚本发了 DisableArm/ResetPiper/MasterSlaveConfig”这一解释；但历史 USB reset/xHCI 重载和旧脚本 RX 暂停后的 link bounce 确实会中断数据通道，属于必须消除的代理侧风险。
+- `ERROR-ACTIVE` 且 bus-off/error-pass 计数为 0 时，不得称为 SocketCAN bus-off，也不得用 restart-ms 掩盖 PiPER 零反馈。若 USB 枚举正常而 RX 仍为 0，只能等待/恢复端到端实体数据链。
+- 稳定化方向：USB-CAN 与 Orbbec 相机应隔离到不同物理/虚拟 USB 控制器；优先为 CAN 使用固定透传的独立端口或经过验证的 USB 2.0 虚拟控制器。该 VMware 设置需要停机变更，不由运行中的一键脚本自动实施。
