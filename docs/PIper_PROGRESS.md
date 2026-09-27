@@ -1396,3 +1396,15 @@
 
 - 当前目标阻断于外部状态：USB-CAN 接口存在且配置正确，但 PiPER 控制器没有在实体 CAN 总线上产生任何可接收帧。按反馈硬门槛，不能安全启动默认一键链。
 - 控制器供电、VMware USB 透传或实体 CAN 链恢复后，第一步只执行 `ip -details -statistics link show can0` 并做一次短时 RX 增量确认；只要 RX 持续增长，立即运行 `/home/johnwick/start_brain_robot_cube_real.sh`，从实时 TF 与 `tilt=0.35` 候选继续验证完整抓取，不再重复已排除的底层实验。
+
+## 2026-09-27 11:26：用户续跑后的第一次外部状态复核
+
+- 从提交 `20ab3bf` 恢复。根分区使用率 28%、可用约 54 GB，`sudo -n true` 成功；无一键脚本、PiPER 驱动、MoveIt、视觉控制器、适配器、抓取执行器或 Astra 残留进程。
+- `can0` 仍绑定 `gs_usb`，USB 设备为 candleLight `1d50:606f`、序列号 `003F001E5246570520323934`；接口为 `UP/LOWER_UP`、`ERROR-ACTIVE`、1 Mbps / sample-point 0.750，错误、丢包及 bus-off 均为 0。8 秒 RX 仍为 `14088555 -> 14088555`，增量 0。
+- 新的只读证据：USB 父设备 `/sys/bus/usb/devices/3-1.2` 为 `runtime_status=active`、`power/control=on`、autosuspend=-1，累计挂起时间为 0；01:20 之后内核日志没有 USB-CAN 断连、挂起或 `gs_usb` 错误。因此当前不存在可通过关闭 autosuspend 在虚拟机内恢复的问题。
+- 本轮没有重载 xHCI/gs_usb、没有 USB reset、没有启动驱动或发送 CAN 控制帧。规范已明确这些动作此前均不能恢复实体反馈，继续重复不会推进实体验收。
+
+### 当前判断与下一步
+
+- 这是用户恢复目标后的第一次同类复核。Linux/VM 侧 USB 设备在线且活跃，但 PiPER 控制器侧仍未产生反馈；磁盘、USB autosuspend、接口参数和控制进程占用均不是本次原因。
+- 唯一续跑门槛仍为 CAN RX 持续增长；满足后不做其他巡检，立即执行 `/home/johnwick/start_brain_robot_cube_real.sh` 验证完整抓取闭环。

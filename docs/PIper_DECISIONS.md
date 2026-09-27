@@ -689,3 +689,8 @@
 
 - `can0` 在接口存在、参数正确且 `ERROR-ACTIVE` 的情况下连续三个目标轮次 RX 增量均为 0；孤立 Astra 清理后仍无帧。按照实体反馈硬门槛，将总目标标记为外部状态阻断，而不是继续用控制帧试探或重复已证明无效的底层恢复操作。
 - 恢复判据只有一个：PiPER 控制器的 CAN RX 计数持续增长。满足后直接运行唯一默认一键脚本，从现有倾斜预抓取和完整释放/安全收尾断点续跑；不重做固件、MasterSlaveConfig、ResetPiper、限位、点云、USB reset、xHCI/gs_usb 或离线 IK 排查。
+
+## 2026-09-27 USB 电源管理排除
+
+- candleLight 父设备已处于 `runtime_status=active`，`power/control=on`、autosuspend 禁用且从未累计挂起时间；近期无 USB-CAN 内核错误。禁止为了“试一下”改写 USB 电源管理或再次重载/复位设备。
+- `can0 ERROR-ACTIVE` 但 RX 不增长仍按控制器供电、VMware 实体透传或 CAN 实体链路未恢复处理；Linux 端不得以发送控制帧作为连通性探针。
