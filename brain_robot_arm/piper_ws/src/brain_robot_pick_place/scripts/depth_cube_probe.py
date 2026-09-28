@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Passive depth-only tabletop-cube candidate probe.
+"""Depth-only tabletop-cube geometry gate.
 
-This node never publishes the real-arm target_valid topic.  It is a data
-collection gate used to prove that a depth-only candidate can reject the
-tabletop and robot structure before the same geometry is admitted into the
-production RGB-D detector.
+The probe never publishes arm commands.  Its stable plane/protrusion/size
+candidate is consumed by the existing visual and grasp state machines when
+the real profile enables depth-only targeting; RGB colour is diagnostic only.
 """
 
 from __future__ import annotations
@@ -84,6 +83,9 @@ class DepthCubeProbe(Node):
         self.size_pub = self.create_publisher(
             Vector3Stamped, "/brain_robot_vision/depth_candidate_size", 1
         )
+        self.error_pub = self.create_publisher(
+            Vector3Stamped, "/brain_robot_vision/depth_candidate_error", 1
+        )
         self.diagnostic_pub = self.create_publisher(
             String, "/brain_robot_vision/depth_candidate_diagnostic", diagnostic_qos
         )
@@ -118,6 +120,10 @@ class DepthCubeProbe(Node):
 
     def publish_invalid(self, reason: str) -> None:
         self.valid_pub.publish(Bool(data=False))
+        error = Vector3Stamped()
+        error.header.stamp = self.get_clock().now().to_msg()
+        error.vector.z = 1.0
+        self.error_pub.publish(error)
         if reason != self.last_diagnostic:
             self.diagnostic_pub.publish(String(data=reason))
             self.get_logger().info(reason)
@@ -275,6 +281,15 @@ class DepthCubeProbe(Node):
         size.vector.y = size_y
         size.vector.z = object_height
         self.size_pub.publish(size)
+        error = Vector3Stamped()
+        error.header = msg.header
+        error.vector.x = center_x - self.cx
+        error.vector.y = center_y - self.cy
+        error.vector.z = max(
+            abs(error.vector.x) / max(1.0, width * 0.5),
+            abs(error.vector.y) / max(1.0, height * 0.5),
+        )
+        self.error_pub.publish(error)
 
         stable = self.stable_frames >= self.required_stable_frames
         self.valid_pub.publish(Bool(data=stable))

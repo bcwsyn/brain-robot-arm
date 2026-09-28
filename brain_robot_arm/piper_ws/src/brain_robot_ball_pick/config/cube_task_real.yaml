@@ -94,6 +94,13 @@ visual_search_controller:
     prepare_execution_timeout_s: 300.0
     # Interpolate the direct current->observe path below the adapter jump gate.
     prepare_max_joint_step_rad: 0.08
+    # Depth geometry is authoritative for the real static-cube path. RGB
+    # colour remains diagnostic only; it cannot invalidate a stable depth
+    # candidate when illumination changes.
+    depth_only_target_enabled: true
+    depth_only_valid_topic: /brain_robot_vision/depth_candidate_valid
+    depth_only_point_topic: /brain_robot_vision/depth_candidate_point
+    depth_only_error_topic: /brain_robot_vision/depth_candidate_error
     error_topic: /brain_robot_vision/pixel_error
     target_valid_topic: /brain_robot_vision/target_valid
     target_point_topic: /brain_robot_vision/target_point_camera
@@ -160,10 +167,15 @@ grasp_lift_executor:
     gripper_touch_links: [link6, gripper_base, link7, link8]
     use_sim_time: false
     lift_reference_frame: base_link
-    camera_optical_frame: camera_color_optical_frame
+    camera_optical_frame: camera_depth_optical_frame
     target_point_topic: /brain_robot_vision/target_point_camera
     target_size_topic: /brain_robot_vision/target_size
     depth_valid_topic: /brain_robot_vision/depth_valid
+    depth_only_target_enabled: true
+    depth_only_valid_topic: /brain_robot_vision/depth_candidate_valid
+    depth_only_point_topic: /brain_robot_vision/depth_candidate_point
+    depth_only_size_topic: /brain_robot_vision/depth_candidate_size
+    depth_only_error_topic: /brain_robot_vision/depth_candidate_error
     adaptive_size_enabled: true
     min_object_size_m: 0.01
     max_object_size_m: 0.25
@@ -223,7 +235,8 @@ pointcloud_tf_gate:
 
 depth_cube_probe:
   ros__parameters:
-    # Passive only: this stream never feeds target_valid or arm commands.
+    # This stream feeds target validity/geometry only when depth-only mode is
+    # enabled; it never publishes a joint or gripper command.
     depth_topic: /camera/depth/image_raw
     camera_info_topic: /camera/depth/camera_info
     frame_stride: 6

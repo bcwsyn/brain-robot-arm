@@ -112,8 +112,9 @@ def generate_launch_description():
                  os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
                  {'use_sim_time': False}],
              remappings=[('/joint_states', '/piper_moveit_joint_states')]),
-        # Passive geometry gate. It publishes diagnostics only and is not
-        # connected to target_valid or any arm command topic.
+        # Depth geometry gate. It publishes only candidate geometry/validity;
+        # the existing controller and grasp executor remain the sole motion
+        # command paths.
         Node(package='brain_robot_pick_place', executable='depth_cube_probe.py',
              name='depth_cube_probe', output='screen', parameters=[
                  os.path.join(cube_share, 'config', 'cube_task_real.yaml'),

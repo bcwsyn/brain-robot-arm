@@ -278,6 +278,13 @@ private:
       "target_valid_topic", "/brain_robot_vision/target_valid");
     target_point_topic_ = ParameterOr<std::string>(
       "target_point_topic", "/brain_robot_vision/target_point_camera");
+    depth_only_target_enabled_ = ParameterOr<bool>("depth_only_target_enabled", false);
+    depth_only_valid_topic_ = ParameterOr<std::string>(
+      "depth_only_valid_topic", "/brain_robot_vision/depth_candidate_valid");
+    depth_only_point_topic_ = ParameterOr<std::string>(
+      "depth_only_point_topic", "/brain_robot_vision/depth_candidate_point");
+    depth_only_error_topic_ = ParameterOr<std::string>(
+      "depth_only_error_topic", "/brain_robot_vision/depth_candidate_error");
     target_history_reference_frame_ = ParameterOr<std::string>(
       "target_history_reference_frame", "base_link");
     target_history_topic_ = ParameterOr<std::string>(
@@ -316,6 +323,9 @@ private:
       error_topic_, sensor_qos,
       [this](const geometry_msgs::msg::Vector3Stamped::SharedPtr message) {
         std::lock_guard<std::mutex> lock(mutex_);
+        if (depth_only_target_enabled_) {
+          return;
+        }
         error_x_px_ = message->vector.x;
         error_y_px_ = message->vector.y;
         target_error_ratio_ = message->vector.z;
@@ -337,6 +347,9 @@ private:
         bool record_history = false;
         {
           std::lock_guard<std::mutex> lock(mutex_);
+          if (depth_only_target_enabled_) {
+            return;
+          }
           target_valid_ = message->data;
           if (target_valid_) {
             ++target_valid_frames_;
@@ -356,6 +369,65 @@ private:
       target_point_topic_, sensor_qos,
       [this](const geometry_msgs::msg::PointStamped::SharedPtr message) {
         std::lock_guard<std::mutex> lock(mutex_);
+        if (depth_only_target_enabled_) {
+          return;
+        }
+        target_point_camera_ = *message;
+        target_point_received_time_ = SteadyClock::now();
+      });
+    depth_only_error_subscription_ = create_subscription<geometry_msgs::msg::Vector3Stamped>(
+      depth_only_error_topic_, sensor_qos,
+      [this](const geometry_msgs::msg::Vector3Stamped::SharedPtr message) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (!depth_only_target_enabled_) {
+          return;
+        }
+        error_x_px_ = message->vector.x;
+        error_y_px_ = message->vector.y;
+        target_error_ratio_ = message->vector.z;
+        error_received_time_ = SteadyClock::now();
+        if ((state_ == ControlState::ALIGN || state_ == ControlState::LEVEL_ALIGN ||
+          state_ == ControlState::FINAL_ALIGN) && target_valid_ &&
+          target_error_ratio_ <= target_acquire_error_ratio_)
+        {
+          ++aligned_frames_;
+        } else if (state_ == ControlState::ALIGN || state_ == ControlState::LEVEL_ALIGN ||
+          state_ == ControlState::FINAL_ALIGN)
+        {
+          aligned_frames_ = 0;
+        }
+      });
+    depth_only_valid_subscription_ = create_subscription<std_msgs::msg::Bool>(
+      depth_only_valid_topic_, sensor_qos,
+      [this](const std_msgs::msg::Bool::SharedPtr message) {
+        bool record_history = false;
+        {
+          std::lock_guard<std::mutex> lock(mutex_);
+          if (!depth_only_target_enabled_) {
+            return;
+          }
+          target_valid_ = message->data;
+          if (target_valid_) {
+            ++target_valid_frames_;
+            last_target_valid_time_ = SteadyClock::now();
+            record_history = Fresh(target_point_received_time_, target_timeout_s_) &&
+              Fresh(error_received_time_, target_timeout_s_);
+          } else {
+            target_valid_frames_ = 0;
+            aligned_frames_ = 0;
+          }
+        }
+        if (record_history) {
+          RecordTargetHistorySample();
+        }
+      });
+    depth_only_point_subscription_ = create_subscription<geometry_msgs::msg::PointStamped>(
+      depth_only_point_topic_, sensor_qos,
+      [this](const geometry_msgs::msg::PointStamped::SharedPtr message) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (!depth_only_target_enabled_) {
+          return;
+        }
         target_point_camera_ = *message;
         target_point_received_time_ = SteadyClock::now();
       });
@@ -2379,6 +2451,10 @@ private:
   std::string error_topic_;
   std::string target_valid_topic_;
   std::string target_point_topic_;
+  bool depth_only_target_enabled_{false};
+  std::string depth_only_valid_topic_;
+  std::string depth_only_point_topic_;
+  std::string depth_only_error_topic_;
   std::string target_history_reference_frame_;
   std::string target_history_topic_;
   std::string candidate_error_topic_;
@@ -2436,6 +2512,9 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr error_subscription_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr target_valid_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr target_point_subscription_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr depth_only_valid_subscription_;
+  rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr depth_only_point_subscription_;
+  rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr depth_only_error_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr candidate_error_subscription_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr candidate_valid_subscription_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscription_;

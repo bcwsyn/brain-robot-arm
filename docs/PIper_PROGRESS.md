@@ -1611,3 +1611,18 @@
 - 仅启动 Astra 相机并订阅一帧 `/camera/color/image_raw`、`/camera/depth/image_raw`；未启动 PiPER、MoveIt、Servo、视觉控制器或适配器，未发送运动命令。相机随后已停止。
 - 深度仍正常：`16UC1`、`640x400`、有效像素 `196240/256000`。RGB 仍为 `rgb8` 但近黑：平均原始通道值 `14.81`、P95 `24.00`。
 - 判断：现场照明仍未恢复，不能进行真实紫色识别或运行会运动的一键链。深度探针继续保持被动诊断，不把几何候选接成正式 `target_valid`；下一步仍是灯光恢复后先取得同步 RGB-D 方块候选，再锁定 `base_link` 点并继续搜索/抓取。
+
+## 2026-09-29：按用户确认切换深度-only目标门控（无紫色依赖）
+
+- 用户明确确认当前任务不需要紫色语义，目标是静止方块的硬深度抓取。因此本轮把“深度探针仅诊断”推进为真实配置的目标来源；仍保留桌面平面、凸起高度、物理尺寸、填充率/方形度和连续稳定帧门控，不接受最近深度或无几何约束的任意像素。
+- `depth_cube_probe.py` 新增 `/brain_robot_vision/depth_candidate_error`，发布候选中心像素误差和归一化误差；无候选时发布无效门控。该节点只发布候选几何/有效性，不发布任何关节、Servo 或夹爪命令。
+- `visual_search_controller` 增加 `depth_only_target_enabled` 及独立 valid/point/error 订阅。真实配置启用后，RGB 紫色检测回调被旁路，深度候选直接驱动现有 `SEARCH -> ALIGN -> GRASP_READY` 状态机；目标点仍通过历史 TF 变换记录，未另写基础运动程序。
+- `grasp_lift_executor` 增加独立深度点、尺寸、误差和有效性订阅；真实配置启用后，深度候选同时满足目标有效和深度有效门控，并沿既有 `base_link` 静态锁定、顶部倾斜候选、闭爪、抬升、同位释放骨架执行。RGB 目标失效不会覆盖深度-only状态。
+- `cube_task_real.yaml` 对视觉和抓取执行器均设置 `depth_only_target_enabled: true`，使用 `camera_depth_optical_frame` 和 `/brain_robot_vision/depth_candidate_*`；`cube_visual_search.launch.py` 注释同步说明探针是几何门控而非直接运动节点。未修改固件、MasterSlaveConfig、ResetPiper 或基础 CAN 配置。
+- 规范源 C++ 编译目标均通过；规范仓库在 hgfs 上安装 symlink 受文件系统限制而失败，但这不是代码编译错误。随后把五个生效文件同步到 `/home/johnwick/piper_ws`，实际工作区 `brain_robot_pick_place`、`brain_robot_ball_pick` 构建和安装成功，`depth_cube_probe.py`、控制器和抓取执行器安装链接存在。
+- 隔离 `ROS_DOMAIN_ID=77` 合成验证：复用既有 640x400、400 mm 桌面/35 mm 方块发布器，探针输出 `DEPTH_CUBE_CANDIDATE_VALID stable=16/3..20/3`，候选点 `(-0.005,-0.000,0.350) m`、尺寸 `0.035x0.035 m`、高度 `0.050 m`；误差话题输出 `x=-6.636 px, y=-0.373 px, ratio=0.0207`。无 PiPER、MoveIt、Servo、适配器或实体控制帧参与，测试残留已清理。
+
+### 当前阻断与下一步
+
+- 本轮已消除“必须先识别紫色”这一软件阻断，但尚未取得实体相机中真实方块的深度候选，也未因此宣称实体抓取完成。实体运行仍受既有 CAN RX 连续增长、`/joint_states` 新鲜反馈和脚本阶段门控约束。
+- 下一步第一条命令：在不启动运动的前提下确认 `/camera/depth/image_raw` 中出现通过几何门控的 `DEPTH_CUBE_CANDIDATE_VALID`；随后才运行默认一键脚本，验收 `OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY`，并按既有五个抓取诊断事件定位最早缺失点。
