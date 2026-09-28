@@ -1488,3 +1488,15 @@
 
 - 本轮完成了机械臂不在场时能完成的最高价值工作：实际配置核对、锁定后不回搜索的代码门控、真实适配器轨迹规则回放和实际工作区注册测试。
 - 回放不替代实体 MoveIt IK、真实 CAN 反馈和夹爪接触证据。机械臂回到现场且 CAN RX 持续增长后，直接运行默认一键脚本，第一轮只观察并记录 `TARGET_LOCKED -> PREGRASP_TRAJECTORY_ACCEPTED -> TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT -> GRIPPER_CLOSE_REQUESTED`，不再重新设计参数。
+
+## 2026-09-28：实机首次抓取阶段诊断标记补齐
+
+- 本轮起点提交为 `e06532c`。机械臂仍不在现场，无实体进程、使能或 CAN 控制帧。
+- 为避免第一次实机失败只能看到“状态变化”而无法区分轨迹是否真正交给适配器，抓取执行器新增三个只读诊断事件：`TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED`、`TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED`、`GRIPPER_CLOSE_REQUESTED`。
+- 三个事件分别位于顶部预抓取成功、顶部下降成功和发布实体闭爪命令之前；不改变姿态、速度、候选顺序、碰撞检查、目标锁定或安全失败语义。
+- 离线回放测试新增三个事件断言。规范树直接 pytest 为 `9 passed`；实际工作区 `brain_robot_pick_place` 构建成功，实际 colcon 测试汇总 `11 tests, 0 errors, 0 failures, 0 skipped`；规范与实际执行器源码 `cmp` 一致。
+
+### 当前阻断与下一步
+
+- 本轮只增强实机可观测性，未宣称实体预抓取或抓取完成。机械臂回到现场且 CAN RX 持续增长后，首次运行按以下顺序读取诊断：`GRASP_TARGET_MODEL_LOCKED_BASE_FRAME` → `TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED` → `TOP_DOWN_PREGRASP_REACHED` → `TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED` → `GRIPPER_CLOSE_REQUESTED`。
+- 按首次缺失事件定位规划/发布、适配器反馈、下降衔接或夹爪请求，不重复底层巡检。

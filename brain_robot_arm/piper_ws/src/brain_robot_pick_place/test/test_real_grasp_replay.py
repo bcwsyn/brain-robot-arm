@@ -105,6 +105,9 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     executor = EXECUTOR.read_text(encoding="utf-8")
     assert "if (freeze_grasp_tracking_) {\n      return;\n    }" in controller
     assert "GRASP_TARGET_MODEL_LOCKED_BASE_FRAME" in executor
+    assert "TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED" in executor
+    assert "TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED" in executor
+    assert "GRIPPER_CLOSE_REQUESTED" in executor
     assert "if (!static_target_lock_ && !TargetStillAligned())" in executor
     assert "MICRO_APPROACH_TARGET_SHIFT_BEFORE_STEP" in executor
     # Every visual-reacquire guard in the approach path is conditional on the

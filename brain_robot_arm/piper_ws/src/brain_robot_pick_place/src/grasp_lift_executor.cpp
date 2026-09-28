@@ -954,6 +954,7 @@ private:
       Fail("TOP_DOWN_PREGRASP_PLAN_FAILED");
       return;
     }
+    PublishDiagnostic("TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED");
     PublishState("TOP_DOWN_PREGRASP_REACHED");
 
     PublishState("TOP_DOWN_DESCENT_PLANNING");
@@ -966,6 +967,7 @@ private:
       Fail("TOP_DOWN_DESCENT_FAILED");
       return;
     }
+    PublishDiagnostic("TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED");
     FinishGraspAndLift(pregrasp_target);
   }
 
@@ -980,6 +982,7 @@ private:
     }
     const double gripper_before_close = LatestGripperPosition();
     PublishState("CLOSING_GRIPPER");
+    PublishDiagnostic("GRIPPER_CLOSE_REQUESTED");
     if (!CommandRealGripper(false) || cancel_requested_) {
       Fail("CLOSE_GRIPPER_FAILED");
       return;
