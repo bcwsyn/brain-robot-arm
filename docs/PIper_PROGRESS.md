@@ -1596,3 +1596,12 @@
 ### 下一步
 
 - 照明恢复后用已修复的完整上下搜索取得“方块进入深度视野”的同步帧；若 RGB 仍不可靠，再在现有 `cup_detector_node` 内增加受上述四类门控约束的深度候选，而不是绕过检测器或放宽抓取授权。首次可靠候选应立即保存基座三维点，后续对齐/接近只使用该静态模型，不因腕部相机运动重新选目标。
+
+## 2026-09-28 23:49：深度候选探针构建与真实只读验证
+
+- 按确认方案新增 `brain_robot_pick_place/scripts/depth_cube_probe.py`。它对深度帧拟合透视桌面平面（逆深度线性模型），只保留 `0.015..0.120 m` 凸起、物理尺寸 `0.015..0.120 m`、宽高比 `<=1.45`、填充率 `>=0.45` 且连续三帧稳定的候选；发布 `/brain_robot_vision/depth_candidate_*` 诊断话题，不发布 `/brain_robot_vision/target_valid`、不发布 `/joint_commands`、不调用任何控制服务。
+- 探针已接入 `cube_visual_search.launch.py` 和 `cube_task_real.yaml`，但仍是被动诊断节点；CMake 安装项和 `python3-numpy/python3-scipy` 依赖已加入。实际 `/home/johnwick/piper_ws` 与规范源四个文件逐一 `cmp` 一致。
+- 离线语法/YAML 验证通过；实际工作区 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回 0，两个包完成构建，安装空间已出现 `depth_cube_probe.py`。
+- 真实只读验证：仅启动 Astra 和探针，未启动 PiPER/MoveIt/Servo/视觉控制器，未发送机械臂命令。关灯条件下探针连续输出 `DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2652..2695`，没有把桌面或夹爪误报为目标；随后相机已停止且无控制进程残留。
+- 合成正向验证：640x400、400 mm 平面上放置约 35 mm 方块凸起，探针依次输出 `DEPTH_CUBE_WAIT_STABLE stable=1/3`、`2/3`、`DEPTH_CUBE_CANDIDATE_VALID stable=3/3`，三维点约 `(-0.005,0,0.350) m`、尺寸约 `0.035x0.035 m`、高度 `0.050 m`。这证明平面/尺寸/连续帧门控实际生效。
+- 当前探针结果仍未授权运动；它只证明深度几何候选链可用。照明恢复并完成真实搜索后，需取得紫色方块进入视野的真实候选，再决定把锁定点接入正式 `target_valid`，避免纯深度把任意方块或末端结构当成紫色目标。

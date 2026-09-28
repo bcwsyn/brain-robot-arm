@@ -220,3 +220,24 @@ pointcloud_tf_gate:
     # S-V1.9-1 feedback gaps; this cloud is not passed to an Octomap updater.
     required_frames: [base_link]
     transform_timeout_s: 0.05
+
+depth_cube_probe:
+  ros__parameters:
+    # Passive only: this stream never feeds target_valid or arm commands.
+    depth_topic: /camera/depth/image_raw
+    camera_info_topic: /camera/depth/camera_info
+    frame_stride: 6
+    sample_stride: 8
+    border_px: 12
+    min_plane_samples: 500
+    plane_inlier_m: 0.006
+    min_height_m: 0.015
+    max_height_m: 0.120
+    min_area_px: 40
+    min_fill_ratio: 0.45
+    min_size_m: 0.015
+    max_size_m: 0.120
+    max_aspect_ratio: 1.45
+    required_stable_frames: 3
+    max_center_delta_px: 16.0
+    max_depth_delta_m: 0.030

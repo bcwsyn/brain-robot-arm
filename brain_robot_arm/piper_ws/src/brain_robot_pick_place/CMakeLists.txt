@@ -132,6 +132,7 @@ install(PROGRAMS
   scripts/wrist_camera_viewer.py
   scripts/runtime_monitor.py
   scripts/piper_jog_adapter.py
+  scripts/depth_cube_probe.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
