@@ -1621,6 +1621,7 @@
 - `cube_task_real.yaml` 对视觉和抓取执行器均设置 `depth_only_target_enabled: true`，使用 `camera_depth_optical_frame` 和 `/brain_robot_vision/depth_candidate_*`；`cube_visual_search.launch.py` 注释同步说明探针是几何门控而非直接运动节点。未修改固件、MasterSlaveConfig、ResetPiper 或基础 CAN 配置。
 - 规范源 C++ 编译目标均通过；规范仓库在 hgfs 上安装 symlink 受文件系统限制而失败，但这不是代码编译错误。随后把五个生效文件同步到 `/home/johnwick/piper_ws`，实际工作区 `brain_robot_pick_place`、`brain_robot_ball_pick` 构建和安装成功，`depth_cube_probe.py`、控制器和抓取执行器安装链接存在。
 - 隔离 `ROS_DOMAIN_ID=77` 合成验证：复用既有 640x400、400 mm 桌面/35 mm 方块发布器，探针输出 `DEPTH_CUBE_CANDIDATE_VALID stable=16/3..20/3`，候选点 `(-0.005,-0.000,0.350) m`、尺寸 `0.035x0.035 m`、高度 `0.050 m`；误差话题输出 `x=-6.636 px, y=-0.373 px, ratio=0.0207`。无 PiPER、MoveIt、Servo、适配器或实体控制帧参与，测试残留已清理。
+- 随后尝试只启动真实 Astra 与深度探针（无 PiPER/MoveIt/Servo/适配器）；本次相机启动未在门控时限内提供 `CameraInfo`/深度候选，探针只记录 `DEPTH_PROBE_WAITING_FOR_CAMERA_INFO`，相机与探针进程已清理。该结果只说明当前无真实候选证据，不回退深度-only配置，也不启动运动。
 
 ### 当前阻断与下一步
 
