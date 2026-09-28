@@ -1500,3 +1500,16 @@
 
 - 本轮只增强实机可观测性，未宣称实体预抓取或抓取完成。机械臂回到现场且 CAN RX 持续增长后，首次运行按以下顺序读取诊断：`GRASP_TARGET_MODEL_LOCKED_BASE_FRAME` → `TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED` → `TOP_DOWN_PREGRASP_REACHED` → `TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED` → `GRIPPER_CLOSE_REQUESTED`。
 - 按首次缺失事件定位规划/发布、适配器反馈、下降衔接或夹爪请求，不重复底层巡检。
+
+## 2026-09-28：重启后首次实体一键链实跑断点
+
+- 机械臂重启后 USB-CAN 重新枚举；`sudo -n true` 返回 0。`can0` 初始为 `DOWN/STOPPED`、RX=0，本轮仅按已记录参数配置为 1 Mbps、sample-point 0.750、txqueuelen 1000，未发送 PiPER 控制帧。
+- 配置后被动 RX 曾在 8 秒增加 `18578`，接口为 `UP/LOWER_UP/ERROR-ACTIVE`，错误、丢包和 bus-off 均为 0，因此按硬门槛启动唯一默认 `/home/johnwick/start_brain_robot_cube_real.sh`。
+- 实际脚本通过 `[1/7]` CAN 复用、RGB/深度首帧、`[3/7]` 紫色检测启动和 `[4/7]` MoveIt/Servo/真机适配器启动，停在 `[5/7]` 的完整 MoveIt 反馈/自体过滤 TF 门控；没有进入 `[6/7]`、没有调用 `/enable_srv`、没有调用适配器 `arm`，没有发送实体关节或夹爪命令。
+- 同期 `piper_driver.log` 记录反馈反复丢失/恢复（4.65 s、0.33 s、0.21 s、5.58 s、0.76 s、0.27 s、2.58 s 等），最终报 `can0 feedback absent for 25.0s; holding all output and waiting for recovery (driver stays receive-only)`。随后 8 秒被动 `candump` 无帧，RX 计数冻结；最终接口统计仍为无错误/丢包/bus-off。
+- 当前运行实例因 `/piper_moveit_joint_states` 无反馈而卡在等待门控；已精确终止本轮脚本及其已识别的 PiPER/MoveIt/Servo/视觉/Astra 子进程，确认无控制栈残留。适配器全程只记录初始 `disarmed`，没有 `PHYSICAL MOTION ARMED`。
+
+### 当前阻断与下一步
+
+- 这次首次实体实跑把阻断定位到“重启后 CAN 反馈生命周期再次中断”，早于观测姿态、SEARCH、目标锁定和抓取；不是抓取姿态或夹爪逻辑失败。
+- 机械臂仍在现场时，下一次只需先被动确认 `0x251..0x256`/RX 持续增长和 `/joint_states` 连续更新；满足后直接复用本提交运行默认脚本。若反馈再次中断，保持 receive-only，不进入使能和运动，不重复视觉/抓取实验。
