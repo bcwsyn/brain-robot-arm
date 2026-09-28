@@ -973,12 +973,10 @@ private:
     const geometry_msgs::msg::PoseStamped & postgrasp_retreat = geometry_msgs::msg::PoseStamped())
   {
     geometry_msgs::msg::PoseStamped grasp_pose;
-    if (!simulation_only_) {
-      grasp_pose = CurrentPoseInFrame(lift_reference_frame_);
-      if (grasp_pose.header.frame_id.empty()) {
-        Fail("GRASP_POSE_UNAVAILABLE");
-        return;
-      }
+    grasp_pose = CurrentPoseInFrame(lift_reference_frame_);
+    if (grasp_pose.header.frame_id.empty()) {
+      Fail("GRASP_POSE_UNAVAILABLE");
+      return;
     }
     const double gripper_before_close = LatestGripperPosition();
     PublishState("CLOSING_GRIPPER");
@@ -1084,7 +1082,43 @@ private:
       return;
     }
     PublishState("HOLDING");
-    RCLCPP_INFO(get_logger(), "Cup post-grasp retreat completed and held.");
+    if (!auto_release_after_lift_) {
+      RCLCPP_INFO(get_logger(), "Cup post-grasp retreat completed and held.");
+      return;
+    }
+    if (hold_after_lift_s_ > 0.0) {
+      std::this_thread::sleep_for(std::chrono::duration<double>(hold_after_lift_s_));
+    }
+
+    PublishState("RELEASE_LOWERING");
+    grasp_pose.header.stamp = now();
+    if (!MoveArmCartesianToPose(grasp_pose, "RELEASE_LOWER") || cancel_requested_) {
+      Fail("RELEASE_LOWER_FAILED_HOLDING_CUP");
+      return;
+    }
+    PublishState("RELEASING");
+    if (!SetCupFollowing(false)) {
+      Fail("GAZEBO_CUP_UNFOLLOW_FAILED");
+      return;
+    }
+    if (!MoveGripper(open_target_) || cancel_requested_) {
+      Fail("RELEASE_GRIPPER_OPEN_FAILED");
+      return;
+    }
+    PublishState("RELEASED");
+    PublishState("RELEASE_RETREATING");
+    lift_target.header.stamp = now();
+    if (!MoveArmCartesianToPose(lift_target, "RELEASE_RETREAT") || cancel_requested_) {
+      Fail("RELEASE_RETREAT_FAILED");
+      return;
+    }
+    if (!DetachCupToWorld()) {
+      Fail("DETACH_CUP_FAILED");
+      return;
+    }
+    PublishSceneReady(false);
+    PublishState("RELEASE_COMPLETE_HOLDING_SAFE_RETREAT");
+    RCLCPP_INFO(get_logger(), "Cup release and safe retreat completed.");
   }
 
   bool VerifyGraspContact()
@@ -1638,6 +1672,35 @@ private:
     {
       std::lock_guard<std::mutex> lock(state_mutex_);
       attached_ = true;
+    }
+    return true;
+  }
+
+  bool DetachCupToWorld()
+  {
+    moveit_msgs::msg::AttachedCollisionObject detached;
+    detached.link_name = end_effector_link_;
+    detached.object.id = cached_cup_.id;
+    detached.object.operation = moveit_msgs::msg::CollisionObject::REMOVE;
+    if (!planning_scene_->applyAttachedCollisionObject(detached)) {
+      return false;
+    }
+    {
+      std::lock_guard<std::mutex> lock(state_mutex_);
+      attached_ = false;
+    }
+
+    // The simulation release returns to the measured grasp pose, which is the
+    // cached world-object pose. Restore it after retreat so MoveIt keeps the
+    // released object in the world scene instead of losing it.
+    auto released = cached_cup_;
+    released.operation = moveit_msgs::msg::CollisionObject::ADD;
+    if (!planning_scene_->applyCollisionObject(released)) {
+      return false;
+    }
+    {
+      std::lock_guard<std::mutex> lock(state_mutex_);
+      prepared_ = false;
     }
     return true;
   }

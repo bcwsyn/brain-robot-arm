@@ -715,3 +715,9 @@
 - attached collision object 的 `touch_links` 固定至少包含 `link6`、`gripper_base`、`link7`、`link8`，并合并 gripper planning group 链接；这只允许被抓物体与末端接触，不关闭机器人自碰撞，也不恢复腕部相机点云到实体 Octomap。
 - Cyclone DDS 只用于本轮 fake-system 确定性验证；Fast DDS SHM zombie 清理属于仿真诊断。没有实体证据前，不把仿真中间件选择推广到 `/home/johnwick/start_brain_robot_cube_real.sh`。
 - `can0` 当前虽为正确配置的 `ERROR-ACTIVE`，但 3 秒 RX 增量为 0；本轮代码/仿真通过不解除实体反馈硬门槛。只有 RX 持续增长后才可运行默认一键链。
+
+## 2026-09-28 仿真释放的碰撞场景次序
+
+- simulation-only 的释放顺序固定为：返回实测抓取位 → 停止 Gazebo 物体跟随 → 在 MoveIt 物体仍 attached 且具有末端 touch-links 时张爪 → 沿已验证接近路径反向撤离 → detach 并恢复世界碰撞物体。
+- 禁止在张爪前恢复世界物体：已验证这会使被抓物体与 `link7` 的合法接触转成世界碰撞并阻止夹爪规划。禁止在撤离前恢复世界物体：已验证这会使撤离笛卡尔路径 fraction 为 0。不得通过删除碰撞检查或忽略失败绕过这两个问题。
+- 该决策只完成 fake-system 对真实抓取执行器终态的覆盖，不改变实体分支已有的“沿实测路径下降、张爪确认、沿同路撤离”语义，也不解除 CAN 新鲜反馈门槛。

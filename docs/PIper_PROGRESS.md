@@ -1460,3 +1460,18 @@
 
 - 本轮推进了抓取骨架和防异常轨迹能力，但没有推进实体机械臂到新的观测/抓取状态，因为 PiPER 当前 CAN RX 增量仍为 0。接口配置正确不等于反馈可用；禁止用实体控制帧试探，也不重复 USB reset、xHCI/gs_usb、固件、限位或点云基础实验。
 - 唯一续跑入口仍是 CAN RX 持续增长。恢复后直接运行默认 `/home/johnwick/start_brain_robot_cube_real.sh`，重点验收实时 `tilt=0.35` 候选的 `TOP_DOWN_PREGRASP -> TOP_DOWN_DESCENT -> CLOSE -> POSTGRASP_RETREAT -> RELEASE`；实体成功前不宣称总目标完成。
+
+## 2026-09-28：仿真抓取、同位释放与安全撤离闭环
+
+- 本轮起点为 `fa2d33a`。只读现场复核确认没有一键脚本、PiPER 驱动、MoveIt、适配器、视觉控制器或抓取执行器残留；`can0` 保持 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750、txqueuelen 1000，但 3 秒 RX packets 固定为 `14088555 -> 14088555`（增量 0）。因此未启动实体驱动，未发送使能、失能、夹爪或运动命令。
+- 最小目标是补齐上一轮 fake-system 只验证到 `HOLDING` 的缺口，使同一真实抓取执行器在仿真中实际经过释放、撤离和终态，而不是只靠静态代码审计。
+- 第一种次序“先 detach/恢复世界物体，再张爪”被测试否决：MoveIt 正确检测到 `medicine_cup` 与 `link7` 接触，夹爪规划失败并进入 `FAULT_RELEASE_GRIPPER_OPEN_FAILED`。第二种次序“张爪后立即恢复世界物体，再撤离”也被否决：刚恢复的世界物体仍与夹爪接触，撤离的 `computeCartesianPath` fraction 为 0，进入 `FAULT_RELEASE_RETREAT_FAILED`。这两次失败均保留了碰撞检查，没有把失败伪装为成功。
+- 最终仿真次序为：下降回实测抓取位 → 停止 Gazebo 跟随 → 在物体仍以 attached object 且带 touch-links 的状态下张爪 → 沿已验证路径反向撤离至预抓取位 → detach 并把物体恢复到世界场景。该次序不改动真实分支已经确定的实体释放语义，仅补齐 `simulation_only` 的闭环验证。
+- 最终 fake-system 测试返回 0，状态依次出现 `WAITING_FOR_LEVEL_ALIGN -> OPENING_GRIPPER -> PREPARED -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME -> TOP_DOWN_PREGRASP_PLANNING -> TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT_PLANNING -> CLOSING_GRIPPER -> VERIFYING_GRASP_CONTACT -> LIFTING -> LIFT_USING_REVERSE_APPROACH -> HOLDING -> RELEASE_LOWERING -> RELEASING -> RELEASE_RETREATING -> RELEASE_COMPLETE_HOLDING_SAFE_RETREAT`。
+- 同一次测试选择 `tilt=0.350 rad, yaw=0`；预抓取轨迹 31 点；下降轨迹 12 点、最大相邻关节步长 `0.046459 rad`；抓取后反向撤离 12 点、`0.047728 rad`；释放下降 12 点、`0.047724 rad`；释放撤离 12 点、`0.047728 rad`。所有 MoveIt execute 请求成功，最终日志为 `Cup release and safe retreat completed.`。
+- 实际 `/home/johnwick/piper_ws` 已用最终源码重建，`brain_robot_pick_place` 构建成功；规范仓库源码与实际生效源码 `cmp` 一致。直接 pytest 为 `6 passed in 0.27s`；注册的 colcon/ament 测试为 1 个 suite、6 个 pytest，汇总 7 tests、0 errors/failures/skipped。
+
+### 当前阻断与下一步
+
+- 仿真现已覆盖锁模、倾斜预抓取、下降、闭爪、反向撤离、同位释放和安全撤离完整骨架；这仍不是实体抓取完成证据。
+- 当前唯一实体阻断仍是 CAN RX 增量为 0。只有 RX 持续增长后才直接运行 `/home/johnwick/start_brain_robot_cube_real.sh`，从 `OBSERVE_POSE_REACHED -> SEARCH` 一路验证到实体 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT -> RESET_COMPLETE -> confirmed disable`；不重复固件、限位、点云、USB reset、xHCI/gs_usb 或离线 IK 实验。
