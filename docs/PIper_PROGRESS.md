@@ -1569,3 +1569,17 @@
 
 - 当前通信链已经恢复且静态反馈稳定；实体主线已首次确证到达 `OBSERVE_POSE_REACHED -> SEARCH`。尚未完成搜索目标锁定与抓取，不能宣称总目标完成。
 - 下一步直接运行默认一键链验证收紧后的连续搜索；首先确认不再出现 J1 越界拒绝和空发。如果检测器满足紫色、矩形、深度与尺寸门控，则继续验收 `ALIGN -> GRASP_READY -> TOP_DOWN_PREGRASP -> DESCENT -> CLOSE -> POSTGRASP_RETREAT -> RELEASE`。
+
+
+## 2026-09-28 22:52：搜索越界修复实证与全搜索超时修复
+
+- 从提交 `6840af2` 重跑默认一键链。CAN 启动前三秒 RX 增量 `2440/2436/2429`，内核非法 echo 计数保持 1；新的运行期 CAN 守护实际启动且全程未触发。脚本再次通过 `[7/7]`，从记录的 J1 `-1.4437 rad` 姿态发布 72.2 s、20 点观测轨迹，适配器接受并到达 `OBSERVE_POSE_REACHED -> SEARCH`。
+- 新的 `[-1.35, 1.35] rad` J1 边界和 0.20 rad 搜索段已取得实体证据：搜索段约每 3.3 s 连续接受，J1 实测到达 `+1.339978304 rad` 后反向，无 `exceeds limit`、无适配器 disarm、无 `PIPER_ADAPTER_DISARMED`，通信守护日志为空。上一轮 J1 极限拒绝已消失。
+- 检测器一直为 `PURPLE_CUBE target LOST`、`target_valid=false`、`DEPTH_REJECTED_TARGET_LOST`。保存的 `/camera/color/image_raw` 和调试帧几乎全黑；UVC 确认使用独立 `2bc5:0557` RGB 设备，曝光/增益可正常读写。分别尝试默认 `157/0`、手动 `300/50` 和诊断 `1000/100` 后已恢复自动曝光/自动白平衡。用户随后确认现场灯被关闭，因此本轮黑帧和目标丢失归因于环境照明，不再推断相机故障、物理遮挡或颜色/深度阈值错误。
+- 状态日志揭示直接软件原因：整个运行只出现 `SEARCH_DOWN` 与 `BOTTOM_SCAN`；实体全搜索每 75 s 被通用 `search_timeout_s` 强制 `FULL_SEARCH_CYCLE_RESTART`，每次又从 DESCEND 开始，导致 J5 长期停留在约 `+0.95 rad` 一侧，永远不能进入 `SEARCH_UP/TOP_SCAN` 覆盖另一侧视野。停止前位置为 `J1=0.496927228, J2=1.053286164, J3=-0.989667896, J4=-0.064647464, J5=1.065200416, J6=0 rad`；Ctrl+C 只停止输出并保持使能，未复位或失能。
+- 最小修复位于状态机而不是扩大轨迹：实体 full SEARCH 不再受通用墙钟超时重启，继续由既有有界 J1/J5 相位和每段反馈超时驱动；实体 LOCAL_SEARCH 仍保留 5 s 超时，仿真仍保留原 `search_timeout_s`。这使实体搜索能从 `DESCEND/BOTTOM_SCAN` 继续进入 `ASCEND/TOP_SCAN` 并循环覆盖。
+- 验证：适配器/实体回放 `11 passed in 0.38s`；实际 `brain_robot_pick_place`、`brain_robot_ball_pick` 两包构建成功。尚未用实体复核 `SEARCH_UP/TOP_SCAN` 和目标锁定。
+
+### 下一步
+
+- 现场照明恢复后直接重跑默认一键链；验收日志必须出现 `SEARCH_UP` 或 `TOP_SCAN`。检测器恢复有效画面并锁定方块后，继续 `ALIGN -> GRASP_READY` 和五个抓取阶段诊断；照明关闭期间不改相机 profile、不放宽颜色/深度门控，也不据黑帧重新设计搜索轨迹。

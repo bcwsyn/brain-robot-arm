@@ -137,3 +137,4 @@ def test_real_search_stays_inside_adapter_limits_and_reports_disarm():
     assert 0.08 < float(visual["search_planning_step_rad"]) < 0.35
     assert "/brain_robot_control/adapter_armed" in adapter
     assert "PIPER_ADAPTER_DISARMED" in controller
+    assert 'search_timeout_reached && (local || backend_ != "piper")' in controller

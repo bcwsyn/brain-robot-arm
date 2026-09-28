@@ -1261,7 +1261,9 @@ private:
         }
       }
     }
-    const bool search_complete = elapsed >= timeout || StepSearchLocked();
+    const bool search_timeout_reached = elapsed >= timeout;
+    const bool search_complete =
+      (search_timeout_reached && (local || backend_ != "piper")) || StepSearchLocked();
     if (!search_complete) {
       return;
     }
