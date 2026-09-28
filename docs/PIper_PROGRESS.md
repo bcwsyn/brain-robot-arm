@@ -1541,3 +1541,31 @@
 ### 下一步
 
 - 确认 RX 持续增长后，直接重跑默认脚本；首要验收适配器不再拒绝 PREPARE、观测反馈收敛并发布 `OBSERVE_POSE_REACHED -> SEARCH`。
+
+
+## 2026-09-28 22:35：实机到达 SEARCH、记录停机姿态并优先收口通信异常
+
+### 实际运行与断点
+
+- 起点为 `95248ae`。根分区使用率 29%、可用约 54 GB；USB-CAN 为 candleLight `1d50:606f`（序列号 `003F001E5246570520323934`），`can0` 为 1 Mbps / sample-point 0.750 / txqueuelen 1000、`ERROR-ACTIVE`，无 bus-off、error-pass、bus-error 或 RX drop。
+- 默认 `/home/johnwick/start_brain_robot_cube_real.sh` 实际通过 `[1/7]` 至 `[7/7]`。插值后的当前姿态→观测轨迹为 49.1 s、14 点，适配器接受；实机随后明确发布 `STATE -> SEARCH (OBSERVE_POSE_REACHED)`，证明 `95248ae` 已修复此前两点观测轨迹拒绝。
+- 搜索期间 MoveIt 短段被连续接受；到 J1 负向边界时，适配器明确拒绝 `point 4 exceeds limit for joint1` 并 disarm。视觉控制器此前没有消费适配器失能状态，因而在机械臂已不再接收输出后仍空发搜索计划。此次停止不是 Octomap/夹爪点云或目标移动导致。
+- 按用户要求优先记录停止位置。两次独立 `/joint_states --once` 一致：`J1=-1.443717772, J2=1.031236948, J3=-0.784578788, J4=-0.028433720, J5=0.888545028, J6=0.000000000 rad`，夹爪反馈 `-0.0007 m`。停止一键链时只停止控制输出并保持使能；未执行 ResetPiper、MasterSlaveConfig、自动零点复位或硬件失能。
+
+### 通信异常证据与恢复
+
+- 停止后 USB-CAN 仍在线，RX 连续三秒增长 `2429/2444/2445` 帧，磁盘不是原因。内核日志在本轮高频输出期间新增一次 `gs_usb ... Unexpected out of range echo id 343`；Linux 主线 `gs_usb.c` 对超出 `GS_MAX_TX_URBS` 的 echo id 明确记错并丢弃该 echo 后重新提交接收 URB。这证明设备/USB 路径曾返回无效发送回显；它不等同于 CAN bus-off，也不能仅凭这一条认定机械臂固件故障。
+- 在确认 PiPER/视觉/适配器均无残留后，只执行一次受限 `can0 down -> 1 Mbps/0.75/qlen 1000 -> up`，清除本轮可能滞留的 gs_usb TX echo 上下文，并将已处理 echo 异常计数记录为 1。恢复后 RX 三秒增量 `2437/2427/2440`，仍为 `ERROR-ACTIVE` 且总线错误计数为 0。
+- 以 `auto_enable=false` 启动只读 PiPER 驱动复测 45 秒：`/joint_states` 平均约 `199.8 Hz`，观测到的最大消息间隔 `0.022 s`，共覆盖 8616 个窗口样本；内核 echo 异常计数保持 1，未新增异常。驱动初始化仅出现一次 `feedback lost` 后 `0.08 s` 恢复，属于首批完整反馈到达前的瞬时门控，不是历史 25 s 断联。
+
+### 最小修复与验证
+
+- 一键脚本新增通信守护，但不恢复“RX 一停就盲目 bounce”的旧行为：只有内核出现尚未处理的新 `gs_usb` 非法 echo 且尚未启动运动时，才重建一次 `can0`；运动期间若连续 3 秒 RX 不增长、接口消失或出现新的非法 echo，先发布 emergency-stop、停止本轮输出并保持硬件使能，由下一次启动在无运动阶段恢复接口。
+- `piper_jog_adapter` 新增 `/brain_robot_control/adapter_armed` 状态；视觉控制器在已见过 armed 后若收到 false，立即进入 `FAULT (PIPER_ADAPTER_DISARMED)` 并停止 MoveGroup，禁止适配器拒绝后继续空发计划。
+- 实体搜索 J1 边界从适配器极限 `[-1.50, 1.50]` 收紧为 `[-1.35, 1.35] rad`，给 MoveIt/TOTG 中间采样保留 0.15 rad 余量；搜索段从 0.08 增至仍低于 0.35 跳变门的 0.20 rad，减少频繁停启。没有扩大任何现场轨迹或降低适配器限位。
+- 验证：规范和实际一键脚本 `bash -n` 通过；适配器/实体回放测试 `11 passed in 0.36s`；实际 `brain_robot_pick_place`、`brain_robot_ball_pick` 两包构建成功。
+
+### 当前判断与下一步
+
+- 当前通信链已经恢复且静态反馈稳定；实体主线已首次确证到达 `OBSERVE_POSE_REACHED -> SEARCH`。尚未完成搜索目标锁定与抓取，不能宣称总目标完成。
+- 下一步直接运行默认一键链验证收紧后的连续搜索；首先确认不再出现 J1 越界拒绝和空发。如果检测器满足紫色、矩形、深度与尺寸门控，则继续验收 `ALIGN -> GRASP_READY -> TOP_DOWN_PREGRASP -> DESCENT -> CLOSE -> POSTGRASP_RETREAT -> RELEASE`。

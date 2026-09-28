@@ -303,6 +303,8 @@ private:
       "servo_stop_service", "/servo_node/stop_servo");
     emergency_stop_topic_ = ParameterOr<std::string>(
       "emergency_stop_topic", "/brain_robot_control/emergency_stop");
+    adapter_armed_topic_ = ParameterOr<std::string>(
+      "adapter_armed_topic", "/brain_robot_control/adapter_armed");
     grasp_reacquire_topic_ = ParameterOr<std::string>(
       "grasp_reacquire_topic", "/brain_robot_grasp/reacquire");
   }
@@ -414,6 +416,31 @@ private:
         cancel_requested_ = true;
         if (move_group_) {
           move_group_->stop();
+        }
+      });
+    adapter_armed_subscription_ = create_subscription<std_msgs::msg::Bool>(
+      adapter_armed_topic_, rclcpp::QoS(10),
+      [this](const std_msgs::msg::Bool::SharedPtr message) {
+        bool stop_move_group = false;
+        {
+          std::lock_guard<std::mutex> lock(mutex_);
+          if (message->data) {
+            adapter_was_armed_ = true;
+            return;
+          }
+          if (backend_ == "piper" && adapter_was_armed_ &&
+            state_ != ControlState::IDLE && state_ != ControlState::STOPPED &&
+            state_ != ControlState::FAULT)
+          {
+            StopLocked(ControlState::FAULT, "PIPER_ADAPTER_DISARMED");
+            stop_move_group = true;
+          }
+        }
+        if (stop_move_group) {
+          cancel_requested_ = true;
+          if (move_group_) {
+            move_group_->stop();
+          }
         }
       });
     grasp_reacquire_subscription_ = create_subscription<std_msgs::msg::Bool>(
@@ -2246,6 +2273,7 @@ private:
   ControlState state_{ControlState::IDLE};
   std::string last_reason_;
   bool configuration_ok_{false};
+  bool adapter_was_armed_{false};
 
   std::string backend_;
   bool real_motion_enabled_{false};
@@ -2362,6 +2390,7 @@ private:
   std::string servo_start_service_;
   std::string servo_stop_service_;
   std::string emergency_stop_topic_;
+  std::string adapter_armed_topic_;
   std::string grasp_reacquire_topic_;
 
   std::unordered_map<std::string, double> joint_positions_;
@@ -2411,6 +2440,7 @@ private:
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr filtered_point_cloud_subscription_;
   rclcpp::Subscription<std_msgs::msg::Int8>::SharedPtr servo_status_subscription_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr emergency_stop_subscription_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr adapter_armed_subscription_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr grasp_reacquire_subscription_;
   rclcpp::Publisher<control_msgs::msg::JointJog>::SharedPtr joint_command_publisher_;
   rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr arm_trajectory_publisher_;

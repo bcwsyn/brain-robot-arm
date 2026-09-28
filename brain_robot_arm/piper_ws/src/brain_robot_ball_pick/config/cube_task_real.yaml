@@ -32,9 +32,10 @@ visual_search_controller:
     horizon_lock_enabled: false
     horizontal_error_sign: -1.0
     vertical_error_sign: 1.0
-    # Use the adapter's full configured J1 software envelope for visual search.
-    horizontal_search_min: -1.50
-    horizontal_search_max: 1.50
+    # Keep 0.15 rad clearance inside the adapter's J1 envelope. MoveIt/TOTG
+    # may generate intermediate samples infinitesimally beyond an exact goal bound.
+    horizontal_search_min: -1.35
+    horizontal_search_max: 1.35
     vertical_search_min: -0.60
     vertical_search_max: 0.95
     search_bounds_relative_to_start: false
@@ -56,7 +57,7 @@ visual_search_controller:
     # Real search is executed as short MoveIt-planned segments. Each segment
     # is collision-checked against the current planning scene before it is
     # sent to piper_jog_adapter; no blind JointJog search is used on hardware.
-    search_planning_step_rad: 0.08
+    search_planning_step_rad: 0.20
     search_planning_time_s: 0.50
     search_planning_attempts: 2
     search_planning_velocity_scaling: 0.05

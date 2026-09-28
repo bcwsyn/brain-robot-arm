@@ -125,3 +125,15 @@ def test_real_prepare_path_is_interpolated_below_adapter_jump_gate():
     assert 0.0 < max_step < 0.35
     assert "std::ceil(max_delta / prepare_max_joint_step_rad_)" in controller
     assert "trajectory.points.resize(segment_count + 1U)" in controller
+
+
+def test_real_search_stays_inside_adapter_limits_and_reports_disarm():
+    profile = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    visual = profile["visual_search_controller"]["ros__parameters"]
+    adapter = ADAPTER.read_text(encoding="utf-8")
+    controller = CONTROLLER.read_text(encoding="utf-8")
+    assert -1.50 < float(visual["horizontal_search_min"]) < 0.0
+    assert 0.0 < float(visual["horizontal_search_max"]) < 1.50
+    assert 0.08 < float(visual["search_planning_step_rad"]) < 0.35
+    assert "/brain_robot_control/adapter_armed" in adapter
+    assert "PIPER_ADAPTER_DISARMED" in controller

@@ -28,6 +28,7 @@ class PiperJogAdapter(Node):
         self.declare_parameter('filtered_joint_state_topic', '/piper_moveit_joint_states')
         self.declare_parameter('output_topic', '/joint_commands')
         self.declare_parameter('emergency_stop_topic', '/brain_robot_control/emergency_stop')
+        self.declare_parameter('armed_status_topic', '/brain_robot_control/adapter_armed')
         self.declare_parameter('command_timeout_s', 0.20)
         self.declare_parameter('joint_state_timeout_s', 0.30)
         self.declare_parameter('publish_rate_hz', 50.0)
@@ -101,6 +102,8 @@ class PiperJogAdapter(Node):
             self._gripper_command, qos)
         self.command_publisher = self.create_publisher(
             JointState, str(self.get_parameter('output_topic').value), qos)
+        self.status_publisher = self.create_publisher(
+            Bool, str(self.get_parameter('armed_status_topic').value), qos)
         self.filtered_joint_state_publisher = self.create_publisher(
             JointState, str(self.get_parameter('filtered_joint_state_topic').value), qos)
         self.arm_service = self.create_service(Trigger, '~/arm', self._arm)
@@ -108,6 +111,7 @@ class PiperJogAdapter(Node):
         self.enable_service = self.create_service(Trigger, '~/enable_motion', self._enable_motion)
         self.disable_service = self.create_service(Trigger, '~/disable_motion', self._disable_motion)
         self.create_timer(1.0 / self.publish_rate_hz, self._tick)
+        self._publish_armed_status()
         self.get_logger().warn(
             'PiPER physical adapter is disarmed. Set motion_enabled=true and call '
             '/piper_jog_adapter/arm only after the workspace is clear.')
@@ -235,6 +239,7 @@ class PiperJogAdapter(Node):
         self.pending_gripper_target = None
         self.last_command_time = 0.0
         self.armed = True
+        self._publish_armed_status()
         response.success = True
         response.message = 'Adapter armed; only clamped low-speed JointJog commands are forwarded.'
         self.get_logger().warn('PHYSICAL MOTION ARMED')
@@ -266,7 +271,15 @@ class PiperJogAdapter(Node):
         self.pending_gripper_target = None
         self.velocities = {name: 0.0 for name in self.joint_names}
         self.targets.update(self.positions)
+        self._publish_armed_status()
         self.get_logger().warn(f'PHYSICAL MOTION DISARMED: {reason}')
+
+    def _publish_armed_status(self):
+        if not hasattr(self, 'status_publisher'):
+            return
+        message = Bool()
+        message.data = bool(self.armed)
+        self.status_publisher.publish(message)
 
     def _emergency_stop(self, message):
         if message.data:

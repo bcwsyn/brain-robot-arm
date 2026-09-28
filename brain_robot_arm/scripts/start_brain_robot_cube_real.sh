@@ -15,6 +15,7 @@ AUTO_START="${BRAIN_ROBOT_AUTO_START:-1}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
+CAN_HEALTH_PID=""
 CAMERA_STARTED_BY_SCRIPT=0
 DISABLE_REQUESTED=0
 MOTION_ARMED=0
@@ -51,6 +52,9 @@ cleanup() {
   echo "[关闭] 停止本脚本启动的视觉、相机和驱动进程..."
   if [[ -n "$CAMERA_HEALTH_PID" ]]; then
     kill "$CAMERA_HEALTH_PID" 2>/dev/null || true
+  fi
+  if [[ -n "$CAN_HEALTH_PID" ]]; then
+    kill "$CAN_HEALTH_PID" 2>/dev/null || true
   fi
   if (( CAMERA_STARTED_BY_SCRIPT )); then
     stop_astra_camera || true
@@ -315,6 +319,81 @@ start_camera_health_guard() {
   echo "[相机] 已启用无帧自动恢复；仅重启 Astra，不影响机械臂控制栈。"
 }
 
+gs_usb_echo_error_count() {
+  sudo -n dmesg --color=never 2>/dev/null |
+    grep -Ec 'gs_usb .*Unexpected (out of range|unused) echo id' || true
+}
+
+recover_unhandled_gs_usb_echo_error() {
+  local marker="$LOG_DIR/gs_usb_echo_errors.handled" count handled=0
+  count=$(gs_usb_echo_error_count)
+  [[ "$count" =~ ^[0-9]+$ ]] || count=0
+  if [[ -r "$marker" ]]; then
+    handled=$(<"$marker")
+    [[ "$handled" =~ ^[0-9]+$ ]] || handled=0
+  fi
+  if (( count <= handled )); then
+    return 0
+  fi
+
+  echo "[CAN] 检测到 $((count - handled)) 个未处理的 gs_usb echo 异常；在运动启动前重建 can0。"
+  sudo -n ip link set can0 down || fail "gs_usb 异常恢复时无法停止 can0。"
+  sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75 ||
+    fail "gs_usb 异常恢复时无法重设 can0 位时序。"
+  sudo -n ip link set can0 txqueuelen "${BRAIN_ROBOT_CAN_TX_QUEUE:-1000}" ||
+    fail "gs_usb 异常恢复时无法重设 can0 TX 队列。"
+  sudo -n ip link set can0 up || fail "gs_usb 异常恢复后无法启动 can0。"
+  printf '%s\n' "$count" > "$marker"
+}
+
+start_can_health_guard() {
+  local parent_pid=$$ logfile="$LOG_DIR/can_health.log"
+  : > "$logfile"
+  (
+    local rx_path=/sys/class/net/can0/statistics/rx_packets
+    local last_rx current_rx stagnant=0 baseline loop=0 echoes reason
+    baseline=$(gs_usb_echo_error_count)
+    [[ "$baseline" =~ ^[0-9]+$ ]] || baseline=0
+    [[ -r "$rx_path" ]] && last_rx=$(<"$rx_path") || last_rx=0
+    while sleep 1; do
+      reason=""
+      if ! ip link show can0 >/dev/null 2>&1 || [[ ! -r "$rx_path" ]]; then
+        reason="CAN_INTERFACE_LOST"
+      else
+        current_rx=$(<"$rx_path")
+        if (( current_rx > last_rx )); then
+          stagnant=0
+        else
+          ((stagnant += 1))
+        fi
+        last_rx=$current_rx
+        if (( stagnant >= 3 )); then
+          reason="CAN_RX_STALLED_3S"
+        fi
+      fi
+
+      ((loop += 1))
+      if (( loop % 5 == 0 )); then
+        echoes=$(gs_usb_echo_error_count)
+        [[ "$echoes" =~ ^[0-9]+$ ]] || echoes=$baseline
+        if (( echoes > baseline )); then
+          reason="GS_USB_ECHO_ID_ERROR"
+        fi
+      fi
+
+      if [[ -n "$reason" ]]; then
+        echo "[$(date '+%F %T')] $reason: stop outputs and preserve enable"
+        timeout 3s ros2 topic pub --once /brain_robot_control/emergency_stop \
+          std_msgs/msg/Bool '{data: true}' >/dev/null 2>&1 || true
+        kill -TERM "$parent_pid" 2>/dev/null || true
+        exit 0
+      fi
+    done
+  ) >>"$logfile" 2>&1 &
+  CAN_HEALTH_PID=$!
+  echo "[CAN] 已启用运行期守护：3 秒 RX 停滞或新 gs_usb echo 异常将停止输出并保持使能。"
+}
+
 configure_can_tx_queue() {
   local can_tx_queue="${BRAIN_ROBOT_CAN_TX_QUEUE:-1000}" can_details
   can_details=$(ip -details link show can0 2>/dev/null || true)
@@ -341,6 +420,7 @@ configure_can() {
   fi
   ip link show can0 >/dev/null 2>&1 ||
     fail "未找到 can0；请确认 USB-CAN 已连接并已透传到虚拟机。"
+  recover_unhandled_gs_usb_echo_error
 
   # Reuse an already configured interface without disturbing the USB-CAN data
   # path. Privileged reconfiguration is allowed only when the link is down or
@@ -705,6 +785,7 @@ fi
 wait_for topic /joint_states
 wait_for_joint_feedback /joint_states
 wait_for service /enable_srv
+start_can_health_guard
 
 echo "[2/7] 检查并启动 RGB-D 相机..."
 if ! node_exists /camera/camera; then
