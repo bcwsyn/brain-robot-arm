@@ -1518,3 +1518,9 @@
 
 - 停止本轮实体控制栈后，保持 `can0` 原配置不变做 10 秒 `candump -n 1` 被动观察；返回 `124`，无帧，RX `721825 -> 721825`（增量 0）。接口仍 `UP/ERROR-ACTIVE`、1 Mbps/0.750、qlen 1000，错误/丢包/bus-off 均为 0。
 - 未执行 link bounce、USB reset、xHCI/gs_usb 重载、发送 CAN 控制帧或再次启动上层；当前断点仍是重启后 PiPER 控制器反馈没有持续恢复。
+
+## 2026-09-28：用户要求自主续跑后的现场复核
+
+- 从提交 `2f2d8f7` 继续。无一键脚本、PiPER 驱动、适配器、视觉、MoveIt 或 Astra 残留进程。
+- `can0` 保持 `UP/LOWER_UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750、qlen 1000，错误/丢包/bus-off 均为 0；5 秒 RX `721825 -> 721825`，增量 0。
+- 因实体反馈仍为 0，本轮没有重启机械臂、bounce can0、USB reset、发送控制帧或重新启动默认脚本；无新增实体运动证据。
