@@ -707,3 +707,11 @@
 - `BRAIN_ROBOT_AUTO_START=1` 是无人值守的完整抓取事务：观测启动失败、抓取状态 `FAULT_*`、超时或安全收尾失败时必须停止新增控制输出、保持硬件使能并返回非零码；禁止落入 `read`/按键重试循环。交互循环只属于显式关闭自动模式的人工调试入口。
 - 一旦 `piper_jog_adapter/arm` 成功，启动脚本必须锁存“运动已启动”状态；直到 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT -> RESET_COMPLETE -> adapter disarm -> disable_motion -> /enable_srv false` 全部确认后才能清除。锁存期间无论普通错误、TERM 还是 EXIT，都必须请求视觉/Servo/适配器停止输出，但禁止把硬件失能或零点复位当作 cleanup。
 - 此规则只收口一键编排和异常控制流，不修改已有搜索轨迹、倾斜抓取候选、碰撞检查、反馈门控或静态目标模型。
+
+## 2026-09-28 顶部抓取采用已验证接近路径的反向撤离
+
+- MoveIt 官方 Pick and Place 语义将抓取前接近与抓取后撤离建模为成对方向；本机 fake-system 又证明固定世界 `+Z` 抬升只完成 `0.65/0.667` 的笛卡尔路径，而反向返回同一预抓取位生成完整可执行轨迹。因此顶部抓取闭爪后的默认第一段运动为 `POSTGRASP_RETREAT`：沿已验证接近路径反向回到预抓取位，再进入既有同位放回/释放骨架。固定 `+Z` 只保留给没有预抓取位的旧调用者，不再用于顶部抓取默认路径。
+- 任何笛卡尔路径在执行前必须满足点维度完整、位置有限且相邻关节步长不超过 `0.35 rad`；实体 `piper_jog_adapter` 再次独立检查首点与最新实测状态偏差不超过 `0.10 rad`、时间严格递增、软限位和同一 `0.35 rad` 跳变阈值。任一检查失败即 disarm 并拒绝输出，不能依赖下游控制器处理 IK 分支翻转。
+- attached collision object 的 `touch_links` 固定至少包含 `link6`、`gripper_base`、`link7`、`link8`，并合并 gripper planning group 链接；这只允许被抓物体与末端接触，不关闭机器人自碰撞，也不恢复腕部相机点云到实体 Octomap。
+- Cyclone DDS 只用于本轮 fake-system 确定性验证；Fast DDS SHM zombie 清理属于仿真诊断。没有实体证据前，不把仿真中间件选择推广到 `/home/johnwick/start_brain_robot_cube_real.sh`。
+- `can0` 当前虽为正确配置的 `ERROR-ACTIVE`，但 3 秒 RX 增量为 0；本轮代码/仿真通过不解除实体反馈硬门槛。只有 RX 持续增长后才可运行默认一键链。

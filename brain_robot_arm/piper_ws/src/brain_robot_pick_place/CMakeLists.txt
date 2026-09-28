@@ -143,4 +143,12 @@ ament_environment_hooks(
   "${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/gazebo_plugin_path.dsv.in"
 )
 
+if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(
+    piper_jog_adapter_test
+    test/test_piper_jog_adapter.py
+  )
+endif()
+
 ament_package()

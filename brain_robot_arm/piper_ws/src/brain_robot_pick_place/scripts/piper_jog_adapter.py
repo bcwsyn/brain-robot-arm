@@ -32,6 +32,8 @@ class PiperJogAdapter(Node):
         self.declare_parameter('joint_state_timeout_s', 0.30)
         self.declare_parameter('publish_rate_hz', 50.0)
         self.declare_parameter('max_velocity_rad_s', 0.035)
+        self.declare_parameter('trajectory_start_tolerance_rad', 0.10)
+        self.declare_parameter('trajectory_max_joint_step_rad', 0.35)
         self.declare_parameter('joint_min', [-1.50, -0.30, -1.40, -0.80, -1.20, -0.80])
         self.declare_parameter('joint_max', [1.50, 1.40, 0.40, 0.80, 1.20, 0.80])
         self.declare_parameter(
@@ -51,6 +53,10 @@ class PiperJogAdapter(Node):
         self.joint_state_timeout_s = float(self.get_parameter('joint_state_timeout_s').value)
         self.publish_rate_hz = float(self.get_parameter('publish_rate_hz').value)
         self.max_velocity = float(self.get_parameter('max_velocity_rad_s').value)
+        self.trajectory_start_tolerance = float(
+            self.get_parameter('trajectory_start_tolerance_rad').value)
+        self.trajectory_max_joint_step = float(
+            self.get_parameter('trajectory_max_joint_step_rad').value)
         self.joint_min = list(self.get_parameter('joint_min').value)
         self.joint_max = list(self.get_parameter('joint_max').value)
         self.visual_joint_max_delta = list(
@@ -62,6 +68,8 @@ class PiperJogAdapter(Node):
             raise ValueError('visual_joint_max_delta_rad must contain six non-negative values')
         if self.max_velocity <= 0.0 or self.publish_rate_hz <= 0.0:
             raise ValueError('max_velocity_rad_s and publish_rate_hz must be positive')
+        if self.trajectory_start_tolerance <= 0.0 or self.trajectory_max_joint_step <= 0.0:
+            raise ValueError('trajectory safety tolerances must be positive')
 
         self.positions = {}
         self.targets = {}
@@ -143,8 +151,10 @@ class PiperJogAdapter(Node):
             return
         if not message.joint_names or not message.points:
             return
-        if any(name not in self.joint_names for name in message.joint_names):
-            self.get_logger().error('Rejecting trajectory with an unknown joint name')
+        rejection = self._trajectory_rejection_reason(message)
+        if rejection is not None:
+            self.get_logger().error(f'Rejecting trajectory: {rejection}')
+            self._disarm_internal(f'invalid trajectory: {rejection}')
             return
         self.trajectory = message
         self.trajectory_start = time.monotonic()
@@ -158,6 +168,45 @@ class PiperJogAdapter(Node):
         self.last_command_time = time.monotonic()
         self.get_logger().info(
             f'REAL ARM trajectory accepted: {len(message.points)} points')
+
+    def _trajectory_rejection_reason(self, message):
+        if len(set(message.joint_names)) != len(message.joint_names):
+            return 'duplicate joint name'
+        if any(name not in self.joint_names for name in message.joint_names):
+            return 'unknown joint name'
+
+        previous_positions = None
+        previous_time = None
+        for point_index, point in enumerate(message.points):
+            if len(point.positions) != len(message.joint_names):
+                return f'point {point_index} position count mismatch'
+            point_time = (
+                float(point.time_from_start.sec) +
+                float(point.time_from_start.nanosec) * 1e-9)
+            if not math.isfinite(point_time) or point_time < 0.0:
+                return f'point {point_index} invalid time_from_start'
+            if previous_time is not None and point_time <= previous_time:
+                return f'point {point_index} time_from_start is not strictly increasing'
+
+            current_positions = []
+            for index, name in enumerate(message.joint_names):
+                position = float(point.positions[index])
+                if not math.isfinite(position):
+                    return f'point {point_index} non-finite position for {name}'
+                joint_index = self.joint_names.index(name)
+                if position < self.joint_min[joint_index] or position > self.joint_max[joint_index]:
+                    return f'point {point_index} exceeds limit for {name}'
+                if point_index == 0:
+                    measured = self.positions.get(name)
+                    if measured is None or abs(position - measured) > self.trajectory_start_tolerance:
+                        return f'point 0 start mismatch for {name}'
+                elif abs(position - previous_positions[index]) > self.trajectory_max_joint_step:
+                    return f'point {point_index} joint jump for {name}'
+                current_positions.append(position)
+            previous_positions = current_positions
+            previous_time = point_time
+        return None
+
 
     def _gripper_command(self, message):
         if not self.armed or not self._state_fresh() or not message.position:

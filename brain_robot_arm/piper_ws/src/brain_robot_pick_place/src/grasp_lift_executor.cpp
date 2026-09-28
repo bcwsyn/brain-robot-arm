@@ -262,6 +262,8 @@ private:
     arm_group_ = ParameterOr<std::string>("arm_group", "arm");
     gripper_group_ = ParameterOr<std::string>("gripper_group", "gripper");
     end_effector_link_ = ParameterOr<std::string>("end_effector_link", "gripper_base");
+    gripper_touch_links_ = ParameterOr<std::vector<std::string>>(
+      "gripper_touch_links", {"link6", "gripper_base", "link7", "link8"});
     cup_name_ = ParameterOr<std::string>("cup_name", "medicine_cup");
     open_target_ = ParameterOr<std::string>("open_target", "open");
     close_target_ = ParameterOr<std::string>("close_target", "close");
@@ -321,6 +323,8 @@ private:
     approach_max_target_speed_m_s_ = ParameterOr<double>(
       "approach_max_target_speed_m_s", 0.30);
     cartesian_eef_step_m_ = ParameterOr<double>("cartesian_eef_step_m", 0.005);
+    cartesian_max_joint_step_rad_ = ParameterOr<double>(
+      "cartesian_max_joint_step_rad", 0.35);
     linear_approach_velocity_scaling_ = ParameterOr<double>(
       "linear_approach_velocity_scaling", 0.025);
     lift_distance_m_ = ParameterOr<double>("lift_distance_m", 0.10);
@@ -358,7 +362,8 @@ private:
       grasp_depth_m_ > 0.0 && pregrasp_standoff_m_ > grasp_depth_m_ &&
       approach_microstep_m_ > 0.0 && approach_max_steps_ > 0 &&
       approach_prediction_horizon_s_ >= 0.0 && approach_max_target_speed_m_s_ > 0.0 &&
-      cartesian_eef_step_m_ > 0.0 && grasp_height_offset_m_ >= 0.0 &&
+      cartesian_eef_step_m_ > 0.0 && cartesian_max_joint_step_rad_ > 0.0 &&
+      grasp_height_offset_m_ >= 0.0 &&
       gripper_tip_offset_m_ > 0.0 && top_down_pregrasp_clearance_m_ > 0.0 &&
       grasp_center_offset_m_ > 0.0 && grasp_contact_tolerance_m_ > 0.0 &&
       top_down_grasp_clearance_m_ >= 0.0 &&
@@ -395,6 +400,13 @@ private:
     arm_->setMaxVelocityScalingFactor(velocity_scaling_);
     arm_->setMaxAccelerationScalingFactor(acceleration_scaling_);
     arm_->setGoalPositionTolerance(position_tolerance_);
+    if (!arm_->setEndEffectorLink(end_effector_link_)) {
+      configuration_ok_ = false;
+      RCLCPP_ERROR(
+        get_logger(), "Grasp execution is locked: end-effector link %s is invalid for group %s.",
+        end_effector_link_.c_str(), arm_group_.c_str());
+      return;
+    }
     arm_->setGoalOrientationTolerance(orientation_tolerance_);
     if (gripper_) {
       gripper_->setPlanningTime(planning_time_s_);
@@ -954,10 +966,11 @@ private:
       Fail("TOP_DOWN_DESCENT_FAILED");
       return;
     }
-    FinishGraspAndLift();
+    FinishGraspAndLift(pregrasp_target);
   }
 
-  void FinishGraspAndLift()
+  void FinishGraspAndLift(
+    const geometry_msgs::msg::PoseStamped & postgrasp_retreat = geometry_msgs::msg::PoseStamped())
   {
     geometry_msgs::msg::PoseStamped grasp_pose;
     if (!simulation_only_) {
@@ -985,10 +998,17 @@ private:
       PublishDiagnostic("GRIPPER_CLOSE_FEEDBACK_CONFIRMED_NO_FORCE_SENSOR");
 
       PublishState("LIFTING");
-      auto lift_target = grasp_pose;
+      auto lift_target = postgrasp_retreat;
+      std::string lift_stage = "POSTGRASP_RETREAT";
+      if (lift_target.header.frame_id.empty()) {
+        lift_target = grasp_pose;
+        lift_target.pose.position.z += lift_distance_m_;
+        lift_stage = "LIFT";
+      } else {
+        PublishDiagnostic("LIFT_USING_REVERSE_APPROACH");
+      }
       lift_target.header.stamp = now();
-      lift_target.pose.position.z += lift_distance_m_;
-      if (!MoveArmToPose(lift_target, "LIFT") || cancel_requested_) {
+      if (!MoveArmCartesianToPose(lift_target, lift_stage) || cancel_requested_) {
         Fail("LIFT_FAILED_HOLDING_CUBE");
         return;
       }
@@ -1000,9 +1020,9 @@ private:
         std::this_thread::sleep_for(std::chrono::duration<double>(hold_after_lift_s_));
       }
 
-      // Return along the already traversed vertical path and release at the
+      // Return along the already traversed post-grasp retreat path and release at the
       // measured grasp pose. This avoids inventing an uncalibrated transfer
-      // location, then retreats to the collision-checked lifted pose.
+      // location, then retreats to the collision-checked retreat pose.
       PublishState("RELEASE_LOWERING");
       grasp_pose.header.stamp = now();
       if (!MoveArmCartesianToPose(grasp_pose, "RELEASE_LOWER") || cancel_requested_) {
@@ -1045,21 +1065,26 @@ private:
     }
 
     PublishState("LIFTING");
-    auto lift_target = CurrentPoseInFrame(lift_reference_frame_);
+    auto lift_target = postgrasp_retreat;
+    std::string lift_stage = "POSTGRASP_RETREAT";
     if (lift_target.header.frame_id.empty()) {
-      Fail("CURRENT_POSE_UNAVAILABLE");
-      return;
+      lift_target = CurrentPoseInFrame(lift_reference_frame_);
+      if (lift_target.header.frame_id.empty()) {
+        Fail("CURRENT_POSE_UNAVAILABLE");
+        return;
+      }
+      lift_target.pose.position.z += lift_distance_m_;
+      lift_stage = "LIFT";
+    } else {
+      PublishDiagnostic("LIFT_USING_REVERSE_APPROACH");
     }
     lift_target.header.stamp = now();
-    lift_target.pose.position.z += lift_distance_m_;
-    if (!MoveArmToPose(lift_target, "LIFT") || cancel_requested_) {
+    if (!MoveArmCartesianToPose(lift_target, lift_stage) || cancel_requested_) {
       Fail("LIFT_FAILED_HOLDING_CUP");
       return;
     }
     PublishState("HOLDING");
-    RCLCPP_INFO(
-      get_logger(), "Cup lifted %.3f m and held; no transfer or placement was commanded.",
-      lift_distance_m_);
+    RCLCPP_INFO(get_logger(), "Cup post-grasp retreat completed and held.");
   }
 
   bool VerifyGraspContact()
@@ -1587,7 +1612,14 @@ private:
 
     moveit_msgs::msg::AttachedCollisionObject attached;
     attached.link_name = end_effector_link_;
-    attached.touch_links = gripper_->getLinkNames();
+    attached.touch_links = gripper_touch_links_;
+    for (const auto & link_name : gripper_->getLinkNames()) {
+      if (std::find(attached.touch_links.begin(), attached.touch_links.end(), link_name) ==
+        attached.touch_links.end())
+      {
+        attached.touch_links.push_back(link_name);
+      }
+    }
     if (std::find(
         attached.touch_links.begin(), attached.touch_links.end(), end_effector_link_) ==
       attached.touch_links.end())
@@ -1681,6 +1713,48 @@ private:
     return ExecuteArmTrajectory(plan.trajectory_.joint_trajectory);
   }
 
+  bool CartesianTrajectoryContinuous(
+    const trajectory_msgs::msg::JointTrajectory & trajectory, const std::string & stage)
+  {
+    if (trajectory.joint_names.empty() || trajectory.points.empty()) {
+      PublishDiagnostic(stage + ":CARTESIAN_TRAJECTORY_EMPTY");
+      return false;
+    }
+    double max_delta_rad = 0.0;
+    for (std::size_t point_index = 0; point_index < trajectory.points.size(); ++point_index) {
+      const auto & point = trajectory.points[point_index];
+      if (point.positions.size() != trajectory.joint_names.size()) {
+        PublishDiagnostic(stage + ":CARTESIAN_TRAJECTORY_DIMENSION_MISMATCH");
+        return false;
+      }
+      for (const double position : point.positions) {
+        if (!std::isfinite(position)) {
+          PublishDiagnostic(stage + ":CARTESIAN_TRAJECTORY_NONFINITE");
+          return false;
+        }
+      }
+      if (point_index == 0) {
+        continue;
+      }
+      const auto & previous = trajectory.points[point_index - 1];
+      for (std::size_t joint_index = 0; joint_index < point.positions.size(); ++joint_index) {
+        max_delta_rad = std::max(
+          max_delta_rad, std::abs(point.positions[joint_index] - previous.positions[joint_index]));
+      }
+    }
+    RCLCPP_INFO(
+      get_logger(), "%s Cartesian maximum adjacent joint step is %.6f rad.",
+      stage.c_str(), max_delta_rad);
+    if (max_delta_rad > cartesian_max_joint_step_rad_) {
+      PublishDiagnostic(stage + ":CARTESIAN_JOINT_JUMP_REJECTED");
+      RCLCPP_ERROR(
+        get_logger(), "%s Cartesian path rejected: adjacent joint step %.6f rad exceeds %.6f rad.",
+        stage.c_str(), max_delta_rad, cartesian_max_joint_step_rad_);
+      return false;
+    }
+    return true;
+  }
+
   bool MoveArmCartesianToPose(
     const geometry_msgs::msg::PoseStamped & target, const std::string & stage)
   {
@@ -1705,6 +1779,9 @@ private:
     if (fraction < 0.995 || trajectory.joint_trajectory.points.empty() || cancel_requested_) {
       RCLCPP_ERROR(
         get_logger(), "%s Cartesian path incomplete (fraction=%.3f).", stage.c_str(), fraction);
+      return false;
+    }
+    if (!CartesianTrajectoryContinuous(trajectory.joint_trajectory, stage)) {
       return false;
     }
     RCLCPP_INFO(
@@ -1919,6 +1996,7 @@ private:
   std::string arm_group_;
   std::string gripper_group_;
   std::string end_effector_link_;
+  std::vector<std::string> gripper_touch_links_;
   std::string cup_name_;
   std::string open_target_;
   std::string close_target_;
@@ -1964,6 +2042,7 @@ private:
   double approach_prediction_horizon_s_{0.08};
   double approach_max_target_speed_m_s_{0.30};
   double cartesian_eef_step_m_{0.005};
+  double cartesian_max_joint_step_rad_{0.35};
   double linear_approach_velocity_scaling_{0.025};
   double lift_distance_m_{0.10};
   double planning_time_s_{8.0};
@@ -2054,23 +2133,45 @@ int main(int argc, char * argv[])
   const auto options = rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true);
   const auto node = std::make_shared<brain_robot_pick_place::GraspLiftExecutor>(options);
 
+  std::shared_ptr<rclcpp::Node> gripper_interface_node;
+  if (node->SimulationOnly()) {
+    // The launch-level __node remap applies to every node created in this
+    // process. Disable global arguments here so the auxiliary interface keeps
+    // a distinct graph name instead of colliding with the executor node.
+    auto gripper_options = rclcpp::NodeOptions()
+      .automatically_declare_parameters_from_overrides(true)
+      .use_global_arguments(false);
+    gripper_interface_node = std::make_shared<rclcpp::Node>(
+      "grasp_lift_executor_gripper_interface", gripper_options);
+  }
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 4);
+  executor.add_node(node);
+  if (gripper_interface_node) {
+    executor.add_node(gripper_interface_node);
+  }
+  std::thread executor_thread([&executor]() {executor.spin();});
+
   try {
+    // Spin before constructing MoveGroupInterface. Keep the simulation gripper
+    // interface on its own node: two interfaces sharing one node can block the
+    // second constructor while MoveIt action/parameter callbacks are pending.
     auto arm = std::make_shared<brain_robot_pick_place::MoveGroupInterface>(
       node, node->ArmGroup());
     std::shared_ptr<brain_robot_pick_place::MoveGroupInterface> gripper;
     if (node->SimulationOnly()) {
       gripper = std::make_shared<brain_robot_pick_place::MoveGroupInterface>(
-        node, node->GripperGroup());
+        gripper_interface_node, node->GripperGroup());
     }
     auto planning_scene =
       std::make_shared<brain_robot_pick_place::PlanningSceneInterface>();
     node->SetMoveItInterfaces(arm, gripper, planning_scene);
-
-    rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 4);
-    executor.add_node(node);
-    executor.spin();
+    executor_thread.join();
   } catch (const std::exception & exception) {
     RCLCPP_FATAL(node->get_logger(), "Grasp executor failed: %s", exception.what());
+    executor.cancel();
+    if (executor_thread.joinable()) {
+      executor_thread.join();
+    }
   }
   rclcpp::shutdown();
   return 0;

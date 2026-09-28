@@ -1444,3 +1444,19 @@
 
 - 软件骨架现已闭合，但没有新鲜 CAN 反馈，不能用实体运动宣称抓取目标已完成；本轮仅完成无运动可验证修复。
 - 唯一下一步：CAN RX 持续增长后直接运行默认 `/home/johnwick/start_brain_robot_cube_real.sh`，无需按键，按顺序验收 `OBSERVE_POSE_REACHED -> SEARCH -> GRASP_READY -> TOP_DOWN_PREGRASP -> DESCENT -> CLOSE -> LIFT -> RELEASE -> RESET_COMPLETE -> confirmed disable`。若任一步失败，脚本现在停止新增输出、保持硬件使能并以非零码退出，不会静默等待输入。
+
+## 2026-09-28：抓取后撤路径与实体轨迹双层保护完成
+
+- 本轮按固定恢复顺序完整读取四份规范文档；起点提交为 `e9e18fa`。只读现场复核显示 `can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750、txqueuelen 1000、无错误/丢包/bus-off，但 3 秒 RX packets 固定为 `14088555 -> 14088555`（增量 0）；没有一键脚本、PiPER 驱动、MoveIt、Servo、视觉或抓取进程。根分区使用率 29%、约 55.8 GB 可用。依照既有硬门槛，本轮未启动实体驱动，未发送使能、失能、夹爪或运动命令。
+- 官方资料依据：MoveIt Pick and Place 将接近与抓取后撤建模为相反方向的 `pre_grasp_approach` / `post_grasp_retreat`；MoveGroupInterface 提供 `computeCartesianPath`；PlanningScene 的 attached object 通过 `touch_links` 允许物体与夹爪接触。由此将顶部抓取闭爪后的第一段抬升改为沿已经规划并执行过的接近路径反向返回预抓取位，而不是另行尝试固定世界 `+Z` 方向。
+- `grasp_lift_executor` 新增笛卡尔轨迹连续性门控：点集为空、维度不符、非有限值或相邻任一关节跳变超过 `0.35 rad` 时，在交给实体适配器前拒绝执行。顶部抓取把预抓取位传入闭爪后流程，闭爪后执行 `POSTGRASP_RETREAT`，并发布 `LIFT_USING_REVERSE_APPROACH`；其他历史调用者仍保留固定 `+Z` 抬升作为兼容回退。
+- attached object 显式使用 `[link6, gripper_base, link7, link8]` 并合并 MoveIt gripper group 链接作为 `touch_links`；启动配置显式锁定 `end_effector_link=link6`，无效末端链接会锁住抓取执行。仿真初始化改为先启动多线程 executor，并为辅助夹爪 MoveGroup 使用独立节点，消除第二个 MoveGroupInterface 构造时的阻塞。
+- `piper_jog_adapter` 新增实体输出前的完整轨迹校验：拒绝重复/未知关节、点维度不符、非有限或非递增时间、非有限位置、软限位越界、首点与最新实测状态偏差超过 `0.10 rad`、以及相邻点关节跳变超过 `0.35 rad`。拒绝时立即 disarm，不产生 `/joint_commands` 输出。launch 与实体 YAML 已显式传递同一阈值。
+- 失能 MoveIt fake-system 骨架验证返回 0，状态实际依次出现 `WAITING_FOR_LEVEL_ALIGN -> OPENING_GRIPPER -> PREPARED -> TOP_DOWN_PREGRASP_PLANNING -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME -> TOP_DOWN_DESCENT_PLANNING -> CLOSING_GRIPPER -> VERIFYING_GRASP_CONTACT -> LIFTING -> LIFT_USING_REVERSE_APPROACH -> HOLDING`。选择候选为 `tilt=0.350 rad, yaw=0`；下降轨迹 11 点、最大相邻关节步长 `0.044973 rad`，反向撤离 12 点、最大步长 `0.047728 rad`，两段均执行成功。此前固定世界 `+Z` 抬升只能得到 `computeCartesianPath` fraction `0.65/0.667`，故不再作为顶部抓取的默认撤离方式。
+- 通信仿真采用 `rmw_cyclonedds_cpp`，避免本机陈旧 Fast DDS SHM 资源干扰；清理前发现旧 `ros2 topic echo --once` 进程和 Fast DDS zombie 段/端口，使用官方 `fastdds shm clean` 清除。该选择只用于本轮 fake-system 验证，没有据此修改实体一键脚本的中间件默认值。
+- 验证结果：`py_compile` 通过；直接 pytest `6 passed`；规范仓库隔离 `colcon build` 成功；注册的 ament pytest 为 `1/1` suite、6 tests、0 errors/failures；范围内 `git diff --check` 通过。实际运行工作区两包同步重建成功；规范与实际四个生效源码/配置文件一致。测试覆盖有效轨迹、首点不一致、时间不递增、关节跳变、越限、非有限值和维度错误。
+
+### 当前阻断与下一步
+
+- 本轮推进了抓取骨架和防异常轨迹能力，但没有推进实体机械臂到新的观测/抓取状态，因为 PiPER 当前 CAN RX 增量仍为 0。接口配置正确不等于反馈可用；禁止用实体控制帧试探，也不重复 USB reset、xHCI/gs_usb、固件、限位或点云基础实验。
+- 唯一续跑入口仍是 CAN RX 持续增长。恢复后直接运行默认 `/home/johnwick/start_brain_robot_cube_real.sh`，重点验收实时 `tilt=0.35` 候选的 `TOP_DOWN_PREGRASP -> TOP_DOWN_DESCENT -> CLOSE -> POSTGRASP_RETREAT -> RELEASE`；实体成功前不宣称总目标完成。
