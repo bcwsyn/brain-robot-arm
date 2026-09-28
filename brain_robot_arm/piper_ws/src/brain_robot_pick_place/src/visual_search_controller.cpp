@@ -270,6 +270,7 @@ private:
     prepare_acceleration_scaling_ = ParameterOr<double>("prepare_acceleration_scaling", 0.05);
     prepare_planning_time_s_ = ParameterOr<double>("prepare_planning_time_s", 10.0);
     prepare_execution_timeout_s_ = ParameterOr<double>("prepare_execution_timeout_s", 45.0);
+    prepare_max_joint_step_rad_ = ParameterOr<double>("prepare_max_joint_step_rad", 0.08);
 
     error_topic_ = ParameterOr<std::string>(
       "error_topic", "/brain_robot_vision/pixel_error");
@@ -579,7 +580,7 @@ private:
       local_horizontal_range_ <= 0.0 || local_vertical_range_ <= 0.0 ||
       full_search_horizontal_range_ <= 0.0 || full_search_vertical_range_ <= 0.0 ||
       horizontal_search_speed_ <= 0.0 || vertical_search_speed_ <= 0.0 ||
-      prepare_execution_timeout_s_ <= 0.0 ||
+      prepare_execution_timeout_s_ <= 0.0 || prepare_max_joint_step_rad_ <= 0.0 ||
       target_acquire_error_ratio_ <= 0.0 || target_acquire_error_ratio_ > 1.0 ||
       align_stable_frames_ < 1 || target_history_window_s_ <= 0.0 ||
       last_path_prediction_horizon_s_ < 0.0 ||
@@ -717,9 +718,9 @@ private:
       // observation pose; publish a slow, explicit current->target trajectory.
       trajectory_msgs::msg::JointTrajectory trajectory;
       trajectory.joint_names = joint_names_;
-      trajectory.points.resize(2);
       double max_delta = 0.0;
       bool missing_joint_state = false;
+      std::vector<double> current_positions;
       {
         std::lock_guard<std::mutex> lock(mutex_);
         for (std::size_t index = 0; index < joint_names_.size(); ++index) {
@@ -728,8 +729,7 @@ private:
             missing_joint_state = true;
             break;
           }
-          trajectory.points[0].positions.push_back(*current);
-          trajectory.points[1].positions.push_back(prepare_positions[index]);
+          current_positions.push_back(*current);
           max_delta = std::max(max_delta,
             std::abs(prepare_positions[index] - *current));
         }
@@ -750,12 +750,29 @@ private:
         }
         return duration;
       };
-      trajectory.points[0].time_from_start = make_duration(0.0);
-      trajectory.points[1].time_from_start = make_duration(duration_s);
+      const std::size_t segment_count = std::max<std::size_t>(
+        1U, static_cast<std::size_t>(std::ceil(max_delta / prepare_max_joint_step_rad_)));
+      trajectory.points.resize(segment_count + 1U);
+      for (std::size_t step = 0; step <= segment_count; ++step) {
+        const double ratio = static_cast<double>(step) / static_cast<double>(segment_count);
+        auto & point = trajectory.points[step];
+        point.positions.reserve(joint_names_.size());
+        for (std::size_t index = 0; index < joint_names_.size(); ++index) {
+          point.positions.push_back(
+            current_positions[index] +
+            (prepare_positions[index] - current_positions[index]) * ratio);
+        }
+        point.time_from_start = make_duration(duration_s * ratio);
+      }
+
       arm_trajectory_publisher_->publish(trajectory);
       PublishTrajectoryDiagnostic(
         zero_reset ? "ZERO_RESET_TRAJECTORY" : "OBSERVE_PREPARE_TRAJECTORY", trajectory);
-      RCLCPP_INFO(get_logger(), "Published direct real-arm prepare trajectory (%0.1f s).", duration_s);
+      RCLCPP_INFO(
+        get_logger(),
+        "Published direct real-arm prepare trajectory (%0.1f s, %zu points, max step %.3f rad).",
+        duration_s, trajectory.points.size(), prepare_max_joint_step_rad_);
+
       const auto deadline = SteadyClock::now() +
         std::chrono::duration<double>(prepare_execution_timeout_s_);
       bool reached = false;
@@ -2327,6 +2344,7 @@ private:
   double prepare_acceleration_scaling_{0.05};
   double prepare_planning_time_s_{10.0};
   double prepare_execution_timeout_s_{45.0};
+  double prepare_max_joint_step_rad_{0.08};
 
   std::string error_topic_;
   std::string target_valid_topic_;

@@ -115,3 +115,13 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     locked_section = executor[executor.index("bool ClosedLoopMicroApproach()"):executor.index("void DiagonalSidePointGraspAndLift()")]
     assert "if (!static_target_lock_ && !TargetStillAligned())" in locked_section
     assert "RequestVisualReacquire(\"MICRO_APPROACH_TARGET_SHIFT_BEFORE_STEP\")" in locked_section
+
+
+def test_real_prepare_path_is_interpolated_below_adapter_jump_gate():
+    profile = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    visual = profile["visual_search_controller"]["ros__parameters"]
+    controller = CONTROLLER.read_text(encoding="utf-8")
+    max_step = float(visual["prepare_max_joint_step_rad"])
+    assert 0.0 < max_step < 0.35
+    assert "std::ceil(max_delta / prepare_max_joint_step_rad_)" in controller
+    assert "trajectory.points.resize(segment_count + 1U)" in controller
