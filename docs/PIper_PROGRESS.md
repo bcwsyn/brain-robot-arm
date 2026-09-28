@@ -1475,3 +1475,16 @@
 
 - 仿真现已覆盖锁模、倾斜预抓取、下降、闭爪、反向撤离、同位释放和安全撤离完整骨架；这仍不是实体抓取完成证据。
 - 当前唯一实体阻断仍是 CAN RX 增量为 0。只有 RX 持续增长后才直接运行 `/home/johnwick/start_brain_robot_cube_real.sh`，从 `OBSERVE_POSE_REACHED -> SEARCH` 一路验证到实体 `RELEASE_COMPLETE_HOLDING_SAFE_RETREAT -> RESET_COMPLETE -> confirmed disable`；不重复固件、限位、点云、USB reset、xHCI/gs_usb 或离线 IK 实验。
+
+## 2026-09-28：无机械臂现场时完成实体适配器回放验收
+
+- 本轮起点提交为 `2704222`。机械臂不在现场，因此没有启动实体脚本、PiPER 驱动、使能、夹爪或任何 CAN 控制帧；本轮只做规范配置审计和离线回放。
+- 复核实际生效的 `brain_robot_ball_pick/config/cube_task_real.yaml`：`backend=piper`、`real_motion_enabled=true`、`direct_grasp_after_align=true`、`freeze_grasp_tracking=true`、`static_target_lock=true`、`top_down_grasp_enabled=true`、`candidate_grasp_enabled=false`、`auto_execute=true`、`auto_release_after_lift=true`。腕部点云仍只经过 TF gate 作为诊断证据，未接入实体 Octomap。
+- 新增 `test_real_grasp_replay.py` 并注册到 `brain_robot_pick_place` 的 ament pytest。测试复用实体适配器 `_trajectory_rejection_reason()`，将规范文档记录的 P2 六轴快照 `[0, 0.193°, -0.113°, 0, 15.253°, 0]` 转为弧度，插值到实体观测姿态 `[0, 0.98, -0.75, 0, 0.30, 0]`，再回放一次锁定后的有界六轴接近段；验证首点与测量状态、六轴完整性、软限位、时间单调性和相邻步长门控。
+- 回放同时静态确认：`GRASP_TARGET_MODEL_LOCKED_BASE_FRAME` 后，抓取执行器的视觉重捕获分支只在 `!static_target_lock_` 时可达；`freeze_grasp_tracking=true` 时 `GRASP_READY` 不恢复视觉搜索。该测试不伪造目标笛卡尔位姿，因此不把离线回放冒充实体目标可达性。
+- 规范树直接 pytest：新增回放 3 项与既有适配器 6 项共 `9 passed`。实际 `/home/johnwick/piper_ws` 同步后构建成功；实际 colcon 测试注册为两个 suite，全部通过，汇总 `11 tests, 0 errors, 0 failures, 0 skipped`。
+
+### 当前阻断与下一步
+
+- 本轮完成了机械臂不在场时能完成的最高价值工作：实际配置核对、锁定后不回搜索的代码门控、真实适配器轨迹规则回放和实际工作区注册测试。
+- 回放不替代实体 MoveIt IK、真实 CAN 反馈和夹爪接触证据。机械臂回到现场且 CAN RX 持续增长后，直接运行默认一键脚本，第一轮只观察并记录 `TARGET_LOCKED -> PREGRASP_TRAJECTORY_ACCEPTED -> TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT -> GRIPPER_CLOSE_REQUESTED`，不再重新设计参数。

@@ -149,6 +149,10 @@ if(BUILD_TESTING)
     piper_jog_adapter_test
     test/test_piper_jog_adapter.py
   )
+  ament_add_pytest_test(
+    real_grasp_replay_test
+    test/test_real_grasp_replay.py
+  )
 endif()
 
 ament_package()
