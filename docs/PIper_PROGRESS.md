@@ -1627,3 +1627,15 @@
 
 - 本轮已消除“必须先识别紫色”这一软件阻断，但尚未取得实体相机中真实方块的深度候选，也未因此宣称实体抓取完成。实体运行仍受既有 CAN RX 连续增长、`/joint_states` 新鲜反馈和脚本阶段门控约束。
 - 下一步第一条命令：在不启动运动的前提下确认 `/camera/depth/image_raw` 中出现通过几何门控的 `DEPTH_CUBE_CANDIDATE_VALID`；随后才运行默认一键脚本，验收 `OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY`，并按既有五个抓取诊断事件定位最早缺失点。
+
+## 2026-09-29：灯光恢复后解除Astra UVC阻塞并验证深度数据面
+
+- 灯光恢复后，被动门控确认 Orbbec `2bc5:0557/0657` 与 USB-CAN 均枚举，CAN 3 秒 RX 增长 `7305` 帧，根分区可用约 53 GB；无机械臂控制栈残留。
+- 首次只读启动复现了具体相机断点：实际 `astra_params.yaml` 仍启用 UVC RGB，深度设备 `2bc5:0657` 已启动后，驱动在打开 `2bc5:0557` 时输出 `attempt to claim already-claimed interface 1` 并阻塞组件构造，ROS 因此看不到深度话题。该问题不是光照、CAN 或方块颜色门控。
+- 按已确认的深度-only目标做最小修复：实体 Astra profile 关闭 `enable_color`、`enable_ir` 与 `uvc_camera.enable`，深度保持 `640x400@30 Hz`；一键脚本默认 `BRAIN_ROBOT_DEPTH_ONLY_TARGET=1`，只等待/监测深度帧，跳过紫色检测器、RGB首帧和RGB调试窗口，并显式等待 `/depth_cube_probe`。
+- 实际 `/home/johnwick/start_brain_robot_cube_real.sh` 与相机工作空间已同步，`astra_camera` 重建成功；脚本 `bash -n` 通过。清除一条 2026-09-26 遗留的 `timeout 8s /usr/bin/python3 -` ROS探针和本轮旧 daemon 后，Astra/探针数据面恢复。
+- 真实无运动验证：Astra 明确输出 `ir is not enable`、`color is not enable`、`SENSOR_DEPTH is started`；深度探针连续取得约 `2651..2685` 个平面内点并输出 `DEPTH_PROBE_NO_CUBE_CANDIDATE`。这证明深度流和几何算法实际工作，且当前静止视野没有通过尺寸/凸起/稳定门控的方块；未启动 PiPER、MoveIt、Servo、适配器或运动。
+
+### 下一步
+
+- 当前视野无候选不能阻止既有机械搜索；下一步在 CAN RX 持续增长的前提下运行默认一键脚本，以实体 SEARCH 扫描把静止方块带入深度视野。验收顺序为 `OBSERVE_POSE_REACHED -> SEARCH -> DEPTH_CUBE_CANDIDATE_VALID -> ALIGN -> GRASP_READY`。

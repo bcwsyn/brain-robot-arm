@@ -12,6 +12,7 @@ LOG_TOTAL_MAX_MB="${BRAIN_ROBOT_LOG_TOTAL_MAX_MB:-100}"
 MIN_FREE_MB="${BRAIN_ROBOT_MIN_FREE_MB:-2048}"
 WAIT_SECONDS="${BRAIN_ROBOT_WAIT_SECONDS:-45}"
 AUTO_START="${BRAIN_ROBOT_AUTO_START:-1}"
+DEPTH_ONLY_TARGET="${BRAIN_ROBOT_DEPTH_ONLY_TARGET:-1}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
@@ -259,10 +260,16 @@ start_astra_camera() {
   CAMERA_STARTED_BY_SCRIPT=1
 }
 
-camera_has_rgb_frame() {
-  # A Publisher can exist before Orbbec SDK has opened the USB device.  A
-  # successful one-shot subscription proves that an actual RGB frame arrived.
-  timeout 4s ros2 topic echo --once /camera/color/image_raw >/dev/null 2>&1
+camera_has_required_frame() {
+  # A Publisher can exist before Orbbec SDK has opened the USB device. A
+  # successful one-shot subscription proves that the required real stream
+  # arrived. The depth-only profile must not depend on the UVC RGB interface.
+  if [[ "$DEPTH_ONLY_TARGET" == "1" || "$DEPTH_ONLY_TARGET" == "true" ||
+    "$DEPTH_ONLY_TARGET" == "yes" ]]; then
+    timeout 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1
+  else
+    timeout 4s ros2 topic echo --once /camera/color/image_raw >/dev/null 2>&1
+  fi
 }
 
 wait_for_actual_frame() {
@@ -287,7 +294,7 @@ start_camera_health_guard() {
   (
     local missing_frames=0 restart_backoff_s=3
     while true; do
-      if camera_has_rgb_frame; then
+      if camera_has_required_frame; then
         if (( restart_backoff_s > 3 )); then
           echo "[$(date '+%F %T')] CAMERA_FRAMES_RECOVERED"
         fi
@@ -787,21 +794,24 @@ wait_for_joint_feedback /joint_states
 wait_for service /enable_srv
 start_can_health_guard
 
-echo "[2/7] 检查并启动 RGB-D 相机..."
+echo "[2/7] 检查并启动深度相机..."
 if ! node_exists /camera/camera; then
   start_astra_camera
 else
   echo "[复用] 已检测到 /camera/camera"
 fi
-wait_for topic /camera/color/image_raw
 wait_for topic /camera/depth/image_raw
 start_camera_health_guard
-wait_for_actual_frame /camera/color/image_raw "RGB 图像"
 wait_for_actual_frame /camera/depth/image_raw "深度图像"
 
-echo "[3/7] 启动紫色方块 RGB-D 检测..."
-start_group cube_detector ros2 launch brain_robot_ball_pick cube_detector.launch.py
-wait_for topic /brain_robot_vision/debug_image
+if [[ "$DEPTH_ONLY_TARGET" == "1" || "$DEPTH_ONLY_TARGET" == "true" ||
+  "$DEPTH_ONLY_TARGET" == "yes" ]]; then
+  echo "[3/7] 深度-only模式：跳过紫色 RGB 检测器。"
+else
+  echo "[3/7] 启动紫色方块 RGB-D 检测..."
+  start_group cube_detector ros2 launch brain_robot_ball_pick cube_detector.launch.py
+  wait_for topic /brain_robot_vision/debug_image
+fi
 
 echo "[4/7] 启动 MoveIt、Servo 和真机保护适配器..."
 stop_stale_visual_stack
@@ -810,6 +820,7 @@ wait_for node /move_group
 wait_for node /servo_node
 wait_for node /piper_jog_adapter
 wait_for node /grasp_lift_executor
+wait_for node /depth_cube_probe
 wait_for node /pointcloud_tf_gate
 wait_for service /piper_jog_adapter/arm
 wait_for service /visual_search_controller/reset
@@ -822,9 +833,14 @@ wait_for topic /brain_robot_vision/tf_gate_diagnostic
 wait_for_tf_validated_pointcloud
 wait_for_filtered_pointcloud
 echo "[地图] 已验证相机到基座 TF；腕部相机的深度点云不写入 Octomap，避免夹爪自体障碍。"
-echo "[6/7] 打开识别窗口..."
-start_group debug_image_view ros2 run image_view image_view --ros-args -r image:=/brain_robot_vision/debug_image
-wait_for_actual_frame /brain_robot_vision/debug_image "调试图像"
+if [[ "$DEPTH_ONLY_TARGET" == "1" || "$DEPTH_ONLY_TARGET" == "true" ||
+  "$DEPTH_ONLY_TARGET" == "yes" ]]; then
+  echo "[6/7] 深度几何门控已启动；无需 RGB 调试窗口。"
+else
+  echo "[6/7] 打开识别窗口..."
+  start_group debug_image_view ros2 run image_view image_view --ros-args -r image:=/brain_robot_vision/debug_image
+  wait_for_actual_frame /brain_robot_vision/debug_image "调试图像"
+fi
 echo "[7/7] 全部组件已就绪。"
 echo
 if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" ]]; then
@@ -840,7 +856,7 @@ if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" 
     exit 1
   fi
   SUCCESSFUL_CYCLE_COMPLETE=1
-  echo "[完成] 紫色方块抓取、抬升、同位释放、安全回位和失能均已确认。"
+  echo "[完成] 深度方块抓取、抬升、同位释放、安全回位和失能均已确认。"
   exit 0
 else
   echo "[手动] 自动运动已关闭；按 1 从当前反馈姿态开始观测/搜索。"
