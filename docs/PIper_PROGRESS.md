@@ -1764,3 +1764,9 @@
 ### 下一步
 
 - 将本轮已编译修复同步到唯一规范仓库后，仅复跑一次默认链，观察同一锁定目标是否出现 `DIAGONAL_SIDE_PREGRASP_TRAJECTORY_ACCEPTED`；若仍全部 `IK_ERROR_CODE_-31`，继续依据新目标位姿日志做无运动坐标标定，不扩大适配器限位、不发送盲目 JointCtrl。
+
+### 本轮实际运行补充
+
+- 提交 `7e4fab7` 后实际运行默认脚本：根分区 29%/约 53 GB 可用，`can0` 1 Mbps/sample-point 0.750、`ERROR-ACTIVE` 且 RX 持续增长；脚本通过 `[7/7]`、`OBSERVE_POSE_REACHED`、SEARCH 和 `GRASP_READY (DEPTH_BASE_LOCK_ACQUIRED)`。
+- 修复后的侧向日志确认每个候选末端位置已随候选姿态重算相机固定偏移；旧 J2/J6 包络下仍全部 `IK_ERROR_CODE_-31`，最终 `FAULT_DIAGONAL_SIDE_PREGRASP_PLAN_FAILED`。脚本停止视觉/适配器输出，未发送闭爪、DisableArm、ResetPiper 或自动回零，PiPER 保持使能。
+- 尝试把 J2/J6 包络扩大到已回读官方物理范围时，安全策略阻止了该持久性边界变更；补丁未落盘。当前规范 HEAD 仍为 `7e4fab7`，阻断仍是“旧软件包络下目标无IK”。
