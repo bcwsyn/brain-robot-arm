@@ -1795,3 +1795,4 @@
 - 唯一适配器接受了 75 点预抓取轨迹，机械臂真实反馈已运动到示例采样 `[-0.74193,1.64223,-0.99895,-0.11002,0.26396,0.0] rad`；但执行器在规划时长加 `trajectory_feedback_timeout_s=45 s` 后仍未确认全部轴进入 `0.04 rad` 末端容差，最终明确 `FAULT_TOP_DOWN_PREGRASP_EXECUTION_FAILED`。没有发送下降、闭爪、抬升或释放命令。
 - 故障清理先停止视觉控制输出，再调用适配器 disarm；脚本明确未发送 `DisableArm`、`ResetPiper` 或自动零位运动，PiPER 保持硬件使能。日志为 `/home/johnwick/brain_robot_logs/authorized_topdown_20260929.log`、`/home/johnwick/brain_robot_logs/visual_stack.log` 和 `/home/johnwick/brain_robot_logs/ros/grasp_lift_executor_402189_1790689817634.log`。
 - 当前唯一断点已从“无可行抓取姿态”前移为“可行预抓取已发送但反馈未在截止时间内收敛”。下一步只补充发布末端目标和超时逐轴偏差，并使截止时间覆盖初始最大关节差/适配器限速；不回退到视觉、CAN、点云或候选姿态排查，也不在已发送失败后自动换姿态继续运动。
+- 已完成第一步诊断增强且不改变任何控制行为：每条实机轨迹发布前记录规划时长与六轴终点；反馈超时时记录反馈年龄及每轴 `measured/target/error`。规范源码与 `/home/johnwick/piper_ws` 已同步，两个包构建成功，完整 `colcon test-result` 为 `14 tests, 0 errors, 0 failures, 0 skipped`。

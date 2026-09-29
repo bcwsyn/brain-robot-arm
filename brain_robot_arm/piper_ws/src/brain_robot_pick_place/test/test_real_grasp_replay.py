@@ -135,6 +135,11 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     assert "PHASE=GRASP_READY DEPTH_BASE_LOCK" in controller
     assert "GRASP_TARGET_MODEL_LOCKED_BASE_FRAME" in executor
     assert "TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED" in executor
+    assert "Real arm trajectory endpoint:" in executor
+    assert "Real arm trajectory feedback timeout:" in executor
+    assert '<< "_measured=" << measured' in executor
+    assert '<< "_target=" << target' in executor
+    assert '<< "_error=" << std::abs(measured - target)' in executor
     assert "RealTrajectoryWithinLimits" in executor
     assert "REAL_LIMIT_REJECTED" in executor
     assert "StateAtTrajectoryEnd" in executor

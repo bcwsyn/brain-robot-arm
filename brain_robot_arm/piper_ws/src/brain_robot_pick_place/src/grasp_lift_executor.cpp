@@ -1811,11 +1811,20 @@ private:
     if (trajectory.joint_names.empty() || trajectory.points.empty()) {
       return false;
     }
-    arm_trajectory_publisher_->publish(trajectory);
-    PublishDiagnostic("REAL_ARM_TRAJECTORY_PUBLISHED");
     const auto & final_point = trajectory.points.back();
     const double duration_s = static_cast<double>(final_point.time_from_start.sec) +
       static_cast<double>(final_point.time_from_start.nanosec) * 1e-9;
+    std::ostringstream endpoint;
+    endpoint << "duration_s=" << duration_s;
+    for (std::size_t index = 0;
+      index < trajectory.joint_names.size() && index < final_point.positions.size(); ++index)
+    {
+      endpoint << " " << trajectory.joint_names[index] << "=" << final_point.positions[index];
+    }
+    RCLCPP_INFO(
+      get_logger(), "Real arm trajectory endpoint: %s.", endpoint.str().c_str());
+    arm_trajectory_publisher_->publish(trajectory);
+    PublishDiagnostic("REAL_ARM_TRAJECTORY_PUBLISHED");
     const auto earliest_feedback_time = std::chrono::steady_clock::now() +
       std::chrono::duration_cast<std::chrono::steady_clock::duration>(
       std::chrono::duration<double>(duration_s));
@@ -1833,6 +1842,44 @@ private:
     }
     if (!cancel_requested_) {
       PublishDiagnostic("REAL_ARM_TRAJECTORY_FEEDBACK_TIMEOUT_OR_DEVIATION");
+      sensor_msgs::msg::JointState joint_state;
+      double feedback_age_s = std::numeric_limits<double>::infinity();
+      {
+        std::lock_guard<std::mutex> lock(feedback_mutex_);
+        if (joint_state_received_time_ != std::chrono::steady_clock::time_point{}) {
+          feedback_age_s = std::chrono::duration<double>(
+            std::chrono::steady_clock::now() - joint_state_received_time_).count();
+        }
+        joint_state = latest_joint_state_;
+      }
+      std::ostringstream deviations;
+      deviations << "feedback_age_s=" << feedback_age_s;
+      for (std::size_t target_index = 0;
+        target_index < trajectory.joint_names.size() &&
+        target_index < final_point.positions.size(); ++target_index)
+      {
+        const auto state_index = std::find(
+          joint_state.name.begin(), joint_state.name.end(), trajectory.joint_names[target_index]);
+        if (state_index == joint_state.name.end()) {
+          deviations << " " << trajectory.joint_names[target_index] << "=MISSING";
+          continue;
+        }
+        const std::size_t index = static_cast<std::size_t>(
+          std::distance(joint_state.name.begin(), state_index));
+        if (index >= joint_state.position.size()) {
+          deviations << " " << trajectory.joint_names[target_index] << "=MISSING";
+          continue;
+        }
+        const double measured = joint_state.position[index];
+        const double target = final_point.positions[target_index];
+        deviations << " " << trajectory.joint_names[target_index]
+                   << "_measured=" << measured
+                   << "_target=" << target
+                   << "_error=" << std::abs(measured - target);
+      }
+      RCLCPP_ERROR(
+        get_logger(), "Real arm trajectory feedback timeout: %s.",
+        deviations.str().c_str());
     }
     return false;
   }
