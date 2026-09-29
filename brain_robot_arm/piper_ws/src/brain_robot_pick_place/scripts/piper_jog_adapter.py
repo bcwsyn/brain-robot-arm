@@ -36,6 +36,7 @@ class PiperJogAdapter(Node):
         self.declare_parameter('trajectory_start_tolerance_rad', 0.10)
         self.declare_parameter('trajectory_max_joint_step_rad', 0.35)
         self.declare_parameter('gripper_effort_nm', 1.0)
+        self.declare_parameter('gripper_command_repeats', 5)
         self.declare_parameter('joint_min', [-1.50, -0.30, -1.40, -0.80, -1.20, -3.14159265359])
         self.declare_parameter('joint_max', [1.50, 3.14159265359, 0.40, 0.80, 1.20, 3.14159265359])
         self.declare_parameter(
@@ -60,6 +61,8 @@ class PiperJogAdapter(Node):
         self.trajectory_max_joint_step = float(
             self.get_parameter('trajectory_max_joint_step_rad').value)
         self.gripper_effort_nm = float(self.get_parameter('gripper_effort_nm').value)
+        self.gripper_command_repeats = int(
+            self.get_parameter('gripper_command_repeats').value)
         self.joint_min = list(self.get_parameter('joint_min').value)
         self.joint_max = list(self.get_parameter('joint_max').value)
         self.visual_joint_max_delta = list(
@@ -75,11 +78,14 @@ class PiperJogAdapter(Node):
             raise ValueError('trajectory safety tolerances must be positive')
         if not 0.5 <= self.gripper_effort_nm <= 3.0:
             raise ValueError('gripper_effort_nm must stay within the driver range 0.5..3.0')
+        if not 1 <= self.gripper_command_repeats <= 10:
+            raise ValueError('gripper_command_repeats must stay within 1..10')
 
         self.positions = {}
         self.targets = {}
         self.visual_baseline = {}
         self.pending_gripper_target = None
+        self.pending_gripper_frames = 0
         self.trajectory = None
         self.trajectory_start = 0.0
         self.velocities = {name: 0.0 for name in self.joint_names}
@@ -229,9 +235,11 @@ class PiperJogAdapter(Node):
             return
         value = float(message.position[0])
         self.pending_gripper_target = max(0.0, min(0.08, value))
+        self.pending_gripper_frames = self.gripper_command_repeats
         self.last_command_time = time.monotonic()
         self.get_logger().info(
-            f'Accepted one-shot gripper command: target={self.pending_gripper_target:.6f} m')
+            f'Accepted bounded gripper command: target={self.pending_gripper_target:.6f} m '
+            f'frames={self.pending_gripper_frames}')
 
     def _state_fresh(self):
         return bool(self.positions) and time.monotonic() - self.last_state_time <= self.joint_state_timeout_s
@@ -249,8 +257,9 @@ class PiperJogAdapter(Node):
         self.visual_baseline = {name: self.positions[name] for name in self.joint_names}
         self.velocities = {name: 0.0 for name in self.joint_names}
         # Arming the six-axis motion path must not move the gripper. The grasp
-        # executor sends an explicit one-shot open/close command when needed.
+        # executor sends an explicit bounded open/close burst when needed.
         self.pending_gripper_target = None
+        self.pending_gripper_frames = 0
         self.last_command_time = 0.0
         self.armed = True
         self._publish_armed_status()
@@ -283,6 +292,7 @@ class PiperJogAdapter(Node):
         self.armed = False
         self.trajectory = None
         self.pending_gripper_target = None
+        self.pending_gripper_frames = 0
         self.velocities = {name: 0.0 for name in self.joint_names}
         self.targets.update(self.positions)
         self._publish_armed_status()
@@ -329,22 +339,25 @@ class PiperJogAdapter(Node):
         self.command_publisher.publish(command)
 
     def _append_pending_gripper(self, command):
-        if self.pending_gripper_target is None:
+        if self.pending_gripper_target is None or self.pending_gripper_frames <= 0:
             return False
         command.name.append('gripper')
         command.position.append(self.pending_gripper_target)
         # The vendor driver intentionally calls GripperCtrl only when the
         # explicit gripper command also carries a seventh effort entry. Keep
         # ordinary arm-only frames free of gripper data, and provide the
-        # configured 1 N.m only on this one-shot frame.
+        # configured 1 N.m only during this short bounded burst.
         command.effort = [0.0] * len(self.joint_names) + [self.gripper_effort_nm]
         # Unit tests exercise this pure message helper without constructing
         # the rclpy Node base. Runtime instances always have ``_logger``.
         if hasattr(self, '_logger'):
             self.get_logger().info(
-                f'Emitting one-shot gripper frame: target={self.pending_gripper_target:.6f} m '
-                f'effort={self.gripper_effort_nm:.3f} N.m')
-        self.pending_gripper_target = None
+                f'Emitting bounded gripper frame: target={self.pending_gripper_target:.6f} m '
+                f'effort={self.gripper_effort_nm:.3f} N.m '
+                f'remaining={self.pending_gripper_frames - 1}')
+        self.pending_gripper_frames -= 1
+        if self.pending_gripper_frames == 0:
+            self.pending_gripper_target = None
         return True
 
     def _limit_visual_target(self, index, name, desired):

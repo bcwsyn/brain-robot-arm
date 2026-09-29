@@ -107,6 +107,10 @@ def generate_launch_description():
                  'trajectory_start_tolerance_rad': 0.10,
                  'trajectory_max_joint_step_rad': 0.35,
                  'gripper_effort_nm': 1.0,
+                 # The vendor driver subscribes with queue depth one. Repeat
+                 # the explicit frame for only 100 ms so a following arm-only
+                 # frame cannot overwrite it before the callback runs.
+                 'gripper_command_repeats': 5,
                  'joint_min': real_joint_mins,
                  'joint_max': real_joint_maxs,
                  # The VM can briefly delay ROS subscription callbacks even
