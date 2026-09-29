@@ -6,6 +6,7 @@
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <utility>
@@ -428,6 +429,10 @@ private:
       "trajectory_feedback_tolerance_rad", 0.04);
     trajectory_feedback_timeout_s_ = ParameterOr<double>(
       "trajectory_feedback_timeout_s", 12.0);
+    real_trajectory_joint_min_ = ParameterOr<std::vector<double>>(
+      "real_trajectory_joint_min", {-1.50, -0.30, -1.40, -0.80, -1.20, -0.80});
+    real_trajectory_joint_max_ = ParameterOr<std::vector<double>>(
+      "real_trajectory_joint_max", {1.50, 1.40, 0.40, 0.80, 1.20, 0.80});
     joint_state_wait_timeout_s_ = ParameterOr<double>(
       "joint_state_wait_timeout_s", 25.0);
     visual_state_topic_ = ParameterOr<std::string>(
@@ -471,6 +476,11 @@ private:
       hold_after_lift_s_ >= 0.0 &&
       gripper_feedback_timeout_s_ > 0.0 && min_gripper_feedback_motion_rad_ >= 0.0 &&
       trajectory_feedback_tolerance_rad_ > 0.0 && trajectory_feedback_timeout_s_ > 0.0 &&
+      real_trajectory_joint_min_.size() == 6U && real_trajectory_joint_max_.size() == 6U &&
+      std::equal(
+        real_trajectory_joint_min_.begin(), real_trajectory_joint_min_.end(),
+        real_trajectory_joint_max_.begin(),
+        [](double lower, double upper) {return lower < upper;}) &&
       joint_state_wait_timeout_s_ > 0.0;
     if (!configuration_ok_) {
       RCLCPP_ERROR(
@@ -1035,12 +1045,52 @@ private:
     selected_top_down_yaw_valid_ = false;
     PublishState("TOP_DOWN_PREGRASP_PLANNING");
     geometry_msgs::msg::PoseStamped pregrasp_target;
-    if (!BuildTopDownPointGrasp(top_down_pregrasp_clearance_m_, pregrasp_target)) {
-      Fail("TOP_DOWN_PREGRASP_TARGET_UNAVAILABLE");
+    MoveGroupInterface::Plan pregrasp_plan;
+    bool pregrasp_plan_found = false;
+    for (const double tilt : top_down_tilt_candidates_) {
+      for (const double yaw : top_down_yaw_candidates_) {
+        selected_top_down_tilt_ = tilt;
+        selected_top_down_yaw_ = yaw;
+        selected_top_down_yaw_valid_ = true;
+        if (!BuildTopDownPointGrasp(top_down_pregrasp_clearance_m_, pregrasp_target) ||
+          !TopDownPoseHasIk(pregrasp_target))
+        {
+          continue;
+        }
+        MoveGroupInterface::Plan candidate_plan;
+        const std::string candidate_stage =
+          "TOP_DOWN_PREGRASP_TILT_" + std::to_string(tilt) +
+          "_YAW_" + std::to_string(yaw);
+        if (!PlanArmToPose(pregrasp_target, candidate_stage, candidate_plan)) {
+          continue;
+        }
+        std::string rejection;
+        if (!simulation_only_ && !RealTrajectoryWithinLimits(
+            candidate_plan.trajectory_.joint_trajectory, rejection))
+        {
+          PublishDiagnostic(candidate_stage + ":REAL_LIMIT_REJECTED:" + rejection);
+          RCLCPP_WARN(
+            get_logger(), "%s rejected before adapter output: %s.",
+            candidate_stage.c_str(), rejection.c_str());
+          continue;
+        }
+        pregrasp_plan = std::move(candidate_plan);
+        pregrasp_plan_found = true;
+        break;
+      }
+      if (pregrasp_plan_found) {
+        break;
+      }
+    }
+    if (!pregrasp_plan_found || cancel_requested_) {
+      Fail("TOP_DOWN_PREGRASP_PLAN_FAILED");
       return;
     }
-    if (!MoveArmToPose(pregrasp_target, "TOP_DOWN_PREGRASP") || cancel_requested_) {
-      Fail("TOP_DOWN_PREGRASP_PLAN_FAILED");
+    const bool pregrasp_executed = simulation_only_ ?
+      static_cast<bool>(arm_->execute(pregrasp_plan)) :
+      ExecuteArmTrajectory(pregrasp_plan.trajectory_.joint_trajectory);
+    if (!pregrasp_executed || cancel_requested_) {
+      Fail("TOP_DOWN_PREGRASP_EXECUTION_FAILED");
       return;
     }
     PublishDiagnostic("TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED");
@@ -1818,6 +1868,30 @@ private:
   bool MoveArmToPose(
     const geometry_msgs::msg::PoseStamped & target, const std::string & stage)
   {
+    MoveGroupInterface::Plan plan;
+    if (!PlanArmToPose(target, stage, plan)) {
+      return false;
+    }
+    std::string rejection;
+    if (!simulation_only_ && !RealTrajectoryWithinLimits(
+        plan.trajectory_.joint_trajectory, rejection))
+    {
+      PublishDiagnostic(stage + ":REAL_LIMIT_REJECTED:" + rejection);
+      RCLCPP_WARN(
+        get_logger(), "%s rejected before adapter output: %s.",
+        stage.c_str(), rejection.c_str());
+      return false;
+    }
+    if (simulation_only_) {
+      return static_cast<bool>(arm_->execute(plan));
+    }
+    return ExecuteArmTrajectory(plan.trajectory_.joint_trajectory);
+  }
+
+  bool PlanArmToPose(
+    const geometry_msgs::msg::PoseStamped & target, const std::string & stage,
+    MoveGroupInterface::Plan & plan)
+  {
     if (!WaitForFreshJointState(stage)) {
       RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for planning.", stage.c_str());
       return false;
@@ -1837,7 +1911,6 @@ private:
       RCLCPP_ERROR(get_logger(), "%s rejected the requested end-effector pose.", stage.c_str());
       return false;
     }
-    MoveGroupInterface::Plan plan;
     const bool planned = static_cast<bool>(arm_->plan(plan));
     arm_->clearPoseTargets();
     if (!planned || cancel_requested_) {
@@ -1862,10 +1935,49 @@ private:
     RCLCPP_INFO(
       get_logger(), "%s planned with %zu trajectory points.", stage.c_str(),
       plan.trajectory_.joint_trajectory.points.size());
-    if (simulation_only_) {
-      return static_cast<bool>(arm_->execute(plan));
+    return true;
+  }
+
+  bool RealTrajectoryWithinLimits(
+    const trajectory_msgs::msg::JointTrajectory & trajectory, std::string & reason) const
+  {
+    static const std::vector<std::string> joint_names = {
+      "joint1", "joint2", "joint3", "joint4", "joint5", "joint6"};
+    if (trajectory.joint_names.empty() || trajectory.points.empty()) {
+      reason = "empty trajectory";
+      return false;
     }
-    return ExecuteArmTrajectory(plan.trajectory_.joint_trajectory);
+    for (std::size_t point_index = 0; point_index < trajectory.points.size(); ++point_index) {
+      const auto & point = trajectory.points[point_index];
+      if (point.positions.size() != trajectory.joint_names.size()) {
+        reason = "point " + std::to_string(point_index) + " position count mismatch";
+        return false;
+      }
+      for (std::size_t trajectory_index = 0;
+        trajectory_index < trajectory.joint_names.size(); ++trajectory_index)
+      {
+        const auto found = std::find(
+          joint_names.begin(), joint_names.end(), trajectory.joint_names[trajectory_index]);
+        if (found == joint_names.end()) {
+          reason = "unknown joint " + trajectory.joint_names[trajectory_index];
+          return false;
+        }
+        const auto joint_index = static_cast<std::size_t>(
+          std::distance(joint_names.begin(), found));
+        const double position = point.positions[trajectory_index];
+        if (!std::isfinite(position) || position < real_trajectory_joint_min_[joint_index] ||
+          position > real_trajectory_joint_max_[joint_index])
+        {
+          std::ostringstream stream;
+          stream << "point " << point_index << " " << *found << "=" << position
+                 << " outside [" << real_trajectory_joint_min_[joint_index] << ","
+                 << real_trajectory_joint_max_[joint_index] << "]";
+          reason = stream.str();
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   bool CartesianTrajectoryContinuous(
@@ -2214,6 +2326,8 @@ private:
   double scene_wait_s_{10.0};
   double trajectory_feedback_tolerance_rad_{0.04};
   double trajectory_feedback_timeout_s_{12.0};
+  std::vector<double> real_trajectory_joint_min_;
+  std::vector<double> real_trajectory_joint_max_;
   double joint_state_wait_timeout_s_{25.0};
   std::string visual_state_topic_;
   std::string scene_ready_topic_;

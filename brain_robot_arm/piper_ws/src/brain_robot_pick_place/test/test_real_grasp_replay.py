@@ -118,6 +118,8 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     assert "PHASE=GRASP_READY DEPTH_BASE_LOCK" in controller
     assert "GRASP_TARGET_MODEL_LOCKED_BASE_FRAME" in executor
     assert "TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED" in executor
+    assert "RealTrajectoryWithinLimits" in executor
+    assert "REAL_LIMIT_REJECTED" in executor
     assert "TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED" in executor
     assert "GRIPPER_CLOSE_REQUESTED" in executor
     assert "if (!static_target_lock_ && !TargetStillAligned())" in executor

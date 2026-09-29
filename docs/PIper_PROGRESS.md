@@ -1722,3 +1722,15 @@
 ### 下一步
 
 - 复跑默认链，先验收近基座/远背景组件只产生 `DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE`，随后真正方块约 `(0.33,-0.31,0.11)` 达到三帧稳定并进入GRASP_READY。下一断点必须来自该点的真实MoveIt预抓取，而不是再次调整IK或关节边界。
+
+## 2026-09-29：第八次实体链首次生成真实方块预抓取轨迹
+
+- 工作区门复跑生效：近基座/背景候选持续输出 `DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE`；真正方块在 `(0.329,-0.304,0.120) m` 达到三帧稳定并进入GRASP_READY，抓取执行器锁定同一点，没有再次选择前轮 `x=0.089` 的错误几何。
+- 顶部候选筛选最终选择 `tilt=0.700, yaw=0`，目标末端约 `(0.190,-0.304,0.285) m`。MoveIt首次为真实方块生成97点 `TOP_DOWN_PREGRASP` 轨迹，证明目标、IK和碰撞规划已经越过此前断点。
+- 轨迹没有产生实体预抓取运动：唯一适配器在发送前拒绝 `point 55 exceeds limit for joint2` 并disarm，控制器同步进入 `PIPER_ADAPTER_DISARMED`；脚本报告 `FAULT_TOP_DOWN_PREGRASP_PLAN_FAILED` 后停止输出、保持使能，未闭爪、复位或失能。
+- 当前MoveIt/URDF J2范围与已记录手册/控制器回读比适配器旧软件范围更宽，但本轮不放宽适配器安全边界。改为抓取执行器复用适配器现有六轴范围，在任何轨迹发布前逐点预筛；越界的tilt/yaw只记录 `REAL_LIMIT_REJECTED`，继续规划下一候选。只有全点均在原范围内的候选才会交给适配器；实际适配器仍保留独立二次检查。
+- 执行器规划与执行已拆分：候选筛选阶段只规划不发送，选中安全轨迹后才执行；执行失败不会继续尝试另一候选。直接pytest `5 passed`，实际两包编译成功，完整colcon `13 tests, 0 errors, 0 failures, 0 skipped`。
+
+### 下一步
+
+- 复跑默认链，读取每个tilt/yaw的 `REAL_LIMIT_REJECTED`；若存在原适配器范围内候选，应首次得到 `TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED/REACHED`。若全部候选均被原范围否决，保留使能和日志，再以规划结果调整抓取姿态，不修改适配器限位。
