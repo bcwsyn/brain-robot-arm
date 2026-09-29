@@ -1865,3 +1865,11 @@
 - 无控制进程时先执行 PCI function reset；设备号与拓扑未变化，5 秒被动 RX 仍为 0。随后对 `xhci_hcd` 的 `0000:03:00.0` 做一次 unbind/bind，内核完整注销并重建 Bus 003，USB-CAN 从 Device 18 重新枚举为 Device 6，Astra 也重新枚举；`can0` 按既定 1 Mbps、sample-point 0.75 恢复为 `UP/ERROR-ACTIVE`。这证明虚拟 xHCI 已真正重建，但重建后 5 秒被动 `candump` 仍为 0 帧，说明仅在 guest 内重建还没有恢复端到端收包。
 - 全程没有 PiPER/MoveIt/Servo/视觉控制进程，没有发送 Enable、JointCtrl、GripperCtrl、DisableArm、ResetPiper 或任何运动命令。根分区仍约 29%，本次与磁盘空间无关。
 - 当前阻断修正为“由冲突 UVC 诊断触发的 VMware USB/xHCI 数据面故障，guest 内控制器重建后端到端 CAN RX 尚未恢复”，不能再未经证据归到机械臂控制器或用户物理操作。下一恢复动作应是宿主侧对 USB-CAN 做真正的 VMware 断开/重新连接或物理断电重枚举；恢复后只做 5 秒被动 RX 门，再从夹爪 `0x159` 断点继续。
+
+## 2026-09-29 23:55：guest 终端内端口断电恢复边界验证
+
+- 当前无 PiPER/MoveIt/Servo/视觉控制进程；`can0` 仍为正确 1 Mbps/0.75、`UP/ERROR-ACTIVE`，3 秒被动 RX 为 0。VMware Tools 12.3.5 正常运行，但 `vmware-toolbox-cmd device list` 为空，不能从 guest 请求宿主 USB passthrough 的 disconnect/connect。
+- VMware 虚拟 Hub `3-1` 声明支持逐端口电源控制，端口 2 精确对应 USB-CAN 序列号 `003F001E5246570520323934`。安装 Ubuntu 标准包 `uhubctl 2.4.0-1` 后，仅对 `3-1:2` 执行一次 3 秒 power cycle；工具报告 power off/on 成功。
+- 但内核没有产生 USB disconnect/re-enumerate，USB-CAN 设备号仍为 6，说明 VMware 只更新了虚拟 Hub 状态位，没有把 guest 端口请求转化为宿主侧真实断电。恢复 `can0` 后 8 秒 `candump` 仍为 0 帧，RX 仍为 0。
+- 本轮未启动机械臂驱动，也未发送任何 CAN 控制、使能、失能、复位或运动命令。无需重启 PiPER；guest 内可用的 device reset、xHCI 重建和 Hub 端口 power cycle 均已验证，不能继续重复。
+- 当前唯一最小恢复动作是宿主 VMware 菜单对 `candleLight USB to CAN adapter` 执行一次 Disconnect/Connect，或物理拔插 USB-CAN 使其真正断电重枚举。完成后先验证 5 秒 RX；恢复才从夹爪 `0x159` 断点继续。
