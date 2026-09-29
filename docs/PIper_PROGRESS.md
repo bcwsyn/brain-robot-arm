@@ -1662,3 +1662,14 @@
 ### 下一步
 
 - 复跑同一链，验收首条 `DEPTH_CUBE_CANDIDATE_VALID stable=3/3` 紧随 `STATE -> ALIGN`；随后验证5秒历史窗口能否完成短暂丢失恢复并进入GRASP_READY。
+
+## 2026-09-29：第三次实体搜索确认LAST_PATH年龄判定不可达
+
+- 第三次默认链再次通过 `[7/7]`、观测和SEARCH。候选 `pixel=(557.7,55.3)`、相机点 `(0.164,-0.102,0.339) m`、尺寸 `0.044x0.038 m` 在 `stable=3/3` 后约21 ms触发 `STATE -> ALIGN (TARGET_ACQUIRED)`，证明“首条探针true即停搜”修复生效。
+- 目标随后多次稳定重捕获并进入ALIGN，但每次约2.5秒后仍落到 `LOCAL_SEARCH (LAST_TARGET_HISTORY_UNAVAILABLE)`。源码给出确定原因：`InitializePredictedReacquireLocked()` 仍要求最新历史样本年龄不超过实时 `target_timeout_s=0.6`，而该函数只会在 `target_loss_grace_s=2.0` 后调用，因此无论历史窗口设为5秒都必然失败。
+- 修复只改变历史分支的年龄上限：已经变换并保存在固定 `base_link` 的样本使用独立 `target_history_window_s=5.0`；实时ALIGN仍保持0.6秒新鲜度要求，未允许用旧相机误差直接运动。第三轮以Ctrl+C停止输出并保持使能。
+- 规范源码与实际 `/home/johnwick/piper_ws` 已同步；`brain_robot_pick_place`、`brain_robot_ball_pick` 实际构建安装成功。
+
+### 下一步
+
+- 复跑并验收丢失后进入 `LAST_PATH_REACQUIRE`（而非 `LAST_TARGET_HISTORY_UNAVAILABLE`），静止基座目标重投影成功后继续ALIGN/GRASP_READY。

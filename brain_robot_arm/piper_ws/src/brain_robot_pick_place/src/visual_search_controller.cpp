@@ -1833,7 +1833,12 @@ private:
       SteadyClock::now() - latest.received_time).count();
     const double elapsed_s = std::chrono::duration<double>(
       latest.received_time - oldest.received_time).count();
-    if (latest_age_s > target_timeout_s_ || elapsed_s <= 1e-3 ||
+    // Reacquisition starts only after target_loss_grace_s_. Requiring the
+    // latest sample to still satisfy the much shorter live-target timeout
+    // makes this branch unreachable by construction. History has its own
+    // bounded retention window and is transformed into the fixed reference
+    // frame before use, so apply that window here.
+    if (latest_age_s > target_history_window_s_ || elapsed_s <= 1e-3 ||
       latest.camera_point.header.frame_id.empty())
     {
       return false;
