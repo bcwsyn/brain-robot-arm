@@ -279,6 +279,8 @@ private:
     target_point_topic_ = ParameterOr<std::string>(
       "target_point_topic", "/brain_robot_vision/target_point_camera");
     depth_only_target_enabled_ = ParameterOr<bool>("depth_only_target_enabled", false);
+    depth_only_direct_grasp_after_lock_ = ParameterOr<bool>(
+      "depth_only_direct_grasp_after_lock", false);
     depth_only_valid_topic_ = ParameterOr<std::string>(
       "depth_only_valid_topic", "/brain_robot_vision/depth_candidate_valid");
     depth_only_point_topic_ = ParameterOr<std::string>(
@@ -1292,6 +1294,14 @@ private:
       CancelPlannedSearchLocked();
       PublishZeroLocked();
       aligned_frames_ = 0;
+      if (depth_only_target_enabled_ && depth_only_direct_grasp_after_lock_) {
+        RequestServoStopLocked();
+        PublishControlDetailLocked("PHASE=GRASP_READY DEPTH_BASE_LOCK");
+        SetStateLocked(
+          ControlState::GRASP_READY,
+          local ? "DEPTH_BASE_LOCK_REACQUIRED" : "DEPTH_BASE_LOCK_ACQUIRED");
+        return;
+      }
       PublishControlDetailLocked("PHASE=ALIGN J1/J5=VISION_CENTER");
       SetStateLocked(
         ControlState::ALIGN,
@@ -1366,6 +1376,12 @@ private:
       CancelPlannedSearchLocked();
       PublishZeroLocked();
       aligned_frames_ = 0;
+      if (depth_only_target_enabled_ && depth_only_direct_grasp_after_lock_) {
+        RequestServoStopLocked();
+        PublishControlDetailLocked("PHASE=GRASP_READY DEPTH_BASE_LOCK_REACQUIRED");
+        SetStateLocked(ControlState::GRASP_READY, "DEPTH_BASE_LOCK_REACQUIRED");
+        return;
+      }
       PublishControlDetailLocked("PHASE=ALIGN TARGET_REACQUIRED_ON_LAST_PATH");
       SetStateLocked(ControlState::ALIGN, "TARGET_REACQUIRED_ON_LAST_PATH");
       return;
@@ -2372,6 +2388,7 @@ private:
   bool horizon_lock_enabled_{true};
   bool level_align_enabled_{false};
   bool direct_grasp_after_align_{false};
+  bool depth_only_direct_grasp_after_lock_{false};
   bool freeze_grasp_tracking_{false};
   std::string level_joint2_name_;
   std::string level_joint3_name_;

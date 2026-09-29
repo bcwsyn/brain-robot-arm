@@ -67,6 +67,7 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert visual["backend"] == "piper"
     assert visual["real_motion_enabled"] is True
     assert visual["direct_grasp_after_align"] is True
+    assert visual["depth_only_direct_grasp_after_lock"] is True
     assert visual["freeze_grasp_tracking"] is True
     assert grasp["real_grasp_enabled"] is True
     assert grasp["auto_execute"] is True
@@ -104,6 +105,8 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     controller = CONTROLLER.read_text(encoding="utf-8")
     executor = EXECUTOR.read_text(encoding="utf-8")
     assert "if (freeze_grasp_tracking_) {\n      return;\n    }" in controller
+    assert "depth_only_target_enabled_ && depth_only_direct_grasp_after_lock_" in controller
+    assert "PHASE=GRASP_READY DEPTH_BASE_LOCK" in controller
     assert "GRASP_TARGET_MODEL_LOCKED_BASE_FRAME" in executor
     assert "TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED" in executor
     assert "TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED" in executor

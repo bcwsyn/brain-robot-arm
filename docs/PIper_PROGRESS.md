@@ -1697,3 +1697,15 @@
 ### 下一步
 
 - 复跑同一默认链；首先验收候选诊断包含有界 `tf_age_s` 而不再因数毫秒未来外推清零，然后继续到 `stable=3/3 -> ALIGN -> GRASP_READY`。
+
+## 2026-09-29：第六次实体搜索验证基座稳定，移除锁定后的多余像素追踪
+
+- TF年龄门修复后的默认链再次通过 `[7/7]`、观测姿态和SEARCH。实体候选从像素 `(550.2,241.1)` 移动到 `(542.0,224.8)`、`(528.4,209.6)`，但对应 `base_link` 点仅为 `(0.338,-0.309,0.111)`、`(0.334,-0.311,0.115)`、`(0.332,-0.308,0.118) m`，帧间三维差为 `7/5 mm`，实际达到 `stable=3/3` 并触发 `STATE -> ALIGN`。这证明相机自运动下的固定基座稳定判定生效。
+- 有界最新TF回退也实际生效，连续有效候选的 `tf_age_s` 约 `0.021..0.095 s`；一次 `0.101 s` 和反馈切换期间 `1.314..2.717 s` 的陈旧TF被年龄门拒绝。该门既容纳正常数毫秒错位，也没有允许秒级旧姿态进入抓取。
+- 锁定后旧ALIGN仍继续按腕部像素运动：候选从 `(528.4,209.6)` 移到 `(509.6,191.3)`、`(491.9,185.2)`，基座点始终约 `(0.330..0.332,-0.303..-0.308,0.118..0.129) m`，随后分割暂失并进入LAST_PATH。对静止三维目标继续像素居中没有增加抓取信息，反而制造自运动视差和丢失。
+- 最小骨架修复新增 `depth_only_direct_grasp_after_lock=true`：SEARCH/LOCAL_SEARCH在收到探针三帧固定基座证明后，立即取消搜索、停止Servo并发布 `GRASP_READY (DEPTH_BASE_LOCK_ACQUIRED)`；随后仍由原 `grasp_lift_executor` 捕获固定base_link模型并执行MoveIt碰撞检查、顶部倾斜候选、下降、闭爪、撤离和释放。未新增基础运动程序，未绕过适配器、IK、碰撞或反馈门控。
+- 第六轮以Ctrl+C停止输出并保持使能。新增实体profile和源码回放断言直接pytest `5 passed`；实际两包构建成功，完整colcon结果 `13 tests, 0 errors, 0 failures, 0 skipped`。
+
+### 下一步
+
+- 直接复跑默认链，首个验收点改为 `DEPTH_CUBE_CANDIDATE_VALID -> GRASP_READY -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME`，再按 `TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED -> TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED -> GRIPPER_CLOSE_REQUESTED` 定位真实抓取的最早断点。
