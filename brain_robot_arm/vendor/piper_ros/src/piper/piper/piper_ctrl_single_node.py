@@ -412,8 +412,19 @@ class PiperRosNode(Node):
             joint_6 = round(command_positions['gripper'] * 1000 * 1000)
             joint_6 = joint_6 * self.gripper_val_mutiple
 
+        # Evaluate both output gates once so an explicit gripper command can
+        # report exactly why it was forwarded or suppressed.
+        enable_flag = self.GetEnableFlag()
+        feedback_available = self._can_feedback_available()
+        explicit_gripper = 'gripper' in command_positions
+        if explicit_gripper:
+            self.get_logger().warning(
+                'Explicit gripper frame received: angle=%d effort_count=%d '
+                'enable=%s feedback_available=%s',
+                joint_6, len(joint_data.effort), enable_flag, feedback_available)
+
         # 控制电机速度
-        if self.GetEnableFlag() and self._can_feedback_available():
+        if enable_flag and feedback_available:
             if joint_data.velocity != []:
                 all_zeros = all(v == 0 for v in joint_data.velocity)
             else:
@@ -450,7 +461,18 @@ class PiperRosNode(Node):
                     else:
                         # self.get_logger().warning("Gripper effort is NaN, using default value.")
                         gripper_effort = 1000  # 设置默认值
+                    self.get_logger().warning(
+                        'Calling GripperCtrl: angle=%d effort=%d code=0x01 set_zero=0x00',
+                        abs(joint_6), gripper_effort)
                     self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x01, 0)
+                else:
+                    self.get_logger().warning(
+                        'Explicit gripper frame rejected: effort_count=%d is less than 7',
+                        len(joint_data.effort))
+        elif explicit_gripper:
+            self.get_logger().warning(
+                'Explicit gripper frame suppressed by output gate: enable=%s '
+                'feedback_available=%s', enable_flag, feedback_available)
 
 
     def enable_callback(self, enable_flag: Bool):

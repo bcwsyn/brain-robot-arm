@@ -1834,3 +1834,14 @@
 - 同期CAN跟踪仍没有任何`0x159`，而`0x3A7`持续约200 Hz。实际驱动对`/joint_commands`使用QoS深度1；适配器在夹爪组合帧后20 ms立即发布普通六轴帧，单次事件可能在驱动回调执行前被最新帧覆盖。这解释了“适配器已发、CAN仍为0”，无需修改夹爪零点或反馈门。
 - 最小修复把显式组合帧限制为5次、50 Hz下约100 ms：每帧仍含六轴当前目标、`gripper`位置和第7项1.0 N.m；计数归零后自动恢复纯六轴。参数硬限为`1..10`，禁止永久恢复50 Hz夹爪洪泛。
 - 实际工作区重建成功；单元测试改为验证恰好5帧均含正确位置/力矩、随后第6帧无夹爪，完整colcon结果`15 tests, 0 errors, 0 failures, 0 skipped`。尚未实体复跑该有界重复，不能宣称已出现`0x159`。
+
+### 有界重复实跑：五帧均离开适配器，驱动内部仍无0x159
+
+- 提交`e84ec03`后的默认链再次通过`[7/7] -> OBSERVE_POSE_REACHED -> SEARCH -> GRASP_READY`。适配器在连续五个20 ms周期明确记录`remaining=4..0`，每帧target=50 mm、effort=1.0 N.m；执行器5秒后仍收到-0.700 mm并停止在`FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED`。
+- 同步CAN跟踪仍为`0x159=0`，因此“单帧被后续六轴帧覆盖”不是完整根因；五帧有界机制本身保持，因为它仍是对深度1订阅队列的确定性保护，但不得据此宣称驱动已调用SDK。
+- 在规范仓库与实际工作区逐字对应的供应商驱动中加入行为不变的WARN诊断：显式gripper到达回调时记录角度、effort长度、enable和feedback门；调用`GripperCtrl`前记录实际SDK参数；门控或effort长度失败也明确记录。没有修改CAN ID、命令值、使能流程或输出门。
+- 驱动包重建成功，`py_compile`通过，规范仓库的`test_command_validation.py`为`3 passed`。包自带全量lint仍因供应商存量代码的150项flake8/61项pep257错误失败，本轮不批量格式化供应商树，也不把该既有lint债务描述为控制失败。
+
+### 下一步
+
+- 用新驱动WARN仅复跑一次默认链；若回调未记录，定位DDS/话题接收；若记录但门控false，修反馈/enable时序；若明确记录`Calling GripperCtrl`而CAN仍无`0x159`，再检查SDK发送返回和SocketCAN发送路径。仍禁止跳到夹爪写零点。
