@@ -1796,3 +1796,11 @@
 - 故障清理先停止视觉控制输出，再调用适配器 disarm；脚本明确未发送 `DisableArm`、`ResetPiper` 或自动零位运动，PiPER 保持硬件使能。日志为 `/home/johnwick/brain_robot_logs/authorized_topdown_20260929.log`、`/home/johnwick/brain_robot_logs/visual_stack.log` 和 `/home/johnwick/brain_robot_logs/ros/grasp_lift_executor_402189_1790689817634.log`。
 - 当前唯一断点已从“无可行抓取姿态”前移为“可行预抓取已发送但反馈未在截止时间内收敛”。下一步只补充发布末端目标和超时逐轴偏差，并使截止时间覆盖初始最大关节差/适配器限速；不回退到视觉、CAN、点云或候选姿态排查，也不在已发送失败后自动换姿态继续运动。
 - 已完成第一步诊断增强且不改变任何控制行为：每条实机轨迹发布前记录规划时长与六轴终点；反馈超时时记录反馈年龄及每轴 `measured/target/error`。规范源码与 `/home/johnwick/piper_ws` 已同步，两个包构建成功，完整 `colcon test-result` 为 `14 tests, 0 errors, 0 failures, 0 skipped`。
+
+### 逐轴诊断复跑：预抓取和下降均成功，断点前移到夹爪反馈
+
+- 提交 `684d4f7` 后默认链再次通过 `[7/7] -> OBSERVE_POSE_REACHED -> SEARCH -> GRASP_READY`，锁定目标 `(0.338,-0.314,0.106) m`。同一顶部候选 `tilt=0.75,yaw=-pi/4` 生成77点预抓取和100%的4点下降轨迹。
+- 新诊断记录预抓取终点 `[-0.726192,1.66442,-1.03318,-0.146188,0.280476,0.183893] rad`、规划时长 `7.5324 s`；执行器随后发布了下降终点 `[-0.727011,1.68462,-1.03995,-0.151243,0.267093,0.188699] rad`，证明预抓取反馈确认已经成功。4点下降也被适配器接受并反馈确认，故本轮不得再修改腕轴插值或扩大轨迹超时。
+- 流程首次实际到达 `GRIPPER_CLOSE_REQUESTED`，随后在5秒内进入 `FAULT_GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED`；未执行抬升、释放或安全撤离。脚本停止输出并保持硬件使能，未发送DisableArm、ResetPiper或自动回零。
+- 官方手册明确夹爪行程为 `0–70 mm`；当前官方SDK `GripperCtrl` 明确角度整数单位为 `0.001 mm`、`0x01`为使能、力矩整数单位为 `0.001 N·m`。因此实体profile的 `gripper_close_value=40000` 是40 mm开口；本轮深度方块尺寸约24–30 mm，该值即便执行也不能夹紧方块。
+- 下一步只修复夹爪骨架：预抓取前50 mm张爪必须由反馈确认；小方块闭爪使用官方范围内的0 mm目标和1 N·m现有力矩，接触时允许“产生足够闭合位移但未到0”作为动作确认。未确认张爪或闭爪均停止且不抬升。
