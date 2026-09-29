@@ -64,6 +64,7 @@ def test_real_profile_is_one_shot_locked_grasp():
     profile = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     visual = profile["visual_search_controller"]["ros__parameters"]
     grasp = profile["grasp_lift_executor"]["ros__parameters"]
+    depth_probe = profile["depth_cube_probe"]["ros__parameters"]
     assert visual["backend"] == "piper"
     assert visual["real_motion_enabled"] is True
     assert visual["direct_grasp_after_align"] is True
@@ -75,6 +76,14 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["top_down_grasp_enabled"] is True
     assert grasp["candidate_grasp_enabled"] is False
     assert grasp["auto_release_after_lift"] is True
+    assert depth_probe["workspace_min_x_m"] < 0.33 < depth_probe["workspace_max_x_m"]
+    assert depth_probe["workspace_min_y_m"] < -0.31 < depth_probe["workspace_max_y_m"]
+    assert depth_probe["workspace_min_z_m"] < 0.11 < depth_probe["workspace_max_z_m"]
+    assert not (
+        depth_probe["workspace_min_x_m"]
+        <= 0.089
+        <= depth_probe["workspace_max_x_m"]
+    )
 
 
 def test_recorded_p2_to_observe_and_locked_approach_replay_are_accepted():

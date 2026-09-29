@@ -86,6 +86,30 @@ class DepthCubeProbe(Node):
             self.transform_timeout_s,
             float(self.declare_parameter("max_transform_age_s", 0.10).value),
         )
+        self.workspace_min_x_m = float(
+            self.declare_parameter("workspace_min_x_m", -2.0).value
+        )
+        self.workspace_max_x_m = float(
+            self.declare_parameter("workspace_max_x_m", 2.0).value
+        )
+        self.workspace_min_y_m = float(
+            self.declare_parameter("workspace_min_y_m", -2.0).value
+        )
+        self.workspace_max_y_m = float(
+            self.declare_parameter("workspace_max_y_m", 2.0).value
+        )
+        self.workspace_min_z_m = float(
+            self.declare_parameter("workspace_min_z_m", -2.0).value
+        )
+        self.workspace_max_z_m = float(
+            self.declare_parameter("workspace_max_z_m", 2.0).value
+        )
+        if not (
+            self.workspace_min_x_m < self.workspace_max_x_m
+            and self.workspace_min_y_m < self.workspace_max_y_m
+            and self.workspace_min_z_m < self.workspace_max_z_m
+        ):
+            raise ValueError("depth candidate workspace bounds must be strictly ordered")
 
         sensor_qos = QoSProfile(depth=10)
         sensor_qos.reliability = ReliabilityPolicy.BEST_EFFORT
@@ -227,7 +251,7 @@ class DepthCubeProbe(Node):
         mask = ndimage.binary_closing(mask, structure=np.ones((5, 5), dtype=bool))
         labels, label_count = ndimage.label(mask)
 
-        best = None
+        candidates = []
         for label_id in range(1, label_count + 1):
             ys, xs = np.nonzero(labels == label_id)
             area = int(xs.size)
@@ -263,10 +287,9 @@ class DepthCubeProbe(Node):
                 fill_ratio,
                 plane_inliers,
             )
-            if best is None or candidate[0] > best[0]:
-                best = candidate
+            candidates.append(candidate)
 
-        if best is None:
+        if not candidates:
             self.stable_frames = 0
             self.previous_candidate_reference = None
             self.publish_invalid(
@@ -274,18 +297,12 @@ class DepthCubeProbe(Node):
             )
             return
 
-        area, center_x, center_y, z, size_x, size_y, object_height, fill, inliers = best
-        point = PointStamped()
-        point.header = msg.header
-        point.point.x = (center_x - self.cx) * z / self.fx
-        point.point.y = (center_y - self.cy) * z / self.fy
-        point.point.z = z
-        image_time = Time.from_msg(point.header.stamp)
+        image_time = Time.from_msg(msg.header.stamp)
         transform_age_s = 0.0
         try:
             transform = self.tf_buffer.lookup_transform(
                 self.stability_reference_frame,
-                point.header.frame_id,
+                msg.header.frame_id,
                 image_time,
                 timeout=Duration(seconds=0.0),
             )
@@ -297,7 +314,7 @@ class DepthCubeProbe(Node):
             try:
                 transform = self.tf_buffer.lookup_transform(
                     self.stability_reference_frame,
-                    point.header.frame_id,
+                    msg.header.frame_id,
                     Time(),
                     timeout=Duration(seconds=0.0),
                 )
@@ -316,11 +333,54 @@ class DepthCubeProbe(Node):
                 self.previous_candidate_reference = None
                 self.publish_invalid(
                     "DEPTH_PROBE_STABILITY_TF_UNAVAILABLE "
-                    f"{point.header.frame_id}->{self.stability_reference_frame}: "
+                    f"{msg.header.frame_id}->{self.stability_reference_frame}: "
                     f"{latest_exc}"
                 )
                 return
-        reference_point = do_transform_point(point, transform)
+
+        best = None
+        candidates.sort(key=lambda candidate: candidate[0], reverse=True)
+        for candidate in candidates:
+            (
+                area,
+                center_x,
+                center_y,
+                z,
+                size_x,
+                size_y,
+                object_height,
+                fill,
+                inliers,
+            ) = candidate
+            point = PointStamped()
+            point.header = msg.header
+            point.point.x = (center_x - self.cx) * z / self.fx
+            point.point.y = (center_y - self.cy) * z / self.fy
+            point.point.z = z
+            reference_point = do_transform_point(point, transform)
+            if (
+                self.workspace_min_x_m <= reference_point.point.x <= self.workspace_max_x_m
+                and self.workspace_min_y_m
+                <= reference_point.point.y
+                <= self.workspace_max_y_m
+                and self.workspace_min_z_m
+                <= reference_point.point.z
+                <= self.workspace_max_z_m
+            ):
+                best = (candidate, point, reference_point)
+                break
+
+        if best is None:
+            self.stable_frames = 0
+            self.previous_candidate_reference = None
+            self.publish_invalid(
+                "DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE "
+                f"geometry_candidates={len(candidates)} plane_inliers={plane_inliers}"
+            )
+            return
+
+        candidate, point, reference_point = best
+        area, center_x, center_y, z, size_x, size_y, object_height, fill, inliers = candidate
 
         current_reference = (
             reference_point.point.x,

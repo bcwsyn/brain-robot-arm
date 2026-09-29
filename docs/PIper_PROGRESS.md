@@ -1709,3 +1709,16 @@
 ### 下一步
 
 - 直接复跑默认链，首个验收点改为 `DEPTH_CUBE_CANDIDATE_VALID -> GRASP_READY -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME`，再按 `TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED -> TOP_DOWN_PREGRASP_REACHED -> TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED -> GRIPPER_CLOSE_REQUESTED` 定位真实抓取的最早断点。
+
+## 2026-09-29：第七次实体链首次锁模并定位错误工作区候选
+
+- 默认链再次通过 `[7/7]`、观测和SEARCH，并按新骨架实际发布 `DEPTH_CUBE_CANDIDATE_VALID -> GRASP_READY (DEPTH_BASE_LOCK_ACQUIRED) -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME`。抓取执行器不再退回像素ALIGN，静态锁模和自动执行接线已经实证。
+- 本次锁定点为 `base_link=(0.089,-0.329,0.164) m`，几何尺寸约 `0.053x0.048 m`、高度 `0.053 m`。MoveIt对该点所有顶部倾斜/yaw候选均返回IK `code=-31`，最终明确 `FAULT_TOP_DOWN_PREGRASP_PLAN_FAILED`；没有预抓取轨迹被发送、没有闭爪、没有失能或复位。
+- 同一批运行日志已经给出目标方块的另一组固定基座证据：约 `(0.336,-0.311,0.109)`、`(0.331,-0.303,0.124) m`，尺寸约 `0.031..0.041 m`、高度约 `0.026..0.028 m`；前一轮同一目标曾在 `(0.332,-0.308,0.118) m` 达到三帧稳定。反复可达坐标与误锁的近基座点可明确分离。
+- 结论：纯深度几何允许多个“方块状凸起”，只按图像最大面积会把近基座/远背景稳定结构当目标；IK拒绝是正确安全结果，不应通过关闭碰撞或扩大关节限位绕过。
+- 最小修复为探针在同一深度帧中保留全部通过桌面/高度/尺寸/方形度的组件，逐个变换到 `base_link`，只在实体证据工作区 `x=0.20..0.45, y=-0.45..-0.15, z=0.08..0.20 m` 内选面积最大者。该门纳入已重复观测的真实方块约 `(0.33,-0.31,0.11)`，排除误锁 `x=0.089` 和背景 `x>=0.54`。
+- 脚本因抓取故障自行停止输出并保持PiPER使能，明确未自动回零或失能。工作区修改 `py_compile`、直接pytest `5 passed`；实际两包构建成功，完整colcon结果 `13 tests, 0 errors, 0 failures, 0 skipped`。
+
+### 下一步
+
+- 复跑默认链，先验收近基座/远背景组件只产生 `DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE`，随后真正方块约 `(0.33,-0.31,0.11)` 达到三帧稳定并进入GRASP_READY。下一断点必须来自该点的真实MoveIt预抓取，而不是再次调整IK或关节边界。

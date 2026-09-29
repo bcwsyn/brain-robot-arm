@@ -273,6 +273,17 @@ depth_cube_probe:
     # image callback is blocked. Permit only a tightly bounded latest-TF
     # fallback for normal camera/joint timestamp skew.
     max_transform_age_s: 0.10
+    # Entity evidence separates the reachable tabletop cube near
+    # (0.33,-0.31,0.11)m from stable but unreachable geometry near x=0.09
+    # and background components beyond x=0.54. Select the largest geometry
+    # candidate inside this fixed base_link workspace, not the largest blob in
+    # the entire camera image.
+    workspace_min_x_m: 0.20
+    workspace_max_x_m: 0.45
+    workspace_min_y_m: -0.45
+    workspace_max_y_m: -0.15
+    workspace_min_z_m: 0.08
+    workspace_max_z_m: 0.20
     # Retained for backward-compatible parameter parsing; base-frame
     # stability above is authoritative for the real depth-only profile.
     max_center_delta_px: 16.0
