@@ -388,6 +388,8 @@ private:
     hold_after_lift_s_ = ParameterOr<double>("hold_after_lift_s", 1.0);
     top_down_pregrasp_clearance_m_ = ParameterOr<double>(
       "top_down_pregrasp_clearance_m", 0.12);
+    top_down_pregrasp_clearance_candidates_m_ = ParameterOr<std::vector<double>>(
+      "top_down_pregrasp_clearance_candidates_m", {top_down_pregrasp_clearance_m_});
     top_down_grasp_clearance_m_ = ParameterOr<double>(
       "top_down_grasp_clearance_m", 0.005);
     top_down_grasp_yaw_ = ParameterOr<double>("top_down_grasp_yaw", 0.0);
@@ -395,6 +397,9 @@ private:
       "top_down_yaw_candidates", {0.0, 1.57079632679, -1.57079632679, 3.14159265359});
     top_down_tilt_candidates_ = ParameterOr<std::vector<double>>(
       "top_down_tilt_candidates", {0.0, 0.35, 0.70, 1.00});
+    real_pose_planning_pipeline_ = ParameterOr<std::string>(
+      "real_pose_planning_pipeline", "pilz_industrial_motion_planner");
+    real_pose_planner_id_ = ParameterOr<std::string>("real_pose_planner_id", "PTP");
     diagonal_pregrasp_standoff_m_ = ParameterOr<double>(
       "diagonal_pregrasp_standoff_m", 0.17);
     diagonal_grasp_standoff_m_ = ParameterOr<double>(
@@ -433,6 +438,8 @@ private:
       "real_trajectory_joint_min", {-1.50, -0.30, -1.40, -0.80, -1.20, -0.80});
     real_trajectory_joint_max_ = ParameterOr<std::vector<double>>(
       "real_trajectory_joint_max", {1.50, 1.40, 0.40, 0.80, 1.20, 0.80});
+    real_trajectory_limit_margin_rad_ = ParameterOr<double>(
+      "real_trajectory_limit_margin_rad", 0.005);
     joint_state_wait_timeout_s_ = ParameterOr<double>(
       "joint_state_wait_timeout_s", 25.0);
     visual_state_topic_ = ParameterOr<std::string>(
@@ -462,7 +469,16 @@ private:
       grasp_center_offset_m_ > 0.0 && grasp_contact_tolerance_m_ > 0.0 &&
       top_down_grasp_clearance_m_ >= 0.0 &&
       top_down_pregrasp_clearance_m_ > top_down_grasp_clearance_m_ &&
+      !top_down_pregrasp_clearance_candidates_m_.empty() &&
+      std::all_of(
+        top_down_pregrasp_clearance_candidates_m_.begin(),
+        top_down_pregrasp_clearance_candidates_m_.end(),
+        [this](double clearance) {
+          return clearance > top_down_grasp_clearance_m_;
+        }) &&
       !top_down_yaw_candidates_.empty() &&
+      (simulation_only_ ||
+      (!real_pose_planning_pipeline_.empty() && !real_pose_planner_id_.empty())) &&
       (!candidate_grasp_enabled_ || !candidate_grasp_order_.empty()) &&
       diagonal_pregrasp_standoff_m_ > diagonal_grasp_standoff_m_ &&
       diagonal_grasp_standoff_m_ > 0.0 && diagonal_pregrasp_lift_m_ >= 0.0 &&
@@ -480,7 +496,11 @@ private:
       std::equal(
         real_trajectory_joint_min_.begin(), real_trajectory_joint_min_.end(),
         real_trajectory_joint_max_.begin(),
-        [](double lower, double upper) {return lower < upper;}) &&
+        [this](double lower, double upper) {
+          return lower + real_trajectory_limit_margin_rad_ <
+                 upper - real_trajectory_limit_margin_rad_;
+        }) &&
+      real_trajectory_limit_margin_rad_ >= 0.0 &&
       joint_state_wait_timeout_s_ > 0.0;
     if (!configuration_ok_) {
       RCLCPP_ERROR(
@@ -909,51 +929,124 @@ private:
   {
     PublishState("DIAGONAL_SIDE_PREGRASP_PLANNING");
     geometry_msgs::msg::PoseStamped pregrasp_target;
-    if (!BuildDiagonalSidePointGrasp(
-        diagonal_pregrasp_standoff_m_, diagonal_pregrasp_lift_m_, 0.0, pregrasp_target))
-    {
-      Fail("DIAGONAL_SIDE_PREGRASP_TARGET_UNAVAILABLE");
-      return;
+    MoveGroupInterface::Plan pregrasp_plan;
+    moveit_msgs::msg::RobotTrajectory approach_plan;
+    bool plan_found = false;
+    std::vector<double> lateral_offsets{0.0};
+    const std::vector<double> side_tilts{0.35, 0.75, 0.95, 1.10};
+    const std::vector<double> side_yaws{0.0, 0.78539816339, -0.78539816339, 1.57079632679, -1.57079632679, 3.14159265359};
+    if (diagonal_lateral_offset_m_ > 0.0) {
+      lateral_offsets.push_back(diagonal_lateral_offset_m_);
+      lateral_offsets.push_back(-diagonal_lateral_offset_m_);
     }
-    if (!MoveArmToPose(pregrasp_target, "DIAGONAL_SIDE_PREGRASP") || cancel_requested_) {
+    for (const double lateral_offset : lateral_offsets) {
+      for (const double side_tilt : side_tilts) {
+        for (const double side_yaw : side_yaws) {
+      geometry_msgs::msg::PoseStamped candidate_pregrasp;
+      if (!BuildDiagonalSidePointGrasp(
+          diagonal_pregrasp_standoff_m_, diagonal_pregrasp_lift_m_,
+          lateral_offset, candidate_pregrasp))
+      {
+        continue;
+      }
+      candidate_pregrasp.pose.orientation = TopDownOrientation(side_yaw, side_tilt);
+      MoveGroupInterface::Plan candidate_pregrasp_plan;
+      const std::string candidate_stage =
+        "DIAGONAL_SIDE_PREGRASP_LATERAL_" + std::to_string(lateral_offset) +
+        "_TILT_" + std::to_string(side_tilt) + "_YAW_" + std::to_string(side_yaw);
+      if (!PlanArmToPose(candidate_pregrasp, candidate_stage, candidate_pregrasp_plan)) {
+        PublishDiagnostic(candidate_stage + ":PREGRASP_PLAN_RETURNED_FALSE");
+        continue;
+      }
+      std::string rejection;
+      if (!simulation_only_ && !RealTrajectoryWithinLimits(
+          candidate_pregrasp_plan.trajectory_.joint_trajectory, rejection))
+      {
+        PublishDiagnostic(candidate_stage + ":REAL_LIMIT_REJECTED:" + rejection);
+        RCLCPP_WARN(
+          get_logger(), "%s rejected before adapter output: %s.",
+          candidate_stage.c_str(), rejection.c_str());
+        continue;
+      }
+      geometry_msgs::msg::PoseStamped candidate_grasp;
+      if (!BuildDiagonalSidePointGrasp(
+          diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, 0.0, candidate_grasp))
+        candidate_grasp.pose.orientation = candidate_pregrasp.pose.orientation;
+      {
+        continue;
+      }
+      auto predicted_pregrasp_state = StateAtTrajectoryEnd(
+        candidate_pregrasp_plan.trajectory_.joint_trajectory,
+        candidate_stage + "_APPROACH_START");
+      if (!predicted_pregrasp_state) {
+        continue;
+      }
+      moveit_msgs::msg::RobotTrajectory candidate_approach_plan;
+      const std::string approach_stage = candidate_stage + "_APPROACH";
+      if (!PlanArmCartesianFromState(
+          candidate_grasp, approach_stage, predicted_pregrasp_state,
+          candidate_approach_plan))
+      {
+        continue;
+      }
+      if (!simulation_only_ && !RealTrajectoryWithinLimits(
+          candidate_approach_plan.joint_trajectory, rejection))
+      {
+        PublishDiagnostic(approach_stage + ":REAL_LIMIT_REJECTED:" + rejection);
+        RCLCPP_WARN(
+          get_logger(), "%s rejected before adapter output: %s.",
+          approach_stage.c_str(), rejection.c_str());
+        continue;
+      }
+      pregrasp_target = candidate_pregrasp;
+      pregrasp_plan = std::move(candidate_pregrasp_plan);
+      approach_plan = std::move(candidate_approach_plan);
+      plan_found = true;
+      break;
+        }
+      }
+    }
+    if (!plan_found || cancel_requested_) {
       Fail("DIAGONAL_SIDE_PREGRASP_PLAN_FAILED");
       return;
     }
-    PublishState("DIAGONAL_SIDE_PREGRASP_REACHED");
-
-    PublishState("DIAGONAL_SIDE_APPROACH_PLANNING");
-    geometry_msgs::msg::PoseStamped grasp_target;
-    if (!BuildDiagonalSidePointGrasp(
-        diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, 0.0, grasp_target))
-    {
-      Fail("DIAGONAL_SIDE_GRASP_TARGET_UNAVAILABLE");
+    const bool pregrasp_executed = simulation_only_ ?
+      static_cast<bool>(arm_->execute(pregrasp_plan)) :
+      ExecuteArmTrajectory(pregrasp_plan.trajectory_.joint_trajectory);
+    if (!pregrasp_executed || cancel_requested_) {
+      Fail("DIAGONAL_SIDE_PREGRASP_EXECUTION_FAILED");
       return;
     }
-    if (!MoveArmCartesianToPose(grasp_target, "DIAGONAL_SIDE_APPROACH") || cancel_requested_) {
+    PublishDiagnostic("DIAGONAL_SIDE_PREGRASP_TRAJECTORY_ACCEPTED");
+    PublishState("DIAGONAL_SIDE_PREGRASP_REACHED");
+
+    PublishState("DIAGONAL_SIDE_APPROACH_EXECUTING");
+    const bool approach_executed = simulation_only_ ?
+      static_cast<bool>(arm_->execute(approach_plan)) :
+      ExecuteArmTrajectory(approach_plan.joint_trajectory);
+    if (!approach_executed || cancel_requested_) {
       Fail("DIAGONAL_SIDE_APPROACH_FAILED");
       return;
     }
-    FinishGraspAndLift();
+    PublishDiagnostic("DIAGONAL_SIDE_APPROACH_TRAJECTORY_ACCEPTED");
+    FinishGraspAndLift(pregrasp_target);
   }
 
   bool BuildDiagonalSidePointGrasp(
     double camera_standoff_m, double vertical_clearance_m,
     double lateral_offset_m, geometry_msgs::msg::PoseStamped & grasp_target)
   {
-    geometry_msgs::msg::PointStamped target_point_camera;
+    geometry_msgs::msg::PointStamped object_world;
+    if (!PredictedTargetInReference(object_world)) {
+      RCLCPP_ERROR(get_logger(), "Locked base-frame target is unavailable for side grasp.");
+      return false;
+    }
     double object_size_m = 0.0;
     {
       std::lock_guard<std::mutex> lock(target_mutex_);
-      const double age_s = std::chrono::duration<double>(
-        std::chrono::steady_clock::now() - target_point_received_time_).count();
-      if (target_point_received_time_ == std::chrono::steady_clock::time_point{} ||
-        age_s > target_timeout_s_)
-      {
-        RCLCPP_ERROR(get_logger(), "Camera target point is missing or stale (age %.3f s).", age_s);
-        return false;
-      }
-      target_point_camera = target_point_camera_;
-      if (adaptive_size_enabled_) {
+      if (adaptive_size_enabled_ && target_model_locked_) {
+        object_size_m = locked_object_size_m_;
+      } else if (adaptive_size_enabled_) {
         const double size_age_s = std::chrono::duration<double>(
           std::chrono::steady_clock::now() - target_size_received_time_).count();
         const double width_m = std::max(target_size_.vector.x, target_size_.vector.y);
@@ -975,14 +1068,7 @@ private:
     const double effective_standoff = camera_standoff_m + size_margin;
     const double effective_clearance = vertical_clearance_m + size_margin;
 
-    const std::string target_frame = target_point_camera.header.frame_id.empty() ?
-      camera_optical_frame_ : target_point_camera.header.frame_id;
     try {
-      const auto world_from_target = tf_buffer_->lookupTransform(
-        lift_reference_frame_, target_frame, tf2::TimePointZero);
-      geometry_msgs::msg::PointStamped object_world;
-      tf2::doTransform(target_point_camera, object_world, world_from_target);
-
       const auto world_from_camera = tf_buffer_->lookupTransform(
         lift_reference_frame_, camera_optical_frame_, tf2::TimePointZero);
       tf2::Quaternion camera_orientation;
@@ -1046,20 +1132,23 @@ private:
     PublishState("TOP_DOWN_PREGRASP_PLANNING");
     geometry_msgs::msg::PoseStamped pregrasp_target;
     MoveGroupInterface::Plan pregrasp_plan;
+    moveit_msgs::msg::RobotTrajectory descent_plan;
     bool pregrasp_plan_found = false;
-    for (const double tilt : top_down_tilt_candidates_) {
-      for (const double yaw : top_down_yaw_candidates_) {
+    for (const double clearance : top_down_pregrasp_clearance_candidates_m_) {
+      for (const double tilt : top_down_tilt_candidates_) {
+        for (const double yaw : top_down_yaw_candidates_) {
         selected_top_down_tilt_ = tilt;
         selected_top_down_yaw_ = yaw;
         selected_top_down_yaw_valid_ = true;
-        if (!BuildTopDownPointGrasp(top_down_pregrasp_clearance_m_, pregrasp_target) ||
+        if (!BuildTopDownPointGrasp(clearance, pregrasp_target) ||
           !TopDownPoseHasIk(pregrasp_target))
         {
           continue;
         }
         MoveGroupInterface::Plan candidate_plan;
         const std::string candidate_stage =
-          "TOP_DOWN_PREGRASP_TILT_" + std::to_string(tilt) +
+          "TOP_DOWN_PREGRASP_CLEARANCE_" + std::to_string(clearance) +
+          "_TILT_" + std::to_string(tilt) +
           "_YAW_" + std::to_string(yaw);
         if (!PlanArmToPose(pregrasp_target, candidate_stage, candidate_plan)) {
           continue;
@@ -1074,7 +1163,34 @@ private:
             candidate_stage.c_str(), rejection.c_str());
           continue;
         }
+        geometry_msgs::msg::PoseStamped candidate_grasp_target;
+        if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, candidate_grasp_target)) {
+          continue;
+        }
+        auto predicted_pregrasp_state = StateAtTrajectoryEnd(
+          candidate_plan.trajectory_.joint_trajectory, candidate_stage + "_DESCENT_START");
+        if (!predicted_pregrasp_state) {
+          continue;
+        }
+        moveit_msgs::msg::RobotTrajectory candidate_descent_plan;
+        const std::string descent_stage = candidate_stage + "_DESCENT";
+        if (!PlanArmCartesianFromState(
+            candidate_grasp_target, descent_stage, predicted_pregrasp_state,
+            candidate_descent_plan))
+        {
+          continue;
+        }
+        if (!simulation_only_ && !RealTrajectoryWithinLimits(
+            candidate_descent_plan.joint_trajectory, rejection))
+        {
+          PublishDiagnostic(descent_stage + ":REAL_LIMIT_REJECTED:" + rejection);
+          RCLCPP_WARN(
+            get_logger(), "%s rejected before adapter output: %s.",
+            descent_stage.c_str(), rejection.c_str());
+          continue;
+        }
         pregrasp_plan = std::move(candidate_plan);
+        descent_plan = std::move(candidate_descent_plan);
         pregrasp_plan_found = true;
         break;
       }
@@ -1082,6 +1198,10 @@ private:
         break;
       }
     }
+    if (pregrasp_plan_found) {
+      break;
+    }
+  }
     if (!pregrasp_plan_found || cancel_requested_) {
       Fail("TOP_DOWN_PREGRASP_PLAN_FAILED");
       return;
@@ -1096,13 +1216,11 @@ private:
     PublishDiagnostic("TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED");
     PublishState("TOP_DOWN_PREGRASP_REACHED");
 
-    PublishState("TOP_DOWN_DESCENT_PLANNING");
-    geometry_msgs::msg::PoseStamped grasp_target;
-    if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, grasp_target)) {
-      Fail("TOP_DOWN_GRASP_TARGET_UNAVAILABLE");
-      return;
-    }
-    if (!MoveArmCartesianToPose(grasp_target, "TOP_DOWN_DESCENT") || cancel_requested_) {
+    PublishState("TOP_DOWN_DESCENT_EXECUTING");
+    const bool descent_executed = simulation_only_ ?
+      static_cast<bool>(arm_->execute(descent_plan)) :
+      ExecuteArmTrajectory(descent_plan.joint_trajectory);
+    if (!descent_executed || cancel_requested_) {
       Fail("TOP_DOWN_DESCENT_FAILED");
       return;
     }
@@ -1608,6 +1726,19 @@ private:
       RCLCPP_WARN(get_logger(), "Cannot lock base-frame target model (age %.3f s).", age_s);
       return false;
     }
+    if (adaptive_size_enabled_) {
+      const double size_age_s = std::chrono::duration<double>(
+        now - target_size_received_time_).count();
+      const double width_m = std::max(target_size_.vector.x, target_size_.vector.y);
+      if (target_size_received_time_ == std::chrono::steady_clock::time_point{} ||
+        size_age_s > target_timeout_s_ || !std::isfinite(width_m) ||
+        width_m < min_object_size_m_ || width_m > max_object_size_m_)
+      {
+        RCLCPP_WARN(get_logger(), "Cannot lock cube size (age %.3f s).", size_age_s);
+        return false;
+      }
+      locked_object_size_m_ = width_m;
+    }
     locked_target_reference_ = target_point_reference_;
     target_model_locked_ = true;
     PublishDiagnostic("GRASP_TARGET_MODEL_LOCKED_BASE_FRAME");
@@ -1622,6 +1753,7 @@ private:
   {
     approach_locked_ = false;
     target_model_locked_ = false;
+    locked_object_size_m_ = 0.0;
     cancel_requested_ = true;
     PublishDiagnostic(reason);
     std_msgs::msg::Bool message;
@@ -1906,6 +2038,10 @@ private:
       return false;
     }
     arm_->setStartState(*fresh_state);
+    if (!simulation_only_) {
+      arm_->setPlanningPipelineId(real_pose_planning_pipeline_);
+      arm_->setPlannerId(real_pose_planner_id_);
+    }
     arm_->setPoseReferenceFrame(target.header.frame_id);
     if (!arm_->setPoseTarget(target, end_effector_link_)) {
       RCLCPP_ERROR(get_logger(), "%s rejected the requested end-effector pose.", stage.c_str());
@@ -1971,13 +2107,47 @@ private:
           std::ostringstream stream;
           stream << "point " << point_index << " " << *found << "=" << position
                  << " outside [" << real_trajectory_joint_min_[joint_index] << ","
-                 << real_trajectory_joint_max_[joint_index] << "]";
+                 << real_trajectory_joint_max_[joint_index] << "]"
+                 << " start=" << trajectory.points.front().positions[trajectory_index]
+                 << " end=" << trajectory.points.back().positions[trajectory_index];
           reason = stream.str();
           return false;
         }
       }
     }
     return true;
+  }
+
+
+  std::shared_ptr<moveit::core::RobotState> StateAtTrajectoryEnd(
+    const trajectory_msgs::msg::JointTrajectory & trajectory, const std::string & stage)
+  {
+    static const std::vector<std::string> arm_joint_names = {
+      "joint1", "joint2", "joint3", "joint4", "joint5", "joint6"};
+    auto state = FreshMeasuredState(stage);
+    if (!state || trajectory.joint_names.empty() || trajectory.points.empty()) {
+      return nullptr;
+    }
+    const auto & final_point = trajectory.points.back();
+    if (final_point.positions.size() != trajectory.joint_names.size()) {
+      RCLCPP_WARN(get_logger(), "%s trajectory endpoint dimensions are invalid.", stage.c_str());
+      return nullptr;
+    }
+    for (std::size_t index = 0; index < trajectory.joint_names.size(); ++index) {
+      if (std::find(
+          arm_joint_names.begin(), arm_joint_names.end(), trajectory.joint_names[index]) ==
+        arm_joint_names.end() ||
+        !std::isfinite(final_point.positions[index]))
+      {
+        RCLCPP_WARN(
+          get_logger(), "%s trajectory endpoint contains invalid joint %s.",
+          stage.c_str(), trajectory.joint_names[index].c_str());
+        return nullptr;
+      }
+      state->setVariablePosition(trajectory.joint_names[index], final_point.positions[index]);
+    }
+    state->update();
+    return state;
   }
 
   bool CartesianTrajectoryContinuous(
@@ -2034,10 +2204,34 @@ private:
       RCLCPP_WARN(get_logger(), "%s skipped: MoveIt current state became stale before Cartesian planning.", stage.c_str());
       return false;
     }
-    arm_->setStartState(*fresh_state);
+    moveit_msgs::msg::RobotTrajectory trajectory;
+    if (!PlanArmCartesianFromState(target, stage, fresh_state, trajectory)) {
+      return false;
+    }
+    std::string rejection;
+    if (!simulation_only_ && !RealTrajectoryWithinLimits(trajectory.joint_trajectory, rejection)) {
+      PublishDiagnostic(stage + ":REAL_LIMIT_REJECTED:" + rejection);
+      RCLCPP_WARN(
+        get_logger(), "%s rejected before adapter output: %s.", stage.c_str(), rejection.c_str());
+      return false;
+    }
+    if (simulation_only_) {
+      return static_cast<bool>(arm_->execute(trajectory));
+    }
+    return ExecuteArmTrajectory(trajectory.joint_trajectory);
+  }
+
+  bool PlanArmCartesianFromState(
+    const geometry_msgs::msg::PoseStamped & target, const std::string & stage,
+    const std::shared_ptr<moveit::core::RobotState> & start_state,
+    moveit_msgs::msg::RobotTrajectory & trajectory)
+  {
+    if (!start_state) {
+      return false;
+    }
+    arm_->setStartState(*start_state);
     arm_->setPoseReferenceFrame(target.header.frame_id);
     std::vector<geometry_msgs::msg::Pose> waypoints{target.pose};
-    moveit_msgs::msg::RobotTrajectory trajectory;
     const double previous_velocity_scaling = velocity_scaling_;
     arm_->setMaxVelocityScalingFactor(linear_approach_velocity_scaling_);
     const double fraction = arm_->computeCartesianPath(
@@ -2054,10 +2248,7 @@ private:
     RCLCPP_INFO(
       get_logger(), "%s Cartesian path has %zu trajectory points.", stage.c_str(),
       trajectory.joint_trajectory.points.size());
-    if (simulation_only_) {
-      return static_cast<bool>(arm_->execute(trajectory));
-    }
-    return ExecuteArmTrajectory(trajectory.joint_trajectory);
+    return true;
   }
 
   std::string DiagnoseIk(const geometry_msgs::msg::PoseStamped & target)
@@ -2295,10 +2486,13 @@ private:
   bool auto_release_after_lift_{false};
   double hold_after_lift_s_{1.0};
   double top_down_pregrasp_clearance_m_{0.12};
+  std::vector<double> top_down_pregrasp_clearance_candidates_m_;
   double top_down_grasp_clearance_m_{0.005};
   double top_down_grasp_yaw_{0.0};
   std::vector<double> top_down_yaw_candidates_;
   std::vector<double> top_down_tilt_candidates_;
+  std::string real_pose_planning_pipeline_;
+  std::string real_pose_planner_id_;
   double selected_top_down_yaw_{0.0};
   double selected_top_down_tilt_{0.0};
   bool selected_top_down_yaw_valid_{false};
@@ -2328,6 +2522,7 @@ private:
   double trajectory_feedback_timeout_s_{12.0};
   std::vector<double> real_trajectory_joint_min_;
   std::vector<double> real_trajectory_joint_max_;
+  double real_trajectory_limit_margin_rad_{0.005};
   double joint_state_wait_timeout_s_{25.0};
   std::string visual_state_topic_;
   std::string scene_ready_topic_;
@@ -2363,6 +2558,7 @@ private:
   std::chrono::steady_clock::time_point joint_state_received_time_{};
   std::chrono::steady_clock::time_point gripper_feedback_received_time_{};
   double target_error_ratio_{1.0};
+  double locked_object_size_m_{0.0};
   bool target_valid_{false};
   bool depth_valid_{false};
   std::atomic_bool approach_locked_{false};

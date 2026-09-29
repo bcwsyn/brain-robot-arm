@@ -21,6 +21,7 @@ CONFIG = ROOT / "brain_robot_ball_pick" / "config" / "cube_task_real.yaml"
 ADAPTER = Path(__file__).parents[1] / "scripts" / "piper_jog_adapter.py"
 CONTROLLER = Path(__file__).parents[1] / "src" / "visual_search_controller.cpp"
 EXECUTOR = Path(__file__).parents[1] / "src" / "grasp_lift_executor.cpp"
+LAUNCH = ROOT / "brain_robot_ball_pick" / "launch" / "cube_visual_search.launch.py"
 
 
 def _load_adapter():
@@ -74,8 +75,21 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["auto_execute"] is True
     assert grasp["static_target_lock"] is True
     assert grasp["top_down_grasp_enabled"] is True
+    assert grasp["diagonal_side_grasp_enabled"] is True
+    assert grasp["diagonal_pregrasp_standoff_m"] == 0.17
+    assert grasp["diagonal_pregrasp_lift_m"] == 0.20
+    assert grasp["diagonal_grasp_lift_m"] == 0.10
+    assert grasp["diagonal_grasp_standoff_m"] == 0.045
     assert grasp["candidate_grasp_enabled"] is False
     assert grasp["auto_release_after_lift"] is True
+    assert grasp["grasp_orientation_tolerance"] == 0.20
+    assert grasp["top_down_pregrasp_clearance_m"] == 0.024
+    assert grasp["top_down_pregrasp_clearance_candidates_m"] == [0.024]
+    assert grasp["top_down_yaw_candidates"] == [0.0, 0.78539816339, -0.78539816339, 1.57079632679, -1.57079632679, 3.14159265359]
+    assert grasp["top_down_tilt_candidates"] == [0.35, 0.75, 0.90, 1.05]
+    assert grasp["real_pose_planning_pipeline"] == "pilz_industrial_motion_planner"
+    assert grasp["real_pose_planner_id"] == "PTP"
+    assert depth_probe["required_stable_frames"] == 1
     assert depth_probe["workspace_min_x_m"] < 0.33 < depth_probe["workspace_max_x_m"]
     assert depth_probe["workspace_min_y_m"] < -0.31 < depth_probe["workspace_max_y_m"]
     assert depth_probe["workspace_min_z_m"] < 0.11 < depth_probe["workspace_max_z_m"]
@@ -120,7 +134,21 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     assert "TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED" in executor
     assert "RealTrajectoryWithinLimits" in executor
     assert "REAL_LIMIT_REJECTED" in executor
+    assert "StateAtTrajectoryEnd" in executor
+    assert "PlanArmCartesianFromState" in executor
+    assert "real_trajectory_limit_margin_rad" in executor
+    assert "RealTrajectoryWithinLimits" in executor
+    assert "candidate_descent_plan.joint_trajectory, rejection" in executor
+    assert "TOP_DOWN_DESCENT_EXECUTING" in executor
     assert "TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED" in executor
+    assert "DIAGONAL_SIDE_PREGRASP_TRAJECTORY_ACCEPTED" in executor
+    assert "DIAGONAL_SIDE_APPROACH_TRAJECTORY_ACCEPTED" in executor
+    assert "candidate_approach_plan.joint_trajectory, rejection" in executor
+    assert "TopDownOrientation(side_yaw, side_tilt)" in executor
+    assert "PredictedTargetInReference(object_world)" in executor
+    assert "Locked base-frame target is unavailable for side grasp" in executor
+    assert "object_size_m = locked_object_size_m_" in executor
+    assert "locked_object_size_m_ = width_m" in executor
     assert "GRIPPER_CLOSE_REQUESTED" in executor
     assert "if (!static_target_lock_ && !TargetStillAligned())" in executor
     assert "MICRO_APPROACH_TARGET_SHIFT_BEFORE_STEP" in executor
@@ -129,6 +157,15 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     locked_section = executor[executor.index("bool ClosedLoopMicroApproach()"):executor.index("void DiagonalSidePointGraspAndLift()")]
     assert "if (!static_target_lock_ && !TargetStillAligned())" in locked_section
     assert "RequestVisualReacquire(\"MICRO_APPROACH_TARGET_SHIFT_BEFORE_STEP\")" in locked_section
+
+
+def test_moveit_uses_the_same_real_joint_bounds_as_the_adapter():
+    launch = LAUNCH.read_text(encoding="utf-8")
+    assert "real_trajectory_joint_min" in launch
+    assert "real_trajectory_joint_max" in launch
+    assert 'joint_limits["has_position_limits"] = True' in launch
+    assert 'joint_limits["min_position"] = float(min_position)' in launch
+    assert 'joint_limits["max_position"] = float(max_position)' in launch
 
 
 def test_real_prepare_path_is_interpolated_below_adapter_jump_gate():

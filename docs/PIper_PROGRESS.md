@@ -1745,3 +1745,10 @@
 ### 下一步
 
 - 复跑并优先观察新增 `tilt=0.75/0.85`、`yaw=±pi/4` 的规划；只有出现原限位内完整轨迹才允许进入实体 `TOP_DOWN_PREGRASP_REACHED`。
+## 2026-09-29：严格真实限位下的候选抓取实测断点
+- 本轮多次执行 /home/johnwick/start_brain_robot_cube_real.sh，根分区使用率 29%，can0 复用 1 Mbps/0.75 且 RX 持续增长；未重复固件、MasterSlaveConfig、ResetPiper 或基础 CAN 巡检。
+- 每次运行均完成 [7/7]、当前姿态到观测姿态、OBSERVE_POSE_REACHED、SEARCH 和 GRASP_READY (DEPTH_BASE_LOCK_ACQUIRED)；深度目标约 base_link=(0.334..0.341,-0.309..-0.314,0.104..0.110)m，锁定后未重新追踪。
+- MoveIt 现从 cube_task_real.yaml 读取与 piper_jog_adapter 相同的六轴 real_trajectory_joint_min/max，并补齐 Pilz 加速度限位；构建成功，12 项 replay 测试通过。
+- 顶部候选在严格真实边界下全部 IK_ERROR_CODE_-31；侧向预抓取和最终接近已改为锁定基座目标/尺寸后两段离线规划，候选 tilt={0.35,0.75,0.95,1.10}、yaw={0,±0.785,±1.571,pi}、lateral={0,±0.06}，预抓取高度由 0.276m 提到约 0.390m 后仍全部 IK_ERROR_CODE_-31。
+- 最新证据日志为 /home/johnwick/brain_robot_logs/ros/grasp_lift_executor_382493_1790675641296.log；始终未出现 DIAGONAL_SIDE_PREGRASP_TRAJECTORY_ACCEPTED、DIAGONAL_SIDE_APPROACH_TRAJECTORY_ACCEPTED 或 GRIPPER_CLOSE_REQUESTED。故障为 FAULT_DIAGONAL_SIDE_PREGRASP_PLAN_FAILED，脚本保持使能退出，未发送 DisableArm/ResetPiper。
+- 当前阻断：锁定目标与 PiPER link6/真实适配器六轴限位的组合无可行 IK；下一步仅做无运动 URDF 零位、link6 工具偏移、目标中心/顶面语义核对或现场标定，不放宽限位、不盲发 JointCtrl。

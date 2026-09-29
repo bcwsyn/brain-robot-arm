@@ -16,6 +16,13 @@ def _load_yaml(path):
 def generate_launch_description():
     cube_share = get_package_share_directory('brain_robot_ball_pick')
     base_share = get_package_share_directory('brain_robot_pick_place')
+    task_config_path = os.path.join(cube_share, 'config', 'cube_task_real.yaml')
+    task_profile = _load_yaml(task_config_path)
+    grasp_parameters = task_profile['grasp_lift_executor']['ros__parameters']
+    real_joint_mins = grasp_parameters['real_trajectory_joint_min']
+    real_joint_maxs = grasp_parameters['real_trajectory_joint_max']
+    if len(real_joint_mins) != 6 or len(real_joint_maxs) != 6:
+        raise RuntimeError('real grasp limits must contain exactly six joints')
     # The Astra is mounted on the gripper. Feeding its depth cloud into
     # MoveIt's world-geometry updater makes the moving gripper part of the
     # obstacle map whenever camera/joint timestamps are skewed, which can
@@ -25,10 +32,20 @@ def generate_launch_description():
     moveit = MoveItConfigsBuilder(
         'piper', package_name='piper_with_gripper_moveit').sensors_3d(
             os.path.join(cube_share, 'config', 'sensors_3d_real.yaml')).to_moveit_configs()
+    moveit_parameters = moveit.to_dict()
+    for joint_name, min_position, max_position in zip(
+            ("joint1", "joint2", "joint3", "joint4", "joint5", "joint6"),
+            real_joint_mins, real_joint_maxs):
+        joint_limits = moveit_parameters["robot_description_planning"]["joint_limits"][joint_name]
+        joint_limits["has_position_limits"] = True
+        joint_limits["min_position"] = float(min_position)
+        joint_limits["max_position"] = float(max_position)
+        joint_limits["has_acceleration_limits"] = True
+        joint_limits["max_acceleration"] = 1.0
     servo_params = {'moveit_servo': _load_yaml(
         os.path.join(base_share, 'config', 'piper_servo_real.yaml'))}
     move_group_params = [
-        moveit.to_dict(),
+        moveit_parameters,
         {
             # This process is only the state/planning-scene authority for the
             # protected visual path.  Physical trajectories remain disabled;
@@ -69,7 +86,7 @@ def generate_launch_description():
         camera_mount_tf,
         Node(package='brain_robot_pick_place', executable='pointcloud_tf_gate',
              name='pointcloud_tf_gate', output='screen', parameters=[
-                 os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
+                 task_config_path,
                  {'use_sim_time': False}]),
         Node(package='moveit_ros_move_group', executable='move_group', name='move_group',
              output='screen', parameters=move_group_params,
@@ -103,13 +120,13 @@ def generate_launch_description():
              }]),
         Node(package='brain_robot_pick_place', executable='visual_search_controller',
              name='visual_search_controller', output='screen', parameters=[
-                 moveit.to_dict(),
-                 os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
+                 moveit_parameters,
+                 task_config_path,
                  {'backend': 'piper', 'use_sim_time': False}]),
         Node(package='brain_robot_pick_place', executable='grasp_lift_executor',
              name='grasp_lift_executor', output='screen', parameters=[
-                 moveit.to_dict(),
-                 os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
+                 moveit_parameters,
+                 task_config_path,
                  {'use_sim_time': False}],
              remappings=[('/joint_states', '/piper_moveit_joint_states')]),
         # Depth geometry gate. It publishes only candidate geometry/validity;
@@ -117,12 +134,12 @@ def generate_launch_description():
         # command paths.
         Node(package='brain_robot_pick_place', executable='depth_cube_probe.py',
              name='depth_cube_probe', output='screen', parameters=[
-                 os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
+                 task_config_path,
                  {'use_sim_time': False}]),
         # This node only reports whether the current session has fresh RGB-D,
         # joint, TF and Planning Scene inputs. It publishes no arm command.
         Node(package='brain_robot_pick_place', executable='active_scan_supervisor',
              name='active_scan_supervisor', output='screen', parameters=[
-                 os.path.join(cube_share, 'config', 'cube_task_real.yaml'),
+                 task_config_path,
                  {'use_sim_time': False}]),
     ])
