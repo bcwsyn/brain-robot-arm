@@ -1673,3 +1673,16 @@
 ### 下一步
 
 - 复跑并验收丢失后进入 `LAST_PATH_REACQUIRE`（而非 `LAST_TARGET_HISTORY_UNAVAILABLE`），静止基座目标重投影成功后继续ALIGN/GRASP_READY。
+
+## 2026-09-29：第四次实体搜索证实历史恢复可达，并改用基座三维稳定判定
+
+- 第四次默认一键链在 CAN 3 秒 RX 增长 `7292` 帧后通过 `[7/7]`、观测姿态与SEARCH。深度候选 `pixel=(583.4,48.1)`、相机点 `(0.133,-0.079,0.248) m`、尺寸 `0.060x0.049 m`、高度 `0.052 m` 达到 `stable=3/3` 后进入ALIGN。
+- 上一提交的历史年龄修复已经取得实证：目标暂失后控制器不再报告 `LAST_TARGET_HISTORY_UNAVAILABLE`，而是依次发布 `PHASE=LAST_PATH_REACQUIRE step=1/2 predicted_base_link_m=(0.087,-0.337,0.163)`、第二步预测恢复，最终才进入 `LOCAL_SEARCH (LAST_PATH_REACQUIRE_FAILED)`。固定基座历史分支已经可达，但两步重投影仍未重新取得实时几何。
+- 灯光恢复后的持续运行确认全搜索没有停在固定角度：两次相隔约10秒的反馈中 J1 从 `0.680176448` 连续变化到 `0.431006352 rad`，J5 从 `1.007547996` 变化到 `0.862710464 rad`；实时TF也同步变化。当前断点不是“没有搜索轨迹”。
+- 直接原因定位到深度探针稳定判定：旧实现比较候选在腕部相机中的像素中心和深度。静止方块在机械臂SEARCH期间必然随相机视角在画面中移动，因此真实候选曾只能达到 `stable=1/3`；这把相机自运动误当成目标运动，也不能可靠排除固定在末端上的自体几何。
+- 最小修复：探针把每帧候选按该帧时间戳变换到 `base_link`，用三维欧氏距离 `<=0.025 m` 累积三帧稳定。静止桌面方块即使在像素中移动仍可稳定；反之，与腕部/夹爪一起运动的自体几何在 `base_link` 中会移动，不能以静态目标身份授权抓取。TF缺失时明确发布 `DEPTH_PROBE_STABILITY_TF_UNAVAILABLE` 并保持无效，不回退到像素授权。
+- 本轮实体实例用Ctrl+C停止新增输出并保持PiPER使能；脚本明确未发送DisableArm、ResetPiper或自动零点复位。修改后 `py_compile`、TF2 Python API兼容性和 `git diff --check` 均通过；实际 `/home/johnwick/piper_ws` 两包重建成功。
+
+### 下一步
+
+- 直接复跑默认一键链，验收机械搜索过程中同一桌面候选的 `base_link_m` 保持稳定并达到 `stable=3/3`。若进入ALIGN，下一断点按 `GRASP_READY -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME -> TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED` 顺序定位；不得再以移动相机像素位移否决已固定在基座坐标中的静止目标。

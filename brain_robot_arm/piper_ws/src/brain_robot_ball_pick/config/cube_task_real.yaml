@@ -257,5 +257,14 @@ depth_cube_probe:
     max_size_m: 0.070
     max_aspect_ratio: 1.45
     required_stable_frames: 3
+    # The wrist camera moves during SEARCH, so pixel displacement is not
+    # evidence that the tabletop cube moved.  Accumulate stability in the
+    # fixed robot base frame; camera/gripper self-geometry consequently moves
+    # in base_link and cannot authorize a grasp as a static target.
+    stability_reference_frame: base_link
+    max_reference_delta_m: 0.025
+    transform_timeout_s: 0.05
+    # Retained for backward-compatible parameter parsing; base-frame
+    # stability above is authoritative for the real depth-only profile.
     max_center_delta_px: 16.0
     max_depth_delta_m: 0.030

@@ -14,11 +14,15 @@ from typing import Optional, Tuple
 import numpy as np
 import rclpy
 from geometry_msgs.msg import PointStamped, Vector3Stamped
+from rclpy.duration import Duration
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
+from rclpy.time import Time
 from scipy import ndimage
 from sensor_msgs.msg import CameraInfo, Image
 from std_msgs.msg import Bool, String
+from tf2_geometry_msgs import do_transform_point
+from tf2_ros import Buffer, TransformException, TransformListener
 
 
 class DepthCubeProbe(Node):
@@ -68,6 +72,16 @@ class DepthCubeProbe(Node):
         self.max_depth_delta_m = max(
             0.001, float(self.declare_parameter("max_depth_delta_m", 0.030).value)
         )
+        self.stability_reference_frame = str(
+            self.declare_parameter("stability_reference_frame", "base_link").value
+        )
+        self.max_reference_delta_m = max(
+            0.001,
+            float(self.declare_parameter("max_reference_delta_m", 0.025).value),
+        )
+        self.transform_timeout_s = max(
+            0.001, float(self.declare_parameter("transform_timeout_s", 0.05).value)
+        )
 
         sensor_qos = QoSProfile(depth=10)
         sensor_qos.reliability = ReliabilityPolicy.BEST_EFFORT
@@ -91,11 +105,13 @@ class DepthCubeProbe(Node):
         )
         self.create_subscription(CameraInfo, self.camera_info_topic, self.on_info, sensor_qos)
         self.create_subscription(Image, self.depth_topic, self.on_depth, sensor_qos)
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
 
         self.fx = self.fy = self.cx = self.cy = 0.0
         self.frame_count = 0
         self.stable_frames = 0
-        self.previous_candidate: Optional[Tuple[float, float, float]] = None
+        self.previous_candidate_reference: Optional[Tuple[float, float, float]] = None
         self.last_diagnostic = ""
         self.publish_invalid("DEPTH_PROBE_WAITING_FOR_CAMERA_INFO")
 
@@ -176,7 +192,7 @@ class DepthCubeProbe(Node):
         coefficients, plane_inliers = self.fit_table_plane(depth, valid)
         if coefficients is None:
             self.stable_frames = 0
-            self.previous_candidate = None
+            self.previous_candidate_reference = None
             self.publish_invalid(f"DEPTH_PROBE_NO_TABLE_PLANE inliers={plane_inliers}")
             return
 
@@ -248,32 +264,53 @@ class DepthCubeProbe(Node):
 
         if best is None:
             self.stable_frames = 0
-            self.previous_candidate = None
+            self.previous_candidate_reference = None
             self.publish_invalid(
                 f"DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers={plane_inliers}"
             )
             return
 
         area, center_x, center_y, z, size_x, size_y, object_height, fill, inliers = best
-        current = (center_x, center_y, z)
-        if self.previous_candidate is not None:
-            center_delta = math.hypot(
-                center_x - self.previous_candidate[0], center_y - self.previous_candidate[1]
-            )
-            depth_delta = abs(z - self.previous_candidate[2])
-            if center_delta <= self.max_center_delta_px and depth_delta <= self.max_depth_delta_m:
-                self.stable_frames += 1
-            else:
-                self.stable_frames = 1
-        else:
-            self.stable_frames = 1
-        self.previous_candidate = current
-
         point = PointStamped()
         point.header = msg.header
         point.point.x = (center_x - self.cx) * z / self.fx
         point.point.y = (center_y - self.cy) * z / self.fy
         point.point.z = z
+        try:
+            transform = self.tf_buffer.lookup_transform(
+                self.stability_reference_frame,
+                point.header.frame_id,
+                Time.from_msg(point.header.stamp),
+                timeout=Duration(seconds=self.transform_timeout_s),
+            )
+            reference_point = do_transform_point(point, transform)
+        except TransformException as exc:
+            self.stable_frames = 0
+            self.previous_candidate_reference = None
+            self.publish_invalid(
+                "DEPTH_PROBE_STABILITY_TF_UNAVAILABLE "
+                f"{point.header.frame_id}->{self.stability_reference_frame}: {exc}"
+            )
+            return
+
+        current_reference = (
+            reference_point.point.x,
+            reference_point.point.y,
+            reference_point.point.z,
+        )
+        reference_delta = 0.0
+        if self.previous_candidate_reference is not None:
+            reference_delta = math.dist(
+                current_reference, self.previous_candidate_reference
+            )
+            if reference_delta <= self.max_reference_delta_m:
+                self.stable_frames += 1
+            else:
+                self.stable_frames = 1
+        else:
+            self.stable_frames = 1
+        self.previous_candidate_reference = current_reference
+
         self.point_pub.publish(point)
         size = Vector3Stamped()
         size.header = msg.header
@@ -298,6 +335,9 @@ class DepthCubeProbe(Node):
             f"{state} stable={self.stable_frames}/{self.required_stable_frames} "
             f"pixel=({center_x:.1f},{center_y:.1f}) camera_m="
             f"({point.point.x:.3f},{point.point.y:.3f},{z:.3f}) "
+            f"{self.stability_reference_frame}_m=({reference_point.point.x:.3f},"
+            f"{reference_point.point.y:.3f},{reference_point.point.z:.3f}) "
+            f"reference_delta_m={reference_delta:.3f} "
             f"size_m=({size_x:.3f},{size_y:.3f}) height_m={object_height:.3f} "
             f"area_px={area} fill={fill:.3f} plane_inliers={inliers}"
         )
