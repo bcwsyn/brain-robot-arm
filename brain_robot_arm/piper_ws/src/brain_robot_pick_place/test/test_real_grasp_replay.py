@@ -145,6 +145,11 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     assert "DIAGONAL_SIDE_APPROACH_TRAJECTORY_ACCEPTED" in executor
     assert "candidate_approach_plan.joint_trajectory, rejection" in executor
     assert "TopDownOrientation(side_yaw, side_tilt)" in executor
+    assert "requested_orientation = nullptr" in executor
+    assert "camera_offset_gripper" in executor
+    assert "target_camera_offset_world" in executor
+    assert "candidate_grasp,\n          &candidate_orientation" in executor
+    assert "candidate_pregrasp, &candidate_orientation" in executor
     assert "PredictedTargetInReference(object_world)" in executor
     assert "Locked base-frame target is unavailable for side grasp" in executor
     assert "object_size_m = locked_object_size_m_" in executor

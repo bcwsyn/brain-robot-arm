@@ -1752,3 +1752,15 @@
 - 顶部候选在严格真实边界下全部 IK_ERROR_CODE_-31；侧向预抓取和最终接近已改为锁定基座目标/尺寸后两段离线规划，候选 tilt={0.35,0.75,0.95,1.10}、yaw={0,±0.785,±1.571,pi}、lateral={0,±0.06}，预抓取高度由 0.276m 提到约 0.390m 后仍全部 IK_ERROR_CODE_-31。
 - 最新证据日志为 /home/johnwick/brain_robot_logs/ros/grasp_lift_executor_382493_1790675641296.log；始终未出现 DIAGONAL_SIDE_PREGRASP_TRAJECTORY_ACCEPTED、DIAGONAL_SIDE_APPROACH_TRAJECTORY_ACCEPTED 或 GRIPPER_CLOSE_REQUESTED。故障为 FAULT_DIAGONAL_SIDE_PREGRASP_PLAN_FAILED，脚本保持使能退出，未发送 DisableArm/ResetPiper。
 - 当前阻断：锁定目标与 PiPER link6/真实适配器六轴限位的组合无可行 IK；下一步仅做无运动 URDF 零位、link6 工具偏移、目标中心/顶面语义核对或现场标定，不放宽限位、不盲发 JointCtrl。
+
+## 2026-09-29：无运动几何审计与侧向候选坐标修复
+
+- 深度探针源码核对确认 `/brain_robot_vision/depth_candidate_point` 发布的是候选连通区域的中值深度点：`z=median_depth` 位于方块可见上表面，而不是方块中心；同时发布的 `depth_candidate_size.vector.z` 是桌面平面到该表面的凸起高度。抓取执行器已有 `locked_object_size_m_` 冻结尺寸，不能把深度点误写成动态追踪点。
+- 活动供应商 URDF `/home/johnwick/piper_ros/src/piper_description/urdf/piper_description.xacro` 明确 `joint6_to_gripper_base` 为零平移/零旋转 fixed joint；因此 `link6` 与 `gripper_base` 没有隐藏工具偏移，`end_effector_link: link6` 不是当前 IK `-31` 的原因。SRDF 的 arm chain 也确实是 `base_link -> link6`。
+- 审计发现真实代码缺陷：侧向候选先用当前腕姿态把期望相机位置换算成夹爪位置，随后却改变末端 yaw/tilt；相机固定偏移没有随候选姿态旋转，造成目标位置与候选姿态不一致。并且侧向最终接近分支存在无条件 `continue`，预抓取即使成功也不会进入接近规划。
+- 最小修复已写入 `grasp_lift_executor.cpp`：从当前 `gripper_base`/相机 TF 求固定的夹爪坐标系相机偏移；对每个候选姿态先旋转该偏移，再生成预抓取和最终接近目标。删除无条件跳过，预抓取与接近继续保持“先规划、碰撞检查、逐点真实限位预筛，选中后才输出”的安全顺序。
+- 验证：活动 `/home/johnwick/piper_ws` 两包 `colcon build --packages-select brain_robot_pick_place brain_robot_ball_pick --symlink-install` 成功；`python3 -m pytest -q src/brain_robot_pick_place/test` 为 `12 passed`。新增静态断言覆盖候选姿态偏移重算和接近分支。尚未重新运动实机；上一实测仍是所有旧几何候选 `IK_ERROR_CODE_-31`，不能把本轮代码修复描述为抓取成功。
+
+### 下一步
+
+- 将本轮已编译修复同步到唯一规范仓库后，仅复跑一次默认链，观察同一锁定目标是否出现 `DIAGONAL_SIDE_PREGRASP_TRAJECTORY_ACCEPTED`；若仍全部 `IK_ERROR_CODE_-31`，继续依据新目标位姿日志做无运动坐标标定，不扩大适配器限位、不发送盲目 JointCtrl。

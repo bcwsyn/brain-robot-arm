@@ -943,13 +943,13 @@ private:
       for (const double side_tilt : side_tilts) {
         for (const double side_yaw : side_yaws) {
       geometry_msgs::msg::PoseStamped candidate_pregrasp;
+      const auto candidate_orientation = TopDownOrientation(side_yaw, side_tilt);
       if (!BuildDiagonalSidePointGrasp(
           diagonal_pregrasp_standoff_m_, diagonal_pregrasp_lift_m_,
-          lateral_offset, candidate_pregrasp))
+          lateral_offset, candidate_pregrasp, &candidate_orientation))
       {
         continue;
       }
-      candidate_pregrasp.pose.orientation = TopDownOrientation(side_yaw, side_tilt);
       MoveGroupInterface::Plan candidate_pregrasp_plan;
       const std::string candidate_stage =
         "DIAGONAL_SIDE_PREGRASP_LATERAL_" + std::to_string(lateral_offset) +
@@ -970,8 +970,8 @@ private:
       }
       geometry_msgs::msg::PoseStamped candidate_grasp;
       if (!BuildDiagonalSidePointGrasp(
-          diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, 0.0, candidate_grasp))
-        candidate_grasp.pose.orientation = candidate_pregrasp.pose.orientation;
+          diagonal_grasp_standoff_m_, diagonal_grasp_lift_m_, 0.0, candidate_grasp,
+          &candidate_orientation))
       {
         continue;
       }
@@ -1034,7 +1034,8 @@ private:
 
   bool BuildDiagonalSidePointGrasp(
     double camera_standoff_m, double vertical_clearance_m,
-    double lateral_offset_m, geometry_msgs::msg::PoseStamped & grasp_target)
+    double lateral_offset_m, geometry_msgs::msg::PoseStamped & grasp_target,
+    const geometry_msgs::msg::Quaternion * requested_orientation = nullptr)
   {
     geometry_msgs::msg::PointStamped object_world;
     if (!PredictedTargetInReference(object_world)) {
@@ -1097,20 +1098,32 @@ private:
         grasp_height_offset_m_ + effective_clearance);
       desired_camera_position += camera_left * lateral_offset_m;
       const auto current_gripper = CurrentPoseInFrame(lift_reference_frame_);
+      const tf2::Vector3 current_gripper_position(
+        current_gripper.pose.position.x, current_gripper.pose.position.y,
+        current_gripper.pose.position.z);
+      tf2::Quaternion current_gripper_orientation;
+      tf2::fromMsg(current_gripper.pose.orientation, current_gripper_orientation);
       const tf2::Vector3 current_camera_position(
         world_from_camera.transform.translation.x,
         world_from_camera.transform.translation.y,
         world_from_camera.transform.translation.z);
+      const tf2::Vector3 camera_offset_gripper = tf2::quatRotate(
+        current_gripper_orientation.inverse(), current_camera_position - current_gripper_position);
+      const auto target_orientation = requested_orientation ?
+        *requested_orientation : current_gripper.pose.orientation;
+      tf2::Quaternion target_orientation_tf;
+      tf2::fromMsg(target_orientation, target_orientation_tf);
+      const tf2::Vector3 target_camera_offset_world = tf2::quatRotate(
+        target_orientation_tf, camera_offset_gripper);
+      const tf2::Vector3 desired_gripper_position =
+        desired_camera_position - target_camera_offset_world;
 
       grasp_target.header.frame_id = lift_reference_frame_;
       grasp_target.header.stamp = now();
-      grasp_target.pose.position.x = current_gripper.pose.position.x +
-        desired_camera_position.x() - current_camera_position.x();
-      grasp_target.pose.position.y = current_gripper.pose.position.y +
-        desired_camera_position.y() - current_camera_position.y();
-      grasp_target.pose.position.z = current_gripper.pose.position.z +
-        desired_camera_position.z() - current_camera_position.z();
-      grasp_target.pose.orientation = current_gripper.pose.orientation;
+      grasp_target.pose.position.x = desired_gripper_position.x();
+      grasp_target.pose.position.y = desired_gripper_position.y();
+      grasp_target.pose.position.z = desired_gripper_position.z();
+      grasp_target.pose.orientation = target_orientation;
       target_pose_publisher_->publish(grasp_target);
       RCLCPP_INFO(
         get_logger(),
