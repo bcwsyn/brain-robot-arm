@@ -1804,3 +1804,5 @@
 - 流程首次实际到达 `GRIPPER_CLOSE_REQUESTED`，随后在5秒内进入 `FAULT_GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED`；未执行抬升、释放或安全撤离。脚本停止输出并保持硬件使能，未发送DisableArm、ResetPiper或自动回零。
 - 官方手册明确夹爪行程为 `0–70 mm`；当前官方SDK `GripperCtrl` 明确角度整数单位为 `0.001 mm`、`0x01`为使能、力矩整数单位为 `0.001 N·m`。因此实体profile的 `gripper_close_value=40000` 是40 mm开口；本轮深度方块尺寸约24–30 mm，该值即便执行也不能夹紧方块。
 - 下一步只修复夹爪骨架：预抓取前50 mm张爪必须由反馈确认；小方块闭爪使用官方范围内的0 mm目标和1 N·m现有力矩，接触时允许“产生足够闭合位移但未到0”作为动作确认。未确认张爪或闭爪均停止且不抬升。
+- 夹爪骨架已按该边界实现：张爪和释放要求反馈进入50 mm目标的3 mm容差；闭爪目标改为0 mm，允许反馈到达目标或相对张爪前产生至少1 mm闭合位移，以兼容方块接触阻止到零。反馈失败日志包含 `before/current/target/tolerance/minimum_motion`，禁止把无动作当成功。
+- 规范源码与实际 `/home/johnwick/piper_ws` 已同步；两个包构建成功，完整测试为 `14 tests, 0 errors, 0 failures, 0 skipped`。尚未进行修改后的实体夹爪验证，不能把构建通过描述为已抓住方块。

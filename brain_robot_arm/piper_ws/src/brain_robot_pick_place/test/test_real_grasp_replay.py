@@ -74,6 +74,9 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["real_grasp_enabled"] is True
     assert grasp["auto_execute"] is True
     assert grasp["static_target_lock"] is True
+    assert grasp["gripper_open_value"] == 50000
+    assert grasp["gripper_close_value"] == 0
+    assert grasp["gripper_position_tolerance_m"] == 0.003
     assert grasp["top_down_grasp_enabled"] is True
     assert grasp["diagonal_side_grasp_enabled"] is True
     assert grasp["diagonal_pregrasp_standoff_m"] == 0.17
@@ -165,6 +168,10 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     assert "object_size_m = locked_object_size_m_" in executor
     assert "locked_object_size_m_ = width_m" in executor
     assert "GRIPPER_CLOSE_REQUESTED" in executor
+    assert "OPEN_GRIPPER_FEEDBACK_UNCONFIRMED" in executor
+    assert "WaitForGripperCommand(" in executor
+    assert "contact_motion_confirmed" in executor
+    assert "GRIPPER_RELEASE_OPEN" in executor
     assert "if (!static_target_lock_ && !TargetStillAligned())" in executor
     assert "MICRO_APPROACH_TARGET_SHIFT_BEFORE_STEP" in executor
     # Every visual-reacquire guard in the approach path is conditional on the

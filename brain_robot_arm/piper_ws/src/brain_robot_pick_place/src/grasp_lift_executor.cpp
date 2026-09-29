@@ -384,6 +384,8 @@ private:
     gripper_feedback_timeout_s_ = ParameterOr<double>("gripper_feedback_timeout_s", 3.0);
     min_gripper_feedback_motion_rad_ = ParameterOr<double>(
       "min_gripper_feedback_motion_rad", 0.001);
+    gripper_position_tolerance_m_ = ParameterOr<double>(
+      "gripper_position_tolerance_m", 0.003);
     auto_release_after_lift_ = ParameterOr<bool>("auto_release_after_lift", false);
     hold_after_lift_s_ = ParameterOr<double>("hold_after_lift_s", 1.0);
     top_down_pregrasp_clearance_m_ = ParameterOr<double>(
@@ -491,6 +493,7 @@ private:
       linear_approach_velocity_scaling_ <= velocity_scaling_ && gripper_settle_s_ > 0.0 &&
       hold_after_lift_s_ >= 0.0 &&
       gripper_feedback_timeout_s_ > 0.0 && min_gripper_feedback_motion_rad_ >= 0.0 &&
+      gripper_position_tolerance_m_ > 0.0 &&
       trajectory_feedback_tolerance_rad_ > 0.0 && trajectory_feedback_timeout_s_ > 0.0 &&
       real_trajectory_joint_min_.size() == 6U && real_trajectory_joint_max_.size() == 6U &&
       std::equal(
@@ -675,11 +678,18 @@ private:
       return;
     }
     if (!simulation_only_) {
+      const double gripper_before_open = LatestGripperPosition();
       if (!CommandRealGripper(true) || cancel_requested_) {
         Fail("OPEN_GRIPPER_FAILED");
         return;
       }
       std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
+      if (!WaitForGripperCommand(
+          gripper_before_open, gripper_open_value_, false, "GRIPPER_OPEN"))
+      {
+        Fail("OPEN_GRIPPER_FEEDBACK_UNCONFIRMED");
+        return;
+      }
     }
     if (!static_target_lock_) {
       if (!TargetStillAligned()) {
@@ -1259,7 +1269,9 @@ private:
     }
     if (!simulation_only_) {
       std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
-      if (!WaitForGripperMotion(gripper_before_close)) {
+      if (!WaitForGripperCommand(
+          gripper_before_close, gripper_close_value_, true, "GRIPPER_CLOSE"))
+      {
         Fail("GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED");
         return;
       }
@@ -1307,7 +1319,9 @@ private:
         return;
       }
       std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
-      if (!WaitForGripperMotion(gripper_before_open)) {
+      if (!WaitForGripperCommand(
+          gripper_before_open, gripper_open_value_, false, "GRIPPER_RELEASE_OPEN"))
+      {
         Fail("RELEASE_GRIPPER_FEEDBACK_UNCONFIRMED");
         return;
       }
@@ -1926,8 +1940,11 @@ private:
     return JointPosition(latest_gripper_feedback_, "gripper");
   }
 
-  bool WaitForGripperMotion(double before_close)
+  bool WaitForGripperCommand(
+    double before_command, int target_value, bool allow_contact_stop,
+    const std::string & stage)
   {
+    const double target_m = static_cast<double>(target_value) / 1000000.0;
     const auto deadline = std::chrono::steady_clock::now() +
       std::chrono::duration_cast<std::chrono::steady_clock::duration>(
       std::chrono::duration<double>(gripper_feedback_timeout_s_));
@@ -1938,14 +1955,30 @@ private:
           std::chrono::steady_clock::now() - gripper_feedback_received_time_).count();
         const double current = JointPosition(latest_gripper_feedback_, "gripper");
         if (gripper_feedback_received_time_ != std::chrono::steady_clock::time_point{} &&
-          age_s <= target_timeout_s_ && std::isfinite(before_close) && std::isfinite(current) &&
-          std::abs(current - before_close) >= min_gripper_feedback_motion_rad_)
+          age_s <= target_timeout_s_ && std::isfinite(before_command) && std::isfinite(current))
         {
-          return true;
+          const bool target_reached =
+            std::abs(current - target_m) <= gripper_position_tolerance_m_;
+          const bool contact_motion_confirmed = allow_contact_stop &&
+            std::abs(current - before_command) >= min_gripper_feedback_motion_rad_;
+          if (target_reached || contact_motion_confirmed) {
+            PublishDiagnostic(
+              stage + "_FEEDBACK_CONFIRMED before_m=" + std::to_string(before_command) +
+              " current_m=" + std::to_string(current) +
+              " target_m=" + std::to_string(target_m));
+            return true;
+          }
         }
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
+    const double current = LatestGripperPosition();
+    RCLCPP_ERROR(
+      get_logger(),
+      "%s feedback unconfirmed: before=%.6f m current=%.6f m target=%.6f m "
+      "tolerance=%.6f m minimum_motion=%.6f m contact_stop=%s.",
+      stage.c_str(), before_command, current, target_m, gripper_position_tolerance_m_,
+      min_gripper_feedback_motion_rad_, allow_contact_stop ? "true" : "false");
     return false;
   }
 
@@ -2543,6 +2576,7 @@ private:
   std::string gripper_feedback_topic_;
   double gripper_feedback_timeout_s_{3.0};
   double min_gripper_feedback_motion_rad_{0.001};
+  double gripper_position_tolerance_m_{0.003};
   bool auto_release_after_lift_{false};
   double hold_after_lift_s_{1.0};
   double top_down_pregrasp_clearance_m_{0.12};

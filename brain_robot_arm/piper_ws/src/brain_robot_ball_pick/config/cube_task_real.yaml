@@ -148,7 +148,12 @@ grasp_lift_executor:
     candidate_grasp_enabled: false
     candidate_grasp_order: [NONE]
     gripper_open_value: 50000
-    gripper_close_value: 40000
+    # Official SDK unit is 0.001 mm and the manual specifies a 0..70 mm
+    # stroke. The observed cube is only about 24..30 mm wide, so the old
+    # 40 mm target could not establish contact. Command the bounded closed
+    # endpoint; feedback motion, rather than reaching zero through the cube,
+    # confirms that the contact-closing action occurred.
+    gripper_close_value: 0
     gripper_settle_s: 2.0
     # After confirming the lift, return along the same collision-checked
     # vertical path, release at the measured grasp pose, and retreat upward.
@@ -161,6 +166,7 @@ grasp_lift_executor:
     gripper_feedback_topic: /joint_states_feedback
     gripper_feedback_timeout_s: 3.0
     min_gripper_feedback_motion_rad: 0.001
+    gripper_position_tolerance_m: 0.003
     prepare_on_grasp_ready: true
     top_down_grasp_enabled: true
     # Keep the pregrasp just above the 18 mm grasp clearance.  The longer
