@@ -1811,6 +1811,10 @@ private:
     command.name = {"gripper"};
     command.position = {static_cast<double>(
         open ? gripper_open_value_ : gripper_close_value_) / 1000000.0};
+    RCLCPP_INFO(
+      get_logger(), "Publishing real gripper %s command %.6f m to %zu subscriber(s).",
+      open ? "open" : "close", command.position.front(),
+      gripper_command_publisher_->get_subscription_count());
     gripper_command_publisher_->publish(command);
     PublishDiagnostic(std::string("GRIPPER_COMMAND_") + (open ? "OPEN_" : "CLOSE_") +
       std::to_string(open ? gripper_open_value_ : gripper_close_value_));

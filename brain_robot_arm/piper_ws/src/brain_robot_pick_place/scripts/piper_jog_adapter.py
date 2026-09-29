@@ -217,11 +217,21 @@ class PiperJogAdapter(Node):
 
 
     def _gripper_command(self, message):
-        if not self.armed or not self._state_fresh() or not message.position:
+        if not message.position:
+            self.get_logger().error('Rejected gripper command without a position value')
+            return
+        if not self.armed:
+            self.get_logger().error('Rejected gripper command while adapter is disarmed')
+            return
+        if not self._state_fresh():
+            self.get_logger().error(
+                'Rejected gripper command because joint feedback is stale')
             return
         value = float(message.position[0])
         self.pending_gripper_target = max(0.0, min(0.08, value))
         self.last_command_time = time.monotonic()
+        self.get_logger().info(
+            f'Accepted one-shot gripper command: target={self.pending_gripper_target:.6f} m')
 
     def _state_fresh(self):
         return bool(self.positions) and time.monotonic() - self.last_state_time <= self.joint_state_timeout_s
@@ -328,6 +338,12 @@ class PiperJogAdapter(Node):
         # ordinary arm-only frames free of gripper data, and provide the
         # configured 1 N.m only on this one-shot frame.
         command.effort = [0.0] * len(self.joint_names) + [self.gripper_effort_nm]
+        # Unit tests exercise this pure message helper without constructing
+        # the rclpy Node base. Runtime instances always have ``_logger``.
+        if hasattr(self, '_logger'):
+            self.get_logger().info(
+                f'Emitting one-shot gripper frame: target={self.pending_gripper_target:.6f} m '
+                f'effort={self.gripper_effort_nm:.3f} N.m')
         self.pending_gripper_target = None
         return True
 
