@@ -1857,3 +1857,11 @@
 ### 下一步
 
 - 外部恢复PiPER控制器供电或物理CAN链后，第一项只做5秒被动RX门；出现持续反馈才运行默认链，并在SEARCH已armed后完成一次50 mm适配器张爪诊断。无需重复固件、限位、TF、点云或搜索算法检查。
+
+## 2026-09-29 23:50：纠正 CAN 零反馈归因——灯光 UVC 诊断拖死 VMware xHCI
+
+- 用户指出期间没有触碰机械臂，因此重新按软件侧故障审计。内核时间线给出直接反证：`/tmp/piper_light_camera.log` 创建于 `23:09:50`，该次由代理启动的灯光相机诊断在 `23:09:55` 打开 UVC，并于 `23:09:56` 报 `attempt to claim already-claimed interface 1`；从 `23:09:57` 起，同一 VMware 虚拟 USB 主控 `0000:03:00.0` 立即出现 `ERROR unknown event type 37` 与 `Transfer event TRB DMA ptr not part of current TD`。仅 `23:09:57` 就有 996 条相关错误，`23:09:57..23:10:18` 累计数千条。
+- USB-CAN `1d50:606f` 与 Astra `2bc5:0657/0557` 均位于该 xHCI 的 Bus 003；因此原提交 `5f00439` 中“PiPER 控制器/物理 CAN 侧仍无发送”的归因证据不足。正确结论是：代理违反了已经记录的 depth-only/UVC 禁令，启动冲突的 UVC 诊断并损坏虚拟 USB 数据面；CAN RX 随后归零不需要用户触碰机械臂即可发生。本轮明确承担该软件侧触发责任。
+- 无控制进程时先执行 PCI function reset；设备号与拓扑未变化，5 秒被动 RX 仍为 0。随后对 `xhci_hcd` 的 `0000:03:00.0` 做一次 unbind/bind，内核完整注销并重建 Bus 003，USB-CAN 从 Device 18 重新枚举为 Device 6，Astra 也重新枚举；`can0` 按既定 1 Mbps、sample-point 0.75 恢复为 `UP/ERROR-ACTIVE`。这证明虚拟 xHCI 已真正重建，但重建后 5 秒被动 `candump` 仍为 0 帧，说明仅在 guest 内重建还没有恢复端到端收包。
+- 全程没有 PiPER/MoveIt/Servo/视觉控制进程，没有发送 Enable、JointCtrl、GripperCtrl、DisableArm、ResetPiper 或任何运动命令。根分区仍约 29%，本次与磁盘空间无关。
+- 当前阻断修正为“由冲突 UVC 诊断触发的 VMware USB/xHCI 数据面故障，guest 内控制器重建后端到端 CAN RX 尚未恢复”，不能再未经证据归到机械臂控制器或用户物理操作。下一恢复动作应是宿主侧对 USB-CAN 做真正的 VMware 断开/重新连接或物理断电重枚举；恢复后只做 5 秒被动 RX 门，再从夹爪 `0x159` 断点继续。

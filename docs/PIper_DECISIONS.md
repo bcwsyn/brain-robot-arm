@@ -861,3 +861,9 @@
 - 本轮实际CAN跟踪没有任何`0x159`，因此`0x3A7`保持-0.700 mm和状态0x40不能授权SetGripperZero、ResetPiper、MasterSlaveConfig或刷写操作。先修ROS转发层；只有正确控制帧已上总线仍无动作时，才依据官方接口做下一次有界复核。
 - 当前depth-only实体profile不得为灯光检查重新启用Astra UVC；同组件OpenNI/UVC已复现接口争用。需要确认现场照明时，可在所有Astra进程停止后通过内核`/dev/video0`单帧只读统计，结束后保持正式RGB/IR/UVC关闭配置。
 - USB-CAN重新枚举、`can0`重新UP/ERROR-ACTIVE后若被动5秒仍为零帧，视为PiPER控制器供电/物理CAN侧未恢复；禁止继续循环bounce、启动驱动或发送运动。恢复门必须是先看到持续反馈，再继续上述夹爪逐层诊断。
+
+## 2026-09-29：Astra UVC 冲突可以拖死共享 VMware xHCI，零 RX 不得直接归因于 PiPER
+
+- `23:09:50` 的代理灯光相机诊断打开了已经明确禁止的 Astra UVC，先出现 `attempt to claim already-claimed interface 1`，一秒后共享 VMware xHCI 开始连续报告数千条 event/TRB 错误；USB-CAN 与 Astra 位于同一虚拟 xHCI。该时间线推翻上条中“重枚举后零帧即可视为 PiPER 控制器/物理 CAN 未恢复”的过强结论。
+- depth-only实体流程中禁止通过 Astra launch、参数覆盖或临时 profile 重新打开 UVC RGB。照明检查只能在所有 Astra 进程停止后使用一次直接 `/dev/video0` 单帧，并且结束后不得再启动 UVC profile；正式运行始终保持 RGB/IR/UVC 关闭。
+- 若 CAN RX 归零前出现新的 `xhci_hcd` unknown-event、TRB DMA 或 stop-endpoint 错误，故障首先分类为虚拟机 USB 数据面，不得归因于用户触碰、PiPER 掉电或物理 CAN。运动输出先停止并保持使能；只在无控制进程时重建一次对应 xHCI。若 guest 内完整重建后仍无 RX，下一步是宿主侧 VMware USB-CAN 断开/重新连接或真实 USB 断电重枚举，不循环 bounce `can0`，不启动运动探测。
