@@ -626,7 +626,7 @@ start_visual_sequence() {
       --qos-durability transient_local \
       /brain_robot_visual_control/reason 2>&1) || status=""
     if grep -Eq 'OBSERVE_POSE_REACHED|CURRENT_POSE_ACCEPTED' <<<"$status"; then
-      echo "[启动] 观测姿态已达到；已进入紫色方块搜索。"
+      echo "[启动] 观测姿态已达到；已进入深度方块搜索。"
       return 0
     fi
     if grep -Eq 'PREPARE_(EXECUTION_FAILED|JOINT_STATE_MISSING|CANCELLED)|SERVO_START_FAILED' <<<"$status"; then
@@ -635,7 +635,7 @@ start_visual_sequence() {
     fi
     sleep 1
   done
-  echo "[错误] 等待观测姿态完成超时；未进入紫色方块搜索。" >&2
+  echo "[错误] 等待观测姿态完成超时；未进入深度方块搜索。" >&2
   return 1
 }
 
@@ -765,7 +765,7 @@ wait_for_grasp_release_and_finalize() {
 }
 
 echo "=================================================="
-echo " PiPER 实体紫色方块视觉抓取（一键保护模式）"
+echo " PiPER 实体深度方块视觉抓取（一键保护模式）"
 echo " 自动启动 CAN、PiPER 驱动、相机、MoveIt、Servo 和检测器"
 echo " DDS 使用 UDPv4（禁用易残留锁的 Fast DDS 共享内存传输）"
 echo "=================================================="

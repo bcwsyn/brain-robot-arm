@@ -74,7 +74,10 @@ visual_search_controller:
     # transition.  The PiPER driver suppresses output during that window;
     # keep SEARCH alive until the bounded transition completes.
     joint_state_timeout_s: 25.0
-    target_acquire_frames: 6
+    # depth_cube_probe has already required three stable geometry frames.
+    # Require two published-valid samples here so a moving search sweep does
+    # not needlessly demand nine total frames before stopping on the cube.
+    target_acquire_frames: 2
     align_stable_frames: 1
     target_acquire_error_ratio: 0.05
     grasp_reacquire_topic: /brain_robot_grasp/reacquire
@@ -106,7 +109,9 @@ visual_search_controller:
     target_point_topic: /brain_robot_vision/target_point_camera
     target_history_reference_frame: base_link
     target_history_topic: /brain_robot_visual_control/target_history
-    target_history_window_s: 0.40
+    # Must exceed target_loss_grace_s; otherwise the last-path recovery is
+    # guaranteed to discard its only base-frame target before it can run.
+    target_history_window_s: 5.0
     joint_state_topic: /joint_states
     # The physical camera is mounted on the gripper and this launch disables
     # MoveIt's Octomap updater to prevent self-obstacle oscillation. Use the

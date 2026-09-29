@@ -1639,3 +1639,15 @@
 ### 下一步
 
 - 当前视野无候选不能阻止既有机械搜索；下一步在 CAN RX 持续增长的前提下运行默认一键脚本，以实体 SEARCH 扫描把静止方块带入深度视野。验收顺序为 `OBSERVE_POSE_REACHED -> SEARCH -> DEPTH_CUBE_CANDIDATE_VALID -> ALIGN -> GRASP_READY`。
+
+## 2026-09-29：首次深度-only实体搜索进入ALIGN及恢复窗口修复
+
+- 默认一键脚本在 CAN 3 秒 RX 增长 `7285` 帧后实际运行，通过深度首帧、`[7/7]`、当前姿态到观测姿态和 `OBSERVE_POSE_REACHED -> SEARCH`。深度-only阶段确实跳过紫色检测器/RGB窗口；腕部点云仍不写入Octomap。
+- 实体搜索连续接受 MoveIt短段并发现真实几何候选：首次稳定候选约 `pixel=(550.5,46.5)`、相机点 `(0.164,-0.112,0.349) m`、尺寸约 `0.038x0.047 m`、高度约 `0.028 m`、填充率约 `0.69`。状态机实际进入 `ALIGN (TARGET_ACQUIRED)`，证明纯深度 `SEARCH -> ALIGN` 接线生效。
+- 首次ALIGN约4秒后目标暂失，状态进入 `LOCAL_SEARCH (LAST_TARGET_HISTORY_UNAVAILABLE)`。配置直接矛盾已确认：`target_loss_grace_s=2.0`，但 `target_history_window_s=0.40`，所以开始历史恢复时最近样本必然已经超过窗口。同时探针内部已要求3个稳定帧，控制器又要求6个有效发布，搜索掠过目标时出现只到3/4帧却未锁定的重复门控。
+- 本轮用 Ctrl+C 停止新增视觉/Servo/适配器输出并保持机械臂使能，脚本明确未发送 `DisableArm`、ResetPiper或自动零点复位。随后把控制器有效发布要求降为2（连同探针仍至少5个连续几何结果），并把历史窗口扩到5秒，大于2秒丢失宽限；没有扩大搜索边界、速度或关节限位。
+- 实际脚本/实体YAML已同步，`bash -n`、YAML解析和 `history_window > loss_grace` 断言通过。
+
+### 下一步
+
+- 在CAN反馈持续后复跑同一默认链；预期下一次候选更快停止搜索，短暂丢失时进入有历史依据的LAST_PATH_REACQUIRE，而不是无历史LOCAL_SEARCH。继续验收 `ALIGN -> GRASP_READY -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME`。
