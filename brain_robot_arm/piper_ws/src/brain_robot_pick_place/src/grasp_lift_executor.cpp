@@ -695,12 +695,12 @@ private:
       CandidatePointGraspAndLift();
       return;
     }
-    if (diagonal_side_grasp_enabled_) {
-      DiagonalSidePointGraspAndLift();
-      return;
-    }
     if (top_down_grasp_enabled_) {
       TopDownPointGraspAndLift();
+      return;
+    }
+    if (diagonal_side_grasp_enabled_) {
+      DiagonalSidePointGraspAndLift();
       return;
     }
     PublishState("ALIGNED_PREGRASP_PLANNING");

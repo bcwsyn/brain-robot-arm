@@ -153,6 +153,8 @@ def test_locked_path_has_no_visual_reacquire_after_grasp_lock():
     assert "target_camera_offset_world" in executor
     assert "candidate_grasp,\n          &candidate_orientation" in executor
     assert "candidate_pregrasp, &candidate_orientation" in executor
+    assert executor.index("if (top_down_grasp_enabled_)") < executor.index(
+        "if (diagonal_side_grasp_enabled_)")
     assert "PredictedTargetInReference(object_world)" in executor
     assert "Locked base-frame target is unavailable for side grasp" in executor
     assert "object_size_m = locked_object_size_m_" in executor
