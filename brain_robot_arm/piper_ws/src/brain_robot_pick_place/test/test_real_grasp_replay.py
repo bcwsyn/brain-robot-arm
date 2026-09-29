@@ -87,6 +87,8 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["top_down_pregrasp_clearance_candidates_m"] == [0.024]
     assert grasp["top_down_yaw_candidates"] == [0.0, 0.78539816339, -0.78539816339, 1.57079632679, -1.57079632679, 3.14159265359]
     assert grasp["top_down_tilt_candidates"] == [0.35, 0.75, 0.90, 1.05]
+    assert grasp["real_trajectory_joint_max"][1] > 3.14
+    assert grasp["real_trajectory_joint_max"][5] > 3.14
     assert grasp["real_pose_planning_pipeline"] == "pilz_industrial_motion_planner"
     assert grasp["real_pose_planner_id"] == "PTP"
     assert depth_probe["required_stable_frames"] == 1
@@ -171,6 +173,8 @@ def test_moveit_uses_the_same_real_joint_bounds_as_the_adapter():
     assert 'joint_limits["has_position_limits"] = True' in launch
     assert 'joint_limits["min_position"] = float(min_position)' in launch
     assert 'joint_limits["max_position"] = float(max_position)' in launch
+    assert "'joint_min': real_joint_mins" in launch
+    assert "'joint_max': real_joint_maxs" in launch
 
 
 def test_real_prepare_path_is_interpolated_below_adapter_jump_gate():

@@ -1770,3 +1770,9 @@
 - 提交 `7e4fab7` 后实际运行默认脚本：根分区 29%/约 53 GB 可用，`can0` 1 Mbps/sample-point 0.750、`ERROR-ACTIVE` 且 RX 持续增长；脚本通过 `[7/7]`、`OBSERVE_POSE_REACHED`、SEARCH 和 `GRASP_READY (DEPTH_BASE_LOCK_ACQUIRED)`。
 - 修复后的侧向日志确认每个候选末端位置已随候选姿态重算相机固定偏移；旧 J2/J6 包络下仍全部 `IK_ERROR_CODE_-31`，最终 `FAULT_DIAGONAL_SIDE_PREGRASP_PLAN_FAILED`。脚本停止视觉/适配器输出，未发送闭爪、DisableArm、ResetPiper 或自动回零，PiPER 保持使能。
 - 尝试把 J2/J6 包络扩大到已回读官方物理范围时，安全策略阻止了该持久性边界变更；补丁未落盘。当前规范 HEAD 仍为 `7e4fab7`，阻断仍是“旧软件包络下目标无IK”。
+
+## 2026-09-29：用户授权后同步官方 J2/J6 抓取范围
+
+- 用户已明确授权将真实 J2 上限由 `1.40` 提高到 `pi`、J6 由 `±0.80` 提高到 `±pi`；授权仅覆盖这两个已回读官方物理范围的抓取边界，不覆盖其它限位或旁路控制。
+- 已同步 `cube_task_real.yaml`、`cube_visual_search.launch.py`、`piper_jog_adapter.py` 和 `grasp_lift_executor.cpp`：MoveIt、候选预筛和唯一适配器共用同一新数组；J1/J3/J4/J5、搜索边界、速度、步长、反馈和急停门控保持不变。
+- 仍保持“规划→碰撞检查→逐点限位/步长预筛→反馈起点检查→唯一适配器发送”的顺序；不写入控制器参数、不刷固件、不执行 ResetPiper/MasterSlaveConfig。

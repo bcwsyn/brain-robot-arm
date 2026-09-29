@@ -224,11 +224,14 @@ grasp_lift_executor:
     # allow the official MoveIt-planned pregrasp to finish at that measured
     # rate before declaring execution failure.
     trajectory_feedback_timeout_s: 45.0
-    # Keep the existing conservative physical-adapter range. Candidate
-    # pregrasp plans are filtered against this exact range before publication;
-    # an invalid tilt/yaw is skipped instead of disarming the sole output path.
+    # J2/J6 use the controller's already-read-back S-V1.9-1 physical range;
+    # the former 1.40/0.80 software envelope made the measured tabletop cube
+    # unreachable. J1/J3/J4/J5 remain at the established task envelope.
+    # Candidate plans are still filtered against this exact range before
+    # publication; an invalid tilt/yaw is skipped instead of disarming the
+    # sole output path.
     real_trajectory_joint_min: [-1.50, -0.30, -1.40, -0.80, -1.20, -0.80]
-    real_trajectory_joint_max: [1.50, 1.40, 0.40, 0.80, 1.20, 0.80]
+    real_trajectory_joint_max: [1.50, 3.14159265359, 0.40, 0.80, 1.20, 3.14159265359]
     # Ask MoveIt to search inside the unchanged adapter envelope rather than
     # planning through a wider URDF branch and rejecting it only afterwards.
     real_trajectory_limit_margin_rad: 0.005
