@@ -75,9 +75,9 @@ visual_search_controller:
     # keep SEARCH alive until the bounded transition completes.
     joint_state_timeout_s: 25.0
     # depth_cube_probe has already required three stable geometry frames.
-    # Require two published-valid samples here so a moving search sweep does
-    # not needlessly demand nine total frames before stopping on the cube.
-    target_acquire_frames: 2
+    # The first true sample already represents three stable geometry frames
+    # from depth_cube_probe. Stop the moving sweep immediately on that proof.
+    target_acquire_frames: 1
     align_stable_frames: 1
     target_acquire_error_ratio: 0.05
     grasp_reacquire_topic: /brain_robot_grasp/reacquire
@@ -249,12 +249,12 @@ depth_cube_probe:
     border_px: 12
     min_plane_samples: 500
     plane_inlier_m: 0.006
-    min_height_m: 0.015
-    max_height_m: 0.120
+    min_height_m: 0.020
+    max_height_m: 0.070
     min_area_px: 40
     min_fill_ratio: 0.45
-    min_size_m: 0.015
-    max_size_m: 0.120
+    min_size_m: 0.025
+    max_size_m: 0.070
     max_aspect_ratio: 1.45
     required_stable_frames: 3
     max_center_delta_px: 16.0
