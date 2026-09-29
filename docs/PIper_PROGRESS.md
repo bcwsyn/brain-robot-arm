@@ -1845,3 +1845,15 @@
 ### 下一步
 
 - 用新驱动WARN仅复跑一次默认链；若回调未记录，定位DDS/话题接收；若记录但门控false，修反馈/enable时序；若明确记录`Calling GripperCtrl`而CAN仍无`0x159`，再检查SDK发送返回和SocketCAN发送路径。仍禁止跳到夹爪写零点。
+
+### 驱动诊断复跑未触发夹爪，随后控制器CAN反馈停止
+
+- 新驱动诊断轮通过`[7/7]`并进入SEARCH；目标在启动前静止阶段曾稳定出现于`base_link≈(0.339,-0.313,0.107) m`，但控制器尚为STOPPED。正式到达观测姿态后完整搜索周期内目标未再次进入深度视野，约4分钟有界等待结束，因此本轮没有夹爪消息、驱动WARN或`0x159`，不能据此判断驱动门控。
+- 为避免再次等待目标，计划在下一轮SEARCH已armed后向现有`/brain_robot_grasp/gripper_command`发布一次50 mm请求；该请求仍经过适配器、完整六轴组合消息、驱动enable/feedback门和SDK，不旁路`piper_jog_adapter`。
+- 但下一次默认启动在任何控制进程产生前发现CAN RX不再增长。USB-CAN `1d50:606f`仍枚举，旧`can0`显示1 Mbps/0.75、`ERROR-ACTIVE`且无bus-off/error-pass/bus-error，但连续3秒无任何帧。脚本按门控在运动前退出，未发送关节、夹爪、失能或复位命令。
+- 在无控制进程时仅做一次受限恢复：旧接口down后up返回`ENODEV`；随后只重置USB-CAN适配器，内核重新记录`gs_usb ... Configuring for 1 interfaces`，新`can0`成功恢复UP/ERROR-ACTIVE/1 Mbps/0.75。恢复后的计数从0开始，但连续5秒仍为零帧，证明USB-CAN客体接口已恢复、PiPER控制器/物理CAN侧仍无发送。
+- 根分区仍29%、约53 GB可用；此次零RX不是日志或磁盘容量导致。当前禁止再次启动运动或循环重载USB/CAN，直到PiPER控制器供电/物理链恢复并重新看到被动反馈帧。
+
+### 下一步
+
+- 外部恢复PiPER控制器供电或物理CAN链后，第一项只做5秒被动RX门；出现持续反馈才运行默认链，并在SEARCH已armed后完成一次50 mm适配器张爪诊断。无需重复固件、限位、TF、点云或搜索算法检查。
