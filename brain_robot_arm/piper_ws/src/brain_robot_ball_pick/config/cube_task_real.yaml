@@ -264,6 +264,10 @@ depth_cube_probe:
     stability_reference_frame: base_link
     max_reference_delta_m: 0.025
     transform_timeout_s: 0.05
+    # The single-threaded probe cannot receive a future joint TF while its
+    # image callback is blocked. Permit only a tightly bounded latest-TF
+    # fallback for normal camera/joint timestamp skew.
+    max_transform_age_s: 0.10
     # Retained for backward-compatible parameter parsing; base-frame
     # stability above is authoritative for the real depth-only profile.
     max_center_delta_px: 16.0

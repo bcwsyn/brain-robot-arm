@@ -82,6 +82,10 @@ class DepthCubeProbe(Node):
         self.transform_timeout_s = max(
             0.001, float(self.declare_parameter("transform_timeout_s", 0.05).value)
         )
+        self.max_transform_age_s = max(
+            self.transform_timeout_s,
+            float(self.declare_parameter("max_transform_age_s", 0.10).value),
+        )
 
         sensor_qos = QoSProfile(depth=10)
         sensor_qos.reliability = ReliabilityPolicy.BEST_EFFORT
@@ -276,22 +280,47 @@ class DepthCubeProbe(Node):
         point.point.x = (center_x - self.cx) * z / self.fx
         point.point.y = (center_y - self.cy) * z / self.fy
         point.point.z = z
+        image_time = Time.from_msg(point.header.stamp)
+        transform_age_s = 0.0
         try:
             transform = self.tf_buffer.lookup_transform(
                 self.stability_reference_frame,
                 point.header.frame_id,
-                Time.from_msg(point.header.stamp),
-                timeout=Duration(seconds=self.transform_timeout_s),
+                image_time,
+                timeout=Duration(seconds=0.0),
             )
-            reference_point = do_transform_point(point, transform)
-        except TransformException as exc:
-            self.stable_frames = 0
-            self.previous_candidate_reference = None
-            self.publish_invalid(
-                "DEPTH_PROBE_STABILITY_TF_UNAVAILABLE "
-                f"{point.header.frame_id}->{self.stability_reference_frame}: {exc}"
-            )
-            return
+        except TransformException as exact_exc:
+            # The probe spins in one executor thread.  If the image is only a
+            # few milliseconds newer than the newest joint TF, blocking here
+            # prevents the listener from receiving the very TF being awaited.
+            # Use the latest buffered transform only inside a strict age gate.
+            try:
+                transform = self.tf_buffer.lookup_transform(
+                    self.stability_reference_frame,
+                    point.header.frame_id,
+                    Time(),
+                    timeout=Duration(seconds=0.0),
+                )
+                transform_time = Time.from_msg(transform.header.stamp)
+                if transform_time.nanoseconds > 0:
+                    transform_age_s = abs(
+                        image_time.nanoseconds - transform_time.nanoseconds
+                    ) * 1.0e-9
+                if transform_age_s > self.max_transform_age_s:
+                    raise TransformException(
+                        f"latest transform age {transform_age_s:.3f}s exceeds "
+                        f"{self.max_transform_age_s:.3f}s; exact lookup: {exact_exc}"
+                    )
+            except TransformException as latest_exc:
+                self.stable_frames = 0
+                self.previous_candidate_reference = None
+                self.publish_invalid(
+                    "DEPTH_PROBE_STABILITY_TF_UNAVAILABLE "
+                    f"{point.header.frame_id}->{self.stability_reference_frame}: "
+                    f"{latest_exc}"
+                )
+                return
+        reference_point = do_transform_point(point, transform)
 
         current_reference = (
             reference_point.point.x,
@@ -337,7 +366,7 @@ class DepthCubeProbe(Node):
             f"({point.point.x:.3f},{point.point.y:.3f},{z:.3f}) "
             f"{self.stability_reference_frame}_m=({reference_point.point.x:.3f},"
             f"{reference_point.point.y:.3f},{reference_point.point.z:.3f}) "
-            f"reference_delta_m={reference_delta:.3f} "
+            f"reference_delta_m={reference_delta:.3f} tf_age_s={transform_age_s:.3f} "
             f"size_m=({size_x:.3f},{size_y:.3f}) height_m={object_height:.3f} "
             f"area_px={area} fill={fill:.3f} plane_inliers={inliers}"
         )

@@ -1686,3 +1686,14 @@
 ### 下一步
 
 - 直接复跑默认一键链，验收机械搜索过程中同一桌面候选的 `base_link_m` 保持稳定并达到 `stable=3/3`。若进入ALIGN，下一断点按 `GRASP_READY -> GRASP_TARGET_MODEL_LOCKED_BASE_FRAME -> TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED` 顺序定位；不得再以移动相机像素位移否决已固定在基座坐标中的静止目标。
+
+## 2026-09-29：第五次实体SEARCH暴露单线程TF时间差并加年龄门
+
+- 提交 `6716ae0` 后，CAN保持 `ERROR-ACTIVE` 且3秒RX增加约58 KB；默认脚本再次通过 `[7/7]`、到达观测姿态并进入SEARCH。搜索段持续被适配器接受，未出现关节越界、适配器失能或CAN守护触发。
+- 新基座稳定逻辑第一次处理几何候选时明确拒绝：深度图时间 `1790652155.462543`，最新相机TF时间 `1790652155.456452`，仅相差约 `0.006 s`，但精确查询报“extrapolation into the future”。原因是深度探针使用单线程executor；图像回调内等待未来TF时，同一线程不能处理正在到达的TF消息。
+- 修复保留精确时间查询为首选；只在精确查询失败时读取最新已缓存TF，并要求其与图像时间差不超过 `0.10 s`。诊断新增 `tf_age_s`；超过年龄门、没有TF或变换失败仍立即清零稳定计数，禁止用陈旧姿态授权抓取。当前搜索速度下6 ms时间差远低于25 mm基座稳定门。
+- 本轮同样以Ctrl+C停止输出并保持PiPER使能，未执行DisableArm、ResetPiper或自动零位运动。修改后 `py_compile`、TF2异常API、范围内 `git diff --check` 通过，实际两包重建成功。
+
+### 下一步
+
+- 复跑同一默认链；首先验收候选诊断包含有界 `tf_age_s` 而不再因数毫秒未来外推清零，然后继续到 `stable=3/3 -> ALIGN -> GRASP_READY`。
