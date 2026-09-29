@@ -1812,3 +1812,5 @@
 - 提交 `f407016` 后默认链通过 `[7/7] -> OBSERVE_POSE_REACHED -> SEARCH -> GRASP_READY`，锁定 `(0.333,-0.310,0.111) m`。新增张爪反馈门在预抓取前明确停止：`before=-0.000700 m, current=-0.000700 m, target=0.050000 m`，最终 `FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED`；因此没有再次执行预抓取、下降或闭爪。
 - 控制链源码核对给出确定根因：`piper_jog_adapter` 的一次性显式夹爪帧只追加了第7项 `name/position`，没有填写 `JointState.effort`；当前供应商驱动仅在消息显式含`gripper`且`effort`长度至少7时才调用官方SDK `GripperCtrl`。所以命令在ROS层被接收，但CAN夹爪控制函数被静默跳过，反馈保持原值。
 - 下一步只让适配器在显式夹爪帧中附带第7项1.0 N·m力矩及前六轴0占位；普通六轴轨迹仍不含夹爪/力矩，保持“仅按需发送一次”规则。驱动脏工作树不修改。
+- 该适配器修复已实现并同步实际工作空间：新增显式 `gripper_effort_nm=1.0`，只在一次性夹爪帧中产生 `effort=[0,0,0,0,0,0,1.0]`；发送后清空待发状态，下一帧仍为纯六轴。供应商驱动未修改。
+- `py_compile`、直接pytest `13 passed`、实际两包构建和完整colcon测试均通过；最终为 `15 tests, 0 errors, 0 failures, 0 skipped`。尚未进行修改后的实体夹爪复跑。

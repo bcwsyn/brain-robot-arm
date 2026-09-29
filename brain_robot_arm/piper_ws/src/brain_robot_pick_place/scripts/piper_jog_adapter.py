@@ -35,6 +35,7 @@ class PiperJogAdapter(Node):
         self.declare_parameter('max_velocity_rad_s', 0.035)
         self.declare_parameter('trajectory_start_tolerance_rad', 0.10)
         self.declare_parameter('trajectory_max_joint_step_rad', 0.35)
+        self.declare_parameter('gripper_effort_nm', 1.0)
         self.declare_parameter('joint_min', [-1.50, -0.30, -1.40, -0.80, -1.20, -3.14159265359])
         self.declare_parameter('joint_max', [1.50, 3.14159265359, 0.40, 0.80, 1.20, 3.14159265359])
         self.declare_parameter(
@@ -58,6 +59,7 @@ class PiperJogAdapter(Node):
             self.get_parameter('trajectory_start_tolerance_rad').value)
         self.trajectory_max_joint_step = float(
             self.get_parameter('trajectory_max_joint_step_rad').value)
+        self.gripper_effort_nm = float(self.get_parameter('gripper_effort_nm').value)
         self.joint_min = list(self.get_parameter('joint_min').value)
         self.joint_max = list(self.get_parameter('joint_max').value)
         self.visual_joint_max_delta = list(
@@ -71,6 +73,8 @@ class PiperJogAdapter(Node):
             raise ValueError('max_velocity_rad_s and publish_rate_hz must be positive')
         if self.trajectory_start_tolerance <= 0.0 or self.trajectory_max_joint_step <= 0.0:
             raise ValueError('trajectory safety tolerances must be positive')
+        if not 0.5 <= self.gripper_effort_nm <= 3.0:
+            raise ValueError('gripper_effort_nm must stay within the driver range 0.5..3.0')
 
         self.positions = {}
         self.targets = {}
@@ -311,13 +315,21 @@ class PiperJogAdapter(Node):
         command.header.stamp = self.get_clock().now().to_msg()
         command.name = list(self.joint_names)
         command.position = [self.targets[name] for name in self.joint_names]
-        gripper_pending = self.pending_gripper_target is not None
-        if gripper_pending:
-            command.name.append('gripper')
-            command.position.append(self.pending_gripper_target)
+        self._append_pending_gripper(command)
         self.command_publisher.publish(command)
-        if gripper_pending:
-            self.pending_gripper_target = None
+
+    def _append_pending_gripper(self, command):
+        if self.pending_gripper_target is None:
+            return False
+        command.name.append('gripper')
+        command.position.append(self.pending_gripper_target)
+        # The vendor driver intentionally calls GripperCtrl only when the
+        # explicit gripper command also carries a seventh effort entry. Keep
+        # ordinary arm-only frames free of gripper data, and provide the
+        # configured 1 N.m only on this one-shot frame.
+        command.effort = [0.0] * len(self.joint_names) + [self.gripper_effort_nm]
+        self.pending_gripper_target = None
+        return True
 
     def _limit_visual_target(self, index, name, desired):
         baseline = self.visual_baseline.get(name, self.positions.get(name, desired))

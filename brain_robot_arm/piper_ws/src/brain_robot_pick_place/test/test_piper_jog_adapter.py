@@ -5,6 +5,7 @@ import importlib.util
 import math
 from pathlib import Path
 
+from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 
@@ -77,3 +78,24 @@ def test_rejects_nonfinite_or_wrong_dimension():
     assert 'non-finite position' in adapter._trajectory_rejection_reason(nonfinite)
     malformed = make_trajectory([(0.0, [0.0] * 5)])
     assert adapter._trajectory_rejection_reason(malformed) == 'point 0 position count mismatch'
+
+
+def test_explicit_gripper_frame_carries_vendor_effort_field_once():
+    adapter = make_adapter()
+    adapter.gripper_effort_nm = 1.0
+    adapter.pending_gripper_target = 0.05
+    command = JointState()
+    command.name = list(adapter.joint_names)
+    command.position = [0.0] * 6
+
+    assert adapter._append_pending_gripper(command) is True
+    assert command.name == adapter.joint_names + ['gripper']
+    assert list(command.position) == [0.0] * 6 + [0.05]
+    assert list(command.effort) == [0.0] * 6 + [1.0]
+    assert adapter.pending_gripper_target is None
+
+    arm_only = JointState()
+    arm_only.name = list(adapter.joint_names)
+    arm_only.position = [0.0] * 6
+    assert adapter._append_pending_gripper(arm_only) is False
+    assert list(arm_only.effort) == []
