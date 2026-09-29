@@ -435,7 +435,7 @@ private:
     trajectory_feedback_timeout_s_ = ParameterOr<double>(
       "trajectory_feedback_timeout_s", 12.0);
     real_trajectory_joint_min_ = ParameterOr<std::vector<double>>(
-      "real_trajectory_joint_min", {-1.50, -0.30, -1.40, -0.80, -1.20, -0.80});
+      "real_trajectory_joint_min", {-1.50, -0.30, -1.40, -0.80, -1.20, -3.14159265359});
     real_trajectory_joint_max_ = ParameterOr<std::vector<double>>(
       "real_trajectory_joint_max", {1.50, 3.14159265359, 0.40, 0.80, 1.20, 3.14159265359});
     real_trajectory_limit_margin_rad_ = ParameterOr<double>(

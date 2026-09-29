@@ -35,7 +35,7 @@ class PiperJogAdapter(Node):
         self.declare_parameter('max_velocity_rad_s', 0.035)
         self.declare_parameter('trajectory_start_tolerance_rad', 0.10)
         self.declare_parameter('trajectory_max_joint_step_rad', 0.35)
-        self.declare_parameter('joint_min', [-1.50, -0.30, -1.40, -0.80, -1.20, -0.80])
+        self.declare_parameter('joint_min', [-1.50, -0.30, -1.40, -0.80, -1.20, -3.14159265359])
         self.declare_parameter('joint_max', [1.50, 3.14159265359, 0.40, 0.80, 1.20, 3.14159265359])
         self.declare_parameter(
             'visual_joint_max_delta_rad', [0.12, 0.02, 0.02, 0.05, 0.10, 0.05])

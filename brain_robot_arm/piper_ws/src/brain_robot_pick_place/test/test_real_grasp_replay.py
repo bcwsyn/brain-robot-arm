@@ -89,6 +89,7 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["top_down_tilt_candidates"] == [0.35, 0.75, 0.90, 1.05]
     assert grasp["real_trajectory_joint_max"][1] > 3.14
     assert grasp["real_trajectory_joint_max"][5] > 3.14
+    assert grasp["real_trajectory_joint_min"][5] < -3.14
     assert grasp["real_pose_planning_pipeline"] == "pilz_industrial_motion_planner"
     assert grasp["real_pose_planner_id"] == "PTP"
     assert depth_probe["required_stable_frames"] == 1
