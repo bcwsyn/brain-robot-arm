@@ -28,6 +28,10 @@ START_SCRIPT_CANDIDATES = [
     Path(__file__).parents[4] / "scripts" / "start_brain_robot_cube_real.sh",
     Path.home() / "start_brain_robot_cube_real.sh",
 ]
+ASTRA_PARAMS = (
+    Path(__file__).parents[4] / "ros2_ws" / "src" / "ros2_astra_camera" /
+    "astra" / "src" / "astra_camera" / "params" / "astra_params.yaml"
+)
 
 
 def _load_adapter():
@@ -118,6 +122,7 @@ def test_real_profile_uses_low_bandwidth_rgb_with_depth_geometry():
     detector = DETECTOR.read_text(encoding="utf-8")
     detector_config = yaml.safe_load(DETECTOR_CONFIG.read_text(encoding="utf-8"))
     detector_params = detector_config["cube_detector"]["ros__parameters"]
+    astra_params = yaml.safe_load(ASTRA_PARAMS.read_text(encoding="utf-8"))
     start_script_path = next(path for path in START_SCRIPT_CANDIDATES if path.is_file())
     start_script = start_script_path.read_text(encoding="utf-8")
     assert 'BRAIN_ROBOT_DEPTH_ONLY_TARGET:-0' in start_script
@@ -127,11 +132,21 @@ def test_real_profile_uses_low_bandwidth_rgb_with_depth_geometry():
     assert '-p frequency:=5.0' in start_script
     assert 'RGB_DEPTH_GRID_ALIGNED' in detector
     assert 'cv::resize(processing_image(crop), aligned_image, depth_size' in detector
+    assert 'RGB_DEPTH_SOFTWARE_ALIGNED' in detector
     assert detector_params["rgb_topic"] == "/camera/color/image_raw"
     assert detector_params["depth_topic"] == "/camera/depth/image_raw"
     assert detector_params["camera_info_topic"] == "/camera/depth/camera_info"
     assert detector_params["camera_optical_frame"] == "camera_depth_optical_frame"
     assert detector_params["require_depth_for_target_valid"] is True
+    assert detector_params["saturation_min"] == 35
+    assert detector_params["software_registration_enabled"] is True
+    assert detector_params["color_mirror_horizontal"] is True
+    assert len(detector_params["depth_to_color_rotation"]) == 9
+    assert len(detector_params["depth_to_color_translation_m"]) == 3
+    assert detector_params["depth_to_color_translation_m"][0] < -0.02
+    assert astra_params["depth_align"] is False
+    assert astra_params["enable_color"] is False
+    assert astra_params["uvc_camera.enable"] is False
 
 
 def test_recorded_p2_to_observe_and_locked_approach_replay_are_accepted():

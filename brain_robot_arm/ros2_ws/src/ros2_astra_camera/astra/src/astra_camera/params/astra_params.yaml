@@ -3,7 +3,7 @@ camera_name : "camera" # # 相机名字（唯一）
 color_width: 640 # RGB宽
 color_height: 480 # RGB高
 color_fps: 30 # RGB帧率
-enable_color: false # 深度-only实体抓取不打开UVC RGB
+enable_color: false # RGB 由内核 V4L2 低带宽发布；不要启用冲突的 libusb UVC 路径
 
 # IR相机宽/高/帧率 | IR camera width/height/FPS
 ir_width: 640 
@@ -16,7 +16,7 @@ depth_height: 400
 depth_fps: 30
 enable_depth: true
 
-# 是否开启D2C对齐(硬件对齐) | open depth to color alignment （hardware alignment）
+# 硬件 D2C 在关闭 OpenNI 彩色流时不出深度帧；使用检测器软件配准。
 depth_align: false
 # 设备序列号，多相机的时候需要填写
 serial_number: ""

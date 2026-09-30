@@ -2,9 +2,10 @@ cube_detector:
   ros__parameters:
     # Astra/OpenNI remains depth-only because its libusb UVC path conflicts
     # with the kernel-owned colour interface in VMware. The one-key script
-    # publishes low-bandwidth 320x240 BGR through image_tools/cam2image; the
-    # detector centre-crops it to 320x200 and scales it onto the 640x400
-    # depth grid before applying colour, rectangle and metric-depth gates.
+    # publishes low-bandwidth 320x240 BGR through image_tools/cam2image. The
+    # detector performs calibrated software colour-to-depth registration before
+    # applying colour, rectangle and metric-depth gates; hardware D2C remains
+    # off because it suppresses depth frames while OpenNI colour is disabled.
     rgb_topic: /camera/color/image_raw
     depth_topic: /camera/depth/image_raw
     camera_info_topic: /camera/depth/camera_info
@@ -18,6 +19,22 @@ cube_detector:
     depth_valid_topic: /brain_robot_vision/depth_valid
     depth_diagnostic_topic: /brain_robot_vision/depth_diagnostic
     input_reliability: reliable
+    # Factory calibration read from serial CC136530302 via
+    # /camera/get_camera_info and /camera/extrinsic/depth_to_color.
+    # Translation is converted from millimetres to metres. The kernel V4L2
+    # image is horizontally mirrored relative to the OpenNI calibration.
+    software_registration_enabled: true
+    color_calibration_width: 640
+    color_calibration_height: 480
+    color_fx: 488.86849976
+    color_fy: 488.86849976
+    color_cx: 310.73052979
+    color_cy: 209.03765869
+    color_mirror_horizontal: true
+    depth_to_color_rotation: [0.99998426437, 0.00078827410, -0.00555561949,
+      -0.00080088340, 0.99999713898, -0.00226784474,
+      0.00555381598, 0.00227225851, 0.99998199940]
+    depth_to_color_translation_m: [-0.02993771553, 0.00001795782, -0.00032919908]
 
     # OpenCV HSV hue is 0..179. These bounds are deliberately parameters:
     # purple depends on illumination and the material finish.
@@ -25,7 +42,9 @@ cube_detector:
     hue_high_1: 160
     hue_low_2: 0
     hue_high_2: 0
-    saturation_min: 70
+    # The real cube measured S=35..70 under the current ceiling lighting;
+    # rectangle, stable depth and metric size remain mandatory safety gates.
+    saturation_min: 35
     value_min: 45
 
     # A small cube is selected by colour plus rectangular geometry.

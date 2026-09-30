@@ -1900,3 +1900,17 @@
 ### 下一步
 
 - 直接运行默认一键脚本，验收独立 RGB 启动后 `OBSERVE_POSE_REACHED -> SEARCH -> PURPLE_CUBE target ACQUIRED -> GRASP_READY`。若到达夹爪阶段仍无反馈，先记录实体夹爪当前物理开合状态；只有确认夹爪确实处于机械闭合基准，才可按官方夹爪专用流程评估设零，禁止把它与六轴 ResetPiper/失能混用。
+## 2026-09-30：软件 RGB-D 标定配准复核与当前阻断
+
+- 当前实机默认链尚未完成抓取；上一轮真实一键运行已证实 [7/7] -> OBSERVE_POSE_REACHED -> SEARCH 和搜索轨迹持续下发，CAN 为 ERROR-ACTIVE、零 bus error/drop。
+- 只读 RGB 抓帧与深度候选对照发现：实际紫色方块在 RGB 中 HSV 色调约 147、饱和度中位数约 46，原配置 saturation_min=70 会把真实方块完全过滤；已将门限改为 35，但紫色、矩形、稳定深度、尺寸和未裁边门控仍全部保留。
+- 真实 320x240 RGB 与 640x400 深度并非同一像素网格。尝试 Astra 官方 depth_align=true 时，因 OpenNI 彩色流保持关闭，设备不再发布深度帧；该实验已回退为 depth_align=false，没有启用冲突的 libusb UVC。
+- 通过只读 /camera/get_camera_info 与 /camera/extrinsic/depth_to_color 获取本机 Astra 序列号 CC136530302 的工厂标定：彩色 640x480、fx=fy=488.8685、cx=310.7305、cy=209.0377；深度到彩色旋转与平移已写入检测器，平移从驱动报告的毫米换算为米。V4L2 RGB 的水平镜像事实作为显式参数记录，检测器现按标定投影每个有效深度像素取彩色值；标定缺失时目标保持无效。
+- 该软件配准路径已同步到实际工作区并构建成功。离线 7 passed，完整 colcon test 为 16 tests, 0 errors, 0 failures, 0 skipped。仅相机+检测器实测记录 RGB_DEPTH_SOFTWARE_ALIGNED source=320x240 depth=640x400 mapped=190125 mirror_x=true；当前固定姿态未看到方块，故仍为 PURPLE_CUBE target LOST，没有启动运动控制。
+- 实验期间没有执行刷写、MasterSlaveConfig、ResetPiper、DisableArm 或任何机械臂运动命令；测试用的 Astra、V4L2 和检测器进程均已停止。下一最小动作是重新运行唯一默认一键脚本，在新配准和 HSV 门限下验收 SEARCH -> target acquired -> GRASP_READY，然后再处理已有夹爪反馈断点。
+
+## 2026-09-30：新一键启动被当前 USB/xHCI 数据面门控阻断
+
+- 新一键运行命令为 BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh；磁盘为 29%、约 54402 MB 可用，脚本在 [1/7] 正确拒绝启动运动，因为 can0 RX 未增长。
+- can0 仍为 UP、1 Mbps、sample-point 0.750、ERROR-ACTIVE，累计 RX 7398221 但本次 5 秒 candump 增量为 0；无控制进程、无任何运动或失能命令。
+- 同期内核持续报告 xhci_hcd 0000:03:00.0 的 Transfer event TRB DMA ptr not part of current TD。按既有决策，guest 内 USB reset/xHCI 重载已完成且不可循环重复；当前实际阻断是 VMware USB-CAN 端到端数据面，需要宿主侧对 USB-CAN 做 Disconnect/Connect 或真实断电重枚举后再运行脚本。

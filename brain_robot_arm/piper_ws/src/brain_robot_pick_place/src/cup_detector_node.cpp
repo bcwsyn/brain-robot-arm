@@ -60,6 +60,18 @@ public:
     depth_diagnostic_topic_ = declare_parameter<std::string>(
       "depth_diagnostic_topic", "/brain_robot_vision/depth_diagnostic");
     input_reliability_ = declare_parameter<std::string>("input_reliability", "reliable");
+    software_registration_enabled_ = declare_parameter<bool>("software_registration_enabled", false);
+    color_image_width_ = declare_parameter<int>("color_calibration_width", 640);
+    color_image_height_ = declare_parameter<int>("color_calibration_height", 480);
+    color_fx_ = declare_parameter<double>("color_fx", 0.0);
+    color_fy_ = declare_parameter<double>("color_fy", 0.0);
+    color_cx_ = declare_parameter<double>("color_cx", 0.0);
+    color_cy_ = declare_parameter<double>("color_cy", 0.0);
+    color_mirror_horizontal_ = declare_parameter<bool>("color_mirror_horizontal", false);
+    depth_to_color_rotation_ = declare_parameter<std::vector<double>>(
+      "depth_to_color_rotation", std::vector<double>{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0});
+    depth_to_color_translation_m_ = declare_parameter<std::vector<double>>(
+      "depth_to_color_translation_m", std::vector<double>{0.0, 0.0, 0.0});
 
     hue_low_1_ = declare_parameter<int>("hue_low_1", 0);
     hue_high_1_ = declare_parameter<int>("hue_high_1", 12);
@@ -195,6 +207,17 @@ private:
       max_target_size_m_ = min_target_size_m_;
     }
     max_target_size_aspect_ratio_ = std::max(0.0, max_target_size_aspect_ratio_);
+    color_image_width_ = std::max(1, color_image_width_);
+    color_image_height_ = std::max(1, color_image_height_);
+    if (software_registration_enabled_ &&
+      (color_fx_ <= 0.0 || color_fy_ <= 0.0 ||
+      depth_to_color_rotation_.size() != 9 || depth_to_color_translation_m_.size() != 3))
+    {
+      RCLCPP_ERROR(
+        get_logger(),
+        "Invalid software RGB-D registration calibration; target output will remain blocked.");
+      software_registration_calibration_valid_ = false;
+    }
     if (input_reliability_ != "reliable" && input_reliability_ != "best_effort") {
       RCLCPP_WARN(
         get_logger(), "Unknown input_reliability '%s'; using reliable.",
@@ -422,6 +445,102 @@ private:
     return "DEPTH_GRASP_ALLOWED";
   }
 
+  bool software_register_color_to_depth(
+    const sensor_msgs::msg::Image::ConstSharedPtr & depth_message,
+    const cv::Mat & source_image, cv::Mat & registered_image)
+  {
+    if (!software_registration_calibration_valid_ || !camera_info_ready_) {
+      RCLCPP_WARN_THROTTLE(
+        get_logger(), *get_clock(), 2000,
+        "Software RGB-D registration is waiting for valid calibration and depth CameraInfo.");
+      return false;
+    }
+
+    cv_bridge::CvImageConstPtr depth_image;
+    try {
+      depth_image = cv_bridge::toCvShare(depth_message);
+    } catch (const cv_bridge::Exception & error) {
+      RCLCPP_ERROR_THROTTLE(
+        get_logger(), *get_clock(), 2000,
+        "Depth conversion for software registration failed: %s", error.what());
+      return false;
+    }
+    const bool depth_is_float =
+      depth_message->encoding == sensor_msgs::image_encodings::TYPE_32FC1;
+    const bool depth_is_uint16 =
+      depth_message->encoding == sensor_msgs::image_encodings::TYPE_16UC1;
+    if (!depth_is_float && !depth_is_uint16) {
+      RCLCPP_ERROR_THROTTLE(
+        get_logger(), *get_clock(), 2000,
+        "Unsupported depth encoding '%s' for software registration.",
+        depth_message->encoding.c_str());
+      return false;
+    }
+
+    registered_image = cv::Mat::zeros(
+      static_cast<int>(depth_message->height), static_cast<int>(depth_message->width), CV_8UC3);
+    std::size_t mapped_pixels = 0;
+    for (int row = 0; row < registered_image.rows; ++row) {
+      for (int col = 0; col < registered_image.cols; ++col) {
+        double depth_m = 0.0;
+        if (depth_is_float) {
+          depth_m = static_cast<double>(depth_image->image.at<float>(row, col));
+        } else {
+          const auto depth_mm = depth_image->image.at<std::uint16_t>(row, col);
+          depth_m = static_cast<double>(depth_mm) * 0.001;
+        }
+        if (!std::isfinite(depth_m) || depth_m < min_depth_m_ || depth_m > max_depth_m_) {
+          continue;
+        }
+
+        const double depth_x =
+          (static_cast<double>(col) - camera_cx_) * depth_m / camera_fx_;
+        const double depth_y =
+          (static_cast<double>(row) - camera_cy_) * depth_m / camera_fy_;
+        const auto & r = depth_to_color_rotation_;
+        const auto & t = depth_to_color_translation_m_;
+        const double color_x =
+          r[0] * depth_x + r[1] * depth_y + r[2] * depth_m + t[0];
+        const double color_y =
+          r[3] * depth_x + r[4] * depth_y + r[5] * depth_m + t[1];
+        const double color_z =
+          r[6] * depth_x + r[7] * depth_y + r[8] * depth_m + t[2];
+        if (!std::isfinite(color_z) || color_z <= 0.001) {
+          continue;
+        }
+        double full_color_x = color_fx_ * color_x / color_z + color_cx_;
+        const double full_color_y = color_fy_ * color_y / color_z + color_cy_;
+        if (color_mirror_horizontal_) {
+          full_color_x = static_cast<double>(color_image_width_ - 1) - full_color_x;
+        }
+        const int source_x = static_cast<int>(std::lround(
+          full_color_x * static_cast<double>(source_image.cols - 1) /
+          static_cast<double>(std::max(1, color_image_width_ - 1))));
+        const int source_y = static_cast<int>(std::lround(
+          full_color_y * static_cast<double>(source_image.rows - 1) /
+          static_cast<double>(std::max(1, color_image_height_ - 1))));
+        if (source_x < 0 || source_x >= source_image.cols ||
+          source_y < 0 || source_y >= source_image.rows)
+        {
+          continue;
+        }
+        registered_image.at<cv::Vec3b>(row, col) =
+          source_image.at<cv::Vec3b>(source_y, source_x);
+        ++mapped_pixels;
+      }
+    }
+
+    if (!rgb_alignment_reported_) {
+      RCLCPP_INFO(
+        get_logger(),
+        "RGB_DEPTH_SOFTWARE_ALIGNED source=%dx%d depth=%dx%d mapped=%zu mirror_x=%s",
+        source_image.cols, source_image.rows, registered_image.cols, registered_image.rows,
+        mapped_pixels, color_mirror_horizontal_ ? "true" : "false");
+      rgb_alignment_reported_ = true;
+    }
+    return mapped_pixels > 0;
+  }
+
   void on_images(
     const sensor_msgs::msg::Image::ConstSharedPtr & rgb_message,
     const sensor_msgs::msg::Image::ConstSharedPtr & depth_message)
@@ -438,7 +557,19 @@ private:
       return;
     }
 
-    cv::Mat processing_image = bridge_image->image;
+    cv::Mat processing_image;
+    if (software_registration_enabled_) {
+      if (!software_register_color_to_depth(
+          depth_message, bridge_image->image, processing_image))
+      {
+        publish_valid(false);
+        publish_depth_valid(false);
+        publish_depth_diagnostic("DEPTH_REJECTED_SOFTWARE_REGISTRATION_UNAVAILABLE");
+        return;
+      }
+    } else {
+      processing_image = bridge_image->image;
+    }
     const cv::Size depth_size(
       static_cast<int>(depth_message->width), static_cast<int>(depth_message->height));
     if (depth_size.width <= 0 || depth_size.height <= 0) {
@@ -448,12 +579,12 @@ private:
       publish_depth_valid(false);
       return;
     }
-    if (processing_image.size() != depth_size) {
+    if (!software_registration_enabled_ && processing_image.size() != depth_size) {
       // The DaBai DC1 can stream its UVC interface together with OpenNI depth
-      // only at the lower-bandwidth 320x240 mode in this VM. Reproduce the
-      // former centred 640x400 colour ROI: crop to the depth aspect ratio,
-      // then scale the colour pixels into the depth image grid before any
-      // colour, rectangle or metric-depth gate is evaluated.
+      // only at the lower-bandwidth 320x240 mode in this VM. This resize is a
+      // temporary image-grid normalization; calibrated colour-to-depth mapping
+      // below is responsible for metric depth association. The aspect crop is
+      // retained as a defensive fallback for negotiated resolutions.
       const double target_aspect =
         static_cast<double>(depth_size.width) / static_cast<double>(depth_size.height);
       const double source_aspect =
@@ -757,6 +888,17 @@ private:
   std::string depth_valid_topic_;
   std::string depth_diagnostic_topic_;
   std::string input_reliability_;
+  bool software_registration_enabled_;
+  bool software_registration_calibration_valid_{true};
+  int color_image_width_;
+  int color_image_height_;
+  double color_fx_;
+  double color_fy_;
+  double color_cx_;
+  double color_cy_;
+  bool color_mirror_horizontal_;
+  std::vector<double> depth_to_color_rotation_;
+  std::vector<double> depth_to_color_translation_m_;
 
   int hue_low_1_;
   int hue_high_1_;
