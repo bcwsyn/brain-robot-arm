@@ -438,11 +438,55 @@ private:
       return;
     }
 
-    cv::Mat debug_image = bridge_image->image.clone();
+    cv::Mat processing_image = bridge_image->image;
+    const cv::Size depth_size(
+      static_cast<int>(depth_message->width), static_cast<int>(depth_message->height));
+    if (depth_size.width <= 0 || depth_size.height <= 0) {
+      RCLCPP_WARN_THROTTLE(
+        get_logger(), *get_clock(), 2000, "Depth image reports an invalid size.");
+      publish_valid(false);
+      publish_depth_valid(false);
+      return;
+    }
+    if (processing_image.size() != depth_size) {
+      // The DaBai DC1 can stream its UVC interface together with OpenNI depth
+      // only at the lower-bandwidth 320x240 mode in this VM. Reproduce the
+      // former centred 640x400 colour ROI: crop to the depth aspect ratio,
+      // then scale the colour pixels into the depth image grid before any
+      // colour, rectangle or metric-depth gate is evaluated.
+      const double target_aspect =
+        static_cast<double>(depth_size.width) / static_cast<double>(depth_size.height);
+      const double source_aspect =
+        static_cast<double>(processing_image.cols) /
+        static_cast<double>(processing_image.rows);
+      cv::Rect crop(0, 0, processing_image.cols, processing_image.rows);
+      if (source_aspect < target_aspect) {
+        crop.height = std::max(
+          1, static_cast<int>(std::lround(processing_image.cols / target_aspect)));
+        crop.y = (processing_image.rows - crop.height) / 2;
+      } else if (source_aspect > target_aspect) {
+        crop.width = std::max(
+          1, static_cast<int>(std::lround(processing_image.rows * target_aspect)));
+        crop.x = (processing_image.cols - crop.width) / 2;
+      }
+      cv::Mat aligned_image;
+      cv::resize(processing_image(crop), aligned_image, depth_size, 0.0, 0.0, cv::INTER_LINEAR);
+      processing_image = aligned_image;
+      if (!rgb_alignment_reported_) {
+        RCLCPP_INFO(
+          get_logger(),
+          "RGB_DEPTH_GRID_ALIGNED source=%dx%d crop=(%d,%d %dx%d) output=%dx%d",
+          bridge_image->image.cols, bridge_image->image.rows,
+          crop.x, crop.y, crop.width, crop.height, depth_size.width, depth_size.height);
+        rgb_alignment_reported_ = true;
+      }
+    }
+
+    cv::Mat debug_image = processing_image.clone();
     draw_image_center(debug_image);
 
     cv::Mat hsv_image;
-    cv::cvtColor(bridge_image->image, hsv_image, cv::COLOR_BGR2HSV);
+    cv::cvtColor(processing_image, hsv_image, cv::COLOR_BGR2HSV);
 
     cv::Mat low_hue_mask;
     cv::Mat high_hue_mask;
@@ -748,6 +792,7 @@ private:
   double camera_cx_{0.0};
   double camera_cy_{0.0};
   bool camera_info_ready_{false};
+  bool rgb_alignment_reported_{false};
   double previous_depth_m_{0.0};
   bool previous_depth_valid_{false};
   int depth_stable_frame_count_{0};

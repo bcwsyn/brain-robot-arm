@@ -1887,3 +1887,16 @@
 
 - 尚未完成实体抓取。已完成：观测、搜索、静止三维锁模、预抓取规划/运动、下降与夹爪 ROS 调用链；当前两个剩余断点是夹爪实体反馈未变化，以及 RGB 低带宽输入尚未接入一键检测器。
 - 下一步先提交本轮驱动崩溃修复；随后实现/测试 RGB 中心裁剪缩放与一键 V4L2 启动，在无运动模式确认真正紫色方块 `target_valid + depth_valid` 后再复跑完整链。
+
+## 2026-09-30：默认恢复 RGB 语义目标并完成无运动实机数据面验收
+
+- 用户明确撤销 depth-only 作为默认目标授权，要求恢复视觉抓取。实体配置的视觉控制器与抓取执行器现均设为 `depth_only_target_enabled=false`；深度仍保留为三维位置、稳定性和物理尺寸门控，紫色+矩形+稳定深度共同授权，不退回背景见紫即对齐。
+- Astra 的 libusb UVC 继续永久关闭；一键脚本新增独立内核 V4L2 `image_tools/cam2image`，默认 `320x240@5 Hz` 发布 `/camera/color/image_raw`。默认 `BRAIN_ROBOT_DEPTH_ONLY_TARGET=0`，诊断时仍可显式设为1。相机健康门同时要求真实 RGB 与深度帧，并在缺帧时重建两路输入。
+- 检测器仅在 RGB/深度尺寸不同时进行确定性映射：320x240 RGB 中心裁剪 `(0,20,320,200)` 后缩放到 640x400 深度网格；三维投影改用 `/camera/depth/camera_info` 和 `camera_depth_optical_frame`。颜色、矩形度、宽高比、深度MAD/连续帧和物理尺寸门全部保留。
+- 实际运行树同步并构建成功；两包完整测试为 `16 tests, 0 errors, 0 failures`。无 PiPER/MoveIt/适配器的实机探针同时取得 320x240 BGR 和 640x400 深度首帧，检测器记录 `RGB_DEPTH_GRID_ALIGNED source=320x240 crop=(0,20 320x200) output=640x400`，CAN 两秒仍增加约4857帧且无错误。
+- 当前静止姿态的 RGB 快照平均 BGR 约 `[200.3,199.7,200.7]`，按实体阈值统计紫色像素为0，检测器正确发布 `target_valid=false`、`depth_valid=false`、`DEPTH_REJECTED_TARGET_LOST`。这不是 RGB 链路失败：真实帧和对齐回调均已验证，只表示当前相机姿态没有看到紫色方块；下一次必须由既有 SEARCH 扫描寻找，不能放宽颜色门或凭背景触发。
+- 夹爪补充诊断按官方示例的连续发送方向，把同一50 mm/1 N.m请求扩展为约0.5秒；驱动实际调用 `GripperCtrl` 22次，六轴保持不变，夹爪反馈仍为约-0.700 mm。SDK将状态字`0x40`解码为“驱动使能=true、归零状态=false”，不是过流/过热错误，因此本轮没有发送清错、失能或写零点。增加帧数已证明无效，不写入默认配置。
+
+### 下一步
+
+- 直接运行默认一键脚本，验收独立 RGB 启动后 `OBSERVE_POSE_REACHED -> SEARCH -> PURPLE_CUBE target ACQUIRED -> GRASP_READY`。若到达夹爪阶段仍无反馈，先记录实体夹爪当前物理开合状态；只有确认夹爪确实处于机械闭合基准，才可按官方夹爪专用流程评估设零，禁止把它与六轴 ResetPiper/失能混用。

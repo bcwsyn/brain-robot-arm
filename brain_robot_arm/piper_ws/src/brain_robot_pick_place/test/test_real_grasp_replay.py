@@ -21,7 +21,13 @@ CONFIG = ROOT / "brain_robot_ball_pick" / "config" / "cube_task_real.yaml"
 ADAPTER = Path(__file__).parents[1] / "scripts" / "piper_jog_adapter.py"
 CONTROLLER = Path(__file__).parents[1] / "src" / "visual_search_controller.cpp"
 EXECUTOR = Path(__file__).parents[1] / "src" / "grasp_lift_executor.cpp"
+DETECTOR = Path(__file__).parents[1] / "src" / "cup_detector_node.cpp"
 LAUNCH = ROOT / "brain_robot_ball_pick" / "launch" / "cube_visual_search.launch.py"
+DETECTOR_CONFIG = ROOT / "brain_robot_ball_pick" / "config" / "cube_detector.yaml"
+START_SCRIPT_CANDIDATES = [
+    Path(__file__).parents[4] / "scripts" / "start_brain_robot_cube_real.sh",
+    Path.home() / "start_brain_robot_cube_real.sh",
+]
 
 
 def _load_adapter():
@@ -69,10 +75,12 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert visual["backend"] == "piper"
     assert visual["real_motion_enabled"] is True
     assert visual["direct_grasp_after_align"] is True
+    assert visual["depth_only_target_enabled"] is False
     assert visual["depth_only_direct_grasp_after_lock"] is True
     assert visual["freeze_grasp_tracking"] is True
     assert grasp["real_grasp_enabled"] is True
     assert grasp["auto_execute"] is True
+    assert grasp["depth_only_target_enabled"] is False
     assert grasp["static_target_lock"] is True
     assert grasp["gripper_open_value"] == 50000
     assert grasp["gripper_close_value"] == 0
@@ -104,6 +112,26 @@ def test_real_profile_is_one_shot_locked_grasp():
         <= 0.089
         <= depth_probe["workspace_max_x_m"]
     )
+
+
+def test_real_profile_uses_low_bandwidth_rgb_with_depth_geometry():
+    detector = DETECTOR.read_text(encoding="utf-8")
+    detector_config = yaml.safe_load(DETECTOR_CONFIG.read_text(encoding="utf-8"))
+    detector_params = detector_config["cube_detector"]["ros__parameters"]
+    start_script_path = next(path for path in START_SCRIPT_CANDIDATES if path.is_file())
+    start_script = start_script_path.read_text(encoding="utf-8")
+    assert 'BRAIN_ROBOT_DEPTH_ONLY_TARGET:-0' in start_script
+    assert 'ros2 run image_tools cam2image' in start_script
+    assert '-p width:=320' in start_script
+    assert '-p height:=240' in start_script
+    assert '-p frequency:=5.0' in start_script
+    assert 'RGB_DEPTH_GRID_ALIGNED' in detector
+    assert 'cv::resize(processing_image(crop), aligned_image, depth_size' in detector
+    assert detector_params["rgb_topic"] == "/camera/color/image_raw"
+    assert detector_params["depth_topic"] == "/camera/depth/image_raw"
+    assert detector_params["camera_info_topic"] == "/camera/depth/camera_info"
+    assert detector_params["camera_optical_frame"] == "camera_depth_optical_frame"
+    assert detector_params["require_depth_for_target_valid"] is True
 
 
 def test_recorded_p2_to_observe_and_locked_approach_replay_are_accepted():

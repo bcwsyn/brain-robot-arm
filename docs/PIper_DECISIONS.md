@@ -867,3 +867,10 @@
 - `23:09:50` 的代理灯光相机诊断打开了已经明确禁止的 Astra UVC，先出现 `attempt to claim already-claimed interface 1`，一秒后共享 VMware xHCI 开始连续报告数千条 event/TRB 错误；USB-CAN 与 Astra 位于同一虚拟 xHCI。该时间线推翻上条中“重枚举后零帧即可视为 PiPER 控制器/物理 CAN 未恢复”的过强结论。
 - depth-only实体流程中禁止通过 Astra launch、参数覆盖或临时 profile 重新打开 UVC RGB。照明检查只能在所有 Astra 进程停止后使用一次直接 `/dev/video0` 单帧，并且结束后不得再启动 UVC profile；正式运行始终保持 RGB/IR/UVC 关闭。
 - 若 CAN RX 归零前出现新的 `xhci_hcd` unknown-event、TRB DMA 或 stop-endpoint 错误，故障首先分类为虚拟机 USB 数据面，不得归因于用户触碰、PiPER 掉电或物理 CAN。运动输出先停止并保持使能；只在无控制进程时重建一次对应 xHCI。若 guest 内完整重建后仍无 RX，下一步是宿主侧 VMware USB-CAN 断开/重新连接或真实 USB 断电重枚举，不循环 bounce `can0`，不启动运动探测。
+
+## 2026-09-30：RGB 语义恢复使用内核 V4L2，不恢复 Astra libusb UVC
+
+- 用户最新要求优先于旧 depth-only 选择：默认抓取重新要求紫色、矩形、稳定深度和物理尺寸共同成立；深度-only仅保留为显式诊断开关，不再是默认目标授权。
+- Astra 组件仍只开 OpenNI 深度，禁止重新启用其已复现冲突的 libusb UVC。RGB由`image_tools/cam2image`通过内核V4L2以`320x240@5 Hz`发布；该组合已与640x400深度和持续CAN反馈同时实测。
+- 检测器把低带宽RGB中心裁剪到与深度相同的8:5视场再缩放到深度网格，并使用深度CameraInfo/光学帧做三维投影。该映射只解决已验证的分辨率/ROI差异，不取消颜色、形状、深度质量、尺寸、TF、MoveIt、适配器或反馈门控。
+- 当前夹爪`0x40`按SDK位定义是驱动已使能但未归零，不是错误状态。重复22次普通使能位置命令仍无反馈变化，故不得继续扩大命令洪泛，也不得在不知道实体夹爪是否位于机械闭合基准时盲目写零点。

@@ -1,11 +1,14 @@
 cube_detector:
   ros__parameters:
-    # Physical DaBai DC1 topics. The RGB driver crops 640x480 to 640x400 so
-    # the RGB mask and depth image use the same pixel coordinates.
+    # Astra/OpenNI remains depth-only because its libusb UVC path conflicts
+    # with the kernel-owned colour interface in VMware. The one-key script
+    # publishes low-bandwidth 320x240 BGR through image_tools/cam2image; the
+    # detector centre-crops it to 320x200 and scales it onto the 640x400
+    # depth grid before applying colour, rectangle and metric-depth gates.
     rgb_topic: /camera/color/image_raw
     depth_topic: /camera/depth/image_raw
-    camera_info_topic: /camera/color/camera_info
-    camera_optical_frame: camera_color_optical_frame
+    camera_info_topic: /camera/depth/camera_info
+    camera_optical_frame: camera_depth_optical_frame
     debug_topic: /brain_robot_vision/debug_image
     target_topic: /brain_robot_vision/target_pixel
     target_point_camera_topic: /brain_robot_vision/target_point_camera

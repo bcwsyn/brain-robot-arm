@@ -12,7 +12,7 @@ LOG_TOTAL_MAX_MB="${BRAIN_ROBOT_LOG_TOTAL_MAX_MB:-100}"
 MIN_FREE_MB="${BRAIN_ROBOT_MIN_FREE_MB:-2048}"
 WAIT_SECONDS="${BRAIN_ROBOT_WAIT_SECONDS:-45}"
 AUTO_START="${BRAIN_ROBOT_AUTO_START:-1}"
-DEPTH_ONLY_TARGET="${BRAIN_ROBOT_DEPTH_ONLY_TARGET:-1}"
+DEPTH_ONLY_TARGET="${BRAIN_ROBOT_DEPTH_ONLY_TARGET:-0}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
@@ -58,6 +58,7 @@ cleanup() {
     kill "$CAN_HEALTH_PID" 2>/dev/null || true
   fi
   if (( CAMERA_STARTED_BY_SCRIPT )); then
+    stop_rgb_camera || true
     stop_astra_camera || true
   fi
   for pid in "${PIDS[@]:-}"; do kill -TERM -- "-$pid" 2>/dev/null || true; done
@@ -260,6 +261,34 @@ start_astra_camera() {
   CAMERA_STARTED_BY_SCRIPT=1
 }
 
+rgb_camera_process_exists() {
+  pgrep -f '/image_tools/cam2image([[:space:]]|$)' >/dev/null 2>&1 ||
+    pgrep -f 'ros2 run image_tools cam2image([[:space:]]|$)' >/dev/null 2>&1
+}
+
+stop_rgb_camera() {
+  pkill -TERM -f '/image_tools/cam2image([[:space:]]|$)' 2>/dev/null || true
+  pkill -TERM -f 'ros2 run image_tools cam2image([[:space:]]|$)' 2>/dev/null || true
+  local attempt
+  for attempt in {1..5}; do
+    rgb_camera_process_exists || return 0
+    sleep 1
+  done
+  pkill -KILL -f '/image_tools/cam2image([[:space:]]|$)' 2>/dev/null || true
+  pkill -KILL -f 'ros2 run image_tools cam2image([[:space:]]|$)' 2>/dev/null || true
+}
+
+start_rgb_camera() {
+  start_group rgb_camera ros2 run image_tools cam2image --ros-args \
+    -p burger_mode:=false \
+    -p device_id:=0 \
+    -p frequency:=5.0 \
+    -p width:=320 \
+    -p height:=240 \
+    -p frame_id:=camera_color_optical_frame \
+    -r image:=/camera/color/image_raw
+}
+
 camera_has_required_frame() {
   # A Publisher can exist before Orbbec SDK has opened the USB device. A
   # successful one-shot subscription proves that the required real stream
@@ -268,7 +297,8 @@ camera_has_required_frame() {
     "$DEPTH_ONLY_TARGET" == "yes" ]]; then
     timeout 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1
   else
-    timeout 4s ros2 topic echo --once /camera/color/image_raw >/dev/null 2>&1
+    timeout 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1 &&
+      timeout 4s ros2 topic echo --once /camera/color/image_raw >/dev/null 2>&1
   fi
 }
 
@@ -310,10 +340,15 @@ start_camera_health_guard() {
         continue
       fi
 
-      echo "[$(date '+%F %T')] CAMERA_NO_FRAMES: restarting Astra after ${restart_backoff_s}s"
+      echo "[$(date '+%F %T')] CAMERA_NO_FRAMES: restarting RGB-D pipeline after ${restart_backoff_s}s"
+      stop_rgb_camera
       stop_astra_camera
       sleep "$restart_backoff_s"
       start_astra_camera
+      if [[ "$DEPTH_ONLY_TARGET" != "1" && "$DEPTH_ONLY_TARGET" != "true" &&
+        "$DEPTH_ONLY_TARGET" != "yes" ]]; then
+        start_rgb_camera
+      fi
       missing_frames=0
       restart_backoff_s=$((restart_backoff_s * 2))
       if (( restart_backoff_s > 30 )); then
@@ -323,7 +358,7 @@ start_camera_health_guard() {
     done
   ) >>"$logfile" 2>&1 &
   CAMERA_HEALTH_PID="$!"
-  echo "[相机] 已启用无帧自动恢复；仅重启 Astra，不影响机械臂控制栈。"
+  echo "[相机] 已启用无帧自动恢复；仅重启 RGB-D 输入，不影响机械臂控制栈。"
 }
 
 gs_usb_echo_error_count() {
@@ -765,7 +800,7 @@ wait_for_grasp_release_and_finalize() {
 }
 
 echo "=================================================="
-echo " PiPER 实体深度方块视觉抓取（一键保护模式）"
+echo " PiPER 实体紫色方块 RGB-D 视觉抓取（一键保护模式）"
 echo " 自动启动 CAN、PiPER 驱动、相机、MoveIt、Servo 和检测器"
 echo " DDS 使用 UDPv4（禁用易残留锁的 Fast DDS 共享内存传输）"
 echo "=================================================="
@@ -775,6 +810,7 @@ check_disk_headroom
 start_log_guard
 stop_stale_low_level_stack '/piper_single_ctrl([[:space:]]|$)' 'PiPER 低层驱动'
 stop_stale_low_level_stack 'ros2 launch brain_robot_ball_pick cube_detector\.launch\.py' '紫色方块检测器'
+stop_stale_low_level_stack '/image_tools/cam2image([[:space:]]|$)' '低带宽 RGB 发布器'
 echo "[1/7] 检查并初始化实体 CAN/机械臂..."
 configure_can
 if ! node_exists /piper_ctrl_single_node; then
@@ -801,17 +837,21 @@ else
   echo "[复用] 已检测到 /camera/camera"
 fi
 wait_for topic /camera/depth/image_raw
-start_camera_health_guard
 wait_for_actual_frame /camera/depth/image_raw "深度图像"
 
 if [[ "$DEPTH_ONLY_TARGET" == "1" || "$DEPTH_ONLY_TARGET" == "true" ||
   "$DEPTH_ONLY_TARGET" == "yes" ]]; then
   echo "[3/7] 深度-only模式：跳过紫色 RGB 检测器。"
 else
+  echo "[相机] 启动独立 V4L2 RGB（320x240@5 Hz），Astra UVC 保持关闭。"
+  start_rgb_camera
+  wait_for topic /camera/color/image_raw
+  wait_for_actual_frame /camera/color/image_raw "RGB 图像"
   echo "[3/7] 启动紫色方块 RGB-D 检测..."
   start_group cube_detector ros2 launch brain_robot_ball_pick cube_detector.launch.py
   wait_for topic /brain_robot_vision/debug_image
 fi
+start_camera_health_guard
 
 echo "[4/7] 启动 MoveIt、Servo 和真机保护适配器..."
 stop_stale_visual_stack
