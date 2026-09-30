@@ -1,4 +1,6 @@
+import ast
 import math
+from pathlib import Path
 import unittest
 
 from piper.command_validation import validate_absolute_joint_state
@@ -36,6 +38,24 @@ class TestAbsoluteJointStateValidation(unittest.TestCase):
                 self.assertIsNone(values)
                 self.assertIsNotNone(reason)
 
+    def test_ros_logger_calls_use_one_positional_message(self):
+        source_path = (
+            Path(__file__).resolve().parents[1] /
+            'piper' / 'piper_ctrl_single_node.py')
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        bad_calls = []
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            function = node.func
+            if not isinstance(function, ast.Attribute):
+                continue
+            if function.attr not in {
+                    'debug', 'info', 'warn', 'warning', 'error', 'fatal'}:
+                continue
+            if len(node.args) > 1:
+                bad_calls.append((node.lineno, function.attr, len(node.args)))
+        self.assertEqual(bad_calls, [])
 
 if __name__ == '__main__':
     unittest.main()

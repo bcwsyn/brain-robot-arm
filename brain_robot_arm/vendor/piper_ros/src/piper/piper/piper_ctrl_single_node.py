@@ -419,9 +419,9 @@ class PiperRosNode(Node):
         explicit_gripper = 'gripper' in command_positions
         if explicit_gripper:
             self.get_logger().warning(
-                'Explicit gripper frame received: angle=%d effort_count=%d '
-                'enable=%s feedback_available=%s',
-                joint_6, len(joint_data.effort), enable_flag, feedback_available)
+                f'Explicit gripper frame received: angle={joint_6} '
+                f'effort_count={len(joint_data.effort)} enable={enable_flag} '
+                f'feedback_available={feedback_available}')
 
         # 控制电机速度
         if enable_flag and feedback_available:
@@ -462,17 +462,17 @@ class PiperRosNode(Node):
                         # self.get_logger().warning("Gripper effort is NaN, using default value.")
                         gripper_effort = 1000  # 设置默认值
                     self.get_logger().warning(
-                        'Calling GripperCtrl: angle=%d effort=%d code=0x01 set_zero=0x00',
-                        abs(joint_6), gripper_effort)
+                        f'Calling GripperCtrl: angle={abs(joint_6)} '
+                        f'effort={gripper_effort} code=0x01 set_zero=0x00')
                     self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x01, 0)
                 else:
                     self.get_logger().warning(
-                        'Explicit gripper frame rejected: effort_count=%d is less than 7',
-                        len(joint_data.effort))
+                        f'Explicit gripper frame rejected: '
+                        f'effort_count={len(joint_data.effort)} is less than 7')
         elif explicit_gripper:
             self.get_logger().warning(
-                'Explicit gripper frame suppressed by output gate: enable=%s '
-                'feedback_available=%s', enable_flag, feedback_available)
+                f'Explicit gripper frame suppressed by output gate: '
+                f'enable={enable_flag} feedback_available={feedback_available}')
 
 
     def enable_callback(self, enable_flag: Bool):

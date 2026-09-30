@@ -1873,3 +1873,17 @@
 - 但内核没有产生 USB disconnect/re-enumerate，USB-CAN 设备号仍为 6，说明 VMware 只更新了虚拟 Hub 状态位，没有把 guest 端口请求转化为宿主侧真实断电。恢复 `can0` 后 8 秒 `candump` 仍为 0 帧，RX 仍为 0。
 - 本轮未启动机械臂驱动，也未发送任何 CAN 控制、使能、失能、复位或运动命令。无需重启 PiPER；guest 内可用的 device reset、xHCI 重建和 Hub 端口 power cycle 均已验证，不能继续重复。
 - 当前唯一最小恢复动作是宿主 VMware 菜单对 `candleLight USB to CAN adapter` 执行一次 Disconnect/Connect，或物理拔插 USB-CAN 使其真正断电重枚举。完成后先验证 5 秒 RX；恢复才从夹爪 `0x159` 断点继续。
+
+## 2026-09-30：CAN 恢复后定位夹爪驱动崩溃，并验证独立 RGB 数据面
+
+- 用户恢复 USB-CAN 后，`can0` 回到 1 Mbps、sample-point 0.75、`ERROR-ACTIVE`；被动 5 秒收到约 12k 帧，后续 2 秒持续增加约 4868 帧，零 bus error/drop。SDK/ROS 六轴反馈恢复，实体默认链再次达到 `[7/7] -> OBSERVE_POSE_REACHED -> SEARCH -> GRASP_READY`。
+- 该轮抓取执行器发布 50 mm 张爪，适配器接受并发出恰好 5 个组合帧，但供应商驱动在第一条新诊断日志处因 `RcutilsLogger.warning()` 被传入多个位置参数而抛出 `TypeError`，发生在 `GripperCtrl` 调用之前；同步抓包 `0x159=0`。这解释了此前“适配器已发、夹爪无动作”，不是夹爪零点或固件结论。
+- 已把四条新增诊断改为单个 f-string，并增加 AST 回归测试，禁止 ROS logger 再接收多于一个位置参数。实际 `/home/johnwick/piper_ros` 同步后，`colcon build --symlink-install --packages-select piper`、`py_compile` 通过，聚焦测试 `4 passed`。
+- 最小实体复核只保持当前六轴 `[-0.2378, 0.9818, -0.7585, 0, 0.5475, 0] rad`，以 1 N.m 请求夹爪张到 50 mm。驱动保持存活，5 帧均记录 `Calling GripperCtrl: angle=50000 effort=1000`，确认崩溃已消除；但 3 秒后夹爪反馈仍约 `-0.700 mm`，监听器未见 `0x159`。当前 SDK 明确将 `GripperCtrl` 编码为 0x159，但 CAN socket 设置 `local_loopback=False`，所以同机 `candump` 缺帧不能单独证明未发送；实体反馈未变化仍表示张爪动作尚未验收。测试结束只 disarm 适配器、停止节点，未 DisableArm、ResetPiper 或归零。
+- 用户现明确要求恢复视觉语义，不再使用 depth-only 作为目标授权。无运动数据面试验证明：Astra 继续只开 OpenNI 深度时，独立 `image_tools/cam2image` 以 V4L2 读取 `320x240@5 Hz` RGB 可与 `640x400@30 Hz` 深度并存；两路均有真实首帧，CAN 仍持续增加。直接请求 `640x400` RGB 会因 V4L2/GStreamer 数据流错误失败，因此不能照搬该分辨率。
+- Astra 在关闭 RGB 发布时仍提供只读 `/camera/get_camera_info` 服务，返回原生 640x480 彩色内参；不持续发布 `/camera/color/camera_info`。现有检测器要求 RGB/深度图同尺寸，故下一最小实现是将 320x240 RGB 中心裁成 320x200 后缩放到 640x400，并改用同步深度内参/光学帧完成三维点计算；随后无运动验证紫色、矩形、深度和物理尺寸门控，再把一键默认切回视觉目标。
+
+### 当前断点与下一步
+
+- 尚未完成实体抓取。已完成：观测、搜索、静止三维锁模、预抓取规划/运动、下降与夹爪 ROS 调用链；当前两个剩余断点是夹爪实体反馈未变化，以及 RGB 低带宽输入尚未接入一键检测器。
+- 下一步先提交本轮驱动崩溃修复；随后实现/测试 RGB 中心裁剪缩放与一键 V4L2 启动，在无运动模式确认真正紫色方块 `target_valid + depth_valid` 后再复跑完整链。
