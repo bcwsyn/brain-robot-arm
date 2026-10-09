@@ -1299,6 +1299,11 @@ private:
   void HandleSearchLocked(bool local)
   {
     if (TargetFreshLocked() && target_valid_frames_ >= target_acquire_frames_) {
+      if (ParameterOr<bool>("stop_after_target_acquired", false)) {
+        PublishControlDetailLocked("PHASE=SEARCH_TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN");
+        StopLocked(ControlState::STOPPED, "TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN");
+        return;
+      }
       CancelPlannedSearchLocked();
       PublishZeroLocked();
       aligned_frames_ = 0;
@@ -1381,6 +1386,11 @@ private:
   void HandleLastPathReacquireLocked()
   {
     if (TargetFreshLocked() && target_valid_frames_ >= target_acquire_frames_) {
+      if (ParameterOr<bool>("stop_after_target_acquired", false)) {
+        PublishControlDetailLocked("PHASE=SEARCH_TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN");
+        StopLocked(ControlState::STOPPED, "TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN");
+        return;
+      }
       CancelPlannedSearchLocked();
       PublishZeroLocked();
       aligned_frames_ = 0;

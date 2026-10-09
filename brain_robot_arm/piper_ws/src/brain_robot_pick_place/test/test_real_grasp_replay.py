@@ -79,11 +79,20 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert visual["backend"] == "piper"
     assert visual["real_motion_enabled"] is True
     assert visual["stop_after_observe"] is False
+    assert visual["stop_after_target_acquired"] is False
     controller = CONTROLLER.read_text(encoding="utf-8")
     hold_gate = controller.index('ParameterOr<bool>("stop_after_observe", false)')
     hold_state = controller.index("OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH")
     search_transition = controller.index('SetStateLocked(ControlState::SEARCH, "OBSERVE_POSE_REACHED")')
     assert hold_gate < hold_state < search_transition
+    acquired_gate = 'ParameterOr<bool>("stop_after_target_acquired", false)'
+    acquired_reason = '"TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN"'
+    for handler in ("HandleSearchLocked", "HandleLastPathReacquireLocked"):
+        start = controller.index(f"void {handler}(")
+        end = controller.find("\n  void ", start + 1)
+        body = controller[start:end]
+        assert body.index(acquired_gate) < body.index("SetStateLocked(ControlState::ALIGN")
+        assert acquired_reason in body
     assert visual["direct_grasp_after_align"] is True
     assert visual["depth_only_target_enabled"] is False
     assert visual["depth_only_direct_grasp_after_lock"] is True
@@ -153,6 +162,18 @@ def test_real_profile_uses_low_bandwidth_rgb_with_depth_geometry():
     assert astra_params["depth_align"] is False
     assert astra_params["enable_color"] is False
     assert astra_params["uvc_camera.enable"] is False
+
+
+def test_one_click_supports_opt_in_search_only_stop_without_waiting_for_key():
+    start_script_path = next(path for path in START_SCRIPT_CANDIDATES if path.is_file())
+    start_script = start_script_path.read_text(encoding="utf-8")
+    assert 'AUTO_START="${BRAIN_ROBOT_AUTO_START:-1}"' in start_script
+    assert 'STOP_AFTER_TARGET_ACQUIRED="${BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED:-0}"' in start_script
+    set_guard = start_script.index(
+        "ros2 param set /visual_search_controller stop_after_target_acquired true")
+    auto_start = start_script.index('if [[ "$AUTO_START" == "1"')
+    assert start_script.index('echo "[7/7] 全部组件已就绪。"') < set_guard < auto_start
+    assert 'restart_visual_sequence' in start_script[auto_start:]
 
 
 def test_recorded_p2_to_observe_and_locked_approach_replay_are_accepted():

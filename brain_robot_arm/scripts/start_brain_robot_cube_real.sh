@@ -13,6 +13,7 @@ MIN_FREE_MB="${BRAIN_ROBOT_MIN_FREE_MB:-2048}"
 WAIT_SECONDS="${BRAIN_ROBOT_WAIT_SECONDS:-45}"
 AUTO_START="${BRAIN_ROBOT_AUTO_START:-1}"
 DEPTH_ONLY_TARGET="${BRAIN_ROBOT_DEPTH_ONLY_TARGET:-0}"
+STOP_AFTER_TARGET_ACQUIRED="${BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED:-0}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
@@ -883,8 +884,19 @@ else
 fi
 echo "[7/7] 全部组件已就绪。"
 echo
+if [[ "$STOP_AFTER_TARGET_ACQUIRED" == "1" || "$STOP_AFTER_TARGET_ACQUIRED" == "true" ||
+  "$STOP_AFTER_TARGET_ACQUIRED" == "yes" ]]; then
+  echo "[搜索诊断] 目标稳定有效后在 ALIGN 前停止；默认完整任务路径不变。"
+  timeout 5s ros2 param set /visual_search_controller stop_after_target_acquired true ||
+    fail "无法启用目标有效即停止门；拒绝启动真机搜索。"
+fi
 if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" ]]; then
-  echo "[自动] 组件就绪，从当前反馈姿态进入观测、搜索和完整抓取流程。"
+  if [[ "$STOP_AFTER_TARGET_ACQUIRED" == "1" || "$STOP_AFTER_TARGET_ACQUIRED" == "true" ||
+    "$STOP_AFTER_TARGET_ACQUIRED" == "yes" ]]; then
+    echo "[自动] 组件就绪，从当前反馈姿态进入观测和搜索；目标有效后在 ALIGN 前停止。"
+  else
+    echo "[自动] 组件就绪，从当前反馈姿态进入观测、搜索和完整抓取流程。"
+  fi
   if ! restart_visual_sequence; then
     DISABLE_REQUESTED=1
     echo "[保持] 自动观测姿态启动失败；停止新增输出、保持 PiPER 使能并退出，不等待按键。" >&2

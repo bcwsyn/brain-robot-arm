@@ -11,6 +11,9 @@ visual_search_controller:
     # One-shot physical observation positioning can stop here before SEARCH.
     # The normal one-key task keeps the full search path enabled by default.
     stop_after_observe: false
+    # Opt-in supervised runs may stop on a stable valid target before ALIGN.
+    # The normal one-key task keeps the complete search/align/grasp path.
+    stop_after_target_acquired: false
     direct_grasp_after_align: true
     # The depth probe has already proven a static base_link target across
     # three frames. Hand that fixed 3-D model directly to the existing
