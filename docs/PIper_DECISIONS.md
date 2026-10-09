@@ -919,3 +919,10 @@
 - 本次授权仅覆盖从观测姿态运行现有 MoveIt 规划、碰撞检查、适配器限位和反馈门控下的 J1/J5 SEARCH；目标有效后立即停止，不能将其解释为允许 ALIGN、抓取或失能。
 - 一次性运行时 `stop_after_target_acquired=true` 必须在目标连续有效达到采集帧数后、任何 ALIGN/GRASP_READY 状态切换前执行 `StopLocked(STOPPED)`。该门在实际实体 YAML 和一键脚本默认关闭，仅由 `BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=1` 显式启用；不可改变常规一键完整任务默认行为。
 - 搜索的实体范围由当前配置J1 `[-1.35,1.35] rad`、J5 `[-0.60,0.95] rad` 约束；真实速度、逐段规划和执行仍由既有控制器/MoveIt/唯一适配器的独立门控负责。此次不增加搜索范围、不提高速度、不绕过点云/碰撞或反馈门。
+
+### 2026-10-09：目标有效停止门的实机证据
+
+- 实机有界运行证明既有自动路径确实从当前反馈进入观测姿态再进入连续搜索：控制器记录 `OBSERVE_POSE_REACHED`、两次 `SEARCH_PLAN_ACCEPTED source=FULL_SEARCH`，适配器接受42点/41点轨迹；因此“只转到一个固定角度就停”不再是本轮事实。
+- RGB-D 检测器在搜索期间报告 `PURPLE_CUBE target DETECTED`，`target_valid=true` 后控制器在任何 ALIGN 状态前发布 `TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN`。本轮不据此改变 `color_mirror_horizontal`：命中证明检测门通过，不足以单独证明显示左右镜像方向。
+- Ctrl-C 仅发生在目标命中后的脚本等待段；保护路径停止输出并 disarm 软件适配器，未调用 `DisableArm`、`ResetPiper` 或零点回位。为恢复使能状态下的反馈监控，随后启动 `auto_enable=false` 的读反馈驱动，约200Hz反馈和CAN RX均恢复。
+- 在得到继续授权前，当前决策是保持命中姿态/硬件使能/新鲜反馈，不启动 ALIGN、抓取或失能；下一轮若获授权，必须从这个实际关节反馈重新做完整安全清单，并验证目标锁定模型后才执行预抓取。

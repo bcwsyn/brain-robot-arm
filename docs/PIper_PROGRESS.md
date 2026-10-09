@@ -2003,3 +2003,11 @@
 - 为确保授权不越界，在 `HandleSearchLocked` 和 `HandleLastPathReacquireLocked` 中新增 `stop_after_target_acquired` 运行时门：稳定目标达到后以 `TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN` 调 `StopLocked`，不会进入 ALIGN 或 GRASP_READY。实体 YAML 默认false；一键脚本新增 opt-in 环境变量 `BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=1`，只在本次有界验证启用；普通 `BRAIN_ROBOT_AUTO_START=1` 仍默认完整目标路径，不等按键。规范和运行时源码、配置、脚本 SHA-256 一致。
 - 实际 `/home/johnwick/piper_ws` 构建 `brain_robot_pick_place` 与 `brain_robot_ball_pick` 成功（分别38.4s与30.2s）；`colcon test --packages-select brain_robot_pick_place` 及测试汇总为16 tests、0 errors、0 failures、0 skipped；规范/运行时一键脚本 `bash -n` 通过，目标文件 `git diff --check` 通过。
 - 下一步在提交此代码后运行同一个默认自动一键脚本（AUTO_START保留默认1，仅设置本次 stop-at-target 环境开关），复用脚本单实例清理和 `[7/7]` 健康门；启动前确认相机RGB帧、CAN RX、使能服务返回和当前关节未漂移。观测位微小修正后进入既有 J1/J5 SEARCH；一旦控制器报告目标命中停止态，立即采集目标有效/坐标与关节反馈并结束本次脚本，不触发对齐/抓取/硬件失能。若目标未命中，受限搜索可持续至显式停止，必须持续监控反馈和过程日志。
+
+### 2026-10-09 13:07：实机一键自动搜索命中目标并在 ALIGN 前安全停止
+
+- 按用户授权执行 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=1 /home/johnwick/start_brain_robot_cube_real.sh`；根分区可用约50GB（33%），清理门通过。脚本无按键等待，完整通过 `[7/7]`，RGB `/dev/video0` 的320x240@5Hz帧、Astra深度帧、MoveIt/Servo、TF与点云自体过滤门均通过。
+- 自动序列从反馈 `[0.00689038,0.98113778,-0.749603568,0,0.308026152,0] rad` 开始，控制器发布当前姿态到观测姿态的2点、20秒准备轨迹，随后发布 `OBSERVE_POSE_REACHED` 并进入 `SEARCH`。日志记录两次 `SEARCH_PLAN_ACCEPTED source=FULL_SEARCH`，适配器实际接受42点和41点轨迹，证明J1/J5搜索不是停在固定角度。
+- 检测器运行时确认 `RGB_DEPTH_SOFTWARE_ALIGNED source=320x240 depth=640x400 ... mirror_x=true`，并在搜索中报告 `PURPLE_CUBE target DETECTED`。控制器随后发布 `PHASE=SEARCH_TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN` 和 `STATE -> STOPPED (TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN)`；同步话题 `target_valid=true`，命中时反馈约 `[-0.363480628,0.978364184,-0.754819324,0,0.662104464,0] rad`。没有进入 `ALIGN`、`GRASP_READY`，也没有发送抓取、ResetPiper、零点复位或 `DisableArm`。
+- 按有界授权用 Ctrl-C 结束脚本等待段；保护清理停止视觉/Servo并 disarm 适配器，保持PiPER硬件使能。随后以 `auto_enable=false` 仅恢复低层反馈驱动，实测 `/joint_states` 约200Hz、六轴速度0，`/arm_status.err_code=0`、六轴限位和通信异常标志均false。CAN继续 `UP/ERROR-ACTIVE`、1Mbps/sample-point 0.750，错误/丢帧0、RX持续增长。
+- 本轮直接完成了“自动启动→观测姿态→SEARCH→目标有效”的闭环；尚未完成的不是搜索或基础链路，而是本轮明确禁止越过的 `ALIGN/FINAL_ALIGN→GRASP_READY→抓取`。下一动作必须在保持当前命中姿态和新鲜反馈的前提下取得继续对齐/抓取授权，再运行完整后半段；不得把本轮目标命中停止误报为最终抓取完成。
