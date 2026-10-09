@@ -305,11 +305,33 @@ camera_has_required_frame() {
 
 wait_for_actual_frame() {
   local topic="$1" label="$2" next_report=$((SECONDS + 10))
+  local missing_frames=0 recovery_attempts=0
   echo "[等待] 等待 ${label} 首帧；收到真实图像后才继续启动..."
   while true; do
     if timeout 4s ros2 topic echo --once "$topic" >/dev/null 2>&1; then
       echo "[就绪] 已收到 ${label} 首帧。"
       return 0
+    fi
+    ((missing_frames += 1))
+    # The continuous guard starts only after both input streams are ready.
+    # Recover a stale reused camera or blocked V4L2 child during startup too.
+    if (( missing_frames >= 3 )) &&
+      [[ "$topic" == /camera/depth/image_raw || "$topic" == /camera/color/image_raw ]]; then
+      if (( recovery_attempts >= 3 )); then
+        fail "${label} 三次输入恢复后仍无真实首帧；停止启动并保持机械臂使能。"
+      fi
+      ((recovery_attempts += 1))
+      echo "[相机] ${label} 启动无帧，执行第 ${recovery_attempts}/3 次输入恢复。"
+      if [[ "$topic" == /camera/depth/image_raw ]]; then
+        stop_astra_camera
+        sleep 2
+        start_astra_camera
+      else
+        stop_rgb_camera
+        sleep 2
+        start_rgb_camera
+      fi
+      missing_frames=0
     fi
     if (( SECONDS >= next_report )); then
       echo "[等待] ${label} 尚未收到首帧；相机自动恢复仍在运行。"

@@ -2047,6 +2047,17 @@
 - 已完成范围内直接影响下一次执行的视觉修复和新目标路径复核。不能靠重复已完成只读检测或再造离线实验来绕开权限边界。依据目标阻断审计，将目标标为blocked而非complete，保留原完整目标；待用户明确允许后恢复，先核验新鲜关节/目标，再运行同一默认一键脚本（不设置目标命中停止开关）逐门验收完整后半段。所有实体阶段仍未完成，不宣称总目标已达到。
 # 2026-10-09 完整实机链路授权恢复（执行准备）
 
+### 本次执行结果与相机启动修复
+
+- 默认全链脚本会话18024实际运行完并返回1。先因复用Astra PID31977/32017无深度帧停在[2/7]；ROS发布者存在却无帧。原脚本的健康守护在RGB/深度首帧都通过之后才启动，因此这里的“自动恢复仍在运行”提示不符合事实。针对已确认无帧的旧相机组TERM后重启，深度门通过。
+- V4L2 RGB首次只发布1帧后停住；父PID45470停止后子PID45477仍占video0，下一次启动日志明确Device busy。精确终止旧子进程并启动唯一RGB后首帧通过。没有重建CAN或重试旧固件诊断。
+- 同一脚本随后完成[7/7]、PREPARE 6点/20秒、适配器接受、OBSERVE_POSE_REACHED、SEARCH（42点/41点轨迹）、ALIGN/TARGET_ACQUIRED、GRASP_READY/DIRECT_VISUAL_ALIGN_ACQUIRED。执行器锁定基座目标(0.334,-0.071,0.144)m，发送50mm/1N.m张爪；适配器发5个有界帧，驱动4次明确调用GripperCtrl(50000,1000,0x01,0)。
+- 精确终止门：FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED。before=current=0.045900m，target=0.050000m，容差0.003m；尚未进行预抓取、下降、闭爪、抬升、释放。异常清理未DisableArm/ResetPiper/回零，保持使能。恢复auto_enable=false反馈驱动，会话61937；实测Q=[-0.110263524,0.978346740,-0.754784436,0,0.688724008,0]rad，错误码0。
+- 被动0x3A7八帧均角度00 00 B3 4C=45900，即45.9mm，状态0x40。官方SDK定义bit6使能、bit7归零状态；0x40未编码故障但未标记归零。此轮没有同步0x159抓包，故驱动调用日志不能替代总线发送证据，不能直接定性为夹爪硬件故障。旧22次重发无效的结论保留，不再盲目延长发送或放宽张爪门。
+- 官方接口https://github.com/agilexrobotics/piper_sdk/blob/master/asserts/V2/INTERFACE_V2.MD明确0xAE是设当前位置为零点；官方demo https://github.com/agilexrobotics/piper_sdk/blob/master/piper_sdk/demo/V2/piper_set_gripper_zero.py 先仅失能夹爪再写当前零点，并不自动寻找实体闭合基准。未知实际闭合基准时不执行。已异步询问升级后是否曾在完全闭合处标定，尚待答复；这是资料核对，不把未答复当硬件故障证据。
+- 修复规范/运行一键脚本wait_for_actual_frame：输入首帧连续3次缺失即调用现有对应相机清理/启动函数，最多恢复3次仍失败则明确退出保持；不依赖尚未启动的后台守护。两个脚本bash -n通过、SHA一致fbe70ca7201ca9cd3111c6dfaf0cf61f6578794dae81909d0160aab7a79865ac。mock验证深度/RGB各一次恢复后仍要求真实帧成功，持续无帧三次恢复后退出。该修改尚未再次实机复跑，不把mock称为实机验证。
+- 证据：/home/johnwick/brain_robot_logs/visual_stack.log、piper_driver.log、rgb_camera_recovery.log。下一步围绕夹爪首次缺口核对0x159实际发送/0x3A7响应及实体标定历史；正常完整权限继续有效，但未确认张爪前禁止预抓取。总目标保持未完成。
+
 - 用户明确答复“运行”“允许”，撤销此前仅搜索至有效目标的边界；目标恢复active。允许既有默认链路ALIGN、预抓取、抓取、抬升、释放、安全返回后失能。不刷写、不MasterSlaveConfig、不ResetPiper。
 - 当前can0 ERROR-ACTIVE，2秒RX增量4866，无错误/丢帧。磁盘50GB可用、使用34%。实测六轴[-0.363480628,0.978364184,-0.754819324,0,0.662104464,0]rad、速度0、夹爪0.0459m；错误码0，限位/通信异常标志均false。仅反馈驱动和Astra运行。
 - 运行/规范脚本SHA一致ea36d761d410b139e54eb25c0dd391442c1c8a27ce36a05f3e8ee4661d977c02，实体YAML一致8736785a6d70b08da491302515457b247d30d535f975bcf0d52228f1359d8b8f。检测mirror=false、旋转矩形门true。
