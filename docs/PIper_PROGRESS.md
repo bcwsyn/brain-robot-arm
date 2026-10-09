@@ -2038,3 +2038,10 @@
 - 临时启动/检查脚本现持久保存为 `brain_robot_arm/scripts/piper_plan_review.launch.py`、`brain_robot_arm/scripts/piper_review_plan.py`，显式拒绝除78外的ROS域，仅含规划客户端和隔离状态快照发布器，不提供执行接口；读取当前实体YAML，不混用备用配置。复现命令：source ROS/PiPER/app安装空间后设置 `ROS_DOMAIN_ID=78 FASTRTPS_DEFAULT_PROFILES_FILE=/home/johnwick/fastdds_udp_only.xml`，分别 `ros2 launch /mnt/hgfs/ub/brain_robot_arm/scripts/piper_plan_review.launch.py` 与 `PYTHONNOUSERSITE=1 /usr/bin/python3 /mnt/hgfs/ub/brain_robot_arm/scripts/piper_review_plan.py`。若没有完整路径，检查脚本明确返回2；正向本次返回0。两脚本语法检查通过。
 - 成功证据日志 `/home/johnwick/.ros/log/2026-10-09-15-23-08-351109-johnwick-virtual-machine-33500`，MoveGroup日志 `/home/johnwick/.ros/log/move_group_33530_1791530588646.log`。完成后精确TERM本轮PID33500/33528/33530并确认不存在；真实域0读到机械臂Q保持原值、速度0，`/joint_commands` publisher=0/subscriber=1，证明没有实体输出。末次ps无目标返回1是确认清理完毕的预期值。
 - 限制：快照规划只含模型自碰撞，未注入未经测量的桌面/世界障碍，也不证明支架标定、实物夹持、抬升和释放可靠。不能把规划成功写成实机抓取完成。下一步仍需在用户允许ALIGN及完整后半段后，用同一一键脚本和新鲜目标/关节反馈实际执行并逐门验收；授权问题已在上轮提出，当前保持原姿态/使能。
+
+### 2026-10-09 15:28：实机后半段授权边界阻断审计
+
+- 当前提交 `4550fb0`。前两轮已有具体进展：镜像/倾斜形状修复与静态检测通过（`4302789`），新目标快照预抓取/下降规划通过（`4550fb0`）；未把离线规划替代实体抓取验收。本轮不再重复这些实验。
+- 最小当前状态核验：真实域0 `/joint_states` 返回六轴 `[-0.363480628,0.978364184,-0.754819324,0,0.662104464,0] rad`、速度0、夹爪0.0459，时间戳 `1791530881.917019636`；`/joint_commands` publisher=0/subscriber=1；进程匹配没有视觉控制器、抓取执行器、适配器或MoveGroup。命令末尾pgrep返回1表示无这些残留节点，不是链路异常。本轮没有使能/失能、轨迹或夹爪命令。
+- 同一明确边界已连续三轮保留：最近用户仅授权“搜索至目标有效、在ALIGN/抓取前停止”，后续要求检查关节/照片/相机图像，没有撤销该限制；代理上轮已请求允许完整后半段，目前无回答。当前没有新的技术故障证据，阻断的是实体ALIGN/预抓取/闭爪/抬升/释放/安全回位的执行权限；通用长期目标自动续跑不能代替对这条具体限制的撤销。
+- 已完成范围内直接影响下一次执行的视觉修复和新目标路径复核。不能靠重复已完成只读检测或再造离线实验来绕开权限边界。依据目标阻断审计，将目标标为blocked而非complete，保留原完整目标；待用户明确允许后恢复，先核验新鲜关节/目标，再运行同一默认一键脚本（不设置目标命中停止开关）逐门验收完整后半段。所有实体阶段仍未完成，不宣称总目标已达到。
