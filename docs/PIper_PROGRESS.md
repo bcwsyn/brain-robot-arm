@@ -1914,3 +1914,12 @@
 - 新一键运行命令为 BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh；磁盘为 29%、约 54402 MB 可用，脚本在 [1/7] 正确拒绝启动运动，因为 can0 RX 未增长。
 - can0 仍为 UP、1 Mbps、sample-point 0.750、ERROR-ACTIVE，累计 RX 7398221 但本次 5 秒 candump 增量为 0；无控制进程、无任何运动或失能命令。
 - 同期内核持续报告 xhci_hcd 0000:03:00.0 的 Transfer event TRB DMA ptr not part of current TD。按既有决策，guest 内 USB reset/xHCI 重载已完成且不可循环重复；当前实际阻断是 VMware USB-CAN 端到端数据面，需要宿主侧对 USB-CAN 做 Disconnect/Connect 或真实断电重枚举后再运行脚本。
+## 2026-10-09：恢复 can0 后默认链到达观测并搜索，运行期 RX 再次中断
+
+- 规范仓库起始 HEAD 为 `cfbbdbf`。本轮实际确认仓库 `/mnt/hgfs/ub`；运行树为 `/home/johnwick`，启动脚本默认 `BRAIN_ROBOT_AUTO_START=1`、`BRAIN_ROBOT_DEPTH_ONLY_TARGET=0`。
+- 用户报告已恢复后，初态实为 USB-CAN `1d50:606f` 已枚举、`gs_usb` 已绑定，但 `can0` 为 DOWN/STOPPED、RX=0。`sudo -n true` 返回 0；未触碰 USB 设备、VMware 透传或 xHCI，仅按既有 1 Mbps/sample-point 0.75/txqueuelen 1000 参数配置并 UP 接口。随后 `can0` 为 ERROR-ACTIVE，有限 1200 帧被动抓包中 `0x251..0x256` 各 51 帧，bus error=0。
+- 被动 SDK 预检（`C_PiperInterface_V2 0.6.2`，`piper_init=false`）得到高速反馈 100 Hz、低速状态 20 Hz；当前六轴 `[-0.066,-0.005,0.018,0.165,0.252,-0.107] rad`、速度全为 0、使能全 False，collision/error 全 False。目标观测姿态 `[0,0.98,-0.75,0,0.30,0] rad`；执行器只走当前姿态到观测姿态，不执行全零复位。
+- 实际运行命令：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`。根分区 34% 降到 33%，约 51 GB 可用；脚本通过 `[1/7]..[7/7]`，RGB/深度首帧正常，点云仍未送入 Octomap。14 点、49.1 秒观测轨迹被 `piper_jog_adapter` 接受，状态明确到达 `OBSERVE_POSE_REACHED -> SEARCH`。
+- RGB 检测曾 `PURPLE_CUBE target DETECTED` 后变为 LOST；控制器进入 ALIGN，随后 `TARGET_LOST_DURING_ALIGN -> LAST_PATH_REACQUIRE -> LOCAL_SEARCH -> SEARCH`，期间多条 31–42 点搜索轨迹均被唯一适配器接受。未到 `GRASP_READY`，未执行预抓取、下降或夹爪命令。
+- 运行期守护于 `2026-10-09 11:43:59` 记录 `CAN_RX_STALLED_3S`，发出 emergency stop 并终止脚本（会话返回码 143）；退出路径报告保持当前位置/使能，没有 `DisableArm`、ResetPiper 或回零。停止后 `can0` 仍显示 UP/ERROR-ACTIVE、USB 设备仍在 sysfs、gs_usb 仍绑定，但 18 秒被动观察 RX 计数固定为 676928，`candump` 5 秒 0 帧，bus error=0。该时间窗未见 xHCI/USB 内核错误。证据日志：`/home/johnwick/brain_robot_logs/{visual_stack.log,cube_detector.log,piper_driver.log,can_health.log}`。
+- 本轮未做 USB 断开/重连、USB reset、xHCI 重载或额外运动。RX 未恢复前不重跑一键脚本；下一步先只读追踪 USB-CAN URB/反馈停止原因，待连续 `0x251..0x256` 恢复后再继续搜索和抓取。
