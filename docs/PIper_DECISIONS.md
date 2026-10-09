@@ -886,3 +886,9 @@
 - 只要 can0 RX 不持续增长且内核出现 xhci TRB 错误，一键脚本必须停在 CAN 门，不得启动 PiPER、MoveIt、视觉运动或夹爪控制。
 - guest 内已有 USB reset、gs_usb 重绑、xhci 重建和虚拟 Hub power cycle 记录；本轮不重复这些已证明无效的恢复动作。
 - 下一动作是宿主 VMware USB-CAN Disconnect/Connect 或实体断电重枚举；重新出现持续反馈后，直接复用当前 RGB 软件配准和视觉抓取链。
+## 2026-10-09：上游复用与CAN恢复的兼容边界
+
+- 当轮现场状态经主机只读核实为 USB-CAN 已枚举但 `can0 DOWN/STOPPED`；唯一一次按既定参数配置因执行环境缺少 `CAP_NET_ADMIN` 返回 `Operation not permitted`。不循环重试、不启动控制程序；恢复接口后必须先被动确认连续 PiPER RX，才能重跑一键实体链。
+- 当前运行时已确认使用官方旧 SDK `piper_sdk==0.6.2` + `C_PiperInterface_V2`，不是 `pyAgxArm`。本地 SDK 接收线程异常后 `break` 的事实只说明潜在软件缺陷，不证明本次 guest USB/CAN停流由此导致；保留应用层反馈看门狗。
+- AgileX 官方 `pyAgxArm` CAN 手册写明只支持随臂官方 CAN 模块。guest 的 `1d50:606f`/`gs_usb` 枚举不足以证明该适配器与官方 SDK 兼容。未确认适配器型号前，不迁移 SDK、不替换 ROS 控制链、不将 SocketCAN 能打开等同于厂商支持。
+- 外部 issue 是待对照报告，不当作确诊。任何上游复用必须先在隔离 workspace 固定 repo/submodule commit、核对固件/API/CAN/反馈语义，并做离线和只读接收验证；运动仍只经现有 `piper_jog_adapter`。

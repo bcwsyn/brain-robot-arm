@@ -1951,3 +1951,10 @@
 - `sudo -n true` 返回0。只读 xHCI debugfs：slot 06 的 endpoint context 中 Bulk-IN 与 Bulk-OUT 均报 `running`。对应 Bulk-IN 环的 `enqueue` 与 `dequeue` 快照均为 `0x0000000118070890`，环 cycle 为0；Bulk-OUT 环的两个指针均为 `0x000000010cb5dd60`，环 cycle 为1。TRB cycle 标记与对应 cycle 一致，不能把它们解释成已失效；关键观察仅是入队/出队指针相等。端口仍连接，`can0` 接口仍 UP。
 - 证据解释为强推断而非根因结论：相等的环入队/出队指针通常表示 xHCI 环上没有未消费的排队传输，但端点仍报 running；这符合 `gs_usb` 接收 URB 没有继续挂在 host ring 上的表现。该视图不能说明 URB 为什么不在队列中，也不能据此断言 USB 物理断开或机械臂未发送。尚未捕获导致该状态的 callback、取消状态或内核错误。
 - 下一步是在不更改端点、接口、驱动状态的前提下，检查 `gs_usb` 当前内核实现/可用只读跟踪点，寻找能够确定 URB 取消/未重提交原因的证据；如果 guest 不暴露该信息，则需要宿主 VMware USB 透传侧一次真实 Disconnect/Connect 后再验证持续被动 RX。RX 连续恢复前不运行一键运动脚本。
+### 2026-10-09：用户报告恢复后的CAN及官方SDK兼容性复核
+
+- 规范仓库 HEAD 为 `90357ce`。重新核验实际 guest：USB-CAN `1d50:606f` 已枚举、内核驱动 `gs_usb` 已绑定；`can0` 是 `DOWN/STOPPED`，RX/TX 统计均为0；无启动脚本、PiPER、视觉、MoveIt、适配器控制进程。与上一轮 `UP/RX=0` 状态不同，但这不代表反馈已经恢复。
+- 规范允许对 DOWN 接口按 1 Mbps、sample-point 0.75、txqueuelen 1000 做一次有限配置。受限命令环境中 `sudo -n true` 被 `no new privileges` 阻止；经允许的主机检查也读到了接口，但 `ip link set ...` 被 `RTNETLINK: Operation not permitted` 拒绝。因此未能将接口 UP，没有继续重试、没有 USB reset/xHCI 重载、没有启动驱动或运动，也没有发送 CAN 控制帧。当前唯一实机阻断是控制执行环境缺少 CAN 管理权限；即使解除该权限门，仍需被动证明 RX 持续增长后方可启动。
+- 只读确认运行时为 Python `piper_sdk==0.6.2`、ROS 驱动 `piper_ctrl_single_node.py` 使用 `C_PiperInterface_V2`，`pyAgxArm` 未安装。已检查安装 SDK：`ReadCan` 遇到 `CanOperationError`/其它异常会退出线程；FPS monitor 更新健康标志但不负责重启接收线程。应用节点已有高频反馈及聚合关节反馈新鲜度门，缺帧时抑制输出。此代码证据支持“SDK 接收线程可能静默死亡”为一个可检验的软件弱点，但不能解释/证明当前 CAN RX 停止的根因；当前接口 DOWN 与 VM USB-CAN 接收链仍须分层验证。
+- 上游只读资料已登记在 `docs/UPSTREAM_RESOURCES.md`。AgileX 官方 pyAgxArm CAN 手册明确表示仅支持随臂官方 CAN 模块；本机 USB ID/`gs_usb` 只证明 guest 枚举，不能证明它是官方随臂模块，因此适配器兼容性仍未证实。官方 `agx_arm_ros`/`pyAgxArm` 是候选参考，不迁移、不覆盖供应商源码、不绕过唯一 `piper_jog_adapter`。GitHub issue #109/#112/#118 是用户报告，不能当成厂商确认根因。
+- 下一步：恢复能对 guest CAN 接口执行受限 `ip link` 的权限/宿主透传上下文后，仅完成一次接口配置并被动采集连续 `0x251..0x256`；若 CAN 帧持续，再运行现有默认一键链采集观测→搜索→检测锁定断点。CAN RX 未恢复时不运行控制链。上游迁移研究需在独立工作区完成并先固定 commit SHA。
