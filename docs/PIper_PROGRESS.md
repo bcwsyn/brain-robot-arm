@@ -1923,3 +1923,10 @@
 - RGB 检测曾 `PURPLE_CUBE target DETECTED` 后变为 LOST；控制器进入 ALIGN，随后 `TARGET_LOST_DURING_ALIGN -> LAST_PATH_REACQUIRE -> LOCAL_SEARCH -> SEARCH`，期间多条 31–42 点搜索轨迹均被唯一适配器接受。未到 `GRASP_READY`，未执行预抓取、下降或夹爪命令。
 - 运行期守护于 `2026-10-09 11:43:59` 记录 `CAN_RX_STALLED_3S`，发出 emergency stop 并终止脚本（会话返回码 143）；退出路径报告保持当前位置/使能，没有 `DisableArm`、ResetPiper 或回零。停止后 `can0` 仍显示 UP/ERROR-ACTIVE、USB 设备仍在 sysfs、gs_usb 仍绑定，但 18 秒被动观察 RX 计数固定为 676928，`candump` 5 秒 0 帧，bus error=0。该时间窗未见 xHCI/USB 内核错误。证据日志：`/home/johnwick/brain_robot_logs/{visual_stack.log,cube_detector.log,piper_driver.log,can_health.log}`。
 - 本轮未做 USB 断开/重连、USB reset、xHCI 重载或额外运动。RX 未恢复前不重跑一键脚本；下一步先只读追踪 USB-CAN URB/反馈停止原因，待连续 `0x251..0x256` 恢复后再继续搜索和抓取。
+
+### 2026-10-09 11:50：CAN 零 RX 期间的 USB 端口只读复核
+
+- 当前仍无启动脚本、PiPER 驱动、MoveIt、视觉控制器或适配器进程。被动 RX 计数仍固定 `676928`；can0 `UP/ERROR-ACTIVE`、1 Mbps/0.750、bus errors=0，USB-CAN `1d50:606f` 仍枚举且 `gs_usb` 绑定。
+- xHCI debugfs 显示 PCI 控制器 `0000:03:00.0` 仍由 `xhci_hcd` 驱动、runtime active、`USBSTS=0`；槽位 06 对应 `3-1.2`（USB-CAN），端口状态 `Connected Enabled Link:U0`。本轮未发现支持“USB 设备已物理断开”的证据。
+- 临时加载 usbmon 后对 Bus 3 做 3 秒只读采样，没有观察到可打印的 USB-CAN URB 记录；随后已卸载 usbmon。该观察不足以确定 URB 停止原因，也不能区分控制器端静默与虚拟 USB 数据面停流。未执行 USB reset、CAN bounce、xHCI 重载或控制命令。
+- 下一步需要用现场控制箱和 USB-CAN 指示灯的短视频核对设备是否仍供电/活动；在端到端 `0x251..0x256` 连续反馈恢复前保持无运动，并先定位接收停流原因。
