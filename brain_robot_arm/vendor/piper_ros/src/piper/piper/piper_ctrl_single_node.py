@@ -463,8 +463,11 @@ class PiperRosNode(Node):
                         gripper_effort = 1000  # 设置默认值
                     self.get_logger().warning(
                         f'Calling GripperCtrl: angle={abs(joint_6)} '
-                        f'effort={gripper_effort} code=0x01 set_zero=0x00')
-                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x01, 0)
+                        f'effort={gripper_effort} code=0x03 set_zero=0x00')
+                    # Match the SDK's documented/demo gripper command path:
+                    # enable while clearing any latched gripper driver error.
+                    # This does not set the gripper zero point (0xAE).
+                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x03, 0)
                 else:
                     self.get_logger().warning(
                         f'Explicit gripper frame rejected: '
@@ -511,7 +514,14 @@ class PiperRosNode(Node):
             if req.enable_request:
                 enable_flag = self._enable_for_joint_control(50)
                 if enable_flag:
-                    self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                    # The official V2 gripper sequence clears the gripper
+                    # state once before enabling a new command stream. This
+                    # affects only the end-effector; it does not reset the
+                    # arm or alter its joint zeroes.
+                    if self.gripper_exist:
+                        self.piper.GripperCtrl(0, 1000, 0x02, 0)
+                        time.sleep(0.1)
+                        self.piper.GripperCtrl(0, 1000, 0x01, 0)
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
