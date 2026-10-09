@@ -852,6 +852,11 @@ wait_for topic /joint_states
 wait_for_joint_feedback /joint_states
 wait_for service /enable_srv
 start_can_health_guard
+if command -v candump >/dev/null 2>&1; then
+  # Passive evidence: correlate SDK calls with actual gripper control and
+  # legacy/new-firmware feedback, without transmitting diagnostic commands.
+  start_group gripper_can candump -L 'can0,159:7FF,3A7:7FF,2A8:7FF'
+fi
 
 echo "[2/7] 检查并启动深度相机..."
 if ! node_exists /camera/camera; then
