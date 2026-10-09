@@ -1972,3 +1972,10 @@
 - 用户指出识别窗口中目标左右位置疑似与实景相反。源码核对：窗口显示的不是原始 `/camera/color/image_raw`，而是 `cup_detector_node.cpp` 先按深度像素与工厂外参重采样得到的RGB-depth注册图，再叠加中心十字、掩码和状态文字；黑区为没有映射到RGB的深度像素。实际配置 `color_mirror_horizontal=true`，代码将投影得到的 `full_color_x` 改为 `color_width-1-full_color_x` 后采样V4L2原图。该参数只反转配准采样X，不执行整幅显示图的 `cv::flip`；如果物理V4L2镜像方向判断错，检测出的深度网格X会落到相反一侧。当前截图+用户现场观察构成需要验证的反证，但尚未通过同步原始RGB/注册图A-B对照证明应该设true还是false。
 - 为避免镜像方向错误时继续视觉ALIGN，调用 `/visual_search_controller/stop`、`/servo_node/stop_servo`、`/piper_jog_adapter/disarm`；三项服务成功，其中适配器回复命令输出保持在反馈位姿。随后对一键脚本发SIGINT，按其保护trap清理本轮启动的ROS/相机/驱动节点；未执行ResetPiper、DisableArm或硬件失能。停止时实际关节反馈约 `[J1=0.577,J2=1.011,J3=-0.746,J4=0.038,J5=1.035,J6=0] rad`，六轴速度为0；CAN RX继续增长、TX停在21171、bus errors=0。当前抓取目标未锁定、未抓取。
 - 下一步：保持实体适配器disarmed，不重启运动链。单独采集同一静态场景的原始V4L2 RGB、深度和注册调试图，在无运动条件下分别按 `color_mirror_horizontal=true/false` 做离线/被动配准对照；以方块在原始图中的实测侧向和对应深度X为准确定参数。只修正确证的镜像映射并运行离线回归，再以一次默认自动链验证SEARCH/ALIGN。禁止只凭J1/J5运动方向反转或仅为让目标“移向中心”而盲改 `horizontal_error_sign`。
+
+### 2026-10-09 12:20：解释 `/image` 并复核当前静态图像链
+
+- 用户截图标题`/image`来自一键脚本的`image_view` remap；实际订阅`/brain_robot_vision/debug_image`。这张图是配准后的RGB落在深度像素网格上的调试输出，叠加图像中心与`TARGET LOST`文本，不是原始相机帧；黑色空洞表示深度点无效或没有有效颜色采样。截图没有紫色方块，因此不能由此图判明左右方向。
+- 实际配置`color_mirror_horizontal=true`仅翻转注册时源RGB的X采样，不对整幅debug图做`cv::flip`。如果该假设错，目标颜色会落到错误深度侧；不能因此把控制器误差符号直接反向。
+- 只读实测`can0`为`UP/ERROR-ACTIVE`、1 Mbps/0.750，3秒被动收到`0x252..0x256`与`0x3A0..0x3A7`，CAN TX仍为21171。此时ROS仅`/parameter_events`和`/rosout`，无机械臂/控制节点。为静态采图，仅启动已登记的depth-only Astra、V4L2 320x240@5Hz RGB与一个检测器；日志确认两路有效输入，`mapped=171428 mirror_x=true`，结果仍为`PURPLE_CUBE target LOST`。未启动PiPER驱动、MoveIt、Servo、适配器或搜索，未发布任何控制命令。
+- 因目标未在当前静止视野内出现，true/false镜像A/B无法判断物理左右对应。已停止采图组件，ROS恢复仅默认话题，未改变配置。下一步仍是固定相机/机械臂、方块在画面中可见时成对核验原始RGB、配准图和深度目标X；核验完成前不恢复ALIGN。
