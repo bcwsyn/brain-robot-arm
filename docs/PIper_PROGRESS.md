@@ -1958,3 +1958,9 @@
 - 只读确认运行时为 Python `piper_sdk==0.6.2`、ROS 驱动 `piper_ctrl_single_node.py` 使用 `C_PiperInterface_V2`，`pyAgxArm` 未安装。已检查安装 SDK：`ReadCan` 遇到 `CanOperationError`/其它异常会退出线程；FPS monitor 更新健康标志但不负责重启接收线程。应用节点已有高频反馈及聚合关节反馈新鲜度门，缺帧时抑制输出。此代码证据支持“SDK 接收线程可能静默死亡”为一个可检验的软件弱点，但不能解释/证明当前 CAN RX 停止的根因；当前接口 DOWN 与 VM USB-CAN 接收链仍须分层验证。
 - 上游只读资料已登记在 `docs/UPSTREAM_RESOURCES.md`。AgileX 官方 pyAgxArm CAN 手册明确表示仅支持随臂官方 CAN 模块；本机 USB ID/`gs_usb` 只证明 guest 枚举，不能证明它是官方随臂模块，因此适配器兼容性仍未证实。官方 `agx_arm_ros`/`pyAgxArm` 是候选参考，不迁移、不覆盖供应商源码、不绕过唯一 `piper_jog_adapter`。GitHub issue #109/#112/#118 是用户报告，不能当成厂商确认根因。
 - 下一步：恢复能对 guest CAN 接口执行受限 `ip link` 的权限/宿主透传上下文后，仅完成一次接口配置并被动采集连续 `0x251..0x256`；若 CAN 帧持续，再运行现有默认一键链采集观测→搜索→检测锁定断点。CAN RX 未恢复时不运行控制链。上游迁移研究需在独立工作区完成并先固定 commit SHA。
+
+### 2026-10-09：用户报告接口恢复后的即时复核
+
+- 用户报告已恢复接口后，重新只读核验 guest 仍显示 `can0 DOWN/STOPPED`、RX/TX=0，USB-CAN `1d50:606f` 仍枚举且绑定 `gs_usb`，无运动控制进程。因此“已恢复”目前未在此执行环境表现为可用 SocketCAN 接口或有效反馈。
+- 按授权参数再次尝试一次 `ip link set can0 type can bitrate 1000000 sample-point 0.75`、设置队列并 UP，仍因执行器无 `CAP_NET_ADMIN` 返回 `RTNETLINK answers: Operation not permitted`。未重试、未启进程、未发送 CAN 帧/运动命令。
+- 只有当此执行会话能配置 guest 网络接口，或 guest 内接口本身已 UP 且被动 RX 持续增长，才可继续启动默认一键链。当前不是机械臂运动/视觉阶段故障，而是执行会话无法操作且观察到 CAN 接口仍 DOWN。

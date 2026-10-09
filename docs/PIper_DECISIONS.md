@@ -892,3 +892,8 @@
 - 当前运行时已确认使用官方旧 SDK `piper_sdk==0.6.2` + `C_PiperInterface_V2`，不是 `pyAgxArm`。本地 SDK 接收线程异常后 `break` 的事实只说明潜在软件缺陷，不证明本次 guest USB/CAN停流由此导致；保留应用层反馈看门狗。
 - AgileX 官方 `pyAgxArm` CAN 手册写明只支持随臂官方 CAN 模块。guest 的 `1d50:606f`/`gs_usb` 枚举不足以证明该适配器与官方 SDK 兼容。未确认适配器型号前，不迁移 SDK、不替换 ROS 控制链、不将 SocketCAN 能打开等同于厂商支持。
 - 外部 issue 是待对照报告，不当作确诊。任何上游复用必须先在隔离 workspace 固定 repo/submodule commit、核对固件/API/CAN/反馈语义，并做离线和只读接收验证；运动仍只经现有 `piper_jog_adapter`。
+
+## 2026-10-09：用户报告恢复后接口仍不可用
+
+- 用户报告接口已恢复，但本执行会话实测 `can0 DOWN/STOPPED` 且 RX=0；按既定值 UP 接口仍因 `Operation not permitted` 失败。以实际运行环境状态为准，不得把用户报告本身等同于接收反馈恢复。
+- 在执行环境获得 `CAP_NET_ADMIN` 或接口在 guest 中实际 UP 且有持续反馈前，不启动 PiPER/视觉/MoveIt/适配器控制链；不以用户手工贴输出作为替代，后续由代理再次直接复核。
