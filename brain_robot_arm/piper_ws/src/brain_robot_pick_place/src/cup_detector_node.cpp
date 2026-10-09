@@ -86,6 +86,7 @@ public:
     max_area_px_ = declare_parameter<double>("max_area_px", 0.0);
     min_circularity_ = declare_parameter<double>("min_circularity", 0.0);
     min_rectangularity_ = declare_parameter<double>("min_rectangularity", 0.0);
+    shape_use_rotated_rectangle_ = declare_parameter<bool>("shape_use_rotated_rectangle", false);
     min_aspect_ratio_ = declare_parameter<double>("min_aspect_ratio", 1.0);
     max_aspect_ratio_ = declare_parameter<double>("max_aspect_ratio", 0.0);
     target_label_ = declare_parameter<std::string>("target_label", "CUP");
@@ -694,10 +695,14 @@ private:
       const double circularity = perimeter > 1e-6 ?
         4.0 * CV_PI * area / (perimeter * perimeter) : 0.0;
       const cv::Rect box = cv::boundingRect(contour);
-      const double box_area = static_cast<double>(box.area());
+      // A tilted square occupies only about half its axis-aligned box.
+      // Measure shape in its own orientation; retain the pixel box for depth ROI.
+      const cv::Size2f shape_size = shape_use_rotated_rectangle_ ?
+        cv::minAreaRect(contour).size : cv::Size2f(box.width, box.height);
+      const double box_area = static_cast<double>(shape_size.width) * shape_size.height;
       const double rectangularity = box_area > 0.0 ? area / box_area : 0.0;
-      const double aspect_ratio = static_cast<double>(std::max(box.width, box.height)) /
-        static_cast<double>(std::max(1, std::min(box.width, box.height)));
+      const double aspect_ratio = static_cast<double>(std::max(shape_size.width, shape_size.height)) /
+        std::max(1.0, static_cast<double>(std::min(shape_size.width, shape_size.height)));
       if (area >= min_area_px_ &&
         (max_area_px_ <= 0.0 || area <= max_area_px_) &&
         circularity >= min_circularity_ && rectangularity >= min_rectangularity_ &&
@@ -913,6 +918,7 @@ private:
   double max_area_px_;
   double min_circularity_;
   double min_rectangularity_;
+  bool shape_use_rotated_rectangle_;
   double min_aspect_ratio_;
   double max_aspect_ratio_;
   std::string target_label_;

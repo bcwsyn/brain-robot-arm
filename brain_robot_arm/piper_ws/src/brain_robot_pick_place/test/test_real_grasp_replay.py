@@ -91,7 +91,7 @@ def test_real_profile_is_one_shot_locked_grasp():
         start = controller.index(f"void {handler}(")
         end = controller.find("\n  void ", start + 1)
         body = controller[start:end]
-        assert body.index(acquired_gate) < body.index("SetStateLocked(ControlState::ALIGN")
+        assert body.index(acquired_gate) < body.index("ControlState::ALIGN")
         assert acquired_reason in body
     assert visual["direct_grasp_after_align"] is True
     assert visual["depth_only_target_enabled"] is False
@@ -155,7 +155,7 @@ def test_real_profile_uses_low_bandwidth_rgb_with_depth_geometry():
     assert detector_params["require_depth_for_target_valid"] is True
     assert detector_params["saturation_min"] == 35
     assert detector_params["software_registration_enabled"] is True
-    assert detector_params["color_mirror_horizontal"] is True
+    assert detector_params["color_mirror_horizontal"] is False
     assert len(detector_params["depth_to_color_rotation"]) == 9
     assert len(detector_params["depth_to_color_translation_m"]) == 3
     assert detector_params["depth_to_color_translation_m"][0] < -0.02

@@ -536,7 +536,7 @@ visual_stack_processes_exist() {
   # retain nodes from a just-terminated launch for longer than this script's
   # startup window. Match executable paths, not service-client arguments.
   pgrep -f \
-    'ros2 launch brain_robot_ball_pick cube_visual_search\.launch\.py|/brain_robot_pick_place/(piper_jog_adapter\.py|visual_search_controller|grasp_lift_executor|active_scan_supervisor|pointcloud_tf_gate)([[:space:]]|$)|/moveit_servo/servo_node_main([[:space:]]|$)|/moveit_ros_move_group/move_group([[:space:]]|$)|/robot_state_publisher/robot_state_publisher.*piper_moveit_joint_states|/tf2_ros/static_transform_publisher.*piper_camera_mount_tf' \
+    'ros2 launch brain_robot_ball_pick cube_visual_search\.launch\.py|/brain_robot_pick_place/(piper_jog_adapter\.py|visual_search_controller|grasp_lift_executor|active_scan_supervisor|pointcloud_tf_gate|depth_cube_probe\.py)([[:space:]]|$)|/moveit_servo/servo_node_main([[:space:]]|$)|/moveit_ros_move_group/move_group([[:space:]]|$)|/robot_state_publisher/robot_state_publisher.*piper_moveit_joint_states|/tf2_ros/static_transform_publisher.*piper_camera_mount_tf' \
     >/dev/null 2>&1
 }
 
@@ -558,7 +558,7 @@ stop_stale_visual_stack() {
     2>/dev/null || true
   sleep 2
   if visual_stack_processes_exist; then
-    pkill -TERM -f '/brain_robot_pick_place/(piper_jog_adapter.py|visual_search_controller|grasp_lift_executor|active_scan_supervisor|pointcloud_tf_gate)' \
+    pkill -TERM -f '/brain_robot_pick_place/(piper_jog_adapter.py|visual_search_controller|grasp_lift_executor|active_scan_supervisor|pointcloud_tf_gate|depth_cube_probe.py)' \
       2>/dev/null || true
     pkill -TERM -f '/moveit_servo/servo_node_main' 2>/dev/null || true
     pkill -TERM -f '/moveit_ros_move_group/move_group' 2>/dev/null || true

@@ -21,8 +21,9 @@ cube_detector:
     input_reliability: reliable
     # Factory calibration read from serial CC136530302 via
     # /camera/get_camera_info and /camera/extrinsic/depth_to_color.
-    # Translation is converted from millimetres to metres. The kernel V4L2
-    # image is horizontally mirrored relative to the OpenNI calibration.
+    # Translation is converted from millimetres to metres. A synchronized
+    # static RGB/depth capture at the real target pose shows the kernel V4L2
+    # image already has the calibration's physical left/right orientation.
     software_registration_enabled: true
     color_calibration_width: 640
     color_calibration_height: 480
@@ -30,7 +31,7 @@ cube_detector:
     color_fy: 488.86849976
     color_cx: 310.73052979
     color_cy: 209.03765869
-    color_mirror_horizontal: true
+    color_mirror_horizontal: false
     depth_to_color_rotation: [0.99998426437, 0.00078827410, -0.00555561949,
       -0.00080088340, 0.99999713898, -0.00226784474,
       0.00555381598, 0.00227225851, 0.99998199940]
@@ -54,6 +55,8 @@ cube_detector:
     max_area_px: 0.0
     min_circularity: 0.0
     min_rectangularity: 0.58
+    # The wrist camera sees a rotated cube face; use its oriented shape box.
+    shape_use_rotated_rectangle: true
     min_aspect_ratio: 1.0
     max_aspect_ratio: 1.45
     target_label: PURPLE_CUBE

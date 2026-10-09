@@ -926,3 +926,15 @@
 - RGB-D 检测器在搜索期间报告 `PURPLE_CUBE target DETECTED`，`target_valid=true` 后控制器在任何 ALIGN 状态前发布 `TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN`。本轮不据此改变 `color_mirror_horizontal`：命中证明检测门通过，不足以单独证明显示左右镜像方向。
 - Ctrl-C 仅发生在目标命中后的脚本等待段；保护路径停止输出并 disarm 软件适配器，未调用 `DisableArm`、`ResetPiper` 或零点回位。为恢复使能状态下的反馈监控，随后启动 `auto_enable=false` 的读反馈驱动，约200Hz反馈和CAN RX均恢复。
 - 在得到继续授权前，当前决策是保持命中姿态/硬件使能/新鲜反馈，不启动 ALIGN、抓取或失能；下一轮若获授权，必须从这个实际关节反馈重新做完整安全清单，并验证目标锁定模型后才执行预抓取。
+
+### 2026-10-09：静态实机 A/B 复核后修正 RGB-D 水平镜像
+
+- 同一静止当前姿态的原始 RGB、深度和工厂标定离线配准给出可重复判据：`mirror=false` 的紫色框与深度方块凸起重合（约311 mm），`mirror=true` 的紫色框落在背景平面（约300 mm）。因此把 `color_mirror_horizontal` 固定为 `false`，不通过反向 `horizontal_error_sign` 掩盖配准错误。
+- 这项结论同时符合用户现场照片的物理左右关系和实测 URDF 正向运动学；它解除“镜像方向未验证前禁止 ALIGN”的旧门控。下一次运动前必须确认安装空间已加载 `false`、目标有效经过三帧深度稳定门，然后才允许 ALIGN/FINAL_ALIGN。
+
+### 2026-10-09 15:17：倾斜实体方块使用旋转矩形形状门，并核验部署一致性
+
+- 当前实机方块在图像中倾斜，轴对齐填充率0.554会被0.58阈值拒绝，而同轮廓旋转框填充率0.840。实体配置开启 `shape_use_rotated_rectangle`，以OpenCV `minAreaRect` 计算形状矩形填充率和长短边比；默认false保持其他检测profile行为。保持HSV、阈值、深度ROI、稳定帧和尺寸门。修正后同场景25秒检测从初始化LOST转DETECTED后不再跳变，且深度授权通过。官方算法参考 https://docs.opencv.org/4.13.0/d3/dc0/group__imgproc__shape.html 。
+- `/mnt/hgfs/ub`源码树和实际 `/home/johnwick/piper_ws/src` 是两份文件。构建成功不证明规范改动生效；修改后必须核验对应源/安装路径和SHA-256，运行日志必须明确 `mirror_x=false`。本轮部署后实际镜像和形状修正都已静态验证。
+- 关节FK加现有相机支架TF只提供几何预测，不把示意图/照片视为毫米级支架标定或仿真验收。当前方块相机深度311mm，基座坐标约 `[0.323,-0.056,0.136]m` 为模型推断；实机抓取还需现有MoveIt/适配器轨迹和新鲜关节反馈闭环。
+- 镜像旧门解除不自动扩大用户最后一次“仅搜索至目标有效”的授权。静态节点、采图、代码/构建验证可继续；实际ALIGN/预抓取仍在该有界授权之外，需用户允许继续后半段。异常停止不失能，成功收尾仍先确认安全回位。
