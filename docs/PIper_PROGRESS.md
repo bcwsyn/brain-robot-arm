@@ -1964,3 +1964,11 @@
 - 用户报告已恢复接口后，重新只读核验 guest 仍显示 `can0 DOWN/STOPPED`、RX/TX=0，USB-CAN `1d50:606f` 仍枚举且绑定 `gs_usb`，无运动控制进程。因此“已恢复”目前未在此执行环境表现为可用 SocketCAN 接口或有效反馈。
 - 按授权参数再次尝试一次 `ip link set can0 type can bitrate 1000000 sample-point 0.75`、设置队列并 UP，仍因执行器无 `CAP_NET_ADMIN` 返回 `RTNETLINK answers: Operation not permitted`。未重试、未启进程、未发送 CAN 帧/运动命令。
 - 只有当此执行会话能配置 guest 网络接口，或 guest 内接口本身已 UP 且被动 RX 持续增长，才可继续启动默认一键链。当前不是机械臂运动/视觉阶段故障，而是执行会话无法操作且观察到 CAN 接口仍 DOWN。
+
+### 2026-10-09：重启后恢复CAN并验证自动搜索；用户发现调试图左右疑似镜像
+
+- 重启后实际状态变化：`sudo -n true` 返回0。USB-CAN `1d50:606f` 枚举，`can0` 初始DOWN；按已授权参数配置为1 Mbps/sample-point 0.75/txqueuelen 1000后UP/ERROR-ACTIVE、bus errors=0。被动5秒抓到 `0x251..0x256` 每类52帧、`0x3A0` 104帧、`0x3A1..0x3A7` 每类103帧，RX持续增长。
+- 运行默认 `/home/johnwick/start_brain_robot_cube_real.sh`（`BRAIN_ROBOT_AUTO_START=1`、保留紫色RGB-D默认路径）。当前姿态→观测姿态轨迹14点/49.1秒由唯一适配器接受；随后状态进入SEARCH，FULL_SEARCH/LOCAL_SEARCH多段轨迹被接受，实际CAN TX增长且RX持续增长、错误为0。检测器短时多次报告 `PURPLE_CUBE target DETECTED` 后又LOST，控制器在ALIGN和重捕获间切换，未到GRASP_READY，也未发抓取/夹爪命令。
+- 用户指出识别窗口中目标左右位置疑似与实景相反。源码核对：窗口显示的不是原始 `/camera/color/image_raw`，而是 `cup_detector_node.cpp` 先按深度像素与工厂外参重采样得到的RGB-depth注册图，再叠加中心十字、掩码和状态文字；黑区为没有映射到RGB的深度像素。实际配置 `color_mirror_horizontal=true`，代码将投影得到的 `full_color_x` 改为 `color_width-1-full_color_x` 后采样V4L2原图。该参数只反转配准采样X，不执行整幅显示图的 `cv::flip`；如果物理V4L2镜像方向判断错，检测出的深度网格X会落到相反一侧。当前截图+用户现场观察构成需要验证的反证，但尚未通过同步原始RGB/注册图A-B对照证明应该设true还是false。
+- 为避免镜像方向错误时继续视觉ALIGN，调用 `/visual_search_controller/stop`、`/servo_node/stop_servo`、`/piper_jog_adapter/disarm`；三项服务成功，其中适配器回复命令输出保持在反馈位姿。随后对一键脚本发SIGINT，按其保护trap清理本轮启动的ROS/相机/驱动节点；未执行ResetPiper、DisableArm或硬件失能。停止时实际关节反馈约 `[J1=0.577,J2=1.011,J3=-0.746,J4=0.038,J5=1.035,J6=0] rad`，六轴速度为0；CAN RX继续增长、TX停在21171、bus errors=0。当前抓取目标未锁定、未抓取。
+- 下一步：保持实体适配器disarmed，不重启运动链。单独采集同一静态场景的原始V4L2 RGB、深度和注册调试图，在无运动条件下分别按 `color_mirror_horizontal=true/false` 做离线/被动配准对照；以方块在原始图中的实测侧向和对应深度X为准确定参数。只修正确证的镜像映射并运行离线回归，再以一次默认自动链验证SEARCH/ALIGN。禁止只凭J1/J5运动方向反转或仅为让目标“移向中心”而盲改 `horizontal_error_sign`。
