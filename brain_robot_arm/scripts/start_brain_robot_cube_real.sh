@@ -855,7 +855,10 @@ start_can_health_guard
 if command -v candump >/dev/null 2>&1; then
   # Passive evidence: correlate SDK calls with actual gripper control and
   # legacy/new-firmware feedback, without transmitting diagnostic commands.
-  start_group gripper_can candump -L 'can0,159:7FF,3A7:7FF,2A8:7FF'
+  # Capture all frames on this passive socket.  can-utils filters are
+  # positional arguments; a comma-separated filter after the interface can
+  # silently omit 0x159 on some releases.  Parse 0x159/0x2A8/0x3A7 later.
+  start_group gripper_can candump -L can0
 fi
 
 echo "[2/7] 检查并启动深度相机..."

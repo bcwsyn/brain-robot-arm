@@ -2081,3 +2081,4 @@
 ### 下一步
 
 - 提交本轮配置和回归断言后，重新执行同一默认特权一键脚本。验收顺序为 `GRASP_READY -> GRIPPER_OPEN_FEEDBACK_CONFIRMED -> TOP_DOWN_PREGRASP -> DESCENT -> GRIPPER_CLOSE_FEEDBACK_CONFIRMED -> LIFT -> RELEASE -> SAFE_RETREAT -> RESET_COMPLETE -> confirmed disable`；任一真实反馈失败立即保持使能并记录。
+- 下一次实机复核前修正被动抓包启动参数：上一轮 `candump -L 'can0,159:7FF,3A7:7FF,2A8:7FF'` 日志只出现3A7，无法证明0x159；规范/运行脚本现改为 `candump -L can0` 全帧只读捕获（SHA一致0399c196b6ed60861d54bad439fa3937740cb360f5d4c3c2b0ce463bac7bd0fb），随后按ID解析。保持夹爪反馈门，不直接绕过适配器。
