@@ -1986,3 +1986,12 @@
 - 到达时 `/joint_states` 六轴为约 `[0.00689, 0.98114, -0.74960, 0, 0.30803, 0] rad`，速度均为0；与观测目标 `[0,0.98,-0.75,0,0.30,0]` 的最大偏差约0.0081 rad。服务状态/原因话题也分别确认 `STOPPED` 和 `OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`。CAN 当时为 ERROR-ACTIVE、RX持续增加、bus errors/drop为0。
 - 当前环境构建 `brain_robot_pick_place` 与 `brain_robot_ball_pick` 成功；`brain_robot_pick_place` 测试及聚合结果为16 tests、0 errors、0 failures、0 skipped。测试确认 profile 默认不开启该停止门，并确认停止门位于 SEARCH 转换之前。
 - 该一次观测动作只验证“当前姿态→观测姿态”和授权停止边界，不能据此宣称搜索或镜像问题已解决。此前静态相机视野未见紫色方块，因此当前没有可判定左右映射的静止目标A/B证据；镜像参数仍未确认。下一步需在不动机械臂的静态可见方块画面下核对原始RGB、配准图及 true/false 映射，再由用户授权后恢复搜索。当前停止在观测姿态，不再发运动命令。
+
+### 2026-10-09 12:38：观测位静态 RGB-D 对照发现方块落在深度视野之外
+
+- 规范仓库仍为 `/mnt/hgfs/ub`，当前基线提交 `2a98d86`；实际脚本 `/home/johnwick/start_brain_robot_cube_real.sh` 与规范副本 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` SHA-256 相同（`7c0fa3c6…d97bc90`）。运行中的控制器/配置源码也与规范树 SHA-256 相同。
+- 宿主只读检查确认 `can0 UP/ERROR-ACTIVE`、1 Mbps/sample-point 0.750，2秒 RX 增量约4850帧，错误/丢帧为0；磁盘根分区使用33%。`/joint_states` 单一发布者返回六轴 `[0.00689038,0.98113778,-0.749603568,0,0.308026152,0] rad`，速度为0。视觉控制器仍为 `STOPPED / USER_STOP`，参数 `stop_after_observe=true`；适配器 `motion_enabled=false`。本轮未调用任何运动服务、未搜索/对齐/抓取、未ResetPiper或DisableArm。
+- 检查到本次一键组件的 ROS 子进程仍在运行（PiPER、Astra、检测器、MoveIt/Servo、视觉控制器和抓取执行器），但脚本父进程已不在；适配器运动门关闭且视觉控制器停止。初始 `/camera/color/image_raw` 发布者数为0。只启动已验证的 V4L2 `cam2image` 320x240@5Hz 静态输入（非 Astra UVC），测得约4.998 Hz；采集后停止本轮 RGB 进程，发布者恢复为0。注意：因此次异常退出/启动残留，后续仍需在用户批准搜索前审查脚本进程组清理，不能误认核心 ROS 节点已退出。
+- 同场景原始 RGB 帧 `/tmp/piper_raw_observe.png` 为320x240，静态方块 HSV(色相125–160、S≥35、V≥45) 连通区域框约 `(146,206,28,33)`、共667像素；检测器配准调试帧 `/tmp/piper_debug_observe.png` 为640x400、紫色像素0，`target_valid=false`。临时图不纳入 Git。
+- 使用当前 `/camera/depth/camera_info`（640x400，fx=fy=478.7569、cx=326.1356、cy=199.8735）和配置中的 Astra 工厂RGB内参/深度到彩色外参，离线复现同一帧的源RGB→深度配准。`color_mirror_horizontal=true/false` 两种结果均无紫色深度像素；映射的有效深度像素数均为170745。原始方块中心约 `(160,222)`，变换回深度网格的垂直坐标约 `v=432`（以有效深度0.375–0.992m计算几乎不变），落在深度图400行范围之外。水平镜像只影响X，不能消除此竖直FOV/重叠缺口。因此当前 `TARGET LOST` 的直接解释是该观察位可见RGB方块但彩色/深度不重叠，尚不能据此确认镜像方向；未改 `color_mirror_horizontal`、HSV或水平误差符号。
+- 当前配置的既有 SEARCH 扫描轴为J1/J5，J5垂直范围 `-0.60..0.95 rad`，本来应通过垂直扫描把方块带入深度共同视野；但运行时 `stop_after_observe=true` 和 `USER_STOP` 阻止了该阶段。本轮授权仅覆盖返回观测姿态，不能据此继续发SEARCH运动。下一步需要用户明确允许恢复既有受MoveIt碰撞/限位/反馈门控的 SEARCH（先只运行至检测目标，不做ALIGN/抓取），并在开始前打印当前姿态、扫描边界、速度/停止条件；若获授权再核对持续往返轨迹及RGB-D重叠。
