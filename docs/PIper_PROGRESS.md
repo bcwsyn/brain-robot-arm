@@ -1,5 +1,12 @@
 # PiPER 调试进度
 
+### 2026-10-09：第二次实体完整链路到闭爪门，准备延长官方命令保持
+
+- 复跑提交d563eeb后，默认脚本再次通过[7/7]、观测、SEARCH、ALIGN、GRASP_READY、63点预抓取和4点下降；张爪45000通过。闭爪0仍反馈before=current=0.045900m，停止于`FAULT_GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED`，未抬升、释放或失能。机械臂异常清理保持使能。
+- 新的被动全CAN日志统计到3A0..3A7、251..256及其他反馈帧，但没有可见159回环帧；驱动日志明确调用0x03/angle0五次。由于USB-CAN当前不回显TX，缺少159不能单独证明没发送；SDK `SendCanMessage`无错误日志，需结合TX计数或驱动发送状态判断。3A7仍为角度45900、状态40。
+- 依据官方SDK `piper_ctrl_gripper.py`持续每5ms发送约1.5秒的示例，适配器夹爪帧从5（100ms）扩为80（约1.6s），上限由1..10扩为1..100；规范/运行源SHA分别`2f9723809a9418873275de434454abaa9e077087d5cc58c8fcd5aa99af9ae80a`，launch源SHA`7fafad5125d7b165e0579698dbe0ad73c929f5557144cd35db9249fe65056b14`。构建成功，17 tests、0 errors/failures/skipped。
+- 下一步用同一脚本复核80帧保持是否让3A7角度变化；若仍完全不变，证据将指向夹爪零点/实体驱动或控制回路，而不是视觉或预抓取路径。未知闭合基准仍禁止写0xAE。
+
 ## 2026-09-23：重新拾起任务
 
 - 规范仓库：`/mnt/hgfs/ub`；恢复前 HEAD：`a195b6d`（`docs: define durable Codex handoff workflow`）。

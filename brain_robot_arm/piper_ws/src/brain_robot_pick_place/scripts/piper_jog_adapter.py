@@ -78,8 +78,8 @@ class PiperJogAdapter(Node):
             raise ValueError('trajectory safety tolerances must be positive')
         if not 0.5 <= self.gripper_effort_nm <= 3.0:
             raise ValueError('gripper_effort_nm must stay within the driver range 0.5..3.0')
-        if not 1 <= self.gripper_command_repeats <= 10:
-            raise ValueError('gripper_command_repeats must stay within 1..10')
+        if not 1 <= self.gripper_command_repeats <= 100:
+            raise ValueError('gripper_command_repeats must stay within 1..100')
 
         self.positions = {}
         self.targets = {}

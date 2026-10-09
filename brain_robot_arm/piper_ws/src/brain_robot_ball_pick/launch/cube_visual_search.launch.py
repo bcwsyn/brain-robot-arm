@@ -110,7 +110,10 @@ def generate_launch_description():
                  # The vendor driver subscribes with queue depth one. Repeat
                  # the explicit frame for only 100 ms so a following arm-only
                  # frame cannot overwrite it before the callback runs.
-                 'gripper_command_repeats': 5,
+                 # The official SDK gripper example holds each target for
+                 # about 1.5 s. Keep this bounded at 80 x 20 ms so a vendor
+                 # callback cannot lose the command before the motor reacts.
+                 'gripper_command_repeats': 80,
                  'joint_min': real_joint_mins,
                  'joint_max': real_joint_maxs,
                  # The VM can briefly delay ROS subscription callbacks even
