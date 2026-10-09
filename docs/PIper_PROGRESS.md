@@ -1,5 +1,13 @@
 # PiPER 调试进度
 
+### 2026-10-10：灯光外部阻断隔离与夹爪反馈只读复核
+
+- 用户确认现场当前无灯光；本轮将 RGB 紫色目标识别视为外部输入阻断，不再启动视觉搜索或用黑色画面反复调整检测参数。未把“无目标”误写成机械臂或碰撞逻辑故障。
+- 清理并确认没有残留 Astra、`visual_search_controller`、MoveIt、适配器或 PiPER 进程后，启动唯一 `piper_single_ctrl` 的 `auto_enable=false` 接收实例；随后只调用一次已有 `/enable_srv true` 以读取夹爪驱动状态，未发送关节轨迹、`ResetPiper`、`MasterSlaveConfig` 或 `0xAE`。
+- 通过 ROS `/joint_states_feedback` 读到六轴反馈新鲜、夹爪 `0.045900 m`；用与 S-V1.9-1 运行驱动相同的 `0x3A0..0x3A7 -> 0x2A1..0x2A8` 只读映射复核官方 SDK，得到夹爪角度 `45900`、力矩 `0`、状态码 `0x40`、反馈约 `200 Hz`。`0x40` 表示夹爪驱动使能且无错误位，但尚未归零；它不是 CAN/RX 断联证据。
+- 最近一次实际日志同时记录适配器接受 `0.000000 m` 闭爪目标、驱动连续调用 `GripperCtrl(angle=0, effort=1000, code=0x03, set_zero=0x00)`，但反馈仍为 `0.045900 m`。因此“命令未到达驱动”已排除；当前夹爪阻断是实体角度不响应/闭合基准未确认，不能用静态反馈放宽抓取门。
+- 当前保持驱动使能和实体当前位置，不自动失能；下一次有灯光后只需从同一干净栈复跑视觉，夹爪仍必须以真实角度变化或明确接触位移通过 `GRIPPER_CLOSE_FEEDBACK_CONFIRMED`，继续禁止未知位置执行 `0xAE`。
+
 ### 2026-10-10：自动搜索复核与夹爪“曾经闭合”说法的证据边界
 
 - 实际运行 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh` 通过 `[7/7]`、当前姿态到观测姿态、`OBSERVE_POSE_REACHED -> SEARCH`；搜索阶段持续接受 41/42 点的 `FULL_SEARCH` 轨迹并多次改变 J1/J5 搜索相位。脚本在其 900 秒抓取等待门超时后按保护路径停止搜索并 disarm 适配器，未调用 `DisableArm`、`ResetPiper` 或抓取命令。
