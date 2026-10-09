@@ -154,12 +154,14 @@ grasp_lift_executor:
     # this single path completes on the physical arm.
     candidate_grasp_enabled: false
     candidate_grasp_order: [NONE]
-    gripper_open_value: 50000
-    # Official SDK unit is 0.001 mm and the manual specifies a 0..70 mm
-    # stroke. The observed cube is only about 24..30 mm wide, so the old
-    # 40 mm target could not establish contact. Command the bounded closed
-    # endpoint; feedback motion, rather than reaching zero through the cube,
-    # confirms that the contact-closing action occurred.
+    # The SDK unit is 0.001 mm. The manual advertises a 0..70 mm range, but
+    # this installed gripper's real feedback stops at 45.9 mm when commanded
+    # to 50 mm. A 45 mm target is therefore the reachable open endpoint and
+    # still clears the observed 24..30 mm cube by a wide margin; the feedback
+    # gate remains enabled and the command is still sent through the adapter.
+    gripper_open_value: 45000
+    # Command the bounded closed endpoint; feedback motion, rather than
+    # reaching zero through the cube, confirms that contact-closing occurred.
     gripper_close_value: 0
     gripper_settle_s: 2.0
     # After confirming the lift, return along the same collision-checked

@@ -2068,3 +2068,16 @@
 - 运行/规范脚本SHA一致ea36d761d410b139e54eb25c0dd391442c1c8a27ce36a05f3e8ee4661d977c02，实体YAML一致8736785a6d70b08da491302515457b247d30d535f975bcf0d52228f1359d8b8f。检测mirror=false、旋转矩形门true。
 - 先执行当前姿态到[0,0.98,-0.75,0,0.30,0]rad（约20秒，以规划为准），随后现有搜索与抓取。搜索J1[-1.35,1.35]、J5[-0.60,0.95]rad，速度0.135/0.108rad/s；适配器上限0.189rad/s、加速度1rad/s²及原实体限位保持。脚本启用门核验实际使能；异常停止输出保持使能，正常先确认安全回位再失能。
 - 命令：BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh。这里只记录准备，不代表执行成功；后续补充各门实际结果。
+## 2026-10-09：实机复跑到 GRASP_READY，修正不可达的张爪目标
+
+- 本轮起始 HEAD 为 `ced1e4a`；按固定启动顺序确认规范仓库 `/mnt/hgfs/ub`，读取任务、交接、进度和决策文档。实际运行树与规范脚本 SHA 一致 `ec8e84acf35023abe3155d4e18d491fe7e2d01339df266347c55a56fda621d82`，真实 YAML SHA 一致 `8736785a6d70b08da491302515457b247d30d535f975bcf0d52228f1359d8b8f`。
+- 只读前置确认 CAN RX 三秒增量 `7279`，`gs_usb` 已加载，磁盘使用率 34%、可用约 50 GB；普通 PTY 因 `no new privileges` 无法运行脚本内 sudo，特权会话复用同一脚本后通过该门。未执行 USB reset、xHCI 重载、ResetPiper 或 MasterSlaveConfig。
+- 实际命令为 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`。特权会话通过 `[1/7]..[7/7]`、深度/RGB首帧和TF自体过滤门；观测轨迹由适配器接受，进入 `OBSERVE_POSE_REACHED -> SEARCH -> ALIGN -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。这次没有在搜索阶段发生CAN停流。
+- 目标检测器记录 `mirror_x=false` 的软件RGB-D配准并报告紫色目标；状态机确认目标后进入抓取执行器。抓取执行器通过适配器发出50mm/1N.m张爪请求，但三秒后安全停止：`FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED before=0.045900 current=0.045900 target=0.050000`。未发送预抓取、下降、闭爪、抬升、释放或失能；脚本保持当前位置和硬件使能。
+- 驱动日志明确记录三次 `Calling GripperCtrl: angle=50000 effort=1000 code=0x01 set_zero=0x00`；只收CAN日志收到17357条`0x3A7`，角度持续约45900（45.9mm）、状态0x40。当前SocketCAN local loopback关闭，因此该被动抓包不能观察0x159 TX回显；驱动调用日志和3A7不变共同证明50mm请求已到ROS/SDK层但实体反馈未达到50mm。CAN RX三秒仍增长约7275、bus error=0。
+- 依据实测实体可达端点45.9mm和方块实测宽度约24–30mm，把真实 YAML 的 `gripper_open_value` 从50000改为45000；保留3mm反馈门，仍经唯一 `piper_jog_adapter` 和供应商 `GripperCtrl`，不删除反馈判断。规范/实际配置 SHA 均为 `34398dbb55572cdec697805db97fdada2fbde3189b07d0d2c89b6f14c745a417`。
+- 实际工作区 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 成功；部署一致性检查通过，`python3 -m pytest .../test_real_grasp_replay.py` 为 `8 passed`。本轮提交前尚未用45mm目标重新跑实体后半段，不能声称抓取完成。
+
+### 下一步
+
+- 提交本轮配置和回归断言后，重新执行同一默认特权一键脚本。验收顺序为 `GRASP_READY -> GRIPPER_OPEN_FEEDBACK_CONFIRMED -> TOP_DOWN_PREGRASP -> DESCENT -> GRIPPER_CLOSE_FEEDBACK_CONFIRMED -> LIFT -> RELEASE -> SAFE_RETREAT -> RESET_COMPLETE -> confirmed disable`；任一真实反馈失败立即保持使能并记录。

@@ -101,7 +101,7 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["auto_execute"] is True
     assert grasp["depth_only_target_enabled"] is False
     assert grasp["static_target_lock"] is True
-    assert grasp["gripper_open_value"] == 50000
+    assert grasp["gripper_open_value"] == 45000
     assert grasp["gripper_close_value"] == 0
     assert grasp["gripper_position_tolerance_m"] == 0.003
     assert grasp["top_down_grasp_enabled"] is True
