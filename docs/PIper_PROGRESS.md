@@ -1979,3 +1979,10 @@
 - 实际配置`color_mirror_horizontal=true`仅翻转注册时源RGB的X采样，不对整幅debug图做`cv::flip`。如果该假设错，目标颜色会落到错误深度侧；不能因此把控制器误差符号直接反向。
 - 只读实测`can0`为`UP/ERROR-ACTIVE`、1 Mbps/0.750，3秒被动收到`0x252..0x256`与`0x3A0..0x3A7`，CAN TX仍为21171。此时ROS仅`/parameter_events`和`/rosout`，无机械臂/控制节点。为静态采图，仅启动已登记的depth-only Astra、V4L2 320x240@5Hz RGB与一个检测器；日志确认两路有效输入，`mapped=171428 mirror_x=true`，结果仍为`PURPLE_CUBE target LOST`。未启动PiPER驱动、MoveIt、Servo、适配器或搜索，未发布任何控制命令。
 - 因目标未在当前静止视野内出现，true/false镜像A/B无法判断物理左右对应。已停止采图组件，ROS恢复仅默认话题，未改变配置。下一步仍是固定相机/机械臂、方块在画面中可见时成对核验原始RGB、配准图和深度目标X；核验完成前不恢复ALIGN。
+### 2026-10-09：按用户授权仅返回观测姿态并在搜索前停止
+
+- 用户授权范围为“仅返回观测姿态”；本轮未进入 SEARCH、ALIGN 或抓取，也未执行复位/失能服务。为遵守该边界，在高级控制器 PREPARE 完成观测轨迹后加入可选 `stop_after_observe` 门：开启时发布保持/零速停止并转到 `STOPPED`，原因 `OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`，早于 SEARCH 状态转换；实体 profile 默认仍为 `false`，不改变正常一键完整搜索路径。
+- 运行默认一键组件至 `[7/7]` 后，仅对本次运行把控制器参数设为 `stop_after_observe=true`，启用 PiPER 和现有唯一适配器并调用现有 PREPARE。控制器日志先记录观测轨迹 11 点、36.8 秒并由适配器接受，随后明确记录 `STATE -> STOPPED (OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)`；本次日志没有 SEARCH 轨迹。停止脚本时保护清理保持当前位置，未调用 `DisableArm` 或 `ResetPiper`。
+- 到达时 `/joint_states` 六轴为约 `[0.00689, 0.98114, -0.74960, 0, 0.30803, 0] rad`，速度均为0；与观测目标 `[0,0.98,-0.75,0,0.30,0]` 的最大偏差约0.0081 rad。服务状态/原因话题也分别确认 `STOPPED` 和 `OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`。CAN 当时为 ERROR-ACTIVE、RX持续增加、bus errors/drop为0。
+- 当前环境构建 `brain_robot_pick_place` 与 `brain_robot_ball_pick` 成功；`brain_robot_pick_place` 测试及聚合结果为16 tests、0 errors、0 failures、0 skipped。测试确认 profile 默认不开启该停止门，并确认停止门位于 SEARCH 转换之前。
+- 该一次观测动作只验证“当前姿态→观测姿态”和授权停止边界，不能据此宣称搜索或镜像问题已解决。此前静态相机视野未见紫色方块，因此当前没有可判定左右映射的静止目标A/B证据；镜像参数仍未确认。下一步需在不动机械臂的静态可见方块画面下核对原始RGB、配准图及 true/false 映射，再由用户授权后恢复搜索。当前停止在观测姿态，不再发运动命令。

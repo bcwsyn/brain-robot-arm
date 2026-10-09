@@ -78,6 +78,12 @@ def test_real_profile_is_one_shot_locked_grasp():
     depth_probe = profile["depth_cube_probe"]["ros__parameters"]
     assert visual["backend"] == "piper"
     assert visual["real_motion_enabled"] is True
+    assert visual["stop_after_observe"] is False
+    controller = CONTROLLER.read_text(encoding="utf-8")
+    hold_gate = controller.index('ParameterOr<bool>("stop_after_observe", false)')
+    hold_state = controller.index("OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH")
+    search_transition = controller.index('SetStateLocked(ControlState::SEARCH, "OBSERVE_POSE_REACHED")')
+    assert hold_gate < hold_state < search_transition
     assert visual["direct_grasp_after_align"] is True
     assert visual["depth_only_target_enabled"] is False
     assert visual["depth_only_direct_grasp_after_lock"] is True

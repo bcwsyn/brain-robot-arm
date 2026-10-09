@@ -926,6 +926,14 @@ private:
         SetStateLocked(ControlState::STOPPED, "RESET_COMPLETE");
         return;
       }
+      if (ParameterOr<bool>("stop_after_observe", false)) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (cancel_requested_ || state_ != ControlState::PREPARE) {
+          return;
+        }
+        StopLocked(ControlState::STOPPED, "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH");
+        return;
+      }
     } else {
       const auto move_group = move_group_;
       if (!move_group) {

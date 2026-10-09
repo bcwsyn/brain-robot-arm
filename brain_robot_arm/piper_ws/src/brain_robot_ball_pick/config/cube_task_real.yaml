@@ -8,6 +8,9 @@ visual_search_controller:
     # configuration (0.135/0.108 rad/s; alignment limit 0.135 rad/s).
     execute_prepare: true
     skip_prepare: false
+    # One-shot physical observation positioning can stop here before SEARCH.
+    # The normal one-key task keeps the full search path enabled by default.
+    stop_after_observe: false
     direct_grasp_after_align: true
     # The depth probe has already proven a static base_link target across
     # three frames. Hand that fixed 3-D model directly to the existing
