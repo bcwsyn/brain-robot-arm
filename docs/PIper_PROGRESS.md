@@ -1,5 +1,13 @@
 # PiPER 调试进度
 
+### 2026-10-10：自动搜索复核与夹爪“曾经闭合”说法的证据边界
+
+- 实际运行 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh` 通过 `[7/7]`、当前姿态到观测姿态、`OBSERVE_POSE_REACHED -> SEARCH`；搜索阶段持续接受 41/42 点的 `FULL_SEARCH` 轨迹并多次改变 J1/J5 搜索相位。脚本在其 900 秒抓取等待门超时后按保护路径停止搜索并 disarm 适配器，未调用 `DisableArm`、`ResetPiper` 或抓取命令。
+- 深度探针在运行中多次发布 `DEPTH_CUBE_CANDIDATE_VALID stable=1/1`，例如 `base_link=(0.212,-0.215,0.143) m`、尺寸约 `0.022x0.030 m`；但实体默认配置明确 `depth_only_target_enabled=false`，这些候选只作诊断，不会越过紫色/矩形 RGB 目标门。因此本轮没有 `GRASP_READY`，也没有闭爪反馈可供验收。
+- 检查 `/home/johnwick/brain_robot_logs/cube_detector.log`：检测器启动后只报告一次 `PURPLE_CUBE target LOST`。独立保存的真实 `/dev/video0` RGB 帧为 `320x240`，BGR 均值约 `(32.1,32.8,32.3)`、像素范围约 `14..71`，画面接近全黑；`/dev/video1` 明确不是 capture 节点。Astra 日志同时显示 OpenNI 彩色流未启用。由此本轮的视觉阻断是 RGB 输入未提供可分割的紫色场景，不是夹爪碰撞或搜索轨迹未执行；未凭黑图修改镜像参数。
+- 夹爪实际反馈仍为 `0.045900 m`（45.9 mm）、状态字 `0x40`（驱动使能、未标记归零），用户最新确认“未完全闭合”。历史记录中没有 `GRIPPER_CLOSE_FEEDBACK_CONFIRMED`；所谓“之前能闭合”只对应早期适配器/SDK 调用或驱动曾崩溃前后的命令路径，并无实体角度从 45.9 mm 到 0 mm 的反馈证据。当前不能写入 `0xAE`，也不能把未发生的抓取动作解释成夹爪曾经闭合。
+- 本轮静态相机采样进程已停止；保留以上日志和数值作为下一次最小动作的基线。下一步先修复/确认 RGB 视频数据面（不启动运动），再用同一默认 RGB-D 门控复跑；夹爪只在真正到达闭爪阶段后重新核对反馈，不再重复延长闭爪帧或写未知零点。
+
 ### 2026-10-09：第二次实体完整链路到闭爪门，准备延长官方命令保持
 
 ### 2026-10-09：80帧闭爪保持复核仍无位移
