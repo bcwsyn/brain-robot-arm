@@ -1,5 +1,18 @@
 # PiPER 调试进度
 
+### 2026-10-10 12:16–12:34：实施中心优先搜索与分段边界修复，完成隔离控制器回放
+
+- 起始HEAD`74991a1`，用户确认修改搜索顺序。保留唯一实体`cube_task_real.yaml`、既有MoveIt搜索分段与`piper_jog_adapter`，不另建运动程序、不混备用YAML、不扩大关节搜索范围、不改颜色/深度授权、不启用腕部Octomap。开始/收尾真实主机2秒RX均946260→946260，TX21139、errors/dropped0；本轮无新鲜实体反馈，因此**未再次实机到观测位或发送实体运动**，没有复位/失能/刷固件/主从/未知夹爪零点写入。
+- 实体YAML启用`initial_search_center_first=true`、`initial_search_hold_s=2.0`。观测完成后先保持六轴当前位置、给RGB-D稳定识别窗口；有效目标判断始终优先，可立即取消搜索转ALIGN，不强制先扫。仍无有效目标才访问中心附近J1±0.08rad、J5±0.12rad的8个小范围点（必要时按原0.20rad分段）；然后`CENTER_RETURN`回到同一实测中心，确认到达后才`CENTER_RETURN_CONFIRMED_EXPAND_EXISTING_FULL_SEARCH`。搜索大范围仍J1[-1.35,1.35]/J5[-0.60,0.95]，左右只是现场视角，不擅自等同关节正负方向。新的中心阶段不受旧local 5秒超时提前扩扫；规划失败只做原有次数内重试，未到达/未回中心不能靠超时假称完成，停止于明确CENTER_SEARCH故障。
+- 分段修复：先限制desired目标到本次搜索区域，再按最大步长接近；full阶段的J5目标设为真实上下边界，不再current±0.20越界折返。边界覆盖按实测到达/跨过方向判定，不因随机GOAL误差停在边界外反复等待。新增每段target_J1/J5及实测REACHED日志，不把trajectory accepted当成双侧覆盖。
+- 第一次隔离回放真实控制器发现已有额外缺口：普通RRT使用0.01rad goal tolerance，首个中心规划终点J1≈0.08838/J5≈0.29120，非搜索轴也变动，回放失败`Non-search axis moved`。据此在**规划请求**增加J2/J3/J4/J6保持路径约束±0.001rad，搜索goal tolerance收紧到min(反馈到达容差,0.0001rad)，以每次搜索初始化实测位置作为非搜索轴锚点；规划后清除约束，不篡改已规划轨迹来绕过碰撞检查。这些是模型规划容差，不宣称实体具有0.0001rad跟踪精度；实际反馈到达门仍0.01rad。
+- 一键脚本新增抓取尚未启动前的visual FAULT门，直接报告控制器reason并保护退出，避免中心搜索失败但grasp还在IDLE时空等900秒；支持FAULT字符串的单双引号。正常释放路径仍先回位后失能，新增9项启动脚本测试包含故障不回位/不失能、成功先回位再失能。
+- 构建/同步：`source /opt/ros/humble/setup.bash; source /home/johnwick/piper_ros/install/setup.bash; PYTHONNOUSERSITE=1 colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick --parallel-workers 1 --cmake-args -DCMAKE_BUILD_TYPE=Release`最终两包返回0。规范/运行控制器SHA`5e89ddeee132568e181f2ec681abc78482720de24a66d2746448c2e0ec65c0b5`；已安装/规范YAML SHA`3528397f3c0f6b0e047b9227cb642de7aa46a7f9a2ed833403d47310090fd17a`；运行/规范一键脚本SHA`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`，安装二进制含CENTER_*日志。
+- 验证：`bash -n`与指定/tmp缓存的py_compile返回0；CTest5套全部通过（5项抓取几何、8项中心搜索gtest，7项适配器/9项抓取回放/9项脚本pytest），`colcon test-result --test-result-base build/brain_robot_pick_place --verbose`汇总41 tests、0 errors/failures/skipped（含结果包装，实际38项）。无实体测试不会证明紫色方块检测/物理执行成功。
+- 新增可复现`test/replay_center_search{.py,.launch.py}`，复用已有`review_surface_grasp_plan.launch.py`的MoveIt/URDF/实体限位；硬要求ROS_DOMAIN_ID=78、allow_trajectory_execution=false，域内禁止PiPER/适配器/Servo/抓取执行器。仅发布合成/joint_states、合成target_valid/pixel_error并捕获控制器轨迹；没有joint_commands发布者、CAN或真实相机。假反馈瞬时跟踪端点，**不模拟真实动力学/电机跟踪/实体桌面碰撞**。完整回放通过：中心小扫→实测回中心→原full扫描，J1端点约-1.349951到+1.350011rad、J5约0.950rad，无旧1.10目标；中心合成有效目标在任何非零扫动前转TARGET_ACQUIRED；反馈冻结转JOINT_STATE_TIMEOUT而不进入full。
+- 第二次回放先通过双侧覆盖/目标优先，但过期反馈场景止于CENTER_SEARCH_NOT_REACHED而非预期0.5秒超时；原因是测试launch的后置wildcard覆盖没有替换node-specific YAML的25秒值。已修正**测试配置合并**并回读参数`0.5,true,2.0`，生产25秒值未更改；最终三个场景全部通过、回放返回0。最终证据`/tmp/piper_center_search_replay_verified.log`含三个PASS和ALL_PASS，旧部分结果保留`/tmp/piper_center_search_replay.log`；ROS日志`/home/johnwick/.ros/log/2026-10-10-12-31-23-917776-johnwick-virtual-machine-143194/`。三次隔离MoveIt在SIGINT析构时仍有既有2.5.9退出-11，控制器/robot_state_publisher正常退出，收尾无相关进程残留；不把它误写为规划失败或实体故障。
+- 下一步首条命令在真实主机`ip -statistics link show can0`并作短RX差分，只有恢复持续反馈后直接运行默认`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`，核对CENTER_HOLD→目标立即ALIGN或CENTER_LOCAL_SCAN→CENTER_RETURN→full实际轨迹；再验证已部署表面夹入/落点/夹爪闭合。无需重复已完成基线或另等按键授权。总目标尚未完成，CAN冻结、实体检测及夹爪46.2mm响应仍独立待验证。
+
 ### 2026-10-10：启动修复通过，复发RX停滞与单侧搜索逻辑核对
 
 - 在`50c33fe`修正版同一默认自动命令下，`1791605387.558474302`进入PREPARE，12点40.4秒轨迹被接受；`1791605427.564144755`实际`SEARCH(OBSERVE_POSE_REACHED)`。启动确认窗口修复已通过实体运行，不再把已接受轨迹误判为服务失败。随后适配器连续接受41/42点FULL_SEARCH段；未进入ALIGN/GRASP_READY，故本轮没有新表面下降、闭爪、抬升或释放的实机证据。

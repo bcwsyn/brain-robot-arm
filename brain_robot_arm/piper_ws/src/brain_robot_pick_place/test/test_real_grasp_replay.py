@@ -80,11 +80,26 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert visual["real_motion_enabled"] is True
     assert visual["stop_after_observe"] is False
     assert visual["stop_after_target_acquired"] is False
+    assert visual["initial_search_center_first"] is True
+    assert visual["initial_search_hold_s"] == 2.0
     controller = CONTROLLER.read_text(encoding="utf-8")
     hold_gate = controller.index('ParameterOr<bool>("stop_after_observe", false)')
     hold_state = controller.index("OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH")
     search_transition = controller.index('SetStateLocked(ControlState::SEARCH, "OBSERVE_POSE_REACHED")')
     assert hold_gate < hold_state < search_transition
+    prepare = controller[controller.index("void PrepareWorker()"):
+                         controller.index("bool CallServoService(")]
+    assert 'center_first_search_.Reset(' in prepare
+    assert 'PublishHoldTrajectoryLocked();' in prepare
+    search_handler = controller[controller.index("void HandleSearchLocked(bool local)"):
+                                controller.index("void HandleLastPathReacquireLocked()")]
+    assert search_handler.index("TargetFreshLocked()") < search_handler.index("StepCenterFirstSearchLocked()")
+    assert "CENTER_SEARCH_NOT_REACHED_NO_FULL_SWEEP" in search_handler
+    assert "search::BoundedStep(" in controller
+    assert "move_group->setPathConstraints(hold_constraints)" in controller
+    assert "constraint.tolerance_above = constraint.tolerance_below = 0.001" in controller
+    assert "std::min(joint_position_tolerance_, 0.0001)" in controller
+    assert "CENTER_RETURN_CONFIRMED_EXPAND_EXISTING_FULL_SEARCH" in controller
     acquired_gate = 'ParameterOr<bool>("stop_after_target_acquired", false)'
     acquired_reason = '"TARGET_ACQUIRED_STOPPED_BEFORE_ALIGN"'
     for handler in ("HandleSearchLocked", "HandleLastPathReacquireLocked"):

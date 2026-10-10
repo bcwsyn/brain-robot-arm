@@ -65,11 +65,13 @@ ament_target_dependencies(cup_detector_node
 target_link_libraries(cup_detector_node ${OpenCV_LIBRARIES})
 
 add_executable(visual_search_controller src/visual_search_controller.cpp)
+target_include_directories(visual_search_controller PRIVATE include)
 ament_target_dependencies(visual_search_controller
   control_msgs
   geometry_msgs
   moveit_core
   moveit_ros_planning_interface
+  moveit_msgs
   rclcpp
   sensor_msgs
   std_msgs
@@ -149,6 +151,8 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   ament_add_gtest(grasp_geometry_test test/test_grasp_geometry.cpp)
   target_include_directories(grasp_geometry_test PRIVATE include)
+  ament_add_gtest(center_search_test test/test_center_search.cpp)
+  target_include_directories(center_search_test PRIVATE include)
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_pytest_test(
     piper_jog_adapter_test
@@ -158,6 +162,7 @@ if(BUILD_TESTING)
     real_grasp_replay_test
     test/test_real_grasp_replay.py
   )
+  ament_add_pytest_test(startup_script_test test/test_startup_script.py)
 endif()
 
 ament_package()

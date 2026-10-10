@@ -802,7 +802,7 @@ disable_after_confirmed_reset() {
 }
 
 wait_for_grasp_release_and_finalize() {
-  local deadline=$((SECONDS + ${BRAIN_ROBOT_GRASP_WAIT_SECONDS:-900})) status
+  local deadline=$((SECONDS + ${BRAIN_ROBOT_GRASP_WAIT_SECONDS:-900})) status visual_status visual_reason
   echo "[自动] 等待目标锁定、预抓取、闭爪、抬升、释放和撤离完成..."
   while (( SECONDS < deadline )); do
     status=$(timeout 4s ros2 topic echo --once \
@@ -820,6 +820,18 @@ wait_for_grasp_release_and_finalize() {
     fi
     if grep -Fq 'FAULT_' <<<"$status"; then
       echo "[抓取] 抓取执行器报告故障：${status//$'\n'/ }" >&2
+      return 1
+    fi
+    # Search can fault BEFORE the grasp executor starts. Surface its reason
+    # instead of spending the 900-second grasp deadline waiting at IDLE.
+    visual_status=$(timeout 4s ros2 topic echo --once \
+      --qos-reliability reliable --qos-durability transient_local \
+      /brain_robot_visual_control/state 2>&1) || visual_status=""
+    if grep -Eq "^[[:space:]]*data: ['\"]?FAULT['\"]?[[:space:]]*$" <<<"$visual_status"; then
+      visual_reason=$(timeout 4s ros2 topic echo --once \
+        --qos-reliability reliable --qos-durability transient_local \
+        /brain_robot_visual_control/reason 2>&1) || visual_reason="reason unavailable"
+      echo "[搜索] 控制器报告故障：${visual_reason//$'\n'/ }" >&2
       return 1
     fi
     sleep 1

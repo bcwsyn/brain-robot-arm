@@ -60,3 +60,36 @@ def test_log_writer_stays_append_after_guard_truncation(tmp_path):
     finally:
         os.close(descriptor)
     assert path.read_bytes() == b"new CAN evidence\n"
+
+
+@pytest.mark.parametrize("grasp,visual,expected,returns_home", [
+    ("IDLE", "FAULT", 1, False),
+    ("IDLE", "'FAULT'", 1, False),
+    ("IDLE", '"FAULT"', 1, False),
+    ("FAULT_GRIPPER", "SEARCH", 1, False),
+    ("RELEASE_COMPLETE_HOLDING_SAFE_RETREAT", "GRASP_READY", 0, True),
+])
+def test_early_search_fault_does_not_wait_at_idle_or_disable(tmp_path, grasp, visual, expected, returns_home):
+    trace = tmp_path / "trace"
+    mock = r'''
+timeout() { shift; "$@"; }
+ros2() {
+  case "$*" in
+    *brain_robot_grasp/state*) printf 'data: %s\n' "$GRASP";;
+    *visual_control/state*) printf 'data: %s\n' "$VISUAL";;
+    *visual_control/reason*) printf 'data: CENTER_SEARCH_NOT_REACHED_NO_FULL_SWEEP\n';;
+  esac
+}
+reset_zero_sequence() { printf 'return_home\n' >> "$TRACE"; }
+disable_after_confirmed_reset() { printf 'disable_after_home\n' >> "$TRACE"; }
+'''
+    result = subprocess.run(["bash", "-c", mock + function("wait_for_grasp_release_and_finalize") +
+                             "\nwait_for_grasp_release_and_finalize"], capture_output=True,
+                            env={**os.environ, "TRACE": str(trace), "GRASP": grasp,
+                                 "VISUAL": visual, "BRAIN_ROBOT_GRASP_WAIT_SECONDS": "2"}, timeout=5)
+    assert result.returncode == expected
+    assert trace.exists() == returns_home
+    if returns_home:
+        assert trace.read_text().splitlines() == ["return_home", "disable_after_home"]
+    elif grasp == "IDLE":
+        assert b"CENTER_SEARCH_NOT_REACHED_NO_FULL_SWEEP" in result.stderr

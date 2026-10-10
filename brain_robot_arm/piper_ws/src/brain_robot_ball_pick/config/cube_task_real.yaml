@@ -52,6 +52,11 @@ visual_search_controller:
     search_bounds_relative_to_start: false
     local_horizontal_range: 0.08
     local_vertical_range: 0.12
+    # Let the stationary wrist image stabilize BEFORE any scan. Then visit
+    # both sides of a small centered scan, return to its measured center,
+    # and only then use the existing full-search bounds (never enlarge them).
+    initial_search_center_first: true
+    initial_search_hold_s: 2.0
     # On loss, reproject the recent base_link target history into the current
     # wrist-camera frame. This replaces the former fixed J1/J5 direction
     # jump with at most two bounded prediction-guided reacquisition moves.

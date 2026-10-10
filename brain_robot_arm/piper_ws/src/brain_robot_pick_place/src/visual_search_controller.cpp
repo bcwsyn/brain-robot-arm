@@ -17,11 +17,15 @@
 #include <utility>
 #include <vector>
 
+#include "brain_robot_pick_place/center_search.hpp"
+
 #include <builtin_interfaces/msg/duration.hpp>
 #include <control_msgs/msg/joint_jog.hpp>
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <geometry_msgs/msg/vector3_stamped.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit_msgs/msg/constraints.hpp>
+#include <moveit_msgs/msg/joint_constraint.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
@@ -218,6 +222,8 @@ private:
       "full_search_vertical_range", 0.10);
     local_horizontal_range_ = ParameterOr<double>("local_horizontal_range", 0.08);
     local_vertical_range_ = ParameterOr<double>("local_vertical_range", 0.06);
+    initial_search_center_first_ = ParameterOr<bool>("initial_search_center_first", false);
+    initial_search_hold_s_ = ParameterOr<double>("initial_search_hold_s", 2.0);
     last_path_prediction_horizon_s_ = ParameterOr<double>(
       "last_path_prediction_horizon_s", 0.25);
     last_path_prediction_max_speed_m_s_ = ParameterOr<double>(
@@ -679,6 +685,7 @@ private:
       horizontal_search_min_ >= horizontal_search_max_ ||
       vertical_search_min_ >= vertical_search_max_ ||
       local_horizontal_range_ <= 0.0 || local_vertical_range_ <= 0.0 ||
+      !std::isfinite(initial_search_hold_s_) || initial_search_hold_s_ < 0.0 ||
       full_search_horizontal_range_ <= 0.0 || full_search_vertical_range_ <= 0.0 ||
       horizontal_search_speed_ <= 0.0 || vertical_search_speed_ <= 0.0 ||
       prepare_execution_timeout_s_ <= 0.0 || prepare_max_joint_step_rad_ <= 0.0 ||
@@ -987,7 +994,22 @@ private:
         StopLocked(ControlState::FAULT, "SEARCH_JOINT_STATE_MISSING");
         return;
       }
-      InitializeSearchLocked(false, *horizontal, *vertical);
+      if (!std::isfinite(*horizontal) || !std::isfinite(*vertical)) {
+        StopLocked(ControlState::FAULT, "CENTER_SEARCH_NONFINITE_JOINT_STATE");
+        return;
+      }
+      InitializeSearchLocked(false, *horizontal, *vertical, !initial_search_center_first_);
+      if (initial_search_center_first_) {
+        center_first_search_.Reset(
+          {*horizontal, *vertical},
+          {search_horizontal_limit_min_, search_horizontal_limit_max_,
+            search_vertical_limit_min_, search_vertical_limit_max_},
+          local_horizontal_range_, local_vertical_range_, initial_search_hold_s_,
+          std::chrono::duration<double>(SteadyClock::now().time_since_epoch()).count());
+        center_search_detail_.clear();
+        PublishHoldTrajectoryLocked();
+        PublishControlDetailLocked("PHASE=CENTER_HOLD NO_SEARCH_SWEEP UNTIL_DETECTION_WINDOW");
+      }
       SetStateLocked(ControlState::SEARCH, "OBSERVE_POSE_REACHED");
     }
   }
@@ -1118,12 +1140,14 @@ private:
       StopLocked(ControlState::FAULT, "SEARCH_JOINT_STATE_MISSING");
       return true;
     }
-    const double horizontal_delta = std::clamp(
-      desired_horizontal - *horizontal, -search_planning_step_rad_, search_planning_step_rad_);
-    const double vertical_delta = std::clamp(
-      desired_vertical - *vertical, -search_planning_step_rad_, search_planning_step_rad_);
-    const double target_horizontal = *horizontal + horizontal_delta;
-    const double target_vertical = *vertical + vertical_delta;
+    const auto bounded_goal = search::Bounds{
+      search_horizontal_limit_min_, search_horizontal_limit_max_,
+      search_vertical_limit_min_, search_vertical_limit_max_}.Clamp(
+      {desired_horizontal, desired_vertical});
+    const double target_horizontal = search::BoundedStep(
+      *horizontal, bounded_goal.horizontal, search_planning_step_rad_);
+    const double target_vertical = search::BoundedStep(
+      *vertical, bounded_goal.vertical, search_planning_step_rad_);
     if (Reached(*horizontal, target_horizontal) && Reached(*vertical, target_vertical)) {
       return true;
     }
@@ -1134,6 +1158,13 @@ private:
       return true;
     }
     std::unordered_map<std::string, double> start_positions = joint_positions_;
+    // Search may vary only J1/J5. Anchor the remaining goal/path coordinates
+    // for the whole scan instead of accumulating random goal-tolerance drift.
+    for (const auto & held : search_hold_positions_) {
+      if (held.first != horizontal_joint_ && held.first != vertical_joint_) {
+        start_positions[held.first] = held.second;
+      }
+    }
     search_plan_active_ = true;
     search_plan_done_ = false;
     search_plan_cancel_ = false;
@@ -1174,8 +1205,21 @@ private:
         move_group->setNumPlanningAttempts(search_planning_attempts_);
         move_group->setMaxVelocityScalingFactor(search_planning_velocity_scaling_);
         move_group->setMaxAccelerationScalingFactor(search_planning_acceleration_scaling_);
-        move_group->setGoalJointTolerance(joint_position_tolerance_);
+        move_group->setGoalJointTolerance(std::min(joint_position_tolerance_, 0.0001));
         if (move_group->setJointValueTarget(target)) {
+          moveit_msgs::msg::Constraints hold_constraints;
+          for (const auto & joint_name : joint_names_) {
+            if (joint_name == horizontal_joint_ || joint_name == vertical_joint_) {
+              continue;
+            }
+            moveit_msgs::msg::JointConstraint constraint;
+            constraint.joint_name = joint_name;
+            constraint.position = target.at(joint_name);
+            constraint.tolerance_above = constraint.tolerance_below = 0.001;
+            constraint.weight = 1.0;
+            hold_constraints.joint_constraints.push_back(constraint);
+          }
+          move_group->setPathConstraints(hold_constraints);
           MoveGroupInterface::Plan plan;
           if (static_cast<bool>(move_group->plan(plan)) && !search_plan_cancel_ &&
             !plan.trajectory_.joint_trajectory.points.empty())
@@ -1211,6 +1255,7 @@ private:
               failure_reason = "SEARCH_PLAN_JOINT_SET_INVALID";
             }
           }
+          move_group->clearPathConstraints();
         } else {
           failure_reason = "SEARCH_PLAN_TARGET_REJECTED";
         }
@@ -1251,7 +1296,22 @@ private:
             std::max(search_segment_timeout_s_, duration_s * 2.0 + 1.0)));
         search_segment_deadline_ = SteadyClock::now() + segment_timeout;
         PublishControlDetailLocked("SEARCH_PLAN_ACCEPTED source=" + source);
+        std::ostringstream detail;
+        detail << std::fixed << std::setprecision(4)
+               << "SEARCH_SEGMENT source=" << source << " target_J1_rad=" << target_horizontal
+               << " target_J5_rad=" << target_vertical;
+        PublishControlDetailLocked(detail.str());
       } else if (!success && !search_plan_cancel_ && IsSearchState(state_)) {
+        if (center_first_search_.Active()) {
+          if (++center_search_plan_failures_ >= search_planning_attempts_) {
+            StopLocked(ControlState::FAULT, "CENTER_SEARCH_PLAN_FAILED_NO_FULL_SWEEP");
+          } else {
+            search_plan_retry_time_ = SteadyClock::now() + std::chrono::milliseconds(500);
+            PublishControlDetailLocked(failure_reason);
+          }
+          search_plan_done_ = true;
+          return;
+        }
         search_plan_retry_time_ = SteadyClock::now() + std::chrono::milliseconds(500);
         search_horizontal_direction_ *= -1;
         PublishControlDetailLocked(failure_reason);
@@ -1290,6 +1350,7 @@ private:
 
   void CancelPlannedSearchLocked()
   {
+    center_first_search_.Cancel();
     search_plan_cancel_ = true;
     search_plan_active_ = false;
     search_trajectory_active_ = false;
@@ -1336,6 +1397,12 @@ private:
           Reached(*vertical, search_segment_vertical_target_))
         {
           search_trajectory_active_ = false;
+          center_search_plan_failures_ = 0;
+          std::ostringstream detail;
+          detail << std::fixed << std::setprecision(4)
+                 << "SEARCH_SEGMENT_REACHED measured_J1_rad=" << *horizontal
+                 << " measured_J5_rad=" << *vertical;
+          PublishControlDetailLocked(detail.str());
         } else if (SteadyClock::now() >= search_segment_deadline_) {
           // A reachable target that stalls must not leave the real arm parked
           // at one search angle.  Continue the bounded sweep only while the
@@ -1344,6 +1411,10 @@ private:
           if (!JointStateFreshLocked()) {
             CancelPlannedSearchLocked();
             StopLocked(ControlState::FAULT, "SEARCH_SEGMENT_FEEDBACK_TIMEOUT");
+            return;
+          }
+          if (center_first_search_.Active()) {
+            StopLocked(ControlState::FAULT, "CENTER_SEARCH_NOT_REACHED_NO_FULL_SWEEP");
             return;
           }
           search_trajectory_active_ = false;
@@ -1355,6 +1426,10 @@ private:
           return;
         }
       }
+    }
+    if (!local && center_first_search_.Active()) {
+      StepCenterFirstSearchLocked();
+      return;
     }
     const bool search_timeout_reached = elapsed >= timeout;
     const bool search_complete =
@@ -1482,6 +1557,45 @@ private:
     return false;
   }
 
+  void StepCenterFirstSearchLocked()
+  {
+    const auto horizontal = CurrentJointLocked(horizontal_joint_);
+    const auto vertical = CurrentJointLocked(vertical_joint_);
+    if (!horizontal || !vertical || !std::isfinite(*horizontal) || !std::isfinite(*vertical)) {
+      StopLocked(ControlState::FAULT, "CENTER_SEARCH_JOINT_STATE_MISSING");
+      return;
+    }
+    const auto action = center_first_search_.Tick(
+      std::chrono::duration<double>(SteadyClock::now().time_since_epoch()).count(),
+      {*horizontal, *vertical}, joint_position_tolerance_);
+    std::ostringstream detail;
+    detail << std::fixed << std::setprecision(4)
+           << "PHASE=" << search::PhaseName(action.phase) << " waypoint=" << action.index
+           << " target_J1_rad=" << action.target.horizontal
+           << " target_J5_rad=" << action.target.vertical;
+    if (detail.str() != center_search_detail_) {
+      center_search_detail_ = detail.str();
+      PublishControlDetailLocked(center_search_detail_);
+    }
+    if (action.phase == search::CenterPhase::HOLD) {
+      return;
+    }
+    if (action.phase == search::CenterPhase::COMPLETE) {
+      // Full search can begin ONLY after measured return to the same center.
+      InitializeSearchLocked(false, *horizontal, *vertical);
+      PublishControlDetailLocked("CENTER_RETURN_CONFIRMED_EXPAND_EXISTING_FULL_SEARCH");
+      return;
+    }
+    if (RequestPlannedSearchLocked(
+        action.target.horizontal, action.target.vertical, search::PhaseName(action.phase)))
+    {
+      return;
+    }
+    PublishJointLocked(
+      VelocityToward(*horizontal, action.target.horizontal, horizontal_search_speed_),
+      VelocityToward(*vertical, action.target.vertical, vertical_search_speed_));
+  }
+
   void StepLocalSearchLocked(double horizontal, double vertical)
   {
     double horizontal_target = search_horizontal_direction_ > 0 ?
@@ -1521,7 +1635,9 @@ private:
     bool horizontal_boundary_hit = false;
     int horizontal_boundary_direction = 0;
 
-    if (Reached(horizontal, horizontal_target)) {
+    if (search::BoundaryReached(
+        horizontal, horizontal_target, search_horizontal_direction_, joint_position_tolerance_))
+    {
       horizontal_boundary_hit = true;
       horizontal_boundary_direction = search_horizontal_direction_;
       search_horizontal_direction_ *= -1;
@@ -1534,7 +1650,7 @@ private:
     switch (full_search_phase_) {
       case FullSearchPhase::DESCEND:
         search_vertical_direction_ = 1;
-        if (Reached(vertical, search_vertical_limit_max_)) {
+        if (search::BoundaryReached(vertical, search_vertical_limit_max_, 1, joint_position_tolerance_)) {
           full_search_phase_ = FullSearchPhase::BOTTOM_SCAN;
           search_vertical_direction_ = 0;
           ResetFullSearchCoverageLocked();
@@ -1561,7 +1677,7 @@ private:
 
       case FullSearchPhase::ASCEND:
         search_vertical_direction_ = -1;
-        if (Reached(vertical, search_vertical_limit_min_)) {
+        if (search::BoundaryReached(vertical, search_vertical_limit_min_, -1, joint_position_tolerance_)) {
           full_search_phase_ = FullSearchPhase::TOP_SCAN;
           search_vertical_direction_ = 0;
           ResetFullSearchCoverageLocked();
@@ -1590,9 +1706,13 @@ private:
     if (horizontal_boundary_hit || phase_changed) {
       PublishSearchDirectionLocked();
     }
-    const double planned_vertical_target = vertical_velocity == 0.0 ?
-      vertical : vertical + (vertical_velocity > 0.0 ? search_planning_step_rad_ :
-      -search_planning_step_rad_);
+    // Plan toward the actual phase boundary, not current +/- step. The common
+    // segment builder limits the step and lands the final partial step exactly
+    // at the boundary (e.g. 0.90 -> 0.95, never 1.10 -> 0.90 oscillation).
+    const double planned_vertical_target =
+      (full_search_phase_ == FullSearchPhase::DESCEND ||
+      full_search_phase_ == FullSearchPhase::BOTTOM_SCAN) ?
+      search_vertical_limit_max_ : search_vertical_limit_min_;
     if (RequestPlannedSearchLocked(horizontal_target, planned_vertical_target, "FULL_SEARCH")) {
       return;
     }
@@ -1962,8 +2082,12 @@ private:
     return true;
   }
 
-  void InitializeSearchLocked(bool local, double horizontal_center, double vertical_center)
+  void InitializeSearchLocked(
+    bool local, double horizontal_center, double vertical_center, bool publish_direction = true)
   {
+    center_first_search_.Cancel();
+    center_search_plan_failures_ = 0;
+    search_hold_positions_ = joint_positions_;
     search_is_local_ = local;
     if (local) {
       const double clamped_horizontal_center = std::clamp(
@@ -2008,7 +2132,9 @@ private:
       ResetFullSearchCoverageLocked();
     }
     search_start_time_ = SteadyClock::now();
-    PublishSearchDirectionLocked();
+    if (publish_direction) {
+      PublishSearchDirectionLocked();
+    }
   }
 
   void PublishSearchDirectionLocked()
@@ -2434,6 +2560,11 @@ private:
   double full_search_vertical_range_{0.10};
   double local_horizontal_range_{0.08};
   double local_vertical_range_{0.06};
+  bool initial_search_center_first_{false};
+  double initial_search_hold_s_{2.0};
+  search::CenterFirstSearch center_first_search_;
+  std::string center_search_detail_;
+  int center_search_plan_failures_{0};
   double last_path_prediction_horizon_s_{0.25};
   double last_path_prediction_max_speed_m_s_{0.40};
   double last_path_reacquire_max_joint_step_rad_{0.60};
@@ -2543,6 +2674,7 @@ private:
   int search_horizontal_direction_{1};
   int search_vertical_direction_{1};
   bool search_is_local_{false};
+  std::unordered_map<std::string, double> search_hold_positions_;
   FullSearchPhase full_search_phase_{FullSearchPhase::DESCEND};
   bool full_search_left_seen_{false};
   bool full_search_right_seen_{false};
