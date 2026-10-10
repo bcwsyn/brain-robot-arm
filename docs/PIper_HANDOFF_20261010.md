@@ -1,5 +1,13 @@
 # 2026-10-10 暂停交接：一键紫色方块实机抓取
 
+## 2026-10-10 20:18 最新复测：在[5/7]就绪阶段被CAN反馈停滞中止，未运动
+
+现行代码仍是按用户要求撤销颜色候选丢失停止门后的版本（commit `c7a86e9`）。本轮默认`AUTO_START=1`一键实测日志在`/home/johnwick/brain_robot_logs/onekey_reverify_host_20261010_2018/`：深度/RGB首帧通过、MoveIt加载、检测器报告过方块候选；卡在`[5/7]`完整MoveIt反馈/自体过滤TF检查，未到`[6/7]`、`[7/7]`，没有到观测、搜索或抓取运动阶段。
+
+主直接事件为`can_health.log`的`CAN_RX_STALLED_3S`；PiPER驱动记录反馈中断并抑制输出，5.37秒后恢复，adapter收到外部急停并转FAULT。深度探测同时报告camera-depth到`base_link` TF连接缺失或时间年龄超限。运行期具体阻断及命令见`docs/PIper_PROGRESS.md`首节。脚本清理后控制/相机进程已退出；事后`can0`仍UP/ERROR-ACTIVE、1Mbps/.750、1秒RX增加2334、错误/丢帧0；这个事后快照不代表运行中没有发生停滞。没有ResetPiper/DisableArm或运动目标。本轮未做第二次重跑。
+
+下一步先用该目录的`can_health.log`、`piper_driver.log`、`visual_stack.log`和相机日志确定RX停滞与TF不可用的触发情况，再继续同一默认入口；不可声称本轮已到观测姿态，也不要把目标检测到等同于SEARCH/抓取。
+
 ## 2026-10-10 20:14 最新状态：已按用户要求撤销颜色候选丢失停止门
 
 用户明确要求撤销`eed71ff`新增的“颜色候选丢失即停止”门并回到上一版。本轮已从规范源码及一键实际工作区`/home/johnwick/piper_ws`移除候选订阅/轮询/adapter disarm分支和实体YAML开关。规范/运行源码一致，并与`eed71ff`父版本哈希一致（执行器`9df895cfb6f05eaff96178e9d7ddb932f3b6778886cf4f73bccc1bb6a77e9f5c`；YAML`907e3d0608c8e7c6faf81482c9d4817dc67cf6ab5c14df2bebdb67705ecfb05c`）。两个ROS包重新构建成功，install执行器指向新构建版本；没有启动一键脚本，没有发送实体运动/夹爪命令。

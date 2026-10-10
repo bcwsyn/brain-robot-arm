@@ -1,5 +1,14 @@
 # PiPER 调试进度
 
+### 2026-10-10 20:16–20:18：恢复上一版后复测一键启动；在[5/7]就绪前被CAN反馈停滞中止
+
+- 起始HEAD为`c7a86e9`（颜色候选丢失停止门已撤销）。普通沙箱中的第一次启动在`[1/7]`因沙箱看不到`can0`、`sudo`受`no new privileges`限制而退出1；未触碰机械臂。随后用获准主机执行上下文运行同一默认自动流程：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_reverify_host_20261010_2018 /home/johnwick/start_brain_robot_cube_real.sh`。入口SHA仍为`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`，没有更改代码、配置或启动参数逻辑。
+- 主机执行中脚本复用`can0`（1 Mbps、sample-point 0.750，起始RX持续增长），磁盘33%/约51GB可用；深度与RGB均收到首帧，RGB-D软件配准启动，MoveIt加载成功，检测器后来报告`PURPLE_CUBE target DETECTED`。流程停在`[5/7] 检查完整 MoveIt 反馈和自体过滤 TF`，没有打印`[6/7]`、`[7/7]`，没有`OBSERVE_POSE_REACHED`、`SEARCH`或任何抓取状态，因此自动运动阶段未开始。主机运行返回143，脚本清理了所启动栈；日志显示没有`DisableArm`或`ResetPiper`。
+- 本轮直接阻断：`can_health.log`记`2026-10-10 20:17:30 CAN_RX_STALLED_3S: stop outputs and preserve enable`；驱动随后报告can0反馈丢失并抑制输出，5.37秒后恢复。适配器记录`PHYSICAL MOTION DISARMED: external emergency stop`，控制器到`FAULT(EOG_OR_EXTERNAL_EMERGENCY_STOP)`。CAN停滞的底层诱因尚未从本轮证据确定，不将它归因于磁盘或抓取执行器。
+- 同一启动中`depth_cube_probe`还记录相机深度帧到`base_link` TF连接缺失/年龄超过0.1秒（报告年龄1.252–3.109秒及future extrapolation）。这也是`[5/7]`就绪问题的直接证据，但本轮未判断其与RX停滞的因果关系。相机/检测器曾启动并报告候选，不代表TF/MoveIt就绪或已进入SEARCH。
+- 清理后只读检查：所有本轮控制/相机进程均退出；`can0`仍UP/ERROR-ACTIVE，1Mbps/.750，errors/dropped=0，1秒RX计数增加2334包。记录的是当前恢复状态，不抹去运行中曾停滞5.37秒的事实。未重新启动第二轮，未发关节/夹爪目标。日志目录：`/home/johnwick/brain_robot_logs/onekey_reverify_host_20261010_2018/`；完整终端首次沙箱失败发生在执行上下文不可访问CAN，并非真实启动结果。
+- 下一步仅依据这次日志定位CAN RX停滞事件及深度相机TF时间/连接异常，修复当前实际阻断后再运行同一入口；不恢复已撤销的颜色可见性门，不重复无新证据的完整启动，也不声称本轮达到观测姿态或抓取。
+
 ### 2026-10-10 20:14–20:15：按用户要求撤销颜色候选丢失停止门，恢复上一版抓取执行路径
 
 - 用户明确要求撤销我在`eed71ff`加入的“颜色候选丢失即中断预抓取/下降”门并回到上一步。本轮只撤销这一项：从`grasp_lift_executor.cpp`移除颜色候选订阅、可见性轮询与adapter disarm分支；从唯一实体`cube_task_real.yaml`移除`approach_visibility_required`。对齐锁定、MoveIt预抓取/下降、`piper_jog_adapter`、已有落点/夹爪反馈流程未改；本次没有启动机械臂或发实体命令。
