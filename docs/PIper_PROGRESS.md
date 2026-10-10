@@ -1,5 +1,11 @@
 # PiPER 调试进度
 
+### 2026-10-10 20:14–20:15：按用户要求撤销颜色候选丢失停止门，恢复上一版抓取执行路径
+
+- 用户明确要求撤销我在`eed71ff`加入的“颜色候选丢失即中断预抓取/下降”门并回到上一步。本轮只撤销这一项：从`grasp_lift_executor.cpp`移除颜色候选订阅、可见性轮询与adapter disarm分支；从唯一实体`cube_task_real.yaml`移除`approach_visibility_required`。对齐锁定、MoveIt预抓取/下降、`piper_jog_adapter`、已有落点/夹爪反馈流程未改；本次没有启动机械臂或发实体命令。
+- 规范源码与一键脚本使用的`/home/johnwick/piper_ws`源码SHA一致：执行器`9df895cfb6f05eaff96178e9d7ddb932f3b6778886cf4f73bccc1bb6a77e9f5c`，YAML`907e3d0608c8e7c6faf81482c9d4817dc67cf6ab5c14df2bebdb67705ecfb05c`；均与`eed71ff`父版本相同。`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick`通过（2包，50.2秒）；运行入口所用install执行器链接到新构建产物，二进制中不含候选丢失停车标记，install YAML SHA与源码一致。
+- 20:00历史实测仍如实保留：当时的旧版本确实在预抓取中途因颜色候选丢失停止，未到预抓取终点、未执行下降和闭爪。撤销的是代码门，不是这条历史事实；20:00记录中“应保留该门”的建议已被用户本轮明确指令取代。下一步按原一键主线复测预抓取是否完成，不另加候选丢失门或其他新流程。
+
 ### 2026-10-10 20:00–20:03：默认一键实机运行到 GRASP_READY；颜色可见门在预抓取途中提前停车
 
 - 起始规范仓库 HEAD `0986a75`；运行入口 `/home/johnwick/start_brain_robot_cube_real.sh` 与规范脚本 SHA-256 同为 `e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`。开始前无 PiPER/视觉/MoveIt 栈残留；根分区 33%，`sudo -n true` 返回0；can0 为 1 Mbps/sample-point 0.750、ERROR-ACTIVE，2秒 RX `63335095→63339957`（+4862），errors/dropped=0；USB-CAN 与 Astra RGB/深度设备枚举正常。

@@ -153,13 +153,6 @@ public:
         depth_valid_ = message->data;
         depth_valid_received_time_ = std::chrono::steady_clock::now();
       });
-    color_candidate_valid_subscription_ = create_subscription<std_msgs::msg::Bool>(
-      "/brain_robot_vision/color_candidate_valid", rclcpp::QoS(1).reliable(),
-      [this](const std_msgs::msg::Bool::SharedPtr message) {
-        std::lock_guard<std::mutex> lock(target_mutex_);
-        color_candidate_valid_ = message->data;
-        color_candidate_received_time_ = std::chrono::steady_clock::now();
-      });
     depth_only_point_subscription_ = create_subscription<geometry_msgs::msg::PointStamped>(
       depth_only_point_topic_, rclcpp::QoS(1).reliable(),
       [this](const geometry_msgs::msg::PointStamped::SharedPtr message) {
@@ -260,7 +253,6 @@ public:
       });
     cup_follow_client_ = create_client<std_srvs::srv::SetBool>(cup_follow_service_);
     servo_stop_client_ = create_client<std_srvs::srv::Trigger>(servo_stop_service_);
-    adapter_disarm_client_ = create_client<std_srvs::srv::Trigger>("/piper_jog_adapter/disarm");
     compute_ik_client_ = create_client<moveit_msgs::srv::GetPositionIK>("/compute_ik");
     execute_service_ = create_service<std_srvs::srv::Trigger>(
       "~/execute", [this](
@@ -383,7 +375,6 @@ private:
     static_target_lock_ = ParameterOr<bool>("static_target_lock", false);
     preserve_aligned_grasp_orientation_ = ParameterOr<bool>(
       "preserve_aligned_grasp_orientation", false);
-    approach_visibility_required_ = ParameterOr<bool>("approach_visibility_required", false);
     grasp_height_offset_m_ = ParameterOr<double>("grasp_height_offset_m", 0.0);
     gripper_tip_offset_m_ = ParameterOr<double>("gripper_tip_offset_m", 0.1358);
     grasp_center_offset_m_ = ParameterOr<double>(
@@ -1194,7 +1185,6 @@ private:
   void TopDownPointGraspAndLift()
   {
     selected_top_down_yaw_valid_ = false;
-    approach_visibility_lost_ = false;
     locked_approach_orientation_valid_ = false;
     if (preserve_aligned_grasp_orientation_) {
       if (!static_target_lock_ || !target_model_locked_ ||
@@ -1306,10 +1296,9 @@ private:
     }
     const bool pregrasp_executed = simulation_only_ ?
       static_cast<bool>(arm_->execute(pregrasp_plan)) :
-      ExecuteArmTrajectory(pregrasp_plan.trajectory_.joint_trajectory, approach_visibility_required_);
+      ExecuteArmTrajectory(pregrasp_plan.trajectory_.joint_trajectory);
     if (!pregrasp_executed || cancel_requested_) {
-      Fail(approach_visibility_lost_ ?
-        "APPROACH_TARGET_LOST_HOLD_NO_CLOSE" : "TOP_DOWN_PREGRASP_EXECUTION_FAILED");
+      Fail("TOP_DOWN_PREGRASP_EXECUTION_FAILED");
       return;
     }
     PublishDiagnostic("TOP_DOWN_PREGRASP_TRAJECTORY_ACCEPTED");
@@ -1318,10 +1307,9 @@ private:
     PublishState("TOP_DOWN_DESCENT_EXECUTING");
     const bool descent_executed = simulation_only_ ?
       static_cast<bool>(arm_->execute(descent_plan)) :
-      ExecuteArmTrajectory(descent_plan.joint_trajectory, approach_visibility_required_);
+      ExecuteArmTrajectory(descent_plan.joint_trajectory);
     if (!descent_executed || cancel_requested_) {
-      Fail(approach_visibility_lost_ ?
-        "APPROACH_TARGET_LOST_HOLD_NO_CLOSE" : "TOP_DOWN_DESCENT_FAILED");
+      Fail("TOP_DOWN_DESCENT_FAILED");
       return;
     }
     PublishDiagnostic("TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED");
@@ -1329,8 +1317,7 @@ private:
     // grasp region. Check FK from fresh measured joints, with one bounded
     // fixed-pose Cartesian correction, before issuing any close command.
     if (!simulation_only_ && !EnsureRealTopDownLanding(final_grasp_target)) {
-      Fail(approach_visibility_lost_ ?
-        "APPROACH_TARGET_LOST_HOLD_NO_CLOSE" : "GRASP_LANDING_UNCONFIRMED_NO_CLOSE");
+      Fail("GRASP_LANDING_UNCONFIRMED_NO_CLOSE");
       return;
     }
     FinishGraspAndLift(pregrasp_target);
@@ -1405,9 +1392,7 @@ private:
       }
       PublishState("GRASP_LANDING_SINGLE_CORRECTION");
       // Same base-frame model, same tilt/yaw: never re-enter pixel ALIGN here.
-      if (!MoveArmCartesianToPose(
-          expected, "GRASP_LANDING_CORRECTION", approach_visibility_required_))
-      {
+      if (!MoveArmCartesianToPose(expected, "GRASP_LANDING_CORRECTION")) {
         return false;
       }
     }
@@ -2012,57 +1997,12 @@ private:
     return true;
   }
 
-  bool ApproachColorCandidateVisible()
-  {
-    const auto now_steady = std::chrono::steady_clock::now();
-    std::lock_guard<std::mutex> lock(target_mutex_);
-    const double age_s = std::chrono::duration<double>(
-      now_steady - color_candidate_received_time_).count();
-    // Depth/size may become invalid at the image edge while the cube remains
-    // plainly visible. Only color-candidate loss stops this trajectory.
-    return color_candidate_received_time_ != std::chrono::steady_clock::time_point{} &&
-           age_s <= 0.45 && color_candidate_valid_;
-  }
-
-  bool HoldAdapterAfterVisibilityLoss()
-  {
-    approach_visibility_lost_ = true;
-    PublishDiagnostic("APPROACH_COLOR_CANDIDATE_LOST_STOP_TRAJECTORY_NOT_DISABLE_ARM");
-    if (!adapter_disarm_client_->wait_for_service(std::chrono::seconds(1))) {
-      RCLCPP_ERROR(get_logger(), "Visibility hold: adapter disarm service unavailable.");
-      return false;
-    }
-    auto future = adapter_disarm_client_->async_send_request(
-      std::make_shared<std_srvs::srv::Trigger::Request>());
-    if (future.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
-      RCLCPP_ERROR(get_logger(), "Visibility hold: adapter disarm acknowledgement timed out.");
-      return false;
-    }
-    const bool held = future.get()->success;
-    RCLCPP_ERROR(get_logger(),
-      "Approach color candidate lost; adapter hold acknowledged=%s, no close/reset/DisableArm.",
-      held ? "true" : "false");
-    return held;
-  }
-
-  bool ExecuteArmTrajectory(
-    const trajectory_msgs::msg::JointTrajectory & trajectory, bool require_visible_target = false)
+  bool ExecuteArmTrajectory(const trajectory_msgs::msg::JointTrajectory & trajectory)
   {
     if (simulation_only_) {
       return false;
     }
     if (trajectory.joint_names.empty() || trajectory.points.empty()) {
-      return false;
-    }
-    if (require_visible_target && !ApproachColorCandidateVisible()) {
-      approach_visibility_lost_ = true;
-      PublishDiagnostic("APPROACH_COLOR_CANDIDATE_UNAVAILABLE_BEFORE_TRAJECTORY_NO_OUTPUT");
-      return false;
-    }
-    if (require_visible_target &&
-      !adapter_disarm_client_->wait_for_service(std::chrono::seconds(1)))
-    {
-      PublishDiagnostic("APPROACH_VISIBILITY_HOLD_UNAVAILABLE_NO_TRAJECTORY_OUTPUT");
       return false;
     }
     const auto & final_point = trajectory.points.back();
@@ -2085,33 +2025,10 @@ private:
     const auto deadline = earliest_feedback_time +
       std::chrono::duration_cast<std::chrono::steady_clock::duration>(
       std::chrono::duration<double>(trajectory_feedback_timeout_s_));
-    auto invisible_since = std::chrono::steady_clock::time_point{};
     while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
-      if (require_visible_target) {
-        const auto sample_time = std::chrono::steady_clock::now();
-        if (ApproachColorCandidateVisible()) {
-          invisible_since = std::chrono::steady_clock::time_point{};
-        } else {
-          if (invisible_since == std::chrono::steady_clock::time_point{}) {
-            invisible_since = sample_time;
-          }
-          // Debounce one missed frame without allowing the rest of a long
-          // preplanned trajectory to run after the cube leaves the image.
-          if (std::chrono::duration<double>(sample_time - invisible_since).count() >= 0.20) {
-            HoldAdapterAfterVisibilityLoss();
-            return false;
-          }
-        }
-      }
       if (std::chrono::steady_clock::now() >= earliest_feedback_time &&
         TrajectoryFeedbackReached(trajectory.joint_names, final_point.positions))
       {
-        // Do not let a final feedback sample turn a just-lost target into
-        // permission to proceed to jaw closure.
-        if (require_visible_target && !ApproachColorCandidateVisible()) {
-          HoldAdapterAfterVisibilityLoss();
-          return false;
-        }
         PublishDiagnostic("REAL_ARM_TRAJECTORY_FEEDBACK_CONFIRMED");
         return true;
       }
@@ -2604,8 +2521,7 @@ private:
   }
 
   bool MoveArmCartesianToPose(
-    const geometry_msgs::msg::PoseStamped & target, const std::string & stage,
-    bool require_visible_target = false)
+    const geometry_msgs::msg::PoseStamped & target, const std::string & stage)
   {
     if (!WaitForFreshJointState(stage)) {
       RCLCPP_WARN(get_logger(), "%s skipped: no fresh joint state for Cartesian planning.", stage.c_str());
@@ -2630,7 +2546,7 @@ private:
     if (simulation_only_) {
       return static_cast<bool>(arm_->execute(trajectory));
     }
-    return ExecuteArmTrajectory(trajectory.joint_trajectory, require_visible_target);
+    return ExecuteArmTrajectory(trajectory.joint_trajectory);
   }
 
   bool PlanArmCartesianFromState(
@@ -2918,8 +2834,6 @@ private:
   double selected_top_down_tilt_{0.0};
   bool selected_top_down_yaw_valid_{false};
   bool preserve_aligned_grasp_orientation_{false};
-  bool approach_visibility_required_{false};
-  bool approach_visibility_lost_{false};
   bool locked_approach_orientation_valid_{false};
   geometry_msgs::msg::Quaternion locked_approach_orientation_;
   double diagonal_pregrasp_standoff_m_{0.17};
@@ -2979,7 +2893,6 @@ private:
   std::chrono::steady_clock::time_point target_error_received_time_{};
   std::chrono::steady_clock::time_point target_valid_received_time_{};
   std::chrono::steady_clock::time_point depth_valid_received_time_{};
-  std::chrono::steady_clock::time_point color_candidate_received_time_{};
   std::chrono::steady_clock::time_point target_reference_received_time_{};
   std::chrono::steady_clock::time_point previous_target_reference_received_time_{};
   std::chrono::steady_clock::time_point joint_state_received_time_{};
@@ -2989,7 +2902,6 @@ private:
   double locked_object_min_size_m_{0.0};
   bool target_valid_{false};
   bool depth_valid_{false};
-  bool color_candidate_valid_{false};
   std::atomic_bool approach_locked_{false};
   std::atomic_bool target_model_locked_{false};
   sensor_msgs::msg::JointState latest_joint_state_;
@@ -3014,7 +2926,6 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr target_error_subscription_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr target_valid_subscription_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr depth_valid_subscription_;
-  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr color_candidate_valid_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr depth_only_point_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr depth_only_size_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr depth_only_error_subscription_;
@@ -3024,7 +2935,6 @@ private:
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr emergency_stop_subscription_;
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr cup_follow_client_;
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr servo_stop_client_;
-  rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr adapter_disarm_client_;
   rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr compute_ik_client_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr execute_service_;
   std::string last_visual_state_;

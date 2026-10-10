@@ -261,11 +261,6 @@ grasp_lift_executor:
     # Frozen 2026-10-10 target: 79-point PTP + 9-point Cartesian path reviewed
     # in isolated MoveIt. This is NOT yet a physically verified grasp.
     preserve_aligned_grasp_orientation: true
-    # During the preplanned pregrasp/descent, stop through the physical adapter
-    # if the color candidate disappears from the camera. This avoids treating
-    # depth loss at the image edge as proof that the cube vanished, while also
-    # preventing the remainder of a long joint trajectory from running blind.
-    approach_visibility_required: true
     grasp_alignment_error_ratio: 0.05
     # The planned pregrasp is followed by bounded Cartesian microsteps. Every
     # step sees a fresh RGB-D target and measured joint feedback before continuing.
