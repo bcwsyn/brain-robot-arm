@@ -179,6 +179,10 @@ grasp_lift_executor:
     # With the unchanged 3 mm tolerance the known 46.2 mm stall must fail
     # before approaching. Do not hide it by commanding the stalled value.
     gripper_open_value: 50000
+    # User-authorized basic grasp path: continue to visual pregrasp when the
+    # installed jaw stalls below the nominal 50 mm endpoint. Fresh jaw capture,
+    # close feedback, and lift feedback remain required.
+    allow_open_feedback_unconfirmed_for_approach: true
     # Command the bounded closed endpoint; feedback motion, rather than
     # reaching zero through the cube, confirms that contact-closing occurred.
     gripper_close_value: 0

@@ -528,7 +528,10 @@ class PiperRosNode(Node):
                         held_gripper = int(
                             self.piper.GetArmGripperMsgs().gripper_state.grippers_angle)
                         if not 0 <= held_gripper <= 80000:
-                            raise ValueError("Gripper hold feedback outside 0..80000")
+                            self.get_logger().warning(
+                                f"Ignoring invalid gripper hold cache {held_gripper}; "
+                                "using zero only for the enable handshake")
+                            held_gripper = 0
                         self.piper.GripperCtrl(held_gripper, 1000, 0x02, 0)
                         time.sleep(0.1)
                         self.piper.GripperCtrl(held_gripper, 1000, 0x01, 0)

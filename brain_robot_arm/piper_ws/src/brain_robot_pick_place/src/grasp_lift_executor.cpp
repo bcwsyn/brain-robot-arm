@@ -379,6 +379,8 @@ private:
       "grasp_center_offset_m", gripper_tip_offset_m_);
     grasp_contact_tolerance_m_ = ParameterOr<double>("grasp_contact_tolerance_m", 0.025);
     gripper_open_value_ = ParameterOr<int>("gripper_open_value", 50000);
+    allow_open_feedback_unconfirmed_for_approach_ = ParameterOr<bool>(
+      "allow_open_feedback_unconfirmed_for_approach", false);
     gripper_close_value_ = ParameterOr<int>("gripper_close_value", 40000);
     gripper_settle_s_ = ParameterOr<double>("gripper_settle_s", 2.0);
     fresh_jaw_capture_required_ = ParameterOr<bool>("fresh_jaw_capture_required", false);
@@ -707,10 +709,17 @@ private:
       }
       std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
       if (!WaitForGripperCommand(
-          gripper_before_open, gripper_open_value_, false, "GRIPPER_OPEN"))
+          gripper_before_open, gripper_open_value_, false, "GRIPPER_OPEN") &&
+        !allow_open_feedback_unconfirmed_for_approach_)
       {
         Fail("OPEN_GRIPPER_FEEDBACK_UNCONFIRMED");
         return;
+      }
+      if (allow_open_feedback_unconfirmed_for_approach_ &&
+        std::abs(LatestGripperPosition() - static_cast<double>(gripper_open_value_) / 1000000.0) >
+        gripper_position_tolerance_m_)
+      {
+        PublishDiagnostic("OPEN_GRIPPER_FEEDBACK_UNCONFIRMED_PROCEED_TO_APPROACH");
       }
     }
     if (!static_target_lock_) {
@@ -2762,6 +2771,7 @@ private:
   double grasp_center_offset_m_{0.1358};
   double grasp_contact_tolerance_m_{0.025};
   int gripper_open_value_{50000};
+  bool allow_open_feedback_unconfirmed_for_approach_{false};
   int gripper_close_value_{40000};
   double gripper_settle_s_{2.0};
   bool fresh_jaw_capture_required_{false};
