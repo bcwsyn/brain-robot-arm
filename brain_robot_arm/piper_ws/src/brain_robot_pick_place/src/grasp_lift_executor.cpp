@@ -373,6 +373,8 @@ private:
     max_object_size_m_ = ParameterOr<double>("max_object_size_m", 0.25);
     target_timeout_s_ = ParameterOr<double>("target_timeout_s", 0.60);
     static_target_lock_ = ParameterOr<bool>("static_target_lock", false);
+    preserve_aligned_grasp_orientation_ = ParameterOr<bool>(
+      "preserve_aligned_grasp_orientation", false);
     grasp_height_offset_m_ = ParameterOr<double>("grasp_height_offset_m", 0.0);
     gripper_tip_offset_m_ = ParameterOr<double>("gripper_tip_offset_m", 0.1358);
     grasp_center_offset_m_ = ParameterOr<double>(
@@ -1183,15 +1185,45 @@ private:
   void TopDownPointGraspAndLift()
   {
     selected_top_down_yaw_valid_ = false;
+    locked_approach_orientation_valid_ = false;
+    if (preserve_aligned_grasp_orientation_) {
+      if (!static_target_lock_ || !target_model_locked_ ||
+        !WaitForFreshJointState("ALIGNED_ORIENTATION_LOCK"))
+      {
+        Fail("ALIGNED_ORIENTATION_LOCK_UNAVAILABLE");
+        return;
+      }
+      const auto measured_pose = CurrentPoseInFrame(lift_reference_frame_);
+      tf2::Quaternion orientation;
+      tf2::fromMsg(measured_pose.pose.orientation, orientation);
+      if (measured_pose.header.frame_id.empty() || !std::isfinite(orientation.length2()) ||
+        orientation.length2() < 1e-8)
+      {
+        Fail("ALIGNED_ORIENTATION_LOCK_INVALID");
+        return;
+      }
+      orientation.normalize();
+      locked_approach_orientation_ = tf2::toMsg(orientation);
+      locked_approach_orientation_valid_ = true;
+      PublishDiagnostic("ALIGNED_ORIENTATION_LOCKED_FIXED_APPROACH");
+      RCLCPP_INFO(get_logger(),
+        "Aligned approach orientation locked q=(%.6f,%.6f,%.6f,%.6f); "
+        "reuse pregrasp/descent planning, do not enumerate preset wrist angles.",
+        orientation.x(), orientation.y(), orientation.z(), orientation.w());
+    }
     PublishState("TOP_DOWN_PREGRASP_PLANNING");
     geometry_msgs::msg::PoseStamped pregrasp_target;
     MoveGroupInterface::Plan pregrasp_plan;
     moveit_msgs::msg::RobotTrajectory descent_plan;
     geometry_msgs::msg::PoseStamped final_grasp_target;
     bool pregrasp_plan_found = false;
+    const auto tilts = locked_approach_orientation_valid_ ?
+      std::vector<double>{0.0} : top_down_tilt_candidates_;
+    const auto yaws = locked_approach_orientation_valid_ ?
+      std::vector<double>{0.0} : top_down_yaw_candidates_;
     for (const double clearance : top_down_pregrasp_clearance_candidates_m_) {
-      for (const double tilt : top_down_tilt_candidates_) {
-        for (const double yaw : top_down_yaw_candidates_) {
+      for (const double tilt : tilts) {
+        for (const double yaw : yaws) {
         selected_top_down_tilt_ = tilt;
         selected_top_down_yaw_ = yaw;
         selected_top_down_yaw_valid_ = true;
@@ -1652,9 +1684,11 @@ private:
       object_world.point.x, object_world.point.y, object_world.point.z,
       vertical_clearance_m, grasp_target.pose.position.x, grasp_target.pose.position.y,
       grasp_target.pose.position.z);
-    RCLCPP_INFO(
-      get_logger(), "Top-down approach selected: tilt=%.3f yaw=%.3f rad.",
-      selected_top_down_tilt_, selected_top_down_yaw_);
+    if (!locked_approach_orientation_valid_) {
+      RCLCPP_INFO(
+        get_logger(), "Top-down approach selected: tilt=%.3f yaw=%.3f rad.",
+        selected_top_down_tilt_, selected_top_down_yaw_);
+    }
     return true;
   }
 
@@ -1662,7 +1696,8 @@ private:
     const geometry_msgs::msg::PointStamped & object_world, double vertical_clearance_m,
     double tilt, double yaw, geometry_msgs::msg::PoseStamped & grasp_target)
   {
-    const auto orientation = TopDownOrientation(yaw, tilt);
+    const auto orientation = locked_approach_orientation_valid_ ?
+      locked_approach_orientation_ : TopDownOrientation(yaw, tilt);
     tf2::Quaternion rotation;
     tf2::fromMsg(orientation, rotation);
     tf2::Vector3 tool_axis = tf2::quatRotate(rotation, tf2::Vector3(0.0, 0.0, 1.0));
@@ -2798,6 +2833,9 @@ private:
   double selected_top_down_yaw_{0.0};
   double selected_top_down_tilt_{0.0};
   bool selected_top_down_yaw_valid_{false};
+  bool preserve_aligned_grasp_orientation_{false};
+  bool locked_approach_orientation_valid_{false};
+  geometry_msgs::msg::Quaternion locked_approach_orientation_;
   double diagonal_pregrasp_standoff_m_{0.17};
   double diagonal_grasp_standoff_m_{0.045};
   double diagonal_pregrasp_lift_m_{0.10};

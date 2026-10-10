@@ -176,8 +176,8 @@ grasp_lift_executor:
     # SDK unit: 0.001 mm. A static 46.2 mm feedback is NOT evidence of the
     # maximum opening. Keep the existing 50 mm baseline: it clears the
     # measured cube, but is not called "fully open" without calibration.
-    # With the unchanged 3 mm tolerance the known 46.2 mm stall must fail
-    # before approaching. Do not hide it by commanding the stalled value.
+    # With the unchanged 3 mm tolerance the known 46.2 mm stall is reported
+    # unconfirmed; the explicit approach override below does not mean open.
     gripper_open_value: 50000
     # User-authorized basic grasp path: continue to visual pregrasp when the
     # installed jaw stalls below the nominal 50 mm endpoint. Fresh jaw capture,
@@ -256,6 +256,11 @@ grasp_lift_executor:
     target_timeout_s: 0.60
     # Static tabletop target: capture one base-frame model and never reacquire after lock.
     static_target_lock: true
+    # Reuse the proven two-segment grasp path, but keep the measured aligned
+    # tool attitude for both poses instead of trying fixed tilt/yaw presets.
+    # Frozen 2026-10-10 target: 79-point PTP + 9-point Cartesian path reviewed
+    # in isolated MoveIt. This is NOT yet a physically verified grasp.
+    preserve_aligned_grasp_orientation: true
     grasp_alignment_error_ratio: 0.05
     # The planned pregrasp is followed by bounded Cartesian microsteps. Every
     # step sees a fresh RGB-D target and measured joint feedback before continuing.

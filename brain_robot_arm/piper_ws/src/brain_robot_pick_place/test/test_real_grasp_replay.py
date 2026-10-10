@@ -119,6 +119,7 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["auto_execute"] is True
     assert grasp["depth_only_target_enabled"] is False
     assert grasp["static_target_lock"] is True
+    assert grasp["preserve_aligned_grasp_orientation"] is True
     assert grasp["gripper_open_value"] == 50000
     assert abs(0.0462 - grasp["gripper_open_value"] / 1e6) > grasp["gripper_position_tolerance_m"]
     assert grasp["gripper_close_value"] == 0
@@ -207,6 +208,23 @@ def test_top_down_surface_landing_is_checked_before_close():
     assert 'MoveArmCartesianToPose(expected, "GRASP_LANDING_CORRECTION")' in check
     assert "CommandRealGripper" not in check
     assert "TargetStillAligned" not in check
+
+
+def test_aligned_orientation_is_captured_once_before_both_planned_segments():
+    source = EXECUTOR.read_text(encoding="utf-8")
+    body = source[source.index("void TopDownPointGraspAndLift()"):
+                  source.index("bool EnsureRealTopDownLanding(")]
+    assert body.count("CurrentPoseInFrame(lift_reference_frame_)") == 1
+    assert body.index("locked_approach_orientation_ =") < body.index("for (const double clearance")
+    assert 'WaitForFreshJointState("ALIGNED_ORIENTATION_LOCK")' in body
+    assert "!static_target_lock_ || !target_model_locked_" in body
+    assert "std::vector<double>{0.0} : top_down_tilt_candidates_" in body
+    assert "std::vector<double>{0.0} : top_down_yaw_candidates_" in body
+    assert body.index("PlanArmCartesianFromState(") < body.index("ExecuteArmTrajectory(")
+    geometry = source[source.index("void PopulateTopDownPose("):
+                      source.index("bool TopDownPoseHasIk(")]
+    assert "locked_approach_orientation_ : TopDownOrientation(yaw, tilt)" in geometry
+    assert "grasp_geometry::ToolOrigin(" in geometry
 
 
 def test_real_close_needs_fresh_face_inside_jaw_capture_not_only_locked_fk():

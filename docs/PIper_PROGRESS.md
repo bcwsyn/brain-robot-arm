@@ -1,5 +1,29 @@
 # PiPER 调试进度
 
+### 2026-10-10 18:40–18:44：按用户要求先实跑一键流程；靠近恢复，目标移出下边缘，禁止把轨迹结束当已夹住
+
+- 用户明确要求先实验默认一键流程再依据现象处理；最新授权恢复实体运行，18:24暂停及18:30只做离线的限制属于历史阶段。确认无实体控制进程后，直接执行 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_aligned_retry_20261010 /home/johnwick/start_brain_robot_cube_real.sh`。入口未改，使用上一节已构建的新模式/唯一YAML；实际节点只读确认`preserve_aligned_grasp_orientation`、`static_target_lock`、`initial_search_center_first`均true。无等待按键、固件/主从/ResetPiper/零点写入、接口重载或底层巡检。
+- 脚本自行完成日志维护，磁盘33%、可用51317MB；CAN RX增长直接复用。18:41:02.206 PREPARE，7点/22秒轨迹接受；18:41:23.882 SEARCH/OBSERVE_POSE_REACHED，实测约[-.004623,.979062,-.748609,0,.309509,0]rad。中心8点实际到达、18:41:51.822 CENTER_RETURN_CONFIRMED后进入既有full，18:41:55.325 ALIGN，18:41:57.323 GRASP_READY；观测与搜索没有再次阻断，也不是只停在固定角度。
+- 锁定目标约[.433,-.128,.083]m；50mm张爪命令已调用，反馈102.1mm始终不变，既有明确approach override继续靠近但不称张爪成功。18:42:02.351锁定当前四元数[.138143,.930759,-.049704,.334863]；79点PTP/9点Cartesian规划通过并经原adapter真实执行，18:42:13.466预抓取到达，18:42:15.362一次5点落点纠偏。模型FK距离17.1→6.6mm，仅是模型内计算，不证明物体已在指间；未出现此前IK -31。
+- 18:42:15.769明确故障`FAULT_FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，没有发闭爪/抬升/释放。此处不是已算出几何inside=false：目标/深度valid在18:42:07.110已false，`FreshFaceInsideJaws`的新鲜RGB-D前置分支拒绝，未进入`FRESH_JAW_CAPTURE face=...`计算。因此故障名称不能误读为已外部量测确认夹爪与方块距离。
+- 同步查看原始RGB/调试图：0015/16仍见方块，0018落在彩色画面下边缘、0019以后原始RGB也看不到，不只是深度黑区。用与现有配置相同HSV125..160/S>=35/V>=45、area>=40离线提取最大色块（仅图像证据，非完整检测器判定）：320×240原图中心v约105→145→231→无候选；对应18:42:02/05/08/11。这证明物体随靠近移出画面，尚不能仅凭RGB/FK确定实物是否被越过或哪个外参错误。
+- 用户新增现场事实：相机能看到夹爪，正确夹住时也能看见方块；若看不到方块，需按夹爪超前/越过目标排查。该条件优先于此前“末端必然离开FOV”的模型推断，禁止把丢失当正常、撤掉可见性门或用旧锁定模型盲闭爪。用户建议J5向下有助夹入：实测J5从对齐.736835降到末段.206293rad，确实受控，但目的是J2/J3补偿/保持link6朝向，未以相机中的两指夹持位置闭环下俯；锁定朝向可规划不等于实体抓取方向正确。此前0014→15 J5约.614744→.736835，方块v153→105（J1也少量改变），提示J5下俯方向需用实图核验，不盲目宣称关节正负与现场“向下”等价。
+- 实测脚本退出1，保护清理结束，无控制栈/采集器残留、未回零/失能；最后新鲜ROS反馈18:42:26.060为[-.284442,1.808768,-1.049396,-.031748,.206293,.039354]rad。18:43:54仅被动2秒高速/低速反馈，六轴speed_raw全0、使能全true、每轴200帧；RX52219923、errors/drop/bus-error0。本轮没有断联，不能用CAN或磁盘解释本次抓取停止。
+- 小型真实输出及像素迁移已入`docs/evidence/piper_onekey_20261010/aligned_real_run.txt`、`aligned_real_image_trace.csv`；大日志`/home/johnwick/brain_robot_logs/onekey_aligned_retry_20261010/`，脚本输出`/tmp/piper_onekey_aligned_retry_20261010.log`、采集`..._observer.jsonl`、画面`..._images/0014..0021_rgb.png`。采集器首次因用户NumPy2与系统cv2不兼容退出；改用`PYTHONNOUSERSITE=1 /usr/bin/python3`后正常，仅只读采集问题，不是控制链故障。收尾SIGINT采集PID203309，rclpy重复shutdown异常不代表实机失能；末尾复用旧stamp的图片/快照不能当新鲜数据。
+- 下一步不重跑相同路径或旧24候选：用本次图像/真实关节比较锁定目标重投影与实际色块轨迹，验证相机安装旋转/TCP和J5下俯方向；复用原MoveIt/adapter把接近调整为保留方块在两指可见夹持区的有限末段，而不是按同一错误FK继续。保留用户已确认的YZ测量，不重问。102.1mm夹爪反馈/开闭响应仍是独立阻断；未宣称最终抓取完成。
+
+### 2026-10-10 18:30后接手：保持对齐朝向的完整模型路径通过，接入原执行器
+
+- 起始HEAD `ec26e1d`，已核对规范Git状态、后续提交及暂停交接`docs/PIper_HANDOFF_20261010.md`，保留全部既有供应商/Astra修改、手册/升级包/deb；用户要求恢复项目工作并以历史经验为主、将接力输入持久化。本轮没有重新启动默认实机脚本，也没有重复CAN/固件/限位/USB基线实验；观测/搜索已通过的证据直接沿用。
+- 新的最小动作只针对现有断点：复用历史靠近所用`review_surface_grasp_plan.launch.py/.py`，把18:20的实测关节和锁定点保存为`docs/evidence/piper_onekey_20261010/locked_grasp_snapshot.json`；加入`--snapshot`与`--orientation measured`，FK取得该快照link6朝向，冻结同一目标 `[.432,-.127,.081] m`，不再重复24个已失败的预设姿态，也不恢复旧外参。姿态四元数约 `[.130845,.932497,-.046782,.333377]`。
+- 实際命令：source ROS/PiPER/app安装空间，`ROS_DOMAIN_ID=78 FASTRTPS_DEFAULT_PROFILES_FILE=/home/johnwick/fastdds_udp_only.xml ros2 launch /mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_surface_grasp_plan.launch.py`；同域调用复核脚本，`--config /mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml --snapshot /mnt/hgfs/ub/docs/evidence/piper_onekey_20261010/locked_grasp_snapshot.json --orientation measured`。运行参数核实`allow_trajectory_execution=False`，无实体驱动/适配器/Servo/抓取执行器；只有FK/规划/笛卡尔服务和隔离历史joint_states，无实机命令。
+- 工具实测返回0：Pilz PTP预抓取79点，末段Cartesian9点、fraction=1.000000，原限位及≤.35rad相邻跳变检查通过，未扩大包络；目标容差1mm/.01rad。预抓取末端关节约[-.289806,1.690819,-1.002263,.024991,.282856,-.032505]，末段约[-.289009,1.813758,-1.046209,.031950,.203877,-.039179]rad。沿用24mm预间隙/最多12mm夹入，末段保持同一朝向；FK误差2.25e-9m只证明模型一致性，不证明实物精度/桌面碰撞/夹持成功。模型开口50mm是假设，实际102.1mm反馈未验证，不能因此闭爪。结果与独立复现步骤已保存`measured_orientation_moveit_result.txt`/`REPLAY.md`；新工具不依赖原/tmp observer。
+- 已实施最小应用修复：唯一实体YAML `preserve_aligned_grasp_orientation=true`。原TopDownPointGraspAndLift在静态目标锁定及新鲜关节门通过后，只捕获一次当前末端四元数；两个姿态目标均使用它，不枚举预设yaw/tilt。复用原预抓取+末段完整预规划、适配器、限位/碰撞/落点纠偏/闭爪/抬升反馈；其他profile默认false，保留历史行为，不另写基础运动程序。PTP中间姿态不承诺严格不变；既有TOP_DOWN状态名保留，新增`ALIGNED_ORIENTATION_LOCKED_FIXED_APPROACH`标识实际策略。
+- 规范/实际源与install配置一致：executor SHA `9df895cfb6f05eaff96178e9d7ddb932f3b6778886cf4f73bccc1bb6a77e9f5c`；实体YAML SHA `907e3d0608c8e7c6faf81482c9d4817dc67cf6ab5c14df2bebdb67705ecfb05c`。`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick`返回0/47.3秒；`colcon test --packages-select brain_robot_pick_place`返回0，六套全通过，`colcon test-result`49 tests/0 errors/0 failures。额外规范源码的抓取/相机/启动pytest25项通过；py_compile和限定文件diff检查通过。二进制含新增锁定日志。
+- 收尾精确SIGINT测试launch PID200584；子进程200613/200615已退出，已知MoveIt2.5.9析构-11再次出现，发生在成功规划之后，不是规划失败或实体CAN故障。未发Enable/Disable/Reset/MasterSlave/0xAE，未发真实预抓取/闭爪/抬升；保留机械臂先前使能/静止状态。
+- 剩余两个具体问题不能掩盖：真实夹爪反馈102.1mm超出已知接口范围，且张爪无响应；当前闭爪门要求新鲜面点在夹持区，按已确认光学YZ偏移，物体进入指尖附近时可能处于深度画面下方之外，须处理固定3D目标的可见性而非重入搜索或删除门控。用户YZ测量不再重问，未标定旋转/水平偏移仍保留。新模式尚未实体复跑，总目标未完成。
+- 下一轮第一条可复现命令见`docs/evidence/piper_onekey_20261010/REPLAY.md`；新鲜实机数据采集可用唯一脚本`BRAIN_ROBOT_AUTO_START=0`，不按1/2、不启用运动，只针对当前夹爪反馈与末段投影采图。之后才在同一主链验证新模式真实靠近/落点，并取得有效夹爪响应；不得把本模型路径直接当可发关节序列。所有权/部署/真机与模型证据均已更新接手记录。
+
 > 当前状态（2026-10-10 18:24）：按用户要求已暂停实机工作，交给此前参与项目的老师傅。最新一键测试到GRASP_READY后预抓取IK失败；详细证据及下一步见 [暂停交接记录](PIper_HANDOFF_20261010.md)，本轮记录追加在文件末尾。
 
 ### 2026-10-10：按镜头实测指尖偏移修正外参，禁止把画面中心当作夹持区

@@ -1,5 +1,27 @@
 # 2026-10-10 暂停交接：一键紫色方块实机抓取
 
+## 最新实机更新：18:40–18:44（优先于下方暂停/离线历史）
+
+用户要求先实际运行一键流程，已执行默认AUTO_START=1、RGB紫色模式、完整抓取路径，日志目录`/home/johnwick/brain_robot_logs/onekey_aligned_retry_20261010`。实际参数三个true：preserve_aligned_grasp_orientation/static_target_lock/initial_search_center_first。下节SHA仍是本次实际部署版本。
+
+实际链：观测（18:41:23）→中心8点/确认回中心→既有full找到目标→ALIGN（18:41:55）→GRASP_READY（18:41:57）→79点预抓取→9点末段→一次5点落点纠偏。此前IK -31未复现；本次停止于18:42:15的`FAULT_FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，没有闭爪/抬升/释放。模型FK6.6mm不是实物落点证明。夹爪50mm命令后反馈仍102.1mm，未验证响应。
+
+重要现场纠正：用户确认相机能看见夹爪，也应能看见夹持的物体；物体看不见要排查超前/越过目标，不以正常FOV丢失解释。原始RGB方块由v≈105→145→231（320×240）移出下边缘，0019以后看不到；拒绝实际发生在新鲜RGB-D前置门，未计算inside=false。J5对齐.736835→末段.206293，确实参与但只是维持朝向；用户建议末段向下夹入，下一步应核对方向/重投影/两指位置再修有限末段，不盲重跑原路径或删除可见性门。
+
+脚本实测退出1，实体栈和采集器全部退出；最后ROS关节[-.284442,1.808768,-1.049396,-.031748,.206293,.039354]rad。18:43:54被动2秒核对六轴速度全0、使能全true，无回零/失能。本次CAN没有断联，磁盘33%。原暂停位置已经不是当前起点。
+
+Git内小证据：[实际一键输出/执行器关键行](evidence/piper_onekey_20261010/aligned_real_run.txt)、[原始RGB像素迁移](evidence/piper_onekey_20261010/aligned_real_image_trace.csv)。原始采集`/tmp/piper_onekey_aligned_retry_20261010_observer.jsonl`；画面`/tmp/piper_onekey_aligned_retry_20261010_images`，看0014..0021 RGB/对应debug。只读采集需`PYTHONNOUSERSITE=1 /usr/bin/python3`隔离用户NumPy2；末尾重复旧stamp不要当新帧。完整命令、判断和下一步见PIper_PROGRESS首节。
+
+## 18:30之后接手更新（先读此节，下面保留暂停时历史事实）
+
+用户已要求继续接手项目，当前项目工作恢复，但本轮未自动续跑实体控制。复用原两段抓取规划：冻结对齐时实测朝向，在域78/执行禁用的MoveIt中规划通过79点预抓取+9点末段，fraction=1.0、原包络与连续性检查通过。
+
+已将`preserve_aligned_grasp_orientation=true`接入原执行器/唯一YAML，保留原规划、适配器和反馈门；构建部署通过，六套/49项测试无失败。当前executor源码SHA为`9df895cfb6f05eaff96178e9d7ddb932f3b6778886cf4f73bccc1bb6a77e9f5c`、实体YAML SHA为`907e3d0608c8e7c6faf81482c9d4817dc67cf6ab5c14df2bebdb67705ecfb05c`，规范/实际/install一致。下面旧SHA仅代表暂停时版本。
+
+新输入及复现过程：[REPLAY.md](evidence/piper_onekey_20261010/REPLAY.md)、[冻结快照](evidence/piper_onekey_20261010/locked_grasp_snapshot.json)、[MoveIt结果](evidence/piper_onekey_20261010/measured_orientation_moveit_result.txt)。不再依赖原/tmp observer即可重做模型检查；模型开口50mm不是已验证的实际开口。
+
+尚无新实体靠近/闭爪/抬升证据。102.1mm夹爪异常反馈，以及进入指尖时目标可能离开深度FOV的闭爪门可见性仍待验证。测试节点已退出，未发失能/复位。下一轮从此处继续，不重跑24个旧失败候选、不从CAN基线重新开始；完整命令/风险/下一步见进度文档最新首节。
+
 更新时间：2026-10-10 18:24（北京时间）。用户要求在合适位置暂停，交给此前参与项目的老师傅；实机工作已停止。唯一规范仓库 `/mnt/hgfs/ub`；本轮起始代码提交 `4db88e3`。本轮仅撤回上轮未部署的配置试改并记录实机证据，没有加入新的抓取策略。
 
 ## 接手时先看这里
