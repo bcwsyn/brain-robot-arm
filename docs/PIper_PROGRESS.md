@@ -2202,3 +2202,12 @@
 
 - 提交本轮配置和回归断言后，重新执行同一默认特权一键脚本。验收顺序为 `GRASP_READY -> GRIPPER_OPEN_FEEDBACK_CONFIRMED -> TOP_DOWN_PREGRASP -> DESCENT -> GRIPPER_CLOSE_FEEDBACK_CONFIRMED -> LIFT -> RELEASE -> SAFE_RETREAT -> RESET_COMPLETE -> confirmed disable`；任一真实反馈失败立即保持使能并记录。
 - 下一次实机复核前修正被动抓包启动参数：上一轮 `candump -L 'can0,159:7FF,3A7:7FF,2A8:7FF'` 日志只出现3A7，无法证明0x159；规范/运行脚本现改为 `candump -L can0` 全帧只读捕获（SHA一致0399c196b6ed60861d54bad439fa3937740cb360f5d4c3c2b0ce463bac7bd0fb），随后按ID解析。保持夹爪反馈门，不直接绕过适配器。
+
+## 2026-10-10：恢复仓库后的当前断点复核
+
+- 按固定启动顺序在 `/mnt/hgfs/ub` 复核，当前 `HEAD=b8f544d`；工作树已有用户未提交修改，范围包括真实抓取配置、相机支架参数、抓取反馈实现/测试以及供应商树的广泛文件变化。本轮未覆盖、未回滚这些修改。
+- 规范脚本与实际 `/home/johnwick/start_brain_robot_cube_real.sh` SHA-256 均为 `e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`；规范与实际实体 YAML SHA-256 均为 `618f00df44b8094aa77ed29e9020b2f64568fd89824a2915bf296199dee31f72`。当前实际 YAML 的 `gripper_open_value=50000`，并保留 3 mm 反馈门；同时新增 `fresh_jaw_capture_required=true`。因此旧记录中“已切换 45000”不是当前生效状态，不能据此宣称张爪门已通过。
+- 当前运行态没有 `piper_single_ctrl`、`piper_jog_adapter`、`visual_search_controller`、抓取执行器、MoveIt/Servo 或 Astra/cam2image 进程；未发送本轮运动或夹爪命令。旧日志仍显示最近一次实体链在 `GRASP_READY` 后因 `FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED` 停止，反馈约 45.9 mm。
+- 本执行会话对 `can0` 的只读 netlink 查询返回 `Operation not permitted`；`sudo -n true` 返回1，原因是 no-new-privileges/ sudo 配置异常。故本轮没有 CAN RX 结论、没有接口配置、没有启动一键脚本，也没有重复 USB/CAN 恢复实验。磁盘根分区使用率约33%，不是当前阻断。
+- 当前第一断点仍是实体抓取前的真实夹爪开口/间隙反馈门；其后才是闭爪反馈、抬升、释放、安全回位和确认支撑后失能。观测姿态、搜索、目标检测、镜像方向和离线预抓取规划已有证据，不应重复。
+- 下一步首条命令：在具备 `CAP_NET_ADMIN` 的同一实际运行终端复核 `ip -details -statistics link show can0` 与 3–5 秒被动 RX；若持续反馈，再核对安装空间已加载当前 50 mm 配置和新鲜 RGB-D 夹爪间隙门，运行同一一键脚本并按门控记录；若权限或 RX 未恢复，保持不启动运动链并记录阻断。当前不执行 0xAE 零点写入、ResetPiper 或 MasterSlaveConfig。
