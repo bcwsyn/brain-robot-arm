@@ -1,5 +1,14 @@
 # PiPER 调试进度
 
+### 2026-10-10 20:21–20:22：按要求重试原一键抓取；Cartesian下降已执行，闭爪前鲜目标/夹持区检查失败
+
+- 起始规范仓库HEAD=`8d7a483`；实际入口 `/home/johnwick/start_brain_robot_cube_real.sh` 未修改，按 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_retry_20261010_2021` 原样运行。CAN/RGB/深度、MoveIt及TF readiness通过，脚本自动完成`[7/7]`，未等按键。实际经过`PREPARE→OBSERVE_POSE_REACHED→SEARCH→ALIGN→GRASP_READY`；中心小扫有连续`SEARCH_SEGMENT_REACHED`反馈，之后进入原FULL_SEARCH并转入目标对齐。本轮没有改源码/YAML/启动行为。
+- 目标模型锁定为`base_link (0.433,-0.128,0.085)m`。夹爪50mm张开命令执行后反馈`0.102100m→0.102100m`，仍未证实张开；实际YAML的`allow_open_feedback_unconfirmed_for_approach=true`允许继续旧有接近流程，这不是本轮退出原因。
+- 抓取器规划保持ALIGN时的朝向；日志显示预抓取目标gripper_base z=`0.208m`，末段目标z=`0.180m`，Cartesian下降目标降低28mm。六轴联合轨迹终点中J5由`+0.291366`变为`+0.212520 rad`（数值减少0.078846rad，约4.52°），J2/J3也同步变化；不是单独给J5发送直线步进。`TOP_DOWN_PREGRASP` 79点和`DESCENT` 8点均由`piper_jog_adapter`接受并执行。该数值变化本身不能直接等同实体“向上/向下”，因为J5局部轴方向随姿态变换；但规划目标确实降低了模型中的末端高度。
+- 下降后模型落点为距离18.1mm、轴向误差-13.1mm、横向12.5mm；执行一次既有5点Cartesian纠偏后测得7.3mm、轴向-5.3mm、横向5.0mm、角误差0.0154rad。随后闭爪前`FreshFaceInsideJaws()`失败，状态文本为`FAULT_FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，因此没有闭爪、抬升或释放。检测日志于`1791635057.743`报告`PURPLE_CUBE target LOST`，之后没有再次记录DETECTED。
+- 源码确认该状态文本是多个条件共用的结果：新鲜RGB-D点/valid/尺寸数据、夹爪反馈时效和目标面点在夹爪捕获区内均会影响`FreshFaceInsideJaws()`。本次终端/节点日志没有保存其细分诊断，所以`OUTSIDE_JAWS`不能据此当作“已证实几何落在两指外”；目标在接近期间丢失使新鲜数据失效尤其值得核对。当前证据无法在路径规划误差、3D目标/TF/TCP偏差与感知新鲜度之间定因。J5数值减小与现场观感“关节上抬”不一致，需用关节反馈+同步图像/末端FK核验，不能盲目再增减J5。
+- 脚本退出码1，按既有异常处理停止控制输出并明确未发`DisableArm`/`ResetPiper`；一键栈进程已退出。脚本报告PiPER保持使能；退出后没有新的关节流可独立确认最终姿态。日志在`/home/johnwick/brain_robot_logs/onekey_retry_20261010_2021/`。本轮仅记录，没有按用户新要求擅自改代码。下一步若获批准，只加非行为性分支诊断（记录失败具体分支、RGB-D新鲜度、gripper_base下目标坐标和反馈值），不改轨迹、不放宽门控，再据实区分目标/模型和感知问题。
+
 ### 2026-10-10 20:16–20:18：恢复上一版后复测一键启动；在[5/7]就绪前被CAN反馈停滞中止
 
 - 起始HEAD为`c7a86e9`（颜色候选丢失停止门已撤销）。普通沙箱中的第一次启动在`[1/7]`因沙箱看不到`can0`、`sudo`受`no new privileges`限制而退出1；未触碰机械臂。随后用获准主机执行上下文运行同一默认自动流程：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_reverify_host_20261010_2018 /home/johnwick/start_brain_robot_cube_real.sh`。入口SHA仍为`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`，没有更改代码、配置或启动参数逻辑。
