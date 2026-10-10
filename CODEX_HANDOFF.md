@@ -5,6 +5,7 @@
 这份文件用于把 Windows Codex 会话中的 PiPER 调试上下文交接给虚拟机中的 Codex。虚拟机共享目录对应：`/mnt/hgfs/ub`。
 
 最新状态：20:21–20:22再次以`AUTO_START=1`运行未经修改的一键入口，顺利完成[7/7]、观测、中心优先搜索、ALIGN、GRASP_READY、79点预抓取、8点笛卡尔下降和一次落点纠偏。纠偏后模型tip误差7.3mm，但闭爪前`FreshFaceInsideJaws()`失败，状态`FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，没有闭爪/抬升/释放；检测器在接近期间报告target LOST。该错误文本共用多个分支，无法仅凭它断言目标3D坐标错或实体几何在两指外。原始CAN反馈显示J5在TARGET_ACQUIRED后仍处ALIGN期间由约`+0.478`升至`+0.734rad`；TARGET_ACQUIRED是进入ALIGN，不是对齐完成。YAML以J5作为竖直图像纠偏轴（sign +1），但没有逐帧图像误差/命令速度，无法认定符号错误。进入抓取器后实际J5在预抓取从`+0.738`降至`+0.290rad`，末段下降再降至`+0.2126rad`，规划末端目标z由0.208降至0.180m。日志及本轮关节/落点数值见[最新交接](docs/PIper_HANDOFF_20261010.md)和[进度首节](docs/PIper_PROGRESS.md)。50mm开口请求反馈仍为102.1mm。脚本清理后栈进程退出，未发ResetPiper/DisableArm，脚本报告保持使能。无源码/YAML/启动逻辑改动；任何代码修改须先向用户说明并获批准。下一步若获批准，仅加非行为性ALIGN与夹爪判定诊断，不放宽执行门。
+20:47–20:50仅相机读取：相机当前RGB帧严重洋红偏色，未清晰看到紫色块/完整夹爪；深度中位244mm是相机距离，不是桌面高度。URDF有夹爪及手指碰撞网格，但arm目标链与配置末端是link6，使用0.1358m固定指尖偏移。用户报告实体指尖离桌面约90mm，与上轮7.3mm模型FK残差不能直接比较；需同时间对齐相机/桌面/关节/TCP。图片见`/home/johnwick/brain_robot_logs/camera_inspection_20261010_2048/`。本次只启动相机读帧，无机械臂运动；任何代码或运动参数改动仍须先获用户批准。
 实体方向判断以用户观察为准：机械臂从弯曲变直就是上抬/远离，不能仅凭J5角度符号反推。代码链不是一条MoveGroup直达目标轨迹：TARGET_ACQUIRED后仍是图像误差驱动的ALIGN/MoveIt Servo；到GRASP_READY后Servo才停，抓取器随后执行MoveGroup预抓取和Cartesian下降。因此需先确定上抬发生在哪个状态段；对齐尚未完成时应查视觉ALIGN方向/误差，对齐后则查3D目标位姿、TF/TCP和MoveGroup路径。任何源码改动仍须先向用户说明并得到批准。
 
 ## 历史暂停交接（2026-10-10 18:24）

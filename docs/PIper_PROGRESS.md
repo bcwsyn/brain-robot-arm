@@ -1,5 +1,13 @@
 # PiPER 调试进度
 
+### 2026-10-10 20:47–20:50：只读检查当前相机画面与夹爪末端模型
+
+- 当时一键控制栈已退出，日志目录没有保存图像帧；为响应用户要求查看相机视野，只启动 Astra 深度相机和原脚本 RGB 发布器，未启动 PiPER、MoveIt、Servo、视觉控制器或抓取器，没有发任何机械臂命令。采完即停止相机进程。普通沙箱的 DDS/USB 权限不足，获准的相机只读进程才发现设备序列号`CC136530302`。
+- 当前 RGB 单帧（320×240，`bgr8`）整体严重洋红偏色；画面以近处表面和暗色遮挡/边缘为主，没有清楚可辨的紫色方块或完整夹爪，不能从这帧量出“尖端离桌面9cm”。深度单帧（640×400，16UC1）有效点158,368；距离p10=208mm、中位数244mm、p90=270mm（相机量程方向），这不是桌面垂直高度。原始可视化保存在`/home/johnwick/brain_robot_logs/camera_inspection_20261010_2048/{rgb_current.png,depth_current.png}`；采集时刻不与上轮机械臂轨迹/FK日志同步。
+- 夹爪模型核对：PiPER URDF含`gripper_base`、`link7`、`link8`的visual/collision网格；`gripper_base`通过零位姿固定到`link6`，指爪关节`joint7/8`从`gripper_base`伸出。SRDF的arm链是`base_link→link6`，当前实体YAML `end_effector_link: link6`，故MoveIt末端目标不是直接设在指尖；抓取器用`gripper_tip_offset_m: 0.1358m`将指尖目标换算为link6目标。0.1358m与URDF指爪关节原点长度相符，但只是模型/固定几何假设，不等同现场量测校准。
+- 上轮纠偏后FK预测的指尖`base_link z=0.0830m`，预期点`z=0.0757m`，模型残差7.3mm；用户现场报告实体指尖仍约高于桌面90mm。两者不是同一个量（base坐标高度 vs 桌面间隙），且相机帧与关节反馈没有时间同步，当前不能据此确认是目标3D坐标、桌面基准、URDF/TCP偏移还是用户观察时刻造成差异。不得把模型FK残差称作实体落点精度，也不得据此盲目追加下降量。
+- 下一步：在不改运动逻辑的前提下，用同一时刻的真实图像/深度、桌面平面、六轴反馈和指尖FK进行坐标对照；恢复控制栈前先遵守用户提出的“任何源码/运动参数改动须先说明并得到批准”。
+
 ### 2026-10-10 20:21–20:22：按要求重试原一键抓取；Cartesian下降已执行，闭爪前鲜目标/夹持区检查失败
 
 - 起始规范仓库HEAD=`8d7a483`；实际入口 `/home/johnwick/start_brain_robot_cube_real.sh` 未修改，按 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_retry_20261010_2021` 原样运行。CAN/RGB/深度、MoveIt及TF readiness通过，脚本自动完成`[7/7]`，未等按键。实际经过`PREPARE→OBSERVE_POSE_REACHED→SEARCH→ALIGN→GRASP_READY`；中心小扫有连续`SEARCH_SEGMENT_REACHED`反馈，之后进入原FULL_SEARCH并转入目标对齐。本轮没有改源码/YAML/启动行为。

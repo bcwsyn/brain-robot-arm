@@ -1,5 +1,11 @@
 # 2026-10-10 暂停交接：一键紫色方块实机抓取
 
+## 20:50 新增核对：相机帧与工具模型
+
+用户现场报告夹爪尖端距桌面约9cm。模型不是没有夹爪：PiPER URDF有`gripper_base`及`link7/link8`指爪视觉/碰撞网格；但MoveIt arm链终点是`link6`，当前YAML的`end_effector_link=link6`，抓取器通过`gripper_tip_offset_m=0.1358m`换算link6和指尖的目标。上轮`GRASP_LANDING`纠偏后FK给出模型actual_tip z=`0.0830m`、expected_tip z=`0.0757m`、差7.3mm；这不是对桌面的实测距离。需要把桌面高度、目标表面点、link6/TCP及实体动作时刻放到同一坐标/时间核对，不能将模型FK精度当成实物触点证明，也不能直接盲加9cm下降。
+
+为遵循用户要求自行看相机，本轮只启动Astra深度流和脚本既有RGB发布器抓帧，未启动机械臂控制/MoveIt/Servo，无运动命令，采完已关闭。RGB 320×240严重洋红偏色、暗色遮挡显著，当前帧没有清楚辨认出紫色方块/完整夹爪；深度640×400有效点158,368，中位距离244mm（这是相机距离，不是垂直桌高）。图像保存在`/home/johnwick/brain_robot_logs/camera_inspection_20261010_2048/`。这不是上轮抓取时同步的录像，因此不能把当前图与上轮FK做逐帧对应。
+
 ## 2026-10-10 20:22 最新重试：观测/搜索/对齐、预抓取和下降均执行，闭爪前检查退出
 
 从规范仓库`8d7a483`运行原默认入口，日志目录`/home/johnwick/brain_robot_logs/onekey_retry_20261010_2021/`。`AUTO_START=1`无需按键，脚本完成`[7/7]→OBSERVE_POSE_REACHED→SEARCH→ALIGN→GRASP_READY`。中心小扫有多个实测到达日志，之后进入FULL_SEARCH并获得目标。本轮未改源码、配置或一键脚本。
