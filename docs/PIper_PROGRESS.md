@@ -1,5 +1,14 @@
 # PiPER 调试进度
 
+### 2026-10-10 12:05–12:12：新USB枚举后的CAN恢复与启动确认超时修复
+
+- 起始HEAD `34fbd80`，针对当前反馈停滞检查真实主机（提升执行权限避免沙箱设备隔离误判）。内核记录12:02:08/17断开、12:02:14/31新枚举USB-CAN（device 17/18），can0索引7、DOWN/STOPPED、计数0；这是新的外部枚举事实，不推断是谁操作。`sudo -n true`成功。
+- 仅执行`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、`txqueuelen 1000`、`up`，均成功；5秒RX 41→11661，251..256和3A7持续收到，ERROR-ACTIVE且错误/丢弃0。根分区33%、可用51GB。未重复guest USB reset/xHCI重建/固件/主从/ResetPiper实验。
+- 运行`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`，通过[7/7]；15秒收到RGB76、深度412、检测输出75、关节2665，末六轴[-0.127480752,0.029968792,-0.038725680,0.522046588,0.438960816,-0.543572484]rad、夹爪46.2mm。原始RGB能看见方块但局部过曝；当时target/depth_valid=false，不据此放宽门。
+- 新阻断是启动请求确认竞态：`1791605194.856623556`控制器PREPARE(START_AUTHORIZED)，14点49.1s轨迹被适配器接受；约100ms后服务日志`failed to send response ... client will not receive response`，脚本8秒CLI外层已结束并误判启动失败，返回1/保护清理；本次没有完成观测/搜索/抓取。退出后无本轮实体节点残留，RX228890继续增长，不是CAN再次冻结。
+- 最小修复：唯一脚本start服务确认deadline 8→30秒，覆盖CLI发现/启动负载；不重发start、不以旧topic当确认，不改变关节反馈新鲜度、运动完成等待或故障门。同步运行脚本，SHA均`cb2c34fd1c453caa1b1678bff2e80ba1e57533a33290d2f07563f831779eefb4`。额外修复已有日志守护的证据损坏：start_group先清空后用O_APPEND打开；否则守护原inode截断时，旧writer偏移会在后续CAN日志中生成大段NUL稀疏空洞。该日志修复不宣称能恢复CAN。
+- `bash -n`返回0；新增不连接ROS/CAN的4项pytest全部通过，验证30秒只发一次请求、服务拒绝/轨迹失败不能当成功、截断后append不产生NUL。命令`PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_startup_script.py`。下一步直接修正版默认自动运行，核对观测后表面夹入/落点及真实闭爪；持续授权不反复询问。未失能/复位/标定零点，最终目标仍未完成。
+
 ### 2026-10-10：修正表面抓取的提前闭爪逻辑，完成离线落点验证
 
 - 起始提交 `fe90ad8`，用户确认修正提前闭爪/落点。观测与SEARCH已有本日实机证据，本轮不重新运动；优先修改现有`grasp_lift_executor`与唯一生效`cube_task_real.yaml`，不新增基础控制程序、不绕过适配器、不改固件/零点/失能策略。

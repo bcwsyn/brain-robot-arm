@@ -223,7 +223,9 @@ start_group() {
   shift
   local logfile="$LOG_DIR/${tag}.log"
   : > "$logfile"
-  setsid "$@" >"$logfile" 2>&1 &
+  # The log guard truncates this inode in place. O_APPEND prevents the next
+  # write from seeking to the old offset and creating a NUL-filled sparse gap.
+  setsid "$@" >>"$logfile" 2>&1 &
   PIDS+=("$!")
   echo "[后台] ${tag} 日志：${logfile}"
 }
@@ -671,7 +673,11 @@ enable_physical_motion() {
 start_visual_sequence() {
   echo "[启动] 从当前反馈姿态移动到观测姿态..."
   local result
-  result=$(timeout 8s ros2 service call /visual_search_controller/start \
+  # CLI discovery can consume most of an 8-second deadline while the startup
+  # executor is busy. A request may then launch PREPARE just before its client
+  # is killed. This acknowledgement deadline does not relax fresh-feedback or
+  # asynchronous trajectory-completion gates, and the request is not retried.
+  result=$(timeout 30s ros2 service call /visual_search_controller/start \
     std_srvs/srv/Trigger '{}' 2>&1) || result=""
   if ! grep -Eq 'success=True' <<<"$result"; then
     echo "[错误] 视觉复位/搜索启动失败。"
