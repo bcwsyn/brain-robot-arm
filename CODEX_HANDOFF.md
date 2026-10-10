@@ -4,7 +4,7 @@
 
 这份文件用于把 Windows Codex 会话中的 PiPER 调试上下文交接给虚拟机中的 Codex。虚拟机共享目录对应：`/mnt/hgfs/ub`。
 
-最新状态：20:21–20:22再次以`AUTO_START=1`运行未经修改的一键入口，顺利完成[7/7]、观测、中心优先搜索、ALIGN、GRASP_READY、79点预抓取、8点笛卡尔下降和一次落点纠偏。纠偏后模型tip误差7.3mm，但闭爪前`FreshFaceInsideJaws()`失败，状态`FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，没有闭爪/抬升/释放；检测器在接近期间报告target LOST。该错误文本共用多个分支，无法仅凭它断言目标3D坐标错或实体几何在两指外。日志及本轮关节/落点数值见[最新交接](docs/PIper_HANDOFF_20261010.md)和[进度首节](docs/PIper_PROGRESS.md)。J5本轮参与了完整六轴笛卡尔路径，规划z从0.208降到0.180m，J5数值+0.291366→+0.212520rad；这不单独证明实体上下方向。50mm开口请求反馈仍为102.1mm。脚本清理后栈进程退出，未发ResetPiper/DisableArm，脚本报告保持使能。无源码/YAML/启动逻辑改动；任何代码修改须先向用户说明并获批准。下一步若批准，仅加非行为性故障分支和同步几何诊断，不放宽执行门。
+最新状态：20:21–20:22再次以`AUTO_START=1`运行未经修改的一键入口，顺利完成[7/7]、观测、中心优先搜索、ALIGN、GRASP_READY、79点预抓取、8点笛卡尔下降和一次落点纠偏。纠偏后模型tip误差7.3mm，但闭爪前`FreshFaceInsideJaws()`失败，状态`FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，没有闭爪/抬升/释放；检测器在接近期间报告target LOST。该错误文本共用多个分支，无法仅凭它断言目标3D坐标错或实体几何在两指外。原始CAN反馈显示J5在TARGET_ACQUIRED后仍处ALIGN期间由约`+0.478`升至`+0.734rad`；TARGET_ACQUIRED是进入ALIGN，不是对齐完成。YAML以J5作为竖直图像纠偏轴（sign +1），但没有逐帧图像误差/命令速度，无法认定符号错误。进入抓取器后实际J5在预抓取从`+0.738`降至`+0.290rad`，末段下降再降至`+0.2126rad`，规划末端目标z由0.208降至0.180m。日志及本轮关节/落点数值见[最新交接](docs/PIper_HANDOFF_20261010.md)和[进度首节](docs/PIper_PROGRESS.md)。50mm开口请求反馈仍为102.1mm。脚本清理后栈进程退出，未发ResetPiper/DisableArm，脚本报告保持使能。无源码/YAML/启动逻辑改动；任何代码修改须先向用户说明并获批准。下一步若获批准，仅加非行为性ALIGN与夹爪判定诊断，不放宽执行门。
 
 ## 历史暂停交接（2026-10-10 18:24）
 
