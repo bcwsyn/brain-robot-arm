@@ -1,5 +1,14 @@
 # PiPER 调试进度
 
+### 2026-10-10 22:46:40–22:48:35：一键实机已执行下降；落点FK容差差0.6mm而未闭爪
+
+- 运行原入口，没有改启动脚本、源码、YAML、夹爪策略或外参。命令：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/tmp/ub_tf_stamp_workspace BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261010_retry_2242 /home/johnwick/start_brain_robot_cube_real.sh`。规范仓库起始HEAD=`bd5330d`；实时日志在`/home/johnwick/brain_robot_logs/real_full_20261010_retry_2242/`。
+- 本轮推进检查：CAN复用且RX增长、磁盘34%、RGB/深度首帧就绪，全部[1/7]–[7/7]通过；控制器实际到达`OBSERVE_POSE_REACHED`，进入SEARCH，22:48:07目标有效后进入ALIGN，22:48:09进入GRASP_READY。目标点成功按图像消息时间戳转换并锁定到base_link `(0.432,-0.112,0.080)m`。因此上轮73.619秒旧目标缓存故障本轮没有重现，抓取已越过目标锁定门。
+- 执行器发送50mm张爪命令，夹爪反馈仍为102.1mm（前后未变）；但唯一实体YAML `allow_open_feedback_unconfirmed_for_approach=true`，故未因开爪反馈停住，真实继续完成78点`TOP_DOWN_PREGRASP`轨迹、9点Cartesian下降及一次5点`GRASP_LANDING_CORRECTION`，适配器均接受。这直接证明本轮靠近没有被夹爪开口反馈阻止。
+- 首次落点FK误差17.9mm，朝向误差0.0396rad；执行唯一纠偏后误差降至8.6mm，轴向-6.1mm、侧向6.0mm、朝向0.0188rad。当前YAML `grasp_landing_tolerance_m=0.008m`、朝向容差0.12rad；角度已通过，距离仅超出0.6mm，第二次判定报`GRASP_LANDING_UNCONFIRMED_NO_CLOSE`。这是FK对目标落点的模型残差，不是外部TCP实测。执行器未发闭爪，因此本轮没有抓住、抬升或释放；脚本停止输出并退出，明确未发`DisableArm`/`ResetPiper`，PiPER保持使能。控制栈进程已退出。
+- 日志另有高频`Joint 'gripper' not found in model 'piper'` MoveIt机器人模型错误，但本轮预抓取/下降规划和轨迹均被接受；先作为次要现象记录，不据此改搜索或关节映射。`gripper_can.log`约13.8MB，脚本结束时根分区使用率仍34%；本次控制栈已退出，无遗留运行进程。
+- 下一步候选（未实施、按用户要求须先获明确批准）：仅将实体配置的落点FK接受容差从8mm改到10mm，使本轮8.6mm误差能进入既有闭爪步骤；不加新保护、不改靠近/下降轨迹、夹爪命令或相机外参。是否允许这一项小幅放宽需用户确认；未确认前不发手工闭爪或重跑相同测试。
+
 ### 2026-10-10 22:29:55–22:32:04：原一键脚本到达GRASP_READY；目标模型因精确时间戳TF长期未刷新而阻断
 
 - 规范仓库起始HEAD为`5db925a`。未改写或修改`/home/johnwick/start_brain_robot_cube_real.sh`，直接用原入口和`AUTO_START=1`实跑；命令：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/tmp/ub_tf_stamp_workspace BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261010_stamped_tf /home/johnwick/start_brain_robot_cube_real.sh`。该临时overlay运行的是规范仓库当前执行器构建；RGB-D实体配置来自`/home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_task_real.yaml`。

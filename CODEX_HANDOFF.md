@@ -1,6 +1,14 @@
 # PiPER ROS 调试完整交接记录
 
-更新时间：2026-10-10 22:42（后文保留历史背景）
+更新时间：2026-10-10 22:49（后文保留历史背景）
+
+## 最新实机测试（22:46:40–22:48:35）
+
+原`/home/johnwick/start_brain_robot_cube_real.sh`以`AUTO_START=1`运行；没有改源码、YAML或脚本。完整命令、阶段和哈希见[`docs/PIper_PROGRESS.md`](docs/PIper_PROGRESS.md)首条记录，日志：`/home/johnwick/brain_robot_logs/real_full_20261010_retry_2242/`。
+
+本轮[1/7]–[7/7]通过，实际到达`OBSERVE_POSE_REACHED`并进入SEARCH；紫色方块有效后到ALIGN/GRASP_READY。精确时间戳目标成功锁到base_link `(0.432,-0.112,0.080)m`。张爪请求50mm但反馈仍102.1mm；实体YAML允许开爪反馈不确认仍靠近，所以抓取器执行了78点预抓取、9点Cartesian下降及一次5点落点纠偏。最终FK落点误差8.6mm，当前阈值8mm（仅超0.6mm），因此`GRASP_LANDING_UNCONFIRMED_NO_CLOSE`，没有闭爪/抬升/释放。开口反馈不是靠近阻断，前轮TF缓存故障本轮也未重现。
+
+脚本退出，未发`DisableArm`或`ResetPiper`，PiPER保持使能，控制栈无残留。本轮未改任何代码/参数。待用户批准的唯一最小配置候选是落点FK容差`0.008→0.010m`；在授权前不手工闭爪、不重跑相同脚本。另有MoveIt持续报`Joint 'gripper' not found in model 'piper'`，但轨迹规划/执行接受；先记录为次要现象。
 
 ## 本轮最新实机状态（22:29:55–22:32:04）
 
