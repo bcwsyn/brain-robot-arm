@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <optional>
 #include <stdexcept>
 #include <vector>
 
@@ -36,6 +37,29 @@ inline double BoundedStep(double current, double target, double maximum_step)
 inline bool BoundaryReached(double current, double boundary, int direction, double tolerance)
 {
   return direction > 0 ? current >= boundary - tolerance : current <= boundary + tolerance;
+}
+
+struct HoldBand
+{
+  double below;
+  double above;
+};
+
+// Include the measured planning start AND the fixed scan anchor, without
+// permitting cumulative drift or widening the existing feedback envelope.
+inline std::optional<HoldBand> MakeHoldBand(
+  double anchor, double measured, double maximum_drift, double margin = 0.001)
+{
+  if (!std::isfinite(anchor) || !std::isfinite(measured) ||
+    !std::isfinite(maximum_drift) || !std::isfinite(margin) ||
+    maximum_drift <= 0.0 || margin <= 0.0 ||
+    std::abs(measured - anchor) > maximum_drift)
+  {
+    return std::nullopt;
+  }
+  const double lower = std::max(anchor - maximum_drift, std::min(anchor, measured) - margin);
+  const double upper = std::min(anchor + maximum_drift, std::max(anchor, measured) + margin);
+  return HoldBand{anchor - lower, upper - anchor};
 }
 
 enum class CenterPhase {INACTIVE, HOLD, LOCAL_SCAN, RETURN_CENTER, COMPLETE};

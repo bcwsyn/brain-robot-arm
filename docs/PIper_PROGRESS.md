@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-10 12:42–12:53：恢复后实机中心扫描/锁定/下降通过，修复保持约束，阻断转为夹爪
+
+- 起始HEAD `f90e6ef`。用户明确没有碰机械臂、已恢复接口；不把先前运行期冻结归因于用户干预。内核12:40:59/12:41:09断开、12:41:05/29新枚举USB-CAN device19/20，接口索引9 DOWN/STOPPED，sudo非交互0。仅固定`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75; sudo -n ip link set can0 txqueuelen 1000; sudo -n ip link set can0 up`一次，3秒RX41→7027，无错误；之后两次启动均直接复用链路。
+- 增加不发送CAN帧的/tmp被动时间线`piper_rx_timeline_20261010.py`，每秒记录ID计数、RX/TX/errors及停流时最后帧，限600秒，不提交脚本/原始日志。连续251..256每轴约100Hz、3A0..3A7约200Hz、低速约20Hz。加载只读`usbmon`后仅捕获003/020设备URB事件计数/状态/长度、不记录其他USB数据或payload，限300秒，证据`/tmp/piper_usb20_timeline_20261010.log`。Linux官方 https://docs.kernel.org/usb/usbmon.html 明确它记录驱动/HCD请求，不保证错误HCD下等同物理总线事务。
+- 第一默认自动运行`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`，证据`/tmp/piper_real_run_20261010_1243.log`，实际返回1。起点约[-.019921,-.005181,.016816,.149896,.229232,-.182098]rad，目标[0,.98,-.75,0,.30,0]rad；14点观测轨迹接受，1791607492.426实机SEARCH(OBSERVE_POSE_REACHED)、CENTER_HOLD。观测实测[0,.971055,-.743428,0,.299234,0]在0.01rad门内，随后首个中心小扫规划两次失败，不是CAN中断。日志明确J3实际-.743428、锚点-.741928，差.0015超过上轮固定±.001路径保持约束；FixStartStatePathConstraints尝试过渡但最终路径被拒。保护退出未回零/失能，原始RX持续。失败日志已保留`/tmp/piper_center_first_physical_failure_20261010.log`和`...driver...log`，不把新软件问题写成硬件错。
+- 修复现有PlanSearchSegment：getCurrentState取得同一实测快照，setStartState明确使用它；非搜索轴目标仍固定初始化锚点，路径带同时包含锚点与实测起点并留1mrad余量，但绝不超既有0.01rad反馈包络。起点漂移超过0.01或非有限时拒绝，打印具体SEARCH_HOLD_AXIS_DRIFT_EXCEEDED轴；不逐段重置锚点累积漂移、不篡改已规划轨迹、不绕过MoveIt/适配器/碰撞。官方setStartState参考 https://moveit.picknik.ai/main/api/html/classMoveGroupInterface.html ，本次具体原因依据本地日志，非网页推断。
+- 同步规范/运行源码SHA`2c6bf032292687055a5b159e6f8823dca9e6a2287ea09599e0728cd5eabb72a6`。单包colcon构建返回0/约53秒；CTest5套全通过（新增2个保持带gtest，实际40项），18项抓取/脚本pytest单独通过。隔离ROS域78四场景全通过：原双侧/中心目标优先/过期反馈禁止扩扫，加J3在CENTER_HOLD后偏差1.5mrad仍首扫规划通过且回固定锚点。证据`/tmp/piper_center_settled_replay_result.log`。仍是假反馈、无实体驱动/Servo/适配器，不能当物理执行证明；确切测试launch PID146778 SIGINT退出，既有MoveIt析构-11再现，所有测试控制进程退出后再实体复跑。
+- 修复后同一默认脚本复跑证据`/tmp/piper_real_run_20261010_settled_fix.log`，1791607794.126观测实测就位；中心8点均真实SEARCH_SEGMENT_REACHED，1791607821.556实际CENTER_RETURN_CONFIRMED，再展开原full。两段full后1791607828.806目标有效→ALIGN、7829.807 GRASP_READY。RGB实帧可见泡沫台面紫色方块；15秒采样RGB75/深度445/反馈2893，target/depth_valid true、DEPTH_GRASP_ALLOWED。没有重新启用腕部Octomap或盲扩大扫描。
+- 实体抓取进一步通过：76点预抓取+9点下降，SURFACE_GRASP小边33.3mm、夹入12mm；1791607845.376落点距离8.1mm，执行一次5点纠偏后7845.815模型FK误差2.8mm、姿态.0128rad。该FK不是外部TCP标定；没有现场外部量测就不宣称指尖实体绝对误差2.8mm。
+- 真实闭爪阻断：0mm/1Nm命令通过adapter和驱动调用GripperCtrl，当前steady code仍0x03；7845.82开始闭爪，7850.826等待5秒后反馈仍46.2mm→46.2mm，FAULT_GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED。没有抬升/释放/自动回位/失能。脚本实测退出1，收尾无控制栈残留。CAN到12:52仍增长至1384928，TX18567、errors/dropped0，USB bulk IN/OUT成功完成；本轮**没有复发断联**，不能声称历史冻结根因已解决。
+- 下一步只验证新的官方实现差异，而不重复相同80帧闭爪：当前官方V2 demo https://raw.githubusercontent.com/agilexrobotics/piper_sdk/master/piper_sdk/demo/V2/piper_ctrl_gripper.py 在一次0x02→0x01后steady使用0x01；现有joint_callback每帧0x03=使能并清错。0x03在官方接口合法，不据此预断它必然导致无位移；可按同一适配器链改steady01作一次有真实反馈的验证。未知机械完全闭合基准仍禁止0xAE，不刷写/主从/ResetPiper。总目标仍未完成。
+
 ### 2026-10-10 12:38–12:41：按授权实际运行新版默认脚本，反馈门在[1/7]拒绝运动
 
 - 起始HEAD `2a1de70`，用户明确要求“开始实机验证”。读取规范Git状态和最新进度/决策，保留既有供应商/Astra未提交修改。实际宿主权限检查`sudo -n true`返回0；运行/规范一键脚本SHA-256均`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`，不是旧脚本或备用YAML。

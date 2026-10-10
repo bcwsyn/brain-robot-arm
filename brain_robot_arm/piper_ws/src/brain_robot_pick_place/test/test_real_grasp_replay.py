@@ -97,7 +97,10 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert "CENTER_SEARCH_NOT_REACHED_NO_FULL_SWEEP" in search_handler
     assert "search::BoundedStep(" in controller
     assert "move_group->setPathConstraints(hold_constraints)" in controller
-    assert "constraint.tolerance_above = constraint.tolerance_below = 0.001" in controller
+    assert "search::MakeHoldBand(anchor, measured, joint_position_tolerance_)" in controller
+    assert "move_group->setStartState(*measured_state)" in controller
+    assert "constraint.tolerance_above = band->above" in controller
+    assert "SEARCH_HOLD_AXIS_DRIFT_EXCEEDED_" in controller
     assert "std::min(joint_position_tolerance_, 0.0001)" in controller
     assert "CENTER_RETURN_CONFIRMED_EXPAND_EXISTING_FULL_SEARCH" in controller
     acquired_gate = 'ParameterOr<bool>("stop_after_target_acquired", false)'

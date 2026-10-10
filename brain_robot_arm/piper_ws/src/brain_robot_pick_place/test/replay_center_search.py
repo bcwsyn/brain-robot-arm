@@ -55,6 +55,9 @@ class Replay(Node):
 
     def publish(self):
         if self.feedback:
+            if self.scenario == "settled_feedback" and "CENTER_HOLD" in self.phase:
+                # Real regression: J3 settled 1.5 mrad after the anchor snapshot.
+                self.q[2] = OBSERVE[2] - 0.0015
             state = JointState()
             state.header.stamp = self.get_clock().now().to_msg()
             state.name = NAMES + ["joint7", "joint8"]
@@ -95,7 +98,8 @@ class Replay(Node):
             for i in (1, 2, 3, 5):
                 # 0.001 path hold around an anchor; next scan anchors may be
                 # within the tightened 0.0001 goal tolerance of that posture.
-                if abs(point[NAMES[i]] - OBSERVE[i]) > 0.002:
+                limit = 0.003 if self.scenario == "settled_feedback" else 0.002
+                if abs(point[NAMES[i]] - OBSERVE[i]) > limit:
                     self.error = f"Non-search hold exceeded: {NAMES[i]}={point[NAMES[i]]}"
             if not -1.351 <= point["joint1"] <= 1.351 or not -0.601 <= point["joint5"] <= 0.951:
                 self.error = "Search range exceeded"
@@ -150,6 +154,11 @@ class Replay(Node):
                 assert self.local_started and not self.full_seen
                 print("STALE_FEEDBACK_CANNOT_EXPAND_PASS", flush=True)
                 break
+            if scenario == "settled_feedback" and self.local_started:
+                assert not self.full_seen
+                assert abs(self.q[2] - OBSERVE[2]) < 0.0002
+                print("SETTLED_FEEDBACK_START_INCLUDED_PASS", flush=True)
+                break
             if scenario == "full_scan" and self.full_seen:
                 negative = any(h <= -1.34 for h, _ in self.endpoints)
                 positive = any(h >= 1.34 for h, _ in self.endpoints)
@@ -185,7 +194,7 @@ try:
     print("REPLAY_ACTUAL_PARAMETERS", timeout.double_value, center_first.bool_value,
           hold.double_value, flush=True)
     assert timeout.double_value == 0.5 and center_first.bool_value and hold.double_value == 2.0
-    for scenario in ("full_scan", "acquire_at_center", "stale_feedback"):
+    for scenario in ("full_scan", "acquire_at_center", "stale_feedback", "settled_feedback"):
         node.run(scenario)
     print("CENTER_REPLAY_ALL_PASS_NO_PHYSICAL_EXECUTION", flush=True)
 finally:

@@ -1200,64 +1200,83 @@ private:
       if (complete_start) {
         target[horizontal_joint_] = target_horizontal;
         target[vertical_joint_] = target_vertical;
-        move_group->setStartStateToCurrentState();
-        move_group->setPlanningTime(search_planning_time_s_);
-        move_group->setNumPlanningAttempts(search_planning_attempts_);
-        move_group->setMaxVelocityScalingFactor(search_planning_velocity_scaling_);
-        move_group->setMaxAccelerationScalingFactor(search_planning_acceleration_scaling_);
-        move_group->setGoalJointTolerance(std::min(joint_position_tolerance_, 0.0001));
-        if (move_group->setJointValueTarget(target)) {
-          moveit_msgs::msg::Constraints hold_constraints;
+        const auto measured_state = move_group->getCurrentState(1.0);
+        moveit_msgs::msg::Constraints hold_constraints;
+        bool hold_start_valid = static_cast<bool>(measured_state);
+        if (measured_state) {
           for (const auto & joint_name : joint_names_) {
             if (joint_name == horizontal_joint_ || joint_name == vertical_joint_) {
               continue;
             }
+            const double anchor = target.at(joint_name);
+            const double measured = measured_state->getVariablePosition(joint_name);
+            const auto band = search::MakeHoldBand(anchor, measured, joint_position_tolerance_);
+            if (!band) {
+              hold_start_valid = false;
+              failure_reason = "SEARCH_HOLD_AXIS_DRIFT_EXCEEDED_" + joint_name;
+              break;
+            }
             moveit_msgs::msg::JointConstraint constraint;
             constraint.joint_name = joint_name;
-            constraint.position = target.at(joint_name);
-            constraint.tolerance_above = constraint.tolerance_below = 0.001;
+            constraint.position = anchor;
+            constraint.tolerance_above = band->above;
+            constraint.tolerance_below = band->below;
             constraint.weight = 1.0;
             hold_constraints.joint_constraints.push_back(constraint);
           }
-          move_group->setPathConstraints(hold_constraints);
-          MoveGroupInterface::Plan plan;
-          if (static_cast<bool>(move_group->plan(plan)) && !search_plan_cancel_ &&
-            !plan.trajectory_.joint_trajectory.points.empty())
-          {
-            const auto & planned = plan.trajectory_.joint_trajectory;
-            trajectory.joint_names = joint_names_;
-            bool compatible = true;
-            for (const auto & point : planned.points) {
-              trajectory_msgs::msg::JointTrajectoryPoint filtered;
-              filtered.time_from_start = point.time_from_start;
-              for (const auto & joint_name : joint_names_) {
-                const auto found = std::find(
-                  planned.joint_names.begin(), planned.joint_names.end(), joint_name);
-                if (found == planned.joint_names.end()) {
-                  compatible = false;
-                  break;
-                }
-                const auto index = static_cast<std::size_t>(
-                  std::distance(planned.joint_names.begin(), found));
-                if (index >= point.positions.size()) {
-                  compatible = false;
-                  break;
-                }
-                filtered.positions.push_back(point.positions[index]);
-              }
-              if (!compatible) {
-                break;
-              }
-              trajectory.points.push_back(std::move(filtered));
-            }
-            success = compatible && !trajectory.points.empty();
-            if (!success) {
-              failure_reason = "SEARCH_PLAN_JOINT_SET_INVALID";
-            }
-          }
-          move_group->clearPathConstraints();
         } else {
-          failure_reason = "SEARCH_PLAN_TARGET_REJECTED";
+          failure_reason = "SEARCH_PLAN_CURRENT_STATE_UNAVAILABLE";
+        }
+        if (hold_start_valid) {
+          // Use exactly the same measured snapshot that defined the path band.
+          // Never replace real start positions with the desired hold anchors.
+          move_group->setStartState(*measured_state);
+          move_group->setPlanningTime(search_planning_time_s_);
+          move_group->setNumPlanningAttempts(search_planning_attempts_);
+          move_group->setMaxVelocityScalingFactor(search_planning_velocity_scaling_);
+          move_group->setMaxAccelerationScalingFactor(search_planning_acceleration_scaling_);
+          move_group->setGoalJointTolerance(std::min(joint_position_tolerance_, 0.0001));
+          if (move_group->setJointValueTarget(target)) {
+            move_group->setPathConstraints(hold_constraints);
+            MoveGroupInterface::Plan plan;
+            if (static_cast<bool>(move_group->plan(plan)) && !search_plan_cancel_ &&
+              !plan.trajectory_.joint_trajectory.points.empty())
+            {
+              const auto & planned = plan.trajectory_.joint_trajectory;
+              trajectory.joint_names = joint_names_;
+              bool compatible = true;
+              for (const auto & point : planned.points) {
+                trajectory_msgs::msg::JointTrajectoryPoint filtered;
+                filtered.time_from_start = point.time_from_start;
+                for (const auto & joint_name : joint_names_) {
+                  const auto found = std::find(
+                    planned.joint_names.begin(), planned.joint_names.end(), joint_name);
+                  if (found == planned.joint_names.end()) {
+                    compatible = false;
+                    break;
+                  }
+                  const auto index = static_cast<std::size_t>(
+                    std::distance(planned.joint_names.begin(), found));
+                  if (index >= point.positions.size()) {
+                    compatible = false;
+                    break;
+                  }
+                  filtered.positions.push_back(point.positions[index]);
+                }
+                if (!compatible) {
+                  break;
+                }
+                trajectory.points.push_back(std::move(filtered));
+              }
+              success = compatible && !trajectory.points.empty();
+              if (!success) {
+                failure_reason = "SEARCH_PLAN_JOINT_SET_INVALID";
+              }
+            }
+            move_group->clearPathConstraints();
+          } else {
+            failure_reason = "SEARCH_PLAN_TARGET_REJECTED";
+          }
         }
       } else {
         failure_reason = "SEARCH_PLAN_JOINT_STATE_MISSING";
@@ -1303,6 +1322,7 @@ private:
         PublishControlDetailLocked(detail.str());
       } else if (!success && !search_plan_cancel_ && IsSearchState(state_)) {
         if (center_first_search_.Active()) {
+          PublishControlDetailLocked(failure_reason);
           if (++center_search_plan_failures_ >= search_planning_attempts_) {
             StopLocked(ControlState::FAULT, "CENTER_SEARCH_PLAN_FAILED_NO_FULL_SWEEP");
           } else {

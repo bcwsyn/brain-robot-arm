@@ -7,6 +7,31 @@
 namespace s = brain_robot_pick_place::search;
 const s::Bounds bounds{-1.35, 1.35, -0.60, 0.95};
 
+TEST(SearchHoldBand, IncludesRealStartWithoutMovingFixedAnchor)
+{
+  const double anchor = -0.741928;
+  const double measured = -0.743428;
+  const auto band = s::MakeHoldBand(anchor, measured, 0.01);
+  ASSERT_TRUE(band);
+  EXPECT_GE(measured, anchor - band->below);
+  EXPECT_LE(measured, anchor + band->above);
+  EXPECT_NEAR(band->below, 0.0025, 1e-10);
+  EXPECT_NEAR(band->above, 0.001, 1e-10);
+  const auto opposite = s::MakeHoldBand(anchor, anchor + 0.0015, 0.01);
+  ASSERT_TRUE(opposite);
+  EXPECT_NEAR(opposite->above, 0.0025, 1e-10);
+}
+
+TEST(SearchHoldBand, CannotExpandBeyondFeedbackEnvelopeOrAcceptLargeDrift)
+{
+  const auto band = s::MakeHoldBand(0.0, 0.0098, 0.01);
+  ASSERT_TRUE(band);
+  EXPECT_DOUBLE_EQ(band->above, 0.01);
+  EXPECT_FALSE(s::MakeHoldBand(0.0, 0.0101, 0.01));
+  EXPECT_FALSE(s::MakeHoldBand(0.0, std::numeric_limits<double>::quiet_NaN(), 0.01));
+  EXPECT_FALSE(s::MakeHoldBand(0.0, 0.0, 0.0));
+}
+
 TEST(CenterSearch, FirstImageWindowHasNoSweep)
 {
   s::CenterFirstSearch plan;
