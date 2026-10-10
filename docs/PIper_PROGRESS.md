@@ -1,5 +1,19 @@
 # PiPER 调试进度
 
+### 2026-10-10：恢复灯光后的实机抓取尝试与黑色配准区域核对
+
+- 后续故障定向只读检查：2秒间隔can0 RX均为199339361，TX423161，errors/dropped均0，证实RX已停止（ERROR-ACTIVE本身不代表反馈持续）。脚本退出仍残留本轮进程组129552/129505/129346/130080/129335/129241；按已核对PID精确发送TERM并确认退出，未发送实体控制/失能。最后可见3A7为`0000B47800094000`（角度46200）。
+- 用户追问J1/J6偏移的代码原因：当前检测器只取旋转矩形尺寸用于形状门控，并未发布方块边缘朝向；抓取执行器按固定tilt/yaw候选顺序选首个完整可行规划。本次选tilt=0.350rad、yaw=0rad，锁定对象base_link=(0.260,-0.092,0.136)m；预抓取link6原点=(0.205,-0.092,0.286)m，下降终点=(0.207,-0.092,0.280)m。J1/J6变化是六轴IK/PTP姿态变换的结果，**不是识别方块边后主动抓角**。默认tip_offset=0.1358m用于原点到指尖补偿；本次日志并不能独立证明实体夹持中心已经正确落在目标中心，不能用“IK可行”掩盖用户观察的偏移。后续应核对TCP/相机外参、方块朝向与夹持中心，且最后靠近保留固定姿态直线段；本次无新运动。
+
+- 起始 HEAD `1747932`；先前自动运行通过观测和 SEARCH，但等待抓取超时。纠正本轮口头误判：`RGB_DEPTH_SOFTWARE_ALIGNED` 受 `rgb_alignment_reported_` 控制仅首次打印，`target LOST/DETECTED` 仅状态变化打印；日志只有一条 LOST **不能证明同步器只处理一帧**，不据此修改同步算法或放宽 RGB-D 门控。
+- 本次宿主权限执行成功，`sudo -n true` 返回 0；can0 为 ERROR-ACTIVE/1Mbps/0.750，已有链路直接复用，无重载。命令 `BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`，在 `[7/7]` 后先读取 15 秒数据，再由代理向同一脚本输入 `1`（不要求用户按键）。
+- 无运动窗口实际收到 RGB 76、depth 430、debug/target_valid/depth_valid 各74条、关节反馈2945条；末值 target_valid/depth_valid=true、`DEPTH_GRASP_ALLOWED`。原始 RGB 图可见桌上紫色方块；配准图检测深度约0.356m、尺寸0.032×0.038m。RGB-D 同步持续正常，灯光已恢复。
+- 六轴初始反馈 `[0.128230844,-0.005163424,0,-0.012071248,0.295483916,-0.046784808] rad`；观测配置 `[0,0.98,-0.75,0,0.30,0] rad`。适配器接受14点/49.1秒观测轨迹，`1791601390.435686679` 实际进入 `SEARCH (OBSERVE_POSE_REACHED)`，随后持续接受41/42点搜索轨迹；`1791601433.470934668` ALIGN，短暂丢失后重获，`1791601440.470644986` GRASP_READY。
+- 本次真实抓取执行器规划并发送68点预抓取、5点下降；闭爪0mm/1N.m经适配器与驱动持续发送。`1791601458.802633079` 再次停止于 `GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED`：before=current=0.046200m，target=0m，无≥1mm闭合位移。未抬升/释放，不能声称抓取完成；不继续重复已证伪的延长闭爪窗口或未知基准0xAE。
+- 用户指出配准窗口的大块黑区而原始彩色无黑区。代码 `software_register_color_to_depth()` 先 `cv::Mat::zeros`，对无效/超量程深度、非正投影Z、超出彩色FOV的映射直接continue，故黑色是**未映射像素**，不是实体黑影/碰撞障碍/夹爪的充分证据。HSV/矩形检测在这张配准图上运行，缺深度确实可能切碎目标轮廓；本次仍通过GRASP_READY，黑区不是本次闭爪失败原因。未用补色或虚构深度伪造目标。
+- `11:04:39` 守护日志新报 `CAN_RX_STALLED_3S`，驱动此前提示feedback lost；脚本返回1并清理本轮节点，未发送DisableArm/ResetPiper/MasterSlaveConfig。当前新出现的反馈中断与较早闭爪无位移分别记录，不倒置因果。
+- 证据：`/home/johnwick/brain_robot_logs/{visual_stack,piper_driver,cube_detector,can_health}.log`；原始/配准图 `/tmp/piper_current_{rgb,debug}.png` 为临时诊断产物，不提交。下一步只针对新反馈中断取最小实际计数；恢复后优先取得夹爪真实响应/实体基准证据，不再次重复整段搜索或80帧闭爪实验。黑区的进一步改进应把原始RGB外观与有效深度明确区分，不把无效像素误当环境障碍。
+
 ### 2026-10-10：灯光外部阻断隔离与夹爪反馈只读复核
 
 - 用户确认现场当前无灯光；本轮将 RGB 紫色目标识别视为外部输入阻断，不再启动视觉搜索或用黑色画面反复调整检测参数。未把“无目标”误写成机械臂或碰撞逻辑故障。
