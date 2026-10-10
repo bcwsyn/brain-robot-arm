@@ -81,6 +81,7 @@ ament_target_dependencies(visual_search_controller
 )
 
 add_executable(grasp_lift_executor src/grasp_lift_executor.cpp)
+target_include_directories(grasp_lift_executor PRIVATE include)
 ament_target_dependencies(grasp_lift_executor
   geometry_msgs
   moveit_core
@@ -145,6 +146,9 @@ ament_environment_hooks(
 )
 
 if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(grasp_geometry_test test/test_grasp_geometry.cpp)
+  target_include_directories(grasp_geometry_test PRIVATE include)
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_pytest_test(
     piper_jog_adapter_test

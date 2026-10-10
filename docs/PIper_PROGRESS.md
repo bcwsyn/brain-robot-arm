@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-10：修正表面抓取的提前闭爪逻辑，完成离线落点验证
+
+- 起始提交 `fe90ad8`，用户确认修正提前闭爪/落点。观测与SEARCH已有本日实机证据，本轮不重新运动；优先修改现有`grasp_lift_executor`与唯一生效`cube_task_real.yaml`，不新增基础控制程序、不绕过适配器、不改固件/零点/失能策略。
+- 明确目标语义：检测器给的是可见表面点，不是体积中心。实体配置启用`top_down_surface_grasp_enabled=true`；预抓取保留表面外24mm，最终沿同一工具轴夹入`min(较小实测面尺寸×0.4,12mm)`，取消原来的最终+18mm间隙。对记录的32×38mm方块，插入12mm，末段从6mm改为36mm。此为桌面方块的**尺寸启发式**，不是官方给定夹持深度，也未证明独立实测TCP/相机外参正确；不自动推断完整体积中心。
+- 新增真机`EnsureRealTopDownLanding()`：从新鲜实测六轴状态做link6 FK，计算当前/目标指尖与轴向、横向、姿态误差并输出`GRASP_LANDING`。允许位置≤8mm/姿态≤0.12rad进入闭爪；小偏差只允许一次≤20mm、保持同一目标tilt/yaw的笛卡尔修正。超过范围、反馈过期、修正失败或修正后仍不达标，停止在`GRASP_LANDING_UNCONFIRMED_NO_CLOSE`，不发闭爪。该FK核验不是独立外部测量，无法单独识别错误实体外参，日志明确标识`NOT_EXTERNAL_TCP_CALIBRATION`。
+- 复用主线PTP预抓取、笛卡尔末段、六轴限位、适配器和静态base_link目标；没有恢复反复像素ALIGN，也没有根据J1/J5盲目扩大搜索。新增纯C++几何/落点决策函数及5项gtest，覆盖旧+18mm仍停在表面外、新夹入跨越表面、尺寸上限、远处不闭爪和仅一次纠偏。Python回归共16项通过。
+- 构建：`cd /home/johnwick/piper_ws; source /opt/ros/humble/setup.bash; source /home/johnwick/piper_ros/install/setup.bash; PYTHONNOUSERSITE=1 colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick --parallel-workers 1 --cmake-args -DCMAKE_BUILD_TYPE=Release` 返回0（两包）；更新后再增量构建返回0。CTest三组全部通过，`colcon test-result --test-result-base build/brain_robot_pick_place --verbose` 返回0，汇总24 tests、0 errors/failures/skipped（包含CTest包装，实际5项gtest+16项pytest）。一次colcon test外层在CTest完成后收尾等待，后续中断已结束；直接CTest和结果文件用于验收。规范/运行executor SHA一致`6d268d76cfc1e14e735d6bb25b03e298108c8ceb954ae9bd81d12e11321bf5e1`，生效YAML SHA一致`674200e3b435e9f1da8d48284b171f2b748580f87dcadaeeed9660f150752e50`，运行二进制含新增落点/夹入日志。
+- 无运动规划复核复用既有`/tmp/piper_plan_review.launch.py`与`/tmp/piper_review_plan.py`，已保存可复现版本到规范`brain_robot_pick_place/test/review_surface_grasp_plan{.py,.launch.py}`。隔离域`ROS_DOMAIN_ID=78`，`allow_trajectory_execution=false`，无PiPER/适配器/抓取执行器/实体命令发布者。记录目标surface=(0.260,-0.092,0.136)m、面宽假设0.032m；从本次记录六轴姿态和标准观测姿态分别得到16/82点PTP与9点末段，`fraction=1.000000`、限位/连续性通过，tilt=0.35/yaw=0未变。新终点J2=1.313876rad；模型指尖=(0.264115,-0.092,0.124728)m与预期一致，FK误差约3.4e-9m仅为模型计算一致性，不是实体毫米级精度证明，也不代表真实桌面碰撞/抓住已验证。
+- 隔离move_group在全部规划成功后SIGINT析构退出-11（MoveIt 2.5.9关闭栈），robot_state_publisher正常退出；没有残留本轮离线规划/测试或实体输出进程。未把关闭异常当作规划失败或硬件故障。一次py_compile在只读规范目录写缓存失败，改`PYTHONPYCACHEPREFIX=/tmp/piper_surface_pycache`后验证；不改源码权限、不提交缓存。
+- 本轮实机条件：针对上次RX停滞的最小2秒计数复核仍为RX199339361/TX423161、errors/dropped0；无新鲜反馈，不执行一键运动或重复80帧闭爪。未发送Enable/Disable/Reset/MasterSlave/0xAE，保持此前使能状态。目标未完成，实体TCP/相机外参、夹持落点以及夹爪真实响应仍未验证。
+- 下一步：第一条针对实际故障命令`ip -statistics link show can0`并作短间隔RX差分，若已恢复，直接复用修正版默认一键脚本，核对`SURFACE_GRASP -> TOP_DOWN_DESCENT -> GRASP_LANDING -> CLOSING_GRIPPER`的真实落点/夹爪位移；若仍冻结，不再重复搜索/闭爪/既有无效USB与固件实验。离线复现：source三工作区、`ROS_DOMAIN_ID=78 ros2 launch /mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_surface_grasp_plan.launch.py`；同域运行对应`.py`，`PIPER_REVIEW_START=observe`选择观测起点。该域只规划，无实体执行。
+
 ### 2026-10-10：恢复灯光后的实机抓取尝试与黑色配准区域核对
 
 - 用户最新实体观察为“夹爪离方块仍很远即闭爪”，不能用规划轨迹完成反驳。核对发现闭爪触发只是`ExecuteArmTrajectory()`等待轨迹时间结束且六轴角度在容差内；真机没有直接验证物体已进入两指夹持区。更具体的几何缺口：检测器发布的是像素中心处深度表面点，不是重建后的实体中心；`PopulateTopDownPose()`却直接把它当object_world，并在最终抓取保持tip_offset+0.018m距离，预抓取0.024到抓取0.018只推进6mm。不能把正的表面间隙当成夹持深度，也不能未经实测断定这18mm足以解释用户观察的全部远距离。下一步需核对真实TCP/表面点→夹持中心/进入深度，不能仅增加闭爪命令或放宽反馈。

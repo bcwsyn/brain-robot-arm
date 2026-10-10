@@ -37,6 +37,8 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
+#include "brain_robot_pick_place/grasp_geometry.hpp"
+
 namespace brain_robot_pick_place
 {
 
@@ -394,6 +396,13 @@ private:
       "top_down_pregrasp_clearance_candidates_m", {top_down_pregrasp_clearance_m_});
     top_down_grasp_clearance_m_ = ParameterOr<double>(
       "top_down_grasp_clearance_m", 0.005);
+    top_down_surface_grasp_enabled_ = ParameterOr<bool>("top_down_surface_grasp_enabled", false);
+    surface_insertion_fraction_ = ParameterOr<double>("surface_insertion_fraction", 0.4);
+    surface_insertion_max_m_ = ParameterOr<double>("surface_insertion_max_m", 0.012);
+    grasp_landing_tolerance_m_ = ParameterOr<double>("grasp_landing_tolerance_m", 0.008);
+    grasp_landing_orientation_tolerance_rad_ = ParameterOr<double>(
+      "grasp_landing_orientation_tolerance_rad", 0.05);
+    grasp_landing_max_correction_m_ = ParameterOr<double>("grasp_landing_max_correction_m", 0.020);
     top_down_grasp_yaw_ = ParameterOr<double>("top_down_grasp_yaw", 0.0);
     top_down_yaw_candidates_ = ParameterOr<std::vector<double>>(
       "top_down_yaw_candidates", {0.0, 1.57079632679, -1.57079632679, 3.14159265359});
@@ -470,6 +479,18 @@ private:
       gripper_tip_offset_m_ > 0.0 && top_down_pregrasp_clearance_m_ > 0.0 &&
       grasp_center_offset_m_ > 0.0 && grasp_contact_tolerance_m_ > 0.0 &&
       top_down_grasp_clearance_m_ >= 0.0 &&
+      (!top_down_surface_grasp_enabled_ ||
+      (top_down_grasp_enabled_ && !candidate_grasp_enabled_ &&
+      static_target_lock_ && adaptive_size_enabled_ &&
+      grasp_height_offset_m_ == 0.0 && surface_insertion_fraction_ > 0.0 &&
+      surface_insertion_fraction_ < 0.5 && surface_insertion_max_m_ > 0.0 &&
+      std::isfinite(surface_insertion_max_m_))) &&
+      (simulation_only_ || !top_down_grasp_enabled_ ||
+      (grasp_landing_tolerance_m_ > 0.0 &&
+      grasp_landing_orientation_tolerance_rad_ > 0.0 &&
+      grasp_landing_orientation_tolerance_rad_ <= orientation_tolerance_ &&
+      grasp_landing_max_correction_m_ >= grasp_landing_tolerance_m_ &&
+      std::isfinite(grasp_landing_max_correction_m_))) &&
       top_down_pregrasp_clearance_m_ > top_down_grasp_clearance_m_ &&
       !top_down_pregrasp_clearance_candidates_m_.empty() &&
       std::all_of(
@@ -812,7 +833,7 @@ private:
       }
       PublishState("CANDIDATE_" + name + "_APPROACH_PLANNING");
       geometry_msgs::msg::PoseStamped grasp_target;
-      if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, grasp_target)) {
+      if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, grasp_target, true)) {
         PublishDiagnostic("CANDIDATE_REJECTED_" + name + "_APPROACH_TARGET_UNAVAILABLE");
         break;
       }
@@ -1156,6 +1177,7 @@ private:
     geometry_msgs::msg::PoseStamped pregrasp_target;
     MoveGroupInterface::Plan pregrasp_plan;
     moveit_msgs::msg::RobotTrajectory descent_plan;
+    geometry_msgs::msg::PoseStamped final_grasp_target;
     bool pregrasp_plan_found = false;
     for (const double clearance : top_down_pregrasp_clearance_candidates_m_) {
       for (const double tilt : top_down_tilt_candidates_) {
@@ -1187,7 +1209,7 @@ private:
           continue;
         }
         geometry_msgs::msg::PoseStamped candidate_grasp_target;
-        if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, candidate_grasp_target)) {
+        if (!BuildTopDownPointGrasp(top_down_grasp_clearance_m_, candidate_grasp_target, true)) {
           continue;
         }
         auto predicted_pregrasp_state = StateAtTrajectoryEnd(
@@ -1214,6 +1236,7 @@ private:
         }
         pregrasp_plan = std::move(candidate_plan);
         descent_plan = std::move(candidate_descent_plan);
+        final_grasp_target = candidate_grasp_target;
         pregrasp_plan_found = true;
         break;
       }
@@ -1248,7 +1271,90 @@ private:
       return;
     }
     PublishDiagnostic("TOP_DOWN_DESCENT_TRAJECTORY_ACCEPTED");
+    // Joint endpoints are not proof that the fingertips reached the intended
+    // grasp region. Check FK from fresh measured joints, with one bounded
+    // fixed-pose Cartesian correction, before issuing any close command.
+    if (!simulation_only_ && !EnsureRealTopDownLanding(final_grasp_target)) {
+      Fail("GRASP_LANDING_UNCONFIRMED_NO_CLOSE");
+      return;
+    }
     FinishGraspAndLift(pregrasp_target);
+  }
+
+  bool EnsureRealTopDownLanding(const geometry_msgs::msg::PoseStamped & expected)
+  {
+    if (expected.header.frame_id.empty() || !arm_) {
+      return false;
+    }
+    tf2::Transform expected_transform;
+    tf2::fromMsg(expected.pose, expected_transform);
+    const auto expected_axis = tf2::quatRotate(
+      expected_transform.getRotation(), tf2::Vector3(0.0, 0.0, 1.0));
+    const auto expected_tip = expected_transform * tf2::Vector3(0.0, 0.0, gripper_tip_offset_m_);
+    for (int attempt = 0; attempt < 2 && !cancel_requested_; ++attempt) {
+      const auto state = FreshMeasuredState("GRASP_LANDING");
+      if (!state) {
+        PublishDiagnostic("GRASP_LANDING_MEASURED_STATE_UNAVAILABLE");
+        return false;
+      }
+      const auto & fk = state->getGlobalLinkTransform(end_effector_link_);
+      const Eigen::Quaterniond rotation(fk.rotation());
+      geometry_msgs::msg::PoseStamped measured;
+      measured.header.frame_id = arm_->getRobotModel()->getModelFrame();
+      measured.header.stamp = now();
+      measured.pose.position.x = fk.translation().x();
+      measured.pose.position.y = fk.translation().y();
+      measured.pose.position.z = fk.translation().z();
+      measured.pose.orientation.x = rotation.x();
+      measured.pose.orientation.y = rotation.y();
+      measured.pose.orientation.z = rotation.z();
+      measured.pose.orientation.w = rotation.w();
+      if (measured.header.frame_id != expected.header.frame_id) {
+        try {
+          const auto transform = tf_buffer_->lookupTransform(
+            expected.header.frame_id, measured.header.frame_id, tf2::TimePointZero);
+          geometry_msgs::msg::PoseStamped transformed;
+          tf2::doTransform(measured, transformed, transform);
+          measured = transformed;
+        } catch (const tf2::TransformException & error) {
+          RCLCPP_ERROR(get_logger(), "Grasp landing frame conversion failed: %s", error.what());
+          return false;
+        }
+      }
+      tf2::Transform actual;
+      tf2::fromMsg(measured.pose, actual);
+      const auto actual_tip = actual * tf2::Vector3(0.0, 0.0, gripper_tip_offset_m_);
+      const auto error = grasp_geometry::CompareTips(
+        {actual_tip.x(), actual_tip.y(), actual_tip.z()},
+        {expected_tip.x(), expected_tip.y(), expected_tip.z()},
+        {expected_axis.x(), expected_axis.y(), expected_axis.z()});
+      const double angle = actual.getRotation().angleShortestPath(expected_transform.getRotation());
+      RCLCPP_INFO(
+        get_logger(),
+        "GRASP_LANDING frame=%s expected_tip=(%.4f,%.4f,%.4f) actual_tip=(%.4f,%.4f,%.4f) "
+        "distance=%.4f axial=%.4f lateral=%.4f angle=%.4f attempt=%d.",
+        expected.header.frame_id.c_str(), expected_tip.x(), expected_tip.y(), expected_tip.z(),
+        actual_tip.x(), actual_tip.y(), actual_tip.z(), error.distance_m, error.axial_m,
+        error.lateral_m, angle, attempt);
+      const auto decision = grasp_geometry::DecideLanding(
+        error, angle,
+        {grasp_landing_tolerance_m_, grasp_landing_orientation_tolerance_rad_,
+          grasp_landing_max_correction_m_, orientation_tolerance_}, attempt != 0);
+      if (decision == grasp_geometry::LandingDecision::ACCEPT) {
+        PublishDiagnostic("GRASP_LANDING_FK_CONFIRMED_NOT_EXTERNAL_TCP_CALIBRATION");
+        return true;
+      }
+      if (decision == grasp_geometry::LandingDecision::REJECT) {
+        PublishDiagnostic("GRASP_LANDING_TOO_FAR_OR_UNCONFIRMED_NO_CLOSE");
+        return false;
+      }
+      PublishState("GRASP_LANDING_SINGLE_CORRECTION");
+      // Same base-frame model, same tilt/yaw: never re-enter pixel ALIGN here.
+      if (!MoveArmCartesianToPose(expected, "GRASP_LANDING_CORRECTION")) {
+        return false;
+      }
+    }
+    return false;
   }
 
   void FinishGraspAndLift(
@@ -1481,12 +1587,25 @@ private:
   }
 
   bool BuildTopDownPointGrasp(
-    double vertical_clearance_m, geometry_msgs::msg::PoseStamped & grasp_target)
+    double vertical_clearance_m, geometry_msgs::msg::PoseStamped & grasp_target,
+    bool final_grasp = false)
   {
     geometry_msgs::msg::PointStamped object_world;
     if (!PredictedTargetInReference(object_world)) {
       RCLCPP_ERROR(get_logger(), "Locked top-down target is unavailable.");
       return false;
+    }
+    if (final_grasp && top_down_surface_grasp_enabled_) {
+      try {
+        vertical_clearance_m = -grasp_geometry::SurfaceInsertion(
+          locked_object_min_size_m_, surface_insertion_fraction_, surface_insertion_max_m_);
+      } catch (const std::invalid_argument & error) {
+        RCLCPP_ERROR(get_logger(), "Surface grasp geometry unavailable: %s", error.what());
+        return false;
+      }
+      RCLCPP_INFO(
+        get_logger(), "SURFACE_GRASP edge=%.4f insertion=%.4f m (size-derived heuristic).",
+        locked_object_min_size_m_, -vertical_clearance_m);
     }
     if (!selected_top_down_yaw_valid_) {
       for (const double tilt : top_down_tilt_candidates_) {
@@ -1538,9 +1657,13 @@ private:
       vertical_clearance_m;
     grasp_target.header.frame_id = lift_reference_frame_;
     grasp_target.header.stamp = now();
-    grasp_target.pose.position.x = object_world.point.x - tool_axis.x() * tip_distance;
-    grasp_target.pose.position.y = object_world.point.y - tool_axis.y() * tip_distance;
-    grasp_target.pose.position.z = object_world.point.z - tool_axis.z() * tip_distance;
+    const auto origin = grasp_geometry::ToolOrigin(
+      {object_world.point.x, object_world.point.y, object_world.point.z},
+      {tool_axis.x(), tool_axis.y(), tool_axis.z()}, gripper_tip_offset_m_,
+      tip_distance - gripper_tip_offset_m_);
+    grasp_target.pose.position.x = origin[0];
+    grasp_target.pose.position.y = origin[1];
+    grasp_target.pose.position.z = origin[2];
     grasp_target.pose.orientation = orientation;
   }
 
@@ -1757,14 +1880,17 @@ private:
       const double size_age_s = std::chrono::duration<double>(
         now - target_size_received_time_).count();
       const double width_m = std::max(target_size_.vector.x, target_size_.vector.y);
+      const double face_edge_m = std::min(target_size_.vector.x, target_size_.vector.y);
       if (target_size_received_time_ == std::chrono::steady_clock::time_point{} ||
         size_age_s > target_timeout_s_ || !std::isfinite(width_m) ||
-        width_m < min_object_size_m_ || width_m > max_object_size_m_)
+        width_m < min_object_size_m_ || width_m > max_object_size_m_ ||
+        !std::isfinite(face_edge_m) || face_edge_m < min_object_size_m_)
       {
         RCLCPP_WARN(get_logger(), "Cannot lock cube size (age %.3f s).", size_age_s);
         return false;
       }
       locked_object_size_m_ = width_m;
+      locked_object_min_size_m_ = face_edge_m;
     }
     locked_target_reference_ = target_point_reference_;
     target_model_locked_ = true;
@@ -1781,6 +1907,7 @@ private:
     approach_locked_ = false;
     target_model_locked_ = false;
     locked_object_size_m_ = 0.0;
+    locked_object_min_size_m_ = 0.0;
     cancel_requested_ = true;
     PublishDiagnostic(reason);
     std_msgs::msg::Bool message;
@@ -2586,6 +2713,12 @@ private:
   double top_down_pregrasp_clearance_m_{0.12};
   std::vector<double> top_down_pregrasp_clearance_candidates_m_;
   double top_down_grasp_clearance_m_{0.005};
+  bool top_down_surface_grasp_enabled_{false};
+  double surface_insertion_fraction_{0.4};
+  double surface_insertion_max_m_{0.012};
+  double grasp_landing_tolerance_m_{0.008};
+  double grasp_landing_orientation_tolerance_rad_{0.05};
+  double grasp_landing_max_correction_m_{0.020};
   double top_down_grasp_yaw_{0.0};
   std::vector<double> top_down_yaw_candidates_;
   std::vector<double> top_down_tilt_candidates_;
@@ -2657,6 +2790,7 @@ private:
   std::chrono::steady_clock::time_point gripper_feedback_received_time_{};
   double target_error_ratio_{1.0};
   double locked_object_size_m_{0.0};
+  double locked_object_min_size_m_{0.0};
   bool target_valid_{false};
   bool depth_valid_{false};
   std::atomic_bool approach_locked_{false};

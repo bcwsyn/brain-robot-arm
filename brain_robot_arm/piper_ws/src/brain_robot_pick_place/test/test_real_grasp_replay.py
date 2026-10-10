@@ -164,6 +164,32 @@ def test_real_profile_uses_low_bandwidth_rgb_with_depth_geometry():
     assert astra_params["uvc_camera.enable"] is False
 
 
+def test_top_down_surface_landing_is_checked_before_close():
+    profile = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    params = profile["grasp_lift_executor"]["ros__parameters"]
+    assert params["top_down_surface_grasp_enabled"] is True
+    assert params["top_down_grasp_clearance_m"] == 0.0
+    assert 0.0 < params["surface_insertion_fraction"] < 0.5
+    assert params["surface_insertion_max_m"] == 0.012
+    assert params["grasp_landing_tolerance_m"] == 0.008
+    assert params["grasp_landing_max_correction_m"] == 0.020
+    source = EXECUTOR.read_text(encoding="utf-8")
+    start = source.index("void TopDownPointGraspAndLift()")
+    end = source.index("bool EnsureRealTopDownLanding(", start)
+    body = source[start:end]
+    assert "candidate_grasp_target, true" in body
+    assert body.index("EnsureRealTopDownLanding(final_grasp_target)") < body.index(
+        "FinishGraspAndLift(pregrasp_target)")
+    check = source[end:source.index("void FinishGraspAndLift(", end)]
+    assert 'FreshMeasuredState("GRASP_LANDING")' in check
+    assert "attempt < 2" in check
+    assert "grasp_geometry::DecideLanding(" in check
+    assert "grasp_geometry::LandingDecision::REJECT" in check
+    assert 'MoveArmCartesianToPose(expected, "GRASP_LANDING_CORRECTION")' in check
+    assert "CommandRealGripper" not in check
+    assert "TargetStillAligned" not in check
+
+
 def test_one_click_supports_opt_in_search_only_stop_without_waiting_for_key():
     start_script_path = next(path for path in START_SCRIPT_CANDIDATES if path.is_file())
     start_script = start_script_path.read_text(encoding="utf-8")
