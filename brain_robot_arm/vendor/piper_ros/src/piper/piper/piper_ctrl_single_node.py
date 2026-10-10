@@ -380,7 +380,9 @@ class PiperRosNode(Node):
             if pos_data.gripper < 0:
                 gripper = 0
             if self.gripper_exist:
-                self.piper.GripperCtrl(abs(gripper), 1000, 0x01, 0)
+                gripper_code = 0x03 if self._gripper_clear_pending else 0x01
+                self.piper.GripperCtrl(abs(gripper), 1000, gripper_code, 0)
+                self._gripper_clear_pending = False
 
     def joint_callback(self, joint_data):
         """Callback function for joint angles
@@ -494,6 +496,7 @@ class PiperRosNode(Node):
             if self.__enable_flag and self.gripper_exist:
                 self.piper.GripperCtrl(0, 1000, 0x02, 0)
                 self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                self._gripper_clear_pending = True
         else:
             self.__enable_flag = False
             self.piper.DisableArm(7)

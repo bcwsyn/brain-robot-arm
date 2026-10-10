@@ -38,6 +38,29 @@ class TestAbsoluteJointStateValidation(unittest.TestCase):
                 self.assertIsNone(values)
                 self.assertIsNotNone(reason)
 
+    def test_explicit_gripper_stream_uses_clear_then_steady_code(self):
+        source_path = Path(__file__).resolve().parents[1] / 'piper' / 'piper_ctrl_single_node.py'
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        callback = next(node for node in ast.walk(tree)
+                        if isinstance(node, ast.FunctionDef) and node.name == 'joint_callback')
+        calls = [node for node in ast.walk(callback) if isinstance(node, ast.Call)
+                 and isinstance(node.func, ast.Attribute) and node.func.attr == 'GripperCtrl']
+        self.assertEqual(len(calls), 1)
+        self.assertIsInstance(calls[0].args[2], ast.Name)
+        self.assertEqual(calls[0].args[2].id, 'gripper_code')
+        self.assertEqual(calls[0].args[3].value, 0x00)
+
+    def test_enable_service_holds_measured_jaw_instead_of_closing_to_zero(self):
+        source_path = Path(__file__).resolve().parents[1] / 'piper' / 'piper_ctrl_single_node.py'
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        callback = next(node for node in ast.walk(tree)
+                        if isinstance(node, ast.FunctionDef) and node.name == 'handle_enable_service')
+        calls = [node for node in ast.walk(callback) if isinstance(node, ast.Call)
+                 and isinstance(node.func, ast.Attribute) and node.func.attr == 'GripperCtrl'
+                 and isinstance(node.args[0], ast.Name) and node.args[0].id == 'held_gripper']
+        self.assertEqual([node.args[2].value for node in calls], [0x02, 0x01])
+        self.assertTrue(all(node.args[3].value == 0 for node in calls))
+
     def test_ros_logger_calls_use_one_positional_message(self):
         source_path = (
             Path(__file__).resolve().parents[1] /

@@ -2287,3 +2287,10 @@
 - 源码只读跟踪确认：launch 从实体YAML加载相机平移/旋转，发布 gripper_base -> camera_link TF；FreshFaceInsideJaws 将新鲜相机面点通过TF变换至 gripper_base，再检查夹持区。测量不是仅作说明字段：它已用于当前相机TF平移的推导。但该推导还依赖当前旋转和模型 `gripper_tip_offset_m=0.1358`，两张照片不能独立验证这些假设。
 - 本轮未推进新的观测姿态运动：该阶段已有完整实机通过证据，当前断点仍在张爪反馈门；重复运行不会消除几何假设或固定46.2 mm反馈。未启动控制栈、未发送运动/夹爪命令、未更改参数。
 - 下一步针对照片中的实际指爪核对模型指尖位置和碰撞几何，并区分“已确认镜头到指尖YZ”与“未验证J6到实际指尖偏移/安装旋转”；并行继续只读检查demo/ROS夹爪发送差异，不重复首帧0x03整链实验。不能因收到照片将 rotation_calibrated 或 horizontal_offset_measured 设为true。
+
+### 2026-10-10：修复夹爪非关节入口跳过首次清错
+
+- 代码审查发现 `enable_flag` 入口完成 `0x02 -> 0x01` 后没有重新置 `_gripper_clear_pending`，笛卡尔 `PosCmd` 入口则始终发送 `0x01`。这使得这些入口与用户 V2 demo 的首次 `0x03` 语义不一致，可能保留夹爪错误状态。
+- 已修复规范 vendor 驱动：使能成功后置位首次清错状态；`PosCmd` 的首次显式夹爪目标使用 `0x03`，后续使用 `0x01`。关节轨迹入口原有首帧0x03路径保持不变；不改变角度、力矩、反馈门或零点命令。
+- 规范源已部署到实际 `/home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py`，两份文件SHA一致；`colcon build --symlink-install --packages-select piper` 返回0。`test_command_validation.py` 更新后 `6 passed`，Python AST解析和 `git diff --check` 通过。
+- 本轮没有启动ROS或发送实体命令；未验证硬件反馈是否改变。下一步必须在有实时CAN权限的会话做一次静止、夹爪专用有界验证，再决定是否进入完整视觉抓取；禁止重复整套运动作为代码修复证明。
