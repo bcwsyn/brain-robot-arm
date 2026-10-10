@@ -45,7 +45,7 @@ BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 \
 
 ## 证据路径
 
-一键输出和小型离线诊断已另存入规范仓库 [docs/evidence/piper_onekey_20261010](evidence/piper_onekey_20261010)，可随Git交接；大体积CAN/节点日志和画面仅保留在下面的实机路径。离线脚本依赖同机安装URDF、配置及原始observer快照，异机接手需按记录补齐输入，不自动启动实体控制。
+[一键输出](evidence/piper_onekey_20261010/onekey_run.txt)和小型离线诊断已另存入规范仓库 [docs/evidence/piper_onekey_20261010](evidence/piper_onekey_20261010)，可随Git交接；大体积CAN/节点日志和画面仅保留在下面的实机路径。离线脚本依赖同机安装URDF、配置及原始observer快照，异机接手需按记录补齐输入，不自动启动实体控制。
 
 - 本轮一键输出：`/tmp/piper_onekey_test_20261010.log`。
 - 本轮节点日志和CAN：`/home/johnwick/brain_robot_logs/onekey_test_20261010/`，重点 `visual_stack.log`、`piper_driver.log`、`gripper_can.log`。
