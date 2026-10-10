@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+### 2026-10-10 19:17–19:30：接入“目标还在画面内才继续接近”门，并核算J5候选
+
+- 以最新一次实机反馈和图像为基准：末态关节 `[-.284442,1.808768,-1.049396,-.031748,.206293,.039354] rad`；18:42左右紫色候选中心从 `v=105→145→231→画面外`。用户明确方块在夹爪正下方且正确抓住时相机应能看到它。上次因RGB-D有效性/深度门停止，不是几何程序已测得`inside=false`；本轮未把旧锁定点误当成可闭爪证据。
+- 已在唯一实体执行链增加 `approach_visibility_required=true`：`grasp_lift_executor`订阅检测器现有可靠话题`/brain_robot_vision/color_candidate_valid`。预抓取、下降及唯一落点微调发轨迹前要求颜色候选新鲜；执行期间每20ms轮询，连续丢失0.20s则调用现有`/piper_jog_adapter/disarm`，截断适配器剩余轨迹并以适配器最后关节反馈保持；不闭爪、不ResetPiper、不DisableArm。发轨迹前还要求该停止服务可用。仍保留RGB-D目标、落点和闭爪前鲜帧门；颜色候选可见不等同目标已在两指内。
+- 以URDF `joint7/joint8` 与指爪STL几何核对：张合方向是link6的±Y，指爪主体沿link6的负Z伸出；原始link7/8网格边界相同，局部X约±28mm、Y约-76.5..0mm、Z约0..26.5mm。按本次相机TF假设与上一帧锁定表面点，当前模型目标在link6约 `[+1.9,+0.6,+123.9] mm`，与±Y张合中心接近，且离指根z=135.8mm约12mm；这只是模型坐标，未在MoveIt中加入方块做实体碰撞/夹持验证，旋转/水平外参也未标定。直接增加J5 `+0.10 rad`的纯关节假设会把模型目标link6-X移至约`-19.6 mm`，并令末端基座坐标约移至`[.4223,-.1257,.0612] m`；相机投影趋势`v≈293→238`，同时发生约厘米级侧向偏移。J5不是单独竖直下降轴；不将未补偿的J5增量发送到实机。
+- 代码/唯一YAML已同步到规范仓库与实际工作区。加入“轨迹终点刚好收到关节到点反馈时，再确认一次颜色候选”的末端竞态门后，最终执行 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 成功（两包，约91秒）；C++源码规范/运行SHA均为`f29503399d63a30462c2eb50bb2670b784b6c0217d85f9494560dfcb045a4b6a`，实体YAML规范/运行/install SHA均为`1758895ad5dd7e769c33d3907abcc71412a694e9d4134e1e0a6727709cd21e96`，新执行器二进制SHA=`47280eea8694021d2ea429595ff223b1f4de181c29e66d106db818edb81249d9`；源码规范/运行逐字一致，`git diff --check`通过。未运行测试套件。
+- 本轮又尝试在`ROS_DOMAIN_ID=78`启动`allow_trajectory_execution=false`的隔离MoveIt复核；DDS UDP socket被当前执行沙箱拒绝，两个规划进程随即退出，因此该次复核没有得到规划结果，不能记成IK/碰撞失败。此前已提交的79点+9点离线规划结果仍是历史模型证据，不是当前J5方案或实机结果。没有发送新的实机关节/夹爪命令。
+- 逐轴FK投影的完整输入/输出表及坐标假设已保存为[`j5_projection_review.md`](evidence/piper_onekey_20261010/j5_projection_review.md)，可与真实像素轨迹CSV对照。
+- 规范代码、配置、进度/决策/交接和投影证据均已修改，但本环境Git提交被阻断：`git add`对`/mnt/hgfs/ub/.git/index`返回`Read-only file system`（尽管路径权限位显示可写）。未生成提交号；所有改动仍保留在规范仓库工作树，未触碰其他123项既有vendor/reference脏改。得到可写Git索引后，第一步只暂存本节列出的7个文件并提交。
+- 当前仍未完成闭爪/抬升/释放；实机夹爪反馈停留`102.1 mm`且50mm开口命令无反馈变化，是独立阻断。下一步用本轮已构建的保护代码运行同一默认一键入口，观察目标移出画面时适配器是否及时停止；同时只在隔离MoveIt恢复可用后规划“保持抓取点、由其它关节补偿的小J5姿态变化”，不发裸J5步进，不重复完整盲接近。最终仍需新鲜两指可见/闭爪反馈再继续抓取。
+
 ### 2026-10-10 18:40–18:44：按用户要求先实跑一键流程；靠近恢复，目标移出下边缘，禁止把轨迹结束当已夹住
 
 - 用户明确要求先实验默认一键流程再依据现象处理；最新授权恢复实体运行，18:24暂停及18:30只做离线的限制属于历史阶段。确认无实体控制进程后，直接执行 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_aligned_retry_20261010 /home/johnwick/start_brain_robot_cube_real.sh`。入口未改，使用上一节已构建的新模式/唯一YAML；实际节点只读确认`preserve_aligned_grasp_orientation`、`static_target_lock`、`initial_search_center_first`均true。无等待按键、固件/主从/ResetPiper/零点写入、接口重载或底层巡检。

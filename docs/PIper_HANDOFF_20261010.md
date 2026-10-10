@@ -1,5 +1,21 @@
 # 2026-10-10 暂停交接：一键紫色方块实机抓取
 
+## 2026-10-10 19:17后最新更新：颜色可见性停车已构建，尚未重跑实体
+
+用户确认紫色方块位于夹爪正下方，并指出相机应能同时看见夹爪及被夹物。本轮仅做代码/离线几何与构建，没有向实机关节或夹爪发布命令；最近可追溯实体静止反馈仍是18:43:54六轴速度0、使能true、夹爪102.1mm。
+
+唯一真实YAML现启用`approach_visibility_required=true`。实体抓取执行器在长预抓取、末段下降及一次落点纠偏期间检查可靠的颜色候选topic；深度valid消失但紫色仍在图像中不触发停车。候选缺失超过0.20s则调用已存在的`/piper_jog_adapter/disarm`，停止适配器正在执行的余下轨迹并保持反馈姿态；不会闭爪、复位或DisableArm。开始发送这类轨迹前，要求候选新鲜且停车服务在线。颜色候选不是两指捕获证明，原RGB-D、落点及闭爪反馈门仍在。
+
+规范、实际源码和唯一YAML已同步。含“轨迹终点再检查一次候选可见性”的最终版本由`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick`成功构建；executor SHA`f29503399d63a30462c2eb50bb2670b784b6c0217d85f9494560dfcb045a4b6a`，YAML SHA`1758895ad5dd7e769c33d3907abcc71412a694e9d4134e1e0a6727709cd21e96`，install二进制SHA`47280eea8694021d2ea429595ff223b1f4de181c29e66d106db818edb81249d9`。未运行测试套件。本轮ROS域78重启隔离MoveIt复核被sandbox拒绝DDS UDP socket，进程退出；这是模型工具可用性限制，不是机器人/IK结果。
+
+按URDF，夹爪张合沿link6±Y，finger主体从link6约z=0.1358m沿负Z伸出；link7/8 STL局部边界分别约`x±28mm,y=-76.5..0mm,z=0..26.5mm`。当前点目标的近似FK在link6为`[+1.9,+0.6,+123.9]mm`，离手指根部z=135.8mm约12mm；仅说明模型里它靠近两指中心，未在规划场景加入方块做碰撞计算，也未完成外部相机旋转/水平标定。直接J5+0.10rad的模型会将目标link6-X改为约-19.6mm、TCP也移动约厘米级，尽管像素投影朝画面上方回移；故不执行裸J5增量。下一步在用户已恢复的自动流程授权下，用已构建版本运行唯一默认一键入口，实测颜色消失时是否及时停车；再继续做“保持抓取点、由其他关节补偿”的有限J5姿态候选，隔离规划未可用前不凭像素直接下发。
+
+本轮不改变既有夹爪断点：50mm张开命令反馈仍102.1mm无变化，尚未有闭爪、抬升、释放证据。最新实机失败、图像与关节仍见本文件下方18:40节及`docs/evidence/piper_onekey_20261010/aligned_real_run.txt`。
+
+J5的逐值FK、TCP和RGB像素推算见[`j5_projection_review.md`](evidence/piper_onekey_20261010/j5_projection_review.md)；它解释了为什么裸加J5虽能让近似目标像素上移，却会同时造成link6-X偏移和TCP移动。不得将表格数据当成可执行实机关节目标。
+
+本轮规范改动仍在工作树，但`git add`被沙箱以`.git/index: Read-only file system`拒绝，故没有commit SHA。不要覆盖这些文件；恢复规范仓库Git可写能力后，精确暂存进度首节列出的7个文件再提交。其他vendor/reference脏改属于既有状态，保持原样。
+
 ## 最新实机更新：18:40–18:44（优先于下方暂停/离线历史）
 
 用户要求先实际运行一键流程，已执行默认AUTO_START=1、RGB紫色模式、完整抓取路径，日志目录`/home/johnwick/brain_robot_logs/onekey_aligned_retry_20261010`。实际参数三个true：preserve_aligned_grasp_orientation/static_target_lock/initial_search_center_first。下节SHA仍是本次实际部署版本。
