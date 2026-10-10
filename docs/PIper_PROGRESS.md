@@ -2422,3 +2422,9 @@
 - 完整暂停交接文件 `docs/PIper_HANDOFF_20261010.md`，CODEX_HANDOFF顶部指向当前状态。接手第一条命令 `cd /mnt/hgfs/ub && git status --short`。暂停后不得自动续跑，需用户/接手者明确恢复执行。总目标未完成，当前新版阻断为预置抓取姿态IK，夹爪异常反馈独立待核实；本轮只提交记录，未提交新控制策略。
 
 - 为避免/tmp重启丢失全部直接证据，已将小型一键输出、离线诊断源码及结果保存到 `docs/evidence/piper_onekey_20261010/` 随本轮Git提交；原始CAN/节点大日志和相机序列没有加入Git。
+
+## 2026-10-10 21:39：本轮代码回退索引
+
+- 时间戳 TF 实现提交：`17faaac240339ae977de99ef02cf662b5be13ed5`（`fix: use stamped TF for RGB-D grasp target`）。
+- 如需完整撤销该实现及同一提交中的记录，先确认这5个提交文件没有需要保留的未提交编辑，然后执行：`git revert --no-edit 17faaac240339ae977de99ef02cf662b5be13ed5`。这是生成反向提交的可审计回退，不使用 `reset --hard`；其他既有 vendor/reference 工作树改动不在该提交内。
+- 回退后 `/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp` 的两处活动 RGB-D TF 查询恢复为原先实现；其余未提交改动不应清理或覆盖。
