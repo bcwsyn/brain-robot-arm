@@ -5,6 +5,20 @@
 
 namespace gg = brain_robot_pick_place::grasp_geometry;
 
+TEST(GraspGeometry, FreshJawCaptureRejectsRemoteOrOffCentreCube)
+{
+  EXPECT_FALSE(gg::FaceInsideJawCapture({0.0, 0.0, 0.2858}, 0.1358, 0.033, 0.050));
+  EXPECT_FALSE(gg::FaceInsideJawCapture({0.0434, 0.02735, 0.108}, 0.1358, 0.040, 0.0462));
+  EXPECT_FALSE(gg::FaceInsideJawCapture({0.0, 0.015, 0.1238}, 0.1358, 0.033, 0.050));
+}
+
+TEST(GraspGeometry, FreshJawCaptureNeedsOpeningAndFiniteMeasuredFace)
+{
+  EXPECT_TRUE(gg::FaceInsideJawCapture({0.0, 0.0, 0.1238}, 0.1358, 0.033, 0.050));
+  EXPECT_FALSE(gg::FaceInsideJawCapture({0.0, 0.0, 0.1238}, 0.1358, 0.050, 0.0462));
+  EXPECT_FALSE(gg::FaceInsideJawCapture({NAN, 0.0, 0.1238}, 0.1358, 0.033, 0.050));
+}
+
 TEST(GraspGeometry, InsertionUsesSmallerFaceAndCapsTravel)
 {
   EXPECT_DOUBLE_EQ(gg::SurfaceInsertion(0.020, 0.4, 0.012), 0.008);

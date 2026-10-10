@@ -1,3 +1,17 @@
+piper_camera_mount_tf:
+  ros__parameters:
+    # Operator confirmed 2026-10-10: fingertip is about 70 mm image-down
+    # and 105 mm lens-forward, measured from the lens centre. Horizontal
+    # offset is unmeasured (assumed zero), and rotation remains uncalibrated.
+    # Existing mount rotation maps optical XYZ to tool [Y, -X, Z].
+    # origin = [0, 0, tip_offset] - R * measured_tip_optical.
+    translation_m: [-0.070, 0.0, 0.0308]
+    rotation_rpy_rad: [0.0, -1.5707963267948966, 0.0]
+    operator_tip_optical_m: [0.0, 0.070, 0.105]
+    measurement_basis_confirmed: true
+    horizontal_offset_measured: false
+    rotation_calibrated: false
+
 visual_search_controller:
   ros__parameters:
     backend: piper
@@ -159,16 +173,19 @@ grasp_lift_executor:
     # this single path completes on the physical arm.
     candidate_grasp_enabled: false
     candidate_grasp_order: [NONE]
-    # The SDK unit is 0.001 mm. The manual advertises a 0..70 mm range, but
-    # this installed gripper's real feedback stops at 45.9 mm when commanded
-    # to 50 mm. A 45 mm target is therefore the reachable open endpoint and
-    # still clears the observed 24..30 mm cube by a wide margin; the feedback
-    # gate remains enabled and the command is still sent through the adapter.
-    gripper_open_value: 45000
+    # SDK unit: 0.001 mm. A static 46.2 mm feedback is NOT evidence of the
+    # maximum opening. Keep the existing 50 mm baseline: it clears the
+    # measured cube, but is not called "fully open" without calibration.
+    # With the unchanged 3 mm tolerance the known 46.2 mm stall must fail
+    # before approaching. Do not hide it by commanding the stalled value.
+    gripper_open_value: 50000
     # Command the bounded closed endpoint; feedback motion, rather than
     # reaching zero through the cube, confirms that contact-closing occurred.
     gripper_close_value: 0
     gripper_settle_s: 2.0
+    # Fresh RGB-D face must fit the measured open jaws before closing; a
+    # planned endpoint/FK against the same locked model is insufficient.
+    fresh_jaw_capture_required: true
     # After confirming the lift, return along the same collision-checked
     # vertical path, release at the measured grasp pose, and retreat upward.
     # No uncalibrated lateral transfer or automatic motor disable is used.
@@ -216,6 +233,7 @@ grasp_lift_executor:
     # The MoveIt arm group is declared as base_link -> link6; gripper_base
     # is fixed at the same origin but lies outside that semantic chain.
     end_effector_link: link6
+    gripper_tip_offset_m: 0.1358
     gripper_touch_links: [link6, gripper_base, link7, link8]
     use_sim_time: false
     lift_reference_frame: base_link

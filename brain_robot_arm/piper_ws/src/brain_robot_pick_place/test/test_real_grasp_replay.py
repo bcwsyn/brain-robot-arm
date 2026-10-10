@@ -119,7 +119,8 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["auto_execute"] is True
     assert grasp["depth_only_target_enabled"] is False
     assert grasp["static_target_lock"] is True
-    assert grasp["gripper_open_value"] == 45000
+    assert grasp["gripper_open_value"] == 50000
+    assert abs(0.0462 - grasp["gripper_open_value"] / 1e6) > grasp["gripper_position_tolerance_m"]
     assert grasp["gripper_close_value"] == 0
     assert grasp["gripper_position_tolerance_m"] == 0.003
     assert grasp["top_down_grasp_enabled"] is True
@@ -206,6 +207,20 @@ def test_top_down_surface_landing_is_checked_before_close():
     assert 'MoveArmCartesianToPose(expected, "GRASP_LANDING_CORRECTION")' in check
     assert "CommandRealGripper" not in check
     assert "TargetStillAligned" not in check
+
+
+def test_real_close_needs_fresh_face_inside_jaw_capture_not_only_locked_fk():
+    profile = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    assert profile["grasp_lift_executor"]["ros__parameters"]["fresh_jaw_capture_required"] is True
+    source = EXECUTOR.read_text(encoding="utf-8")
+    body = source[source.index("void FinishGraspAndLift("):source.index("bool VerifyGraspContact(")]
+    assert body.index("!FreshFaceInsideJaws()") < body.index('PublishState("CLOSING_GRIPPER")')
+    assert 'Fail("FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE")' in body
+    check = source[source.index("bool FreshFaceInsideJaws()"):source.index("bool WaitForGripperCommand(")]
+    assert "face = target_point_camera_" in check
+    assert "grasp_geometry::FaceInsideJawCapture(" in check
+    assert "locked_target_reference_ =" not in check
+    assert "MoveArm" not in check and "CommandRealGripper" not in check
 
 
 def test_one_click_supports_opt_in_search_only_stop_without_waiting_for_key():

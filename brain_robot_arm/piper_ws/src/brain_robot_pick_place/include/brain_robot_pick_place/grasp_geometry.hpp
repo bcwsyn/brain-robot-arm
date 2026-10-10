@@ -64,6 +64,25 @@ inline LandingError CompareTips(
 
 enum class LandingDecision { ACCEPT, CORRECT_ONCE, REJECT };
 
+// A fresh visible cube-face point is NOT a calibrated volume reconstruction.
+// This conservative local-jaw check rejects remote/off-centre faces before
+// close. It cannot certify a physically wrong camera-to-tool transform.
+inline bool FaceInsideJawCapture(
+  const Point & face, double tip_z, double cube_side, double opening,
+  double depth_slack = 0.008, double side_margin = 0.002)
+{
+  for (const double value : {face[0], face[1], face[2], tip_z, cube_side, opening,
+    depth_slack, side_margin})
+  {
+    if (!std::isfinite(value)) {return false;}
+  }
+  return cube_side > 0.0 && opening > 0.0 && tip_z > 0.0 &&
+    depth_slack >= 0.0 && side_margin >= 0.0 &&
+    std::abs(face[0]) <= cube_side * 0.5 + depth_slack &&
+    std::abs(face[1]) + cube_side * 0.5 + side_margin <= opening * 0.5 &&
+    face[2] >= tip_z - cube_side - depth_slack && face[2] <= tip_z + depth_slack;
+}
+
 struct LandingLimits
 {
   double position_tolerance_m;

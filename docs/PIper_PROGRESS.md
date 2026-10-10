@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+### 2026-10-10：按镜头实测指尖偏移修正外参，禁止把画面中心当作夹持区
+
+- 用户确认实体尺寸的测量基准：从相机镜头中心，沿相机光学方向，夹爪尖端约在画面向下`0.070 m`、镜头向前`0.105 m`；这是本轮新增的现场证据，不是由旧TF反推。按ROS REP-103，相机光学轴为X右、Y下、Z前（参考 https://www.ros.org/reps/rep-0103.html）。
+- 旧启动外参`gripper_base -> camera_link = [0,-0.05,-0.10] m, RPY=[0,-pi/2,0]`把模型指尖算为camera-optical `[-0.05,0,0.2358] m`；新测量在保留旋转未标定假设、未测水平偏移取0的条件下，推得平移`[-0.070,0,0.0308] m`，模型指尖重投影为`[0,0.070,0.105] m`。二者相距约`0.156552 m`，解释了“已经对齐但夹爪仍离方块很远”的量级；这仍是近似安装测量，不是完整六自由度手眼标定。
+- 当前深度内参`fx=fy=478.756866,cx=326.135559,cy=199.873489,size=640x400`下，新指尖投影`u=326.14,v=519.04`，落在图像下方之外。该矛盾说明画面中心不能直接证明两指已经包住目标，且实物“下方”与光学Y方向虽已确认仍需用可见指尖/目标的同帧验证；没有据此盲目向下增加`0.156 m`运动。
+- 将唯一生效的`cube_task_real.yaml`加入`piper_camera_mount_tf`测量记录，启动文件改为从该配置读取平移/旋转并检查有限值；规范与`/home/johnwick/piper_ws`运行文件SHA一致。新增只读`review_camera_mount.py`和5项外参回归测试，验证旧外参差异、测量反投影和启动参数顺序；实际结果5/5通过，连同抓取/驱动回归共21项通过。
+- 将`gripper_open_value`恢复为官方50mm命令基线。此前静态`46.2mm`反馈不是“完全张开”的证据，新的实测闭爪前门控不得把它当作成功；本轮没有发送夹爪、六轴或失能命令。之前的`0x01`开爪实机复核仍只有命令进入链路、反馈未变化，未知夹爪零点保持未解决。
+- 本轮没有运行自动脚本、没有启动实体控制栈、没有修改/写入夹爪零点；CAN及已有控制进程状态沿用前一轮证据，未重复底层巡检。当前阻断从“模型末端位置与现场不符”转为“相机旋转/水平偏移和指尖可见性仍未完成外部标定，且真实夹爪开合反馈未验证”。
+- 下一步：先在静止、无运动条件下用真实图像同时核对指尖和方块投影/TF（或取得一组手眼标定对应点），再离线重算预抓取/下降；只有新鲜目标确实落在两指几何门内且夹爪反馈发生位移，才允许继续闭爪、抬升和释放。第一条命令为`PYTHONDONTWRITEBYTECODE=1 python3 brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_camera_mount.py --config brain_robot_arm/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml --observation /tmp/piper_stationary_geometry_review.json`。本轮不允许真机运动。
+
 ### 2026-10-10 12:42–12:53：恢复后实机中心扫描/锁定/下降通过，修复保持约束，阻断转为夹爪
 
 - 起始HEAD `f90e6ef`。用户明确没有碰机械臂、已恢复接口；不把先前运行期冻结归因于用户干预。内核12:40:59/12:41:09断开、12:41:05/29新枚举USB-CAN device19/20，接口索引9 DOWN/STOPPED，sudo非交互0。仅固定`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75; sudo -n ip link set can0 txqueuelen 1000; sudo -n ip link set can0 up`一次，3秒RX41→7027，无错误；之后两次启动均直接复用链路。
@@ -2211,3 +2221,11 @@
 - 本执行会话对 `can0` 的只读 netlink 查询返回 `Operation not permitted`；`sudo -n true` 返回1，原因是 no-new-privileges/ sudo 配置异常。故本轮没有 CAN RX 结论、没有接口配置、没有启动一键脚本，也没有重复 USB/CAN 恢复实验。磁盘根分区使用率约33%，不是当前阻断。
 - 当前第一断点仍是实体抓取前的真实夹爪开口/间隙反馈门；其后才是闭爪反馈、抬升、释放、安全回位和确认支撑后失能。观测姿态、搜索、目标检测、镜像方向和离线预抓取规划已有证据，不应重复。
 - 下一步首条命令：在具备 `CAP_NET_ADMIN` 的同一实际运行终端复核 `ip -details -statistics link show can0` 与 3–5 秒被动 RX；若持续反馈，再核对安装空间已加载当前 50 mm 配置和新鲜 RGB-D 夹爪间隙门，运行同一一键脚本并按门控记录；若权限或 RX 未恢复，保持不启动运动链并记录阻断。当前不执行 0xAE 零点写入、ResetPiper 或 MasterSlaveConfig。
+
+### 2026-10-10：镜头实测外参与夹持区门控的离线验证完成
+
+- 用户确认测量基准为镜头中心、沿相机光学方向：指尖向下约 `0.070 m`、向前约 `0.105 m`。当前规范和实际 YAML SHA-256 均为 `618f00df44b8094aa77ed29e9020b2f64568fd89824a2915bf296199dee31f72`，均加载 `translation_m=[-0.070,0,0.0308]`、`rotation_rpy_rad=[0,-pi/2,0]`、`operator_tip_optical_m=[0,0.070,0.105]`，并明确水平偏移未测、旋转未完成标定。
+- 只读复核工具反算配置得到指尖 `[0,0.070,0.105] m`；按当前 640x400 深度内参投影为 `(u=326.14,v=519.04)`，落在图像下方。该结果确认不能把画面中心当作两指夹持中心，也不能据此直接增加实体下降量。
+- 当前抓取代码在闭爪前要求 `fresh_jaw_capture_required=true`、新鲜 RGB-D 面点、最新夹爪反馈，并通过 `FaceInsideJawCapture` 几何门；门控失败只报告 `FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，不发闭爪、抬升或释放命令。50 mm 张爪目标与约46.2 mm静态反馈的差异仍保持拒绝，不写入0xAE零点。
+- 实际工作区验证：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回0；`colcon test --packages-select brain_robot_pick_place` 返回0，结果 `54 tests, 0 errors, 0 failures, 0 skipped`；离线外参和抓取回归 `15 passed`；`bash -n`启动脚本和相关文件 `git diff --check` 通过。未启动ROS控制栈，未发送六轴、夹爪或失能命令。
+- 当前技术状态仍是待外部手眼/安装旋转和水平偏移验证，以及真实夹爪开合反馈验证；模型、离线测试和部署一致性不能替代实体抓取验收。下一步先取得静止同帧指尖/方块对应点或完整手眼标定，再重新离线规划预抓取/下降；在此之前保持真机运动禁用。

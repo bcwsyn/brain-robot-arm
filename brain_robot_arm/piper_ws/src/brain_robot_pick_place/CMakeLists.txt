@@ -163,6 +163,7 @@ if(BUILD_TESTING)
     test/test_real_grasp_replay.py
   )
   ament_add_pytest_test(startup_script_test test/test_startup_script.py)
+  ament_add_pytest_test(camera_mount_geometry_test test/test_camera_mount_geometry.py)
 endif()
 
 ament_package()

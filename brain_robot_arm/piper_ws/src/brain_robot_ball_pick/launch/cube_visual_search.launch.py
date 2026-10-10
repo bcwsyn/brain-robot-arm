@@ -1,3 +1,4 @@
+import math
 import os
 
 import yaml
@@ -11,6 +12,18 @@ from moveit_configs_utils.launches import generate_static_virtual_joint_tfs_laun
 def _load_yaml(path):
     with open(path, encoding='utf-8') as stream:
         return yaml.safe_load(stream)
+
+
+def _camera_mount_arguments(task_profile):
+    mount = task_profile['piper_camera_mount_tf']['ros__parameters']
+    xyz = mount['translation_m']
+    rpy = mount['rotation_rpy_rad']
+    if len(xyz) != 3 or len(rpy) != 3 or not all(
+            math.isfinite(float(value)) for value in xyz + rpy):
+        raise RuntimeError('camera mount must contain finite XYZ and RPY triples')
+    # The legacy positional interface expects yaw, pitch, roll (not RPY).
+    return [str(float(value)) for value in xyz + [rpy[2], rpy[1], rpy[0]]] + [
+        'gripper_base', 'camera_link']
 
 
 def generate_launch_description():
@@ -78,8 +91,7 @@ def generate_launch_description():
     camera_mount_tf = Node(
         package='tf2_ros', executable='static_transform_publisher',
         name='piper_camera_mount_tf', output='screen',
-        arguments=['0.0', '-0.05', '-0.10', '0.0', '-1.57079632679', '0.0',
-                   'gripper_base', 'camera_link'])
+        arguments=_camera_mount_arguments(task_profile))
     static_virtual_joint_tfs = generate_static_virtual_joint_tfs_launch(moveit)
     return LaunchDescription(static_virtual_joint_tfs.entities + [
         robot_state_publisher,

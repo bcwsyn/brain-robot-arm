@@ -381,6 +381,7 @@ private:
     gripper_open_value_ = ParameterOr<int>("gripper_open_value", 50000);
     gripper_close_value_ = ParameterOr<int>("gripper_close_value", 40000);
     gripper_settle_s_ = ParameterOr<double>("gripper_settle_s", 2.0);
+    fresh_jaw_capture_required_ = ParameterOr<bool>("fresh_jaw_capture_required", false);
     gripper_feedback_topic_ = ParameterOr<std::string>(
       "gripper_feedback_topic", "/joint_states_feedback");
     gripper_feedback_timeout_s_ = ParameterOr<double>("gripper_feedback_timeout_s", 3.0);
@@ -1360,6 +1361,10 @@ private:
   void FinishGraspAndLift(
     const geometry_msgs::msg::PoseStamped & postgrasp_retreat = geometry_msgs::msg::PoseStamped())
   {
+    if (!simulation_only_ && fresh_jaw_capture_required_ && !FreshFaceInsideJaws()) {
+      Fail("FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE");
+      return;
+    }
     geometry_msgs::msg::PoseStamped grasp_pose;
     grasp_pose = CurrentPoseInFrame(lift_reference_frame_);
     if (grasp_pose.header.frame_id.empty()) {
@@ -2071,6 +2076,61 @@ private:
     return JointPosition(latest_gripper_feedback_, "gripper");
   }
 
+  bool FreshFaceInsideJaws()
+  {
+    geometry_msgs::msg::PointStamped face;
+    double size = 0.0;
+    const auto now_steady = std::chrono::steady_clock::now();
+    {
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      const auto fresh = [&](const auto & received) {
+          return received != std::chrono::steady_clock::time_point{} &&
+                 std::chrono::duration<double>(now_steady - received).count() <= target_timeout_s_;
+        };
+      if (!target_valid_ || !depth_valid_ || !fresh(target_point_received_time_) ||
+        !fresh(target_valid_received_time_) || !fresh(depth_valid_received_time_) ||
+        !fresh(target_size_received_time_))
+      {
+        PublishDiagnostic("JAW_CAPTURE_FRESH_RGBD_UNAVAILABLE_NO_CLOSE");
+        return false;
+      }
+      face = target_point_camera_;
+      size = std::max(target_size_.vector.x, target_size_.vector.y);
+    }
+    double opening = 0.0;
+    {
+      std::lock_guard<std::mutex> lock(feedback_mutex_);
+      if (gripper_feedback_received_time_ == std::chrono::steady_clock::time_point{} ||
+        std::chrono::duration<double>(now_steady - gripper_feedback_received_time_).count() >
+        target_timeout_s_)
+      {
+        return false;
+      }
+      opening = JointPosition(latest_gripper_feedback_, "gripper");
+    }
+    if (!std::isfinite(size) || size < min_object_size_m_ || size > max_object_size_m_) {
+      return false;
+    }
+    try {
+      const auto transform = tf_buffer_->lookupTransform(
+        "gripper_base", face.header.frame_id, tf2::TimePointZero);
+      geometry_msgs::msg::PointStamped local;
+      tf2::doTransform(face, local, transform);
+      const bool inside = grasp_geometry::FaceInsideJawCapture(
+        {local.point.x, local.point.y, local.point.z}, gripper_tip_offset_m_, size, opening);
+      RCLCPP_INFO(get_logger(),
+        "FRESH_JAW_CAPTURE face=(%.4f,%.4f,%.4f) tip_z=%.4f size=%.4f opening=%.4f inside=%s "
+        "MODEL_MOUNT_NOT_EXTERNAL_CALIBRATION",
+        local.point.x, local.point.y, local.point.z, gripper_tip_offset_m_, size,
+        opening, inside ? "true" : "false");
+      // Validate fresh perception without replacing/chasing the static target.
+      return inside;
+    } catch (const tf2::TransformException & error) {
+      RCLCPP_ERROR(get_logger(), "Fresh jaw-capture transform unavailable: %s", error.what());
+      return false;
+    }
+  }
+
   bool WaitForGripperCommand(
     double before_command, int target_value, bool allow_contact_stop,
     const std::string & stage)
@@ -2704,6 +2764,7 @@ private:
   int gripper_open_value_{50000};
   int gripper_close_value_{40000};
   double gripper_settle_s_{2.0};
+  bool fresh_jaw_capture_required_{false};
   std::string gripper_feedback_topic_;
   double gripper_feedback_timeout_s_{3.0};
   double min_gripper_feedback_motion_rad_{0.001};
