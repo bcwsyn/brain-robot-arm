@@ -1,5 +1,13 @@
 # PiPER 调试进度
 
+### 2026-10-10 21:31：将活动 RGB-D 目标和闭爪前目标变换改为采样时刻 TF
+
+- 经用户批准，只改 `grasp_lift_executor.cpp` 当前活动 RGB-D 路径的两处 TF 查询：收到的目标点变换到 `lift_reference_frame_`，以及 `FreshFaceInsideJaws()` 将目标点变换到 `gripper_base`。两处均按 `PointStamped.header.stamp` 查询；零时间戳不再被 TF2 当成“取最新”，而是记录明确诊断；查询失败时日志带源帧、图像时间戳和异常，不回退最新 TF。成功日志记录图像时间戳、TF返回时间戳及变换前后点坐标。
+- 当前实体 YAML `brain_robot_arm/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml` 中 `depth_only_target_enabled=false`。因此这次未改未启用的 depth-only 回调，也未改目标坐标、TCP偏移、搜索/抓取轨迹、速度、门限或一键脚本；没有启动 ROS 控制栈或向机械臂发送命令。若将来启用 depth-only，该备用回调的 latest-TF 查询仍需单独处理后才应使用。
+- 用户现场方向观察单独记录：夹爪尖端相对当前视角约需再下降 5–8 cm，并沿机械臂当前朝向向后约 8–10 cm。该观察不是已标定的相机/机器人坐标偏移；本轮没有把它换算或硬编码为外参、目标位姿或运动量。
+- 离线验证：ROS 2 Humble 下从规范仓库源码构建 `brain_robot_pick_place` 成功，构建/安装目录均在 `/tmp/ub_tf_stamp_*`，未部署到 `/home/johnwick/piper_ws`；该包现有 6 个测试目标全部通过（`colcon test`）。本轮仍未实机验证消息时间戳与动态 TF 的运行时同步效果。
+- 代码及本记录的回退点为本轮实现提交；准确哈希和可复制的 `git revert` 命令在提交后续记项中记录。不要使用 `git reset`，也不要回退同工作区中其他未提交资料/供应商改动。
+
 ### 2026-10-10 20:47–20:50：只读检查当前相机画面与夹爪末端模型
 
 - 当时一键控制栈已退出，日志目录没有保存图像帧；为响应用户要求查看相机视野，只启动 Astra 深度相机和原脚本 RGB 发布器，未启动 PiPER、MoveIt、Servo、视觉控制器或抓取器，没有发任何机械臂命令。采完即停止相机进程。普通沙箱的 DDS/USB 权限不足，获准的相机只读进程才发现设备序列号`CC136530302`。

@@ -1,5 +1,11 @@
 # 2026-10-10 暂停交接：一键紫色方块实机抓取
 
+## 21:31 更新：活动 RGB-D TF 对齐采样时间戳（仅离线构建，未部署/未实机运行）
+
+用户批准后，规范仓库中的 `grasp_lift_executor.cpp` 仅有两处活动路径 TF 查找改为按目标 `PointStamped.header.stamp` 查询：缓存到参考系的观测点和 `FreshFaceInsideJaws()` 的夹爪坐标变换。新增诊断打印源帧、相机消息时间戳、TF返回时间戳及坐标；时间戳为零或该时刻 TF 不可用时明确失败，禁用 latest-TF 回退。当前真实 YAML 的 depth-only 模式关闭，备用 depth-only 回调没有改。代码尚未同步至或构建在 `/home/johnwick/piper_ws`，没有启动节点/机械臂命令；不能据此宣称坐标链或抓取已修复。
+
+离线验证：Humble `colcon build` 成功，包内6个测试目标通过；临时构建位于 `/tmp/ub_tf_stamp_*`。用户提供的实体观察（尖端还需约5–8cm向下、并沿机械臂当前朝向向后约8–10cm）已作为未标定方向信息保留，不是已换算的机器人坐标位移，本轮未写入运动配置。精确代码提交哈希与 `git revert` 命令在规范仓库 `PIper_PROGRESS.md` 的下一条提交回退记录中。
+
 ## 20:50 新增核对：相机帧与工具模型
 
 用户现场报告夹爪尖端距桌面约9cm。模型不是没有夹爪：PiPER URDF有`gripper_base`及`link7/link8`指爪视觉/碰撞网格；但MoveIt arm链终点是`link6`，当前YAML的`end_effector_link=link6`，抓取器通过`gripper_tip_offset_m=0.1358m`换算link6和指尖的目标。上轮`GRASP_LANDING`纠偏后FK给出模型actual_tip z=`0.0830m`、expected_tip z=`0.0757m`、差7.3mm；这不是对桌面的实测距离。需要把桌面高度、目标表面点、link6/TCP及实体动作时刻放到同一坐标/时间核对，不能将模型FK精度当成实物触点证明，也不能直接盲加9cm下降。

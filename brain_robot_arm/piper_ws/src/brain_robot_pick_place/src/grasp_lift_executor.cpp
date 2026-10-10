@@ -90,16 +90,36 @@ public:
         bool target_reference_valid = false;
         const std::string target_frame = message->header.frame_id.empty() ?
           camera_optical_frame_ : message->header.frame_id;
-        try {
-          const auto reference_from_target = tf_buffer_->lookupTransform(
-            lift_reference_frame_, target_frame, tf2::TimePointZero);
-          tf2::doTransform(*message, target_reference, reference_from_target);
-          target_reference_valid = true;
-        } catch (const tf2::TransformException & exception) {
+        const auto & source_stamp_msg = message->header.stamp;
+        if (source_stamp_msg.sec == 0 && source_stamp_msg.nanosec == 0) {
           RCLCPP_WARN_THROTTLE(
             get_logger(), *get_clock(), 2000,
-            "Cannot save target in %s for short-horizon approach prediction: %s",
-            lift_reference_frame_.c_str(), exception.what());
+            "Cannot save target in %s: source=%s has zero stamp; latest-TF fallback disabled",
+            lift_reference_frame_.c_str(), target_frame.c_str());
+        } else {
+          const rclcpp::Time source_stamp(source_stamp_msg);
+          try {
+            const auto reference_from_target = tf_buffer_->lookupTransform(
+              lift_reference_frame_, target_frame, source_stamp);
+            tf2::doTransform(*message, target_reference, reference_from_target);
+            target_reference_valid = true;
+            RCLCPP_INFO_THROTTLE(
+              get_logger(), *get_clock(), 5000,
+              "TARGET_TF source=%s image_stamp=%.9f tf_stamp=%.9f "
+              "camera_xyz=(%.4f,%.4f,%.4f) reference=%s xyz=(%.4f,%.4f,%.4f)",
+              target_frame.c_str(), source_stamp.seconds(),
+              rclcpp::Time(reference_from_target.header.stamp).seconds(),
+              message->point.x, message->point.y, message->point.z,
+              lift_reference_frame_.c_str(), target_reference.point.x,
+              target_reference.point.y, target_reference.point.z);
+          } catch (const tf2::TransformException & exception) {
+            RCLCPP_WARN_THROTTLE(
+              get_logger(), *get_clock(), 2000,
+              "Cannot save target in %s at image_stamp=%.9f from %s; "
+              "latest-TF fallback disabled: %s",
+              lift_reference_frame_.c_str(), source_stamp.seconds(),
+              target_frame.c_str(), exception.what());
+          }
         }
         std::lock_guard<std::mutex> lock(target_mutex_);
         target_point_camera_ = *message;
@@ -2155,22 +2175,40 @@ private:
     if (!std::isfinite(size) || size < min_object_size_m_ || size > max_object_size_m_) {
       return false;
     }
+    const auto & source_stamp_msg = face.header.stamp;
+    const std::string source_frame = face.header.frame_id.empty() ?
+      camera_optical_frame_ : face.header.frame_id;
+    if (source_stamp_msg.sec == 0 && source_stamp_msg.nanosec == 0) {
+      PublishDiagnostic("JAW_CAPTURE_TF_ZERO_STAMP_NO_CLOSE");
+      RCLCPP_WARN_THROTTLE(
+        get_logger(), *get_clock(), 2000,
+        "Fresh jaw-capture check rejected: source=%s has zero stamp; latest-TF fallback disabled",
+        source_frame.c_str());
+      return false;
+    }
+    const rclcpp::Time source_stamp(source_stamp_msg);
     try {
       const auto transform = tf_buffer_->lookupTransform(
-        "gripper_base", face.header.frame_id, tf2::TimePointZero);
+        "gripper_base", source_frame, source_stamp);
       geometry_msgs::msg::PointStamped local;
       tf2::doTransform(face, local, transform);
       const bool inside = grasp_geometry::FaceInsideJawCapture(
         {local.point.x, local.point.y, local.point.z}, gripper_tip_offset_m_, size, opening);
       RCLCPP_INFO(get_logger(),
-        "FRESH_JAW_CAPTURE face=(%.4f,%.4f,%.4f) tip_z=%.4f size=%.4f opening=%.4f inside=%s "
+        "FRESH_JAW_CAPTURE source=%s image_stamp=%.9f tf_stamp=%.9f "
+        "face=(%.4f,%.4f,%.4f) tip_z=%.4f size=%.4f opening=%.4f inside=%s "
         "MODEL_MOUNT_NOT_EXTERNAL_CALIBRATION",
+        source_frame.c_str(), source_stamp.seconds(),
+        rclcpp::Time(transform.header.stamp).seconds(),
         local.point.x, local.point.y, local.point.z, gripper_tip_offset_m_, size,
         opening, inside ? "true" : "false");
       // Validate fresh perception without replacing/chasing the static target.
       return inside;
     } catch (const tf2::TransformException & error) {
-      RCLCPP_ERROR(get_logger(), "Fresh jaw-capture transform unavailable: %s", error.what());
+      RCLCPP_ERROR(get_logger(),
+        "Fresh jaw-capture transform unavailable: gripper_base<- %s at image_stamp=%.9f; "
+        "latest-TF fallback disabled: %s",
+        source_frame.c_str(), source_stamp.seconds(), error.what());
       return false;
     }
   }
