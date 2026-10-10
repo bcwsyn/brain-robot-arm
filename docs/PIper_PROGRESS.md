@@ -2229,3 +2229,12 @@
 - 当前抓取代码在闭爪前要求 `fresh_jaw_capture_required=true`、新鲜 RGB-D 面点、最新夹爪反馈，并通过 `FaceInsideJawCapture` 几何门；门控失败只报告 `FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，不发闭爪、抬升或释放命令。50 mm 张爪目标与约46.2 mm静态反馈的差异仍保持拒绝，不写入0xAE零点。
 - 实际工作区验证：`colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 返回0；`colcon test --packages-select brain_robot_pick_place` 返回0，结果 `54 tests, 0 errors, 0 failures, 0 skipped`；离线外参和抓取回归 `15 passed`；`bash -n`启动脚本和相关文件 `git diff --check` 通过。未启动ROS控制栈，未发送六轴、夹爪或失能命令。
 - 当前技术状态仍是待外部手眼/安装旋转和水平偏移验证，以及真实夹爪开合反馈验证；模型、离线测试和部署一致性不能替代实体抓取验收。下一步先取得静止同帧指尖/方块对应点或完整手眼标定，再重新离线规划预抓取/下降；在此之前保持真机运动禁用。
+
+### 2026-10-10：实机完整链验证到 GRASP_READY，张爪反馈门阻断
+
+- 按用户授权运行 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_OBSERVE=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh`。运行前 USB-CAN `1d50:606f`/`gs_usb` 正常，`can0` 为 1 Mbps、sample-point 0.750、ERROR-ACTIVE；被动4秒 RX 增量9747，`0x251..0x256` 各400帧；无控制进程残留，磁盘33%。
+- 一键链实际通过 `[1/7]..[7/7]`、深度/RGB首帧、观测姿态和搜索；视觉控制器进入 `GRASP_READY`，检测器使用当前 `mirror_x=false`。没有执行预抓取下降，因为抓取执行器先执行张爪反馈门。
+- 适配器发出有界 `target=0.050000 m, effort=1.000 N.m` 张爪帧；驱动日志反复记录 `GripperCtrl(50000,1000,0x01,0)`。只收 CAN 日志中 `0x3A7` 共64713帧，角度始终 `0xB478=46200`（46.2 mm），未观察到 `0x159` 回显（SocketCAN local loopback关闭，不能据此否定SDK发送）。最终错误为 `FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED before=current=0.046200 m target=0.050000 m tolerance=0.003000 m`。
+- 保护路径返回码为1，未发送预抓取、闭爪、抬升、释放、ResetPiper、0xAE或DisableArm；脚本停止其进程并保持硬件使能。结束后 `can0` 仍 ERROR-ACTIVE，3秒 RX 增量7278，错误/丢帧为0。
+- 视觉日志还出现重复 `Joint 'gripper' not found in model 'piper'`，需后续单独修正模型/日志噪声；本轮没有把它当作张爪反馈成功或绕过门控的理由。
+- 当前阻断是实体夹爪的开口基准/反馈未验证：46.2 mm 是持续反馈值，不等于已证明50 mm完全张开。下一步必须取得实体完全张开基准或明确的夹爪标定证据，并保持新鲜 RGB-D 夹持区门；在此之前不把 `gripper_open_value` 改成46.2、不放宽容差、不继续下降或闭爪。
