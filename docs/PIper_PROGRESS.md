@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+### 2026-10-10 12:38–12:41：按授权实际运行新版默认脚本，反馈门在[1/7]拒绝运动
+
+- 起始HEAD `2a1de70`，用户明确要求“开始实机验证”。读取规范Git状态和最新进度/决策，保留既有供应商/Astra未提交修改。实际宿主权限检查`sudo -n true`返回0；运行/规范一键脚本SHA-256均`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`，不是旧脚本或备用YAML。
+- 12:38:50真实主机`ip -details -statistics link show can0; sleep 3; ip -statistics link show can0`：索引7、UP/LOWER_UP、ERROR-ACTIVE、1Mbps/.750、qlen1000；RX946260→946260、TX21139、errors/dropped0。无PiPER/适配器/视觉/相机/MoveIt控制进程残留。没有把接口UP当作新鲜反馈，也没有将沙箱网络隔离误认为实体断联。
+- 本轮最小可验证动作：直接执行`set -o pipefail; BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 /home/johnwick/start_brain_robot_cube_real.sh 2>&1 | tee /tmp/piper_real_verification_20261010_1241.log`。该证据文件名仅为标签，实际运行时间约12:39。脚本自带磁盘维护完成，根分区33%/可用51601MB，清理前后使用率不变；系统日志vacuum释放0B，未删除源码/依赖/Git，不能把本次阻断解释成磁盘满。
+- 实际输出到`[1/7]`后，既有5秒RX门给出“can0已正确配置但RX未增长；保持接口不变，不执行down/up”及“PiPER控制器没有CAN反馈”，随即执行保护清理。**没有到[7/7]、没有新的观测到达、CENTER_HOLD/中心小扫、ALIGN或抓取证据**；没有启动驱动、发送使能/运动/闭爪/失能/ResetPiper/标定/固件命令。脚本错误路径`fail`定义退出1；外层工具会话收尾状态尚未返回时不把推断退出码冒充工具实测。
+- 12:39:43退出输出后的实际RX仍946260、TX21139，无上述控制进程。内核echo异常计数0，已处理marker为1，不存在“新增未处理echo错误”的一次恢复条件；无12:12之后的新USB断开/枚举。12:35:24仅新增`gs_usb_timestamp_work ... hogged CPU >10000us`警告，它本身不证明RX冻结原因。未重复历史无效guest USB reset/xHCI重建/重刷/主从/普通限位检查。
+- 本轮回答“是否推进观测”：已实际运行新版默认启动并验证启动拒绝路径，但未推进实体观测或抓取，因为未取得任何新鲜关节反馈。中心搜索离线通过与当前实体可执行性必须分开。当前确切阻断仍是接收流停滞，尚不能凭计数区分VMware透传、USB-CAN内部状态或机械臂控制器端；不武断归为硬件故障或视觉算法问题。
+- 12:40工具会话完成返回**实测退出码1**，与启动反馈门拒绝一致；本轮两份文档的限定范围`git diff HEAD^ HEAD --check -- docs/PIper_PROGRESS.md docs/PIper_DECISIONS.md`返回0。全工作树diff检查曾报告既有供应商CRLF/尾空格，不属于本轮修改，未修整或提交它们。
+- 下一步需要恢复真实反馈链（历史有效动作是宿主VMware把USB-CAN断开后重新连接到此虚拟机，代理当前仅有guest入口，不能代操作宿主）。恢复后的首条命令仍`ip -statistics link show can0`并做短差分；若新枚举接口DOWN且sudo可用，仅固定1Mbps/.75/qlen1000/up一次；RX持续增长后直接运行上面同一默认命令，不等待按键、不重复已完成基线，验证CENTER_HOLD→目标立即ALIGN或中心小扫→实测回中心→双侧full，再核验落点、真实闭爪、抬升、释放及先回位后失能。连续实机授权有效，但总目标未完成。
+
 ### 2026-10-10 12:16–12:34：实施中心优先搜索与分段边界修复，完成隔离控制器回放
 
 - 起始HEAD`74991a1`，用户确认修改搜索顺序。保留唯一实体`cube_task_real.yaml`、既有MoveIt搜索分段与`piper_jog_adapter`，不另建运动程序、不混备用YAML、不扩大关节搜索范围、不改颜色/深度授权、不启用腕部Octomap。开始/收尾真实主机2秒RX均946260→946260，TX21139、errors/dropped0；本轮无新鲜实体反馈，因此**未再次实机到观测位或发送实体运动**，没有复位/失能/刷固件/主从/未知夹爪零点写入。
