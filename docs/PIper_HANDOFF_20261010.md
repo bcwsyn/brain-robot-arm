@@ -14,7 +14,7 @@
 
 J5的逐值FK、TCP和RGB像素推算见[`j5_projection_review.md`](evidence/piper_onekey_20261010/j5_projection_review.md)；它解释了为什么裸加J5虽能让近似目标像素上移，却会同时造成link6-X偏移和TCP移动。不得将表格数据当成可执行实机关节目标。
 
-本轮规范改动仍在工作树，但`git add`被沙箱以`.git/index: Read-only file system`拒绝，故没有commit SHA。不要覆盖这些文件；恢复规范仓库Git可写能力后，精确暂存进度首节列出的7个文件再提交。其他vendor/reference脏改属于既有状态，保持原样。
+本轮改动已提交为 `eed71ff fix: stop grasp approach when target leaves camera view`，精确包含进度首节列出的7个文件，`git show --check`通过且这些路径现已干净。普通沙箱报 `.git/index: Read-only file system` 的原因是当前执行视图将 `/mnt/hgfs` 以 `vmhgfs-fuse ro` 挂载，虽然索引权限位为777；之前以及本次成功提交均通过 `require_escalated` 执行Git写操作，不是修改chmod。其他vendor/reference脏改未暂存，保持原样。
 
 ## 最新实机更新：18:40–18:44（优先于下方暂停/离线历史）
 

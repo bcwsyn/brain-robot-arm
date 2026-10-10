@@ -8,7 +8,7 @@
 - 代码/唯一YAML已同步到规范仓库与实际工作区。加入“轨迹终点刚好收到关节到点反馈时，再确认一次颜色候选”的末端竞态门后，最终执行 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 成功（两包，约91秒）；C++源码规范/运行SHA均为`f29503399d63a30462c2eb50bb2670b784b6c0217d85f9494560dfcb045a4b6a`，实体YAML规范/运行/install SHA均为`1758895ad5dd7e769c33d3907abcc71412a694e9d4134e1e0a6727709cd21e96`，新执行器二进制SHA=`47280eea8694021d2ea429595ff223b1f4de181c29e66d106db818edb81249d9`；源码规范/运行逐字一致，`git diff --check`通过。未运行测试套件。
 - 本轮又尝试在`ROS_DOMAIN_ID=78`启动`allow_trajectory_execution=false`的隔离MoveIt复核；DDS UDP socket被当前执行沙箱拒绝，两个规划进程随即退出，因此该次复核没有得到规划结果，不能记成IK/碰撞失败。此前已提交的79点+9点离线规划结果仍是历史模型证据，不是当前J5方案或实机结果。没有发送新的实机关节/夹爪命令。
 - 逐轴FK投影的完整输入/输出表及坐标假设已保存为[`j5_projection_review.md`](evidence/piper_onekey_20261010/j5_projection_review.md)，可与真实像素轨迹CSV对照。
-- 规范代码、配置、进度/决策/交接和投影证据均已修改，但本环境Git提交被阻断：`git add`对`/mnt/hgfs/ub/.git/index`返回`Read-only file system`（尽管路径权限位显示可写）。未生成提交号；所有改动仍保留在规范仓库工作树，未触碰其他123项既有vendor/reference脏改。得到可写Git索引后，第一步只暂存本节列出的7个文件并提交。
+- 首次普通沙箱 `git add` 被拒绝，系统证据显示 `/mnt/hgfs` 在该执行上下文以 `vmhgfs-fuse ro` 挂载；`.git/index` 权限位为777，因此问题不是chmod可修复的文件mode。随后用此前成功提交所用的 `require_escalated` 执行方式，只暂存本节所列7个文件并成功提交 `eed71ff fix: stop grasp approach when target leaves camera view`；`git show --check`通过，指定7个路径提交后干净。其他vendor/reference改动没有暂存或覆盖。
 - 当前仍未完成闭爪/抬升/释放；实机夹爪反馈停留`102.1 mm`且50mm开口命令无反馈变化，是独立阻断。下一步用本轮已构建的保护代码运行同一默认一键入口，观察目标移出画面时适配器是否及时停止；同时只在隔离MoveIt恢复可用后规划“保持抓取点、由其它关节补偿的小J5姿态变化”，不发裸J5步进，不重复完整盲接近。最终仍需新鲜两指可见/闭爪反馈再继续抓取。
 
 ### 2026-10-10 18:40–18:44：按用户要求先实跑一键流程；靠近恢复，目标移出下边缘，禁止把轨迹结束当已夹住
