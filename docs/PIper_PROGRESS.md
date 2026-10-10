@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-10 20:00–20:03：默认一键实机运行到 GRASP_READY；颜色可见门在预抓取途中提前停车
+
+- 起始规范仓库 HEAD `0986a75`；运行入口 `/home/johnwick/start_brain_robot_cube_real.sh` 与规范脚本 SHA-256 同为 `e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`。开始前无 PiPER/视觉/MoveIt 栈残留；根分区 33%，`sudo -n true` 返回0；can0 为 1 Mbps/sample-point 0.750、ERROR-ACTIVE，2秒 RX `63335095→63339957`（+4862），errors/dropped=0；USB-CAN 与 Astra RGB/深度设备枚举正常。
+- 只读 SDK 当前反馈（无运动/使能/复位/夹爪命令）：高速约100Hz、数据年龄8ms，初始 `q=[-0.284,1.794,-1.056,-0.031,0.198,0.039] rad`、各轴速度0；低速约20Hz，六轴均使能，状态码均`0x40`，collision/error/stall均false。单次官方限位查询为六轴`-1700..1700`（0.1°单位，即±170°）、速度300（0.001rad/s）、加速度500（0.001rad/s²）；当前实体控制器限位读取独立于MoveIt适配器的更紧动作包络。
+- 实际命令：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_live_20261010_200016 /home/johnwick/start_brain_robot_cube_real.sh`。脚本复用健康can0，深度与RGB均收到首帧，通过`[7/7]`；真实自动从当前位置启动到观测姿态，12点、最大相邻步长0.08rad、规划时长41.4s，实测到达`OBSERVE_POSE_REACHED`并进入SEARCH。
+- 搜索实际符合中心优先代码：观测位中心保持→J1约`-0.08↔+0.08rad`、J5围绕观测值约`±0.12rad`的8个中心小扫段（每段均有`SEARCH_SEGMENT_REACHED`实测反馈）→反馈确认回中心→`CENTER_COMPLETE`→才开始既有`FULL_SEARCH`。随后目标在full搜索中变为DETECTED并进入`ALIGN→GRASP_READY`。首个全搜索方向J1负/J5下；这不是只发轨迹而无实动。
+- 抓取执行器锁定目标`base_link=(0.430,-0.128,0.080)m`，发出50mm张爪目标，但夹爪反馈仍为`102.1mm`，日志`GRIPPER_OPEN feedback unconfirmed`。其后MoveIt成功规划78点预抓取，计算了8点笛卡尔下降路径（尺寸启发式插入12mm）；预抓取轨迹估时7.675s，适配器于`1791633776.875`接受78点。
+- 颜色候选于`1791633769.667` DETECTED，`1791633781.672` LOST；约0.26s后（超过配置连续丢失0.20s）执行器调用adapter `/disarm`，日志确认`hold acknowledged=true`，并停止为`APPROACH_TARGET_LOST_HOLD_NO_CLOSE`。这是预抓取78点轨迹执行约5.1s时中止，**预抓取未到计划终点，8点下降未执行、未闭爪/抬升/释放**。因此用户看到“离方块仍有距离”与日志相符；并非已到达抓取点后才停车，也不是MoveIt规划失败、CAN失联或机械臂碰撞。
+- 该门只根据`/brain_robot_vision/color_candidate_valid`是否新鲜且为true停车，不含目标到夹爪的距离/路径进度判断。它成功阻止了继续盲走，但本次实测证明“检测器候选丢失”不能单独证明机械臂已经越过方块：没有保存颜色/RGB关键帧，无法区分真实目标离开FOV、夹爪遮挡/视角变化和检测器瞬时假阴性；不能据此直接删除门或放宽时限。RGB-D检测日志在同一秒报告`PURPLE_CUBE target LOST`，还需同步图像确认。
+- 脚本以1退出是保护门阻断后的预期失败路径。收尾后无PiPER/视觉/MoveIt控制进程残留；can0仍ERROR-ACTIVE、无错误。停止后高速反馈新鲜100Hz，`q=[-0.288,1.291,-0.952,-0.011,0.475,0.011]rad`；首次短读J1速度0.035rad/s，2秒后六轴速度均0，六轴仍使能且无collision/error/stall。没有调用`DisableArm`、`ResetPiper`，不失能、不回零。完整日志在`/home/johnwick/brain_robot_logs/onekey_live_20261010_200016/`，未提交大型日志。
+- 下一步不重跑同一无影像记录的全流程：给现有测试采集器增加同步稀疏证据（RGB/调试图、`color_candidate_valid`、RGB-D `target_valid`、锁定base目标与六轴反馈时间线），只在一轮受控运行中确定丢失时方块是否仍在原始RGB且预抓取进度/末端离目标距离；按结果修复检测保持/相机投影或预抓取路径。张爪反馈102.1mm未变化仍是独立问题，不把当前停止归咎于它，也不得绕开新鲜夹持区/闭爪反馈门。
+
 ### 2026-10-10 19:17–19:30：接入“目标还在画面内才继续接近”门，并核算J5候选
 
 - 以最新一次实机反馈和图像为基准：末态关节 `[-.284442,1.808768,-1.049396,-.031748,.206293,.039354] rad`；18:42左右紫色候选中心从 `v=105→145→231→画面外`。用户明确方块在夹爪正下方且正确抓住时相机应能看到它。上次因RGB-D有效性/深度门停止，不是几何程序已测得`inside=false`；本轮未把旧锁定点误当成可闭爪证据。
