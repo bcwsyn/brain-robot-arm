@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+### 2026-10-10：启动修复通过，复发RX停滞与单侧搜索逻辑核对
+
+- 在`50c33fe`修正版同一默认自动命令下，`1791605387.558474302`进入PREPARE，12点40.4秒轨迹被接受；`1791605427.564144755`实际`SEARCH(OBSERVE_POSE_REACHED)`。启动确认窗口修复已通过实体运行，不再把已接受轨迹误判为服务失败。随后适配器连续接受41/42点FULL_SEARCH段；未进入ALIGN/GRASP_READY，故本轮没有新表面下降、闭爪、抬升或释放的实机证据。
+- 新RX事件：`12:12:01`守护报告`CAN_RX_STALLED_3S`，控制器日志`1791605522.771074208 FAULT(EOG_OR_EXTERNAL_EMERGENCY_STOP)`，这是脚本守护发布的emergency_stop而非可断言用户按了急停。脚本退出143，停止本轮输出/进程，不发送DisableArm/ResetPiper。退出后的2秒计数RX946260→946260、TX21139不变，errors/dropped0，无实体控制/视觉/相机节点残留。内核无同时间的新USB断开或echo异常；较早12:05:54存在uvcvideo resubmit URB(-1)，不据此断言当前冻结根因。继续不重复已无效guest reset/USB重建。
+- 相机事实：RGB明显泛白、均值约209..226。安装`v4l-utils 1.22.1-2build1`（两包约2.3MB，返回0），仅读取控制而不启动第二个采集源：brightness=64（最大、默认0），gain=100（最大、默认0），auto_exposure=3，exposure_time_absolute=1000。一次恢复brightness=0/gain=0成功，保留自动曝光/白平衡，未更改HSV/深度门；后续RGB均值约99..105、画面恢复细节，但该帧未见有效方块。曝光时间保持1000，不假称已自动回157。参考Linux官方控制文档 https://docs.kernel.org/userspace-api/media/v4l/ext-ctrls-camera.html 。这是相机状态修复，不是CAN恢复证据，当前脚本尚无持久化相机控制初始化。
+- 用户指出“观测时看到方块，却向右且没有先在中间小幅搜索”。源码证实`PrepareWorker()`观测完成直接`InitializeSearchLocked(false,...)`，选择全范围而非local；`search_bounds_relative_to_start=false`、J1[-1.35,1.35]、J5[-0.60,0.95]，full初始化J1方向固定-1、DESCEND/J5正方向。本次日志首阶段`PHASE=SEARCH_DOWN J1=NEGATIVE J5=DOWN`。不能把J1负方向未经现场定义说成实体左/右；用户现场对应的是右侧。local ±0.08/±0.12rad参数存在但不在初始流程使用，故当前实现确实不符合用户“中心→小范围→左右扩展”的顺序。
+- “看得见”与本次软件检测分别记录：检测器整个本次日志只有LOST，75帧窗口target/depth_valid=false，所以HandleSearchLocked的目标有效转ALIGN门未触发；不否定用户看见方块，也不以此合理化立刻大扫。过曝和深度配准零区均可削弱检测，但不能仅用LOST区分具体颜色/形状/深度拒绝原因。
+- 另定位真实代码缺口：`StepFullSearchLocked()`vertical目标用current±0.20rad而不截在搜索上下界，`RequestPlannedSearchLocked()`只限制每步差值、没限制区域；`Reached()`要求绝对误差≤0.01。例如J5=0.90→1.10会越过上界0.95，之后回到0.90附近，可能无法切换BOTTOM_SCAN。本次实测J5=1.076888/1.074899，已超搜索0.95（仍在适配器轴范围内），日志5466.689/5485.739/5500.940/5520.139多次`SEARCH_SEGMENT_TIMEOUT_CONTINUE`翻转J1方向。因此连续接受轨迹不能证明已完成正负两侧覆盖；现有样本J1=-1.156363及末值-0.754610，不声称已扫到正侧。
+- 当前动作范围：本轮问题按用户最新请求作代码/日志解释，尚未更改搜索策略或再次执行运动。下一步实现中心静止优先检测、继而中心小范围，再回中心展开左右；给搜索末步正确夹到边界并记录方向/目标/实测覆盖，不盲增范围、不降低目标门。实机前先解决本次RX冻结；单侧搜索代码缺口与CAN冻结分别存在，不能相互掩盖。总目标仍未完成。
+
 ### 2026-10-10 12:05–12:12：新USB枚举后的CAN恢复与启动确认超时修复
 
 - 起始HEAD `34fbd80`，针对当前反馈停滞检查真实主机（提升执行权限避免沙箱设备隔离误判）。内核记录12:02:08/17断开、12:02:14/31新枚举USB-CAN（device 17/18），can0索引7、DOWN/STOPPED、计数0；这是新的外部枚举事实，不推断是谁操作。`sudo -n true`成功。
