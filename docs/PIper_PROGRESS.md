@@ -1,5 +1,7 @@
 # PiPER 调试进度
 
+> 当前状态（2026-10-10 18:24）：按用户要求已暂停实机工作，交给此前参与项目的老师傅。最新一键测试到GRASP_READY后预抓取IK失败；详细证据及下一步见 [暂停交接记录](PIper_HANDOFF_20261010.md)，本轮记录追加在文件末尾。
+
 ### 2026-10-10：按镜头实测指尖偏移修正外参，禁止把画面中心当作夹持区
 
 - 用户确认实体尺寸的测量基准：从相机镜头中心，沿相机光学方向，夹爪尖端约在画面向下`0.070 m`、镜头向前`0.105 m`；这是本轮新增的现场证据，不是由旧TF反推。按ROS REP-103，相机光学轴为X右、Y下、Z前（参考 https://www.ros.org/reps/rep-0103.html）。
@@ -2315,3 +2317,19 @@
 - 按用户要求部署了“张爪反馈未确认仍继续预抓取”的基础抓取路径并启动完整实体脚本。实际链通过 `[1/7]..[7/7]`，随后驱动在使能服务读取异常夹爪缓存时抛出 `ValueError: Gripper hold feedback outside 0..80000`，`piper_single_ctrl` 崩溃，适配器进入 `PIPER_ADAPTER_DISARMED`；机械臂没有进入对齐/预抓取/下降，不能把本轮称为抓取尝试成功。
 - 已修复驱动：异常的启动夹爪缓存不再使节点崩溃，记录警告并仅以0作为使能握手占位；后续真实夹爪目标和闭爪反馈仍通过现有链路验证。规范源已部署到 `/home/johnwick/piper_ros`，`piper` 构建返回0。
 - 本轮新配置和驱动修复尚未再次实体复跑；下一步重新执行同一流程，验收必须出现 `ALIGN -> TOP_DOWN_PREGRASP -> DESCENT -> GRIPPER_CLOSE -> LIFT`，否则记录实际新阻断。
+
+
+### 2026-10-10 18:17–18:24：核对唯一入口、执行完整实机测试并按用户要求暂停交接
+
+- 起始HEAD `4db88e3`，规范根 `/mnt/hgfs/ub`；依次核对Git状态/log/reflog/HEAD及四份持久文档。撤回上轮未部署的 `top_down_grasp_enabled=false` 试改后，规范/运行源码/install实体YAML SHA一致为 `6bd95d17828279b842e4404118d1137112b01504b686ca3fdaa673fe784c7460`。执行器/launch/驱动源亦逐项SHA一致，安装执行器有允许张爪未确认继续接近分支。其余既有工作树修改未动。
+- 历史 `/tmp/piper_real_run_20261010_settled_fix.log` 的76点预抓取、9点下降和闭爪反馈46.2 mm失败仍是有效证据；本轮测试是更新相机外参后的实际部署版本，不以本轮规划失败抹去历史靠近证据。
+- 实机前被动高速反馈100 Hz、六轴使能true、速度0；SDK正确接收映射测得起点 `[-.296060,.978658,-.749008,0,.751312,0] rad`，观测目标 `[0,.98,-.75,0,.30,0] rad`。沿用已验证物理/软件限位，适配器速度上限.189 rad/s、准备速度/加速度缩放.01、搜索.05；失败停止输出且保持使能。can0 1Mbps/.750 ERROR-ACTIVE、零错误/丢帧，磁盘33%。夹爪即时反馈102.1 mm与历史46.2 mm不同，不称作已完全张开。
+- 实际命令 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/onekey_test_20261010 /home/johnwick/start_brain_robot_cube_real.sh`，一键输出 `/tmp/piper_onekey_test_20261010.log`。唯一额外日志目录变量不改变任务行为。脚本磁盘维护前后33%，[1/7]..[7/7]通过、RGB/深度真实首帧和TF门通过。
+- 实机18:19:48.919接受7点/22.5秒观测轨迹；18:20:11.043 SEARCH(OBSERVE_POSE_REACHED)；18:20:42.543 ALIGN；18:20:44.494 GRASP_READY；18:20:49.516张爪未确认仍进入TOP_DOWN_PREGRASP_PLANNING。当前锁定模型目标约 `[.432,-.127,.081] m`；24个预置tilt/yaw全部IK -31(NO_IK_SOLUTION)，18:21:13.698 FAULT_TOP_DOWN_PREGRASP_PLAN_FAILED。没有预抓取/下降轨迹、闭爪、抬升或释放，工具实测退出1；不归因于张爪提前门控。
+- 原始RGB与debug已多次实际查看；对齐后0036帧约dx9/dy-4、深度303 mm、尺寸36×40 mm。状态和图像证据 `/tmp/piper_onekey_test_20261010_observer.jsonl`、`/tmp/piper_onekey_test_20261010_images/`；节点/CAN日志独立保留在上述LOG_DIR。首次只读采集器因终端NumPy冲突退出，改为PYTHONNOUSERSITE=1系统Python后有效采图，不影响控制脚本。退出后重复保存最后帧属于旧stamp，不能当新鲜图像。
+- 驱动存活并记录忽略启动异常夹爪缓存102100；实际50mm目标首帧0x03后续0x01。139.3秒CAN记录0x3A7共27590帧均102100，各高速轴约13793帧；无0x159回显不证明未发送，SDK关闭local_loopback。当前102.1 mm开口语义/基准仍未确认，不写0xAE、不假称夹爪已修复。
+- 一次无运动数值几何核对 `/tmp/piper_onekey_geometry_review_20261010.{py,jsonl}`：安装URDF和当前六轴边界，24预置顶抓候选每个4种子均未找到<1mm/<.01rad解；有限数值搜索不能证明绝对不可达。实测末端朝向有模型内预抓取解 `[-.289806,1.690820,-1.002264,.024986,.282857,-.032500] rad`，尚未经MoveIt碰撞、下降/夹入和实体验证，未部署或发送。下一步建议只在禁止执行的ROS域78做同快照姿态对照，不重复当前原样实机失败。
+- 用户要求暂停交给此前参与项目的老师傅；停止一切后续实机动作并结束只读采集器。18:23:39正确按0x3A4..0x3A6聚合帧核实实际关节 `[-.278956,.979583,-.749008,0,.741241,0] rad`，高速速度全0、六轴使能全true、夹爪.1021m，连续RX。早先手算输出误用3A1..3A3末端pose帧，已纠正，不作为关节证据。实际进程检查无本轮控制栈残留。没有ResetPiper、DisableArm、自动回位或零点命令。
+- 完整暂停交接文件 `docs/PIper_HANDOFF_20261010.md`，CODEX_HANDOFF顶部指向当前状态。接手第一条命令 `cd /mnt/hgfs/ub && git status --short`。暂停后不得自动续跑，需用户/接手者明确恢复执行。总目标未完成，当前新版阻断为预置抓取姿态IK，夹爪异常反馈独立待核实；本轮只提交记录，未提交新控制策略。
+
+- 为避免/tmp重启丢失全部直接证据，已将小型一键输出、离线诊断源码及结果保存到 `docs/evidence/piper_onekey_20261010/` 随本轮Git提交；原始CAN/节点大日志和相机序列没有加入Git。
