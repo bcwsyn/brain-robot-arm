@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-10 22:29:55–22:32:04：原一键脚本到达GRASP_READY；目标模型因精确时间戳TF长期未刷新而阻断
+
+- 规范仓库起始HEAD为`5db925a`。未改写或修改`/home/johnwick/start_brain_robot_cube_real.sh`，直接用原入口和`AUTO_START=1`实跑；命令：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/tmp/ub_tf_stamp_workspace BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261010_stamped_tf /home/johnwick/start_brain_robot_cube_real.sh`。该临时overlay运行的是规范仓库当前执行器构建；RGB-D实体配置来自`/home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_task_real.yaml`。
+- 一键检查通过[1/7]至[7/7]。根分区34%（可用50,733 MB），can0按脚本既有逻辑复用，深度/RGB/调试图均收到真实首帧，MoveIt TF门通过。检测器运行时多次报告方块`DETECTED/LOST`，搜索期间`depth_cube_probe`反复`NO_CANDIDATE_IN_WORKSPACE`，并报告相机采样时刻领先最新TF的外推失败。
+- 当前关节起点（22:26:09反馈）`[-0.286867,1.807111,-1.053583,-0.025241,0.213427,0.030422] rad`，六轴速度为0；夹爪反馈`0.1021 m`。默认自动段直接发14点、49.1秒观测轨迹，最大单步0.080 rad，适配器接受；22:31:23记录`OBSERVE_POSE_REACHED`并进入`SEARCH`。随后中心局部扫描、回中心和FULL_SEARCH均有MoveIt计划被唯一适配器接受；不是仅转到固定角度就停。搜索中实测关节反馈发生变化，例如J1/J5到`-0.178487/+0.457347 rad`且J1速度`-0.117 rad/s`。紫色目标于22:31:55被检测并进入`ALIGN (TARGET_ACQUIRED)`，随后22:31:57进入`GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)`。
+- 执行器在GRASP_READY立即报`Cannot lock base-frame target model (age 73.619 s)`及`STATIC_TARGET_MODEL_UNAVAILABLE`。源码`CaptureTargetModel()`要求已变换到base_link的目标缓存不超过0.60秒，并同时要求目标有效、深度有效和坐标有限；22:31:57时该基座系缓存已经73.619秒没有成功刷新。此处在执行器调用`CommandRealGripper(true)`之前，因而本轮没有预抓取/靠近、张爪/闭爪、下降、抬升或释放。
+- 失败前的执行器日志反复显示目标图像时间戳对应的精确TF查询遇到`extrapolation into the future`，没有latest-TF回退（符合21:31已批准决策）；失败后0.55秒，22:31:57.850的一帧才成功记录`camera_xyz=(-0.0051,-0.0012,0.3010)`、`base_link xyz=(0.4329,-0.1117,0.0825)`。因此实证阻断是静态目标锁定时没有新鲜、成功按采样时刻变换的base_link点；不是预抓取IK、夹爪反馈或目标中心对齐失败。视觉进入GRASP_READY不等于执行器已锁定3D目标。
+- 脚本因上述故障停止控制输出并软件disarm，明确记录未发`DisableArm`；没有ResetPiper/归零/夹爪命令。脚本退出后最后一组被动CAN反馈（22:32:04.678）按实际PiPER驱动角度换算为`[-0.263980,0.971073,-0.741876,0,0.741457,0] rad`，夹爪仍`0.1021 m`。此组是最后记录位置，不把它说成已测零速度。控制栈已退出；清理了本次之前残留的两个旧`candump`日志进程以避免无界追加。
+- 版本/哈希：启动脚本`e8c9f85c…`（未改）；规范执行器源码`1f55f026…`；实体YAML`907e3d06…`；实际叠加层执行器二进制`c6624512…`。抓取执行器、视觉控制器、YAML行为均未修改。完整日志在`/home/johnwick/brain_robot_logs/real_full_20261010_stamped_tf/`，不提交大日志。
+- 回答本轮“是否删除相机—指尖7cm/10.5cm”：该测量不是再次加到抓取目标上的额外位移，而是相机镜头相对于夹爪坐标系的安装外参推导输入。当前PiPER URDF已含`gripper_base/link7/link8`，`link6→gripper_base`是identity fixed joint，指爪关节原点距夹爪基座0.1358m；MoveIt语义臂末端是`link6`，抓取器以`gripper_tip_offset_m=0.1358`处理指尖。实体YAML另用用户实测的`operator_tip_optical_m=[0,0.070,0.105]`及未标定的相机安装旋转推得`gripper_base→camera_link`静态TF平移`[-0.070,0,0.0308]m`，用于把相机观测点变到机器人坐标。删掉它不会解决73.619秒目标缓存过期，反而会使相机坐标链缺少现有安装变换；目前不应删，也未改任何外参。测量旋转/水平分量仍是近似，不能当作完整手眼标定。
+- 下一项最小修复建议（尚未实施，按用户要求须先获得代码修改批准）：在抓取工作线程锁存静态目标时，等待/重试下一条**原图像时间戳**可变换的目标消息，最多等待现有0.60秒；只在精确时间戳TF成功后更新base_link缓存，超时仍按原故障停止。保留全部有效/深度/目标尺寸检查，不用latest TF、不放宽缓存新鲜度、不改外参/搜索/抓取轨迹/夹爪。批准后先补瞬时TF外推回归测试、隔离构建，再重跑同一个原一键脚本。当前代码修改阻断为等待用户批准。
+
 ### 2026-10-10 21:31：将活动 RGB-D 目标和闭爪前目标变换改为采样时刻 TF
 
 - 经用户批准，只改 `grasp_lift_executor.cpp` 当前活动 RGB-D 路径的两处 TF 查询：收到的目标点变换到 `lift_reference_frame_`，以及 `FreshFaceInsideJaws()` 将目标点变换到 `gripper_base`。两处均按 `PointStamped.header.stamp` 查询；零时间戳不再被 TF2 当成“取最新”，而是记录明确诊断；查询失败时日志带源帧、图像时间戳和异常，不回退最新 TF。成功日志记录图像时间戳、TF返回时间戳及变换前后点坐标。
