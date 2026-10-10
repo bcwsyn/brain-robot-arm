@@ -6,6 +6,8 @@
 
 目标锁定`base_link (0.433,-0.128,0.085)m`。规划冻结ALIGN时的抓取朝向；抓取器计划末端高度从0.208m降到0.180m，联合关节J5终点数值由+0.291366降至+0.212520rad，J2/J3同步补偿。79点预抓取、8点Cartesian下降及一次5点落点纠偏均交给`piper_jog_adapter`执行。纠偏前模型tip误差18.1mm，纠偏后7.3mm。本轮原始CAN反馈解码得到J5：TARGET_ACQUIRED时约+0.478rad，进入GRASP_READY前升至+0.734rad；实际抓取预抓取中从+0.738降至+0.290rad，下降到+0.2126rad。前一段对应ALIGN视觉伺服（YAML以J5作为vertical_joint，sign=+1），`TARGET_ACQUIRED`仅表示从SEARCH进入ALIGN，不表示完成对齐；之后才是抓取执行器MoveIt轨迹。日志缺ALIGN期间的逐帧像素误差和Jog命令速度，因此不能判定vertical sign是否反了；但可以确认末段笛卡尔下降有J5参与。纠偏前后模型FK结果不能单独证明实体夹持中心正确。
 
+用户明确以实物形态为运动方向依据：手臂由弯曲变直表示现场观察到上抬/远离；不能单凭joint5数值正负把该现象翻译成上/下，也不能用角度数值否定用户的实体观察。控制链代码区分视觉ALIGN和抓取MoveGroup：ALIGN按像素误差发布JointJog给Servo；达到稳定帧后进入GRASP_READY并停止Servo；之后才由抓取执行器规划到预抓取位并执行Cartesian下降。TARGET_ACQUIRED是SEARCH发现目标后进入ALIGN，不是最终对齐完成。因此若上抬发生在这一状态窗口，应先诊断ALIGN误差/方向；若发生在GRASP_READY后的79点MoveGroup轨迹，则核对预抓取Pose、物理模型与实际动作。不能仅用某个关节符号直接改下移量。
+
 退出前命中`FAULT_FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，没有闭爪、抬升或释放。代码中的`FreshFaceInsideJaws()`将无新鲜RGB-D、夹爪反馈陈旧、目标尺寸异常/TF错误及目标面点在两指捕获区外都映射为false；现有日志没有具体子原因。检测器在接近过程中记录target LOST，后续没有再次记录DETECTED；这可能导致新鲜度分支失败，但不证明目标3D位置一定错误。现在无法仅凭该轮选择“MoveIt路径错误”或“目标坐标错误”。需要同步保存细分诊断、图像和关节/末端反馈。
 
 50mm张爪请求的实体反馈仍为0.1021m不变；当前实体YAML允许在张爪反馈未确认时继续approach。该问题尚未被本轮闭爪测试验证。脚本以退出码1退出，已清理一键栈，未发`DisableArm`/`ResetPiper`；脚本报告PiPER保持使能。末态没有退出后的新反馈独立复核。代码改动必须先由用户批准；建议的下一项仅为非行为性诊断日志：ALIGN期间记录`error_y_px`、J5命令速度和实际反馈；闭爪检查记录拒绝子因、目标变换到`gripper_base`的坐标、RGB-D年龄和开口，不改轨迹、配置门或执行顺序。
