@@ -2251,3 +2251,11 @@
 - 当前 ROS 驱动在使能时仅做 `0x02 -> 0x01`，显式目标帧始终 `0x01`；本轮最小修复为每次成功使能后的第一条明确夹爪目标使用 `0x03`，随后目标使用 `0x01`，不改变目标值、反馈门、闭爪门或六轴控制。
 - 规范 vendor 驱动与实际 `/home/johnwick/piper_ros` 源 SHA 已同步为 `fe1e954032f...`；`piper` 构建返回0，实际 `piper_ws` 的 `brain_robot_pick_place`/`brain_robot_ball_pick` 构建返回0。尚未用该补丁重跑实体抓取。
 - 前一轮仅 SDK 直连发送 `0x03` 未先成功完成完整 demo 使能，SDK 聚合读数为零，不能作为有效实体反馈；本轮不据此宣称夹爪已动作。下一步用重新部署的 ROS 驱动运行同一一键链，验收首帧日志是否为 `code=0x03`、0x3A7 开口是否变化，以及张爪反馈门是否通过。
+
+### 2026-10-10：demo 首次0x03目标的实体复跑结果
+
+- 提交31657fb部署后，完整一键链再次通过观测姿态、搜索、ALIGN和GRASP_READY；驱动首条实际日志为 `GripperCtrl angle=50000 effort=1000 code=0x03 set_zero=0x00`（1791619158.504），后续目标帧为0x01。真实张爪反馈仍 `before=current=0.046200 m target=0.050000 m tolerance=0.003000 m`，停止在 `FAULT_OPEN_GRIPPER_FEEDBACK_UNCONFIRMED`。没有预抓取、闭爪、抬升、释放或失能。
+- 首次0x03路径已实机验证进入SDK调用层，但没有证据证明其解除夹爪阻断；不把SDK调用等同于实体动作，不重复此运行。日志 `/home/johnwick/brain_robot_logs/real_verify_20261010_0x03.log`、`piper_driver.log`、`visual_stack.log`、`gripper_can.log`。
+- 纠正此前独立SDK测试解释：本固件聚合帧在0x3A0..0x3A7，而SDK默认接收2A1..2A8；没有安装ROS驱动的接收映射时读出的零值是未更新缓存，不能解释为未使能或夹爪已闭合。测试曾调用EnablePiper，但没有六轴目标、闭爪、零点或失能命令。
+- 驱动初始化补齐 `_gripper_clear_pending=True`，避免非服务使能入口首次目标访问未初始化属性；规范与实际源同步，Python语法检查通过。本次实体路径经使能服务已设置该字段，不改变上述结果。
+- 下一步必须用正确接收映射与新鲜反馈，在保持六轴静止的诊断中核对demo的单次0x03保持方式和实际发送结果；demo第二参数200是力矩0.2 N·m而非速度，40000是40 mm而非物理“20%闭合”。没有证据支持写零点或将46.2mm当开口端点。总目标仍未完成。

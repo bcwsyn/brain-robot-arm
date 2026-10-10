@@ -76,6 +76,7 @@ class PiperRosNode(Node):
         self.joint_ctrl.effort = [0.0] * 7
         # Enable flag
         self.__enable_flag = False
+        self._gripper_clear_pending = True
         self._can_feedback_lost_at = None
         self._can_feedback_loss_escalated = False
         self._joint_mode_speed = None
