@@ -461,13 +461,15 @@ class PiperRosNode(Node):
                     else:
                         # self.get_logger().warning("Gripper effort is NaN, using default value.")
                         gripper_effort = 1000  # 设置默认值
+                    gripper_code = 0x03 if self._gripper_clear_pending else 0x01
                     self.get_logger().warning(
                         f'Calling GripperCtrl: angle={abs(joint_6)} '
-                        f'effort={gripper_effort} code=0x03 set_zero=0x00')
-                    # Match the SDK's documented/demo gripper command path:
-                    # enable while clearing any latched gripper driver error.
-                    # This does not set the gripper zero point (0xAE).
-                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x03, 0)
+                        f'effort={gripper_effort} code=0x{gripper_code:02x} set_zero=0x00')
+                    # Match the verified V2 demo for the first explicit target:
+                    # 0x03 enables and clears a stale gripper error; steady
+                    # targets then use 0x01 without repeated error clearing.
+                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, gripper_code, 0)
+                    self._gripper_clear_pending = False
                 else:
                     self.get_logger().warning(
                         f'Explicit gripper frame rejected: '
@@ -519,9 +521,13 @@ class PiperRosNode(Node):
                     # affects only the end-effector; it does not reset the
                     # arm or alter its joint zeroes.
                     if self.gripper_exist:
-                        self.piper.GripperCtrl(0, 1000, 0x02, 0)
+                        held_gripper = int(
+                            self.piper.GetArmGripperMsgs().gripper_state.grippers_angle)
+                        if not 0 <= held_gripper <= 80000:
+                            raise ValueError("Gripper hold feedback outside 0..80000")
+                        self.piper.GripperCtrl(held_gripper, 1000, 0x02, 0)
                         time.sleep(0.1)
-                        self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                        self.piper.GripperCtrl(held_gripper, 1000, 0x01, 0)
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
@@ -529,6 +535,7 @@ class PiperRosNode(Node):
 
             self.get_logger().info(f"Enable status: {enable_flag}")
             self.__enable_flag = enable_flag
+            self._gripper_clear_pending = bool(enable_flag)
             self.get_logger().info(f"--------------------")
 
             if enable_flag == req.enable_request:
