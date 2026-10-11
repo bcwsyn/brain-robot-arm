@@ -42,6 +42,53 @@ def test_static_entry_waits_for_sampled_tf_before_gripper_or_approach():
     assert "WAITING_FOR_FRESH_TARGET_TF" in retry
     assert "TimePointZero" not in retry
 DETECTOR = Path(__file__).parents[1] / "src" / "cup_detector_node.cpp"
+
+
+def test_visual_preview_is_off_and_strictly_bounded_on_real_default():
+    params = yaml.safe_load(CONFIG.read_text())["grasp_lift_executor"]["ros__parameters"]
+    assert params["visual_microsteps_enabled"] is False
+    assert params["visual_microstep_max_steps"] == 4
+    assert params["visual_microstep_m"] <= .005
+    assert params["visual_view_recovery_angle_rad"] <= math.radians(1) + 1e-9
+    assert params["visual_view_recovery_steps"] <= 3
+    assert params.get("visual_jaw_image_roi", []) == []
+    assert params["visual_jaw_image_roi_confirmed"] is False
+    source = EXECUTOR.read_text()
+    body = source[source.index("void VisualMicrostepPreview()"):
+                  source.index("void TargetDirectedPointGraspAndLift()")]
+    assert "total_travel + travel > .020" in body
+    assert "from_start > .020" in body
+    assert "travel > .005" in body and "tip_travel > .005" in body
+    assert "FinishGraspAndLift" not in body
+    assert "VISUAL_PREVIEW_HOLD_NO_CLOSE" in body
+    assert "CommandRealGripper" not in body
+    assert "RequestReacquire" not in body
+    settle = source[source.index("bool ExecuteVisualPose("):
+                    source.index("void VisualMicrostepPreview()")]
+    assert "PlanArmCartesianFromState(" in settle
+    assert "RealTrajectoryWithinLimits(" in settle
+    assert "ExecuteArmTrajectory(" in settle
+    assert "raw_full_frames_ = 0" in settle
+    assert "<= .002" in settle
+    association = source[source.index("bool VisualFaceInReference("):
+                         source.index("bool ExecuteVisualPose(")]
+    assert "raw_box_stamp_ns_ != stamp" in association
+    assert "raw_target_projection_.header.stamp" in association
+
+
+def test_raw_colour_observation_precedes_depth_black_mask_and_is_not_grasp_valid():
+    source = DETECTOR.read_text()
+    images = source[source.index("void on_images("):source.index("void PublishRawColorObservation(")]
+    assert images.index("PublishRawColorObservation(") < images.index("software_register_color_to_depth(")
+    raw = source[source.index("void PublishRawColorObservation("):
+                 source.index("std::string rgb_topic_")]
+    assert "raw_color_bbox" in source
+    assert "raw_color_debug" in source
+    assert "publish_valid" not in raw
+    assert "publish_depth_valid" not in raw
+    assert "observation.header = header" in raw
+    assert "RAW COLOUR ONLY" in raw
+
 LAUNCH = ROOT / "brain_robot_ball_pick" / "launch" / "cube_visual_search.launch.py"
 DETECTOR_CONFIG = ROOT / "brain_robot_ball_pick" / "config" / "cube_detector.yaml"
 START_SCRIPT_CANDIDATES = [

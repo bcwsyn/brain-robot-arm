@@ -190,6 +190,18 @@ grasp_lift_executor:
     # Fresh RGB-D face must fit the measured open jaws before closing; a
     # planned endpoint/FK against the same locked model is insufficient.
     fresh_jaw_capture_required: true
+    # Offline/opt-in NO-CLOSE preview, NOT enabled on the real default path.
+    # It checks direction only; it cannot certify physical jaw capture.
+    visual_microsteps_enabled: false
+    visual_microstep_m: 0.005
+    visual_microstep_angle_rad: 0.01745329252
+    visual_view_recovery_angle_rad: 0.01745329252
+    visual_view_recovery_steps: 3
+    visual_microstep_max_steps: 4
+    visual_target_association_m: 0.04
+    # No invented jaw ROI: current contact projection lies outside raw RGB.
+    # Empty YAML arrays also cannot reliably retain the ROS double-array type.
+    visual_jaw_image_roi_confirmed: false
     # After confirming the lift, return along the same collision-checked
     # vertical path, release at the measured grasp pose, and retreat upward.
     # No uncalibrated lateral transfer or automatic motor disable is used.

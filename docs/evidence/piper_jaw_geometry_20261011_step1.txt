@@ -1,0 +1,64 @@
+PiPER jaw review 2026-10-11 Asia/Shanghai. Hardware capture NOT complete.
+Canonical start HEAD: 6e1b69c. Default runtime source/config unchanged.
+
+Entry: BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0
+BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws
+BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/jaw_geometry_20261011
+/home/johnwick/start_brain_robot_cube_real.sh
+Reached [7/7], IDLE. No start/grasp service called. Reused CAN. Disk 34%.
+
+MoveIt /robot_description and /get_planning_scene read only:
+allow_trajectory_execution=false, joint7=joint8=0, objects=[], octomap bytes=0.
+Adapter uses fixed closed model-only finger positions, not physical opening.
+Static camera TF and actual joint values are in companion scene JSON.
+Model render: /home/johnwick/brain_robot_logs/jaw_geometry_20261011_step1/review/moveit_jaw_projection.png
+Raw RGB view: /home/johnwick/brain_robot_logs/jaw_geometry_20261011_step1/review/live_raw_colour_debug.png
+Raw bbox/detail: companion geometry JSON. Model/capture are not calibrated truth.
+
+Authorized first direction step: J5 +1 degree, other five axes unchanged.
+Model endpoint tool-origin step=0.0015882302077002588 m
+Model endpoint tip step=0.003958356801767239 m
+PLAN epoch=1791702422.1215143, MoveIt=1, 61 points, duration=5.908179502 s.
+start=[-0.262724084,1.888278112,-1.280686148,0.0095942,0.82047854,0] rad
+goal =[-0.262724084,1.888278112,-1.280686148,0.0095942,0.8379318325199433,0] rad
+speed/acceleration ratio=.002, retained actual YAML limits.
+Fresh feedback/status <=.3 s, RGB <=.8 s; all six passive enable bits true,
+fault bits zero before request. Stop on stale input, status fault/non-IDLE,
+other-axis deviation, limits or timeout; disarm software, retain hardware enable.
+SETTLED epoch=1791702429.3067176
+q=[-0.262724084,1.888278112,-1.280686148,0.0095942,0.836928232,0] rad
+J5=47.95245544894581 deg ROS. gripper cache=.1019 m, not opening proof.
+HOLD epoch=1791702433.3070827: target_valid=false, color_candidate_valid=true.
+Adapter disarm success. Client exit0, no explicit gripper goal published.
+PASSIVE_CAN epoch=1791702434.02541
+3A4=[-15.061,108.248] deg; 3A5=[-73.417,.550] deg; 3A6=[47.978,0] deg
+251..256 speeds=0; 261..266 enabled=true, fault_bits=0.
+
+Important cleanup defect: old driver28090 did not exit after TERM before new
+arm-only37594 was started. ps showed two instances but the client was started
+in the same batch. Old PID28090 was precisely KILLed during the step. Which
+driver answered enable_srv is NOT proven; old gripper_exist=true handshake
+side effects cannot be excluded by this client not publishing a gripper goal.
+Later ps confirms only37594. Future client has pre-service and pre-output
+single arm-only instance checks. Default startup script unchanged.
+
+First 32s observer timed out BEFORE motion. Separate 12s after-step observer
+provided NEW static evidence; never substitute its older images for settled.
+RGB stamp1791702521.4004354, depth stamp1791702521.3029544,
+joint stamp1791702521.495316. Approx97/95ms differences, not exact sync.
+bbox before=[95,174,60,66], after=[95,169,61,71], still cut by RGB bottom.
+Calibrated registered nonzero depth samples on after purple mask=0.
+No close/lift/release/return-to-zero/DisableArm/ResetPiper requested.
+
+Software: isolated /tmp/piper_visual_feedback.NhxMgk build exit0.
+CTest final9/9 passed,4.75s. First new-suite collection failed on user NumPy2
+versus system OpenCV ABI; set only that test ENV PYTHONNOUSERSITE=1 and rerun.
+Manual jaw-scene/replay pytest21 passed.
+Isolated domain78 RGB replay1 passed: zero depth retains original purple RGB
+and bbox but target_valid=false; valid synthetic300mm target projection
+(.37380066921625554,.4560222594308394,.29961464863399) lands in same-stamp bbox.
+This is synthetic integration, NOT real depth restored.
+
+Final entry exit143 after requested TERM, explicit no DisableArm cleanup.
+Only37594/PGID37573 arm-only driver kept; control/camera/temp detector exited.
+Last stored angle is NOT necessarily current angle. Read fresh before next step.

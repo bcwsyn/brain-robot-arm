@@ -14,6 +14,7 @@
 
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
+#include <geometry_msgs/msg/polygon_stamped.hpp>
 #include <geometry_msgs/msg/vector3_stamped.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -41,6 +42,7 @@
 
 #include "brain_robot_pick_place/grasp_geometry.hpp"
 #include "brain_robot_pick_place/target_model_wait.hpp"
+#include "brain_robot_pick_place/visual_grasp_feedback.hpp"
 
 namespace brain_robot_pick_place
 {
@@ -82,6 +84,35 @@ public:
           last_visual_state_ = message->data;
         }
         HandleVisualState(message->data);
+      });
+    raw_bbox_subscription_ = create_subscription<geometry_msgs::msg::PolygonStamped>(
+      "/brain_robot_vision/raw_color_bbox", rclcpp::QoS(1).reliable(),
+      [this](const geometry_msgs::msg::PolygonStamped::SharedPtr message) {
+        std::lock_guard<std::mutex> lock(visual_mutex_);
+        const auto & points = message->polygon.points;
+        const auto stamp = rclcpp::Time(message->header.stamp);
+        if (points.size() != 4 || stamp.nanoseconds() <= 0) {
+          raw_box_valid_ = false;
+          raw_full_frames_ = 0;
+          return;
+        }
+        const visual_grasp::Box box{points[0].x, points[0].y, points[2].x, points[2].y};
+        if (!visual_grasp::Valid(box) || stamp.nanoseconds() <= raw_box_stamp_ns_) {
+          raw_full_frames_ = 0;
+          return;
+        }
+        const bool continuous = raw_box_valid_ && visual_grasp::Associated(raw_box_, box);
+        raw_full_frames_ = visual_grasp::FullView(box) ? (continuous ? raw_full_frames_ + 1 : 1) : 0;
+        raw_box_ = box;
+        raw_box_valid_ = true;
+        raw_box_stamp_ns_ = stamp.nanoseconds();
+        raw_box_received_ = std::chrono::steady_clock::now();
+      });
+    raw_projection_subscription_ = create_subscription<geometry_msgs::msg::PointStamped>(
+      "/brain_robot_vision/raw_target_projection", rclcpp::QoS(1).reliable(),
+      [this](const geometry_msgs::msg::PointStamped::SharedPtr message) {
+        std::lock_guard<std::mutex> lock(visual_mutex_);
+        raw_target_projection_ = *message;
       });
     target_point_subscription_ = create_subscription<geometry_msgs::msg::PointStamped>(
       target_point_topic_, rclcpp::QoS(1).reliable(),
@@ -413,6 +444,15 @@ private:
     gripper_close_value_ = ParameterOr<int>("gripper_close_value", 40000);
     gripper_settle_s_ = ParameterOr<double>("gripper_settle_s", 2.0);
     fresh_jaw_capture_required_ = ParameterOr<bool>("fresh_jaw_capture_required", false);
+    visual_microsteps_enabled_ = ParameterOr<bool>("visual_microsteps_enabled", false);
+    visual_microstep_m_ = ParameterOr<double>("visual_microstep_m", .005);
+    visual_microstep_angle_rad_ = ParameterOr<double>("visual_microstep_angle_rad", .01745329252);
+    visual_view_recovery_angle_rad_ = ParameterOr<double>("visual_view_recovery_angle_rad", .01745329252);
+    visual_view_recovery_steps_ = ParameterOr<int>("visual_view_recovery_steps", 3);
+    visual_microstep_max_steps_ = ParameterOr<int>("visual_microstep_max_steps", 4);
+    visual_target_association_m_ = ParameterOr<double>("visual_target_association_m", .04);
+    visual_jaw_image_roi_ = ParameterOr<std::vector<double>>("visual_jaw_image_roi", {});
+    visual_jaw_image_roi_confirmed_ = ParameterOr<bool>("visual_jaw_image_roi_confirmed", false);
     gripper_feedback_topic_ = ParameterOr<std::string>(
       "gripper_feedback_topic", "/joint_states_feedback");
     gripper_feedback_timeout_s_ = ParameterOr<double>("gripper_feedback_timeout_s", 3.0);
@@ -502,6 +542,19 @@ private:
       "servo_stop_service", "/servo_node/stop_servo");
 
     configuration_ok_ = (simulation_only_ ? auto_execute_ : real_grasp_enabled_) &&
+      (!visual_microsteps_enabled_ ||
+      (target_directed_grasp_enabled_ && static_target_lock_ && !depth_only_target_enabled_ &&
+      std::isfinite(visual_microstep_m_) && visual_microstep_m_ > 0 && visual_microstep_m_ <= .005 &&
+      std::isfinite(visual_microstep_angle_rad_) && visual_microstep_angle_rad_ > 0 &&
+      visual_microstep_angle_rad_ <= .017453293 &&
+      std::isfinite(visual_view_recovery_angle_rad_) && visual_view_recovery_angle_rad_ > 0 &&
+      visual_view_recovery_angle_rad_ <= .017453293 && visual_view_recovery_steps_ >= 0 &&
+      visual_view_recovery_steps_ <= 3 && visual_microstep_max_steps_ > 0 &&
+      visual_microstep_max_steps_ <= 4 && std::isfinite(visual_target_association_m_) &&
+      visual_target_association_m_ > 0 && visual_target_association_m_ <= .04 &&
+      (!visual_jaw_image_roi_confirmed_ || (visual_jaw_image_roi_.size() == 4 &&
+      visual_grasp::Valid({visual_jaw_image_roi_[0], visual_jaw_image_roi_[1],
+        visual_jaw_image_roi_[2], visual_jaw_image_roi_[3]}))))) &&
       lift_distance_m_ > 0.0 &&
       grasp_depth_m_ > 0.0 && pregrasp_standoff_m_ > grasp_depth_m_ &&
       approach_microstep_m_ > 0.0 && approach_max_steps_ > 0 &&
@@ -1213,6 +1266,241 @@ private:
     }
   }
 
+  bool ReadVisualBox(visual_grasp::Box & box, bool full = false)
+  {
+    std::lock_guard<std::mutex> lock(visual_mutex_);
+    const double age = std::chrono::duration<double>(
+      std::chrono::steady_clock::now() - raw_box_received_).count();
+    const double image_age = (now().nanoseconds() - raw_box_stamp_ns_) * 1e-9;
+    if (!raw_box_valid_ || age > target_timeout_s_ || image_age < -.1 ||
+      image_age > target_timeout_s_ || (full && raw_full_frames_ < 3)) {return false;}
+    box = raw_box_;
+    if (visual_locked_box_valid_ && !visual_grasp::Associated(visual_locked_box_, box)) {
+      return false;
+    }
+    visual_locked_box_ = box;
+    visual_locked_box_valid_ = true;
+    return true;
+  }
+
+  bool WaitFullVisualBox()
+  {
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(2500);
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      visual_grasp::Box box{};
+      if (ReadVisualBox(box, true)) {return true;}
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    return false;
+  }
+
+  bool VisualFaceInReference(geometry_msgs::msg::PointStamped & result)
+  {
+    geometry_msgs::msg::PointStamped face, locked;
+    const auto steady = std::chrono::steady_clock::now();
+    {
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      const auto fresh = [&](const auto & stamp) {
+          return stamp != std::chrono::steady_clock::time_point{} &&
+                 std::chrono::duration<double>(steady - stamp).count() <= target_timeout_s_;
+        };
+      if (!target_valid_ || !depth_valid_ || !fresh(target_point_received_time_) ||
+        !fresh(target_valid_received_time_) || !fresh(depth_valid_received_time_) ||
+        !fresh(target_size_received_time_)) {return false;}
+      const double size = std::max(target_size_.vector.x, target_size_.vector.y);
+      if (!std::isfinite(size) || size < min_object_size_m_ || size > max_object_size_m_ ||
+        size < locked_object_size_m_ * .5 || size > locked_object_size_m_ * 1.5) {return false;}
+      face = target_point_camera_; locked = locked_target_reference_;
+    }
+    if (rclcpp::Time(face.header.stamp).nanoseconds() <= 0) {return false;}
+    {
+      std::lock_guard<std::mutex> lock(visual_mutex_);
+      const auto stamp = rclcpp::Time(face.header.stamp).nanoseconds();
+      const auto & p = raw_target_projection_.point;
+      if (!raw_box_valid_ || raw_box_stamp_ns_ != stamp ||
+        rclcpp::Time(raw_target_projection_.header.stamp).nanoseconds() != stamp ||
+        !std::isfinite(p.x) || !std::isfinite(p.y) || p.x < raw_box_.left - .01 ||
+        p.x > raw_box_.right + .01 || p.y < raw_box_.top - .01 || p.y > raw_box_.bottom + .01)
+      {return false;}
+    }
+    try {
+      const auto transform = tf_buffer_->lookupTransform(lift_reference_frame_,
+        face.header.frame_id.empty() ? camera_optical_frame_ : face.header.frame_id,
+        rclcpp::Time(face.header.stamp));  // Same image time, not latest TF.
+      tf2::doTransform(face, result, transform);
+      const double distance = std::hypot(std::hypot(result.point.x - locked.point.x,
+        result.point.y - locked.point.y), result.point.z - locked.point.z);
+      return std::isfinite(distance) && distance <= visual_target_association_m_;
+    } catch (const tf2::TransformException &) {return false;}
+  }
+
+  bool ExecuteVisualPose(
+    const geometry_msgs::msg::PoseStamped & target,
+    const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage)
+  {
+    moveit_msgs::msg::RobotTrajectory plan;
+    if (!PlanArmCartesianFromState(target, stage, state, plan)) {return false;}
+    std::string rejection;
+    if (!RealTrajectoryWithinLimits(plan.joint_trajectory, rejection)) {
+      PublishDiagnostic(stage + ":" + rejection); return false;
+    }
+    const auto start_pose = state->getGlobalLinkTransform(end_effector_link_);
+    const Eigen::Vector3d local_tip(0, 0, gripper_tip_offset_m_);
+    for (const auto & point : plan.joint_trajectory.points) {
+      moveit::core::RobotState planned(*state);
+      for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
+        if (std::abs(point.positions[i] - state->getVariablePosition(
+            plan.joint_trajectory.joint_names[i])) > .08) {return false;}
+        planned.setVariablePosition(plan.joint_trajectory.joint_names[i], point.positions[i]);
+      }
+      planned.update();
+      const auto & pose = planned.getGlobalLinkTransform(end_effector_link_);
+      if ((pose.translation() - start_pose.translation()).norm() > .005 + 1e-9 ||
+        (pose * local_tip - start_pose * local_tip).norm() > .005 + 1e-9 ||
+        Eigen::Quaterniond(start_pose.rotation()).angularDistance(
+          Eigen::Quaterniond(pose.rotation())) > .017453293) {return false;}
+    }
+    const auto before_output = FreshMeasuredState(stage + "_BEFORE_OUTPUT");
+    if (!before_output) {return false;}
+    for (const auto & name : plan.joint_trajectory.joint_names) {
+      if (std::abs(before_output->getVariablePosition(name) -
+          state->getVariablePosition(name)) > .002) {return false;}
+    }
+    if (!ExecuteArmTrajectory(plan.joint_trajectory)) {return false;}
+    const auto & end = plan.joint_trajectory.points.back();
+    const auto deadline = std::chrono::steady_clock::now() +
+      std::chrono::duration<double>(trajectory_feedback_timeout_s_);
+    auto settled = std::chrono::steady_clock::time_point{};
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      const auto measured = FreshMeasuredState(stage + "_SETTLE");
+      if (!measured) {return false;}
+      bool reached = true;
+      for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
+        reached = reached && std::abs(measured->getVariablePosition(
+          plan.joint_trajectory.joint_names[i]) - end.positions[i]) <= .002;
+      }
+      if (!reached) {settled = {};}
+      else if (settled == std::chrono::steady_clock::time_point{}) {
+        settled = std::chrono::steady_clock::now();
+      } else if (std::chrono::duration<double>(
+          std::chrono::steady_clock::now() - settled).count() >= .5)
+      {
+        std::lock_guard<std::mutex> lock(visual_mutex_);
+        raw_full_frames_ = 0;  // Three distinct new frames AFTER measured settling.
+        raw_box_stamp_ns_ = std::max(raw_box_stamp_ns_, now().nanoseconds());
+        return true;
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    return false;
+  }
+
+  // Offline/opt-in limited preview only. Default real YAML explicitly disables
+  // this branch. Four steps and 20 mm total tool-origin travel, including recovery;
+  // enabling any physical preview needs its own explicitly bounded authorization.
+  void VisualMicrostepPreview()
+  {
+    namespace gg = grasp_geometry;
+    {
+      std::lock_guard<std::mutex> lock(visual_mutex_);
+      visual_locked_box_valid_ = false;
+    }
+    gg::Point start_origin{};
+    double total_travel = 0;
+    int recoveries = 0;
+    for (int step = 0; step < visual_microstep_max_steps_ && !cancel_requested_; ++step) {
+      const bool full = WaitFullVisualBox();
+      const auto state = FreshMeasuredState("VISUAL_MICROSTEP");
+      if (!state || state->getRobotModel()->getModelFrame() != lift_reference_frame_) {
+        Fail("VISUAL_MEASURED_STATE_UNAVAILABLE"); return;
+      }
+      const auto & fk = state->getGlobalLinkTransform(end_effector_link_);
+      const Eigen::Quaterniond q(fk.rotation());
+      const gg::DirectedPose current{{fk.translation().x(), fk.translation().y(), fk.translation().z()},
+        {q.x(), q.y(), q.z(), q.w()}};
+      if (step == 0) {start_origin = current.origin;}
+      gg::DirectedPose next = current;
+      visual_grasp::Box box{};
+      if (!ReadVisualBox(box)) {Fail("VISUAL_SAME_COLOUR_UNAVAILABLE_NO_CLOSE"); return;}
+      if (!full) {
+        if (recoveries >= visual_view_recovery_steps_ || box.bottom < .98 ||
+          box.top <= .02 || box.left <= .02 || box.right >= .98) {
+          Fail("VISUAL_FULL_VIEW_UNCONFIRMED_NO_CLOSE"); return;
+        }
+        const auto * joint = state->getRobotModel()->getJointModel("joint5");
+        if (!joint || joint->getType() != moveit::core::JointModel::REVOLUTE) {
+          Fail("VISUAL_VIEW_AXIS_UNAVAILABLE"); return;
+        }
+        const auto * revolute = static_cast<const moveit::core::RevoluteJointModel *>(joint);
+        const auto & pivot = state->getGlobalLinkTransform(joint->getChildLinkModel());
+        const Eigen::Vector3d axis = pivot.rotation() * revolute->getAxis();
+        const Eigen::Vector3d position = pivot.translation() +
+          Eigen::AngleAxisd(visual_view_recovery_angle_rad_, axis.normalized()) *
+          (fk.translation() - pivot.translation());
+        next.origin = {position.x(), position.y(), position.z()};
+        next.orientation = gg::RotateOrientationAboutAxis(current.orientation,
+          {axis.x(), axis.y(), axis.z()}, visual_view_recovery_angle_rad_);
+        ++recoveries;
+        PublishState("VISUAL_VIEW_RECOVERY");
+      } else {
+        geometry_msgs::msg::PointStamped face;
+        const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(2500);
+        while (!VisualFaceInReference(face) && rclcpp::ok() && !cancel_requested_ &&
+          std::chrono::steady_clock::now() < deadline) {
+          std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        }
+        if (cancel_requested_ || !VisualFaceInReference(face) || !ReadVisualBox(box, true)) {
+          Fail("VISUAL_ASSOCIATED_RGBD_UNAVAILABLE_NO_CLOSE"); return;
+        }
+        const double insertion = gg::SurfaceInsertion(
+          locked_object_min_size_m_, surface_insertion_fraction_, surface_insertion_max_m_);
+        const auto axis = gg::Rotate(current.orientation, {0, 0, 1});
+        const auto tip = gg::Tip(current.origin, axis, gripper_tip_offset_m_);
+        const double gap = std::hypot(std::hypot(face.point.x + axis[0] * insertion - tip[0],
+          face.point.y + axis[1] * insertion - tip[1]), face.point.z + axis[2] * insertion - tip[2]);
+        RCLCPP_INFO(get_logger(), "VISUAL_STEP=%d gap=%.4f raw_bbox=(%.3f,%.3f,%.3f,%.3f)",
+          step, gap, box.left, box.top, box.right, box.bottom);
+        if (gap <= .002) {
+          // Surface + insertion is a model hypothesis, not the physical pad
+          // volume. Even perfect model convergence can NEVER close in preview.
+          PublishDiagnostic("VISUAL_PREVIEW_MODEL_CONTACT_NOT_ENTITY_CAPTURE_NO_CLOSE");
+          PublishState("VISUAL_PREVIEW_HOLD_NO_CLOSE"); return;
+        }
+        try {
+          next = visual_grasp::TipMicrostep(current, {face.point.x, face.point.y, face.point.z},
+            gripper_tip_offset_m_, insertion, visual_microstep_m_, visual_microstep_angle_rad_);
+        } catch (const std::invalid_argument &) {Fail("VISUAL_STEP_GEOMETRY_INVALID"); return;}
+        PublishState("VISUAL_GRASP_MICROSTEP");
+      }
+      const double travel = std::hypot(std::hypot(next.origin[0] - current.origin[0],
+        next.origin[1] - current.origin[1]), next.origin[2] - current.origin[2]);
+      const double from_start = std::hypot(std::hypot(next.origin[0] - start_origin[0],
+        next.origin[1] - start_origin[1]), next.origin[2] - start_origin[2]);
+      const auto old_tip = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}),
+        gripper_tip_offset_m_);
+      const auto new_tip = gg::Tip(next.origin, gg::Rotate(next.orientation, {0, 0, 1}),
+        gripper_tip_offset_m_);
+      const double tip_travel = std::hypot(std::hypot(new_tip[0] - old_tip[0],
+        new_tip[1] - old_tip[1]), new_tip[2] - old_tip[2]);
+      if (!std::isfinite(travel) || travel > .005 || tip_travel > .005 + 1e-9 ||
+        gg::QuaternionDistance(current.orientation, next.orientation) > .017453293 ||
+        total_travel + travel > .020 || from_start > .020) {
+        Fail("VISUAL_PREVIEW_20MM_BUDGET_EXHAUSTED_NO_CLOSE"); return;
+      }
+      geometry_msgs::msg::PoseStamped target;
+      target.header.frame_id = lift_reference_frame_; target.header.stamp = now();
+      target.pose.position.x = next.origin[0]; target.pose.position.y = next.origin[1];
+      target.pose.position.z = next.origin[2]; target.pose.orientation.x = next.orientation[0];
+      target.pose.orientation.y = next.orientation[1]; target.pose.orientation.z = next.orientation[2];
+      target.pose.orientation.w = next.orientation[3];
+      if (!ExecuteVisualPose(target, state, "VISUAL_STEP_" + std::to_string(step))) {
+        Fail("VISUAL_MICROSTEP_EXECUTION_FAILED"); return;
+      }
+      total_travel += travel;
+    }
+    Fail("VISUAL_PREVIEW_STEP_BUDGET_EXHAUSTED_NO_CLOSE");
+  }
+
   void TargetDirectedPointGraspAndLift()
   {
     PublishState("TARGET_DIRECTED_PREGRASP_PLANNING");
@@ -1294,6 +1582,12 @@ private:
     {
       PublishDiagnostic("TARGET_DIRECTED_REAL_LIMIT_REJECTED:" + rejection);
       Fail("TARGET_DIRECTED_REAL_LIMIT_REJECTED");
+      return;
+    }
+    // Keep the original full-path preflight. Approved visual execution uses new
+    // measured states and short Cartesian pose goals, never edits those joint points.
+    if (!simulation_only_ && visual_microsteps_enabled_) {
+      VisualMicrostepPreview();
       return;
     }
     // Both changing-attitude segments must be planned before any adapter output.
@@ -3096,6 +3390,24 @@ private:
   int gripper_close_value_{40000};
   double gripper_settle_s_{2.0};
   bool fresh_jaw_capture_required_{false};
+  bool visual_microsteps_enabled_{false};
+  double visual_microstep_m_{.005};
+  double visual_microstep_angle_rad_{.01745329252};
+  double visual_view_recovery_angle_rad_{.01745329252};
+  int visual_view_recovery_steps_{3};
+  int visual_microstep_max_steps_{4};
+  double visual_target_association_m_{.04};
+  std::vector<double> visual_jaw_image_roi_;
+  bool visual_jaw_image_roi_confirmed_{false};
+  std::mutex visual_mutex_;
+  visual_grasp::Box raw_box_{};
+  geometry_msgs::msg::PointStamped raw_target_projection_;
+  visual_grasp::Box visual_locked_box_{};
+  bool raw_box_valid_{false};
+  bool visual_locked_box_valid_{false};
+  int raw_full_frames_{0};
+  int64_t raw_box_stamp_ns_{0};
+  std::chrono::steady_clock::time_point raw_box_received_{};
   std::string gripper_feedback_topic_;
   double gripper_feedback_timeout_s_{3.0};
   double min_gripper_feedback_motion_rad_{0.001};
@@ -3210,6 +3522,8 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr gripper_command_publisher_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr reacquire_publisher_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr visual_state_subscription_;
+  rclcpp::Subscription<geometry_msgs::msg::PolygonStamped>::SharedPtr raw_bbox_subscription_;
+  rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr raw_projection_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr target_point_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr target_size_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr target_error_subscription_;

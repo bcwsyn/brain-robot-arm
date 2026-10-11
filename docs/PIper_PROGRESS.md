@@ -1,5 +1,46 @@
 # PiPER 调试进度
 
+## 2026-10-11 15:15：已批准综合图像/模型核对与有限不闭爪试验，发现实际夹爪状态与模型占位不一致
+
+- 起点HEAD=6e1b69c；用户确认此前方案，要求自主多用相机/深度分析图、关节姿态及movegroup模型。使用ros2-piper-debug核对实际部署/消息/同stamp证据，surgical-change限定现检测器/执行器OFF预览及测试；保护无关vendor/reference更改。没有改变唯一入口/搜索/adapter/相机外参或恢复腕部Octomap。本轮推进的是靠近末段诊断，不重做已成功观测/SEARCH，不把[7/7]当目标完成。
+
+### 无运动启动及真实采样
+
+- 实际原命令`BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/jaw_geometry_20261011 /home/johnwick/start_brain_robot_cube_real.sh`通过[1/7]..[7/7]，状态IDLE/WAITING_FOR_START、抓取WAITING_FOR_LEVEL_ALIGN；不按键1，不调用start/grasp。脚本复用ERROR-ACTIVE 1Mbps/.75持续RX，磁盘清理前后34%/可用50971MB；未USB reset/重载CAN/查询固件/限位。启动自身既有清理终止上轮残留24398，TERM无响应后原脚本KILL；不是手动失能。
+- 只读观察器`PYTHONNOUSERSITE=1 timeout -s INT 24s /usr/bin/python3 /tmp/piper_onekey_observer_20261011.py /home/johnwick/brain_robot_logs/jaw_geometry_20261011`预期124到时，采102RGB/318depth/4038joint反馈，六轴保持[-.262724084,1.888278112,-1.280686148,.0095942,.82047854,0]rad，J5=47.009958°；gripper缓存.1019m，target/depth_valid=false。具体最后原RGB stamp1791701387.5787537、depth stamp1791701387.6458728、joint1791701387.662407（约67/84ms差，不称完全同步）。原RGB/深度/检测debug均实际查看：紫块下沿裁切；注册debug黑区不能当真实夹爪遮挡。
+- 普通Python首次模型依赖检查受用户NumPy2影响失败，按已知项目PYTHONNOUSERSITE=1隔离后系统scipy1.8/matplotlib3.5可用，不安装/卸载依赖；系统没有trimesh，改为诊断工具直接读取已有二进制STL，不新增第三方运行依赖。
+
+### 实际MoveIt与刚性相机关系（事实/推断分开）
+
+- 新只读`test/review_jaw_scene.py --capture-model --observer <日志>/observer.jsonl --task <实际cube_task_real.yaml> --detector <实际cube_detector.yaml> --mesh-share /home/johnwick/piper_ros/install/piper_description/share/piper_description --output <日志>/review`返回0，读取/move_group robot_description、allow_trajectory_execution=false和/GetPlanningScene。生成三维网格与夹持轴投影图，不使用图代替碰撞验收。场景world objects=[]、octomap bytes=0；腕部点云本就不送实体Octomap，没有恢复它。scene joint_stamp=0，是服务返回语义，真实反馈另记，不能据此说CAN无反馈。
+- 代码明确证据：adapter固定`model_only_joint_positions={'joint7':0,'joint8':0}`，并发布在/piper_moveit_joint_states；实际MoveIt joint7/8=0而实拍两指打开，故其夹爪开口是闭合占位而不是实测。模型mesh tip zmax=.1358m、后端zmin≈.0593m，支持工具长度在URDF存在，不能由整个mesh边界认定内接触面/实体TCP已经正确。未知.1019m缓存不能映射为模型±.05095m越界开口。
+- 只读静态TF：gripper_base←depth optical translation[-.070,0,.0308]m；←color optical[-.069982,.029938,.030471]m。内外参按真实配置反投影：模型指尖深度光学[0,.070,.105]m，转彩色为[-.030466,.069780,.104828]m、原RGB像素(84.326,267.229)，超240高下边界；若用户测量以彩色镜头解释，光学YZ仍70/105mm、像素约(155.365,267.475)。因此两解释的主要差异是左右，不是作废YZ。当前模型工具tip基座≈[.391459,-.103634,.052786]m是模型结果，不是实体桌面/落点测量。
+- 用户回复镜头“不确定、大概率彩色”，并正确指出主要是横向基线。本轮接受70mm/105mm，不再重问测量；不把猜测当标定。当前配置隐含深度镜头/horizontal=0，若改为彩色镜头且横向也为0，推导camera_link原点候选[-.070245,.030466,.030798]m，相差约30.47mm；仅归档未部署。该横向差可能解释左右偏移，尚无证据证明唯一根因。完整安装旋转未标定、horizontal_offset_measured=false，不能从一张透视图填夹持ROI。
+- 原紫块bbox[95,174,60,66]、3048紫色像素；按检测器端点保持resize和工厂D→C映射，仅10个非零深度采样落在紫色像素，未erode/形状/稳定门，不能把中值.184m当合法目标深度。早先近似width/640缩放给8个/.1945m，已更正为精确resize；两者都不能授权运动，不改原检测阈值。
+- 一手资料核对：MoveIt Humble实际接口允许对指定end-effector给Pose/Cartesian waypoints并进行碰撞路径计算（https://moveit.picknik.ai/humble/api/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html）；ViSP提供视觉跟踪/伺服及ROS手眼标定工具（https://github.com/lagadic/visp 、https://github.com/lagadic/vision_visp）。只复用证据思路，未移植异构控制器；Orbbec当前SDK文档不作为已部署OpenNI驱动替换理由。
+
+### 已批准第一段实体方向核对（不闭爪，未完成靠近/抓取）
+
+- 用户批准每段≤5mm、最多4段累计20mm预览；本轮只执行1段。使用原MoveIt/Pilz→唯一adapter，纯六轴完整目标仅J5正向+1°，速度/加速度比例.002，61点/5.908179502秒，MoveIt1。实际模型检查tool-origin步长1.588230mm、tip3.958357mm；六轴实测和真实0x261..266使能/故障、当前配置限位、新鲜feedback≤.3s/RGB≤.8s、其他轴不变、超时/非IDLE/fault停输出等已在动作前输出。不是把该诊断客户端写成第二套生产控制器。
+- 驱动次序缺陷必须保留：TERM旧28090/PGID28086后启动arm-only37594/PGID37573，原旧实例仍存活；唯一实例ps已显示2个但与客户端启动放同批，未作为前置硬闸，客户端随后发使能/轨迹。中途精确KILL旧28090后仅37594存活，实体正常到位。不能断言那次/enable_srv究竟由谁响应；客户端未显式发夹爪目标不等于可以排除旧gripper_exist=true握手副作用，故不将“绝无夹爪控制帧”作为已验证事实。现补后续客户端发送前两次唯一arm-only实例硬检查，不再重复该错误；默认启动脚本未变。
+- PLAN epoch1791702422.1215143起点J5=.82047854rad/47.009958°、goal=.83793183252rad/48.009958°；SETTLED1791702429.3067176 feedback=.836928232rad/47.952455°，其他五轴逐值不变，gripper仍.1019m。HOLD1791702433.3070827：target_valid=false、color_candidate_valid=true；disarm软件成功。PASSIVE_CAN1791702434.02541：J5=47.978°，其余[-15.061,108.248,-73.417,.550,0]°，六轴speed0/enabletrue/fault0。没有请求闭爪/抬升/释放/全零/DisableArm/ResetPiper/MasterSlaveConfig。
+- 首观察器32s在动作前到时，不能把其旧图当结束图；另起12s静止采样预期124，实际`jaw_geometry_20261011_step1/evidence/0004_rgb.png` stamp1791702521.4004354、depth1791702521.3029544、joint1791702521.495316。紫块bbox[95,169,61,71]，上移约5px但仍触下沿；该帧与紫色对应非零深度样本0。仅颜色候选，未恢复完整RGB-D目标，不追背景/闭爪。
+- 新检测器原图观测在真实域临时验证：先解析原检测器28374/28381并TERM唯一组，再用隔离构建的同cup_detector_node和原实际cube_detector.yaml替代观测输出，不改授权逻辑。raw_bbox同帧约[(.296875,.700),(.48125,1)]、rawdebug原图仍见紫块/两指，target_valid=false，六轴静止。此临时节点已退出，不作为默认部署成功。
+
+### 源码/配置范围与软件验证
+
+- 已批准的观测实现：原RGB bbox/debug在软件深度注册之前发布，零深度黑影不再抹掉观测候选；原target_valid/depth_valid/形状/尺寸门不变。附加raw_target_projection把检测器所选RGB-D面点按同工厂D→C标定投回原图，带原stamp，供OFF预览匹配同一框；不是raw紫色最大框直接授权抓取。
+- OFF `visual_microsteps_enabled=false`，默认实际一键没有同步/启用；有限原型最多4段/端点累计20mm、每段工具和模型tip≤5mm、姿态≤1°，并检查每个规划点的位置/姿态包络、原限位与adapter。到模型接触点仅VISUAL_PREVIEW_HOLD_NO_CLOSE；此分支删除FinishGraspAndLift/闭爪/抬升调用，任何ROI配置都不能让它闭爪。原正常分支和FreshFaceInsideJaws保持，不增加正式抓取完整轮廓门。off原型恢复入画不能代替真实夹持验证，现局部几何未证实，不开默认开关。
+- 新`review_jaw_scene.py`仅参数/GetPlanningScene/静态TF/相机及joint订阅，无运动publisher/enable服务/执行client；输出模型网格、关节、相机/指尖投影与采样报告。配套test_jaw_scene_review 5项：FK/光学投影/横向镜头差/ behind-camera拒绝/无motion客户端；CMake加入该离线测试。
+- 隔离colcon build在/tmp/piper_visual_feedback.NhxMgk返回0（先整包约91秒，补逐规划点FK包络后executor目标编译返回0；最终参数限制/测试注册43.3秒，测试环境修补后5.15秒）。CTest最终9/9 passed、4.75秒。新增jaw_scene_review首次CTest失败是其未继承手动PYTHONNOUSERSITE，误用用户NumPy2与系统OpenCV ABI；仅该测试ENV设置PYTHONNOUSERSITE=1后通过，不改用户依赖/ROS运行参数。手动pytest模型+real replay共21 passed。隔离ROS_DOMAIN_ID=78的test_raw_color_observation回放1 passed：裁切/完整两种原框各3帧、全零深度target_valid始终false；有效300mm合成深度时，raw_target_projection归一化x/y≈(.37380,.45602)、colour z=.299615m，并落入同stamp原RGB框。合成有效目标不表示实体当前有深度。
+- 规范脚本/实际默认executor/detector/YAML没有同步变化，仍6e1b69c条列出的SHA；实际adapter与相机外参未改。原源码原型及本轮修改整体进入本轮Git，巨大相机序列/URDF/STL/供应商资料不提交，仅精选JSON与小文本证据。回退用`git revert <本轮commit>`；默认部署未同步，不需重建/发送回退运动。
+
+### 收尾、阻断、下一步
+
+- 原一键27929及临时检测器35013已TERM，入口返回143并明确“未发送DisableArm”；主机ps实际只剩37594/PGID37573 arm-only反馈驱动（auto_enable=false/gripper_exist=false）。栈/Servo/MoveIt/相机/临时检测器无本轮残留，保持当前位置及使能。没有自动续跑，不能用关闭ROS等同失能。中断恢复后再次只读ps一致。
+- 未完成的是实体夹持区与相机坐标对应、RGB-D近距有效支持及真实夹爪开口语义；不是普通CAN、观测位或搜索入口。模型预览/颜色候选不当闭爪许可，当前不宣称完成抓取。已批准剩余最多3段/总预算仍需结合新鲜合法几何选择，不因预算剩余就继续盲加J5或向桌面靠近。
+- 下一项先`cd /mnt/hgfs/ub && git status --short`，读本条及精选JSON，从静止实际图/指爪局部投影对比彩色与深度镜头基准；不要求再测已确认70/105mm。若要改变camera_mount横向/模型开口映射或正式末段落点，先向用户说明唯一具体修改并获批，不擅自写0xAE/归零或打开preview自动靠近。先求能解释图/模型差异的证据，再沿原入口推进两指实体捕获。
+
 ## 2026-10-11 14:43：按实体“只差闭爪”重新明确末段目标；只读复核与后续修改提案
 
 - 用户澄清：图中两指因透视看似相交，要求方块真正处于两指接触范围，只差最后闭合。接受该要求，不把图像中心、延长线交点、紫色矩形完整入画或同模型FK收敛称为夹持到位。

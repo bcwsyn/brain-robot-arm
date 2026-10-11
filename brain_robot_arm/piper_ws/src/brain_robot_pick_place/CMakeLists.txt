@@ -151,6 +151,8 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   ament_add_gtest(grasp_geometry_test test/test_grasp_geometry.cpp)
   target_include_directories(grasp_geometry_test PRIVATE include)
+  ament_add_gtest(visual_grasp_feedback_test test/test_visual_grasp_feedback.cpp)
+  target_include_directories(visual_grasp_feedback_test PRIVATE include)
   add_executable(review_target_directed_geometry test/review_target_directed_geometry.cpp)
   target_include_directories(review_target_directed_geometry PRIVATE include)
   ament_add_gtest(center_search_test test/test_center_search.cpp)
@@ -168,6 +170,9 @@ if(BUILD_TESTING)
   )
   ament_add_pytest_test(startup_script_test test/test_startup_script.py)
   ament_add_pytest_test(camera_mount_geometry_test test/test_camera_mount_geometry.py)
+  # Use system OpenCV/SciPy rather than the VM's incompatible user NumPy 2.
+  ament_add_pytest_test(jaw_scene_review_test test/test_jaw_scene_review.py
+    ENV "PYTHONNOUSERSITE=1")
 endif()
 
 ament_package()

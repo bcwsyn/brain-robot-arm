@@ -13,6 +13,7 @@
 
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/msg/point_stamped.hpp>
+#include <geometry_msgs/msg/polygon_stamped.hpp>
 #include <geometry_msgs/msg/vector3_stamped.hpp>
 #include <message_filters/subscriber.h>
 #include <message_filters/sync_policies/approximate_time.h>
@@ -41,6 +42,12 @@ public:
       "camera_optical_frame", "wrist_camera_optical_frame");
     debug_topic_ = declare_parameter<std::string>(
       "debug_topic", "/brain_robot_vision/debug_image");
+    raw_bbox_publisher_ = create_publisher<geometry_msgs::msg::PolygonStamped>(
+      "/brain_robot_vision/raw_color_bbox", rclcpp::QoS(1).reliable());
+    raw_debug_publisher_ = create_publisher<sensor_msgs::msg::Image>(
+      "/brain_robot_vision/raw_color_debug", rclcpp::QoS(1).reliable());
+    raw_target_projection_publisher_ = create_publisher<geometry_msgs::msg::PointStamped>(
+      "/brain_robot_vision/raw_target_projection", rclcpp::QoS(1).reliable());
     target_topic_ = declare_parameter<std::string>(
       "target_topic", "/brain_robot_vision/target_pixel");
     target_point_camera_topic_ = declare_parameter<std::string>(
@@ -558,6 +565,9 @@ private:
       return;
     }
 
+    // Observe original RGB BEFORE depth registration. Missing depth pixels must
+    // not turn visible colour into a black occlusion or hide a cropped candidate.
+    PublishRawColorObservation(bridge_image->image, rgb_message->header);
     cv::Mat processing_image;
     if (software_registration_enabled_) {
       if (!software_register_color_to_depth(
@@ -797,6 +807,29 @@ private:
       target_point_camera.point.z = depth.meters;
       target_point_camera_publisher_->publish(target_point_camera);
 
+      if (software_registration_enabled_ && software_registration_calibration_valid_) {
+        const auto & r = depth_to_color_rotation_;
+        const auto & t = depth_to_color_translation_m_;
+        const auto & p = target_point_camera.point;
+        const double x = r[0] * p.x + r[1] * p.y + r[2] * p.z + t[0];
+        const double y = r[3] * p.x + r[4] * p.y + r[5] * p.z + t[1];
+        const double z = r[6] * p.x + r[7] * p.y + r[8] * p.z + t[2];
+        if (std::isfinite(z) && z > .001) {
+          geometry_msgs::msg::PointStamped projection;
+          projection.header = rgb_message->header;
+          double u = color_fx_ * x / z + color_cx_;
+          if (color_mirror_horizontal_) {u = static_cast<double>(color_image_width_ - 1) - u;}
+          projection.point.x = u * static_cast<double>(bridge_image->image.cols - 1) /
+            static_cast<double>(std::max(1, color_image_width_ - 1)) / bridge_image->image.cols;
+          projection.point.y = (color_fy_ * y / z + color_cy_) *
+            static_cast<double>(bridge_image->image.rows - 1) /
+            static_cast<double>(std::max(1, color_image_height_ - 1)) / bridge_image->image.rows;
+          projection.point.z = z;
+          // Observation only: ties the chosen RGB-D point to original RGB pixels.
+          raw_target_projection_publisher_->publish(projection);
+        }
+      }
+
       geometry_msgs::msg::Vector3Stamped target_size;
       target_size.header = target_point_camera.header;
       target_size.vector.x = static_cast<double>(target_box.width) * depth.meters / camera_fx_;
@@ -878,6 +911,52 @@ private:
     publish_debug_image(rgb_message->header, debug_image);
   }
 
+  void PublishRawColorObservation(const cv::Mat & image, const std_msgs::msg::Header & header)
+  {
+    cv::Mat hsv, mask, second;
+    cv::cvtColor(image, hsv, cv::COLOR_BGR2HSV);
+    cv::inRange(hsv, cv::Scalar(hue_low_1_, saturation_min_, value_min_),
+      cv::Scalar(hue_high_1_, 255, 255), mask);
+    if (hue_high_2_ > hue_low_2_) {
+      cv::inRange(hsv, cv::Scalar(hue_low_2_, saturation_min_, value_min_),
+        cv::Scalar(hue_high_2_, 255, 255), second);
+      mask |= second;
+    }
+    cv::morphologyEx(mask, mask, cv::MORPH_OPEN,
+      cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)));
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    cv::Rect selected;
+    double best = 0;
+    for (const auto & contour : contours) {
+      const auto box = cv::boundingRect(contour);
+      const double area = cv::contourArea(contour);
+      if (area >= 10 && area > best) {best = area; selected = box;}
+    }
+    geometry_msgs::msg::PolygonStamped observation;
+    observation.header = header;
+    cv::Mat debug = image.clone();
+    if (best > 0) {
+      const float l = float(selected.x) / image.cols;
+      const float t = float(selected.y) / image.rows;
+      const float r = float(selected.x + selected.width) / image.cols;
+      const float b = float(selected.y + selected.height) / image.rows;
+      for (const auto & xy : {std::pair<float, float>{l, t}, {r, t}, {r, b}, {l, b}}) {
+        geometry_msgs::msg::Point32 p;
+        p.x = xy.first; p.y = xy.second;
+        observation.polygon.points.push_back(p);
+      }
+      cv::rectangle(debug, selected, cv::Scalar(0, 255, 255), 1);
+    }
+    cv::putText(debug, "RAW COLOUR ONLY - NOT GRASP VALIDATION", cv::Point(4, 14),
+      cv::FONT_HERSHEY_SIMPLEX, .3, cv::Scalar(0, 255, 255), 1);
+    raw_bbox_publisher_->publish(observation);  // Empty polygon explicitly invalidates old colour.
+    raw_debug_publisher_->publish(*cv_bridge::CvImage(header, "bgr8", debug).toImageMsg());
+  }
+
+  rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr raw_bbox_publisher_;
+  rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr raw_target_projection_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr raw_debug_publisher_;
   std::string rgb_topic_;
   std::string depth_topic_;
   std::string camera_info_topic_;
