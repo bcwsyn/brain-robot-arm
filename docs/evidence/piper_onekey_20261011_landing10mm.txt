@@ -1,0 +1,44 @@
+Run: 2026-10-11 landing tolerance 10 mm; original one-key script, exit 1.
+Implementation commit: c0dc5eb
+Runtime parameter read: Double value is: 0.01
+Command: BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/tmp/ub_tf_stamp_workspace BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_landing10mm /home/johnwick/start_brain_robot_cube_real.sh
+No close/lift/release; script stopped output, did not send DisableArm.
+Read-only observer snapshot 14: target_valid=false depth_valid=false; last target_point stamp=1791685440.775314; snapshot epoch=1791685451.2365713. Last target was already 8.863 seconds old at the landing-end event; configured target_timeout_s=0.60.
+Images: local log evidence/0007_rgb.png and 0010_rgb.png show cube; 0013_rgb.png and 0014_rgb.png do not show cube. Images reviewed; physical tip-to-cube distance not measurable from these frames.
+
+
+SOURCE: /home/johnwick/brain_robot_logs/real_full_20261011_landing10mm/visual_stack.log
+[visual_search_controller-7] [INFO] [1791685329.482351925] [visual_search_controller]: STATE -> STOPPED (USER_STOP)
+[piper_jog_adapter.py-6] [WARN] [1791685335.041495109] [piper_jog_adapter]: PHYSICAL MOTION ARMED
+[piper_jog_adapter.py-6] [WARN] [1791685342.609953666] [piper_jog_adapter]: PHYSICAL MOTION ARMED
+[piper_jog_adapter.py-6] [WARN] [1791685354.085479195] [piper_jog_adapter]: PHYSICAL MOTION ARMED
+[visual_search_controller-7] [INFO] [1791685355.937976967] [visual_search_controller]: STATE -> PREPARE (START_AUTHORIZED)
+[visual_search_controller-7] [INFO] [1791685396.494378199] [visual_search_controller]: STATE -> SEARCH (OBSERVE_POSE_REACHED)
+[visual_search_controller-7] [INFO] [1791685429.078209563] [visual_search_controller]: STATE -> ALIGN (TARGET_ACQUIRED)
+[visual_search_controller-7] [INFO] [1791685431.144799848] [visual_search_controller]: STATE -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)
+[grasp_lift_executor-8] [INFO] [1791685431.160752895] [grasp_lift_executor]: Locked base-frame target model: (0.432, -0.113, 0.079).
+[grasp_lift_executor-8] [INFO] [1791685431.161800601] [grasp_lift_executor]: Publishing real gripper open command 0.050000 m to 1 subscriber(s).
+[grasp_lift_executor-8] [ERROR] [1791685436.164067591] [grasp_lift_executor]: GRIPPER_OPEN feedback unconfirmed: before=0.102100 m current=0.102100 m target=0.050000 m tolerance=0.003000 m minimum_motion=0.001000 m contact_stop=false.
+[grasp_lift_executor-8] [INFO] [1791685436.180002628] [grasp_lift_executor]: Top-down grasp target: object=(0.432, -0.113, 0.079), clearance=0.024 m, gripper_base=(0.337, -0.085, 0.204).
+[grasp_lift_executor-8] [INFO] [1791685436.218748198] [grasp_lift_executor]: TOP_DOWN_PREGRASP_CLEARANCE_0.024000_TILT_0.000000_YAW_0.000000 planned with 78 trajectory points.
+[grasp_lift_executor-8] [INFO] [1791685436.218889244] [grasp_lift_executor]: SURFACE_GRASP edge=0.0366 insertion=0.0120 m (size-derived heuristic).
+[grasp_lift_executor-8] [INFO] [1791685436.218914891] [grasp_lift_executor]: Top-down grasp target: object=(0.432, -0.113, 0.079), clearance=-0.012 m, gripper_base=(0.358, -0.092, 0.176).
+[grasp_lift_executor-8] [INFO] [1791685436.226762238] [grasp_lift_executor]: TOP_DOWN_PREGRASP_CLEARANCE_0.024000_TILT_0.000000_YAW_0.000000_DESCENT Cartesian path has 8 trajectory points.
+[grasp_lift_executor-8] [INFO] [1791685449.215396783] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.4397,-0.1147,0.0697) actual_tip=(0.4409,-0.1149,0.0868) distance=0.0172 axial=-0.0127 lateral=0.0116 angle=0.0370 attempt=0.
+[grasp_lift_executor-8] [INFO] [1791685449.227109399] [grasp_lift_executor]: GRASP_LANDING_CORRECTION Cartesian path has 5 trajectory points.
+[grasp_lift_executor-8] [INFO] [1791685449.638071819] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.4397,-0.1147,0.0697) actual_tip=(0.4402,-0.1147,0.0792) distance=0.0095 axial=-0.0071 lateral=0.0063 angle=0.0201 attempt=1.
+[grasp_lift_executor-8] [ERROR] [1791685449.638742653] [grasp_lift_executor]: Grasp sequence stopped: FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE.
+[visual_search_controller-7] [INFO] [1791685453.791386205] [visual_search_controller]: STATE -> STOPPED (USER_STOP)
+
+SOURCE: /home/johnwick/brain_robot_logs/real_full_20261011_landing10mm/cube_detector.log
+[cup_detector_node-1] [INFO] [1791685306.210600927] [cube_detector]: PURPLE_CUBE target LOST
+[cup_detector_node-1] [INFO] [1791685429.024784086] [cube_detector]: PURPLE_CUBE target DETECTED
+[cup_detector_node-1] [INFO] [1791685440.996760441] [cube_detector]: PURPLE_CUBE target LOST
+
+SOURCE: /home/johnwick/brain_robot_logs/real_full_20261011_landing10mm/piper_driver.log
+[WARN] [1791685332.833557990] [piper_ctrl_single_node]: Ignoring invalid gripper hold cache 102100; using zero only for the enable handshake
+
+J5_RAW_FEEDBACK: 3A6 first signed BE int32, 0.001 degree
+(1791685396.493982) can0 3A6#000042A800000000 -> J5 +17.064 degree, OBSERVE_POSE_REACHED at 1791685396.494378199
+(1791685449.639669) can0 3A6#000030BD000018E1 -> J5 +12.477 degree, landing-end at 1791685449.638071819
+(1791685460.144731) can0 3A6#000030BD000018E1 -> J5 +12.477 degree, last feedback before driver exit

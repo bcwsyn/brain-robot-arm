@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+### 2026-10-11 10:26：批准的10mm一键实测落点通过，闭爪前鲜视觉检查失败；附J5两时刻反馈
+
+- 实现提交`c0dc5eb`，只改落点容差8→10mm。按下条完整命令实际运行原一键脚本，运行参数读取`Double value is: 0.01`；CAN复用、根盘34%、RGB/深度/MoveIt就绪，全部[1/7]–[7/7]通过。前两次adapter arm CLI确认超时，但日志均有ARMED，第三次确认后继续；不能写成适配器实际未使能。未修改其他控制代码/策略。
+- 实测时间（北京时间）：10:23:16.494 `OBSERVE_POSE_REACHED→SEARCH`，10:23:49.078 `ALIGN`，10:23:51.145 `GRASP_READY`。锁存base目标`(0.432,-0.113,0.079)m`，开爪50mm反馈仍102.1mm，但原配置允许继续。执行78点预抓取、8点Cartesian下降及一次5点纠偏。纠偏后模型tip预期`(0.4397,-0.1147,0.0697)`，实际FK`(0.4402,-0.1147,0.0792)m`，误差9.5mm、角误差0.0201rad，已过10mm既有落点判断。
+- 10:24:09.639失败于`FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`，本轮没有闭爪/抬升/释放。检测器10:24:00.997已LOST；采集器记录target_valid/depth_valid=false，最后目标采样1791685440.775314，终止时已8.863秒，超过既有0.60秒。源码`FreshFaceInsideJaws()`第一分支即要求上述鲜有效RGB-D，故不能仅凭共用错误文本断言实际两指外或坐标链已证实错误；没有记录FRESH_JAW_CAPTURE几何判定。此次新断点不是10mm落点或开爪反馈阻止靠近。
+- 已实际查看相机原RGB：`evidence/0007_rgb.png`、`0010_rgb.png`中紫色方块可见；`0013_rgb.png`、`0014_rgb.png`中方块已离开画面。靠近时向画面下沿移动；这些帧不能独立量出实体指尖间距或判断已越过。图像目录`/home/johnwick/brain_robot_logs/real_full_20261011_landing10mm/evidence/`。只读采集器首次因用户NumPy2/系统cv2ABI冲突退出，改用`PYTHONNOUSERSITE=1 /usr/bin/python3`成功；结束时SIGINT触发重复rcl_shutdown错误，不影响先前证据，也未发送运动。
+- 用户要求J5两个时间点：CAN聚合反馈3A6首个有符号BE int32，单位0.001°。观测就绪最近帧1791685396.493982为`+17.064° / +0.297823rad`；下降纠偏结束最近帧1791685449.639669为`+12.477° / +0.217765rad`；差`-4.587°`。驱动退出前最后帧1791685460.144731仍`+12.477°`，并非命令角。不要从角度减少直接推定实体末端上/下。
+- 脚本退出码1，停输出并保持当前位置/使能，未DisableArm/ResetPiper；实机控制栈和只读采集器均已结束。日志目录`/home/johnwick/brain_robot_logs/real_full_20261011_landing10mm/`，精选原始阶段/落点/角度帧归档[`evidence/piper_onekey_20261011_landing10mm.txt`](evidence/piper_onekey_20261011_landing10mm.txt)。Git检查与提交见本条随后提交，仅纳入本轮文档/文本证据，既有vendor/reference变动不碰。
+- 下一步先依据本轮图像与同步关节/锁存目标核对靠近过程中相机视野及TCP几何，再向用户提出具体修改并取得批准；不重复相同跑法，不自动关闭鲜视觉判定、不加门、不盲目增大下降/J5或删相机外参。10mm仅模型FK容差通过，不宣称实体抓取成功。回退参数可`git revert c0dc5eb`并同步实际配置，保留本轮证据提交。
+
 ### 2026-10-11 10:20：用户批准落点容差8→10mm，已同步规范与生效实体配置
 
 - 起始HEAD=`aec3cae`。用户“确认”明确批准上一轮提出的单项修改和原一键实测；仅把`brain_robot_arm/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml`的`grasp_landing_tolerance_m: 0.008`改为`0.010`，同步`/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml`。实际install配置是指向此源码的符号链接，无需编译；启动脚本/执行器/轨迹/夹爪/相机安装外参均未改。
