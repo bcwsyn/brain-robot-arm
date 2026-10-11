@@ -1,5 +1,13 @@
 # PiPER 调试进度
 
+## 2026-10-11 22:18：348 个积压提交已审查并同步 GitHub（无实机操作）
+
+- 用户明确授权“现在直接推送”。固定审查/推送范围为远程 `e7c1a5720864070cb8921032f0f5c4bc20c75249` 至本地 `b5c0993026d000043a72ff7988ed1e59140bc004`，共 348 个提交；`origin` 为 `https://github.com/bcwsyn/brain-robot-arm.git`，目标 `main`，远程是本地祖先，普通快进推送，不使用 force。
+- `git rev-list --objects`/`git cat-file --batch-check` 检查 2,946 个新增对象、1,021 个 blob 版本；最大文件 581,627 字节。未检出待推送的 Debian 包、模型权重、构建产物、临时抓包或凭据文件路径；原有未提交修改和未跟踪资料/包不暂存、不上传。
+- 从 Gitleaks 官方 release 获取 8.30.1，压缩包 SHA-256 `d29144deff3a68aa93ced33dddf84b7fdc26070add4aa0f4513094c8332afc4e` 与发布校验和一致。默认规则、100% 脱敏、不启用仓库忽略项：Git 历史扫描覆盖 348 个提交；另将全部新增 Git 对象通过 `git cat-file --batch` 输入扫描（约 106.90 MB，含完整文件版本和提交对象），两次均退出 0、未检出泄漏。自动扫描无发现不构成对未知敏感信息的绝对保证。
+- 执行 `git -c push.followTags=false push origin b5c0993026d000043a72ff7988ed1e59140bc004:refs/heads/main`，退出 0；随后 `git ls-remote origin refs/heads/main` 退出 0，远程真实 SHA 为 `b5c0993026d000043a72ff7988ed1e59140bc004`。此前“历史审查未完成、积压未同步”已由本条证据更新，348 个积压提交已同步。
+- 脱敏扫描报告仅存 Windows 临时目录 `C:\Users\HP\AppData\Local\Temp\piper-push-audit-20261011-b5c0993\`，不加入 Git。本条同步记录单独提交、审查增量后再普通推送；最终记录提交的远程 SHA 以本轮最终核对为准。未构建、启动 ROS、使能、发送运动或修改机械臂代码；实机目标尚未因此完成。
+
 ## 2026-10-11 22:12：补充每轮 GitHub 安全推送与同步证据规则（仅文档）
 
 - 起点 `1a6a662`，规范 Windows 工作树 `C:\ub`（对应 `/mnt/hgfs/ub`）。用户授权补充“每轮完成后审查敏感信息/大文件，再推送；失败记录；本地提交不得声称已同步”规则。仅修改固定任务提示词、长期交接、决策和本条进度；不改驱动、启动脚本或真实运行状态。
