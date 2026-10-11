@@ -31,7 +31,13 @@ parser.add_argument('--snapshot', type=Path)
 parser.add_argument('--orientation', choices=['top_down', 'measured', 'target_directed'], default='top_down')
 parser.add_argument('--geometry-helper', type=Path,
                     help='Compiled read-only C++ target-directed geometry helper')
+parser.add_argument('--output', type=Path,
+                    help='New JSON file retaining complete target-directed planning responses')
 args = parser.parse_args()
+if args.output and (args.orientation != 'target_directed' or args.output.exists()):
+    parser.error('--output requires target_directed mode and a new file')
+report = {'isolated_domain': 78, 'hardware_executed': False,
+          'complete_path_planned': False, 'stages': {}}
 with args.config.open() as f:
     P = yaml.safe_load(f)['grasp_lift_executor']['ros__parameters']
 Q = ([-0.0, 0.98, -0.75, 0.0, 0.30, 0.0]
@@ -134,6 +140,8 @@ def review_target_directed():
                P.get('target_directed_downward_fraction', .5)]
     path = json.loads(subprocess.check_output(
         [str(args.geometry_helper.resolve())] + [str(v) for v in numbers], text=True))
+    report.update(start_q_rad=Q, surface_base_m=OBJECT,
+                  model_opening_m=MODEL_OPENING, geometry=path)
     print('TARGET_DIRECTED_EXACT_CPP_GEOMETRY_NO_EXECUTION',
           'frozen_start', Q, 'surface', OBJECT, 'start_pose', start, flush=True)
     for stage in ('pregrasp', 'descent'):
@@ -153,6 +161,11 @@ def review_target_directed():
         cart_request.avoid_collisions = True
         cart_request.waypoints = waypoints
         result = call(cart, cart_request)
+        if args.output:
+            from rosidl_runtime_py.convert import message_to_ordereddict
+            report['stages'][stage] = {
+                'request': message_to_ordereddict(cart_request),
+                'response': message_to_ordereddict(result)}
         jt = result.solution.joint_trajectory
         max_step = max((max(abs(x-y) for x, y in zip(a.positions, b.positions))
                         for a, b in zip(jt.points, jt.points[1:])), default=0.)
@@ -217,6 +230,7 @@ def review_target_directed():
         if error > P['grasp_landing_tolerance_m']:
             raise RuntimeError('Target-directed model landing failed')
     print('TARGET_DIRECTED_BOTH_SEGMENTS_PLANNED_NO_EXECUTION', flush=True)
+    report['complete_path_planned'] = True
 
 try:
     if args.orientation == 'target_directed':
@@ -346,5 +360,10 @@ try:
         print('SNAPSHOT_NO_COMPLETE_TOP_DOWN_PATH',flush=True)
         raise SystemExit(2)
 finally:
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        with args.output.open('x', encoding='utf-8') as stream:
+            json.dump(report, stream, indent=2)
+            stream.write('\n')
     n.destroy_node()
     rclpy.shutdown()

@@ -180,6 +180,8 @@ if(BUILD_TESTING)
     ENV "PYTHONNOUSERSITE=1")
   ament_add_pytest_test(static_rgbd_test test/test_static_rgbd.py
     ENV "PYTHONNOUSERSITE=1")
+  ament_add_pytest_test(camera_jaw_alignment_test test/test_camera_jaw_alignment.py
+    ENV "PYTHONNOUSERSITE=1")
 endif()
 
 ament_package()

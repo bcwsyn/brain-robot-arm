@@ -1,5 +1,13 @@
 # PiPER ROS 调试完整交接记录
 
+## 最新末段实机瞄准（2026-10-11 22:11）
+
+起点3b10e99。原target_directed全路径隔离规划成功但预抓取J5从54.625降到42.975°，下降结束44.801°；这不是实体执行证据，不能照搬会丢视野的旧段。未改生产executor、TF、TCP、YAML或入口。新增test/review_camera_jaw_alignment.py只读规划，复用原工厂内参/旋转、同帧目标、真实起点、原MoveIt LIN；11纯几何测试通过。可见两指中线(150.5,155.5)只是屏幕瞄准参考，不是接触标定。
+
+已沿原MoveIt→adapter执行一次15mm图像面平移，36点/3.444444秒，图像误差31.08→8.63px，方块完整可见、没有新TARGET_LOST。真实末q rad[-.22136436,1.882870472,-1.271650156,0,.949494364,0]；J5≈54.402°，J6仍0而规划2.571°，不能声称六轴完全到位。只是新任务单段瞄准，不重置旧4段标定预算。临时栈全停，仅SDK50857/PGID50855保持，原disarm成功，未闭爪/Disable，不会自动续跑。
+
+证据目录large_j5_view_20261011.7cb6Gu，完整命令/响应/SHA和局限见docs/evidence/piper_image_aim_20261011.md。CLI印出的camera_loss未实现专门视觉中断，已更正，实际是原adapter反馈/限位停止加显式disarm。J6原因尚未查明，不凭数值改限位/驱动或扩大轨迹。下一从实际末q重新规划一次最多10mm前进并配套命令/反馈及RGB-D，核深度确实缩短；不重复底层巡检，不直接闭爪。完整一键抓取仍未验收。
+
 ## 最新检测实机部署已验收（2026-10-11 21:54）
 
 0b661a4补丁已只部署detector source/header/实际include/bin，旧source/bin备份large_j5_view_20261011.7cb6Gu/detector_before_deploy。实际只目标重建最终bin73b7a2b4…，新paired域78回放4稳态全target/depth=true；实体静止38秒13快照/11就绪全true、点(.009114,.035452,.151)m，之后5组时间配对max37.149ms/关节不变，原RGB完整。详docs/evidence/piper_raw_shape_depth_association_20261011.md部署段。
