@@ -1,5 +1,15 @@
 # PiPER ROS 调试完整交接记录
 
+## 最新实际部署与黑图阻断（2026-10-11 23:41）
+
+56d655b近距補丁已选择性部署实际树：executor新源e97cab06…、实际YAML1a12137f…、detector f2519a31…，实际bin056c4b38…/4d5e9ac1…。原入口0e976b0a…和实际CMake不改，不迁移规范OFF-preview执行路径；精确补丁JSON及base/结果SHA已入docs/evidence/piper_near_depth_selective_executor_20261011.json。旧源/bin/YAML备份near_depth_deploy_20261011.C7wU3n，完整部署/回退/日志/图像与失败证据见docs/evidence/piper_near_depth_deployment_20261011.md。下条“未实体部署”已被本条覆盖。
+
+首启误把测试PYTHONNOUSERSITE=1带入生产导致No module named can，不是硬件/CAN故障；去除变量原入口AUTO_START=0到[7/7]/IDLE，新功能true且工厂标定参数服务诊断成功。原脚本前置清理停止旧50857，现在唯一反馈SDK63407/PGID63403，不能继续引用旧PID。当前新原RGB接近全黑、qualified框空、target/depth=false；曝光原自动值、增益30/60的对照未恢复紫色，已还原gain0。未发运动/张闭爪/回零/失能、无新seed/预测末段实机成功。
+
+采集300秒/100快照后退出；脚本Ctrl+C只到关闭行exit1留部分成员，已核自有组精确TERM退出所有控制/相机/抓包/窗口，仅SDK63407保留。收尾新反馈stamp区间约200Hz/年龄1.786ms，六轴状态字64均使能，实际q未变，夹爪.1019仍非真实开口。不会自动续跑。下一需要现场恢复照明或排除遮挡，再直接看新原图，从原观测姿态新可靠RGB-D seed验有限末段与真实夹持区/开口；不要求重启机械臂、不重复CAN/固件、不执行旧反向J5全路径。
+
+最新用户授权自主继续既有任务，不因普通可逆步骤重复询问；真RGB丢失仍停止、既有标定预算不重置。当前目标尚未完成，Git仅本地/未同步，共享main授权阻断未改、不重试push。首条接手命令仍git -C /mnt/hgfs/ub show --stat --oneline HEAD，再读本条和最新进度。
+
 ## 最新近距代码实施（2026-10-11 23:08，未实体部署）
 
 用户“确认修改”已实施原detector/executor兼容补丁：独立合格原RGB矩形＋现3D锁存/实际图像时刻TF核同目标；不改target_valid/depth_valid初始门、不刷新测量时刻、不追新背景、不用规划J6末角。原轨迹等待内核RGB/反馈，真正丢失请求既有软件stop和adapter disarm保持使能；最后复核新增明确的锁存3D/RGB预测模式，仍用原夹持几何。0..80mm仅已有SDK/adapter命令范围；通用几何实际会接受.1019，所以闭爪处现在拒不可信缓存，不阻止六轴靠近或写零点。
