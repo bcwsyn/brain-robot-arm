@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+## 2026-10-11 22:31：近距深度失效的具体修复方案与只读投影对照（未改控制代码/未运动）
+
+- 起点f8bba3c。用户确认上一轮origin/main普通推送，并询问如何解决近距深度不足；本轮答复方案，不把询问当新运动/闭爪授权。固定Git恢复命令、完整任务提示词与最新交接/决策、两个仓库技能已核；实际SDK50857仍在，实际executor107ce501…、detector2deb634f…不变。没有重做CAN/固件或执行一键运动，本轮直接推进已到观测/对齐之后的末段设计。
+- 实际代码已static_target_lock=true、CaptureTargetModel锁存base目标/尺寸；缺口不是再写锁存器，而是FinishGraspAndLift→FreshFaceInsideJaws仍要求最新target/depth有效。原raw_color_bbox在零深度时可发布，但只取area≥10最大紫色轮廓，不能直接用它当同一正方体/抓取许可。raw_target_projection依赖有效深度，不能拿它支撑无深度近距跟踪。
+- 复用现FK/原URDF/未改mount/工厂D2C，读取上轮运动前真实point(.021568,.033960,.152)m及起终实际q，按静止base点重新投影到末相机：预测Depth-Z .142514733m，预测原RGB(149.457,157.265)，实际末原RGB(151.022,162.842)，残差5.792px。这支持用真实反馈预测同一目标并核彩色误差的方向可行性，不是末段深度实测/手眼标定/接触验收；静止物体和mount仍假设，J6使用真实0而非未达到的规划角。预测已低于本轮实测非零边界.149m，与近距缺样一致，未宣称官方最短距离规格。
+- 具体最小方案：复用已有可靠RGB-D静止3D/尺寸锁存；检测器增加/复用经过原矩形形状门、与锁存对象关联的独立新鲜RGB跟踪结果，保持depth_valid=false且不改SEARCH的RGB-D初始识别要求；现executor仅在已锁存的有限靠近阶段，以图像时刻真实q/TF重投影base目标，和RGB位置/形状/尺度核同一物体，由原MoveIt位置＋朝向规划→原adapter继续有限末段，不因空深度把它重置成SEARCH或追新紫色背景。锁存不能无限期/无限距离复用，错误物体、图像丢失和反馈不符仍停止。
+- 最终FreshFaceInsideJaws的拟改分支要区分“最新RGB-D实测”和“锁存3D＋新鲜RGB＋实际反馈预测”，日志明确预测，不把旧深度刷新时间冒充测量。仍须独立核实际两指接触区/真实开口，再以锁存点在当前夹爪坐标中的位置判闭爪；二维居中或5.8px投影自洽不能替代这一项。此方案解决深度归零导致停住的输入逻辑，**尚未实现/部署，不能保证已经可闭爪**。
+- 下一先用现10个前后配对包做纯离线模式切换、同目标关联和否定例（未可靠锁存就无深度/紫色背景切换/真物体丢失/反馈异常/投影偏离/过度靠近）；补齐临时monitor独立持久会话验收后，才提出现executor两个责任点的最小补丁及单次实机范围。不写第二启动脚本、不绕adapter、不填深度洞、不删原反馈/限位门、不重复原10mm运动。
+- 官方OpenCV projectPoints支持用内外参投影世界点；ViSP官方UR IBVS例由对象pose生成特征Z并由图像角点更新视觉特征，不要求同一深度传感器每帧有值，但其AprilTag/对象pose条件不等于本项目已具备。这里是项目适配方案，非复制示例即抓取保证。来源：https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html；https://github.com/lagadic/visp/blob/master/example/servo-universal-robots/servoUniversalRobotsIBVS.cpp。
+- 新只读分析产物large_j5_view_20261011.7cb6Gu/locked_rgb_projection_review.json，SHA0ccce74b1ca5485350163859013bb6c99797ad91cbd685ea15e486cb96ddcdce；命令Python复用review_calibration_sampling.tool_pose返回0，没有控制publisher/client。首条下一命令：git show --check本轮计划提交，再读本条进行离线回放。GitHub授权更新后按第11节检查全部待推送blob并普通推送/读取远程，实际结果随后记录；目标未抓取。
+
 ## 2026-10-11 22:26：本轮增量审查完成；推送被权限审核拒绝，仅本地提交
 
 - 代码/实体断点提交20a58441597b533915f140a65fb438cc5d67d3ed，13测试及git show --check通过。目标main/origin实际URL与第11节一致，git ls-remote返回真实远程6ebd0c53ca830ac4071b8e64fcc1954dbf5a8cf1、exit0；该历史已由Windows同步，未重复348提交积压审查。
