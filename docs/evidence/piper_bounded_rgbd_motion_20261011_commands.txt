@@ -1,0 +1,295 @@
+DIAGNOSTIC COMMAND RECORD ONLY - NOT A PRODUCTION ENTRYPOINT
+Date: 2026-10-11, Asia/Shanghai
+Physical sampling budget already exhausted; do not rerun or copy these commands to live hardware.
+Review the matching Markdown evidence, fresh state and authorization before any new trial.
+The replay source is the corrected VOLATILE subscriber; first failed transient version is in the runtime log.
+
+Recorded source: /tmp/piper_live_microplan_20261011.py
+"""One-off read-only live planning evidence; no publisher or enable/execution API."""
+import argparse
+import hashlib
+import json
+import math
+import sys
+import time
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+import numpy as np
+import rclpy
+import yaml
+from rclpy.qos import qos_profile_sensor_data
+from sensor_msgs.msg import JointState
+from moveit_msgs.msg import Constraints, JointConstraint, PlanningSceneComponents
+from moveit_msgs.srv import GetMotionPlan, GetPlanningScene
+from rcl_interfaces.srv import GetParameters
+from rosidl_runtime_py.convert import message_to_ordereddict
+
+sys.path.insert(0, '/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test')
+from review_calibration_sampling import NAMES, checked_trajectory, tool_pose
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--axis', type=int, choices=(4, 5), required=True)
+parser.add_argument('--angle-deg', type=float, required=True)
+parser.add_argument('--output', type=Path, required=True)
+args = parser.parse_args()
+if not 0 < abs(args.angle_deg) <= .8 or args.output.exists():
+    raise SystemExit('Refuse outside bounded microplan or overwrite')
+params = yaml.safe_load(Path('/home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_task_real.yaml').read_text())['grasp_lift_executor']['ros__parameters']
+rclpy.init()
+node = rclpy.create_node('read_only_live_microplan_evidence')
+samples = []
+def receive(message):
+    values = dict(zip(message.name, message.position))
+    if all(name in values for name in NAMES):
+        samples.append((node.get_clock().now().nanoseconds,
+                        message.header.stamp.sec * 10**9 + message.header.stamp.nanosec,
+                        [values[name] for name in NAMES]))
+        del samples[:-100]
+node.create_subscription(JointState, '/joint_states_feedback', receive, qos_profile_sensor_data)
+def call(kind, name, request):
+    client = node.create_client(kind, name)
+    try:
+        if not client.wait_for_service(timeout_sec=8):
+            raise RuntimeError('Missing ' + name)
+        future = client.call_async(request)
+        rclpy.spin_until_future_complete(node, future, timeout_sec=8)
+        if not future.done() or future.result() is None:
+            raise RuntimeError('Timeout ' + name)
+        return future.result()
+    finally:
+        node.destroy_client(client)
+report = {'read_only': True, 'hardware_executed': False}
+try:
+    end = time.monotonic() + 5
+    while time.monotonic() < end:
+        rclpy.spin_once(node, timeout_sec=.05)
+        if len(samples) >= 5 and samples[-1][1] - samples[0][1] >= 300_000_000:
+            break
+    if not samples or node.get_clock().now().nanoseconds - samples[-1][1] > 200_000_000:
+        raise RuntimeError('No fresh physical six-axis feedback')
+    start = np.array(samples[-1][2])
+    if not np.isfinite(start).all() or np.max(np.abs(np.array([s[2] for s in samples]) - start)) > .001:
+        raise RuntimeError('Physical starting joints not static')
+    request = GetParameters.Request(names=['allow_trajectory_execution', 'robot_description'])
+    values = call(GetParameters, '/move_group/get_parameters', request).values
+    if len(values) != 2 or values[0].type != 1 or values[0].bool_value:
+        raise RuntimeError('MoveIt execution must remain disabled; adapter is sole output')
+    model = values[1].string_value
+    root = ET.fromstring(model)
+    report.update(urdf_sha256=hashlib.sha256(model.encode()).hexdigest(), start_q_rad=start.tolist(),
+                  feedback_stamp_ns=samples[-1][1], axis=args.axis, angle_deg=args.angle_deg)
+    request = GetPlanningScene.Request()
+    request.components.components = (PlanningSceneComponents.WORLD_OBJECT_GEOMETRY |
+                                     PlanningSceneComponents.OCTOMAP |
+                                     PlanningSceneComponents.ROBOT_STATE)
+    scene = call(GetPlanningScene, '/get_planning_scene', request).scene
+    report['scene'] = message_to_ordereddict(scene)
+    goal_q = start.copy()
+    goal_q[args.axis - 1] += math.radians(args.angle_deg)
+    request = GetMotionPlan.Request()
+    motion = request.motion_plan_request
+    motion.group_name = 'arm'
+    motion.pipeline_id = params['real_pose_planning_pipeline']
+    motion.planner_id = 'PTP'
+    motion.num_planning_attempts = 1
+    motion.allowed_planning_time = 2.
+    motion.max_velocity_scaling_factor = .002
+    motion.max_acceleration_scaling_factor = .002
+    motion.start_state.joint_state.name = NAMES + ['joint7', 'joint8']
+    motion.start_state.joint_state.position = start.tolist() + [0., 0.]
+    motion.start_state.joint_state.header.stamp = node.get_clock().now().to_msg()
+    constraint = Constraints()
+    constraint.joint_constraints = [JointConstraint(joint_name=name, position=float(value),
+        tolerance_above=1e-5, tolerance_below=1e-5, weight=1.) for name, value in zip(NAMES, goal_q)]
+    motion.goal_constraints = [constraint]
+    answer = call(GetMotionPlan, '/plan_kinematic_path', request).motion_plan_response
+    report['response'] = message_to_ordereddict(answer)
+    if answer.error_code.val != 1:
+        raise RuntimeError('Planning code ' + str(answer.error_code.val))
+    trajectory = answer.trajectory.joint_trajectory
+    report['validation'] = checked_trajectory(trajectory.joint_names,
+        [p.positions for p in trajectory.points], start, goal_q, params)
+    tip = np.array([0., 0., float(params['gripper_tip_offset_m']), 1.])
+    curves = []
+    for point in trajectory.points:
+        q = np.array(point.positions)[[trajectory.joint_names.index(name) for name in NAMES]]
+        curves.append((tool_pose(root, q) @ tip)[:3])
+    curves = np.array(curves)
+    length = float(np.linalg.norm(np.diff(curves, axis=0), axis=1).sum())
+    displacement = float(np.linalg.norm(curves - curves[0], axis=1).max())
+    report['validation'].update(model_tip_arc_m=length, model_tip_max_displacement_m=displacement)
+    if length > .005 or displacement > .005:
+        raise RuntimeError('Microplan exceeds existing per-segment budget')
+    report['goal_q_rad'] = goal_q.tolist()
+    report['validated'] = True
+except Exception as error:
+    report['error'] = str(error)
+    raise
+finally:
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    with args.output.open('x') as stream:
+        json.dump(report, stream, indent=2, allow_nan=False)
+    print(json.dumps({key: report[key] for key in ('validated', 'error', 'start_q_rad', 'goal_q_rad', 'validation') if key in report}))
+    node.destroy_node()
+    rclpy.shutdown()
+
+Recorded source: /tmp/piper_microstep_cli_20261011.sh
+#!/bin/bash
+# Diagnostic CLI orchestration only: original MoveIt plan -> original adapter.
+set -e
+source /opt/ros/humble/setup.bash
+source /home/johnwick/piper_ros/install/setup.bash
+source /home/johnwick/piper_ws/install/setup.bash
+export FASTRTPS_DEFAULT_PROFILES_FILE=/home/johnwick/fastdds_udp_only.xml
+export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+PIPER_CAPTURE_ROOT=/home/johnwick/brain_robot_logs/micro_capture_20261011.X3KR3g
+PIPER_STEP=$1
+[[ "$PIPER_STEP" =~ ^[123]$ ]]
+PIPER_PLAN_FILE="$PIPER_CAPTURE_ROOT/plan$PIPER_STEP.json"
+export PIPER_PLAN_FILE
+/usr/bin/python3 - <<'PY'
+import hashlib, json, os, pathlib, time, rclpy
+from sensor_msgs.msg import JointState
+from rclpy.qos import qos_profile_sensor_data
+expected='c0153c88e0e5ac5ff9d8d1b299e4c911c62e14b8f0834e25d5c0d67f6de299cb'
+source=pathlib.Path('/home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py')
+assert hashlib.sha256(source.read_bytes()).hexdigest()==expected
+drivers=[]
+for p in pathlib.Path('/proc').iterdir():
+ if not p.name.isdigit(): continue
+ try: c=(p/'cmdline').read_bytes().split(b'\0')
+ except (OSError,PermissionError): continue
+ if any(x.endswith(b'/piper_single_ctrl') for x in c): drivers.append(int(p.name))
+assert drivers==[50857], drivers
+planpath=pathlib.Path(os.environ['PIPER_PLAN_FILE']); plan=json.loads(planpath.read_text())
+assert plan['validated'] and plan['validation']['model_tip_arc_m']<.005
+assert abs(plan['angle_deg'])<=.8
+assert plan['response']['trajectory']['joint_trajectory']['joint_names']==[f'joint{i}' for i in range(1,7)]
+rclpy.init(); n=rclpy.create_node('microstep_fresh_start_check'); samples=[]
+def cb(m):
+ q=dict(zip(m.name,m.position)); samples.append({'stamp_ns':m.header.stamp.sec*10**9+m.header.stamp.nanosec,'q':[q[f'joint{i}'] for i in range(1,7)]})
+n.create_subscription(JointState,'/joint_states_feedback',cb,qos_profile_sensor_data)
+end=time.monotonic()+5
+while time.monotonic()<end:
+ rclpy.spin_once(n,timeout_sec=.05)
+ if len(samples)>=5 and samples[-1]['stamp_ns']-samples[0]['stamp_ns']>=250_000_000: break
+age=(n.get_clock().now().nanoseconds-samples[-1]['stamp_ns'])/1e9 if samples else None
+with planpath.with_name(planpath.stem+'_fresh.json').open('x') as f: json.dump({'samples':samples,'age_s':age},f)
+assert samples and age<.2
+assert all(abs(a-b)<.001 for a,b in zip(samples[-1]['q'],plan['start_q_rad']))
+print('fresh_start_ok',len(samples),'age_s',age,'q',samples[-1]['q'])
+n.destroy_node(); rclpy.shutdown()
+PY
+trap "timeout -k 1s 5s ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger '{}' || true" EXIT
+PIPER_ENABLE_RESULT=$(timeout -k 1s 12s ros2 service call /enable_srv piper_msgs/srv/Enable '{enable_request: true}')
+printf '%s\n' "$PIPER_ENABLE_RESULT"
+printf '%s\n' "$PIPER_ENABLE_RESULT" | rg -q 'enable_response=True|enable_response: true'
+for PIPER_SERVICE in enable_motion arm; do
+ PIPER_RESULT=$(timeout -k 1s 12s ros2 service call "/piper_jog_adapter/$PIPER_SERVICE" std_srvs/srv/Trigger '{}')
+ printf '%s\n' "$PIPER_RESULT"
+ printf '%s\n' "$PIPER_RESULT" | rg -q 'success=True|success: true'
+done
+PIPER_TRAJECTORY=$(/usr/bin/python3 - <<'PY'
+import json,os,yaml
+r=json.load(open(os.environ['PIPER_PLAN_FILE']))
+print(yaml.safe_dump(r['response']['trajectory']['joint_trajectory'],default_flow_style=True))
+PY
+)
+date -Is
+timeout -k 1s 10s ros2 topic pub --once --wait-matching-subscriptions 1 /brain_robot_grasp/arm_trajectory trajectory_msgs/msg/JointTrajectory "$PIPER_TRAJECTORY" > "$PIPER_CAPTURE_ROOT/publish$PIPER_STEP.log"
+sleep 8
+/usr/bin/python3 /mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_static_rgbd.py --output "$PIPER_CAPTURE_ROOT/capture$PIPER_STEP" --duration-s 20 --frames 5
+
+Recorded source: /tmp/replay_piper_static_rgbd_20261011.py
+"""Captured packets -> original detector in isolated domain 78; no robot interfaces."""
+import json
+import os
+from pathlib import Path
+import time
+
+if os.environ.get('ROS_DOMAIN_ID') != '78':
+    raise RuntimeError('Replay is isolated; never publish into the physical domain')
+import cv2
+from cv_bridge import CvBridge
+import rclpy
+from rclpy.qos import QoSProfile, DurabilityPolicy
+from sensor_msgs.msg import Image, CameraInfo
+from std_msgs.msg import Bool, String
+from geometry_msgs.msg import PointStamped, Vector3Stamped
+
+root = Path('/home/johnwick/brain_robot_logs/micro_capture_20261011.X3KR3g')
+output = root / 'detector_replay_volatile'
+output.mkdir(exist_ok=False)
+stream = (output / 'messages.jsonl').open('x')
+rclpy.init()
+node = rclpy.create_node('isolated_captured_rgbd_replay')
+bridge = CvBridge()
+pubs = [node.create_publisher(kind, topic, 10) for kind, topic in
+        [(Image, '/camera/color/image_raw'), (Image, '/camera/depth/image_raw'),
+         (CameraInfo, '/camera/depth/camera_info')]]
+subscriptions = []
+stage = {'capture': None, 'packet': None}
+latest_debug = None
+qos = QoSProfile(depth=30, durability=DurabilityPolicy.VOLATILE)
+def receive(message, topic):
+    global latest_debug
+    if topic.endswith('debug_image'):
+        latest_debug = message
+        return
+    value = message.data if hasattr(message, 'data') else repr(message)
+    stream.write(json.dumps({'time': time.time(), **stage, 'topic': topic, 'value': value}) + '\n')
+    stream.flush()
+for kind, topic in [(Bool, 'target_valid'), (Bool, 'candidate_valid'), (Bool, 'depth_valid'),
+                    (String, 'depth_diagnostic'), (PointStamped, 'target_point_camera'),
+                    (Vector3Stamped, 'target_size'), (Image, 'debug_image')]:
+    topic = '/brain_robot_vision/' + topic
+    subscriptions.append(node.create_subscription(kind, topic,
+        lambda message, topic=topic: receive(message, topic), qos))
+def spin_for(seconds):
+    until = time.monotonic() + seconds
+    while time.monotonic() < until:
+        rclpy.spin_once(node, timeout_sec=.025)
+def stamp(header, nanoseconds):
+    header.stamp.sec, header.stamp.nanosec = divmod(nanoseconds, 10**9)
+try:
+    spin_for(2.)
+    forbidden = ('piper_ctrl', 'piper_jog_adapter', 'visual_search_controller', 'grasp_lift_executor')
+    graph = node.get_node_names()
+    if any(any(word in name for word in forbidden) for name in graph):
+        raise RuntimeError('Replay domain contains a robot controller')
+    if any(pub.get_subscription_count() == 0 for pub in pubs):
+        raise RuntimeError('Original detector not connected to all replay inputs')
+    for capture in (1, 2, 3):
+        rows = [json.loads(line) for line in (root / f'capture{capture}/observer.jsonl').read_text().splitlines()]
+        for row in rows:
+            stage.update(capture=capture, packet=row['snapshot'])
+            rgb = bridge.cv2_to_imgmsg(cv2.imread(row['images']['rgb']['path']), encoding='bgr8')
+            depth = bridge.cv2_to_imgmsg(cv2.imread(row['images']['depth']['path'], cv2.IMREAD_UNCHANGED), encoding='16UC1')
+            info = CameraInfo()
+            original_info = row['latest']['/camera/depth/camera_info']
+            info.width, info.height = original_info['size']
+            info.k = original_info['k']
+            original = row['stamps_ns']
+            shift = node.get_clock().now().nanoseconds - max(original.values())
+            for message, label in ((rgb, 'rgb'), (depth, 'depth'), (info, 'depth_info')):
+                message.header.frame_id = row['images']['rgb' if label == 'rgb' else 'depth']['frame']
+                stamp(message.header, original[label] + shift)
+            pubs[2].publish(info)
+            pubs[0].publish(rgb)
+            pubs[1].publish(depth)
+            spin_for(.6)
+        if latest_debug is not None:
+            cv2.imwrite(str(output / f'capture{capture}_debug.png'), bridge.imgmsg_to_cv2(latest_debug, 'bgr8'))
+    spin_for(.5)
+    with (output / 'summary.json').open('x') as f:
+        json.dump({'captured_data_replay_not_live_detection': True, 'isolated_domain': 78,
+                   'production_detector_parameters_unchanged': True,
+                   'timestamps_rebased_preserving_relative_deltas': True,
+                   'hardware_command_topics_or_services_used': False, 'graph': graph}, f, indent=2)
+finally:
+    stream.close()
+    node.destroy_node()
+    rclpy.shutdown()
+
+
