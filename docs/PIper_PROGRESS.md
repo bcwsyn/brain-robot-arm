@@ -2501,3 +2501,9 @@
 - 时间戳 TF 实现提交：`17faaac240339ae977de99ef02cf662b5be13ed5`（`fix: use stamped TF for RGB-D grasp target`）。
 - 如需完整撤销该实现及同一提交中的记录，先确认这5个提交文件没有需要保留的未提交编辑，然后执行：`git revert --no-edit 17faaac240339ae977de99ef02cf662b5be13ed5`。这是生成反向提交的可审计回退，不使用 `reset --hard`；其他既有 vendor/reference 工作树改动不在该提交内。
 - 回退后 `/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp` 的两处活动 RGB-D TF 查询恢复为原先实现；其余未提交改动不应清理或覆盖。
+
+### 2026-10-11 10:55：增加按需 ROS 2 与手术式修改技能
+
+- 用户确认在规范仓库内提供供 Ubuntu Codex 接力使用的技能。新增 `.agents/skills/ros2-piper-debug/SKILL.md` 与 `.agents/skills/surgical-change/SKILL.md`；前者聚焦本仓库 ROS 2 Humble/PiPER、TF/QoS/MoveIt/点云证据，后者强调行为归属、窄 diff、验证及保护未提交用户改动。
+- 已审阅上游 ROS2 `SKILL.md`（994行）及当前真实存在的 `ln-41-surgical-change-implementer`。未原样搬入：上游 ROS2 有未经此项目证据支持的通用 DDS 建议，且完整技能体积不利于低 token 接力；新文件保留来源链接并限定按需触发，不修改运行代码或机械臂状态。
+- 验证范围：检查技能 frontmatter、触发描述、路径及 Git diff；无 ROS 构建、启动或实机运动。仅本条记录和两个新技能文件属于本次改动；同一工作树中已有的进度/决策及其他用户改动不应并入本次提交。
