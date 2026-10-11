@@ -1,5 +1,29 @@
 # PiPER 调试进度
 
+## 2026-10-11 14:43：按实体“只差闭爪”重新明确末段目标；只读复核与后续修改提案
+
+- 用户澄清：图中两指因透视看似相交，要求方块真正处于两指接触范围，只差最后闭合。接受该要求，不把图像中心、延长线交点、紫色矩形完整入画或同模型FK收敛称为夹持到位。
+- 本轮请求是解释后续方案，不授权新的代码/运动改动。本轮最小动作：在规范仓库执行rev-parse/status/log30/reflog20/show HEAD，复核文档最新条目、已存在未提交原型、部署SHA、主机进程及保存的原RGB；未启动ROS或发送关节/夹爪目标。HEAD=a1b7b1a；保留既有vendor/reference广泛变动及本代理先前的未提交原型，不纳入本轮文档提交。采用ros2-piper-debug核对实际部署与模型/实体证据，未套通用DDS参数。
+- 部署未变化：原一键SHA e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb；实际executor源码SHA107ce501ee2cbf1862f96bf9096ed8fec7c396809fb8c36749222b35d633ce49；detector源码SHA90510e5f090ef2342f992a0425a093ab72385323f54e4bfe4401171a94c3c0b8；实体YAML SHA7561219416c17c9e0685d5fefcf19a9ab88d63fbc5b3aa99a212d241d34b3f74。sha256sum返回0。默认主线/唯一adapter不替换。
+- 主机只读命令`ps -eo pid,pgid,comm,args | rg '(^|/)(piper_single_ctrl|piper_jog_adapter|visual_search_controller|grasp_lift_executor|move_group|cam2image|cube_detector_node|astra_camera_node)( |$)'`返回0，仍见原arm-only反馈驱动PID24398/PGID24367，auto_enable=false、gripper_exist=false；其余所匹配控制进程未见。本轮未停止或重启该驱动。普通沙箱ps只能见自己的PID命名空间，不作为主机无进程证据。没有新鲜关节采样，不用历史位置冒充当前实时姿态。
+
+### 补记前一阶段已完成而尚未提交的证据（14:16–14:33）
+
+- 用户确认14:12有限恢复视野方案后，原命令`BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/j5_full_view_20261011 /home/johnwick/start_brain_robot_cube_real.sh`到[7/7]/IDLE；复用已有ERROR-ACTIVE链路，磁盘33%，未重载CAN。临时同一驱动arm-only避免夹爪使能握手，不改变默认参数。
+- 现MoveIt/Pilz→adapter规划每档J5+2°，其余五轴冻结；90/93/92点，约8.82/9.11/9.04秒。ROS J5从41.066°到42.964°、44.990°、47.010°。前两档脚本返回0，各档独立看原图0022/0043后再动作；最后一档已到位，但hold期间读到非IDLE，finally软件disarm，客户端返回1。visual_stack记录epoch1791699572.345919060 `STATE -> STOPPED (USER_STOP)`，原入口返回143。终止来源尚不明，不归因于CAN或硬件。
+- 后验只收CAN epoch1791699669.9794288：J5=47.035°，其余[-15.061,108.248,-73.417,.550,0]°、六轴使能true/错误0。未闭爪/抬升/释放/归零/ResetPiper/DisableArm。观察器随栈退出报ExternalShutdownException，其0053图是运动中，不作为最后静止帧。随后仅RGB拍摄`/home/johnwick/brain_robot_logs/j5_full_view_20261011_static47/evidence/0006_rgb.png`（epoch1791699795.0610497）：两指可见、紫块下沿仍裁切；本轮重新实际查看，不能声称完整视野或捕获成功。临时相机/观察器timeout124为预定时限，并非运动故障。
+- 隔离原型在`/tmp/piper_visual_feedback.NhxMgk`编译返回0；CTest LastTest.log确认14:33共8套Test Passed。增加原RGB bbox/debug独立于零深度配准黑影、纯几何微步及测试；只是软件可构建/测试，不是实体靠近或抓取验收。可选ROS原RGB零深度回放尚未执行；最后补丁因重复同路径语法错误未应用，不能把预期修补当现有代码。
+- 自动评审此前拒绝默认启用最多120步×5mm的补丁，理由为累计实体运动超出此次有限实测授权；拒绝补丁未应用。现工作树替代是默认关闭、最多4步/累计及离起点20mm的离线原型。原型尚有模型面点+插入量、未确认夹持ROI、完整入画依赖，且显式preview-only修补尚未应用；因此不能宣称它已保证所有分支不闭爪或已完成实体夹持区判断。不部署、不启用，不用关闭开关代替完成验证。
+
+### 下一方案（尚未实施；代码范围需先获用户同意）
+
+1. 不运动地在同帧原RGB中标出实际两指内缘/指尖和紫块，并核对配准深度对应的是同一块，不用注册黑影、原图中心或任意矩形代替实体接触面。依据已确认光学方向70mm/105mm、相机安装链及现URDF检查夹持中心；这些是不同坐标关系，先证明一致性，不盲删或重复加偏置。原始相机画面是透视投影，延长线交点提供朝向参考而非接触深度。
+2. 唯一入口保留观测→SEARCH→ALIGN→锁定同一静止方块。粗靠近复用已成功轨迹；末段目标改为实际夹持中心和可接触深度，而不是仅让模型指尖碰到相机所见表面点。生成位置/朝向联动Pose，由现MoveIt→adapter求六轴；J5是视野/俯仰修正结果，不固定朝向、不篡改关节输出。
+3. 先隔离验证已校核夹持区的投影和目标深度，再提具体有界、不闭爪实体小段试验（每段/累计位置与姿态范围提前说明）。看新鲜图像与反馈，检验目标是否进入两指接触面覆盖深度，而非继续追图像中心；保持静止目标身份，不因自运动重复ALIGN。若接触区本身超出刚性相机共同视野，应明确该限制，不能承诺靠反复增加J5解决或用出画盲闭爪。
+4. 完整轮廓仅用于前期识别/锁存；夹爪开始遮挡方块时不把轮廓缺失直接解释成目标移动或另一个紫色物体。正式闭爪仍须取得实际接触区/目标深度证据并保留原反馈判断，之后才验证夹住→抬升→释放→安全返回。无需先新建完整训练集或重写整栈。
+- 当前最大未完成项：模型工具点与实体两指夹持区的对应尚未证明；原型不能替代这个证据。没有新的底层CAN、限位、固件诊断或观测姿态运动。本轮为只读答复/记录；具体新修正须先说明获批，不将历史连续授权扩大为120步靠近。
+- 本轮提交仅三个文档，可`git revert <本轮commit>`回退记录；未改变部署，无需回滚机械臂代码。接手第一条命令`cd /mnt/hgfs/ub && git status --short`，先阅读本条和未提交原型，不覆盖它们，不直接开启visual_microsteps。总目标仍未完成。
+
 ### 2026-10-11 14:12：说明完整视野与两指捕获的分阶段实现，未发运动/改生产代码
 
 - HEAD e3304e4，用户确认方向并询问具体实现。本轮只读核对规范/实际任务参数、cup_detector_node.cpp的轮廓及clipped分支、grasp_lift_executor.cpp::FreshFaceInsideJaws、grasp_geometry.hpp::FaceInsideJawCapture，遵循ros2-piper-debug及surgical-change技能。未启动ROS/发送运动、修改源/YAML。观测/SEARCH既有成功证据复用，本轮不重做观测或底层基线。
