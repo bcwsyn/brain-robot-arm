@@ -1,0 +1,1649 @@
+{
+  "schema_version": 1,
+  "evidence": "STATIC_CAPTURE_AND_REJECTED_MARKERLESS_HAND_EYE_CANDIDATES",
+  "local_date": "2026-10-11",
+  "repository_head_at_start": "4ee9bc2",
+  "time_zone": "Asia/Shanghai",
+  "status": "NOT_CALIBRATED_NO_DEPLOYMENT_NO_MOTION",
+  "user_constraints": {
+    "checkerboard_available": false,
+    "confirmed_existing_free_end_regions_only": true,
+    "preserved_optical_measurement_m": {
+      "down": 0.07,
+      "forward": 0.105
+    },
+    "new_production_change_requires_prior_approval": true
+  },
+  "static_capture": {
+    "directory": "/home/johnwick/brain_robot_logs/jaw_static_calib_20261011.If4jex",
+    "mjpg_capture_wall_window_local": [
+      "2026-10-11T16:23:45.642417440+08:00",
+      "2026-10-11T16:23:53.556626621+08:00"
+    ],
+    "wall_window_is_not_hardware_image_timestamp": true,
+    "files": [
+      {
+        "file": "static_640.jpg",
+        "size": [
+          640,
+          480
+        ],
+        "sha256": "d3aa065e833a83c108882492b3327a0531e61b33b408906ec77071589530f7ea"
+      },
+      {
+        "file": "static_1632.jpg",
+        "size": [
+          1632,
+          1224
+        ],
+        "sha256": "9d6b2ae25255d5481ddfe9fe7c33356d9f22d6b12ff1b216148cf422b62066e0"
+      },
+      {
+        "file": "ros_original/evidence/0004_rgb.png",
+        "size": [
+          640,
+          480
+        ],
+        "sha256": "5916a62b8675c838332db22aad36989d172e4d8b4a5a883f27f71e53945e3f59",
+        "rgb_stamp": 1791707154.8658688,
+        "joint_feedback_stamp": 1791707154.900522,
+        "pair_delta_s": 0.0346532
+      },
+      {
+        "file": "ros_original/observer.jsonl",
+        "sha256": "8839026a8a22c80e185dac852a6b4a9b9343097e754718472f4069843a829db0"
+      }
+    ],
+    "temporary_format": "MJPG/5fps, skip8/count1 per resolution",
+    "restored_verified_format": "640x480 YUYV/30fps",
+    "auto_exposure_gain_white_balance_unchanged": true,
+    "v4l2_yuyv_direct_capture_failure": {
+      "exit_code": 0,
+      "reported_error": "select timeout",
+      "saved_bytes": 0,
+      "rejected_as_image": true,
+      "fallback": "finite original image_tools/cam2image + existing subscriber observer"
+    },
+    "fallback_exit_codes": {
+      "cam2image": 124,
+      "observer": 124
+    },
+    "fallback_planned_timeout_not_robot_fault": true,
+    "q_feedback_rad": [
+      -0.262724084,
+      1.888278112,
+      -1.280686148,
+      0.0095942,
+      0.836928232,
+      0
+    ],
+    "hardware_enable_not_read_this_round": true,
+    "gripper_cache_m": 0.1019,
+    "gripper_cache_is_not_calibrated_opening": true,
+    "original_mode_purple_bbox_colour_only": [
+      189,
+      330,
+      117,
+      150
+    ],
+    "purple_clipped": true,
+    "no_new_depth_or_grasp_target": true,
+    "sift_camera_modes": {
+      "algorithm": "OpenCV SIFT/BF ratio0.7, homography RANSAC3px",
+      "low_to_native_matches": 65,
+      "low_to_native_inliers": 51,
+      "low_to_native_error_median_px": 0.6423433,
+      "low_to_native_H": [
+        [
+          2.3105757954542168,
+          -0.009205986475316822,
+          76.77000281743159
+        ],
+        [
+          0.0037476929975769446,
+          2.2997820256329873,
+          114.27585919206577
+        ],
+        [
+          0.000005415818721563833,
+          -0.000009806095787412015,
+          1
+        ]
+      ],
+      "low_to_native_jaw_inliers": 15,
+      "low_to_native_background_inliers": 25,
+      "old_yuyv_to_low_matches": 80,
+      "old_yuyv_to_low_inliers": 79,
+      "old_yuyv_to_low_error_median_px": 0.39041758,
+      "conclusion": "Native-resolution mode cannot assume naive 1632/640 calibration scaling; correspondence homography is empirical, not calibrated intrinsic or physical motion."
+    },
+    "precision_vertex_correspondences_still_unverified": true
+  },
+  "archived_depth_plane": {
+    "file": "/home/johnwick/brain_robot_logs/jaw_correspondence_20261011/evidence/0006_depth.png",
+    "sha256": "d6d1455a44f3b082037f6ddd64828d70777d1b1a369e57c1ac6e14b492e8af2d",
+    "observer": "/home/johnwick/brain_robot_logs/jaw_correspondence_20261011/observer.jsonl",
+    "observer_sha256": "7645ba372c267c48cfd8887ec16f0b4feaa52d5c4599be577142e4c6799174fe",
+    "depth_stamp": 1791703707.3776822,
+    "depth_K": [
+      [
+        478.7568664550781,
+        0,
+        326.13555908203125
+      ],
+      [
+        0,
+        478.7568664550781,
+        199.8734893798828
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ],
+    "protocol": "nonzero depth; 50<u<550,30<v<300; stride5; RNG231; 500 random3-point RANSAC trials; 2mm threshold; SVD plane refit",
+    "sample_count": 9186,
+    "inliers": 5225,
+    "normal_depth_optical": [
+      -0.10515053232538964,
+      -0.15036234054477904,
+      0.983023159491974
+    ],
+    "normal_dot_point_m": 0.17267339359682835,
+    "residual_p50_p95_m": [
+      0.0007179501850493467,
+      0.0018252832265481702
+    ],
+    "configured_model_normal_base": [
+      0.3723977571566506,
+      0.014971100741531344,
+      -0.9279524646269779
+    ],
+    "angle_to_base_z_deg": 21.882141595636853,
+    "subregion_angle_deltas_deg": {
+      "upper": 1.8769143169781308,
+      "lower": 1.4444257749427225,
+      "left": 1.4740632359603993,
+      "right": 0.9472423178000713
+    },
+    "hypothesis": "If this is a tabletop parallel to base XY, current complete model/rotation interpretation is inconsistent by about22deg.",
+    "table_parallel_to_base_xy_and_absolute_height_verified": false,
+    "not_full_extrinsic_solution": true
+  },
+  "archived_markerless_analysis": {
+    "observer_sha256": "d42ce858e87eedbf4a758efe81452f086d7a48a9f287553d524e1a7aa9f7d680",
+    "actual_detector_config_sha256": "2df167ca878179e3f75c82f2ac286f756cd712082627209566429b5a7742a48c",
+    "source": "/home/johnwick/brain_robot_logs/real_full_20261011_target_directed",
+    "frames": [
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      47,
+      48,
+      49
+    ],
+    "pair_records": [
+      {
+        "a": 38,
+        "b": 39,
+        "pnp_inliers": 28,
+        "depth_matches": 26,
+        "depth_fit_inliers": 25,
+        "A_tool_j_from_i": [
+          [
+            0.9933918830686461,
+            -0.027623577595623276,
+            -0.11139795605911018,
+            -0.010023304479860884
+          ],
+          [
+            0.020907207437656745,
+            0.9979178264171664,
+            -0.061015575027992965,
+            -0.013832017756864701
+          ],
+          [
+            0.11285147464914963,
+            0.05828335679811538,
+            0.9919010005992812,
+            -0.0009685213752546606
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9981540840422282,
+            -0.04075323897513976,
+            0.04502885766767412,
+            0.017229092517084113
+          ],
+          [
+            0.045658527911802624,
+            0.9924418794443053,
+            -0.11390528852508203,
+            -0.007513225920834503
+          ],
+          [
+            -0.04004651468914174,
+            0.11575098028997505,
+            0.9924706480411208,
+            -0.013318435927528027
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9979677934777302,
+            -0.03881434371315912,
+            0.05053444274262314,
+            0.013462007646340032
+          ],
+          [
+            0.04436532459573676,
+            0.9925110658287752,
+            -0.1138134534268343,
+            -0.00779581653746704
+          ],
+          [
+            -0.04573839912705336,
+            0.11582413793999924,
+            0.9922160893251781,
+            -0.01153954109104216
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 40,
+        "b": 44,
+        "pnp_inliers": 17,
+        "depth_matches": 16,
+        "depth_fit_inliers": 15,
+        "A_tool_j_from_i": [
+          [
+            0.9902394576778653,
+            0.0385188345337936,
+            -0.13394818342928783,
+            0.028817074769582285
+          ],
+          [
+            -0.031860007060875446,
+            0.9981643677684474,
+            0.051505678012195744,
+            0.013146614693445679
+          ],
+          [
+            0.13568624251532974,
+            -0.046735364592278825,
+            0.9896489525526201,
+            -0.029116407943410055
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9976790461975084,
+            0.051928915547686826,
+            -0.04404439247476608,
+            -0.016048470444683004
+          ],
+          [
+            -0.05791713624013738,
+            0.9873096884877365,
+            -0.14786880789399098,
+            0.03832869973969297
+          ],
+          [
+            0.03580678857662869,
+            0.1500765363016146,
+            0.988025762388582,
+            -0.025533906935576507
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9975638500573314,
+            0.05521057734029053,
+            -0.04263985469658231,
+            -0.01682260984606672
+          ],
+          [
+            -0.060889514485212556,
+            0.9874075056099175,
+            -0.1460098794292889,
+            0.03788225993260775
+          ],
+          [
+            0.03404162282484463,
+            0.14825049752008268,
+            0.9883637781204341,
+            -0.025797209187006398
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 41,
+        "b": 42,
+        "pnp_inliers": 68,
+        "depth_matches": 66,
+        "depth_fit_inliers": 66,
+        "A_tool_j_from_i": [
+          [
+            1,
+            -3.1114061251492214e-17,
+            5.551115123125783e-17,
+            -5.551115123125783e-17
+          ],
+          [
+            -2.901934877293233e-18,
+            0.9999999999999999,
+            -9.180990115289361e-18,
+            8.669382215147764e-19
+          ],
+          [
+            -5.551115123125783e-17,
+            1.1358711822680168e-17,
+            1.0000000000000002,
+            -1.3877787807814457e-17
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9999992980418989,
+            0.0005027895910017144,
+            -0.0010729018298630628,
+            0.0005040026967761472
+          ],
+          [
+            -0.0005018029819636336,
+            0.9999994512262173,
+            0.0009196417952614202,
+            0.00015719946746804912
+          ],
+          [
+            0.0010733636274047975,
+            -0.0009191027643738058,
+            0.9999990015698175,
+            0.00024403623179261027
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9999999406817892,
+            0.0003426591449922501,
+            0.000034944639231176966,
+            0.00009668981687312693
+          ],
+          [
+            -0.00034270200859995003,
+            0.9999991798060514,
+            0.0012340755879124594,
+            0.0000920615497668302
+          ],
+          [
+            -0.00003452174328413826,
+            -0.0012340874903078985,
+            0.9999992379178664,
+            0.00006459175666401196
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 41,
+        "b": 43,
+        "pnp_inliers": 51,
+        "depth_matches": 47,
+        "depth_fit_inliers": 47,
+        "A_tool_j_from_i": [
+          [
+            0.9984967187631288,
+            0.0062858388890042385,
+            0.05444989300933195,
+            -0.005015914502808583
+          ],
+          [
+            -0.006584759798600841,
+            0.9999642102493775,
+            0.005312170811772614,
+            0.0015690934572180858
+          ],
+          [
+            -0.0544145528113657,
+            -0.005662724591590297,
+            0.9985023735537837,
+            -0.004055056678750224
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.999945275533537,
+            0.0030010429792399337,
+            0.01002195984803158,
+            -0.0027900282453777727
+          ],
+          [
+            -0.0035225785101133033,
+            0.9986181882930318,
+            0.05243381972527596,
+            -0.003510077223036735
+          ],
+          [
+            -0.009850755240025526,
+            -0.05246625345285677,
+            0.9985741108549838,
+            -0.0032794615785785605
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9999940939440832,
+            0.0032043529528586294,
+            -0.0012426580806363663,
+            0.0013208549780696602
+          ],
+          [
+            -0.0031293947679674906,
+            0.9984122847577802,
+            0.0562415907770782,
+            -0.004712311205646046
+          ],
+          [
+            0.0014209030009411372,
+            -0.05623736984340248,
+            0.998416415764364,
+            -0.003041795257778923
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 42,
+        "b": 43,
+        "pnp_inliers": 53,
+        "depth_matches": 51,
+        "depth_fit_inliers": 51,
+        "A_tool_j_from_i": [
+          [
+            0.9984967187631288,
+            0.0062858388890042385,
+            0.05444989300933195,
+            -0.005015914502808583
+          ],
+          [
+            -0.006584759798600841,
+            0.9999642102493775,
+            0.005312170811772614,
+            0.0015690934572180858
+          ],
+          [
+            -0.0544145528113657,
+            -0.005662724591590297,
+            0.9985023735537837,
+            -0.004055056678750224
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.99992849830837,
+            0.003088149463801404,
+            0.01155255831654772,
+            -0.003365542801593068
+          ],
+          [
+            -0.003660403491409251,
+            0.998750194627247,
+            0.0498462654400147,
+            -0.003295123862864455
+          ],
+          [
+            -0.01138418714920357,
+            -0.049884988372510895,
+            0.9986900861718947,
+            -0.0031678639237503665
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9999941525717484,
+            0.0033479166848767554,
+            -0.0006973350572920534,
+            0.001140782835500417
+          ],
+          [
+            -0.003306909378675743,
+            0.998628595211245,
+            0.052249336615665894,
+            -0.004069419912863254
+          ],
+          [
+            0.0008713051544845668,
+            -0.052246725067577875,
+            0.9986338270592693,
+            -0.0033232795010259553
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 42,
+        "b": 44,
+        "pnp_inliers": 11,
+        "depth_matches": 9,
+        "depth_fit_inliers": 9,
+        "A_tool_j_from_i": [
+          [
+            0.9905444514105937,
+            -0.01204507981152665,
+            0.1366623789929795,
+            0.05331710044244814
+          ],
+          [
+            0.01288858589035333,
+            0.9999029507429995,
+            -0.005288993211329622,
+            -0.00149165020355892
+          ],
+          [
+            -0.13658540966528515,
+            0.00700036768866185,
+            0.9906035638532655,
+            -0.028865040521013297
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9994101844458435,
+            -0.0256102860602869,
+            0.022877859905055795,
+            0.0002914937176113977
+          ],
+          [
+            0.02178532095158067,
+            0.9878134540310904,
+            0.1541102846217711,
+            0.0585638578849404
+          ],
+          [
+            -0.026545866287648358,
+            -0.15352098645812876,
+            0.987788754592783,
+            0.005205861630135479
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9995369611044929,
+            -0.02962102306500991,
+            0.006961205253201402,
+            0.005658231082903156
+          ],
+          [
+            0.02805195549536839,
+            0.9856744180658858,
+            0.16631003987542076,
+            0.0547942788589452
+          ],
+          [
+            -0.011787755464078481,
+            -0.16603775643828805,
+            0.9860489400927624,
+            0.006904156146848861
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 43,
+        "b": 44,
+        "pnp_inliers": 8,
+        "depth_matches": 8,
+        "depth_fit_inliers": 8,
+        "A_tool_j_from_i": [
+          [
+            0.9964209230059683,
+            -0.01784117210274559,
+            0.08262588440636587,
+            0.058678109711870874
+          ],
+          [
+            0.018866454459541014,
+            0.9997542001881532,
+            -0.011644573941192914,
+            -0.0030129448626916946
+          ],
+          [
+            -0.08239782213177715,
+            0.013161754599826736,
+            0.9965126025915547,
+            -0.025258077890474406
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9987456486520478,
+            -0.03457415599707579,
+            -0.03621818653232152,
+            0.019661816494957473
+          ],
+          [
+            0.03800578501138566,
+            0.9943816926062107,
+            0.09879579806487689,
+            0.06495211870521253
+          ],
+          [
+            0.03259892029298672,
+            -0.10004837403325186,
+            0.9944484065294862,
+            0.011817231468178771
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9994623735169217,
+            -0.028166796482450435,
+            0.01678080748464278,
+            0.0011461303795640594
+          ],
+          [
+            0.026508227524996125,
+            0.9954080554734575,
+            0.09197889416617072,
+            0.06717300003810915
+          ],
+          [
+            -0.019294501740222902,
+            -0.09148461441392763,
+            0.9956195495911726,
+            0.009633166199500831
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 44,
+        "b": 45,
+        "pnp_inliers": 17,
+        "depth_matches": 16,
+        "depth_fit_inliers": 16,
+        "A_tool_j_from_i": [
+          [
+            0.9997812884352999,
+            -0.000001270991677168598,
+            -0.020913519384288426,
+            0.04155137701174305
+          ],
+          [
+            -0.0000011173500947384875,
+            0.9999999934797926,
+            -0.00011418916837133575,
+            0.00022673084583911323
+          ],
+          [
+            0.020913519393061575,
+            0.00011418756160246285,
+            0.9997812819150984,
+            -0.038321181160637756
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9999969868723578,
+            -0.0011144014149846893,
+            -0.002187317007606268,
+            0.001871032782317049
+          ],
+          [
+            0.0011563739497458855,
+            0.9998134061407534,
+            0.019282523188453218,
+            0.0387731087895898
+          ],
+          [
+            0.0021654203965587415,
+            -0.01928499444415702,
+            0.9998116822401082,
+            -0.021433624933030988
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9999997151190829,
+            0.00039581606303948705,
+            -0.0006427218663698289,
+            0.0012535458738290248
+          ],
+          [
+            -0.00040622171092487627,
+            0.9998675299608877,
+            -0.01627137098817588,
+            0.05587794142467338
+          ],
+          [
+            0.000636196254974325,
+            0.0162716274403491,
+            0.9998674059067874,
+            -0.020505479704232554
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "a": 48,
+        "b": 49,
+        "pnp_inliers": 20,
+        "depth_matches": 17,
+        "depth_fit_inliers": 17,
+        "A_tool_j_from_i": [
+          [
+            0.9999691116762695,
+            0.007859721759286287,
+            -0.000021615728500679054,
+            -0.0000019671302625146048
+          ],
+          [
+            -0.007859721724235406,
+            0.9999539760162189,
+            -0.005501874568977837,
+            -0.0005013642923373174
+          ],
+          [
+            -0.000021628469608181433,
+            0.005501874518905855,
+            0.9999848643399496,
+            -0.0000013774149058903493
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_pnp": [
+          [
+            0.9999675774360876,
+            0.005583498351127332,
+            0.005802466955117888,
+            -0.0009437258007922869
+          ],
+          [
+            -0.005603828923912472,
+            0.9999781962192675,
+            0.0034934492198322267,
+            -0.001031417741235031
+          ],
+          [
+            -0.005782834771442002,
+            -0.0035258519854047704,
+            0.9999770633318462,
+            -0.00007730970033553201
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "B_camera_j_from_i_rgbd": [
+          [
+            0.9999893067935649,
+            0.004097281049156805,
+            0.0021444315164723116,
+            -0.00014208063014090576
+          ],
+          [
+            -0.004083661038994574,
+            0.9999717051701529,
+            -0.006317639718766199,
+            0.000993015222252108
+          ],
+          [
+            -0.002170255985642633,
+            0.006308815031505766,
+            0.9999777441732665,
+            -0.00026480985823534864
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      }
+    ],
+    "experimental_fits": {
+      "B_camera_j_from_i_pnp": {
+        "candidate_tool_from_colour_optical": [
+          [
+            0.05253741158004108,
+            0.8847083881043563,
+            0.46317479249443305,
+            -0.06436202924258752
+          ],
+          [
+            -0.9985795788613412,
+            0.0424238353768425,
+            0.03223418795354832,
+            -0.0042905725460352165
+          ],
+          [
+            0.008868205318749614,
+            -0.4642103900277438,
+            0.8856805681083412,
+            0.03783974161055497
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "fit_constraints": {
+          "pairs": [
+            [
+              38,
+              39
+            ],
+            [
+              40,
+              44
+            ],
+            [
+              41,
+              43
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              43,
+              44
+            ],
+            [
+              44,
+              45
+            ]
+          ],
+          "rotation_axes_sv_rad": [
+            0.25162084941984514,
+            0.09050539302874287,
+            0.010207125459804463
+          ],
+          "translation_lhs_sv": [
+            0.26721622360096636,
+            0.2516537264554501,
+            0.09101205484365124
+          ]
+        },
+        "internal_equation_residuals": [
+          {
+            "pair": [
+              38,
+              39
+            ],
+            "equation_translation_error_m": 0.00195182732694131,
+            "equation_rotation_error_deg": 0.3586099446525809
+          },
+          {
+            "pair": [
+              40,
+              44
+            ],
+            "equation_translation_error_m": 0.0039028014615853134,
+            "equation_rotation_error_deg": 1.0954432810144994
+          },
+          {
+            "pair": [
+              41,
+              42
+            ],
+            "equation_translation_error_m": 0.0005816219333531399,
+            "equation_rotation_error_deg": 0.0859276724764699
+          },
+          {
+            "pair": [
+              41,
+              43
+            ],
+            "equation_translation_error_m": 0.002044137508715772,
+            "equation_rotation_error_deg": 0.589045587061567
+          },
+          {
+            "pair": [
+              42,
+              43
+            ],
+            "equation_translation_error_m": 0.0020433987461577928,
+            "equation_rotation_error_deg": 0.7128386082705883
+          },
+          {
+            "pair": [
+              42,
+              44
+            ],
+            "equation_translation_error_m": 0.007239423402299,
+            "equation_rotation_error_deg": 1.5467689266844384
+          },
+          {
+            "pair": [
+              43,
+              44
+            ],
+            "equation_translation_error_m": 0.011992433843421637,
+            "equation_rotation_error_deg": 2.6211420683753865
+          },
+          {
+            "pair": [
+              44,
+              45
+            ],
+            "equation_translation_error_m": 0.01656327433926889,
+            "equation_rotation_error_deg": 2.3055085129478576
+          },
+          {
+            "pair": [
+              48,
+              49
+            ],
+            "equation_translation_error_m": 0.0015227738236270152,
+            "equation_rotation_error_deg": 0.2730881626836536
+          }
+        ],
+        "leave_one_pair_out": [
+          {
+            "left_out_pair": [
+              38,
+              39
+            ],
+            "candidate_translation_change_m": 0.07849732835905997,
+            "candidate_rotation_change_deg": 17.542575929471518,
+            "holdout_translation_error_m": 0.0076513366976802034,
+            "holdout_rotation_error_deg": 1.9362199756049479
+          },
+          {
+            "left_out_pair": [
+              40,
+              44
+            ],
+            "candidate_translation_change_m": 0.058658092138385604,
+            "candidate_rotation_change_deg": 7.697927002262193,
+            "holdout_translation_error_m": 0.016166652540393584,
+            "holdout_rotation_error_deg": 1.6033890082233384
+          },
+          {
+            "left_out_pair": [
+              41,
+              43
+            ],
+            "candidate_translation_change_m": 0.004702946816478587,
+            "candidate_rotation_change_deg": 1.0154797861917433,
+            "holdout_translation_error_m": 0.0021526871842405034,
+            "holdout_rotation_error_deg": 0.6230754508125071
+          },
+          {
+            "left_out_pair": [
+              42,
+              43
+            ],
+            "candidate_translation_change_m": 0.005044115051350804,
+            "candidate_rotation_change_deg": 1.185501405581006,
+            "holdout_translation_error_m": 0.0021462025675256058,
+            "holdout_rotation_error_deg": 0.750227442358413
+          },
+          {
+            "left_out_pair": [
+              42,
+              44
+            ],
+            "candidate_translation_change_m": 0.01803030930803086,
+            "candidate_rotation_change_deg": 2.942290627577622,
+            "holdout_translation_error_m": 0.00767824463520946,
+            "holdout_rotation_error_deg": 1.8574365409955969
+          },
+          {
+            "left_out_pair": [
+              43,
+              44
+            ],
+            "candidate_translation_change_m": 0.02139251203456493,
+            "candidate_rotation_change_deg": 5.83924174771787,
+            "holdout_translation_error_m": 0.011389005519675748,
+            "holdout_rotation_error_deg": 2.953736229576092
+          },
+          {
+            "left_out_pair": [
+              44,
+              45
+            ],
+            "candidate_translation_change_m": 0.006084021158604524,
+            "candidate_rotation_change_deg": 0.06595340603584249,
+            "holdout_translation_error_m": 0.01665869406194142,
+            "holdout_rotation_error_deg": 2.305591207823704
+          }
+        ],
+        "camera_calibrated": false,
+        "deployed": false
+      },
+      "B_camera_j_from_i_rgbd": {
+        "candidate_tool_from_colour_optical": [
+          [
+            0.04168089842167322,
+            0.9453573443927169,
+            0.3233607801040662,
+            -0.08616588985173107
+          ],
+          [
+            -0.9986981045754127,
+            0.02989476173003005,
+            0.041332785274916704,
+            -0.00604095433599304
+          ],
+          [
+            0.029407458649801856,
+            -0.32466258580848556,
+            0.9453726285184619,
+            0.010695784638668555
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "fit_constraints": {
+          "pairs": [
+            [
+              38,
+              39
+            ],
+            [
+              40,
+              44
+            ],
+            [
+              41,
+              43
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              43,
+              44
+            ],
+            [
+              44,
+              45
+            ]
+          ],
+          "rotation_axes_sv_rad": [
+            0.25162084941984514,
+            0.09050539302874287,
+            0.010207125459804463
+          ],
+          "translation_lhs_sv": [
+            0.26721622360096636,
+            0.2516537264554501,
+            0.09101205484365124
+          ]
+        },
+        "internal_equation_residuals": [
+          {
+            "pair": [
+              38,
+              39
+            ],
+            "equation_translation_error_m": 0.003796018152737411,
+            "equation_rotation_error_deg": 0.2871316841424771
+          },
+          {
+            "pair": [
+              40,
+              44
+            ],
+            "equation_translation_error_m": 0.003688126088313971,
+            "equation_rotation_error_deg": 0.9234253452583028
+          },
+          {
+            "pair": [
+              41,
+              42
+            ],
+            "equation_translation_error_m": 0.00014831164708608462,
+            "equation_rotation_error_deg": 0.07341005994010143
+          },
+          {
+            "pair": [
+              41,
+              43
+            ],
+            "equation_translation_error_m": 0.0043821950482400415,
+            "equation_rotation_error_deg": 0.16329043351240063
+          },
+          {
+            "pair": [
+              42,
+              43
+            ],
+            "equation_translation_error_m": 0.004374034793143939,
+            "equation_rotation_error_deg": 0.1993579533125917
+          },
+          {
+            "pair": [
+              42,
+              44
+            ],
+            "equation_translation_error_m": 0.006389697006444001,
+            "equation_rotation_error_deg": 1.853484653777038
+          },
+          {
+            "pair": [
+              43,
+              44
+            ],
+            "equation_translation_error_m": 0.010603698424589364,
+            "equation_rotation_error_deg": 0.8340133574129543
+          },
+          {
+            "pair": [
+              44,
+              45
+            ],
+            "equation_translation_error_m": 0.005602259248820734,
+            "equation_rotation_error_deg": 0.26594429347987036
+          },
+          {
+            "pair": [
+              48,
+              49
+            ],
+            "equation_translation_error_m": 0.0010475916747129358,
+            "equation_rotation_error_deg": 0.491639595436185
+          }
+        ],
+        "leave_one_pair_out": [
+          {
+            "left_out_pair": [
+              38,
+              39
+            ],
+            "candidate_translation_change_m": 0.1133639162767629,
+            "candidate_rotation_change_deg": 1.4907239950373357,
+            "holdout_translation_error_m": 0.013421502668652236,
+            "holdout_rotation_error_deg": 0.3861438331708625
+          },
+          {
+            "left_out_pair": [
+              40,
+              44
+            ],
+            "candidate_translation_change_m": 0.07453244005801873,
+            "candidate_rotation_change_deg": 1.7332848835808166,
+            "holdout_translation_error_m": 0.011598640630542206,
+            "holdout_rotation_error_deg": 0.9978757232054669
+          },
+          {
+            "left_out_pair": [
+              41,
+              43
+            ],
+            "candidate_translation_change_m": 0.002295209465061842,
+            "candidate_rotation_change_deg": 0.12376996251260215,
+            "holdout_translation_error_m": 0.004455575454109242,
+            "holdout_rotation_error_deg": 0.16904612824901522
+          },
+          {
+            "left_out_pair": [
+              42,
+              43
+            ],
+            "candidate_translation_change_m": 0.003032092181380776,
+            "candidate_rotation_change_deg": 0.08904305546642825,
+            "holdout_translation_error_m": 0.00447104448638729,
+            "holdout_rotation_error_deg": 0.20235405452918076
+          },
+          {
+            "left_out_pair": [
+              42,
+              44
+            ],
+            "candidate_translation_change_m": 0.02006405693421602,
+            "candidate_rotation_change_deg": 0.7924294306007387,
+            "holdout_translation_error_m": 0.009094642242526343,
+            "holdout_rotation_error_deg": 1.8758298081704146
+          },
+          {
+            "left_out_pair": [
+              43,
+              44
+            ],
+            "candidate_translation_change_m": 0.011385175262816353,
+            "candidate_rotation_change_deg": 1.145696172916219,
+            "holdout_translation_error_m": 0.010065930661012431,
+            "holdout_rotation_error_deg": 0.877732813294197
+          },
+          {
+            "left_out_pair": [
+              44,
+              45
+            ],
+            "candidate_translation_change_m": 0.0018080488992835474,
+            "candidate_rotation_change_deg": 0.006884291541403996,
+            "holdout_translation_error_m": 0.005640846618256203,
+            "holdout_rotation_error_deg": 0.2659535614018325
+          }
+        ],
+        "camera_calibrated": false,
+        "deployed": false
+      }
+    },
+    "summary": {
+      "B_camera_j_from_i_pnp": {
+        "candidate_translation_m": [
+          -0.06436202924258752,
+          -0.0042905725460352165,
+          0.03783974161055497
+        ],
+        "max_training_error_m": 0.01656327433926889,
+        "max_loo_translation_change_m": 0.07849732835905997,
+        "max_loo_holdout_error_m": 0.01665869406194142
+      },
+      "B_camera_j_from_i_rgbd": {
+        "candidate_translation_m": [
+          -0.08616588985173107,
+          -0.00604095433599304,
+          0.010695784638668555
+        ],
+        "max_training_error_m": 0.010603698424589364,
+        "max_loo_translation_change_m": 0.1133639162767629,
+        "max_loo_holdout_error_m": 0.013421502668652236
+      }
+    },
+    "production_modified": false,
+    "motion_sent": false
+  },
+  "analysis_protocol": {
+    "source_frame_selection": "RGB,depth,joint_feedback joint fallback maximum timestamp span<=0.120s; sensor K from same observer row, factory D2C from actual YAML; actual archived URDF FK, joint7/8 retained model placeholder.",
+    "other_archives_accepted_frame_counts": {
+      "real_full_20261011_tfwait_pitchdown5_1253": 0,
+      "real_full_20261011_pitchdown5": 0
+    },
+    "full_selected_rotation_singular_values_rad": [
+      1.8607966066541208,
+      0.16394196316240925,
+      0.02102311353999503
+    ],
+    "depth_registration": "actual endpoint scale (w-1)/639,(h-1)/479; nearest colour-Z z-buffer; no missing-depth filling",
+    "static_texture_features": "SIFT nfeatures3000 contrastThreshold.015; remove lower left x<.27w/right x>.70w from .58h; remove dilated purple; BF ratio.65; keypoint depth3x3 at least5 actual nonzero values and range<=.010m",
+    "pnp": "OpenCV solvePnPRansac iterative,1500 iterations,1.5px,.999 confidence; refineLM; reject<8 matches/inliers/depth checks, median3D error>5mm or p95>15mm; deterministic seed231",
+    "graph_connected_poses": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "other_components": [
+      [
+        38,
+        39
+      ],
+      [
+        48,
+        49
+      ],
+      [
+        47
+      ]
+    ],
+    "opencv_Park_graph_trial_max_fixed_world_position_drift_m": 0.042523666355865124,
+    "rgbd_cross_check": "same accepted feature pairs; 3D rigid SVD/RANSAC 200trials threshold6mm; seed231",
+    "pair_equation": "A=inv(base_from_tool_j)*base_from_tool_i; B=camera_j_from_camera_i; A*X=X*B, X=tool_from_colour_optical. Pair Park-style rotation Procrustes then translation least squares. Not a new production controller.",
+    "leave_one_pair_out_note": "Diagnostic sensitivity, not independent hardware calibration holdout. Exclude each moving pair and refit; stationary rotations<=1deg excluded from fit.",
+    "candidate_methods_translation_difference_m": 0.03486067374514151,
+    "candidate_methods_rotation_difference_deg": 8.795880527737456,
+    "rejection": "PnP fit leave-one-pair-out translation change up to78.5mm; RGBD up to113.4mm; directions/timestamp accuracy, registration and feature quality not independently certified. Both fits rejected, neither deployed.",
+    "do_not_repeat_as_accepted_calibration": true
+  },
+  "proposed_sampling_fk_only": {
+    "evidence": "PROSPECTIVE_MODEL_FK_ONLY_NOT_PLANNED_OR_AUTHORIZED_MOTION",
+    "poses": [
+      {
+        "joint4_delta_deg": 0,
+        "joint5_delta_deg": 0,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          0.5497071678044144,
+          47.952455448945805,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0,
+        "model_tip_displacement_m": 0,
+        "model_tip_height_base_m": 0.051966889922274856,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": -6,
+        "joint5_delta_deg": 0,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          -5.450292832195586,
+          47.952455448945805,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.007079457507146334,
+        "model_tip_displacement_m": 0.017634953072526802,
+        "model_tip_height_base_m": 0.05262111970134323,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": 6,
+        "joint5_delta_deg": 0,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          6.5497071678044145,
+          47.952455448945805,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.007079457507146302,
+        "model_tip_displacement_m": 0.017634953072526775,
+        "model_tip_height_base_m": 0.05291412403930382,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": 0,
+        "joint5_delta_deg": -6,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          0.5497071678044144,
+          41.952455448945805,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.009525148516201948,
+        "model_tip_displacement_m": 0.023739591549229073,
+        "model_tip_height_base_m": 0.05819416123594007,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": 0,
+        "joint5_delta_deg": 6,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          0.5497071678044144,
+          53.95245544894581,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.009525148516201964,
+        "model_tip_displacement_m": 0.023739591549229094,
+        "model_tip_height_base_m": 0.04816821055783849,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": -6,
+        "joint5_delta_deg": -6,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          -5.450292832195586,
+          41.952455448945805,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.011655737429279531,
+        "model_tip_displacement_m": 0.029044069069451006,
+        "model_tip_height_base_m": 0.05878317166255323,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": -6,
+        "joint5_delta_deg": 6,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          -5.450292832195586,
+          53.95245544894581,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.012053589486668851,
+        "model_tip_displacement_m": 0.030035887022889212,
+        "model_tip_height_base_m": 0.04888049230686947,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": 6,
+        "joint5_delta_deg": -6,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          6.5497071678044145,
+          41.952455448945805,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.011655794457087846,
+        "model_tip_displacement_m": 0.029044150930077724,
+        "model_tip_height_base_m": 0.059046981749159344,
+        "model_urdf_limits_pass": true
+      },
+      {
+        "joint4_delta_deg": 6,
+        "joint5_delta_deg": 6,
+        "joint_angles_deg": [
+          -15.052981189640521,
+          108.19036636453137,
+          -73.37791116126672,
+          6.5497071678044145,
+          53.95245544894581,
+          0
+        ],
+        "model_tool_origin_displacement_m": 0.012053534340912669,
+        "model_tip_displacement_m": 0.030035801456404068,
+        "model_tip_height_base_m": 0.04919947968809435,
+        "model_urdf_limits_pass": true
+      }
+    ],
+    "collision_checked": false,
+    "trajectory_planned": false,
+    "motion_sent": false,
+    "baseline_tip_height_base_m": 0.051966889922274856
+  },
+  "proposed_sampling_limits": {
+    "not_authorized_not_executed": true,
+    "not_collisions_planned": true,
+    "minimal_proposal": "Current centre plus J4 -6/+6deg and J5 -6/+6deg separately, returning centre between excursions; no combined corner poses in minimal proposal.",
+    "joint4_range_deg": [
+      -5.450292832195586,
+      6.5497071678044145
+    ],
+    "joint5_range_deg": [
+      41.952455448945805,
+      53.95245544894581
+    ],
+    "model_tip_max_displacement_from_centre_m": 0.023739591549229094,
+    "model_tip_total_swept_path_approx_m": 0.1654981784870235,
+    "path_budget_note": "This exceeds old <=5mm/step,4steps/20mm finite-preview authorization. Needs separate user authorization and MoveIt/adapter verified trajectories; model height not a verified tabletop clearance.",
+    "collect_after_stationary_only": true,
+    "keep_original_camera_modes_and_exact_timestamps": true,
+    "no_close_no_approach_no_disable": true
+  },
+  "production_hashes_unchanged": {
+    "entry": "e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb",
+    "executor": "107ce501ee2cbf1862f96bf9096ed8fec7c396809fb8c36749222b35d633ce49",
+    "detector": "90510e5f090ef2342f992a0425a093ab72385323f54e4bfe4401171a94c3c0b8",
+    "cube_task_real": "7561219416c17c9e0685d5fefcf19a9ab88d63fbc5b3aa99a212d241d34b3f74"
+  },
+  "final_runtime": "Only existing PID37594 PGID37573 piper_single_ctrl auto_enable=false gripper_exist=false; no temporary camera/control stack remains.",
+  "references": [
+    "https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html",
+    "https://raw.githubusercontent.com/opencv/opencv/4.5.4/modules/calib3d/src/calibration_handeye.cpp"
+  ],
+  "next_action": "User approval of bounded markerless calibration sampling, then first verify planned trajectories/FOV; do not patch TF/TCP or retry full one-key grasp with these rejected candidates."
+}
