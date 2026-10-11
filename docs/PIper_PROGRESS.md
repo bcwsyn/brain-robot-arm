@@ -1,5 +1,27 @@
 # PiPER 调试进度
 
+## 2026-10-11 15:43：已批准静止夹持对应核对；实物两指可见而当前模型投影不一致
+
+- 起点HEAD=0cf4d97，完成规范Git恢复检查、固定提示词/交接及最新进度决策复核；使用ros2-piper-debug追实际部署/时间戳证据，surgical-change将改动限定现只读review工具及测试/记录。观测/SEARCH已成功，不重跑基础运动，本轮推进末段对应；没有改生产executor/YAML/adapter/唯一一键入口，不重新查固件/CAN限位/重载设备。已有vendor/Astra CRLF及reference资料变动保留、不提交。
+- 主机require_escalated ps确认唯一37594/PGID37573原piper_single_ctrl，auto_enable=false、gripper_exist=false，其余控制栈不在运行。磁盘34%/50G可用，不清理/不把当前几何问题归为磁盘。`timeout 6s ros2 topic echo --once /joint_states --qos-reliability best_effort`返回0，stamp1791703653.125410106；六轴[-.262724084,1.888278112,-1.280686148,.0095942,.836928232,0]rad、速度0，J5=47.952455°；gripper .1019m仍不当开口证据。本轮未重新读取六轴硬件enable，不能把历史true伪称新读到。
+
+### 已执行最小动作与证据
+
+- 仅复用原入口的相机启动参数，不启动一键/MoveIt/搜索/executor：source /opt/ros/humble、实际ros2_ws overlay，FASTRTPS_DEFAULT_PROFILES_FILE保持原/home/johnwick/fastdds_udp_only.xml；`timeout -s INT 28s ros2 launch astra_camera astra.launch.py`及`timeout -s INT 25s ros2 run image_tools cam2image --ros-args -p burger_mode:=false -p device_id:=0 -p frequency:=5.0 -p width:=320 -p height:=240 -p frame_id:=camera_color_optical_frame -r image:=/camera/color/image_raw`，均按时限124退出。Astra退出时仍有旧参数undeclare清理警告，容器41529最终cleanly退出，不是运动/CAN故障。
+- `PYTHONNOUSERSITE=1 timeout -s INT 18s /usr/bin/python3 /tmp/piper_onekey_observer_20261011.py /home/johnwick/brain_robot_logs/jaw_correspondence_20261011`预期124；第6快照已有2988个/joint_states、2990个feedback、247depth、61RGB，六轴静止不变。RGB1791703707.291524、depth1791703707.3776822、joint1791703707.4004095，86/109ms偏差如实保留，不是硬同步。原图已实际查看：两指清楚、紫块bbox[95,168,59,72]仍触下沿；精确工厂端点resize配准统计21个紫色像素支持/.177m中值，只是未过erode/形状/稳定门的候选，不能当新合法深度/抓取点。
+- `review_jaw_scene.py --observer <本轮>/observer.jsonl --task /home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_task_real.yaml --detector /home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_detector.yaml --mesh-share /home/johnwick/piper_ros/install/piper_description/share/piper_description --model-directory /home/johnwick/brain_robot_logs/jaw_geometry_20261011_step1/review --output <本轮>/review --overlay-jaw-hypotheses --operator-anchored-pitch-hypotheses`返回0。仅加载前轮实际MoveIt捕获URDF/scene；本轮没有启动MoveIt，模型来源时间与新反馈分开。模型轮廓用全部STL三角形和实际URDF可动轴/限位，RGB映射按检测器同端点缩放，投影后不填深度空洞；图像是离线几何证据而非碰撞/接触验收。
+- 固定安装旋转下，模型开口0/20/40/70mm及两镜头基准共8组，全部两指轮廓v最小约243以上，原320x240帧内投影面积0；用户明确原RGB两块黑色结构就是实体两指，实图其上缘约v155/158。因此“预测模型在画面外”不是“实物不在画面内”，不能继续说实物两指不可见。仅修改开口/横向镜头基准没有解释差异；安装旋转、真实CAD/接触面对应仍待独立区分。
+- 保持已给光学70/105mm，不把倾角试验变成J5实体动作。新增operator_anchored_camera以候选旋转联动相机平移保持同一指尖光学XYZ约束；再以彩色基准/未测X=0/仅俯仰变化比较16..44°×模型开口20..70mm，共165组。命令加`--compare-pitch-opening --holdout-rgb /home/johnwick/brain_robot_logs/j5_positive_probe_20261011/evidence/0002_rgb.png`返回0。最好候选安装26°、模型开口45mm，左右IoU.6511/.5879，平均.6195；第二26°/50mm为.6157，第三28°/50mm为.6135，不能宣称唯一解或已标定。前轮J5≈34.99°旧图固定指爪对照IoU右.6543/左.5817；左暗区出现桌面背景与ROI边界污染，不能当独立标定验证。不把45mm当真实开口/26°当J5目标，也没有回填TF。
+- 另尝试对原real_full_20261011_target_directed中有效target_point和关节做≤.12s同采样筛选，以评估候选对base落点影响；接受对数为0。未增大阈值或用远时刻关节生成新目标，敏感度试算未成立，记录避免下轮重复同一筛选。没有产生末段运动Pose。
+
+### 修改范围、验证与恢复
+
+- 仅test/review_jaw_scene.py及test/test_jaw_scene_review.py：支持归档实际模型+新/joint_states采样、完整指爪网格叠图、固定测量锚点的安装倾角假设、受限外观对照及来源/时间差记录；没有运动publisher、使能服务、执行client、CAN写或默认运行参数。诊断ROIs只取已确认两指所在暗区，不是抓取ROI，存在背景污染明确留档。JSON精选证据docs/evidence/piper_jaw_correspondence_20261011.json，完整图片仍在/home/johnwick/brain_robot_logs/jaw_correspondence_20261011/review，不提交大图/资料/构建。
+- 首pytest失败是旧pytest.approx不接受嵌套list，测试期望改np.array后通过；首次review误用brain_robot_pick_place包的cube_detector.yaml路径不存在，沿实际launch定位到brain_robot_ball_pick包后返回0。不得重复错误路径。全树git diff --check遇既有vendor CRLF输出大量无关告警，随后只对本轮路径检查；不修改vendor换行。
+- `source /opt/ros/humble/setup.bash; PYTHONNOUSERSITE=1 /usr/bin/python3 -m pytest -q -p no:cacheprovider <test_jaw_scene_review.py> <test_camera_mount_geometry.py> <test_real_grasp_replay.py>`：32 passed/1.00s。覆盖投影端点缩放/镜像、后方网格拒绝、URDF开口限位、倾角保持用户测量、来源不被覆盖、只读无运动、现抓取回放不变。只是软件/模型验证，不是实体夹持成功。
+- 实际SHA全部与上轮一致：入口e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb；executor107ce501ee2cbf1862f96bf9096ed8fec7c396809fb8c36749222b35d633ce49；detector90510e5f090ef2342f992a0425a093ab72385323f54e4bfe4401171a94c3c0b8；actual YAML7561219416c17c9e0685d5fefcf19a9ab88d63fbc5b3aa99a212d241d34b3f74。没有同步默认部署。回退本轮仅git revert本轮commit，不需要机械回退/重建部署。
+- 收尾ps仅37594原反馈驱动，有限相机及采集器全部退出；没有enable/arm/gripper/Reset/Disable/回零/新轨迹，保持上轮实体位置。本轮阻断仅已确认两指外观与当前几何不一致、接触面三维身份未校准；下一步按真实指爪特征核对CAD接触面并消除剩余安装姿态歧义，再先说明唯一具体TF/TCP/末段改动获用户同意。不能擅自部署26°/45mm或重复无效开口扫参。下一代理第一条`cd /mnt/hgfs/ub && git status --short`，然后本条及JSON/对照图。
+
 ## 2026-10-11 15:23：用户询问夹持区对应与末段落点实施计划，仅说明并记录
 
 - 实际状态依据 HEAD ce0a447 首条交接/进度及既有图像证据复核；本轮未启动 ROS、读取新实体反馈或发送运动。历史 J5/使能不得表述成当前实时状态。默认部署尚未同步 ce0a447。

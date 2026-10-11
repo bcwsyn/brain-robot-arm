@@ -79,6 +79,225 @@ def binary_stl(path):
     return np.frombuffer(data, dtype, count, 84)['vertices'].astype(float)
 
 
+def jaw_triangles_tool(root, positions, mesh_share, half_open_m):
+    """Model opening hypothesis, never an interpretation of gripper feedback."""
+    for name, value in (('joint7', half_open_m), ('joint8', -half_open_m)):
+        limit = root.find(f"joint[@name='{name}']/limit")
+        if limit is None or not float(limit.get('lower')) <= value <= float(limit.get('upper')):
+            raise ValueError('Jaw hypothesis outside actual URDF limits')
+    hypothetical = dict(positions, joint7=half_open_m, joint8=-half_open_m)
+    link = poses(root, hypothetical)
+    result = {}
+    for name in ('link7', 'link8'):
+        visual = root.find(f"link[@name='{name}']/visual")
+        mesh = visual.find('geometry/mesh')
+        triangles = binary_stl(mesh_share / mesh.get('filename').split('package://piper_description/')[1])
+        scale = np.fromstring(mesh.get('scale', '1 1 1'), sep=' ')
+        pose = np.linalg.inv(link['gripper_base']) @ link[name] @ transform(visual.find('origin'))
+        result[name] = (triangles * scale) @ pose[:3, :3].T + pose[:3, 3]
+    return result
+
+
+def mesh_projection(triangles_tool, tool_from_depth, depth_to_colour_r, depth_to_colour_t,
+                    detector, width, height):
+    """Exact detector resize mapping; silhouette is model evidence, not contact."""
+    depth_from_tool = np.linalg.inv(tool_from_depth)
+    points = triangles_tool @ depth_from_tool[:3, :3].T + depth_from_tool[:3, 3]
+    colour = points @ depth_to_colour_r.T + depth_to_colour_t
+    if np.any(colour[:, :, 2] <= 0):
+        raise ValueError('Jaw mesh reaches camera near plane; clipping is required')
+    u = detector['color_fx'] * colour[:, :, 0] / colour[:, :, 2] + detector['color_cx']
+    v = detector['color_fy'] * colour[:, :, 1] / colour[:, :, 2] + detector['color_cy']
+    if detector['color_mirror_horizontal']:
+        u = detector['color_calibration_width'] - 1 - u
+    pixels = np.stack((u * (width - 1) / (detector['color_calibration_width'] - 1),
+                       v * (height - 1) / (detector['color_calibration_height'] - 1)), axis=-1)
+    mask = np.zeros((height, width), np.uint8)
+    for triangle in np.rint(np.clip(pixels, -100000, 100000)).astype(np.int32):
+        cv2.fillConvexPoly(mask, triangle, 255)
+    return pixels, mask
+
+
+def operator_anchored_camera(tool_from_depth, r, t, measured_tip, tip_tool, pitch_rad,
+                             colour_reference):
+    """Rotation hypothesis preserving operator optical Y/Z, not a calibration."""
+    tip_depth = r.T @ (measured_tip - t) if colour_reference else measured_tip
+    result = tool_from_depth.copy()
+    result[:3, :3] = tool_from_depth[:3, :3] @ Rotation.from_euler('x', pitch_rad).as_matrix()
+    result[:3, 3] = tip_tool[:3] - result[:3, :3] @ tip_depth
+    return result
+
+
+def visible_jaw_masks(rgb):
+    """User-confirmed dark fingers in reviewed image corners, NOT contact pads."""
+    height, width = rgb.shape[:2]
+    yy, xx = np.indices((height, width))
+    dark = cv2.cvtColor(rgb, cv2.COLOR_BGR2HSV)[:, :, 2] < 45
+    result = {}
+    for side, region in (('left', xx < width * .25), ('right', xx > width * .72)):
+        mask = (dark & region & (yy > height * .58)).astype(np.uint8)
+        count, labels, stats, _ = cv2.connectedComponentsWithStats(mask)
+        if count <= 1:
+            raise ValueError('Reviewed visible finger region missing')
+        largest = 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA])
+        if stats[largest, cv2.CC_STAT_AREA] < 100:
+            raise ValueError('Reviewed finger region too small')
+        result[side] = (labels == largest).astype(np.uint8) * 255
+    return result
+
+
+def mask_iou(a, b):
+    union = np.count_nonzero((a > 0) | (b > 0))
+    return float(np.count_nonzero((a > 0) & (b > 0)) / union) if union else 0.
+
+
+def compare_pitch_opening_candidates(root, positions, mesh_share, rgb, tool_from_depth,
+                                     r, t, detector, measured_tip, tip_tool, output, holdout):
+    """Restricted silhouette comparison. Unknown X/roll/yaw prevent calibration."""
+    observed = visible_jaw_masks(rgb)
+    height, width = rgb.shape[:2]
+    rows = []
+    meshes = {half_open: jaw_triangles_tool(root, positions, mesh_share, half_open)
+              for half_open in np.linspace(.010, .035, 11)}
+    for half_open, triangles in meshes.items():
+        for degrees in range(16, 45, 2):
+            camera = operator_anchored_camera(tool_from_depth, r, t, measured_tip, tip_tool,
+                                             math.radians(degrees), True)
+            masks = {name: mesh_projection(mesh, camera, r, t, detector, width, height)[1]
+                     for name, mesh in triangles.items()}
+            left, right = mask_iou(masks['link8'], observed['left']), mask_iou(masks['link7'], observed['right'])
+            rows.append({'mount_pitch_degrees': degrees, 'model_opening_m': 2 * half_open,
+                         'left_iou': left, 'right_iou': right, 'mean_iou': (left + right) / 2,
+                         'tool_from_depth_optical_candidate': camera.tolist()})
+    rows.sort(key=lambda row: row['mean_iou'], reverse=True)
+    best = rows[0]
+    camera = np.array(best['tool_from_depth_optical_candidate'])
+    triangles = jaw_triangles_tool(root, positions, mesh_share, best['model_opening_m'] / 2)
+    images = [('current', rgb)]
+    if holdout is not None:
+        other = cv2.imread(str(holdout))
+        if other is None or other.shape != rgb.shape:
+            raise ValueError('Holdout raw RGB is missing or has a different size')
+        images.append(('earlier raw RGB, same rigid gripper', other))
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    fig, axes = plt.subplots(1, len(images), figsize=(6 * len(images), 5), squeeze=False)
+    scores = {}
+    for index, (label, frame) in enumerate(images):
+        witness = visible_jaw_masks(frame)
+        ax = axes[0, index]
+        ax.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        scores[label] = {}
+        for name, side in (('link7', 'right'), ('link8', 'left')):
+            _, mask = mesh_projection(triangles[name], camera, r, t, detector, width, height)
+            if np.any(mask) and np.any(mask == 0):
+                ax.contour(mask, levels=[127], colors=['cyan'], linewidths=1.5)
+            ax.contour(witness[side], levels=[127], colors=['red'], linewidths=1)
+            scores[label][side] = mask_iou(mask, witness[side])
+        ax.set(xlim=(-.5, width - .5), ylim=(height - .5, -.5), title=label)
+    fig.suptitle(f'RESTRICTED MODEL CANDIDATE, NOT CALIBRATED: mount {best["mount_pitch_degrees"]} deg, '
+                 f'opening {best["model_opening_m"] * 1000:.0f} mm\n'
+                 'red: observed dark fingers; cyan: predicted model; 70/105 mm preserved')
+    fig.tight_layout()
+    fig.savefig(output / 'jaw_candidate_comparison.png', dpi=150)
+    plt.close(fig)
+    report = {'evidence': 'RESTRICTED_SILHOUETTE_COMPARISON_NOT_PHYSICAL_CALIBRATION',
+              'assumptions': ['colour lens', 'unmeasured horizontal tip component zero',
+                              'only mount pitch varies, roll/yaw not fitted',
+                              'model opening is a hypothesis, not gripper feedback',
+                              'dark visible outlines are not identified pad contact landmarks'],
+              'operator_optical_tip_m_preserved': measured_tip.tolist(),
+              'camera_calibrated': False, 'physical_capture_verified': False,
+              'production_config_modified': False, 'motion_sent': False,
+              'candidate_count': len(rows), 'top_candidates': rows[:5],
+              'holdout_path': str(holdout) if holdout else None,
+              'mask_scores': scores,
+              'holdout_only_tests_visible_mask_agreement_not_independent_metric_geometry': True}
+    (output / 'jaw_candidate_comparison.json').write_text(json.dumps(report, indent=2))
+
+
+def render_anchored_pitch_hypotheses(root, positions, mesh_share, rgb, tool_from_depth,
+                                     r, t, detector, measured_tip, tip_tool, output):
+    """The mount rotates in the model only; no physical joints are changed."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    height, width = rgb.shape[:2]
+    fig, axes = plt.subplots(2, 7, figsize=(21, 7))
+    report = {'evidence': 'OPERATOR_YZ_ANCHORED_MOUNT_PITCH_HYPOTHESES_NOT_CALIBRATION',
+              'rotation_changed_in_model_only': True, 'model_half_open_m': .035,
+              'horizontal_zero_unmeasured': True, 'opening_not_measured': True,
+              'camera_extrinsic_fitted': False, 'motion_sent': False, 'hypotheses': []}
+    triangles = jaw_triangles_tool(root, positions, mesh_share, .035)
+    for row, colour_reference in enumerate((False, True)):
+        basis = 'colour lens' if colour_reference else 'depth lens'
+        for column, degrees in enumerate((0, 10, 20, 30, 40, 50, 60)):
+            camera = operator_anchored_camera(tool_from_depth, r, t, measured_tip, tip_tool,
+                                             math.radians(degrees), colour_reference)
+            ax = axes[row, column]
+            ax.imshow(cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB))
+            entry = {'lens_basis': basis, 'camera_mount_pitch_hypothesis_degrees': degrees,
+                     'tool_from_depth_optical': camera.tolist(), 'jaws': {}}
+            for name, colour in (('link7', 'cyan'), ('link8', 'yellow')):
+                pixels, mask = mesh_projection(triangles[name], camera, r, t, detector, width, height)
+                if np.any(mask) and np.any(mask == 0):
+                    ax.contour(mask, levels=[127], colors=[colour], linewidths=1)
+                entry['jaws'][name] = {
+                    'unclipped_vertex_pixel_bounds': [pixels.min(axis=(0, 1)).tolist(),
+                                                      pixels.max(axis=(0, 1)).tolist()],
+                    'in_frame_silhouette_pixels': int(np.count_nonzero(mask))}
+            ax.set(xlim=(-.5, width - .5), ylim=(height - .5, -.5),
+                   title=f'{basis}, mount tilt {degrees} deg\n70/105 mm preserved; opening assumed 70 mm')
+            report['hypotheses'].append(entry)
+    fig.suptitle('RAW RGB + mount-tilt hypotheses, NOT arm J5 motions or fitted camera TF')
+    fig.tight_layout()
+    fig.savefig(output / 'operator_anchored_pitch_hypotheses.png', dpi=140)
+    plt.close(fig)
+    (output / 'operator_anchored_pitch_hypotheses.json').write_text(json.dumps(report, indent=2))
+
+
+def render_jaw_hypotheses(root, positions, mesh_share, rgb, tool_from_depth, r, t,
+                          detector, colour_lens_origin, output):
+    """Show all hypotheses, not an image-based calibration or measured opening."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    height, width = rgb.shape[:2]
+    fig, axes = plt.subplots(2, 4, figsize=(16, 7))
+    report = {'evidence': 'UNFITTED_MODEL_SILHOUETTE_HYPOTHESES_ONLY',
+              'physical_contact_landmarks_identified': False,
+              'camera_extrinsic_fitted': False, 'motion_sent': False, 'hypotheses': []}
+    for row, lens in enumerate(('configured_depth_reference', 'colour_reference_unmeasured_x_zero')):
+        camera = tool_from_depth.copy()
+        if row:
+            camera[:3, 3] = colour_lens_origin
+        for column, half_open in enumerate((0., .010, .020, .035)):
+            ax = axes[row, column]
+            ax.imshow(cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB))
+            entry = {'lens_hypothesis': lens, 'model_half_open_m': half_open, 'jaws': {}}
+            triangles = jaw_triangles_tool(root, positions, mesh_share, half_open)
+            for name, colour in (('link7', 'cyan'), ('link8', 'yellow')):
+                pixels, mask = mesh_projection(triangles[name], camera, r, t, detector, width, height)
+                if np.any(mask) and np.any(mask == 0):
+                    ax.contour(mask, levels=[127], colors=[colour], linewidths=1)
+                entry['jaws'][name] = {
+                    'unclipped_vertex_pixel_bounds': [pixels.min(axis=(0, 1)).tolist(),
+                                                      pixels.max(axis=(0, 1)).tolist()],
+                    'in_frame_silhouette_pixels': int(np.count_nonzero(mask))}
+            ax.set(xlim=(-.5, width - .5), ylim=(height - .5, -.5),
+                   title=f'{lens}\nmodel opening {2 * half_open * 1000:.0f} mm, NOT measured')
+            if all(jaw['in_frame_silhouette_pixels'] == 0 for jaw in entry['jaws'].values()):
+                ax.text(.03, .04, 'MODEL SILHOUETTES OUTSIDE IMAGE', color='red',
+                        transform=ax.transAxes, fontsize=8, bbox={'facecolor': 'white', 'alpha': .8})
+            report['hypotheses'].append(entry)
+    fig.suptitle('Real raw RGB + actual URDF jaw silhouettes; no contact ROI or calibration fitted')
+    fig.tight_layout()
+    fig.savefig(output / 'raw_rgb_jaw_hypotheses.png', dpi=150)
+    plt.close(fig)
+    (output / 'jaw_hypotheses.json').write_text(json.dumps(report, indent=2))
+
+
 def capture_model(output):
     import rclpy
     from moveit_msgs.msg import PlanningSceneComponents
@@ -180,18 +399,20 @@ def review(args):
     rows = [json.loads(line) for line in args.observer.read_text().splitlines() if line.startswith('{')]
     row = next(r for r in reversed(rows) if 'snapshot' in r and
                {'rgb', 'depth'} <= r.get('images', {}).keys() and
-               '/joint_states_feedback' in r['latest'])
+               any(topic in r['latest'] for topic in ('/joint_states_feedback', '/joint_states')))
     latest = row['latest']
     cfg = yaml.safe_load(args.task.read_text())
     detector = yaml.safe_load(args.detector.read_text())['cube_detector']['ros__parameters']
     mount = cfg['piper_camera_mount_tf']['ros__parameters']
     grasp = cfg['grasp_lift_executor']['ros__parameters']
-    joints = latest['/joint_states_feedback']['positions']
-    scene = json.loads((args.output / 'move_group_scene.json').read_text())
+    feedback_topic = '/joint_states_feedback' if '/joint_states_feedback' in latest else '/joint_states'
+    joints = latest[feedback_topic]['positions']
+    model_directory = args.model_directory or args.output
+    scene = json.loads((model_directory / 'move_group_scene.json').read_text())
     # Use actual MoveIt jaw joints, not an invalid gripper cache as a jaw opening.
     positions = dict(scene['joint_positions'])
     positions.update({f'joint{i}': joints[f'joint{i}'] for i in range(1, 7)})
-    root = ET.fromstring((args.output / 'move_group.urdf').read_text())
+    root = ET.fromstring((model_directory / 'move_group.urdf').read_text())
     link = poses(root, positions)
     optical = np.eye(4)
     optical[:3, :3] = np.array([[0, 0, 1], [-1, 0, 0], [0, -1, 0]])
@@ -256,7 +477,12 @@ def review(args):
                             'max_xyz_m': vertices.max(axis=0).tolist()}
     report = {'evidence': 'MODEL_PLUS_MEASURED_OPTICAL_YZ_NOT_CALIBRATED_CAPTURE',
               'snapshot': row['snapshot'], 'image_stamps': row['images'],
-              'joint_stamp': latest['/joint_states_feedback']['stamp'],
+              'joint_stamp': latest[feedback_topic]['stamp'], 'feedback_topic': feedback_topic,
+              'model_directory': str(model_directory),
+              'model_capture_epoch': scene.get('read_epoch'),
+              'model_read_from_archive_this_run': args.model_directory is not None,
+              'rgb_depth_stamp_delta_s': abs(row['images']['rgb']['stamp'] - row['images']['depth']['stamp']),
+              'rgb_joint_stamp_delta_s': abs(row['images']['rgb']['stamp'] - latest[feedback_topic]['stamp']),
               'q_rad': [joints[f'joint{i}'] for i in range(1, 7)],
               'q_degrees': [math.degrees(joints[f'joint{i}']) for i in range(1, 7)],
               'gripper_cache_m_not_opening_proof': joints.get('gripper'),
@@ -283,6 +509,16 @@ def review(args):
     print(json.dumps(report, indent=2), flush=True)
     render(root, link, args.mesh_share, args.output, k, model_rgb_pixel, contact_pixels, bbox,
            width, height, link['gripper_base'] @ tool_from_depth)
+    if args.overlay_jaw_hypotheses:
+        render_jaw_hypotheses(root, positions, args.mesh_share, rgb, tool_from_depth, r, t,
+                             detector, colour_lens_origin_tool, args.output)
+    if args.operator_anchored_pitch_hypotheses:
+        render_anchored_pitch_hypotheses(root, positions, args.mesh_share, rgb, tool_from_depth,
+                                        r, t, detector, measured_tip, tip_tool, args.output)
+    if args.compare_pitch_opening:
+        compare_pitch_opening_candidates(root, positions, args.mesh_share, rgb, tool_from_depth,
+                                         r, t, detector, measured_tip, tip_tool, args.output,
+                                         args.holdout_rgb)
 
 
 def render(root, link, mesh_share, output, k, tip_pixel, contact_pixels, bbox, width, height, base_camera):
@@ -338,7 +574,18 @@ def main():
     parser.add_argument('--detector', type=Path, required=True)
     parser.add_argument('--mesh-share', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--model-directory', type=Path,
+                        help='Previously captured actual model; no live MoveIt startup required')
+    parser.add_argument('--overlay-jaw-hypotheses', action='store_true',
+                        help='Compare raw RGB with unopened/open model silhouettes, NOT calibration')
+    parser.add_argument('--operator-anchored-pitch-hypotheses', action='store_true',
+                        help='Compare mount-tilt hypotheses preserving measured optical Y/Z; no motion')
+    parser.add_argument('--compare-pitch-opening', action='store_true',
+                        help='Restricted visible silhouette comparison, NOT extrinsic calibration')
+    parser.add_argument('--holdout-rgb', type=Path, help='Earlier raw RGB for mask-only comparison')
     args = parser.parse_args()
+    if args.capture_model and args.model_directory and args.model_directory.resolve() != args.output.resolve():
+        parser.error('--capture-model must review its newly captured output, not a different archived model')
     args.output.mkdir(parents=True, exist_ok=True)
     if args.capture_model:
         capture_model(args.output)
