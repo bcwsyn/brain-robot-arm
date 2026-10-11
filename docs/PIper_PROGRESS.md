@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+## 2026-10-11 20:25：移除使能中的意外夹爪目标，77测试及新代码反馈加载通过
+
+- 起点39783f9。检查剩余微步接入发现真实console piper.piper_ctrl_single_node的正向使能会顺带写夹爪；服务把越界101900缓存回退0，话题直接写0，均0x02→0x01。旧源码f2631dfe…与部署相同，此两个指定规范路径原先干净；没有用旧_new备用文件判断当前运行。假SDK复现旧两个入口零目标，新源码均无夹爪调用、六轴使能保留，不证明所有历史闭爪唯一归因这个分支。
+- 普通自主修改只删正向使能中的夹爪目标；保留Pending让现显式夹爪目标首帧0x03、后0x01/set_zero0接管。六轴使能/模式、失败门、失能分支、显式开闭和正常控制主线保留；不加新抓取/开口门，不改相机/TF/TCP/adapter/executor/默认YAML/入口。实际SDK EnablePiper只EnableArm及读状态，已只读核源码无GripperCtrl，未创建新SDK实例。
+- 既有驱动回归扩行为测试（两正向入口/4缓存/存在两配置、失败使能、六轴无夹爪、显式清错一次），最终驱动8项+原四组69项=77全部通过，无跳过。最初测试私有名重整AttributeError已改getattr；一次PYTHONPATH覆盖ROS造成74过2跳，保留原路径后重验77全过，未隐瞒。规范/部署新driver SHA c0153c88…，测试0c014510…。
+- 新代码需加载：只核本轮LOG_DIR组47039成员47039/47043后TERM，后续轮询/proc/environ PermissionError中断；实际TERM已发送、wrapper退出而child47043仍活。再核同标签/UID/PGID/start_ticks2367737精确KILL47043，确认无旧SDK后才启替代，无双驱动。没有CAN down/up/reset或失能；不把该/proc终止竞态当仓库权限故障。
+- 新日志/home/johnwick/brain_robot_logs/arm_enable_fix_20261011.2wUnGP。原同一驱动50857/PGID50855、auto_enable=false/gripper_exist=true，实际导入源及SHA c0153c88…已核。新feedback595条/3秒，首1791721090115437472ns、末1791721093085893224ns，q仍[-.262724084,1.888278112,-1.280686148,.0095942,.836928232,0]、六轴范围0；未实体调用使能、闭爪、轨迹/回零/失能、未读新六使能位。只有反馈及daemon47019，无相机/控制栈/续跑，旧47043存活记录覆盖。
+- 剩余候选J4+1°→回中心→J5+1°各101点FK，三段tip弧长2.940502/2.940502/3.958407mm，总9.839412mm；加前已用3.958357mm=13.797769mm/共4段、每段最大距起点<5mm。只是归档实际模型的FK，不是实时MoveIt/桌面/开口/轨迹执行验证，未发运动。更正完整8段1度27.6mm超预算不能推成所有多轴采样都超预算；这个有限候选先核实时轨迹、逐段采图/反馈及独立标定可行性，不必立即扩±6°。
+- 完整源码/SDK/假调用/实加载次序、命令及下一步见docs/evidence/piper_arm_enable_gripper_decoupling_20261011.md。Git仅driver/test/交接/进度/决策/证据六路径，不纳其他既有vendor/reference。原入口0e976b0a…/executor源码107ce501…/YAML75612194…未变。目标仍未完成：几何尚未独立核定；不重复旧拟合/26°或以模型tip自洽、.155m统计当两指捕获。
+
 ## 2026-10-11 19:55：官方时间同步采集接入，15组新鲜配对，69测试，无运动
 
 - 起点8943c04。解决3秒latest采集偏置，新增仅test/collect_static_rgbd.py、21项回归、CMake2行登记；不改默认控制/TF/TCP/入口/YAML或添抓取保护门。已核本机message_filters4.3.19、官方Humble源码及真实API，不套旧ROS1；ROS2技能限定实际overlay/原话题/真实feedback，surgical-change限定只读工具所有者。

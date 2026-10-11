@@ -1,5 +1,13 @@
 # PiPER ROS 调试完整交接记录
 
+## 最新驱动解耦修复与加载（2026-10-11 20:25，无实体使能/运动）
+
+起点39783f9。实际入口是piper.piper_ctrl_single_node，不是_new旧文件；原驱动f2631dfe…使能话题写夹爪0，服务遇缓存101900回退0后写夹爪。已假SDK复现旧两入口0x02→0x01/零目标，新代码正向使能只使能六轴，不写夹爪；已有显式开闭仍首帧0x03/后0x01、set_zero0，未改正常目标逻辑/新增门。只这两个原先干净的driver/test路径有意修改，其他vendor/reference已有变化保留。77项全部通过，源码规范/部署同SHA c0153c88…。
+
+旧47039组TERM后wrapper退出、47043 SDK未退出，终止期间/proc/environ权限异常导致一次轮询脚本中断；后续严格同标记/UID/PGID/start_ticks核后精确KILL旧47043，确认唯一后启动50857/PGID50855、auto_enable=false/gripper_exist=true。新代码实际导入源已核，3秒595反馈六轴范围0/J5≈47.952455°，未发使能/轨迹/夹爪/Disable。现仅该反馈和daemon47019；下方旧47043/37594存活结论已覆盖。原入口/默认executor/YAML不变，无自动续跑。
+
+详docs/evidence/piper_arm_enable_gripper_decoupling_20261011.md。新有限候选J4+1→中心→J5+1三段FK弧长9.839mm，加已用1段=13.798mm/4段，可能在旧预算内，不必先扩大到±6°。**只是FK、未实时规划/执行**，下一项沿原MoveIt→adapter核这个范围并可靠采多姿态/独立验证，逐段看图、不闭爪；不要重跑旧8段/26°或把模型自洽当真实夹持区。目标未完成。
+
 ## 最新时间配对接入（2026-10-11 19:55，15组静止数据，无运动）
 
 起点8943c04。新增只读test/collect_static_rgbd.py，复用message_filters4.3.19原同步器，固定原RGB/depth/depth_info/真实joint_states_feedback、header队列/120ms不放宽、depth/info同帧及停稳历史，保存原PNG/stamp/K/q/SHA。只在test使用、不改控制栈或添抓取门，不是第二入口。21项新回归及startup/jaw/sampling共69通过，含真实官方同步器内存回放latest偏差复现。

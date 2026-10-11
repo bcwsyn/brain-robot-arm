@@ -493,9 +493,9 @@ class PiperRosNode(Node):
         self.get_logger().info(f"enable_flag: {enable_flag.data}")
         if enable_flag.data:
             self.__enable_flag = self._enable_for_joint_control(50)
-            if self.__enable_flag and self.gripper_exist:
-                self.piper.GripperCtrl(0, 1000, 0x02, 0)
-                self.piper.GripperCtrl(0, 1000, 0x01, 0)
+            if self.__enable_flag:
+                # Arm enable is not a jaw target. The first explicit gripper
+                # command already clears/enables with code 0x03 at its target.
                 self._gripper_clear_pending = True
         else:
             self.__enable_flag = False
@@ -519,22 +519,9 @@ class PiperRosNode(Node):
 
             if req.enable_request:
                 enable_flag = self._enable_for_joint_control(50)
-                if enable_flag:
-                    # The official V2 gripper sequence clears the gripper
-                    # state once before enabling a new command stream. This
-                    # affects only the end-effector; it does not reset the
-                    # arm or alter its joint zeroes.
-                    if self.gripper_exist:
-                        held_gripper = int(
-                            self.piper.GetArmGripperMsgs().gripper_state.grippers_angle)
-                        if not 0 <= held_gripper <= 80000:
-                            self.get_logger().warning(
-                                f"Ignoring invalid gripper hold cache {held_gripper}; "
-                                "using zero only for the enable handshake")
-                            held_gripper = 0
-                        self.piper.GripperCtrl(held_gripper, 1000, 0x02, 0)
-                        time.sleep(0.1)
-                        self.piper.GripperCtrl(held_gripper, 1000, 0x01, 0)
+                # Do not interpret an uncalibrated jaw cache as a new target,
+                # especially not as zero when out of range. Explicit gripper
+                # commands handle the clear/enable sequence at their target.
             else:
                 enable_flag = any(enable_list)
                 self.piper.DisableArm(7)
