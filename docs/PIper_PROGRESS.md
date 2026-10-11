@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+### 2026-10-11 10:38：用户批准抓取向下俯仰5°，现有Pose链实现与隔离MoveIt验证通过
+
+- 用户“好”批准上轮单项方案：仅允许抓取姿态相对ALIGN小幅下俯，锁定同一base目标、复用原一键/MoveIt/adapter。起始HEAD=`54a8cc6`；只改抓取器Pose生成和实体参数，不改SEARCH/ALIGN/相机外参/夹爪/门控，也不直接篡改单关节轨迹。
+- 新参数`aligned_grasp_pitch_down_rad=0.08726646259971647`（5°），默认代码值0，实际实体YAML值5°。保留preserve_aligned_grasp_orientation=true，以当前FK的J5正向轴（模型joint5实际轴变换到lift参考系）将锁存四元数下俯，再按原ToolOrigin/0.1358m工具长度重算预抓取与末段Pose。新增纯四元数旋转函数/单元测试、回放配置检查；把既有落点回放断言同步到已经批准的10mm。参数归零即恢复上一轮完全固定ALIGN朝向。不保证最终J5超过ALIGN起始值，保证的是给MoveIt的抓取俯仰目标改变，不是强制单关节增大。
+- 规范executor/header/YAML已同步实际`/home/johnwick/piper_ws/src/...`；实际源码此前仍是9df895cf旧TF版，本次部署顺带同步已批准提交17faaac的精确采样时刻TF实现，未改变其语义。源码SHA一致`e9a0c33954ded864963abb425bed2552f68591953c41105cc463c04d0c7f1645`；规范与实际install YAML SHA一致`fa15fe5b8c4ba97fe0da9f1871a634758e4ae007418a7b5b59447bfbc929b9ca`；原一键脚本SHA仍`e8c9f85c…`且未改。
+- 隔离规划复用review_surface_grasp_plan.py/.launch.py，ROS_DOMAIN_ID=78、allow_trajectory_execution=False已参数读取确认，无实机驱动/adapter/执行客户端。冻结最新成功ALIGN快照保存为`docs/evidence/piper_onekey_20261011_pitch_down_snapshot.json`：base surface `[0.432,-0.113,0.079]m`、面尺寸近似36.6mm、模型开口假设50mm（实际反馈102.1mm，非标定）。命令`--config 规范cube_task_real.yaml --snapshot 上述JSON --orientation measured`返回0。5°姿态的80点PTP预抓取和8点Cartesian末段fraction=1.0，碰撞/任务限位/相邻关节步进检查通过；末段J5=0.336947rad≈19.3°，J2=1.828860、J3=-1.110472rad。模型tip误差1.61e-9m只是数值一致性；无实体桌面/相机/TCP验证。原始规划结果见`docs/evidence/piper_onekey_20261011_pitch_down_plan.txt`。域78停机时既有MoveIt2.5.9析构-11仍出现，规划已完成，不能误写为路径失败。
+- 从规范源构建`/tmp/ub_pitch_down_workspace`成功（119秒）；姿态gtest9项通过，抓取链pytest12项通过。直接CTest全部6套通过，`colcon --log-base /tmp/ub_pitch_down_workspace/result_log test-result --test-result-base /tmp/ub_pitch_down_workspace/build --verbose`汇总52 tests、0 errors/failures/skipped。colcon test包装停在环境准备，用同一build的CTest取得结果后结束包装器；共享仓库普通沙箱pycache/log只读问题通过PYTHONPYCACHEPREFIX=/tmp和log-base规避，没有chmod/改Git权限。
+- 正在对实际`/home/johnwick/piper_ws`执行`PYTHONNOUSERSITE=1 colcon build --packages-select brain_robot_pick_place --parallel-workers 1 --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release`，完成后直接运行原脚本默认工作区（不再依赖旧TF overlay）。计划日志`/home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5/`，命令`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=上述目录 /home/johnwick/start_brain_robot_cube_real.sh`。复用同一基线限位/速度/失败保持使能收尾，不进行新固件/CAN基础实验。当前没有本参数的实机抓取结果；下一条记录必须以实际运行确定。
+- 回退：只把aligned_grasp_pitch_down_rad设0并同步生效实体YAML即回原固定朝向；完整代码回退用本实现提交的git revert并重新同步/构建，不回滚先前10mm和精确TF提交。保留本次证据/既有vendor和reference修改。
+
 ### 2026-10-11：用户报告J5减小对应实体抬起；只读查明固定朝向补偿及离线俯仰候选
 
 - 用户现场观察：J5带符号角度减小，臂体变直/向上抬；希望增大J5让夹爪向下包住方块。本轮为原因分析，未发送任何机械臂运动、未修改源码/YAML/脚本。不能仅凭观察断言增加J5就能抓住，但局部离线FK方向与其观察一致。

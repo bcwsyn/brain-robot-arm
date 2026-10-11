@@ -5,6 +5,34 @@
 
 namespace gg = brain_robot_pick_place::grasp_geometry;
 
+TEST(GraspGeometry, PosePitchRotationComposesInReferenceFrameAndZeroRestores)
+{
+  const double angle = 5.0 * std::acos(-1.0) / 180.0;
+  const auto pitched = gg::RotateOrientationAboutAxis({0, 0, 0, 1}, {0, 2, 0}, angle);
+  EXPECT_NEAR(pitched[0], 0.0, 1e-12);
+  EXPECT_NEAR(pitched[1], std::sin(angle / 2), 1e-12);
+  EXPECT_NEAR(pitched[2], 0.0, 1e-12);
+  EXPECT_NEAR(pitched[3], std::cos(angle / 2), 1e-12);
+  const gg::Quaternion yaw{0, 0, std::sin(0.4), std::cos(0.4)};
+  const auto unchanged = gg::RotateOrientationAboutAxis(yaw, {1, 0, 0}, 0.0);
+  for (std::size_t i = 0; i < yaw.size(); ++i) {
+    EXPECT_NEAR(unchanged[i], yaw[i], 1e-12);
+  }
+  const auto composed = gg::RotateOrientationAboutAxis(yaw, {0, 1, 0}, angle);
+  EXPECT_NEAR(composed[0], std::sin(angle / 2) * yaw[2], 1e-12);
+  EXPECT_NEAR(composed[1], std::sin(angle / 2) * yaw[3], 1e-12);
+}
+
+TEST(GraspGeometry, PosePitchRotationRejectsUndefinedInputs)
+{
+  EXPECT_THROW(gg::RotateOrientationAboutAxis({0, 0, 0, 1}, {0, 0, 0}, 0.1),
+    std::invalid_argument);
+  EXPECT_THROW(gg::RotateOrientationAboutAxis({0, 0, 0, 0}, {0, 1, 0}, 0.1),
+    std::invalid_argument);
+  EXPECT_THROW(gg::RotateOrientationAboutAxis({0, 0, 0, 1}, {0, 1, 0}, NAN),
+    std::invalid_argument);
+}
+
 TEST(GraspGeometry, FreshJawCaptureRejectsRemoteOrOffCentreCube)
 {
   EXPECT_FALSE(gg::FaceInsideJawCapture({0.0, 0.0, 0.2858}, 0.1358, 0.033, 0.050));

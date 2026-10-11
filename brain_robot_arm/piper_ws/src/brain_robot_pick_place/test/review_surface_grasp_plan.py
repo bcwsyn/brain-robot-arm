@@ -120,6 +120,29 @@ try:
             raise RuntimeError('Snapshot measured-orientation FK unavailable')
         MEASURED_ORIENTATION = current_fk.pose_stamped[0].pose.orientation
         print('MEASURED_ORIENTATION_MODEL_ONLY', MEASURED_ORIENTATION, flush=True)
+        pitch_down = P.get('aligned_grasp_pitch_down_rad', 0.0)
+        if pitch_down > 0.0:
+            # joint5 is revolute about link5's local +Z in the installed URDF.
+            # Match the executor's reference-frame axis-angle composition.
+            axis_fk = copy.deepcopy(start_fk)
+            axis_fk.fk_link_names = ['link5']
+            axis_result = call(fk, axis_fk)
+            if axis_result.error_code.val != 1 or not axis_result.pose_stamped:
+                raise RuntimeError('Positive J5 axis FK unavailable')
+            a = axis_result.pose_stamped[0].pose.orientation
+            axis = [2*(a.x*a.z+a.w*a.y), 2*(a.y*a.z-a.w*a.x),
+                    1-2*(a.x*a.x+a.y*a.y)]
+            scale = math.sin(pitch_down / 2)
+            x, y, z = [v * scale for v in axis]
+            w = math.cos(pitch_down / 2)
+            q = MEASURED_ORIENTATION
+            MEASURED_ORIENTATION = Quaternion(
+                x=w*q.x+x*q.w+y*q.z-z*q.y,
+                y=w*q.y-x*q.z+y*q.w+z*q.x,
+                z=w*q.z+x*q.y-y*q.x+z*q.w,
+                w=w*q.w-x*q.x-y*q.y-z*q.z)
+            print('ALIGNED_GRASP_PITCH_DOWN_MODEL_ONLY', pitch_down,
+                  'positive_J5_axis', axis, 'orientation', MEASURED_ORIENTATION, flush=True)
         print('FROZEN_TARGET_NO_CAMERA_CHASING', OBJECT,
               'ACTUAL_GRIPPER_NOT_VERIFIED', snapshot['actual_gripper_feedback_m'], flush=True)
     found = False

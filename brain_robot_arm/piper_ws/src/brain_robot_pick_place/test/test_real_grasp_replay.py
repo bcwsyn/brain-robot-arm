@@ -191,7 +191,7 @@ def test_top_down_surface_landing_is_checked_before_close():
     assert params["top_down_grasp_clearance_m"] == 0.0
     assert 0.0 < params["surface_insertion_fraction"] < 0.5
     assert params["surface_insertion_max_m"] == 0.012
-    assert params["grasp_landing_tolerance_m"] == 0.008
+    assert params["grasp_landing_tolerance_m"] == 0.010
     assert params["grasp_landing_max_correction_m"] == 0.020
     source = EXECUTOR.read_text(encoding="utf-8")
     start = source.index("void TopDownPointGraspAndLift()")
@@ -225,6 +225,18 @@ def test_aligned_orientation_is_captured_once_before_both_planned_segments():
                       source.index("bool TopDownPoseHasIk(")]
     assert "locked_approach_orientation_ : TopDownOrientation(yaw, tilt)" in geometry
     assert "grasp_geometry::ToolOrigin(" in geometry
+
+
+def test_approved_pitch_down_changes_pose_goal_not_joint_trajectory():
+    params = yaml.safe_load(CONFIG.read_text())["grasp_lift_executor"]["ros__parameters"]
+    assert math.isclose(params["aligned_grasp_pitch_down_rad"], math.radians(5))
+    source = EXECUTOR.read_text()
+    body = source[source.index("void TopDownPointGraspAndLift()"):
+                  source.index("bool EnsureRealTopDownLanding(")]
+    assert 'getJointModel("joint5")' in body
+    assert "grasp_geometry::RotateOrientationAboutAxis(" in body
+    assert body.index("RotateOrientationAboutAxis(") < body.index("for (const double clearance")
+    assert "POSE_GOAL_ONLY_NO_JOINT_TRAJECTORY_EDIT" in body
 
 
 def test_real_close_needs_fresh_face_inside_jaw_capture_not_only_locked_fk():

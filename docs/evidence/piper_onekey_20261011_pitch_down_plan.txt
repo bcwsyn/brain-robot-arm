@@ -1,0 +1,12 @@
+Isolated ROS domain 78, allow_trajectory_execution=False confirmed by runtime parameter.
+No physical driver, adapter or execution client. Model gripper opening 50 mm is hypothetical.
+Command: review_surface_grasp_plan.py --config canonical cube_task_real.yaml --snapshot docs/evidence/piper_onekey_20261011_pitch_down_snapshot.json --orientation measured
+Return code: 0
+MEASURED_ORIENTATION_MODEL_ONLY geometry_msgs.msg.Quaternion(x=0.12670003785377834, y=0.9324736421702664, z=-0.045550083430498954, w=0.33520918389125937)
+ALIGNED_GRASP_PITCH_DOWN_MODEL_ONLY 0.08726646259971647 positive_J5_axis [0.26682425020803147, 0.9637452046509376, -3.6393374129861655e-06] orientation geometry_msgs.msg.Quaternion(x=0.12856616482215263, y=0.9462077734228893, z=-0.03998020552204224, w=0.2942162027207834)
+FROZEN_TARGET_NO_CAMERA_CHASING [0.432, -0.113, 0.079] ACTUAL_GRIPPER_NOT_VERIFIED 0.1021
+tilt=0.000 yaw=0.000 pregrasp_code=1 points=80
+descent_code=1 fraction=1.000000 points=8 limits_continuity=True
+SNAPSHOT_PREGRASP_AND_DESCENT_PLANNED_NO_EXECUTION orientation_mode=measured
+pregrasp_end {'joint1': -0.24916394784508392, 'joint2': 1.7144897784830082, 'joint3': -1.0816695642472753, 'joint4': -0.02894450552785991, 'joint5': 0.42250682089710856, 'joint6': 0.04363778892339483} descent_end {'joint1': -0.25047821682026655, 'joint2': 1.8288598151848203, 'joint3': -1.1104722990881395, 'joint4': -0.03364144872915334, 'joint5': 0.3369474798274757, 'joint6': 0.0479050305286276}
+SURFACE_INSERTION_MODEL 0.012 expected_tip [0.4385579893533264, -0.11481573992144839, 0.0691158781786485] fk_tip [0.43855798793002415, -0.11481573978605986, 0.06911587891706675] tip_error_m 1.6091553258609596e-09

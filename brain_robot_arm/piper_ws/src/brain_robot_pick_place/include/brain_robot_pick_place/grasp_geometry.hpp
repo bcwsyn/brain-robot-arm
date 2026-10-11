@@ -8,6 +8,38 @@
 namespace brain_robot_pick_place::grasp_geometry
 {
 using Point = std::array<double, 3>;
+using Quaternion = std::array<double, 4>;  // x, y, z, w
+
+// Rotate the desired tool attitude about a measured joint axis in the same
+// reference frame. This changes the pose goal, never an executed joint point.
+inline Quaternion RotateOrientationAboutAxis(
+  const Quaternion & orientation, const Point & axis, double angle_rad)
+{
+  double axis_squared = 0.0;
+  double quaternion_squared = 0.0;
+  for (const double value : axis) {
+    if (!std::isfinite(value)) {throw std::invalid_argument("Non-finite rotation axis");}
+    axis_squared += value * value;
+  }
+  for (const double value : orientation) {
+    if (!std::isfinite(value)) {throw std::invalid_argument("Non-finite orientation");}
+    quaternion_squared += value * value;
+  }
+  if (!std::isfinite(angle_rad) || axis_squared < 1e-12 || quaternion_squared < 1e-12) {
+    throw std::invalid_argument("Invalid pose rotation");
+  }
+  const double scale = std::sin(angle_rad * 0.5) / std::sqrt(axis_squared);
+  const Quaternion r{axis[0] * scale, axis[1] * scale, axis[2] * scale,
+    std::cos(angle_rad * 0.5)};
+  const double norm = std::sqrt(quaternion_squared);
+  const Quaternion q{orientation[0] / norm, orientation[1] / norm,
+    orientation[2] / norm, orientation[3] / norm};
+  return {
+    r[3] * q[0] + r[0] * q[3] + r[1] * q[2] - r[2] * q[1],
+    r[3] * q[1] - r[0] * q[2] + r[1] * q[3] + r[2] * q[0],
+    r[3] * q[2] + r[0] * q[1] - r[1] * q[0] + r[2] * q[3],
+    r[3] * q[3] - r[0] * q[0] - r[1] * q[1] - r[2] * q[2]};
+}
 
 // The detector reports a visible surface, not a reconstructed volume centre.
 // This tabletop-cube heuristic puts the fingertips just past that surface.

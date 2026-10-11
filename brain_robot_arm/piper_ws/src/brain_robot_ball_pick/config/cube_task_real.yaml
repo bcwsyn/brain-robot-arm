@@ -256,11 +256,15 @@ grasp_lift_executor:
     target_timeout_s: 0.60
     # Static tabletop target: capture one base-frame model and never reacquire after lock.
     static_target_lock: true
-    # Reuse the proven two-segment grasp path, but keep the measured aligned
-    # tool attitude for both poses instead of trying fixed tilt/yaw presets.
+    # Reuse the two-segment grasp path with the aligned tool attitude as the
+    # reference, plus the approved pitch change below; no preset enumeration.
     # Frozen 2026-10-10 target: 79-point PTP + 9-point Cartesian path reviewed
     # in isolated MoveIt. This is NOT yet a physically verified grasp.
     preserve_aligned_grasp_orientation: true
+    # Approved 5-degree downward tool attitude change about measured positive
+    # J5 axis. MoveIt re-solves all joints around the same locked target.
+    # Set to 0.0 to restore the previous fixed aligned attitude.
+    aligned_grasp_pitch_down_rad: 0.08726646259971647
     grasp_alignment_error_ratio: 0.05
     # The planned pregrasp is followed by bounded Cartesian microsteps. Every
     # step sees a fresh RGB-D target and measured joint feedback before continuing.

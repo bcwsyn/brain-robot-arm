@@ -18,6 +18,7 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit/robot_state/conversions.h>
+#include <moveit/robot_model/revolute_joint_model.h>
 #include <moveit_msgs/msg/attached_collision_object.hpp>
 #include <moveit_msgs/msg/collision_object.hpp>
 #include <moveit_msgs/msg/move_it_error_codes.hpp>
@@ -395,6 +396,7 @@ private:
     static_target_lock_ = ParameterOr<bool>("static_target_lock", false);
     preserve_aligned_grasp_orientation_ = ParameterOr<bool>(
       "preserve_aligned_grasp_orientation", false);
+    aligned_grasp_pitch_down_rad_ = ParameterOr<double>("aligned_grasp_pitch_down_rad", 0.0);
     grasp_height_offset_m_ = ParameterOr<double>("grasp_height_offset_m", 0.0);
     gripper_tip_offset_m_ = ParameterOr<double>("gripper_tip_offset_m", 0.1358);
     grasp_center_offset_m_ = ParameterOr<double>(
@@ -501,6 +503,7 @@ private:
       approach_prediction_horizon_s_ >= 0.0 && approach_max_target_speed_m_s_ > 0.0 &&
       cartesian_eef_step_m_ > 0.0 && cartesian_max_joint_step_rad_ > 0.0 &&
       grasp_height_offset_m_ >= 0.0 &&
+      std::isfinite(aligned_grasp_pitch_down_rad_) && aligned_grasp_pitch_down_rad_ >= 0.0 &&
       gripper_tip_offset_m_ > 0.0 && top_down_pregrasp_clearance_m_ > 0.0 &&
       grasp_center_offset_m_ > 0.0 && grasp_contact_tolerance_m_ > 0.0 &&
       top_down_grasp_clearance_m_ >= 0.0 &&
@@ -1223,6 +1226,46 @@ private:
         return;
       }
       orientation.normalize();
+      if (aligned_grasp_pitch_down_rad_ > 0.0) {
+        // Use the real model's positive J5 axis, not a guessed world pitch or
+        // a change to trajectory joint5 values. MoveIt coordinates all axes.
+        const auto state = FreshMeasuredState("ALIGNED_PITCH_DOWN");
+        if (!state) {
+          Fail("ALIGNED_ORIENTATION_LOCK_UNAVAILABLE");
+          return;
+        }
+        const auto * joint = state->getRobotModel()->getJointModel("joint5");
+        if (!joint || joint->getType() != moveit::core::JointModel::REVOLUTE) {
+          Fail("ALIGNED_ORIENTATION_LOCK_INVALID");
+          return;
+        }
+        const auto * revolute = static_cast<const moveit::core::RevoluteJointModel *>(joint);
+        const Eigen::Vector3d model_axis =
+          state->getGlobalLinkTransform(joint->getChildLinkModel()).rotation() *
+          revolute->getAxis();
+        tf2::Vector3 axis(model_axis.x(), model_axis.y(), model_axis.z());
+        if (state->getRobotModel()->getModelFrame() != lift_reference_frame_) {
+          try {
+            const auto transform = tf_buffer_->lookupTransform(
+              lift_reference_frame_, state->getRobotModel()->getModelFrame(), tf2::TimePointZero);
+            tf2::Quaternion rotation;
+            tf2::fromMsg(transform.transform.rotation, rotation);
+            axis = tf2::quatRotate(rotation, axis);
+          } catch (const tf2::TransformException & error) {
+            RCLCPP_ERROR(get_logger(), "Pitch-down axis frame conversion failed: %s", error.what());
+            Fail("ALIGNED_ORIENTATION_LOCK_UNAVAILABLE");
+            return;
+          }
+        }
+        const auto adjusted = grasp_geometry::RotateOrientationAboutAxis(
+          {orientation.x(), orientation.y(), orientation.z(), orientation.w()},
+          {axis.x(), axis.y(), axis.z()}, aligned_grasp_pitch_down_rad_);
+        orientation = tf2::Quaternion(adjusted[0], adjusted[1], adjusted[2], adjusted[3]);
+        RCLCPP_INFO(get_logger(),
+          "ALIGNED_GRASP_PITCH_DOWN radians=%.6f positive_J5_axis=(%.6f,%.6f,%.6f) "
+          "POSE_GOAL_ONLY_NO_JOINT_TRAJECTORY_EDIT",
+          aligned_grasp_pitch_down_rad_, axis.x(), axis.y(), axis.z());
+      }
       locked_approach_orientation_ = tf2::toMsg(orientation);
       locked_approach_orientation_valid_ = true;
       PublishDiagnostic("ALIGNED_ORIENTATION_LOCKED_FIXED_APPROACH");
@@ -2872,6 +2915,7 @@ private:
   double selected_top_down_tilt_{0.0};
   bool selected_top_down_yaw_valid_{false};
   bool preserve_aligned_grasp_orientation_{false};
+  double aligned_grasp_pitch_down_rad_{0.0};
   bool locked_approach_orientation_valid_{false};
   geometry_msgs::msg::Quaternion locked_approach_orientation_;
   double diagonal_pregrasp_standoff_m_{0.17};
