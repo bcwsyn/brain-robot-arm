@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-11 13:02：原一键已完成靠近/下降；5°目标仍锁定朝向，末段丢目标未闭爪
+
+- 接续实现`e48e4c9`及交接`28b6169`。12:49后USB-CAN `1d50:606f`及Orbbec `2bc5:0557/0657`已出现在主机；can0最初DOWN，执行已授权受限命令`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、`sudo -n ip link set can0 txqueuelen 1000`、`sudo -n ip link set can0 up`。ERROR-ACTIVE、被动candump收到3A0–3A7、RX持续增长后原脚本直接复用，不重载。根盘33%/51G可用。12:49“缺USB”不再是当前阻断，不要求重启机械臂。
+- 唯一运动入口：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_tfwait_pitchdown5_1253 /home/johnwick/start_brain_robot_cube_real.sh`。脚本/源码/实体YAML未再修改；实际参数回读5°及0.60秒正确。默认二进制SHA仍`07c53d1ee6a25771623c77045603a3a2df7afd5c343e3eb8fb7f939bdc867298`。只读采集器`/tmp/piper_onekey_observer_20261011.py`不发布任何控制，记录图像/六轴/目标/状态。
+- [1/7]–[7/7]通过。RGB初期仅一帧，原相机健康逻辑12:52:09重启一次、12:52:26恢复；此后图像连续。12:53:22.119 OBSERVE_POSE_REACHED→SEARCH，中心小扫再扩展搜索均有adapter轨迹接受；12:53:53.927 ALIGN，12:53:55.929 GRASP_READY。同一原采样TF重试在12:53:55.935成功：image_stamp=tf_stamp=1791694435.871712923、age0.033s、base目标(0.4296,-0.1128,0.0799)m，随后静态锁定并自动继续。TF入口修复已有实机成功证据，不再停在STATIC_TARGET_MODEL_UNAVAILABLE。
+- 张爪50mm命令已调用，但反馈始终101.9mm；既有允许未确认开口的分支继续靠近，没有因此阻止运动。12:54:00.959记录ALIGNED_GRASP_PITCH_DOWN=0.087266rad、positive_J5_axis=(0.266989,0.963700,-0.000004)，随后81点预抓取、8点Cartesian下降、5点纠偏均由MoveIt→piper_jog_adapter执行。12:54:13.929模型FK落点误差7.1mm通过既有10mm判断；这仅证明当前模型内落点，不证明实体TCP/目标链标定正确或方块已在两指间。
+- 精确CAN 3A6（signed big-endian，单位0.001°）J5：观测就绪17.156°；GRASP_READY 42.408°；预抓取结束24.778°；最终19.761°。不是没动，而是在靠近时减小。当前代码先把ALIGN四元数绕模型J5正向轴下俯5°，再锁定这个新四元数供预抓取/下降复用；并没有命令J5+5°或沿靠近持续下俯。J2/J3变化时J5作末端朝向补偿；此次实测未实现用户期望的“靠近时J5持续增大向下弯”。此前3秒采样口头近似值以本条原CAN数据为准。
+- 检测器12:54:05.705 LOST；最后目标采样1791694445.4712524。12:54:13.931报FAULT_FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE，详细原因JAW_CAPTURE_FRESH_RGBD_UNAVAILABLE_NO_CLOSE，采样已过去8.459s，target_valid/depth_valid=false。代码FreshFaceInsideJaws第一分支失败，尚未执行两指包围几何判断；不能把错误名当作已证实实体方块不在两指内。已实际查看0051_rgb.png（张爪等待阶段，紫色块可见）与0056_rgb.png（末段后只见桌面/指爪边，块不见），不是只有debug黑影。未闭爪/抬升/释放，最终目标未完成。
+- 只读现模型视野核对：工具tip偏置0.1358m及现相机外参将tip投到optical(0,0.070,0.105)m；使用10:39记录的深度K（并非本轮重新采集K），640×400图像v约519，预抓取表面v约460、最终表面v约560，均在下边界外。这是现模型与“末段仍须新鲜视觉包围验证”的潜在结构矛盾，不是实体外参已经准确的证明；相机与夹爪刚性连接时仅改变整副工具朝向不能改变理想最终表面相对相机的位置。不据此删除门或自动闭爪。
+- 原脚本退出1，停止输出且保持使能/当前位置；没有ResetPiper、MasterSlaveConfig、DisableArm或自动回零。控制栈已退出，只读采集器INT后退出0；13:00主机pgrep确认无executor/visual/adapter/observer残留。末次ROS六轴[-0.252013468,1.821188488,-1.105478612,-0.030247896,0.344710884,0.042912240]rad。完整日志/图像保留在上述实际目录；小文本原始摘录及阶段CAN帧归档`docs/evidence/piper_onekey_20261011_tfwait_pitchdown5_run.txt`，不提交大CAN日志/固件/供应商既有改动。
+- 下一步针对现姿态目标/TCP/相机视野进行只读几何对照，不再重复USB/CAN/固件巡检或原样跑同一失败。任何新运动策略/参数/代码（持续变姿态、外参调整、末段验证变动等）必须先说明具体方案并取得用户同意；不直接改J5轨迹或擅自取消朝向锁定。5°回退归零或revert `8f5f701`，TF等待回退revert `e48e4c9`，各自同步实际工作区并重建；本轮只有文档/证据变化。
+
 ### 2026-10-11 12:49：主机提权与Git写通道恢复；提交TF等待修复，实体USB尚未透传
 
 - 实现/证据提交已成功：`e48e4c9`（9个指定文件，246新增/8删除）；`git diff --cached --check`及`git show --check --oneline HEAD`返回0。完整回退命令为`git revert e48e4c9`，随后仅同步实际工作区相应源码并重新构建；此前5°/10mm及精确采样TF提交保留。无需再修Git权限。本轮没有真实机械臂运动，新断点仅为当前VMware实体USB接入，首条只读检查为提权主机执行`lsusb`。

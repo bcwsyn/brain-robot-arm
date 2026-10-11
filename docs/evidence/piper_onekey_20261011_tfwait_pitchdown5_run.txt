@@ -1,0 +1,68 @@
+2026-10-11 real one-key result; times in log are epoch; local time UTC+8.
+Source directory: /home/johnwick/brain_robot_logs/real_full_20261011_tfwait_pitchdown5_1253
+No new source/config modifications during this test. Runtime build SHA256:
+07c53d1ee6a25771623c77045603a3a2df7afd5c343e3eb8fb7f939bdc867298
+
+Selected original visual_stack.log lines (prefixes preserved):
+[visual_search_controller-7] [INFO] [1791694402.119193401] [visual_search_controller]: STATE -> SEARCH (OBSERVE_POSE_REACHED)
+[visual_search_controller-7] [INFO] [1791694435.928956187] [visual_search_controller]: STATE -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)
+[grasp_lift_executor-8] [INFO] [1791694435.935465553] [grasp_lift_executor]: TARGET_TF_RETRY image_stamp=1791694435.871712923 tf_stamp=1791694435.871712923 age=0.033 reference=base_link xyz=(0.4296,-0.1128,0.0799)
+[grasp_lift_executor-8] [INFO] [1791694440.959083804] [grasp_lift_executor]: ALIGNED_GRASP_PITCH_DOWN radians=0.087266 positive_J5_axis=(0.266989,0.963700,-0.000004) POSE_GOAL_ONLY_NO_JOINT_TRAJECTORY_EDIT
+[piper_jog_adapter.py-6] [INFO] [1791694440.977707159] [piper_jog_adapter]: REAL ARM trajectory accepted: 81 points
+[piper_jog_adapter.py-6] [INFO] [1791694451.861657339] [piper_jog_adapter]: REAL ARM trajectory accepted: 8 points
+[grasp_lift_executor-8] [INFO] [1791694453.524330310] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.4361,-0.1146,0.0700) actual_tip=(0.4376,-0.1151,0.0878) distance=0.0179 axial=-0.0139 lateral=0.0113 angle=0.0392 attempt=0.
+[piper_jog_adapter.py-6] [INFO] [1791694453.528088696] [piper_jog_adapter]: REAL ARM trajectory accepted: 5 points
+[grasp_lift_executor-8] [INFO] [1791694453.929129273] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.4361,-0.1146,0.0700) actual_tip=(0.4367,-0.1148,0.0771) distance=0.0071 axial=-0.0055 lateral=0.0045 angle=0.0154 attempt=1.
+[grasp_lift_executor-8] [ERROR] [1791694453.930668379] [grasp_lift_executor]: Grasp sequence stopped: FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE.
+
+Original CAN samples near stage boundaries, from gripper_can.log:
+Observe ready:
+(1791694402.120073) can0 3A4#000000000000D984
+(1791694402.120163) can0 3A5#FFFF599F00000000
+(1791694402.120400) can0 3A6#0000430400000000
+GRASP_READY:
+(1791694435.930275) can0 3A4#FFFFC37B0000D984
+(1791694435.930276) can0 3A5#FFFF599F00000000
+(1791694435.930387) can0 3A6#0000A5A800000000
+Pregrasp reached:
+(1791694451.860171) can0 3A4#FFFFC7910001758A
+(1791694451.860305) can0 3A5#FFFF0EB8FFFFFA00
+(1791694451.860547) can0 3A6#000060CA00000929
+Final landing/fault:
+(1791694453.930309) can0 3A4#FFFFC79100019408
+(1791694453.930368) can0 3A5#FFFF0873FFFFF93A
+(1791694453.930422) can0 3A6#00004D310000099C
+Decoded signed big-endian int32, 0.001 degrees, J1..J6:
+observe: [0,55.684,-42.593,0,17.156,0]
+ready: [-15.493,55.684,-42.593,0,42.408,0]
+pregrasp: [-14.447,95.626,-61.768,-1.536,24.778,2.345]
+final: [-14.447,103.432,-63.373,-1.734,19.761,2.460]
+
+observer.jsonl snapshot 56 selected original values:
+epoch=1791694454.7868733
+/brain_robot_grasp/state=FAULT_FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE
+/brain_robot_grasp/diagnostic=JAW_CAPTURE_FRESH_RGBD_UNAVAILABLE_NO_CLOSE
+/brain_robot_vision/target_valid=false
+/brain_robot_vision/depth_valid=false
+last target stamp=1791694445.4712524
+last camera target xyz=[0.0017530426146767206,0.10840171963687949,0.293]
+gripper feedback=0.1019 m; 0.050 m open command was not confirmed.
+Image review: evidence/0051_rgb.png (stamp1791694439.6711855) cube visible before approach;
+evidence/0056_rgb.png (stamp1791694454.6714053) tabletop/finger edges, cube not visible.
+This does not prove where cube sits relative to actual fingertips.
+
+Read-only model inference, not calibrated physical fact:
+Existing mount translation [-0.070,0,0.0308], RPY[0,-pi/2,0], tool tip offset0.1358m.
+Uses earlier 10:39 CameraInfo (not newly read this run):
+depth640x400, fx=fy478.7568664550781, cx326.13555908203125, cy199.8734893798828.
+tip optical=[0,0.070,0.105], projected v=519.044734.
+ideal pregrasp surface optical=[0,0.070,0.129], v=459.664037.
+ideal final surface optical=[0,0.070,0.093], v=560.228120.
+All are below depth image boundary in this existing model.
+The camera/tool orientation is rigid; changing the whole tool orientation alone
+does not change these ideal final relative points. Extrinsics not independently calibrated.
+No gate removal, direct J5 trajectory edit, or close command performed.
+
+End: original one-key exit1; no DisableArm/ResetPiper/MasterSlaveConfig/automatic zero return.
+Arm held enabled; original control stack exited. Read-only observer SIGINT exit0.
+Host pgrep for grasp_lift_executor/visual_search_controller/piper_jog_adapter/observer empty.

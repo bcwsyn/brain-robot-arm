@@ -1,5 +1,13 @@
 # PiPER ROS 调试完整交接记录
 
+## 当前接手状态（2026-10-11 13:02，覆盖以下历史断点）
+
+实现e48e4c9及交接28b6169已提交；USB随后恢复，受限CAN配置后原一键实测完成观测→SEARCH→ALIGN→GRASP_READY→精确采样TF锁目标→81点靠近→8点下降→5点纠偏。12:54:13.929模型FK误差7.1mm通过落点；随后因末段新鲜RGB-D目标不可用退出，未闭爪/抬升/释放。实际图像0051紫块可见、0056块已出视野，详细诊断JAW_CAPTURE_FRESH_RGBD_UNAVAILABLE_NO_CLOSE，尚未评估两指包围几何。当前不是Git/USB/TF入口阻断，无需重启或底层巡检。
+
+用户问J5是否没动/保持朝向：原CAN观测17.156°、GRASP_READY42.408°、预抓取24.778°、结束19.761°。当前5°实现只把ALIGN朝向下俯一次，然后仍锁新四元数，MoveIt协调J2/J3并让J5补偿；没有实现靠近时J5持续增大。现外参+工具模型理想末段表面在深度视野下边界外（历史K的模型推算，未证明实体标定正确）。下一步只读核对完整抓取姿态/TCP/相机视野，任何新运动代码/参数须先解释获准，不直接改J5或取消闭爪检查。
+
+仍使用唯一原入口/home/johnwick/start_brain_robot_cube_real.sh及默认/home/johnwick/piper_ws；本轮无源码/参数变更。日志/home/johnwick/brain_robot_logs/real_full_20261011_tfwait_pitchdown5_1253，精选原始证据docs/evidence/piper_onekey_20261011_tfwait_pitchdown5_run.txt。脚本退出1，保持使能/当前位置，控制栈和只读采集器已退出；未DisableArm/ResetPiper/MasterSlaveConfig。准确命令、阶段时刻、回退与模型/实体区分见PIper_PROGRESS首条。下方12:49“实体USB尚未透传”已经过时。
+
 ## 当前接手状态（2026-10-11 12:49）
 
 TF等待修复已提交`e48e4c9`，9个指定文件，Git检查通过；当前本轮指定路径已纳入Git，旧“待提交”段落仅为历史。回退`git revert e48e4c9`再同步/重建实际工作区。下一条执行主机`lsusb`确认透传设备，确认后原一键实测；目前无新实体动作。
