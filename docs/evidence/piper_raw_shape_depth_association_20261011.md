@@ -51,3 +51,13 @@ PYTHONNOUSERSITE=1 ROS_DOMAIN_ID=78 \
 全部原输出在/home/johnwick/brain_robot_logs/large_j5_view_20261011.7cb6Gu：new_detector_replay/{summary.json,messages.jsonl,*_debug.png}、old_detector_same_packets/summary.json、两个节点log。新源SHA2deb634fb542ae2b1a1953771c86ae68c4afeac03cb4a543894e6bddaf24d22f，新二进制SHA099969f9bff0ccf0d320448c8b8fbd2313705b9735523d61b118b9c0876fc7b1。二进制/PNG/大日志不进Git。
 
 下一：只部署这一个已测detector及所需头/实际CMake include，保留旧source/bin独立备份，不全包build/install影响已有executor或YAML。机械臂静止，仅原两相机+原cube_detector.launch.py和有界观察核实时target/depth/点/原RGB。后续真实几何/耦合靠近与接触区仍需实际证据，不能凭DEPTH_GRASP_ALLOWED宣称已抓住或继续扩大J5。
+
+## 部署与真实静止验收（21:54）
+
+部署前核旧source90510e5f…/bin d804707c…且无detector在跑，独立备份于同目录detector_before_deploy/{cup_detector_node.cpp,CMakeLists.txt,cup_detector_node}。只install规范新source/header和已测bin到实际source/build目标，实际CMake只加include目录，未同步整个包/规范OFF-preview executor。随后只cmake --build实际build目录--target cup_detector_node -j2，exit0；最终实际bin SHA73b7a2b4e0d2e4b56f7549c0f151cd23e5e54c8ca077a6a738589addfb480891（与临时build099969f9…不完全相同，明确保留两哈希），install原符号链接解析到实际build。最终实际bin再用新5帧隔离回放7.655秒，4帧稳态target/depth全true/DEPTH_GRASP_ALLOWED、客户端和断言exit0，日志actual_rebuild_replay。不是以源相同推定二进制行为相同。
+
+真实静止窗仅原Astra/cam2image/原cube_detector.launch.py，未启动MoveIt/adapter/搜索/执行器。三个进程组55361/55362/55363上限80秒，原observer明确外包timeout -s INT 38秒/exit124（预期有界停止，数据采集有效）；后配对collector3.605秒/exit0获5组，最大跨度37.149ms、六轴range0，713反馈/49depth/62info/18RGB、3个非同帧info拒绝。观察13快照中11个有合法状态的快照target/depth均true（这是抽样证据，非无限长期连续保证），末记录164点/valid消息、深度608帧/157RGB/6627反馈，三维点(.009114,.035452,.151)m且frame=depth光学。已看0012原RGB及debug，完整bbox(90,126,61,71)、完整原形状中心约(120.11,161.11)，不再因残缺注册形状被TARGET_LOST挡住。
+
+可见自由端区域仅粗略圈选(46,154)/(255,157)，中线参考(150.5,155.5)，目标约左30.39px/下5.61px；这是同原图的二维瞄准参考，不是精确CAD角点、真实接触面或已包围物体，不能直接闭爪。没有再次增加J5或修改TF。21:52临时相机/检测/观察均已退出，仅原SDK50857/PGID50855保留，未Disable。
+
+实时observer SHA77ec133912b6234f4683f2be4f7f81f715b96a42a3d5641ef73b59974c40dd54；新paired SHA8ed7f9c0165a7095bfc306ea2e66bfccf564f26fac273393064d8c84e7e6eec1；new_live_result.json SHAc602061ed5385ee87049f03a9f6df07d5fc0de6472fd53e4641a7e39ba921288；最终actual_rebuild_replay/summary.json SHAf738ae5d03efc00c5a5a23c804f39ac7ca83a776bcebce21cb04840bcc493513。根盘34%未清理。主入口0e976b0a…/实际executor107ce501…/cube_task_real75612194…保持。下一复用原执行器目标与姿态生成/MoveIt，核这一个新有效目标的耦合靠近路径；不回CAN基础检查、不部署旧26°拟合、不把检测修复当抓取验收。

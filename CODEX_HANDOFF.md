@@ -1,5 +1,11 @@
 # PiPER ROS 调试完整交接记录
 
+## 最新检测实机部署已验收（2026-10-11 21:54）
+
+0b661a4补丁已只部署detector source/header/实际include/bin，旧source/bin备份large_j5_view_20261011.7cb6Gu/detector_before_deploy。实际只目标重建最终bin73b7a2b4…，新paired域78回放4稳态全target/depth=true；实体静止38秒13快照/11就绪全true、点(.009114,.035452,.151)m，之后5组时间配对max37.149ms/关节不变，原RGB完整。详docs/evidence/piper_raw_shape_depth_association_20261011.md部署段。
+
+用户继续完成，下一不再重复CAN/注册黑洞检查，复用原grasp_lift_executor的有效目标/姿态生成和MoveIt核末段方向/耦合靠近。目标原RGB约(120.11,161.11)，粗两指中线(150.5,155.5)，仍左约30px/下6px；不是可闭爪或已校准TF。原入口0e976b0a…/实际executor107ce501…/cube_task_real75612194…保持，规范OFF-preview executor仍未自动部署。临时相机/检测/观察已停，仅SDK50857/PGID50855；末六轴不变/J5 54.624901°，未闭爪/Disable/新TF，无自动续跑，抓取尚未完成。
+
 ## 最新检测修复待部署（2026-10-11 21:50）
 
 起点2473f22，仅detector/纯OpenCV几何头/6项测试/域78有界回放及CMake改动。原RGB形状＋工厂D2C同轮廓真实深度；完整RGB中心射线结合实测中值Depth-Z回DEP光学，保留原640×400误差/时刻/质量与尺寸门，不填洞、不改TF/执行器/YAML。旧同五包false/TARGET_LOST，新稳态5帧target/depth全true、.151m，四类合成否定全拒绝。编译/6测试/两个回放exit0，详docs/evidence/piper_raw_shape_depth_association_20261011.md。

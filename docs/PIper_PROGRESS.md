@@ -1,5 +1,12 @@
 # PiPER 调试进度
 
+## 2026-10-11 21:54：仅部署原检测器，静止真实目标确认通过；回到原耦合靠近主线
+
+- 起点0b661a4，只部署source/header/所需实际CMake include和cup_detector二进制，先核旧SHA并独立备份同J5目录detector_before_deploy。原install链接指向实际build；实际只目标重建exit0，最终bin73b7a2b4…与临时099969f9…不同，已新5实帧隔离回放4稳态全target/depth=true/DEPTH_GRASP_ALLOWED、断言exit0，不隐瞒bin差别。其他主入口0e976b0a…/实际executor107ce501…/真实YAML75612194…未动。
+- 原两相机+原detector launch静止实体38秒有界观察，13快照中11就绪全target/depth=true；末164三维/valid消息、608depth/157RGB/6627feedback。点(.009114,.035452,.151)m(depth光学)，六轴range0。随后原配对collector3.605秒exit0获5帧/max37.149ms，3个错时info拒绝。observer外层timeout返回124是预期终止，不能称全部命令exit0。
+- 已看0012原RGB/debug：原完整bbox(90,126,61,71)、中心约(120.11,161.11)，可见两指自由端区域粗约(46,154)/(255,157)，相对二维中线仍左30px/下6px，仅瞄准参考不证明接触/可闭爪。未新运动、未闭爪、未改TF/TCP，旧70/105mm测量仍保留。
+- 21:52临时组55361/55362/55363及观察全退出，SDK50857/PGID50855保持；根盘34%，未重复CAN/清盘/固件操作。实时、新旧回放、最终bin SHA和回退备份完整见docs/evidence/piper_raw_shape_depth_association_20261011.md。用户新“继续完成”后下一复用原grasp_lift_executor的有效目标/姿态生成与MoveIt规划，核实际末段方向后靠近；不把检测通过等同最终抓取，任务尚未完成。
+
 ## 2026-10-11 21:50：原RGB形状/真实深度关联补丁通过同图A/B和四个否定例，待静止部署验证
 
 - 起点2473f22，仅原cup_detector_node增加完整原RGB形状选择、工厂D2C有效像素关联及完整形状中心射线/实测Depth-Z转换，纯OpenCV头与6测试、一个只限域78的有界相机输入回放工具、CMake目标登记。保持640×400误差/深度optical三维/时刻、原质量/尺寸阈值，未填洞/删门/改TF或主线，像素面积在软件配准分支改按原RGB解释，不能承诺所有远距灵敏度完全相同。具体官方几何与项目推断分别见docs/evidence/piper_raw_shape_depth_association_20261011.md。
