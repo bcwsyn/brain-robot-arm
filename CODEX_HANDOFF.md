@@ -4,6 +4,8 @@
 
 ## 当前实测结果（2026-10-11 10:26）
 
+随后用户询问J5减小/实体抬起原因，本轮仅只读分析，未运动/修改代码。现配置preserve_aligned_grasp_orientation=true使抓取锁住ALIGN末端朝向；J2/J3改变后J5反向补偿。CAN阶段反馈J5为观测17.064°、GRASP_READY41.918°、预抓取17.044°、末段12.477°。离线模型在结束q固定其他关节时J5+1°使tip z约-2.48mm，支持用户局部方向；同一tip目标、+5°俯仰候选IK的J5约19.542°，尚无MoveIt碰撞轨迹/实机验证。待批准修改应在既有抓取Pose俯仰层而非篡改J5轨迹，不恢复旧IK失败枚举；详细数值与官方接口依据见进度最新条。目标/TCP/外参准确性仍未独立证实。
+
 `c0dc5eb`已实现批准的落点容差8→10mm并同步实机配置；原一键运行参数确认0.01。已完成观测→SEARCH→ALIGN→GRASP_READY、78点预抓取、8点下降和5点纠偏；最终FK误差9.5mm通过落点判断，随即因鲜RGB-D检查`FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE`退出，未闭爪/抬升/释放。检测器在靠近时LOST，真实RGB靠近前能看到方块、结束时看不到；不能仅凭错误名判两指几何或实体TCP正确。此处不是新加门或开爪反馈阻止靠近。原日志`/home/johnwick/brain_robot_logs/real_full_20261011_landing10mm/`，精选证据[`docs/evidence/piper_onekey_20261011_landing10mm.txt`](docs/evidence/piper_onekey_20261011_landing10mm.txt)。脚本退出1，保持使能，未DisableArm/ResetPiper，控制栈/采集器已退出。
 
 用户最新要求对比J5：本轮观测姿态就绪实际+17.064°，下降纠偏结束+12.477°，差-4.587°；原始3A6帧与时刻见进度首条。只读核对结束，不另发关节命令。下一步在本轮证据上分析视野/TCP关系，任何新代码/参数修改先说明并获批准；不重复同一故障跑法。下方10:20“即将运行”是已完成动作的历史记录。
