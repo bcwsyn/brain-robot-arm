@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-11 13:28：b95c03a变姿态实测完成靠近/下降；落点确认提前拒绝，视野仍待修正
+
+- 实现提交`b95c03a`（13个本轮路径、667新增/9删除），git show --check通过。默认实际colcon构建76秒返回0、实际CTest7/7套通过，install链接到实际build；二进制SHA=db7bcdafc5c16efc11560ab244316c8e30cf8fc15a6969811714b94a02cf01af。新参数运行回读true/0.5/preserve=false，0.60秒与10mm未改，原一键SHA未改。当前不是隔离overlay或另一个入口。
+- 本轮原命令AUTO_START=1、STOP_AFTER_TARGET_ACQUIRED=0、DEPTH_ONLY_TARGET=0、WS=/home/johnwick/piper_ws、LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_target_directed /home/johnwick/start_brain_robot_cube_real.sh。[1/7]–[7/7]全部通过；CAN复用1Mbps/.75 ERROR-ACTIVE、RX持续/错误0、根盘33%；不重载/不重复固件基线。起点[-.252013468,1.821188488,-1.105478612,-.030247896,.344710884,.042912240]rad、原观察目标[0,.98,-.75,0,.30,0]rad，观测规划速度/加速度1%，原适配器速度/限位基线不变。隔离域78规划器先退出（既有MoveIt析构-11发生在退出，不是本次规划失败）。
+- 12点原观测轨迹已接受；13:22:36.598 OBSERVE_POSE_REACHED→SEARCH，13:23:08.687 ALIGN，13:23:10.687 GRASP_READY；精确原采样TF在下一毫秒重试成功锁base(0.4300,-0.1138,0.0794)m。开爪50mm反馈101.9mm仍未确认，原允许分支继续，不阻止靠近。13:23:15.725真实日志TARGET_DIRECTED_VARIABLE_ATTITUDE，74个pre/13个descent Pose路点，下降方向比例0.5，无单轴角度硬改。
+- 新MoveIt靠近29点/下降9点均完整、最大相邻步进0.086293/0.034059rad，adapter分别接受并真实执行。原CAN精确J5：观测17.251°、GRASP_READY42.404°、预抓取结束33.124°、首次落点35.052°、纠偏落点35.113°、后续稳定35.011°。因此下降时J5正向增大、朝向不再固定；不能说全程J5单调增大。实际完整靠近耗时约12.39秒，计划时长2.716秒；原反馈等候才推进，并非机械臂未动。
+- 当前直接阻断：13:23:30.291首次FK误差17.2mm，原5点一次纠偏后13:23:30.711仍11.4mm，故FAULT_GRASP_LANDING_UNCONFIRMED_NO_CLOSE。不是本轮新增门，也不是夹爪反馈/鲜视觉先挡住运动。未进入FreshFaceInsideJaws、未闭爪/抬升/释放，总目标仍未完成。
+- 定位时序的软件证据：ExecuteArmTrajectory在原0.04rad关节误差内即可返回，EnsureRealTopDownLanding随即检查10mm且最多纠偏一次。J2目标1.88846rad≈108.201°，首次判断实测106.046°、纠偏判断106.858°、随后108.248°；未发新抓取目标，反馈仍在完成同一终点。用同一PiPER URDF从实际快照只读重算FK，13:23:32.225（拒绝后1.51秒）模型残差已1.94mm，13:23:35.229为0.73mm；规划终点重算与日志目标差0.057mm。支持“落点确认过早”的判断，不需放宽10mm或增加下降距离；不等于实体TCP/外参已标定正确。
+- 实际RGB已经查看：0042靠近前方块可见、0044过程中靠近下沿、0048最终不见；检测器13:23:20.843 LOST，最后目标stamp1791696200.610657。本轮新增只读CameraInfo订阅捕获当前640×400 K，与历史值一致。现外参模型捕获区在深度视野外的矛盾仍在；即使落点等待修好，原鲜RGB-D闭爪分支仍可能拒绝，不能声称只等到位就一定能抓取。不把“看不到”直接认定物体已在实体夹爪之外。
+- 原脚本退出1、停止输出/保持使能，控制栈退出；只读采集器在同一收尾时收到ExternalShutdownException退出1（此前所有关节/图像/内参证据已写出），主机ps确认无executor/visual/adapter/采集器残留。未ResetPiper/MasterSlaveConfig/DisableArm/自动回零。大日志与图像留在实际LOG_DIR，精选原始行/CAN/FK/内参归档docs/evidence/piper_onekey_20261011_target_directed_run.txt，不提交供应商或升级包。
+- 下一单项建议须先按用户要求获准：仅修改现落点确认时序，保留最后既有目标/使能，按新鲜实际反馈等待模型落点进入原10mm/朝向容差，再继续原鲜视觉判断；受现反馈过期、取消与已有任务超时约束，不放宽10mm、不多发纠偏轨迹、不改变视野门。新姿态已实机验证，不退回固定朝向、不重复CAN诊断。此轮没有擅自实现落点等待或变更相机/闭爪验证。完整实现回退git revert b95c03a，同步实际8路径并重建；TF等待e48e4c9及旧5°/10mm基线保留。后续第一条只读命令为rg -n 'ExecuteArmTrajectory|EnsureRealTopDownLanding|trajectory_feedback_tolerance_rad'规范executor，复用本条实测而非原样重跑。
+
 ### 2026-10-11 13:19：用户批准目标定向变姿态；实现/隔离规划通过，准备原一键实测
 
 - 用户“确认”批准13:04方案。沿仓库ROS/最小修改技能实现现TopDown抓取入口的新target_directed_grasp_enabled分支；实体配置true、preserve_aligned_grasp_orientation=false。不把关闭旧开关当作方案，不进入旧tilt/yaw枚举，不直接改J5轨迹。原SEARCH/ALIGN、精确TF等待、静态base目标、夹爪开闭/末段鲜RGB-D检查及原一键未改。

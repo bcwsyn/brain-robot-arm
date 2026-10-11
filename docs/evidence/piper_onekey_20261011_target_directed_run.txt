@@ -1,0 +1,86 @@
+Real default one-key run of b95c03a target-directed variable attitude.
+Command:
+BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_target_directed /home/johnwick/start_brain_robot_cube_real.sh
+Runtime build SHA256 db7bcdafc5c16efc11560ab244316c8e30cf8fc15a6969811714b94a02cf01af.
+Actual build76s exit0; actual CTest7/7 suites passed.
+Readback: target_directed_grasp_enabled=true, downward_fraction=0.5,
+preserve_aligned_grasp_orientation=false, target_timeout_s=0.6,
+grasp_landing_tolerance_m=0.01. Original script hash unchanged e8c9f85c….
+
+Selected exact original visual_stack.log lines:
+[visual_search_controller-7] [INFO] [1791696156.598437738] [visual_search_controller]: STATE -> SEARCH (OBSERVE_POSE_REACHED)
+[visual_search_controller-7] [INFO] [1791696188.686697927] [visual_search_controller]: STATE -> ALIGN (TARGET_ACQUIRED)
+[visual_search_controller-7] [INFO] [1791696190.686924248] [visual_search_controller]: STATE -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)
+[grasp_lift_executor-8] [INFO] [1791696190.688199257] [grasp_lift_executor]: TARGET_TF_RETRY image_stamp=1791696190.610354662 tf_stamp=1791696190.610354662 age=0.040 reference=base_link xyz=(0.4300,-0.1138,0.0794)
+[grasp_lift_executor-8] [INFO] [1791696195.724607725] [grasp_lift_executor]: TARGET_DIRECTED_VARIABLE_ATTITUDE surface=(0.4300,-0.1138,0.0794) insertion=0.0120 pre_waypoints=74 descent_waypoints=13 downward_fraction=0.500 NO_JOINT_TRAJECTORY_EDIT
+[grasp_lift_executor-8] [INFO] [1791696195.759925045] [grasp_lift_executor]: TARGET_DIRECTED_PREGRASP Cartesian path has 29 trajectory points.
+[grasp_lift_executor-8] [INFO] [1791696195.772194889] [grasp_lift_executor]: TARGET_DIRECTED_DESCENT Cartesian path has 9 trajectory points.
+[piper_jog_adapter.py-6] [INFO] [1791696195.779958331] [piper_jog_adapter]: REAL ARM trajectory accepted: 29 points
+[grasp_lift_executor-8] [INFO] [1791696208.171011521] [grasp_lift_executor]: Real arm trajectory endpoint: duration_s=0.738697 joint1=-0.261452 joint2=1.88846 joint3=-1.28178 joint4=0.010084 joint5=0.611614 joint6=-0.00204221.
+[piper_jog_adapter.py-6] [INFO] [1791696208.172068656] [piper_jog_adapter]: REAL ARM trajectory accepted: 9 points
+[grasp_lift_executor-8] [INFO] [1791696210.290724189] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.4350,-0.1150,0.0686) actual_tip=(0.4359,-0.1172,0.0856) distance=0.0172 axial=-0.0148 lateral=0.0088 angle=0.0385 attempt=0.
+[piper_jog_adapter.py-6] [INFO] [1791696210.304592645] [piper_jog_adapter]: REAL ARM trajectory accepted: 5 points
+[grasp_lift_executor-8] [INFO] [1791696210.710518479] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.4350,-0.1150,0.0686) actual_tip=(0.4352,-0.1171,0.0798) distance=0.0114 axial=-0.0098 lateral=0.0057 angle=0.0252 attempt=1.
+[grasp_lift_executor-8] [ERROR] [1791696210.710592432] [grasp_lift_executor]: Grasp sequence stopped: GRASP_LANDING_UNCONFIRMED_NO_CLOSE.
+
+Selected original gripper_can.log lines; signed BE int32 in0.001deg:
+OBSERVE ready:
+(1791696156.597149) can0 3A4#FFFFFF1E0000DD88
+(1791696156.597268) can0 3A5#FFFF572800000000
+(1791696156.597269) can0 3A6#0000436300000000
+GRASP_READY:
+(1791696190.687408) can0 3A4#FFFFC2FE0000DD88
+(1791696190.687612) can0 3A5#FFFF572800000000
+(1791696190.687616) can0 3A6#0000A5A400000000
+Pregrasp end:
+(1791696208.172652) can0 3A4#FFFFC4DA00017F7A
+(1791696208.172936) can0 3A5#FFFEF69C00000000
+(1791696208.172972) can0 3A6#00008164FFFFFEC7
+First landing check:
+(1791696210.292977) can0 3A4#FFFFC52B00019E3E
+(1791696210.293185) can0 3A5#FFFEE13700000000
+(1791696210.293330) can0 3A6#000088EC00000000
+Correction landing check:
+(1791696210.712972) can0 3A4#FFFFC52B0001A16A
+(1791696210.713020) can0 3A5#FFFEE13700000000
+(1791696210.707929) can0 3A6#0000892900000000
+Settled after fault, before original STOP hold:
+(1791696215.222779) can0 3A4#FFFFC52B0001A6D8
+(1791696215.222929) can0 3A5#FFFEE13700000226
+(1791696215.223039) can0 3A6#000088C300000000
+J5(deg): observe17.251, ready42.404, pregrasp33.124,
+landing0=35.052, landing1=35.113, settled35.011.
+J2(deg): landing0=106.046, landing1=106.858, settled108.248.
+Commanded J2 endpoint1.88846rad (~108.201deg).
+
+Read-only post-fault FK reconstruction from exact same PiPER URDF:
+URDF robot_description in /tmp/launch_params_hnha0fe3 from isolated planner;
+base_link->link6 chain, origin RPY/XYZ then each revolute axis rotation,
+tip offset[0,0,0.1358]. Planned endpoint reconstructs tip
+[0.434990198,-0.115037109,0.068558228], rounded logged goal residual0.0000567m.
+observer snapshot48 stamp1791696212.2246463, no new arm goal after FAULT:
+tip[0.434355251,-0.116819642,0.068363899], rounded goal residual0.001944875m.
+snapshot49 stamp1791696215.2294142:
+tip[0.434682395,-0.115614741,0.068369090], residual0.000729451m.
+Thus joint feedback continued settling and model residual fell below10mm AFTER
+the immediate existing landing check had already rejected. This is model/feedback
+evidence for premature confirmation, not physical TCP/target calibration proof.
+ExecuteArmTrajectory can finish at original0.04rad joint tolerance;
+landing then checks10mm immediately, at most one correction, with no settle wait.
+No tolerances, wait logic or number of corrections changed this round.
+
+Actual current depth CameraInfo captured by read-only observer:
+stamp1791696215.2263112, frame camera_depth_optical_frame, size[640,400],
+K=[478.7568664550781,0,326.13555908203125,0,478.7568664550781,199.8734893798828,0,0,1].
+RGB review: evidence/0042_rgb.png cube visible before approach;
+0044_rgb.png cube near bottom during approach;0048_rgb.png cube no longer visible.
+Detector LOST at1791696200.843034927; last target stamp1791696200.610657.
+Fresh target/depth valid=false at FAULT. FreshFaceInsideJaws was NOT reached,
+because landing failed first. Existing view constraint remains independent.
+Gripper open50mm unconfirmed; actual feedback stayed101.9mm; original allowed
+approach proceeded. No close/lift/release executed; no successful grasp claimed.
+
+Original one-key exit1; cleanup held enable/position, no ResetPiper or DisableArm.
+Control stack exited. Read-only collector exit1 with ExternalShutdownException
+at cleanup after all relevant samples/images were saved; no collector remains.
+No new firmware/CAN recovery experiment or code change after the real failure.

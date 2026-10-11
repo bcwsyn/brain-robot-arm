@@ -1,5 +1,13 @@
 # PiPER ROS 调试完整交接记录
 
+## 当前实机断点（2026-10-11 13:28，覆盖以下“待实测”）
+
+b95c03a目标定向变姿态已部署默认/home/johnwick/piper_ws，实际构建76秒/7套CTest通过，二进制db7bcdaf…；原一键real_full_20261011_target_directed实读新模式true/比例0.5/preserve=false，完整观测→SEARCH→ALIGN→GRASP_READY→精确TF锁点→29点靠近→9点下降→原5点纠偏。原CAN实测J5预抓取33.124°→下降35.113°，后稳定35.011°，不是固定朝向。当前先被原落点确认挡住：17.2→11.4mm大于10mm，未闭爪/抬升/释放。
+
+关键软件时序证据：ExecuteArmTrajectory原0.04rad关节容差使返回早于真正稳定到位；J2在拒绝后仍完成同一已下发目标。拒绝后1.51秒/4.52秒的实际反馈用同URDF重算落点误差为1.94/0.73mm（模型证据非实体标定）。下一建议仅改现落点等待时序，保留10mm、不添加运动，须先获用户同意。另有独立视野问题：实际0042能见方块、0048末段看不见，当前CameraInfo与历史K一致；鲜RGB-D闭爪判断本轮尚未运行，等待修好不保证完整抓取。不要删门或恢复固定朝向。
+
+原入口未改/未另建脚本，日志与图像在/home/johnwick/brain_robot_logs/real_full_20261011_target_directed，精选docs/evidence/piper_onekey_20261011_target_directed_run.txt含CAN和FK证据。脚本退出1、保持使能，栈/采集器全退出；采集器收尾ExternalShutdownException不影响已保存证据。无DisableArm/ResetPiper/MasterSlaveConfig。回退git revert b95c03a再同步实际8路径并重建；原TF等待/旧5°及10mm基线保留。完整命令/时间/下一项批准边界见进度13:28首条。
+
 ## 最新已批准实现（2026-10-11 13:19，尚待本方案实测）
 
 用户确认目标定向变姿态方案。新target_directed_grasp_enabled=true优先于旧固定朝向分支，preserve=false；共用纯C++几何从实际工具基点对准锁定目标，随后连续下俯并联动工具位置/指尖长度，两个完整Pose序列都先经现MoveIt检查再交adapter。完全垂直候选在原任务限位下IK失败（J3接近-1.4）；采用目标方向到向下方向0.5旋转比例的斜向路线，隔离75+13路点→29+9轨迹、fraction1、原限位/连续性通过。模型末段J5 32.882→34.773°，不是全程增大或实机结论。隔离构建/7套CTest通过；已同步实际源/YAML，实际构建进行中。原一键/SEARCH/TF等待/夹爪检查未改，仍有相机局部捕获区出视野的模型矛盾，不删除门。下一步实际构建测试后退出域78规划器，原入口real_full_20261011_target_directed核对真实J5/图像；详见进度13:19首条及新snapshot/plan证据。下方“待批准”是历史。
