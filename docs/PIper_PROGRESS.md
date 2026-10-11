@@ -1,5 +1,13 @@
 # PiPER 调试进度
 
+### 2026-10-11 13:04：提出“目标定向、连续变姿态”方案，等待用户批准实现
+
+- 用户明确不要固定夹爪朝向，询问解决方案。本轮仅只读核对，未改源/YAML/脚本、未启动控制栈或发运动。规范/实际executor源码SHA256均9983738886003766c50274fd7efbf37160d4b558c9010c6e8027f8b5248c520a，接续实测提交5000a3d；观测/靠近证据复用上轮，不重跑底层检查。
+- 行为所有者：RunTopDownGrasp锁定ALIGN四元数（加一次5°），PopulateTopDownPose始终复用；PlanArmCartesianFromState目前只接收一个目标Pose并构造单元素waypoints。因此仅关闭preserve_aligned_grasp_orientation会返回旧tilt/yaw枚举，并不实现目标定向，不采用该捷径。
+- 待批准最小方案：保持已锁定base三维目标不变；在现抓取执行器为“靠近→预抓取→插入”生成带位置/朝向的连续Pose序列。各点用模型夹爪伸出轴对准同一个抓取区域，以工具基点到抓取区域的方向生成姿态；绕伸出轴的旋转尽量接近当前姿态，不以方块边角额外扭腕。工具位置与指尖偏置必须一起计算，不能只改四元数造成指尖绕腕转走。检测点是可见表面，不假称精确体心；沿用已锁尺寸/既有插入定义，并在离线模型检查夹爪捕获区域关系。末段保留可达的最终方向，避免指尖靠近目标时方向向量退化；不保证J5全程单调，也不直接修改输出joint5。
+- 在同一MoveIt链传入逐点变化的Pose waypoints，继续现碰撞、IK连续性/任务限位、adapter执行；加入纯几何单测及冻结实测快照的禁止执行规划验证。先检查指尖轨迹、伸出轴对目标方向、J5/六轴曲线和相机投影，再部署同一默认工作区/运行原一键；不另写基础程序/入口、不改SEARCH/ALIGN/TF等待。官方Humble接口确认支持Pose waypoint序列：https://moveit.picknik.ai/humble/api/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html （computeCartesianPath）。这只说明接口能力，不证明本方案已规划或实机成功。
+- 视野问题单独明确：当前模型理想夹爪捕获区域在相机下边界外；“夹爪对着目标”不等于“相机镜头也对着目标”，同一刚性安装下全工具转向不能保证最终可见。先做同一候选轨迹的投影核对，不能承诺变姿态就能通过现末段鲜RGB-D检查，也不随方案删除它。外参或末段验证若需调整，另报实证和具体修改征求同意。本轮方案尚未实施/规划/实机验证，待用户确认后才修改。
+
 ### 2026-10-11 13:02：原一键已完成靠近/下降；5°目标仍锁定朝向，末段丢目标未闭爪
 
 - 接续实现`e48e4c9`及交接`28b6169`。12:49后USB-CAN `1d50:606f`及Orbbec `2bc5:0557/0657`已出现在主机；can0最初DOWN，执行已授权受限命令`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、`sudo -n ip link set can0 txqueuelen 1000`、`sudo -n ip link set can0 up`。ERROR-ACTIVE、被动candump收到3A0–3A7、RX持续增长后原脚本直接复用，不重载。根盘33%/51G可用。12:49“缺USB”不再是当前阻断，不要求重启机械臂。
