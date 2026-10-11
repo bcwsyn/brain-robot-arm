@@ -31,7 +31,7 @@ def test_raw_rgb_survives_zero_depth_and_clipped_bbox_is_distinct():
     rclpy.init()
     node = rclpy.create_node("raw_colour_zero_depth_replay")
     bridge = CvBridge()
-    rows, debug, valid, projection, stamps = [], [], [], [], set()
+    rows, debug, valid, projection, qualified, stamps = [], [], [], [], [], set()
     subscriptions = [
         node.create_subscription(PolygonStamped, "/brain_robot_vision/raw_color_bbox",
                                  lambda m: rows.append(m), 10),
@@ -41,13 +41,15 @@ def test_raw_rgb_survives_zero_depth_and_clipped_bbox_is_distinct():
                                  lambda m: valid.append(m.data), 10),
         node.create_subscription(PointStamped, "/brain_robot_vision/raw_target_projection",
                                  lambda m: projection.append(m), 10),
+        node.create_subscription(PolygonStamped, "/brain_robot_vision/qualified_color_bbox",
+                                 lambda m: qualified.append(m), 10),
     ]
     rgb_pub = node.create_publisher(Image, "/camera/color/image_raw", 10)
     depth_pub = node.create_publisher(Image, "/camera/depth/image_raw", 10)
     info_pub = node.create_publisher(CameraInfo, "/camera/depth/camera_info", 10)
     try:
         for clipped in [True, False]:
-            rows.clear(); debug.clear(); valid.clear(); stamps.clear()
+            rows.clear(); debug.clear(); valid.clear(); qualified.clear(); stamps.clear()
             image = np.zeros((240, 320, 3), np.uint8)
             image[210 if clipped else 155:240 if clipped else 220, 100:160] = [180, 40, 150]
             assert 125 <= cv2.cvtColor(image, cv2.COLOR_BGR2HSV)[215, 125, 0] <= 160
@@ -70,7 +72,7 @@ def test_raw_rgb_survives_zero_depth_and_clipped_bbox_is_distinct():
                     info_pub.publish(info); rgb_pub.publish(rgb); depth_pub.publish(depth)
                 rclpy.spin_once(node, timeout_sec=.02)
                 current = [m for m in rows if (m.header.stamp.sec, m.header.stamp.nanosec) in stamps]
-                if len(current) >= 3 and debug and valid:
+                if len(current) >= 3 and debug and valid and qualified:
                     rows[:] = current
                     break
             assert len(rows) >= 3 and debug and valid
@@ -81,6 +83,8 @@ def test_raw_rgb_survives_zero_depth_and_clipped_bbox_is_distinct():
             assert abs(points[2].x - 160 / 320) < .02
             assert (points[2].y >= .98) == clipped
             assert rows[-1].header.frame_id == "camera_color_optical_frame"
+            observed = [m for m in qualified if (m.header.stamp.sec, m.header.stamp.nanosec) in stamps]
+            assert observed and bool(observed[-1].polygon.points) == (not clipped)
             assert debug[-1].width == 320 and debug[-1].height == 240
             raw = bridge.imgmsg_to_cv2(debug[-1], "bgr8")
             assert np.array_equal(raw[215, 125], [180, 40, 150])

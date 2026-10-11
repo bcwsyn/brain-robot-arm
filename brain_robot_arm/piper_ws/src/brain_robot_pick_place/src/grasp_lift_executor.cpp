@@ -26,6 +26,8 @@
 #include <moveit_msgs/msg/robot_trajectory.hpp>
 #include <moveit_msgs/srv/get_position_ik.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp/parameter_client.hpp>
+#include <sensor_msgs/msg/camera_info.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/string.hpp>
@@ -43,6 +45,7 @@
 #include "brain_robot_pick_place/grasp_geometry.hpp"
 #include "brain_robot_pick_place/target_model_wait.hpp"
 #include "brain_robot_pick_place/visual_grasp_feedback.hpp"
+#include "brain_robot_pick_place/near_depth_tracking.hpp"
 
 namespace brain_robot_pick_place
 {
@@ -52,6 +55,7 @@ using PlanningSceneInterface = moveit::planning_interface::PlanningSceneInterfac
 
 class GraspLiftExecutor : public rclcpp::Node
 {
+  friend struct NearDepthReplayAccess;  // Isolated tests exercise the actual observation methods.
 public:
   explicit GraspLiftExecutor(const rclcpp::NodeOptions & options)
   : Node("grasp_lift_executor", options)
@@ -74,6 +78,8 @@ public:
       "/brain_robot_grasp/arm_trajectory", rclcpp::QoS(1));
     gripper_command_publisher_ = create_publisher<sensor_msgs::msg::JointState>(
       "/brain_robot_grasp/gripper_command", rclcpp::QoS(1));
+    software_stop_publisher_ = create_publisher<std_msgs::msg::Bool>(
+      emergency_stop_topic_, rclcpp::QoS(10));
     reacquire_publisher_ = create_publisher<std_msgs::msg::Bool>(
       grasp_reacquire_topic_, rclcpp::QoS(10));
     visual_state_subscription_ = create_subscription<std_msgs::msg::String>(
@@ -114,6 +120,55 @@ public:
         std::lock_guard<std::mutex> lock(visual_mutex_);
         raw_target_projection_ = *message;
       });
+    qualified_bbox_subscription_ = create_subscription<geometry_msgs::msg::PolygonStamped>(
+      "/brain_robot_vision/qualified_color_bbox", rclcpp::QoS(1).reliable(),
+      [this](const geometry_msgs::msg::PolygonStamped::SharedPtr message) {
+        std::lock_guard<std::mutex> lock(visual_mutex_);
+        qualified_box_message_ = *message;  // Empty explicitly invalidates the last shape.
+        qualified_box_received_ = std::chrono::steady_clock::now();
+      });
+    raw_info_subscription_ = create_subscription<sensor_msgs::msg::CameraInfo>(
+      "/brain_robot_vision/raw_color_info", rclcpp::QoS(1).reliable(),
+      [this](const sensor_msgs::msg::CameraInfo::SharedPtr message) {
+        std::lock_guard<std::mutex> lock(visual_mutex_);
+        raw_image_info_ = *message;
+      });
+    if (near_depth_rgb_tracking_enabled_ && !simulation_only_) {
+      detector_parameters_ = std::make_shared<rclcpp::AsyncParametersClient>(this, "/cube_detector");
+      calibration_timer_ = create_wall_timer(std::chrono::milliseconds(500), [this]() {
+          if (calibration_request_pending_ || !detector_parameters_->service_is_ready()) {return;}
+          calibration_request_pending_ = true;
+          detector_parameters_->get_parameters({"software_registration_enabled",
+            "color_calibration_width", "color_calibration_height", "color_fx", "color_fy",
+            "color_cx", "color_cy", "color_mirror_horizontal", "depth_to_color_rotation",
+            "depth_to_color_translation_m"},
+            [this](std::shared_future<std::vector<rclcpp::Parameter>> future) {
+              calibration_request_pending_ = false;
+              try {
+                const auto p = future.get();
+                if (p.size() != 10 || !p[0].as_bool()) {return;}
+                const auto r = p[8].as_double_array(), t = p[9].as_double_array();
+                if (r.size() != 9 || t.size() != 3) {return;}
+                near_depth::Calibration c;
+                c.width = p[1].as_int(); c.height = p[2].as_int();
+                c.fx = p[3].as_double(); c.fy = p[4].as_double();
+                c.cx = p[5].as_double(); c.cy = p[6].as_double(); c.mirror = p[7].as_bool();
+                std::copy(r.begin(), r.end(), c.rotation.begin());
+                std::copy(t.begin(), t.end(), c.translation.begin());
+                if (!near_depth::Valid(c)) {return;}
+                {
+                  std::lock_guard<std::mutex> lock(visual_mutex_);
+                  near_calibration_ = c;
+                  near_calibration_ready_ = true;
+                }
+                calibration_timer_->cancel();
+                PublishDiagnostic("NEAR_RGB_FACTORY_CALIBRATION_FROM_RUNNING_DETECTOR");
+              } catch (const std::exception & error) {
+                RCLCPP_WARN(get_logger(), "Cannot read detector calibration: %s", error.what());
+              }
+            });
+        });
+    }
     target_point_subscription_ = create_subscription<geometry_msgs::msg::PointStamped>(
       target_point_topic_, rclcpp::QoS(1).reliable(),
       [this](const geometry_msgs::msg::PointStamped::SharedPtr message) {
@@ -307,6 +362,7 @@ public:
       });
     cup_follow_client_ = create_client<std_srvs::srv::SetBool>(cup_follow_service_);
     servo_stop_client_ = create_client<std_srvs::srv::Trigger>(servo_stop_service_);
+    adapter_disarm_client_ = create_client<std_srvs::srv::Trigger>("/piper_jog_adapter/disarm");
     compute_ik_client_ = create_client<moveit_msgs::srv::GetPositionIK>("/compute_ik");
     execute_service_ = create_service<std_srvs::srv::Trigger>(
       "~/execute", [this](
@@ -444,6 +500,10 @@ private:
     gripper_close_value_ = ParameterOr<int>("gripper_close_value", 40000);
     gripper_settle_s_ = ParameterOr<double>("gripper_settle_s", 2.0);
     fresh_jaw_capture_required_ = ParameterOr<bool>("fresh_jaw_capture_required", false);
+    near_depth_rgb_tracking_enabled_ = ParameterOr<bool>("near_depth_rgb_tracking_enabled", false);
+    near_depth_prediction_max_age_s_ = ParameterOr<double>("near_depth_prediction_max_age_s", 30.0);
+    near_depth_prediction_max_travel_m_ = ParameterOr<double>(
+      "near_depth_prediction_max_travel_m", .030);
     visual_microsteps_enabled_ = ParameterOr<bool>("visual_microsteps_enabled", false);
     visual_microstep_m_ = ParameterOr<double>("visual_microstep_m", .005);
     visual_microstep_angle_rad_ = ParameterOr<double>("visual_microstep_angle_rad", .01745329252);
@@ -542,6 +602,12 @@ private:
       "servo_stop_service", "/servo_node/stop_servo");
 
     configuration_ok_ = (simulation_only_ ? auto_execute_ : real_grasp_enabled_) &&
+      (!near_depth_rgb_tracking_enabled_ ||
+      (static_target_lock_ && !depth_only_target_enabled_ &&
+      std::isfinite(near_depth_prediction_max_age_s_) && near_depth_prediction_max_age_s_ > 0 &&
+      near_depth_prediction_max_age_s_ <= 30 &&
+      std::isfinite(near_depth_prediction_max_travel_m_) &&
+      near_depth_prediction_max_travel_m_ > 0 && near_depth_prediction_max_travel_m_ <= .030)) &&
       (!visual_microsteps_enabled_ ||
       (target_directed_grasp_enabled_ && static_target_lock_ && !depth_only_target_enabled_ &&
       std::isfinite(visual_microstep_m_) && visual_microstep_m_ > 0 && visual_microstep_m_ <= .005 &&
@@ -777,6 +843,16 @@ private:
   {
     approach_locked_ = false;
     target_model_locked_ = false;
+    near_seed_ = {};
+    near_seed_stamp_ns_ = near_last_image_stamp_ns_ = 0;
+    near_camera_travel_m_ = 0;
+    near_last_mode_predicted_ = false;
+    near_depth_tracking_active_ = false;
+    struct TrackingScope
+    {
+      bool & active;
+      ~TrackingScope() {active = false;}
+    } tracking_scope{near_depth_tracking_active_};
     if (!StopServo()) {
       Fail("SERVO_STOP_FAILED");
       return;
@@ -786,6 +862,22 @@ private:
     // open the gripper before the static base-frame target has been locked.
     if (static_target_lock_ && !WaitForTargetModel()) {
       return;
+    }
+    if (near_depth_rgb_tracking_enabled_ && !simulation_only_) {
+      geometry_msgs::msg::PointStamped observed;
+      bool predicted = false;
+      rclcpp::Time image_time(0, 0, get_clock()->get_clock_type());
+      // Capture the same-image shape/depth seed BEFORE gripper/pregrasp output.
+      // Boundedly tolerate normal callback/TF ordering, never substitute latest TF.
+      const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(600);
+      while (rclcpp::ok() && !cancel_requested_ && !near_seed_.valid &&
+        std::chrono::steady_clock::now() < deadline)
+      {
+        ObserveLockedTarget(observed, image_time, predicted);
+        if (!near_seed_.valid) {std::this_thread::sleep_for(std::chrono::milliseconds(20));}
+      }
+      if (!near_seed_.valid) {Fail("NEAR_RGB_RELIABLE_SEED_UNAVAILABLE"); return;}
+      near_depth_tracking_active_ = true;
     }
     if (!simulation_only_) {
       const double gripper_before_open = LatestGripperPosition();
@@ -1264,6 +1356,139 @@ private:
       RCLCPP_ERROR(get_logger(), "Cannot construct diagonal side grasp target: %s", exception.what());
       return false;
     }
+  }
+
+  bool ObserveLockedTarget(
+    geometry_msgs::msg::PointStamped & reference, rclcpp::Time & image_time,
+    bool & predicted)
+  {
+    predicted = false;
+    if (!near_depth_rgb_tracking_enabled_ || !static_target_lock_ ||
+      !target_model_locked_ || depth_only_target_enabled_) {return false;}
+    geometry_msgs::msg::PolygonStamped message;
+    sensor_msgs::msg::CameraInfo info;
+    near_depth::Calibration calibration;
+    std::chrono::steady_clock::time_point received;
+    {
+      std::lock_guard<std::mutex> lock(visual_mutex_);
+      if (!near_calibration_ready_) {return false;}
+      message = qualified_box_message_; info = raw_image_info_;
+      received = qualified_box_received_; calibration = near_calibration_;
+    }
+    const auto steady = std::chrono::steady_clock::now();
+    const auto reject = [this](const char * reason) {
+        RCLCPP_WARN_THROTTLE(get_logger(), *get_clock(), 2000, "NEAR_RGB_REJECTED:%s", reason);
+        return false;
+      };
+    if (message.polygon.points.size() != 4 || received == std::chrono::steady_clock::time_point{} ||
+      info.width <= 1 || info.height <= 1 || info.header.frame_id != message.header.frame_id)
+    {return reject("COLOR_SHAPE_UNAVAILABLE");}
+    image_time = rclcpp::Time(message.header.stamp, get_clock()->get_clock_type());
+    const double image_age = (now() - image_time).seconds();
+    const double receipt_age = std::chrono::duration<double>(steady - received).count();
+    if (image_time.nanoseconds() <= 0 || image_age < 0 || image_age > target_timeout_s_ ||
+      receipt_age > target_timeout_s_) {return reject("STALE_RGB");}
+    if (image_time.nanoseconds() < near_last_image_stamp_ns_) {
+      return reject("OUT_OF_ORDER_RGB");
+    }
+    const auto & p = message.polygon.points;
+    const visual_grasp::Box box{p[0].x, p[0].y, p[2].x, p[2].y};
+    if (!visual_grasp::Valid(box)) {return reject("COLOR_SHAPE_UNAVAILABLE");}
+    // /joint_states contains physical feedback, not the planned endpoint.
+    {
+      std::lock_guard<std::mutex> lock(feedback_mutex_);
+      const auto & q = latest_joint_state_;
+      const double q_age = (now() - rclcpp::Time(q.header.stamp, get_clock()->get_clock_type())).seconds();
+      if (joint_state_received_time_ == std::chrono::steady_clock::time_point{} ||
+        std::chrono::duration<double>(steady - joint_state_received_time_).count() > target_timeout_s_ ||
+        q_age < 0 || q_age > target_timeout_s_) {return reject("STALE_ACTUAL_FEEDBACK");}
+      for (int axis = 1; axis <= 6; ++axis) {
+        if (!std::isfinite(JointPosition(q, "joint" + std::to_string(axis)))) {
+          return reject("INCOMPLETE_ACTUAL_FEEDBACK");
+        }
+      }
+    }
+    geometry_msgs::msg::PointStamped measured;
+    bool measured_same_image = false;
+    {
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      reference = locked_target_reference_;  // Never replace the static world target.
+      measured = target_point_camera_;
+      const auto fresh = [&](const auto & t) {
+          return t != std::chrono::steady_clock::time_point{} &&
+                 std::chrono::duration<double>(steady - t).count() <= target_timeout_s_;
+        };
+      measured_same_image = target_valid_ && depth_valid_ && fresh(target_point_received_time_) &&
+        fresh(target_valid_received_time_) && fresh(depth_valid_received_time_) &&
+        fresh(target_size_received_time_) && measured.header.stamp == message.header.stamp &&
+        target_size_.header.stamp == message.header.stamp;
+    }
+    try {
+      // Exact image-time TF comes from actual feedback. Allow normal TF delivery
+      // latency; do not use latest or the trajectory's planned terminal joints.
+      const auto camera_from_reference = tf_buffer_->lookupTransform(
+        camera_optical_frame_, lift_reference_frame_, image_time,
+        rclcpp::Duration::from_seconds(.3));
+      geometry_msgs::msg::PointStamped camera;
+      tf2::doTransform(reference, camera, camera_from_reference);
+      near_depth::Projection projection;
+      if (!near_depth::Project(calibration, {camera.point.x, camera.point.y, camera.point.z},
+          info.width, info.height, projection)) {return reject("LOCKED_TARGET_OUT_OF_VIEW");}
+      tf2::Transform camera_transform;
+      tf2::fromMsg(camera_from_reference.transform, camera_transform);
+      const auto camera_origin = camera_transform.inverse().getOrigin();
+      // Colour association applies to measured observations too: a new purple
+      // background must not refresh the seed belonging to the locked cube.
+      const double error = std::hypot((box.left + box.right) / 2 - projection.x,
+        (box.top + box.bottom) / 2 - projection.y);
+      if (error > .04 || projection.x < box.left || projection.x > box.right ||
+        projection.y < box.top || projection.y > box.bottom)
+      {return reject("LOCKED_TARGET_RGB_MISMATCH");}
+      if (measured_same_image) {
+        geometry_msgs::msg::PointStamped observed_reference;
+        const std::string frame = measured.header.frame_id.empty() ?
+          camera_optical_frame_ : measured.header.frame_id;
+        const auto reference_from_measurement = tf_buffer_->lookupTransform(
+          lift_reference_frame_, frame, image_time, rclcpp::Duration::from_seconds(.3));
+        tf2::doTransform(measured, observed_reference, reference_from_measurement);
+        if (std::hypot(std::hypot(observed_reference.point.x - reference.point.x,
+            observed_reference.point.y - reference.point.y),
+            observed_reference.point.z - reference.point.z) > visual_target_association_m_)
+        {return reject("MEASURED_TARGET_CHANGED");}
+        geometry_msgs::msg::PointStamped measured_camera;
+        tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
+        near_depth::Projection measured_projection;
+        if (!near_depth::Project(calibration,
+            {measured_camera.point.x, measured_camera.point.y, measured_camera.point.z},
+            info.width, info.height, measured_projection))
+        {return reject("INVALID_MEASURED_RGBD_SEED");}
+        near_seed_ = {box, measured_projection.z, true};
+        near_seed_stamp_ns_ = image_time.nanoseconds();
+        near_last_camera_origin_ = camera_origin;
+        near_last_image_stamp_ns_ = image_time.nanoseconds();
+        near_camera_travel_m_ = 0;
+        reference = observed_reference;  // Fresh output, never mutate the static target lock.
+      } else {
+        if (!near_seed_.valid) {return reject("NO_RELIABLE_RGBD_LOCK");}
+        const double increment = image_time.nanoseconds() > near_last_image_stamp_ns_ ?
+          (camera_origin - near_last_camera_origin_).length() : 0;
+        near_depth::Evidence evidence{true, true, true, image_age, receipt_age,
+          (now().nanoseconds() - near_seed_stamp_ns_) * 1e-9, near_camera_travel_m_ + increment};
+        if (const auto reason = near_depth::PredictionRejection(near_seed_, evidence, box, projection,
+            target_timeout_s_, near_depth_prediction_max_age_s_, near_depth_prediction_max_travel_m_))
+        {return reject(reason);}
+        near_camera_travel_m_ += increment;
+        near_last_camera_origin_ = camera_origin;
+        near_last_image_stamp_ns_ = image_time.nanoseconds();
+        predicted = true;  // depth_valid is still false; old measurement stamp is retained.
+      }
+      if (predicted != near_last_mode_predicted_) {
+        PublishDiagnostic(predicted ? "NEAR_RGB_LOCKED_3D_PREDICTION_NOT_MEASURED_DEPTH" :
+          "NEAR_RGB_MEASURED_DEPTH_RESTORED_STATIC_TARGET_UNCHANGED");
+        near_last_mode_predicted_ = predicted;
+      }
+      return true;
+    } catch (const tf2::TransformException &) {return reject("EXACT_IMAGE_TF_UNAVAILABLE");}
   }
 
   bool ReadVisualBox(visual_grasp::Box & box, bool full = false)
@@ -1888,6 +2113,7 @@ private:
       Fail("FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE");
       return;
     }
+    near_depth_tracking_active_ = false;  // Tabletop association ends before closing/lifting.
     geometry_msgs::msg::PoseStamped grasp_pose;
     grasp_pose = CurrentPoseInFrame(lift_reference_frame_);
     if (grasp_pose.header.frame_id.empty()) {
@@ -2559,6 +2785,16 @@ private:
     if (trajectory.joint_names.empty() || trajectory.points.empty()) {
       return false;
     }
+    const auto observation_ok = [this]() {
+        if (!near_depth_tracking_active_) {return true;}
+        geometry_msgs::msg::PointStamped target;
+        rclcpp::Time stamp(0, 0, get_clock()->get_clock_type());
+        bool predicted = false;
+        return ObserveLockedTarget(target, stamp, predicted);
+      };
+    if (!observation_ok()) {
+      PublishDiagnostic("LOCKED_RGB_OBSERVATION_UNAVAILABLE_BEFORE_ARM_OUTPUT"); return false;
+    }
     const auto & final_point = trajectory.points.back();
     const double duration_s = static_cast<double>(final_point.time_from_start.sec) +
       static_cast<double>(final_point.time_from_start.nanosec) * 1e-9;
@@ -2580,6 +2816,25 @@ private:
       std::chrono::duration_cast<std::chrono::steady_clock::duration>(
       std::chrono::duration<double>(trajectory_feedback_timeout_s_));
     while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      if (!observation_ok()) {
+        // Stop the ORIGINAL adapter's output and hold enabled. MoveGroup::stop()
+        // alone cannot cancel a trajectory published to this separate adapter.
+        std_msgs::msg::Bool stop;
+        stop.data = true;
+        software_stop_publisher_->publish(stop);  // Existing software stop, never DisableArm.
+        bool stopped = false;
+        if (adapter_disarm_client_->service_is_ready()) {
+          auto future = adapter_disarm_client_->async_send_request(
+            std::make_shared<std_srvs::srv::Trigger::Request>());
+          if (future.wait_for(std::chrono::milliseconds(600)) == std::future_status::ready) {
+            const auto response = future.get(); stopped = response && response->success;
+          }
+        }
+        cancel_requested_ = true;
+        PublishDiagnostic(stopped ? "LOCKED_RGB_LOST_ADAPTER_DISARM_CONFIRMED_HOLD_ENABLED" :
+          "LOCKED_RGB_LOST_ADAPTER_DISARM_UNCONFIRMED");
+        return false;
+      }
       if (std::chrono::steady_clock::now() >= earliest_feedback_time &&
         TrajectoryFeedbackReached(trajectory.joint_names, final_point.positions))
       {
@@ -2679,21 +2934,34 @@ private:
     geometry_msgs::msg::PointStamped face;
     double size = 0.0;
     const auto now_steady = std::chrono::steady_clock::now();
+    bool fresh_rgbd = false;
     {
       std::lock_guard<std::mutex> lock(target_mutex_);
       const auto fresh = [&](const auto & received) {
           return received != std::chrono::steady_clock::time_point{} &&
                  std::chrono::duration<double>(now_steady - received).count() <= target_timeout_s_;
         };
-      if (!target_valid_ || !depth_valid_ || !fresh(target_point_received_time_) ||
-        !fresh(target_valid_received_time_) || !fresh(depth_valid_received_time_) ||
-        !fresh(target_size_received_time_))
+      fresh_rgbd = target_valid_ && depth_valid_ && fresh(target_point_received_time_) &&
+        fresh(target_valid_received_time_) && fresh(depth_valid_received_time_) &&
+        fresh(target_size_received_time_);
+      if (fresh_rgbd) {
+        face = target_point_camera_;
+        size = std::max(target_size_.vector.x, target_size_.vector.y);
+      }
+    }
+    bool predicted = false;
+    rclcpp::Time capture_stamp(0, 0, get_clock()->get_clock_type());
+    if (!fresh_rgbd) {
+      if (!near_depth_rgb_tracking_enabled_ ||
+        !ObserveLockedTarget(face, capture_stamp, predicted))
       {
-        PublishDiagnostic("JAW_CAPTURE_FRESH_RGBD_UNAVAILABLE_NO_CLOSE");
+        PublishDiagnostic("JAW_CAPTURE_FRESH_RGBD_AND_LOCKED_RGB_UNAVAILABLE_NO_CLOSE");
         return false;
       }
-      face = target_point_camera_;
-      size = std::max(target_size_.vector.x, target_size_.vector.y);
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      size = locked_object_size_m_;
+    } else {
+      capture_stamp = rclcpp::Time(face.header.stamp, get_clock()->get_clock_type());
     }
     double opening = 0.0;
     {
@@ -2705,6 +2973,10 @@ private:
         return false;
       }
       opening = JointPosition(latest_gripper_feedback_, "gripper");
+    }
+    if (!near_depth::PlausibleOpening(opening)) {
+      PublishDiagnostic("JAW_CAPTURE_OPENING_OUTSIDE_EXISTING_PIPER_RANGE_NO_CLOSE");
+      return false;
     }
     if (!std::isfinite(size) || size < min_object_size_m_ || size > max_object_size_m_) {
       return false;
@@ -2720,7 +2992,7 @@ private:
         source_frame.c_str());
       return false;
     }
-    const rclcpp::Time source_stamp(source_stamp_msg);
+    const rclcpp::Time source_stamp = capture_stamp;
     try {
       const auto transform = tf_buffer_->lookupTransform(
         "gripper_base", source_frame, source_stamp);
@@ -2729,14 +3001,16 @@ private:
       const bool inside = grasp_geometry::FaceInsideJawCapture(
         {local.point.x, local.point.y, local.point.z}, gripper_tip_offset_m_, size, opening);
       RCLCPP_INFO(get_logger(),
-        "FRESH_JAW_CAPTURE source=%s image_stamp=%.9f tf_stamp=%.9f "
+        "JAW_CAPTURE mode=%s source=%s measurement_stamp=%.9f image_stamp=%.9f tf_stamp=%.9f "
         "face=(%.4f,%.4f,%.4f) tip_z=%.4f size=%.4f opening=%.4f inside=%s "
         "MODEL_MOUNT_NOT_EXTERNAL_CALIBRATION",
-        source_frame.c_str(), source_stamp.seconds(),
+        predicted ? "LOCKED_3D_FRESH_RGB_PREDICTION" : "FRESH_RGBD",
+        source_frame.c_str(), rclcpp::Time(face.header.stamp).seconds(), source_stamp.seconds(),
         rclcpp::Time(transform.header.stamp).seconds(),
         local.point.x, local.point.y, local.point.z, gripper_tip_offset_m_, size,
         opening, inside ? "true" : "false");
-      // Validate fresh perception without replacing/chasing the static target.
+      // Model jaw geometry/opening checks are identical in both modes. A
+      // prediction is not a fresh depth measurement or external calibration.
       return inside;
     } catch (const tf2::TransformException & error) {
       RCLCPP_ERROR(get_logger(),
@@ -3390,6 +3664,24 @@ private:
   int gripper_close_value_{40000};
   double gripper_settle_s_{2.0};
   bool fresh_jaw_capture_required_{false};
+  bool near_depth_rgb_tracking_enabled_{false};
+  bool near_depth_tracking_active_{false};
+  double near_depth_prediction_max_age_s_{30.0};
+  double near_depth_prediction_max_travel_m_{.030};
+  near_depth::Seed near_seed_{};
+  int64_t near_seed_stamp_ns_{0};
+  int64_t near_last_image_stamp_ns_{0};
+  tf2::Vector3 near_last_camera_origin_{0, 0, 0};
+  double near_camera_travel_m_{0};
+  bool near_last_mode_predicted_{false};
+  geometry_msgs::msg::PolygonStamped qualified_box_message_;
+  sensor_msgs::msg::CameraInfo raw_image_info_;
+  std::chrono::steady_clock::time_point qualified_box_received_{};
+  near_depth::Calibration near_calibration_{};
+  bool near_calibration_ready_{false};
+  std::atomic_bool calibration_request_pending_{false};
+  std::shared_ptr<rclcpp::AsyncParametersClient> detector_parameters_;
+  rclcpp::TimerBase::SharedPtr calibration_timer_;
   bool visual_microsteps_enabled_{false};
   double visual_microstep_m_{.005};
   double visual_microstep_angle_rad_{.01745329252};
@@ -3520,10 +3812,13 @@ private:
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr diagnostic_publisher_;
   rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr arm_trajectory_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr gripper_command_publisher_;
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr software_stop_publisher_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr reacquire_publisher_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr visual_state_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PolygonStamped>::SharedPtr raw_bbox_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr raw_projection_subscription_;
+  rclcpp::Subscription<geometry_msgs::msg::PolygonStamped>::SharedPtr qualified_bbox_subscription_;
+  rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr raw_info_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr target_point_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr target_size_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Vector3Stamped>::SharedPtr target_error_subscription_;
@@ -3538,6 +3833,7 @@ private:
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr emergency_stop_subscription_;
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr cup_follow_client_;
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr servo_stop_client_;
+  rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr adapter_disarm_client_;
   rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr compute_ik_client_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr execute_service_;
   std::string last_visual_state_;

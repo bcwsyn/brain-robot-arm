@@ -1,5 +1,18 @@
 # PiPER 调试进度
 
+## 2026-10-11 23:08：获准实施近距 RGB 同目标补丁；84 项回归通过，未实体部署
+
+- 起点/current HEAD `6611386`。用户最新“确认修改”用于本轮代码实施，不解释为新运动/闭爪或 GitHub main 写入授权。固定 Git 恢复检查、任务提示词、最新交接/进度/决策及两个仓库技能已核；本轮未重复观测/CAN基线，推进已完成观测/对齐之后的“原 RGB 完整、局部深度几乎归零”责任点。SDK50857/PGID50855在23:01:49仍在；仅进程确认，不谎称重测了六轴使能/高速反馈。根盘34%，未清盘或重载链路。
+- 修改仅原 detector、executor、共享纯几何头、规范唯一 cube_task_real.yaml 三个功能参数及聚焦测试/CMake；保留全部既有供应商/参考资料改动，不另写生产启动入口/基础运动控制器。ROS2技能用于确认实际部署差异/图像时刻TF，手术式修改技能将范围限定同目标观察及最终复核。
+- 新 qualified_color_bbox 在零/稀疏深度时仍发布通过原矩形形状条件的原RGB观察；空观察明确无目标。旧 raw_bbox 预览不变，原 SEARCH/初锁存仍需稳定 RGB-D，depth_valid 不伪造。执行器从实际 /cube_detector 参数服务读取工厂D2C，按新RGB时刻的实际反馈TF核锁存点位置/尺度，不采用未达到的J6规划角、不刷新旧point stamp/基座锁存。缺深度预测最多30秒/30mm，原.60秒新鲜度不放宽；该窗口不是新运动权限或旧采样预算重置。
+- 原 ExecuteArmTrajectory 输出前/反馈等待内嵌观察，真RGB丢失才走原软件停止话题和adapter disarm，应答已确认/未确认分别诊断，保持使能、没有Disable/Reset/固件动作，不依赖死ready文件。FreshFaceInsideJaws增加显式预测模式，仍核原夹持几何及真实开口，分开打印旧measurement_stamp和新image_stamp；完成闭合前后切断桌面追踪范围，不追抬起后的物体。
+- 测试发现原通用FaceInsideJawCapture竟可接受.1019m，纠正“原几何必拒该缓存”的旧推断。仅闭爪复核复用已有adapter/SDK 0..80mm命令范围拒绝不可信缓存，不将80mm当厂家机械规格、不阻止六轴靠近、不写零点。当前相机接触区未独立核准，70/105mm和旧候选否定继续保留。
+- 最终受控 clean rebuild 8个目标exit0、日志无error/warning模式；9个CTest套件exit0/5.90秒，40项C++（含5项原executor方法/标准参数服务测试）+43项Python=83项全通过，另隔离真实detector零深度/裁切/投影测试1项通过，共84项，Python5文件AST语法通过。首编译的Future const-get错误和首开口否定例失败已修，新增目标重新配置后最后串行重建，不把失败隐去/归因实机。
+- 原图/真实q纯离线policy接受前后10包，9个否定例全拒；其时效证据明确模拟，历史stamp保留，不能当实体鲜数据。新detector真实旧包域78回放：前稳态4 target/depth均true；零深度/无色/细长/高MAD都false；后稳态5均false/INSUFFICIENT_SAMPLES，但合格RGB矩形仍存在且无新三维点/深度projection。两回放exit0、26.476/7.729秒，检测器finally退出0。合成原executor夹持分支通过≠真实夹持成功，运动中软件停止/适配器应答尚未实测。
+- 证据：`docs/evidence/piper_near_depth_rgb_tracking_20261011.md`；真实旧包目录large_j5_view_20261011.7cb6Gu下near_depth_policy_replay和near_depth_detector_replay。最终构建/CTest/XML已归档`/home/johnwick/brain_robot_logs/near_depth_validation_20261011.wBut3v`，build SHA500251ee…/ctest SHAa4d7e494…。隔离build/tmp/piper_rgbd_shape_build_20261011.fygBnq；新源detector f2519a31…、executor d0be18cc…、header a663ea30…、规范YAML b93d4deb…；最终bin detector f75ea2dd…、executor30431928…，没有同步真实build/install。
+- 实际入口0e976b0a…/实际executor107ce501…/实际YAML75612194…/实际detector2deb634f…全部未变；仅规范功能参数true，不代表实机启用。未改变J5/原朝向算法、TF/TCP或OFF-preview，不执行旧错误全段转腕，不声称已完成抓取/模型校准。下一先审查实际与规范既有差异、选择性部署本补丁、从原观测姿态的新可靠RGB-D seed验有限末段和真实图/命令/反馈；近距当前位置不可拿旧replay seed盲续跑/闭爪。J6偏差、实体夹持区与夹爪基准仍待解决。
+- GitHub：只读`git ls-remote --heads origin main` exit0，真实远程仍6ebd0c53ca830ac4071b8e64fcc1954dbf5a8cf1；origin仍项目/main。本轮没有再次尝试被拒的push，需明确共享main写入授权；本轮仅本地提交、未同步GitHub。审查/提交只本轮指定源码/测试/文档，不带PNG、日志、bin、固件、PDF或密码。下一接手第一条命令仍`git -C /mnt/hgfs/ub show --stat --oneline HEAD`，再读本条/新证据，不回CAN或重新要求量70/105mm。
+
 ## 2026-10-11 22:34：方案已本地归档；推送确认含义被审核判为不明确
 
 - 本轮方案提交4d3001be1d0062f3a8f649eb45b54472d2f32e66、git show --check通过；只文档和只读离线计算，未改控制代码/未发送运动。代理曾把用户“确认。那你要怎么解决……”理解为上一轮推送问句答复；auto-review明确判定其与近距方案相关、不足以批准共享main写入。下方“明确批准推送”的代理判断现已更正，不能视为新增远程授权。

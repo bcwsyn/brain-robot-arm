@@ -46,6 +46,10 @@ public:
       "debug_topic", "/brain_robot_vision/debug_image");
     raw_bbox_publisher_ = create_publisher<geometry_msgs::msg::PolygonStamped>(
       "/brain_robot_vision/raw_color_bbox", rclcpp::QoS(1).reliable());
+    qualified_bbox_publisher_ = create_publisher<geometry_msgs::msg::PolygonStamped>(
+      "/brain_robot_vision/qualified_color_bbox", rclcpp::QoS(1).reliable());
+    raw_info_publisher_ = create_publisher<sensor_msgs::msg::CameraInfo>(
+      "/brain_robot_vision/raw_color_info", rclcpp::QoS(1).reliable());
     raw_debug_publisher_ = create_publisher<sensor_msgs::msg::Image>(
       "/brain_robot_vision/raw_color_debug", rclcpp::QoS(1).reliable());
     raw_target_projection_publisher_ = create_publisher<geometry_msgs::msg::PointStamped>(
@@ -724,24 +728,9 @@ private:
     double selected_aspect_ratio = 0.0;
     std::vector<cv::Point> largest_contour;
     for (const auto & contour : contours) {
-      const double area = cv::contourArea(contour);
-      const double perimeter = cv::arcLength(contour, true);
-      const double circularity = perimeter > 1e-6 ?
-        4.0 * CV_PI * area / (perimeter * perimeter) : 0.0;
-      const cv::Rect box = cv::boundingRect(contour);
-      // A tilted square occupies only about half its axis-aligned box.
-      // Measure shape in its own orientation; retain the pixel box for depth ROI.
-      const cv::Size2f shape_size = shape_use_rotated_rectangle_ ?
-        cv::minAreaRect(contour).size : cv::Size2f(box.width, box.height);
-      const double box_area = static_cast<double>(shape_size.width) * shape_size.height;
-      const double rectangularity = box_area > 0.0 ? area / box_area : 0.0;
-      const double aspect_ratio = static_cast<double>(std::max(shape_size.width, shape_size.height)) /
-        std::max(1.0, static_cast<double>(std::min(shape_size.width, shape_size.height)));
-      if (area >= min_area_px_ &&
-        (max_area_px_ <= 0.0 || area <= max_area_px_) &&
-        circularity >= min_circularity_ && rectangularity >= min_rectangularity_ &&
-        aspect_ratio >= min_aspect_ratio_ &&
-        (max_aspect_ratio_ <= 0.0 || aspect_ratio <= max_aspect_ratio_) &&
+      double area = 0, rectangularity = 0, aspect_ratio = 0;
+      if (brain_robot_pick_place::qualified_color_shape(
+          contour, ShapeCriteria(), area, rectangularity, aspect_ratio) &&
         area > largest_area)
       {
         largest_area = area;
@@ -970,6 +959,12 @@ private:
     publish_debug_image(rgb_message->header, debug_image);
   }
 
+  brain_robot_pick_place::ColorShapeCriteria ShapeCriteria() const
+  {
+    return {min_area_px_, max_area_px_, min_circularity_, min_rectangularity_,
+      min_aspect_ratio_, max_aspect_ratio_, shape_use_rotated_rectangle_};
+  }
+
   void PublishRawColorObservation(const cv::Mat & image, const std_msgs::msg::Header & header)
   {
     cv::Mat hsv, mask, second;
@@ -1011,9 +1006,68 @@ private:
       cv::FONT_HERSHEY_SIMPLEX, .3, cv::Scalar(0, 255, 255), 1);
     raw_bbox_publisher_->publish(observation);  // Empty polygon explicitly invalidates old colour.
     raw_debug_publisher_->publish(*cv_bridge::CvImage(header, "bgr8", debug).toImageMsg());
+
+    // Independent ORIGINAL-RGB shape observation, even when the synchronized
+    // depth image contains only zeros. This is NOT target_valid/depth_valid.
+    // Reuse the exact production morphology and rectangle criteria.
+    const auto kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE,
+      cv::Size(morphology_kernel_, morphology_kernel_));
+    // Start again from HSV; the passive raw preview's fixed 3px opening is
+    // intentionally unchanged and must not alter this production shape mask.
+    cv::inRange(hsv, cv::Scalar(hue_low_1_, saturation_min_, value_min_),
+      cv::Scalar(hue_high_1_, 255, 255), mask);
+    if (hue_high_2_ > hue_low_2_) {mask |= second;}
+    cv::morphologyEx(mask, mask, cv::MORPH_OPEN, kernel);
+    cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
+    contours.clear();
+    cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    best = 0;
+    selected = {};
+    for (const auto & contour : contours) {
+      double area = 0, rectangularity = 0, aspect = 0;
+      if (brain_robot_pick_place::qualified_color_shape(
+          contour, ShapeCriteria(), area, rectangularity, aspect) &&
+        area > best)
+      {
+        best = area;
+        selected = cv::boundingRect(contour);
+      }
+    }
+    observation.polygon.points.clear();
+    // Match the existing clipped-target rejection; do not invent full-view
+    // evidence when the object leaves the sensor image.
+    if (best > 0 && selected.x > 1 && selected.y > 1 &&
+      selected.x + selected.width < image.cols - 1 &&
+      selected.y + selected.height < image.rows - 1)
+    {
+      for (const auto & xy : {std::pair<int, int>{selected.x, selected.y},
+        {selected.x + selected.width, selected.y},
+        {selected.x + selected.width, selected.y + selected.height},
+        {selected.x, selected.y + selected.height}})
+      {
+        geometry_msgs::msg::Point32 p;
+        p.x = float(xy.first) / image.cols; p.y = float(xy.second) / image.rows;
+        observation.polygon.points.push_back(p);
+      }
+    }
+    sensor_msgs::msg::CameraInfo info;
+    info.header = header;
+    info.width = image.cols; info.height = image.rows;
+    if (software_registration_calibration_valid_ && color_image_width_ > 1 &&
+      color_image_height_ > 1)
+    {
+      const double sx = double(image.cols - 1) / (color_image_width_ - 1);
+      const double sy = double(image.rows - 1) / (color_image_height_ - 1);
+      info.k = {color_fx_ * sx, 0, color_cx_ * sx,
+        0, color_fy_ * sy, color_cy_ * sy, 0, 0, 1};
+    }
+    raw_info_publisher_->publish(info);  // Original grid; D->C is read via detector parameters.
+    qualified_bbox_publisher_->publish(observation);
   }
 
   rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr raw_bbox_publisher_;
+  rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr qualified_bbox_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr raw_info_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr raw_target_projection_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr raw_debug_publisher_;
   std::string rgb_topic_;

@@ -23,7 +23,7 @@ def main():
     import numpy as np
     import rclpy
     from cv_bridge import CvBridge
-    from geometry_msgs.msg import PointStamped, Vector3Stamped
+    from geometry_msgs.msg import PointStamped, PolygonStamped, Vector3Stamped
     from sensor_msgs.msg import CameraInfo, Image
     from std_msgs.msg import Bool, String
 
@@ -45,6 +45,12 @@ def main():
         if isinstance(message, Image):
             debug[current['case']] = message
             return
+        if isinstance(message, PolygonStamped):
+            value = {'stamp_ns': message.header.stamp.sec * 10**9 + message.header.stamp.nanosec,
+                     'frame': message.header.frame_id,
+                     'corners': [[p.x, p.y] for p in message.polygon.points]}
+            records.append({**current, 'topic': topic, 'value': value})
+            return
         value = message.data if hasattr(message, 'data') else {
             'frame': message.header.frame_id,
             'stamp_ns': message.header.stamp.sec * 10**9 + message.header.stamp.nanosec,
@@ -54,6 +60,7 @@ def main():
         records.append({**current, 'topic': topic, 'value': value})
 
     for kind, topic in [(Bool, 'target_valid'), (Bool, 'depth_valid'),
+                       (PolygonStamped, 'qualified_color_bbox'),
                        (String, 'depth_diagnostic'), (PointStamped, 'target_point_camera'),
                        (PointStamped, 'raw_target_projection'),
                        (PointStamped, 'target_pixel'), (Vector3Stamped, 'pixel_error'),
@@ -124,7 +131,8 @@ def main():
             outcomes[case] = {
                 topic: [r['value'] for r in tail if r['topic'] == topic]
                 for topic in ('target_valid', 'depth_valid', 'depth_diagnostic',
-                              'target_point_camera', 'raw_target_projection', 'pixel_error', 'target_size')}
+                              'target_point_camera', 'raw_target_projection', 'qualified_color_bbox',
+                              'pixel_error', 'target_size')}
             if case in debug:
                 cv2.imwrite(str(args.output / f'{case}_debug.png'),
                             bridge.imgmsg_to_cv2(debug[case], 'bgr8'))

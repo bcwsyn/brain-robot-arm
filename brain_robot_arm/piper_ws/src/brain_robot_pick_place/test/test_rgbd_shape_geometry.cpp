@@ -5,6 +5,22 @@
 using brain_robot_pick_place::associate_color_mask;
 using brain_robot_pick_place::color_center_at_depth_z;
 
+TEST(RgbdShape, IndependentColorUsesTheOriginalRectangleCriteria)
+{
+  const brain_robot_pick_place::ColorShapeCriteria criteria{40, 0, 0, .58, 1, 1.45, true};
+  double area = 0, rect = 0, aspect = 0;
+  EXPECT_TRUE(brain_robot_pick_place::qualified_color_shape(
+    {{10, 10}, {50, 10}, {50, 50}, {10, 50}}, criteria, area, rect, aspect));
+  EXPECT_FALSE(brain_robot_pick_place::qualified_color_shape(
+    {{10, 10}, {80, 10}, {80, 20}, {10, 20}}, criteria, area, rect, aspect));
+  EXPECT_FALSE(brain_robot_pick_place::qualified_color_shape(
+    {{10, 10}, {12, 10}, {12, 12}, {10, 12}}, criteria, area, rect, aspect));
+  EXPECT_FALSE(brain_robot_pick_place::qualified_color_shape(
+    {{10, 10}, {50, 10}, {10, 50}}, criteria, area, rect, aspect));
+  EXPECT_TRUE(brain_robot_pick_place::qualified_color_shape(
+    {{10, 30}, {30, 10}, {50, 30}, {30, 50}}, criteria, area, rect, aspect));
+}
+
 TEST(RgbdShape, MissingDepthDoesNotCreateMeasurements)
 {
   cv::Mat raw(10, 10, CV_8UC1, cv::Scalar(255));

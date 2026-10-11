@@ -2,9 +2,36 @@
 
 #include <cmath>
 #include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 
 namespace brain_robot_pick_place
 {
+struct ColorShapeCriteria
+{
+  double min_area, max_area, min_circularity, min_rectangularity, min_aspect, max_aspect;
+  bool rotated;
+};
+
+inline bool qualified_color_shape(
+  const std::vector<cv::Point> & contour, const ColorShapeCriteria & c,
+  double & area, double & rectangularity, double & aspect)
+{
+  if (contour.size() < 3) {return false;}
+  area = cv::contourArea(contour);
+  const double perimeter = cv::arcLength(contour, true);
+  const double circularity = perimeter > 1e-6 ? 4 * CV_PI * area / (perimeter * perimeter) : 0;
+  const cv::Rect box = cv::boundingRect(contour);
+  const cv::Size2f size = c.rotated ? cv::minAreaRect(contour).size :
+    cv::Size2f(box.width, box.height);
+  const double box_area = double(size.width) * size.height;
+  rectangularity = box_area > 0 ? area / box_area : 0;
+  aspect = double(std::max(size.width, size.height)) /
+    std::max(1.0, double(std::min(size.width, size.height)));
+  return area >= c.min_area && (c.max_area <= 0 || area <= c.max_area) &&
+         circularity >= c.min_circularity && rectangularity >= c.min_rectangularity &&
+         aspect >= c.min_aspect && (c.max_aspect <= 0 || aspect <= c.max_aspect);
+}
+
 // Retain ONLY measured depth pixels whose factory D->C projection belongs to
 // this original colour contour. No resizing, inpainting or synthesized depth.
 inline cv::Mat associate_color_mask(
