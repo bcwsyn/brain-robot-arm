@@ -31,6 +31,16 @@ from tf2_ros import Buffer, TransformListener
 from review_calibration_sampling import NAMES, checked_trajectory, tool_pose
 
 
+def wait_for_stamped_transform(buffer, target, source, stamp, pump, timeout_s=.3):
+    """Allow normal TF publication latency without latest-time substitution."""
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        if buffer.can_transform(target, source, stamp):
+            return buffer.lookup_transform(target, source, stamp)
+        pump()
+    raise RuntimeError('Exact image-time TF did not arrive within bounded wait')
+
+
 def color_plane_translation(pixel, goal, color_z, image_size, params, maximum_m, forward_m=0.):
     if (not np.isfinite(list(pixel) + list(goal) + [color_z, maximum_m, forward_m]).all() or
             color_z <= .001 or not 0 < maximum_m <= .015 or not 0 <= forward_m <= .010 or
@@ -149,7 +159,8 @@ def main():
                 p.x <= .02 or p.x >= .98 or p.y <= .02 or p.y >= .98
                 for p in bbox.polygon.points):
             raise RuntimeError('Original shape not completely visible for diagnostic alignment')
-        transform = buffer.lookup_transform('base_link', point.header.frame_id, stamp)
+        transform = wait_for_stamped_transform(buffer, 'base_link', point.header.frame_id,
+            stamp, lambda: rclpy.spin_once(node, timeout_sec=.01))
         values = call(GetParameters, '/move_group/get_parameters', GetParameters.Request(
             names=['robot_description', 'allow_trajectory_execution'])).values
         if len(values) != 2 or values[1].type != 1 or values[1].bool_value:

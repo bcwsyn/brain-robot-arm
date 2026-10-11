@@ -13,6 +13,40 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 
+def test_tf_wait_keeps_exact_original_image_stamp():
+    stamp, expected, calls = object(), object(), []
+
+    class DelayedBuffer:
+        received = False
+
+        def can_transform(self, target, source, requested):
+            calls.append((target, source, requested))
+            return self.received
+
+        def lookup_transform(self, target, source, requested):
+            assert requested is stamp
+            return expected
+
+    buffer = DelayedBuffer()
+    result = module.wait_for_stamped_transform(buffer, 'base', 'camera', stamp,
+        lambda: setattr(buffer, 'received', True))
+    assert result is expected
+    assert len(calls) == 2 and all(call[2] is stamp for call in calls)
+
+
+def test_tf_wait_times_out_without_latest_fallback():
+    class MissingBuffer:
+        def can_transform(self, target, source, stamp):
+            return False
+
+        def lookup_transform(self, *args):
+            raise AssertionError('Missing transform must never be substituted')
+
+    with pytest.raises(RuntimeError, match='Exact image-time TF'):
+        module.wait_for_stamped_transform(MissingBuffer(), 'base', 'camera', object(),
+                                         lambda: None, timeout_s=.001)
+
+
 @pytest.fixture
 def params():
     return {'color_calibration_width': 640, 'color_calibration_height': 480,
