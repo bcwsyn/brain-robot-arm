@@ -37,7 +37,9 @@ export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILE"
 
 fail() { echo "[错误] $*" >&2; exit 1; }
 cleanup() {
-  trap - EXIT INT TERM
+  trap - EXIT
+  # Finish cleanup on repeat signals; helpers retain their own signal handling.
+  trap ':' INT TERM
   if (( SUCCESSFUL_CYCLE_COMPLETE )); then
     echo; echo "[完成] 成功路径已安全回位并失能；仅清理本脚本进程。"
   elif (( DISABLE_REQUESTED || MOTION_ARMED )); then

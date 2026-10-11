@@ -1,7 +1,9 @@
 """Exercise shell startup gates with fake ROS commands, never ROS/CAN output."""
 import os
 from pathlib import Path
+import signal
 import subprocess
+import time
 
 import pytest
 
@@ -93,3 +95,60 @@ disable_after_confirmed_reset() { printf 'disable_after_home\n' >> "$TRACE"; }
         assert trace.read_text().splitlines() == ["return_home", "disable_after_home"]
     elif grasp == "IDLE":
         assert b"CENTER_SEARCH_NOT_REACHED_NO_FULL_SWEEP" in result.stderr
+
+
+@pytest.mark.parametrize("interruption", [signal.SIGINT, signal.SIGTERM])
+def test_cleanup_finishes_owned_group_cleanup_after_repeated_signal(tmp_path, interruption):
+    """Only signal our mock shell; kill/ROS functions cannot affect real hardware."""
+    trace = tmp_path / "trace"
+    ready = tmp_path / "ready"
+    mock = r'''
+SUCCESSFUL_CYCLE_COMPLETE=0
+DISABLE_REQUESTED=1
+MOTION_ARMED=0
+CAMERA_HEALTH_PID=""
+CAN_HEALTH_PID=""
+CAMERA_STARTED_BY_SCRIPT=1
+LOG_GUARD_PID=""
+PIDS=(987654)
+timeout() { shift; "$@"; }
+ros2() { printf 'ros2 %s\n' "$*" >> "$TRACE"; }
+kill() { printf 'kill %s\n' "$*" >> "$TRACE"; }
+sleep() { :; }
+stop_rgb_camera() {
+  printf 'camera_cleanup_started\n' >> "$TRACE"
+  : > "$READY"
+  command sleep 0.5
+}
+stop_astra_camera() {
+  # A trapped signal must not become an inherited, unchangeable ignored signal.
+  bash -c 'trap "exit 42" TERM; kill -TERM $$; exit 0'
+  printf 'helper_signal_status=%s\n' "$?" >> "$TRACE"
+  printf 'astra_cleanup_finished\n' >> "$TRACE"
+}
+'''
+    with subprocess.Popen(
+        ["bash", "-c", mock + function("cleanup") + "\ncleanup"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        env={**os.environ, "TRACE": str(trace), "READY": str(ready)},
+        start_new_session=True,
+    ) as process:
+        deadline = time.monotonic() + 3
+        while not ready.exists() and process.poll() is None and time.monotonic() < deadline:
+            time.sleep(0.01)
+        assert ready.exists(), "mock cleanup did not reach its synchronization point"
+        os.kill(process.pid, interruption)
+        stdout, stderr = process.communicate(timeout=3)
+        assert process.returncode == 0, (stdout, stderr)
+    calls = trace.read_text().splitlines()
+    assert calls[:3] == [
+        "ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger {}",
+        "ros2 service call /servo_node/stop_servo std_srvs/srv/Trigger {}",
+        "ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger {}",
+    ]
+    assert "astra_cleanup_finished" in calls
+    assert "helper_signal_status=42" in calls
+    assert "kill -TERM -- -987654" in calls
+    assert "kill -KILL -- -987654" in calls
+    assert not any("DisableArm" in call or "return_home" in call for call in calls)
+    assert "一键流程已停止" in stdout.decode()
