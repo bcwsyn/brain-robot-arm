@@ -1,5 +1,14 @@
 # PiPER 调试进度
 
+### 2026-10-11 14:12：说明完整视野与两指捕获的分阶段实现，未发运动/改生产代码
+
+- HEAD e3304e4，用户确认方向并询问具体实现。本轮只读核对规范/实际任务参数、cup_detector_node.cpp的轮廓及clipped分支、grasp_lift_executor.cpp::FreshFaceInsideJaws、grasp_geometry.hpp::FaceInsideJawCapture，遵循ros2-piper-debug及surgical-change技能。未启动ROS/发送运动、修改源/YAML。观测/SEARCH既有成功证据复用，本轮不重做观测或底层基线。
+- 下一步提议先复核实际J5（上轮41.088°原CAN），原入口AUTO_START=0复用现MoveIt/adapter每次+2°，本次建议最多三档累计+6°；每档停稳、单独查看原始RGB，确认上一块方块轮廓完整、不触四边并连续三帧，再决定下一档。不是持续转直到检测器true；预算到限若仍裁切则结束此单轴试验，改评估平移/姿态联动。新预算是本轮提出的具体方案，尚未执行，不能合并成原+8°已完成。
+- 完整入画不等于进入夹持区。先在同一原RGB标出两指内缘、尖端及方块轮廓，得到实际夹持区，而非继续追图像中心；2D位于内缘间只表示投影，须结合有效深度和同图像时间戳gripper_base变换，评估横向宽度、指尖深度和夹持高度。70mm/105mm已确认测量继续保留，不重问；现开口反馈仍固定.1019m、外参旋转未标定，不能声称现模型检查已证明实物两指捕获或真实开口。
+- 拟在现executor末段加入“短段执行→稳定图像核对→同目标有界纠偏”，每次姿态至多约1–2°/位置数mm，通过现MoveIt协调六轴位置和朝向，原adapter唯一执行。目标身份保持，运动引起画面变化不重新SEARCH/盲追背景紫色；静态base点作为参考，不把未经校准的旧点当实体真值。不增加第二控制程序，不恢复腕部Octomap，不硬写J5到已规划轨迹。
+- 生产修改边界先说明、获准后实现：现cup_detector输出完整轮廓/边界信息，现grasp_lift_executor消费新鲜图像结果并分段纠偏，配套小测及实体YAML必要参数；原入口/搜索/驱动/adapter不改。原FreshFaceInsideJaws保留RGB-D契约，不把RGB露出或影像居中直接当闭爪许可。模型和图像冲突时先定位外参、RGB-depth配准或开口测量，不悄悄放行。原早返回落点等待问题独立记录，不混入本轮未批准改动。
+- 一手资料复核：https://github.com/lagadic/visp/blob/master/tutorial/visual-servo/ibvs/tutorial-ibvs-4pts.cpp 的眼在手上逐帧更新特征及控制循环；https://moveit.picknik.ai/humble/doc/examples/realtime_servo/realtime_servo_tutorial.html 的视觉闭环/JointJog与TwistStamped接口。只复用思路，不安装异构栈；本机Servo输出未接adapter，因此实现继续走既有规划轨迹。只读及文档检查成功，实体完整视野/两指捕获仍未验证。下一轮第一项只读命令ps -C piper_single_ctrl -o pid,pgid,args，随后按已说明范围恢复试验，不暗启完整抓取。
+
 ### 2026-10-11 14:07：J5正向每档2°实体对比，累计6°使紫块重新露出画面下沿
 
 - 起始HEAD `c5d41fc`，执行用户“角度大一点、小幅比较”授权。原入口命令 `BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/j5_positive_steps_20261011 /home/johnwick/start_brain_robot_cube_real.sh`，到[7/7]后IDLE。健康CAN直接复用，盘33%/约51GB可用，不运行SEARCH/自动抓取。沿仓库ROS技能检查实际反馈、图像和执行链，不改源码/默认参数。
