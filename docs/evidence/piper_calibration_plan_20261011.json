@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "evidence": "MARKERLESS_CALIBRATION_OFFLINE_PLANNING_AND_SYNTHETIC_CONVENTION_CHECK",
+  "local_date": "2026-10-11",
+  "time_zone": "Asia/Shanghai",
+  "repository_head_at_start": "4e117b3",
+  "status": "OFFLINE_ONLY_NOT_CALIBRATED_NOT_DEPLOYED_NO_PHYSICAL_GRASP",
+  "scope": {
+    "user_request": "Advance independently without requiring user participation for now",
+    "production_code_changed": false,
+    "new_physical_motion": false,
+    "joint_gripper_enable_disable_or_can_write_commands": false,
+    "new_camera_capture_or_fresh_physical_feedback": false,
+    "prior_specific_production_change_approval_rule_preserved": true,
+    "previous_preview_budget_not_reset_or_expanded": true
+  },
+  "sources": {
+    "previous_static_evidence": "docs/evidence/piper_markerless_calibration_20261011.json",
+    "robot_description_file": "/home/johnwick/brain_robot_logs/jaw_geometry_20261011_step1/review/move_group.urdf",
+    "robot_description_sha256": "382d79345b286047a09c0941d638248b3f6c5f51a94a8a4dfb4359e2a69443ac",
+    "existing_review_launch": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_surface_grasp_plan.launch.py",
+    "existing_review_launch_sha256": "3f6522569d39392fe6bb54622e1ade09d2a94274a41f7c7ed25f0ad69e6bf204",
+    "existing_fk_helper": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_jaw_scene.py",
+    "launch_log": "/home/johnwick/.ros/log/2026-10-11-16-48-40-218701-johnwick-virtual-machine-44648/launch.log",
+    "launch_log_sha256": "2a8a11759ab1a11209fdca1fc7f2a3981b15c8a4004c1e796afabaf4bfdd2069"
+  },
+  "unchanged_production_sha256": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": "e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "107ce501ee2cbf1862f96bf9096ed8fec7c396809fb8c36749222b35d633ce49",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "7561219416c17c9e0685d5fefcf19a9ab88d63fbc5b3aa99a212d241d34b3f74"
+  },
+  "frozen_start_state": {
+    "source": "Previous static_capture.q_feedback_rad; not a new live measurement",
+    "q_rad": [-0.262724084, 1.888278112, -1.280686148, 0.0095942, 0.836928232, 0.0],
+    "model_joint7_joint8_rad": [0.0, 0.0],
+    "model_gripper_is_placeholder_not_actual_opening": true,
+    "hardware_enable_not_read_this_round": true
+  },
+  "isolated_planning": {
+    "launch_command": "source /opt/ros/humble/setup.bash; source /home/johnwick/piper_ros/install/setup.bash; source /home/johnwick/piper_ws/install/setup.bash; export ROS_DOMAIN_ID=78 FASTRTPS_DEFAULT_PROFILES_FILE=/home/johnwick/fastdds_udp_only.xml PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1; timeout -s INT 90s ros2 launch /mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_surface_grasp_plan.launch.py",
+    "ros_domain_id": 78,
+    "live_move_group_allow_trajectory_execution": false,
+    "live_move_group_robot_description_matches_archived_model": true,
+    "client_mode": "Inline Python, planning/state-validity services only; no saved controller or source edits",
+    "services": ["/move_group/get_parameters", "/get_planning_scene", "/plan_kinematic_path", "/check_state_validity"],
+    "only_joint_state_publisher": "Isolated domain 78 model heartbeat, not /joint_commands",
+    "execution_actions_called": false,
+    "adapter_called": false,
+    "group": "arm",
+    "pipeline_id": "pilz_industrial_motion_planner",
+    "planner_id": "PTP",
+    "planning_attempts": 1,
+    "allowed_planning_time_s": 2.0,
+    "velocity_scaling_factor": 0.02,
+    "acceleration_scaling_factor": 0.02,
+    "all_six_joint_goal_tolerance_rad": 0.00001,
+    "segments": [
+      "centre -> J4 -6deg",
+      "J4 -6deg -> centre",
+      "centre -> J4 +6deg",
+      "J4 +6deg -> centre",
+      "centre -> J5 -6deg",
+      "J5 -6deg -> centre",
+      "centre -> J5 +6deg",
+      "J5 +6deg -> centre"
+    ],
+    "client_exit_code": 0,
+    "client_report_all_segments_planned": true,
+    "planned_total_model_tip_arc_length_m": 0.1655737509466523,
+    "raw_client_stdout_fully_retained": false,
+    "stdout_limitation": "Tool output truncated the middle four per-segment records. End-of-report aggregate all_segments_planned and total arc length were visible. Do not claim every per-point validity response is independently archived.",
+    "visible_segment_witnesses": {
+      "segments": [0, 1, 6, 7],
+      "error_code_each": 1,
+      "points_each": 47,
+      "duration_s_each": 4.576456164,
+      "max_adjacent_joint_step_rad": 0.0044972284390071,
+      "task_joint_limits_passed": true,
+      "non_sampled_six_axis_joint_deviation_rad": 0.0,
+      "visible_sampled_state_validity": "11 selected points per segment; whole-model checks at placeholder 0mm and synthetic 70mm opening valid for these visible witnesses"
+    },
+    "visible_model_path_bounds": {
+      "J4_minus6_tip_max_distance_from_centre_m": 0.017634953072526802,
+      "J4_minus6_tip_segment_arc_length_m": 0.017643005830516728,
+      "J4_minus6_tool_segment_arc_length_m": 0.00708269024373319,
+      "J5_plus6_tip_max_distance_from_centre_m": 0.023739591549229094,
+      "J5_plus6_tip_segment_arc_length_m": 0.023750431906146376,
+      "J5_plus6_tool_segment_arc_length_m": 0.009529498043841967
+    },
+    "planning_scene": {
+      "world_objects": [],
+      "octomap_bytes": 0,
+      "table_clearance_verified": false,
+      "physical_gripper_opening_verified": false,
+      "full_swept_open_gripper_collision_verification": false,
+      "interpretation": "Model planning and sampled self-collision evidence only; not physical environment clearance, adapter acceptance, fresh feedback or RGB-D feature coverage"
+    },
+    "shutdown": {
+      "launch_timeout_exit_code": 124,
+      "move_group_pid": 44652,
+      "move_group_exit_code": -11,
+      "phase": "Destructor after completed planning and timed SIGINT shutdown",
+      "previous_same_phase_failures_documented": true,
+      "not_classified_as_live_can_or_robot_failure": true,
+      "temporary_nodes_remaining": false
+    }
+  },
+  "kinematic_excitation": {
+    "method": "Existing FK, gripper_base frame; centre-relative +/-6deg J4/J5 rotations; SVD of rotation vectors and stacked R-I translation system",
+    "rotation_axis_singular_values_rad": [0.1480963699320338, 0.14809582594469106, 4.1861141637193506e-17],
+    "translation_lhs_singular_values": [0.20934382497177528, 0.1480287101062297, 0.14802816636741495],
+    "translation_condition_number": 1.414216159728488,
+    "angle_between_J4_J5_axes_deg": 89.99978954085032,
+    "interpretation": "Two near-orthogonal modeled rotation axes; no guarantee of measured visual-motion accuracy, tabletop visibility or actual calibrated transform"
+  },
+  "synthetic_convention_check": {
+    "opencv_version": "4.5.4",
+    "method": "CALIB_HAND_EYE_PARK",
+    "model_frame": "gripper_base",
+    "pose_set": "Centre, J4-6, J4+6, J5-6, J5+6 degrees",
+    "synthetic_tool_from_camera_rpy_deg": [12.0, -25.0, 7.0],
+    "synthetic_tool_from_camera_translation_m": [-0.04, 0.01, 0.03],
+    "synthetic_base_from_fixed_target_rpy_deg": [7.0, -13.0, 9.0],
+    "synthetic_base_from_fixed_target_translation_m": [0.3, -0.12, 0.05],
+    "construction": "F_i=base_from_tool FK; X=synthetic_tool_from_camera; W=synthetic_base_from_fixed_target; C_i=inverse(F_i*X)*W. calibrateHandEye inputs F_i and C_i, output X.",
+    "sample_count": 5,
+    "finite_solution": true,
+    "rotation_error_deg": 1.4143541811145897e-12,
+    "translation_error_m": 4.543610517043917e-12,
+    "fixed_target_max_error_m": 7.770849214764054e-12,
+    "single_axis_control": {
+      "pose_set": "Centre, J5-6, J5+6 degrees",
+      "sample_count": 3,
+      "finite_solution": false
+    },
+    "assertions_passed": ["finite five-pose result", "translation error <1e-8m", "rotation error <1e-5deg"],
+    "synthetic_values_are_not_deployment_candidates": true,
+    "interpretation": "Clean-data method/frame-convention test only. No real images, noise accuracy validation or accepted external calibration. Existing rejected real-data candidates remain rejected."
+  },
+  "vendor_or_library_explicit_fact": {
+    "source": "https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html",
+    "fact": "OpenCV hand-eye calibration requires at least two motions with nonparallel rotation axes; at least three distinct poses, with more strongly recommended. Inputs are gripper-to-base and target-to-camera; output is camera-to-gripper.",
+    "source_code": "https://raw.githubusercontent.com/opencv/opencv/4.5.4/modules/calib3d/src/calibration_handeye.cpp",
+    "project_inference_separate": "Using static tabletop texture plus measured depth instead of a printed pattern remains a project hypothesis; it still needs reliable camera relative-motion estimates and independent real-data validation."
+  },
+  "host_end_state": {
+    "driver_pid": 37594,
+    "driver_pgid": 37573,
+    "auto_enable": false,
+    "gripper_exist": false,
+    "driver_preserved": true,
+    "motion_control_stack_not_running": true,
+    "not_a_fresh_joint_or_enable_measurement": true
+  },
+  "current_blocker": "No accepted camera/tool calibration from real observations; current projected CAD free ends disagree with confirmed real RGB free ends. Offline feasibility does not resolve this geometry.",
+  "next_step": "Do not rerun rejected old fits or basic CAN checks. Prepare reliable stopped RGB-D motion observations and independent validation within specifically authorized movement. New +/-6deg sampling exceeds the previous preview budget, is not executed or implicitly approved here. Then propose one explicit camera/TCP/terminal-pose patch with rollback under the existing approval rule."
+}

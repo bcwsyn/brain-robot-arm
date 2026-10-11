@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+## 2026-10-11 16:58：自主完成8段采样离线规划与双轴标定约定验证，未改生产/未运动
+
+- 起点4e117b3，按规范先复核Git/四文档及真实部署，使用ros2-piper-debug确认生效路径，surgical-change把本轮范围限定为既有离线工具及交接记录。用户希望暂不参与，不再索取棋盘格/终端数据；具体生产代码审批与已用1段的4步/20mm预览范围未擅自取消。原vendor/reference等改动未纳入。没有新相机帧、实时关节/使能读取、CAN检查或运动，起终只有原37594反馈驱动（auto_enable=false/gripper_exist=false）。
+- 自行把上条J4/J5各±6°建议推进到实际MoveIt规划。命令：source三个现有ROS/driver/工作区overlay，设ROS_DOMAIN_ID=78、原FASTRTPS_DEFAULT_PROFILES_FILE及PYTHONNOUSERSITE/PYTHONDONTWRITEBYTECODE，`timeout -s INT 90s ros2 launch /mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_surface_grasp_plan.launch.py`。未新建入口/控制器、未升级依赖。只读参数证实allow_trajectory_execution=false、robot_description SHA与实际归档一致；规划客户端只用GetPlanningScene/GetMotionPlan/GetStateValidity、域78模型joint_states心跳，没调用执行action、adapter、实体命令或使能。
+- 起点使用上轮静止q=[-.262724084,1.888278112,-1.280686148,.0095942,.836928232,0]rad，不冒充新反馈。现arm/Pilz/PTP、velocity/acceleration scale=.02、2s/1attempt、六轴容差±1e-5，独立J4-6/回中/J4+6/回中/J5-6/回中/J5+6/回中共8段，客户端exit0、汇总all_segments_planned=true。可见首尾4段各47点/4.576456s、最大相邻关节步.004497228rad、非采样轴不变且任务关节限位通过；客户端工具stdout中间4段原文截断，明确只保存可见证据与最终汇总，不重跑同一实验补造原文。
+- 可见J4负向tip离中心17.634953mm/单段弧长17.643006mm，J5正向23.739592mm/单段23.750432mm；最终汇总模型tip总弧长165.573751mm，仍超旧预算，未执行。GetPlanningScene world为空/Octomap0字节，不验证真实桌面间隙。每段11选点、模型闭合占位及70mm合成开口的可见首尾检查均valid；这不是实物开口、全扫掠环境证明或adapter接受证据。仍不恢复腕部点云。
+- 另用现归档URDF/FK量化激励：J4/J5模型旋转轴夹角89.9997895°，平移线性系统奇异值[.209343825,.148028710,.148028166]/条件数1.414216。用中心及两轴各±6°共5姿态，构造固定目标/已知相机变换，调用系统OpenCV4.5.4 CALIB_HAND_EYE_PARK；旋转误差1.414e-12°/平移4.544e-12m/固定点7.771e-12m，断言通过。J5单轴3姿态对照得到非有限解。纯合成方法/坐标约定测试，无真实图像/噪声精度验收，不作为新外参，不推翻旧真实候选否定。OpenCV官方明确至少两次非平行旋转；自然纹理+深度代打印板仍是本项目需要实测的推断，分开记录。
+- 隔离规划已返回后，90s timeout SIGINT正常触发，MoveIt2.5.9析构阶段exit -11，launch返回124；历史同相位崩溃已记录，不当作实机掉线或再次改DDS/CAN。所有临时节点已退出，唯一原driver保留。日志/home/johnwick/.ros/log/2026-10-11-16-48-40-218701-johnwick-virtual-machine-44648/launch.log SHA2a8a11759ab1a11209fdca1fc7f2a3981b15c8a4004c1e796afabaf4bfdd2069；客户端完整stdout未落盘，不能称该launch.log包含全部规划响应。
+- 当前实机入口/executor/YAML SHA分别e8c9f85c…/107ce501…/75612194…与起点一致。命令/服务、限度、可见响应、合成值和来源在docs/evidence/piper_calibration_plan_20261011.json。阻断仍是实际夹指投影与现TF模型不一致、没有独立通过的实机外参；不是观测/SEARCH或CAN基础问题。下一步只推进可靠停稳RGB-D真实观测与独立核验准备，不复用已否定旧拟合、不硬加J5、不增抓取门；超预算实体采样及精确生产补丁仍按已明确授权/审批规则处理，暂不要求用户供板。本轮没有抓取成功。
+- 提交前验证：新JSON解析/范围断言、6个来源及部署文件SHA、冻结q旧记录对应、条件数一致性通过；四路径git diff --check通过。仅交接/进度/决策/此JSON四文件提交，不包含生产代码、供应商资料或原始日志。提交ID见本条所属Git提交与本轮报告，避免在同一提交正文自引用未生成的ID。
+
 ## 2026-10-11 16:43：静止高分辨率拍摄及无板旧数据标定，候选经敏感度复核否定；生产不变
 
 - 起点4ee9bc2；规范启动Git顺序/四文档已读，复核ros2-piper-debug和surgical-change全文；按已批准外参求解做相机静止及档案分析，没有新运动/闭爪许可。观测/SEARCH已成功，本轮集中末段几何，不重复CAN/限位/固件、165组轮廓扫参或8组开口基线。普通沙箱看不到/dev/video0，主机受限升级执行可读取；不判设备故障。已有vendor/Astra/reference改动未动。
