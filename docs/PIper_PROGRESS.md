@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+## 2026-10-11 15:58：高分辨率轮廓复核否定26°候选，收到实体夹指侧照
+
+- 起点HEAD=8050432，复核规范Git、最新四文档和两项技能；沿已批准的静止对应方案，不重跑已成功观测/SEARCH，不查CAN/固件/限位。生产代码变更继续先说明获批。本轮只有有限彩色采集、现review工具新增方向诊断、测试和记录；未发关节/夹爪/使能/失能命令，未部署或改变默认抓取门控。
+- 主机开始及结束只见原37594/PGID37573反馈驱动（auto_enable=false、gripper_exist=false）；没有停止/重启它。仅执行`source /opt/ros/humble/setup.bash`、保持现FASTRTPS_DEFAULT_PROFILES_FILE后，`timeout -s INT 16s ros2 run image_tools cam2image --ros-args -p burger_mode:=false -p device_id:=0 -p frequency:=5.0 -p width:=640 -p height:=480 -p frame_id:=camera_color_optical_frame -r image:=/camera/color/image_raw`，以及`PYTHONNOUSERSITE=1 timeout -s INT 12s /usr/bin/python3 /tmp/piper_onekey_observer_20261011.py /home/johnwick/brain_robot_logs/jaw_landmarks_20261011`。两者预定timeout124，最终均退出；本轮未启动深度相机或生成新有效三维目标。
+- 已实际查看640×480原RGB `/home/johnwick/brain_robot_logs/jaw_landmarks_20261011/evidence/0002_rgb.png`。RGBstamp1791705038.214105、feedback1791705038.2960317，差81.93ms；六轴与前轮静止值相同，J5=47.952455°，不称硬同步。两指可见，紫块仍触下沿；没有新鲜深度，不能把该图当新抓取点。完整观察器档案同目录observer.jsonl。
+- 不重复165组扫参。只复核前轮最好26°/45mm假设：实图右指内缘(u,v)=(507,360),(509,400),(528,440)，du/dv=+0.2625；同尺寸候选=(516,360),(497,400),(470,440)，du/dv=-0.575。方向相反，故该候选未通过真实轮廓核验，不能作为已标定外参。面积IoU约.62并不足以确认对应；此26°是安装假设而非J5动作，未曾部署，因此没有生产参数需要回滚。
+- 对实际归档URDF/STL的最前端向内平面单独核查：模型工具Z范围125.778..135.800mm、中心130.5895mm；45mm假设开口下两面Y约±22.5mm。这仅是网格最前端的一小片平面，不是完整实物橡胶接触面，不据此把TCP改到130.5895mm。候选下两片绝大部分投影在图像下沿之外，而可见黑色指体不能直接等同这两片。
+- 用户新增侧视照片并确认画面“上指尖/下指尖”都对应同一夹指结构。照片可见夹指具有厚度、宽侧面、斜边和末端边界；据此撤回将上下轮廓角自动当独立实体指尖的解释。不能仅凭侧照确定各相机像素对应哪个三维顶点，也不能从未标尺透视照片量出新尺寸或断言唯一外参/CAD故障。保留光学下方70mm/前方105mm测量及镜头不确定；不要求重复量尺。新增照片可在本轮聊天直接查看，当前attachments未找到本地文件，不声称照片二进制已归档，文字观察和未确认项已入精选JSON。
+- 精选证据`docs/evidence/piper_jaw_landmarks_20261011.json`。工具仅新增inner_edge_direction，回归证明有面积重叠仍可边缘方向相反；不是抓取门或控制条件。`source /opt/ros/humble/setup.bash; PYTHONNOUSERSITE=1 /usr/bin/python3 -m pytest -q -p no:cacheprovider .../test_jaw_scene_review.py .../test_camera_mount_geometry.py .../test_real_grasp_replay.py`返回0，33 passed/1.06s。仅软件/几何诊断验证，未完成实体夹持。
+- 收尾host ps返回0，只留原37594。实际入口/executor/实体YAML哈希仍分别e8c9f85c…、107ce501…、75612194…，与8050432一致。首次哈希误查不存在的brain_robot_ball_pick/src/cube_detector_node.cpp，记录为路径错误；沿实际历史找到brain_robot_pick_place/src/cup_detector_node.cpp再核验，不能误报检测器被删除。保持已有vendor/reference改动不纳入提交。
+- 当前未完成的是“实物各可见面/边→网格面/边→夹持区”的一致对应，不是整个夹爪不可见。下一步用侧照辨明整根夹指的侧面、内面和末端，与现网格/原RGB对照后才提出精确TF/TCP/末段Pose修改；不再重复倾角/开口扫描，不擅自部署26°、删70/105mm或盲增J5。此照片澄清不是新的运动授权。下一代理先`cd /mnt/hgfs/ub && git status --short`，读本条和JSON；本轮提交六个指定路径，可git revert本轮commit撤销诊断/记录，默认一键无需重建。总目标仍未完成。
+
 ## 2026-10-11 15:43：已批准静止夹持对应核对；实物两指可见而当前模型投影不一致
 
 - 起点HEAD=0cf4d97，完成规范Git恢复检查、固定提示词/交接及最新进度决策复核；使用ros2-piper-debug追实际部署/时间戳证据，surgical-change将改动限定现只读review工具及测试/记录。观测/SEARCH已成功，不重跑基础运动，本轮推进末段对应；没有改生产executor/YAML/adapter/唯一一键入口，不重新查固件/CAN限位/重载设备。已有vendor/Astra CRLF及reference资料变动保留、不提交。

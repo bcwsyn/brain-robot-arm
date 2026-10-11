@@ -151,6 +151,22 @@ def mask_iou(a, b):
     return float(np.count_nonzero((a > 0) & (b > 0)) / union) if union else 0.
 
 
+def inner_edge_direction(mask, side, image_rows):
+    """Reviewed silhouette diagnostic, not pad depth or a movement decision."""
+    if side not in ('left', 'right') or len(image_rows) < 2:
+        raise ValueError('Need a finger side and at least two reviewed rows')
+    points = []
+    for row in image_rows:
+        if not 0 <= row < mask.shape[0]:
+            raise ValueError('Reviewed row outside image')
+        columns = np.flatnonzero(mask[row])
+        if not len(columns):
+            raise ValueError('Finger silhouette missing on reviewed row')
+        points.append([int(columns[-1] if side == 'left' else columns[0]), int(row)])
+    slope = np.polyfit([p[1] for p in points], [p[0] for p in points], 1)[0]
+    return {'inner_edge_pixels': points, 'du_dv': float(slope)}
+
+
 def compare_pitch_opening_candidates(root, positions, mesh_share, rgb, tool_from_depth,
                                      r, t, detector, measured_tip, tip_tool, output, holdout):
     """Restricted silhouette comparison. Unknown X/roll/yaw prevent calibration."""

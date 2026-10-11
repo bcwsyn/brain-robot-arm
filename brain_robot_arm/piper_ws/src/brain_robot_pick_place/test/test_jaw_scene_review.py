@@ -108,3 +108,16 @@ def test_visible_finger_witnesses_are_reviewed_dark_components_not_grasp_rois():
     assert review.mask_iou(masks['left'], masks['right']) == 0.
     with pytest.raises(ValueError, match='missing'):
         review.visible_jaw_masks(np.full((240, 320, 3), 200, np.uint8))
+
+
+def test_inner_edge_direction_distinguishes_opposite_contours_despite_overlap():
+    observed = np.zeros((12, 20), np.uint8)
+    predicted = observed.copy()
+    for row in range(12):
+        observed[row, 4 + row:] = 255
+        predicted[row, 15 - row:] = 255
+    assert review.mask_iou(observed, predicted) > .4
+    assert review.inner_edge_direction(observed, 'right', [2, 5, 8])['du_dv'] == pytest.approx(1.)
+    assert review.inner_edge_direction(predicted, 'right', [2, 5, 8])['du_dv'] == pytest.approx(-1.)
+    with pytest.raises(ValueError, match='missing'):
+        review.inner_edge_direction(np.zeros_like(observed), 'right', [2, 5])

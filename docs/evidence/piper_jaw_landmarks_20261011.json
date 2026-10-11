@@ -1,0 +1,142 @@
+{
+  "evidence": "HIGH_RESOLUTION_EDGE_DIRECTION_AND_MODEL_CONTACT_REVIEW",
+  "raw_rgb": "/home/johnwick/brain_robot_logs/jaw_landmarks_20261011/evidence/0002_rgb.png",
+  "image_size": [
+    640,
+    480
+  ],
+  "candidate_is_not_arm_joint_command": true,
+  "candidate_pitch_degrees": 26,
+  "candidate_model_opening_m": 0.045,
+  "motion_sent": false,
+  "production_modified": false,
+  "patches": {
+    "link7": {
+      "model_frontmost_inward_patch_bounds_tool_m": [
+        [
+          -0.01271488144993779,
+          -0.022499999999848207,
+          0.12577773906067835
+        ],
+        [
+          0.012714881449937845,
+          -0.022499963186331757,
+          0.1357999173528852
+        ]
+      ],
+      "model_patch_area_m2": 0.00022962416578290847,
+      "model_patch_center_tool_m": [
+        2.766584728897077e-17,
+        -0.022499980860908972,
+        0.13058949792459296
+      ],
+      "candidate_patch_pixel_bounds": [
+        [
+          411.05192805744036,
+          469.53817317644695
+        ],
+        [
+          432.65781911991587,
+          624.9759748671923
+        ]
+      ],
+      "candidate_patch_in_frame_pixels": 54,
+      "physical_feature_to_model_identity_confirmed": false,
+      "observed_inner_edge": {
+        "inner_edge_pixels": [
+          [
+            507,
+            360
+          ],
+          [
+            509,
+            400
+          ],
+          [
+            528,
+            440
+          ]
+        ],
+        "du_dv": 0.2625000000000022
+      },
+      "candidate_inner_edge": {
+        "inner_edge_pixels": [
+          [
+            516,
+            360
+          ],
+          [
+            497,
+            400
+          ],
+          [
+            470,
+            440
+          ]
+        ],
+        "du_dv": -0.5750000000000016
+      },
+      "candidate_edge_direction_matches_observed": false
+    },
+    "link8": {
+      "model_frontmost_inward_patch_bounds_tool_m": [
+        [
+          -0.01271471615563552,
+          0.02249986977698974,
+          0.12577773906067835
+        ],
+        [
+          0.0127150467435539,
+          0.022500073463341472,
+          0.1357999173528852
+        ]
+      ],
+      "model_patch_area_m2": 0.00022962416578290853,
+      "model_patch_center_tool_m": [
+        1.6529408903482613e-7,
+        0.02249998086030181,
+        0.13058949792459296
+      ],
+      "candidate_patch_pixel_bounds": [
+        [
+          189.40333833650067,
+          470.35484884507434
+        ],
+        [
+          209.89782804543427,
+          626.3232646772626
+        ]
+      ],
+      "candidate_patch_in_frame_pixels": 50,
+      "physical_feature_to_model_identity_confirmed": false
+    }
+  },
+  "canonical_head_at_start": "8050432",
+  "date_local": "2026-10-11",
+  "rgb_stamp": 1791705038.214105,
+  "joint_feedback_stamp": 1791705038.2960317,
+  "rgb_joint_delta_seconds": 0.0819267,
+  "j5_degrees": 47.952455,
+  "new_depth_captured": false,
+  "candidate_disposition": "REJECTED_AS_CALIBRATION: opposite reviewed right-inner-edge direction; overlap alone insufficient",
+  "user_side_photo": {
+    "source": "2026-10-11 user-attached side photograph, visible in conversation; no local file path found",
+    "user_statement": "画面上指尖和下指尖都对应侧照中同一夹爪结构",
+    "visible_observations": [
+      "Finger has finite thickness, broad tapered/stepped side surfaces and lower end boundary",
+      "Side photograph does not include a synchronized robot-camera image or scale/reference axes"
+    ],
+    "interpretation": "Upper/lower silhouette corners must not automatically be assigned separate physical tip/contact landmarks",
+    "exact_3d_vertex_identity_confirmed": false,
+    "metric_dimensions_inferred": false
+  },
+  "model_patch_interpretation": "Frontmost inward planar mesh patch only; not verified whole physical contact surface or a calibrated TCP",
+  "operator_measurement_m": {
+    "optical_down": 0.07,
+    "optical_forward": 0.105,
+    "reference_lens": "uncertain, probably colour, as stated by user",
+    "retained": true,
+    "unmeasured_optical_x_not_calibrated": true
+  },
+  "next_action": "Compare complete finger faces/edges with the existing mesh and actual camera, establish consistent feature identities, then propose precise TF/TCP/terminal-pose changes for approval; no repeat pitch/opening sweep."
+}
