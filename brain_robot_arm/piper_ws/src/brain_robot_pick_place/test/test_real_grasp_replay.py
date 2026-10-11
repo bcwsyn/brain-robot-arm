@@ -21,6 +21,26 @@ CONFIG = ROOT / "brain_robot_ball_pick" / "config" / "cube_task_real.yaml"
 ADAPTER = Path(__file__).parents[1] / "scripts" / "piper_jog_adapter.py"
 CONTROLLER = Path(__file__).parents[1] / "src" / "visual_search_controller.cpp"
 EXECUTOR = Path(__file__).parents[1] / "src" / "grasp_lift_executor.cpp"
+
+
+def test_static_entry_waits_for_sampled_tf_before_gripper_or_approach():
+    source = EXECUTOR.read_text(encoding="utf-8")
+    entry = source[source.index("void PointGraspAndLift()"):
+                   source.index("void PointGraspAndLift()") + 1900]
+    assert "!WaitForTargetModel()" in entry
+    assert "STATIC_TARGET_MODEL_UNAVAILABLE" not in entry
+    assert entry.index("!WaitForTargetModel()") < entry.index("CommandRealGripper(true)")
+    retry = source[source.index("void RetryFreshTargetTransform()"):
+                   source.index("bool CaptureTargetModel(")]
+    assert "rclcpp::Time stamp(camera_point.header.stamp)" in retry
+    assert "lookupTransform(lift_reference_frame_, frame, stamp)" in retry
+    assert "target_reference_received_time_ = received;" in retry
+    assert "received != target_point_received_time_" in retry
+    assert "target_timeout_s_" in retry
+    assert "rclcpp::ok() && !cancel_requested_" in retry
+    assert "milliseconds(20)" in retry
+    assert "WAITING_FOR_FRESH_TARGET_TF" in retry
+    assert "TimePointZero" not in retry
 DETECTOR = Path(__file__).parents[1] / "src" / "cup_detector_node.cpp"
 LAUNCH = ROOT / "brain_robot_ball_pick" / "launch" / "cube_visual_search.launch.py"
 DETECTOR_CONFIG = ROOT / "brain_robot_ball_pick" / "config" / "cube_detector.yaml"

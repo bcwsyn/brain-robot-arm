@@ -1,5 +1,30 @@
 # PiPER 调试进度
 
+### 2026-10-11 12:49：主机提权与Git写通道恢复；提交TF等待修复，实体USB尚未透传
+
+- 本轮从HEAD=`d67a544`接续已批准的TF等待修改，未新增运动代码/参数。使用`exec_command sandbox_permissions=require_escalated`成功（审批没有再报额度错误）；主机视图`findmnt /mnt/hgfs`为`fuse.vmhgfs-fuse rw`，普通沙箱仍为ro；`sudo -n true`返回0。因此旧“无法提权/提交”不再是当前阻断，无需chmod/index修复或重启机械臂。
+- 主机最小只读检查：`ip -details -statistics link show can0`报Device can0 does not exist，`ip -brief link`仅lo/ens33；`lsusb`仅Linux root hubs与VMware虚拟hub/mouse，没有USB-CAN `1d50:606f`或Astra相机，`/dev/video*`不存在。`journalctl -k -b`显示当前Ubuntu于12:46启动，尚无实体设备枚举记录。这是当前虚拟机看不到实体USB的事实；不能用重启前sysfs RX增长记录证明现在链路存在，也不能断言设备自身损坏。
+- 没有运行grasp/visual/adapter/piper控制进程。未发使能/运动/夹爪/ResetPiper/MasterSlaveConfig；未在无USB情况下反复modprobe或启动一键。当前根盘33%、可用51G，非空间不足。需在VMware可移动设备把USB-CAN和Astra/彩色相机连接到当前虚拟机；代理在Ubuntu内没有可枚举的实体USB，驱动重载无法代替宿主机透传。
+- 已批准实现逐字节部署一致：规范/实际executor源码SHA256=`9983738886003766c50274fd7efbf37160d4b558c9010c6e8027f8b5248c520a`，默认实际二进制=`07c53d1ee6a25771623c77045603a3a2df7afd5c343e3eb8fb7f939bdc867298`，install链接到该build产物。原入口SHA=`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`。保留0.60秒单帧有效期、原900秒整轮等待、5°Pose下俯、10mm落点和原静态目标锁存/MoveIt/adapter链。
+- 上轮构建115/121秒返回0，两工作区CTest7组和13项回放已通过。本轮读取实际持久的`/home/johnwick/piper_ws/build/brain_robot_pick_place/Testing/Temporary/LastTest.log`和test_results核对测试记录，不重复同一测试或构建。/tmp隔离构建目录随重启消失，持久实际build仍在；没有实体TF/抓取成功证据。最终差异检查通过，将5个实现/测试文件、3份规范文档及本轮小文本证据按指定路径提交，保留vendor/reference既有未提交内容。
+- 下一步先用主机执行`lsusb`确认USB-CAN/相机已接入，接口ERROR-ACTIVE且RX增长则直接复用；确需接口配置时由已授权受限CAN恢复完成。然后原命令`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_tfwait_pitchdown5 /home/johnwick/start_brain_robot_cube_real.sh`，同步读取图像/六轴/状态，验证WAITING→锁目标→原靠近/下俯；失败按原路径停输出并保持使能。此运行已获授权，不再次问代码批准。完整回退用本轮实现commit的`git revert`并同步实际源码重建，不回退以前5°/10mm提交。
+
+### 2026-10-11 10:53：CAN内核RX持续增长，但执行容器不允许netlink/raw socket
+
+- 接续核对规范仓库HEAD=`d67a544`。本轮等待TF实现及新增测试、交接记录仍未提交；没有grasp/visual/adapter/piper控制进程。`/mnt/hgfs/ub`由`vmhgfs-fuse ro`挂载。
+- 新的只读sysfs证据：`/sys/class/net/can0`存在，operstate=`up`、carrier=`1`、type=`280`；1.2秒间隔RX从193731407增至193734604（+3197），TX=216082，RX/TX错误均0。这证明内核接口在收到帧；仅凭计数器不能确认帧的关节内容或CAN位时序。
+- 当前执行容器运行`ip -details -statistics link show can0`返回`Cannot open netlink socket: Operation not permitted`，`candump -L can0`返回`socket: Operation not permitted`。原一键的`configure_can()`必须通过`ip link show`及详细配置确认1Mbps/采样点后才启动ROS；因此不能在本容器继续启动，也不能重载接口。上轮“未找到can0”是那次执行时容器观察，不能当成当前硬件离线结论。未重新运行脚本、未发运动/使能/夹爪命令。
+- 规范/实体工作区构建、7组CTest、13项回放检查通过，真实TF等待行为尚无硬件验证。Git提交失败原因不变：共享目录只读，`git add`无法创建`.git/index.lock`；此前提权申请被审批服务的额度限制拒绝。下一步只能在具备CAN socket/netlink及规范Git写权限的Ubuntu会话提交本轮指定路径并运行原脚本，采集图像、状态和关节反馈；不要重置/重载当前正在增长的CAN链路。
+
+### 2026-10-11 10:50：TF等待修复通过构建与7组测试；一键实机入口受当前执行容器阻断
+
+- 用户最新“确认”批准10:45方案，取代此前等待批准状态。仅修改既有抓取入口：StopServo后进入WAITING_FOR_FRESH_TARGET_TF，工作线程每20ms重试仍新鲜相机点的原header.stamp精确TF；转换并通过原CaptureTargetModel后自动锁存/张爪/靠近。TF暂未就绪不再立即STATIC_TARGET_MODEL_UNAVAILABLE；没有把0.60秒当整轮等待期限。原一键默认900秒、FAULT/STOPPED/estop/进程退出取消仍有效，不添加保护门。
+- 重试不持target_mutex等待TF；提交缓存前验证原帧未被新回调替换、接收年龄仍不超过0.60秒、不能覆盖较新base缓存。重试成功继续使用原始接收时间，不把重试时间当新观测。零stamp不查询、不退回latest。depth-only备用回调不改，真实配置仍RGB-D。等待取消直接返回，不发张爪/轨迹或新的FAULT；后续运动仍走已有MoveIt与adapter。
+- 新增五项C++等待策略测试（短TF延迟、总等待超过单帧期限后使用新帧、拒绝过期帧与取消、已取消零尝试、锁定同时取消不继续）及源码链回放检查。该单测不是TF2或实体抓取成功证据。规范/实际src、CMake、测试和新header已逐项apply_patch同步；执行器源码SHA256=9983738886003766c50274fd7efbf37160d4b558c9010c6e8027f8b5248c520a。实体YAML和原脚本未改，原脚本SHA仍e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb。确认无控制栈残留，根盘34%可用50G；未做普通CAN/限位/固件巡检或重载。
+- 隔离规范构建目录/tmp/ub_pitch_down_workspace（115秒）及实际构建/home/johnwick/piper_ws（121秒）均成功，目标包7组直接CTest 100%通过；新增目标等待C++ gtest已运行通过，13项python回放检查通过。实际二进制SHA256=07c53d1ee6a25771623c77045603a3a2df7afd5c343e3eb8fb7f939bdc867298，规范和实体源码SHA一致；原脚本SHA仍e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb。YAML/脚本均未改。
+- 已按原命令启动一键脚本，退出码1，停在[1/7] CAN初始化，输出`未找到can0`及`sudo ... no new privileges ... prevents sudo from running as root`；当前运行容器的sudo配置文件也显示uid65534。这是执行容器隔离/特权阻断，非机械臂自身或代码造成；脚本的特权gs_usb加载未成功，随后按现有规则退出。未启动PiPER、相机/MoveIt/视觉/抓取控制栈，未发送运动/使能/夹爪命令；控制进程列表为空。因此这轮没有实机TF延迟闭环证据，不能声称已靠近。运行前机器根盘34%/可用50.8GB，并无磁盘空间不足证据。
+- Git提交也受当前容器审批通道限制：需要提权的仓库只读核对请求被自动审批服务以额度用尽拒绝（服务提示15:20可重试）；不尝试绕过。当前代码与进度留在规范仓库工作树，尚未commit。下一步需在具备仓库写入与实体CAN访问的原Ubuntu/VS Code会话完成指定路径Git提交，然后在同一会话原样重跑上述一键脚本并读取目标/关节/相机证据。最小代码回退为`git revert <本实现commit>`再重建，不回退8f5f701下俯/c0dc5eb落点容差；本轮目前没有实现commit。
+
 ### 2026-10-11 10:45：澄清0.60秒是单帧新鲜度，不是抓取期限；入口应等待而非一次失败退出
 
 - 用户要求至少完成靠近并将目标放入两指之间，反对短TF延迟立即停止。核对现实现：target_timeout_s=0.60用于相机点/有效标志/尺寸等观测新鲜度；原一键等待整个抓取的期限默认900秒。上轮实际并未等待0.60秒重试，而是CaptureTargetModel一次检查失败立即FAULT，脚本再见FAULT退出；本轮不把两种时间混淆。

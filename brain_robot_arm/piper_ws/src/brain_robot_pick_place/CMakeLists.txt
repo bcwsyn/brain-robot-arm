@@ -153,6 +153,8 @@ if(BUILD_TESTING)
   target_include_directories(grasp_geometry_test PRIVATE include)
   ament_add_gtest(center_search_test test/test_center_search.cpp)
   target_include_directories(center_search_test PRIVATE include)
+  ament_add_gtest(target_model_wait_test test/test_target_model_wait.cpp)
+  target_include_directories(target_model_wait_test PRIVATE include)
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_pytest_test(
     piper_jog_adapter_test

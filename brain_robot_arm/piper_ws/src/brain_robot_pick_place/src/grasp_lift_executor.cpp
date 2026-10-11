@@ -39,6 +39,7 @@
 #include <tf2_ros/transform_listener.h>
 
 #include "brain_robot_pick_place/grasp_geometry.hpp"
+#include "brain_robot_pick_place/target_model_wait.hpp"
 
 namespace brain_robot_pick_place
 {
@@ -719,11 +720,10 @@ private:
       Fail("SERVO_STOP_FAILED");
       return;
     }
-    // A tabletop cube is static. Capture its base-frame pose immediately
-    // after visual alignment, before opening the gripper can occlude the
-    // wrist camera; static mode never reacquires from later image motion.
-    if (static_target_lock_ && !CaptureTargetModel()) {
-      Fail("STATIC_TARGET_MODEL_UNAVAILABLE");
+    // Hold after ALIGN until a fresh observation has its exact sampled TF.
+    // Do not turn normal TF publication latency into a terminal fault, or
+    // open the gripper before the static base-frame target has been locked.
+    if (static_target_lock_ && !WaitForTargetModel()) {
       return;
     }
     if (!simulation_only_) {
@@ -1974,7 +1974,75 @@ private:
       age_s <= target_timeout_s_ && depth_valid_;
   }
 
-  bool CaptureTargetModel()
+  void RetryFreshTargetTransform()
+  {
+    if (depth_only_target_enabled_) {
+      return;
+    }
+    geometry_msgs::msg::PointStamped camera_point;
+    std::chrono::steady_clock::time_point received;
+    {
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      camera_point = target_point_camera_;
+      received = target_point_received_time_;
+    }
+    if (received == std::chrono::steady_clock::time_point{} ||
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - received).count() >
+      target_timeout_s_ ||
+      (camera_point.header.stamp.sec == 0 && camera_point.header.stamp.nanosec == 0))
+    {
+      return;
+    }
+    const std::string frame = camera_point.header.frame_id.empty() ?
+      camera_optical_frame_ : camera_point.header.frame_id;
+    const rclcpp::Time stamp(camera_point.header.stamp);
+    try {
+      const auto transform = tf_buffer_->lookupTransform(lift_reference_frame_, frame, stamp);
+      geometry_msgs::msg::PointStamped reference_point;
+      tf2::doTransform(camera_point, reference_point, transform);
+      std::lock_guard<std::mutex> lock(target_mutex_);
+      // A newer callback may have arrived during lookup: never replace it
+      // with an older point, or rejuvenate the original receipt timestamp.
+      if (received != target_point_received_time_ ||
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - received).count() >
+        target_timeout_s_ || received <= target_reference_received_time_)
+      {
+        return;
+      }
+      previous_target_point_reference_ = target_point_reference_;
+      previous_target_reference_received_time_ = target_reference_received_time_;
+      target_point_reference_ = reference_point;
+      target_reference_received_time_ = received;
+      RCLCPP_INFO(
+        get_logger(), "TARGET_TF_RETRY image_stamp=%.9f tf_stamp=%.9f age=%.3f "
+        "reference=%s xyz=(%.4f,%.4f,%.4f)", stamp.seconds(),
+        rclcpp::Time(transform.header.stamp).seconds(),
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - received).count(),
+        lift_reference_frame_.c_str(), reference_point.point.x,
+        reference_point.point.y, reference_point.point.z);
+    } catch (const tf2::TransformException &) {
+      // Leave callbacks free to supply TF/new observations; no latest fallback.
+    }
+  }
+
+  bool WaitForTargetModel()
+  {
+    PublishState("WAITING_FOR_FRESH_TARGET_TF");
+    PublishDiagnostic("WAITING_FOR_FRESH_TARGET_TF_HOLDING");
+    const bool locked = WaitForFreshTargetModel(
+      [this]() {return rclcpp::ok() && !cancel_requested_;},
+      [this]() {
+        RetryFreshTargetTransform();
+        return CaptureTargetModel(false);
+      },
+      []() {std::this_thread::sleep_for(std::chrono::milliseconds(20));});
+    if (!locked) {
+      RCLCPP_INFO(get_logger(), "Target-model wait cancelled; no gripper/arm command issued.");
+    }
+    return locked;
+  }
+
+  bool CaptureTargetModel(bool log_unavailable = true)
   {
     std::lock_guard<std::mutex> lock(target_mutex_);
     const auto now = std::chrono::steady_clock::now();
@@ -1985,7 +2053,9 @@ private:
       !std::isfinite(target_point_reference_.point.y) ||
       !std::isfinite(target_point_reference_.point.z))
     {
-      RCLCPP_WARN(get_logger(), "Cannot lock base-frame target model (age %.3f s).", age_s);
+      if (log_unavailable) {
+        RCLCPP_WARN(get_logger(), "Cannot lock base-frame target model (age %.3f s).", age_s);
+      }
       return false;
     }
     if (adaptive_size_enabled_) {
@@ -1998,7 +2068,9 @@ private:
         width_m < min_object_size_m_ || width_m > max_object_size_m_ ||
         !std::isfinite(face_edge_m) || face_edge_m < min_object_size_m_)
       {
-        RCLCPP_WARN(get_logger(), "Cannot lock cube size (age %.3f s).", size_age_s);
+        if (log_unavailable) {
+          RCLCPP_WARN(get_logger(), "Cannot lock cube size (age %.3f s).", size_age_s);
+        }
         return false;
       }
       locked_object_size_m_ = width_m;

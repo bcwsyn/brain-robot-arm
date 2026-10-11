@@ -1,0 +1,31 @@
+Host execution evidence, 2026-10-11 12:48:56 +08:00
+Execution mode: exec_command sandbox_permissions=require_escalated
+
+whoami: johnwick
+sudo -n true: exit 0
+findmnt /mnt/hgfs: fuse.vmhgfs-fuse rw,relatime,user_id=0,group_id=0,allow_other
+ip -details -statistics link show can0: Device "can0" does not exist.
+ip -brief link:
+lo UNKNOWN 00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+ens33 UP 00:0c:29:87:66:7f <BROADCAST,MULTICAST,UP,LOWER_UP>
+
+lsusb IDs observed:
+1d6b:0003 Linux Foundation 3.0 root hub
+1d6b:0002 Linux Foundation 2.0 root hub
+1d6b:0001 Linux Foundation 1.1 root hub
+0e0f:0002 VMware virtual USB hubs
+0e0f:0003 VMware virtual mouse
+No USB-CAN 1d50:606f or physical camera enumerated.
+ls -l /dev/video*: no such file or directory
+ps -C grasp_lift_executor,visual_search_controller,piper_jog_adapter,piper_single_ctrl:
+PID COMMAND (no matched processes)
+journalctl -k -b: current Ubuntu boot messages begin Oct 11 12:46:18.
+df -h /home/johnwick: /dev/sda3 78G size, 25G used, 51G available, 33% use.
+
+SHA-256:
+startup script e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb
+actual executable 07c53d1ee6a25771623c77045603a3a2df7afd5c343e3eb8fb7f939bdc867298
+canonical executor source 9983738886003766c50274fd7efbf37160d4b558c9010c6e8027f8b5248c520a
+deployed executor source 9983738886003766c50274fd7efbf37160d4b558c9010c6e8027f8b5248c520a
+
+No robot command was sent. Hardware wait/approach/grasp remains unverified.
