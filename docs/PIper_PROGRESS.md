@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+## 2026-10-11 19:55：官方时间同步采集接入，15组新鲜配对，69测试，无运动
+
+- 起点8943c04。解决3秒latest采集偏置，新增仅test/collect_static_rgbd.py、21项回归、CMake2行登记；不改默认控制/TF/TCP/入口/YAML或添抓取保护门。已核本机message_filters4.3.19、官方Humble源码及真实API，不套旧ROS1；ROS2技能限定实际overlay/原话题/真实feedback，surgical-change限定只读工具所有者。
+- 固定4订阅原RGB/depth/depth_info/joint_states_feedback，官方ApproximateTimeSynchronizer/100队列/120ms；depth/info同stamp/frame/尺寸，图像年龄≤500ms、250ms静止历史，按名字六轴/非有限拒绝。原PNG/K/q/stamp/跨度/SHA留全新目录，最多120秒/60组，没有service/publisher/运动接口。数据检查不影响正常抓取门，不是硬同步或标定。
+- source ROS后隔离用户NumPy，new_static/startup/jaw/calibration四组pytest最终69通过，其中新21项含真实官方同步器内存回放：latest170ms被拒、历史30ms合法配对、错时输入无假包。无DDS/硬件；另测坏输入、停稳、路径不覆盖、CLI有界和接口作用域。CMake只测试登记，未全工作区构建/默认部署。
+- 新目录/home/johnwick/brain_robot_logs/static_sync_20261011.a1GWut：原四overlay/原UDP配置，仅有限启动原Astra/cam2image相同命令，47043驱动不动；无MoveIt/Servo/adapter/检测/控制/执行器。duration30/frames15在14.048977秒exit0；收RGB49/depth196/info236/feedback2725，匹配44包中10个非同帧info拒绝，部分合法包按0.5秒间隔不保存。15组最大跨度72.845321ms/年龄74.401461ms、六轴范围0/J5≈47.952455°，不放宽120ms/不拿缓存凑通过。
+- 首RGB/depth/feedback纳秒1791719201192565139/1791719201189454720/1791719201191259526，末1791719210791605784/1791719210782917209/1791719210790990626；info与depth同stamp，完整在JSONL。Astra640×400/1mm、RGB320×240，无color CameraInfo不伪造。启动前SDK有2.39秒/近窗.19秒恢复，采集14秒窗无新增报警，不推翻旧长窗停帧。
+- 已看末组原RGB，两指可见、紫块下沿裁切。同配置D→C离线核15组bbox x94..97/y168/w56..60/h72均裁切，相关非零深度2354..2437样本/每组中值.155m；本轮没起检测器，不称实时target_valid。角点诊断ROI深度.176/.204m可能背景、无新CAD身份，不替代70/105mm；15帧仅一个姿态，不能冒充足够手眼激励。
+- 自有相机组TERM/KILL后主机无本次相机/采集器，仅原47043/PGID47039及daemon47019；未停止/替换反馈驱动，未发关节/夹爪/使能/复位/失能。原入口0e976b0a…/executor源码107ce501…/YAML75612194…不变，4段20mm仅已用1段。完整来源/路径/SHA/命令和限制在docs/evidence/piper_static_rgbd_pairing_20261011.md，Git仅本轮7路径，不含vendor/reference。
+- 下一项可信非平行姿态及独立相机→夹持区核验。新采集成功不等于新TF正确或实体捕获；±6°仍超旧预算未执行，不重扫26°/旧敏感数据、不硬增J5/盲闭爪。当前仍未达到目标。
+
 ## 2026-10-11 19:40：原入口静止采集，退出清理重复信号缺陷最小修复，11测试通过
 
 - 起点ceecb0d；按规范恢复及技能规则查实际路径。旧37594消失，针对这一新生命周期仅查被动链路，can0 ERROR-ACTIVE/RX增长，未恢复/重载/查询固件；原入口AUTO_START=0有限运行到[7/7]/IDLE，不再重复观测/SEARCH基础。根34%/共享73%，无ENOSPC；原脚本仍正常调用维护，未另行清盘。新驱动47043/PGID47039，auto_enable=false/gripper_exist=true，未请求使能/运动/夹爪。

@@ -1,5 +1,13 @@
 # PiPER ROS 调试完整交接记录
 
+## 最新时间配对接入（2026-10-11 19:55，15组静止数据，无运动）
+
+起点8943c04。新增只读test/collect_static_rgbd.py，复用message_filters4.3.19原同步器，固定原RGB/depth/depth_info/真实joint_states_feedback、header队列/120ms不放宽、depth/info同帧及停稳历史，保存原PNG/stamp/K/q/SHA。只在test使用、不改控制栈或添抓取门，不是第二入口。21项新回归及startup/jaw/sampling共69通过，含真实官方同步器内存回放latest偏差复现。
+
+只有限运行原两相机命令，47043驱动不动，无MoveIt/adapter/闭爪/失能。14.049秒取得15组，最大跨度72.845ms/年龄74.401ms，六轴范围0/J5≈47.952455°；相机全退出，仅原反馈及daemon47019。一个姿态15帧不是15标定姿态。原图仍裁切，各组紫色相关深度中值.155m；角点圈选深度可能背景，不当CAD点或新外参。普通自主实施规则保留，不扩运动预算。
+
+详docs/evidence/piper_static_rgbd_pairing_20261011.md，数据/home/johnwick/brain_robot_logs/static_sync_20261011.a1GWut/capture。目标未完成；原入口0e976b0a…/executor源码107ce501…/YAML75612194…不变，4段20mm仍只用1段。下一项可信多姿态/独立对应，不能拿同姿态重复图或旧26°回填TF，不擅自扩±6°。
+
 ## 最新实测与原入口修复（2026-10-11 19:40，静止采集，无运动/失能）
 
 起点ceecb0d。旧37594驱动已不存在；can0活跃未重载，原唯一脚本AUTO_START=0有限130秒到[7/7]/IDLE。22条静止采集六轴不变/J5≈47.952455°；原图有紫块，但下沿裁切，1条满足120ms，深度相关样本中值.155m不等于合法抓取点。其余前期latest抽样存在5Hz/3秒相位偏置，后期确有深度停帧并自动恢复；没有新TF/TCP标定或抓取成功。

@@ -175,6 +175,8 @@ if(BUILD_TESTING)
     ENV "PYTHONNOUSERSITE=1")
   ament_add_pytest_test(calibration_sampling_test test/test_calibration_sampling.py
     ENV "PYTHONNOUSERSITE=1")
+  ament_add_pytest_test(static_rgbd_test test/test_static_rgbd.py
+    ENV "PYTHONNOUSERSITE=1")
 endif()
 
 ament_package()
