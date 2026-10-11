@@ -1,5 +1,18 @@
 # PiPER 调试进度
 
+## 2026-10-11 17:16：自主实现可复现采样核验工具，37测试及完整规划保存通过，生产未动
+
+- 起点f78badf；本连续轮按规范Git顺序复核，固定提示全文/四文档最新条目及两技能全文已读。用户要求先自主推进、问题随后修改，已记录普通可逆代码不再逐项等待的新偏好；实体预算和停止条件不扩张。未重新跑已完成观测/SEARCH，因为断点在实体末段几何；本轮重点准备可信标定数据，不宣称实机到位/抓取成功。
+- 先查主机实际进程及三个生产SHA：只原37594/PGID37573反馈驱动，入口/executor/YAML分别e8c9f85c…/107ce501…/75612194…，起终不变。df根34%/共享73%，未触发85%清理规则；不删除历史日志。无CAN/固件/底层重复检查，无新使能/关节/相机实测。ros2-piper-debug用于实际生效路径/域/来源核验，surgical-change限定test工具及测试登记，不改默认运动组件。
+- 代码最小动作：新增test/review_calibration_sampling.py和对应pytest，CMake只增加2行测试登记。复用已有review_jaw_scene FK、实际URDF/YAML和旧静止证据，输出五姿态/八独立往返/完整矩阵/路径/激励/合成约定。可选规划只在ROS域78、实际allow_trajectory_execution=false且模型SHA相同时调用GetParameters/GetPlanningScene/GetMotionPlan，只有隔离模型joint_states心跳；无execute/adapter/CAN/实体命令。完整MotionPlanResponse落JSON，失败/中断保留部分响应、拒绝覆盖旧输出；这不是原抓取新增保护门。源码SHA及所有复现步骤见新规范证据.md。
+- `PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider .../test_calibration_sampling.py .../test_jaw_scene_review.py`最终返回0、37通过。测试覆盖合成双轴/单轴对照、URDF/任务限位、缺轴/名字重排/NaN/端点、域0在初始化ROS前拒绝、失败/中断保存和输出不覆盖。AST语法及作用域diff检查通过；未跑整个工作区编译/CTest，不冒充完成默认部署。
+- 新日志目录mktemp=/home/johnwick/brain_robot_logs/calibration_tool_20261011.9ghtSu。工具离线六度输出offline_6deg.json，exit0、8,804字节/SHA9114ea228a8d5edc051171ad45bf69d9d1219c5aad602a7f2f5b9520f41fb9ee。51点FK总模型tip弧长165.573793mm/max23.739592mm，合成已知变换方向检查通过；仅新工具验证，不是重试旧不稳定实机解，更不是接受新TF。
+- 实际接入：source原三个overlay，ROS_DOMAIN_ID=78/原FASTRTPS profile/PYTHONNOUSERSITE，`timeout -s INT 55s ros2 launch .../test/review_surface_grasp_plan.launch.py`，随后`timeout -s INT 38s python3 .../test/review_calibration_sampling.py --urdf <归档实际模型> --config <实际cube_task_real> --start-evidence <旧static JSON> --angle-deg 1 --plan --output <目录>/isolated_1deg.json`。客户端exit0，八份code1各20点完整响应保存169,959字节，SHA0f2a36c0941b1590a65338d1714720386f8e7735895a1ebbbd59db09171e9d02；逐点任务限位和按名字映射起终点通过。JSON解析/完整8响应与点数对应断言通过，不再拿终端输出作为全量证据。
+- 一度最大模型tip位移3.958357mm、八段总弧长27.595637mm；仍超旧4步/20mm预算，未执行。world空/Octomap0，不验证真实桌面间隙/开口、RGB-D纹理覆盖或adapter接受。新工具没有70mm开口/全扫掠检查，不能沿用旧选点结果称本轮也完成。候选q仍是旧采样、不冒充实时。合成测试只验证坐标约定，未取得独立通过的真实外参。
+- 55s timeout SIGINT后launch124；MoveIt2.5.9在规划完成后的析构exit -11，属历史同相位问题；原反馈驱动未操作，临时节点收尾全部退出，不据此重置CAN。新launch.log SHAe37a53ee23f5265b383210779557faa9e48aa970cfef332b8e0979e5f1a8c176。所有完整报告留日志目录，规范Git仅工具/测试/CMake及交接/进度/决策/证据摘要，不含原始大型响应或vendor改动。
+- 阻断仍是相机与实际夹持区对应不一致、缺少可信真实标定观测；下一项可靠停稳RGB-D观测/独立验证，保留70/105mm，不重复旧拟合/扫参，不硬加J5、不新增闭爪门。普通最小代码修复可自主推进并记录回退；扩大采样运动不以新自主偏好擅自代替具体范围确认。本轮未执行真实一键/闭爪/抓取。下一代理首条仍`cd /mnt/hgfs/ub && git status --short`，读此条和新工具证据.md再决定需要哪组真实数据，不重跑本轮成功接入来冒充进展。
+- 提交前四个来源/完整输出SHA、8响应/每段20点及范围断言通过。首次暂存diff --check发现新测试文件末尾多一空行，返回2，尚未提交；已精确删该空行并重新检查。只暂存本轮七路径，原vendor/reference未动；最终Git检查及提交ID见本条所属提交/本轮报告。
+
 ## 2026-10-11 16:58：自主完成8段采样离线规划与双轴标定约定验证，未改生产/未运动
 
 - 起点4e117b3，按规范先复核Git/四文档及真实部署，使用ros2-piper-debug确认生效路径，surgical-change把本轮范围限定为既有离线工具及交接记录。用户希望暂不参与，不再索取棋盘格/终端数据；具体生产代码审批与已用1段的4步/20mm预览范围未擅自取消。原vendor/reference等改动未纳入。没有新相机帧、实时关节/使能读取、CAN检查或运动，起终只有原37594反馈驱动（auto_enable=false/gripper_exist=false）。

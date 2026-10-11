@@ -173,6 +173,8 @@ if(BUILD_TESTING)
   # Use system OpenCV/SciPy rather than the VM's incompatible user NumPy 2.
   ament_add_pytest_test(jaw_scene_review_test test/test_jaw_scene_review.py
     ENV "PYTHONNOUSERSITE=1")
+  ament_add_pytest_test(calibration_sampling_test test/test_calibration_sampling.py
+    ENV "PYTHONNOUSERSITE=1")
 endif()
 
 ament_package()
