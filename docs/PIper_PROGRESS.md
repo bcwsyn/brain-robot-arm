@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+## 2026-10-12 00:26：用户确认关灯；完成夹爪原始反馈与软件契约专项，不盲开闭
+
+- 起点9a6dccb；本轮固定Git检查已执行，复用连续轮完整历史/最新文档阅读，使用ros2-piper-debug与surgical-change技能限定实际路径和最小范围。用户最新是询问关灯期间可提前完成工作，并非要求盲目标定/闭爪。未推进新观测姿态：关灯/真实RGB不可用，保持当前姿态，把最小工作转为独立夹爪诊断；不重复CAN/固件/六轴限位基线。
+- host只读ps确认唯一wrapper63403、SDK63407/PGID63403，现存driver auto_enable=false/gripper_exist=true；高级控制/相机均未运行。规范/部署driver SHA c0153c88…一致，原入口SHA0e976b0a…不变，无生产代码/配置修改，也没有新使能、六轴、夹爪、ResetPiper、MasterSlaveConfig、标定、失能或CAN恢复命令。
+- /tmp/piper_gripper_passive_20261012.py用can.Bus仅recv、ROS仅订阅、SDK仅纯parser（不实例化C_PiperInterface），8秒exit0：1672帧0x3A7/按报文时间戳199.998207Hz；全部position101900/status64，力矩字段变化。独立int32/int16大端有符号解码与现SDK parser零差异；ROS1600反馈199.997374Hz/最后接收年龄4.616ms，gripper.1019m，六轴反馈范围0。0x159与/joint_commands观测0条，命令/enable发布者为空；不会把本轮没命令解释成“命令已发送却不响应”。原始反馈接收年龄字段是本地出队年龄，不是硬件时延。
+- 官方V2接口/反馈类和本地SDK确认0.001mm、0x40位定义（已使能/0..5故障位0/回零位未置起）、0xAE写当前位置为零；这不是独立实体开口或零点已失效的定论。本轮排除纯ROS旧缓存和现解析换算造成101.9，未排除实体基准/标定、固件位置语义、机构响应等假设；101.9不能当最大开口，也不软件减偏移伪造真实值。
+- source Humble与实际piper_ws install，保留ROS PYTHONPATH、加入规范vendor；PYTHONNOUSERSITE=1只用于离线pytest：指定test_command_validation.py + test_piper_jog_adapter.py **15 passed in0.63s/exit0**，验证使能不写夹爪、六轴保持不夹带夹爪、显式50mm/1Nm首0x03后0x01/set_zero0、适配器5帧有界effort契约。生产环境仍须保留can/SDK user-site，不再复现上轮导入错误。此不是实体抓取/开闭成功。
+- 诊断中的一条rg使用了不存在的moveit_config/scripts路径，改用rg --files定位到真实pick_place/scripts/piper_jog_adapter.py；是只读路径查找错误，非生产故障。误用全仓git diff --check触发已有vendor/Astra CRLF空白报告，已改为本轮指定文档范围，exit0；不修改既有用户文件。此前0x03清错、22次普通目标无响应、实体闭合基准不确定的记录已复用，不重复命令洪泛或官方demo的立即闭爪初始化。
+- 证据与完整复现命令：docs/evidence/piper_gripper_dark_20261012.md、.json、_probe.py（原脚本SHA97e74e4a…）；现场关灯由用户确认，不重新增益扫描/替换depth-only。下一步暗处可完成软件失败回放/测试，不依赖训练集；实体开闭恢复仍需可观察夹指/接触区与实际开口基准，再同一adapter发单次有界目标配套0x159/0x3A7响应核验，未知闭合基准不写0xAE、不因夹爪问题改变六轴靠近门。
+- 收尾只读采集已退出，现驱动保留、无自动续跑。Git只纳本轮3文档/3小证据，保留既有vendor/reference用户改动；目标remote origin/main，先前auto-review拒绝的主分支写入范围尚未获新授权，本轮不再次尝试，标记“仅本地提交，未同步GitHub”。P5仍未完成。
+
+
 ## 2026-10-11 23:41：近距补丁已选择性部署；原入口到[7/7]，当前真实彩色全黑阻断实机
 
 - 起点9231e84，用户最新授权任务内自主继续。复用上一连续轮完整阅读与历史基线，本轮重核固定Git顺序、完整任务提示词/两个技能及三份文档最新变化；不重复固件/CAN基础实验。原入口SHA0e976b0a…不变，仍唯一入口。本轮未推进新观测姿态：静止原RGB真实丢失，不能拿旧可靠seed续跑或执行已知错误全段J5。没有运动/张闭爪/回零/失能/刷写。
