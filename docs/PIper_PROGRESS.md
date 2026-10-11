@@ -1,5 +1,19 @@
 # PiPER 调试进度
 
+## 2026-10-11 16:15：完成夹指结构图，用户确认A/B为自由末端；当前静态几何与实物不一致
+
+- 起点HEAD=b6c93af，已执行规范rev-parse/status/log30/reflog20/show；复核四规范文档及ros2-piper-debug/surgical-change全文。实际主机开始/结束只有37594/PGID37573原arm-only反馈驱动。此轮沿用户批准的结构对应方案，未启动相机/ROS栈、未重新读取硬件使能、未发关节或夹爪命令；使用前轮档案不假称新实时采样。观测/SEARCH已有成功证据，不重跑它们或普通CAN/固件/限位检查。
+- 现review_jaw_scene新增archive-only结构分支：按真实归档URDF及实际部署STL绘制夹指X/Z宽侧面、Y/Z厚度轮廓，列内外平面/台阶，而不是仅最前端小面。模型夹指Z59.300..135.800mm、长76.500mm、最大宽56.000mm，包含完整渐窄末端。与用户侧照的结构类型相符；未据无标尺照片核实实物精确尺寸，不能声称所有CAD尺寸已校准。link6→gripper_base为单位固定变换，.1358m已包括模型夹指，不盲删或二次叠加此长度。
+- 已生成并实际查看`/home/johnwick/brain_robot_logs/jaw_landmarks_20261011/structure_review/finger_structure.png`（约472KB，不纳入Git），右侧标原RGB A=(95,311)、B=(513,315)。用户明确回复两点对应侧照远离螺丝的自由末端；把此区域身份写入规范JSON和确认表。不再把它们称为根部或两个独立指尖；精确三维顶点/接触面边界尚未确认。A/B手工坐标/确认绑定原RGB SHA5b695ae3…，不同帧不继承确认。没有做AI生成/替换实景证据。
+- 新的最小核验只取模型Z最前端平面，不重做165组轮廓扫参。以归档实际TF、工厂D2C和640×480内参投影：闭合模型两末端v最小487.77/487.88、最大约581；70mm模型v最小487.13/488.53、最大约582，四者图内末端像素均0。实物A/B在v311/315，明确不一致；实际模型开口未知，0/70mm是模型限位端点诊断而不是实际运动/开口测量。不存在“实物夹爪看不到”的结论，也不是模型没有夹爪；未唯一确定哪项外参或模型接触点误差，禁止把这一步称为已求出新TF。
+- 对前轮jaw_correspondence_20261011同帧档案做一次7px内缩指体深度注册核验：左3173像素/6个深度样本约.17549m、右2892像素/0样本；左背景污染可能，不能当两真实指尖3D测量。此次无新深度或合法抓取目标，不把零洞补值用于标定，也不重复前轮无配对的目标base敏感度筛选。
+- 沿实际部署代码定位：brain_robot_ball_pick/launch/cube_visual_search.launch.py `_camera_mount_arguments`读取cube_task_real.yaml的translation/rotation并发布gripper_base→camera_link；实际executor用同图像stamp TF把目标转到基座锁存，FreshFaceInsideJaws又用同几何转到gripper_base。错误几何解释可同时影响规划目标和夹持区判断，MoveIt不会自行看RGB纠正它；这是需要核校的责任链，不新增门控。用户70/105mm继续保留，测量点→模型点绑定、镜头基准/未标定旋转不能由当前确认自动补齐。
+- 主命令：`PYTHONNOUSERSITE=1 /usr/bin/python3 .../test/review_jaw_scene.py --observer /home/johnwick/brain_robot_logs/jaw_landmarks_20261011/observer.jsonl --task /home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_task_real.yaml --detector /home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_detector.yaml --mesh-share /home/johnwick/piper_ros/install/piper_description/share/piper_description --model-directory /home/johnwick/brain_robot_logs/jaw_geometry_20261011_step1/review --output /home/johnwick/brain_robot_logs/jaw_landmarks_20261011/structure_review --structure-rgb /home/johnwick/brain_robot_logs/jaw_landmarks_20261011/evidence/0002_rgb.png --free-end-corners-confirmed`返回0。源码/模型来源、图像SHA和来源时间已存`docs/evidence/piper_jaw_structure_20261011.json`，对应表/复现见同名.md。
+- 验证：先结构测试14通过，再完整针对性36通过；增加确认只属于原帧的测试后最终`source /opt/ros/humble/setup.bash; PYTHONNOUSERSITE=1 /usr/bin/python3 -m pytest -q -p no:cacheprovider .../test_jaw_scene_review.py .../test_camera_mount_geometry.py .../test_real_grasp_replay.py`返回0，37 passed/1.06s。覆盖网格面分层、自由端与根部/侧面分离、错误数据拒绝、确认来源、现投影/抓取回放不变，仅软件与结构证据，不是实体抓取。
+- 首次确认flag补丁因上下文行不匹配未应用，修正精确上下文后应用/运行成功。只读查询曾误用不存在model_capture.json和pick_place包的cube_visual_search.launch.py；实际来源是move_group_scene.json及ball_pick launch，已纠正，不将路径不存在判硬件/运行错误。未动已有vendor/Astra/reference改动。
+- 收尾require_escalated主机ps返回0仅37594；sha256sum返回0，原一键/executor/实体YAML仍e8c9f85c…/107ce501…/75612194…，没有新入口、TF/TCP/抓取代码部署，无Reset/Disable/刷固件操作。当前进展是b6c93af计划的结构对应图与几何矛盾定位，不是总体抓取完成。
+- 下一步按已确认自由端，补齐可辨的具体CAD角点/边与实际开口尺度或等价独立约束，复用OpenCV PnP求相机→夹持框架并留出特征验证。已查看官方文档https://docs.opencv.org/4.13.0/d5/d1f/calib3d_solvePnP.html；两个未定顶点的自由端区域不足唯一解完整旋转/平移，不能凑点或把175mm未验证深度当答案。若现图无法补齐，要说明所缺独立几何证据及如何采集；整体J5不提供新的相机/夹指相对视图，不无限加角或重复旧扫参。先列精确生产改动获准再实施，运动预算不重置，当前无新增运动/闭爪许可。下一代理先`cd /mnt/hgfs/ub && git status --short`，读本条和结构.md/.json。
+
 ## 2026-10-11：用户要求具体下一步；先交付实体/模型对应图，再提出精确生产差异
 
 - 起点HEAD=95c9ff1。复核规范路径、指定文件Git状态/历史、三文档首条及两技能全文，指定任务路径干净；本轮是计划说明，不采新反馈、不启动ROS或运动，不将上一轮37594/J5/使能当新实时读取。不推进已完成的观测姿态，集中末段真实夹持区；没有更改控制代码或新增门控。ros2-piper-debug用于保持实际来源/时间戳区分，surgical-change用于限定后续最小变更与审批。

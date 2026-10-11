@@ -121,3 +121,39 @@ def test_inner_edge_direction_distinguishes_opposite_contours_despite_overlap():
     assert review.inner_edge_direction(predicted, 'right', [2, 5, 8])['du_dv'] == pytest.approx(-1.)
     with pytest.raises(ValueError, match='missing'):
         review.inner_edge_direction(np.zeros_like(observed), 'right', [2, 5])
+
+
+def test_structure_inventory_keeps_contact_depth_steps_separate():
+    first = np.array([[0., 0., .100], [.010, 0., .100], [0., 0., .110]])
+    second = first + [0., -.002, -.030]
+    report = review.finger_structure(np.array([first, second]))
+    assert report['extent_m'] == pytest.approx([.010, .002, .040])
+    faces = report['y_normal_planar_faces']
+    assert [f['y_tool_m'] for f in faces] == pytest.approx([-.002, 0.])
+    assert [f['area_m2'] for f in faces] == pytest.approx([.00005, .00005])
+    assert not report['physical_contact_face_verified']
+
+
+def test_structure_inventory_rejects_invalid_mesh_instead_of_assigning_contacts():
+    for mesh in (np.empty((0, 3, 3)), np.zeros((1, 2, 3)), np.full((1, 3, 3), np.nan)):
+        with pytest.raises(ValueError):
+            review.finger_structure(mesh)
+
+
+def test_distal_end_selection_does_not_include_full_side_or_mounting_plane():
+    end = np.array([[0., 0., .1358], [.010, 0., .1358], [0., -.007, .1358]])
+    side = np.array([[0., 0., .1358], [.010, 0., .1258], [0., 0., .1258]])
+    proximal = end - [0., 0., .070]
+    result = review.distal_end_triangles(np.array([end, side, proximal]))
+    assert result.shape == (1, 3, 3)
+    assert result[0] == pytest.approx(end)
+    with pytest.raises(ValueError, match='No planar distal end'):
+        review.distal_end_triangles(np.array([side]))
+
+
+def test_user_free_end_identity_is_bound_to_reviewed_frame_not_future_images():
+    digest = '5b695ae3ad08b07f2b8e0895a897cdb7e11edd34057dda5109532b97511e412b'
+    assert review.reviewed_free_end_regions(digest, True) == [('A', [95., 311.]), ('B', [513., 315.])]
+    assert review.reviewed_free_end_regions('different-frame', False) == []
+    with pytest.raises(ValueError, match='reviewed raw RGB frame'):
+        review.reviewed_free_end_regions('different-frame', True)

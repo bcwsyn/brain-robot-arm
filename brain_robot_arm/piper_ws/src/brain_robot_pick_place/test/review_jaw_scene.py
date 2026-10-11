@@ -167,6 +167,141 @@ def inner_edge_direction(mask, side, image_rows):
     return {'inner_edge_pixels': points, 'du_dv': float(slope)}
 
 
+def finger_structure(triangles):
+    """Mesh-only face inventory; no physical pixel-to-face identity is inferred."""
+    triangles = np.asarray(triangles, dtype=float)
+    if triangles.ndim != 3 or triangles.shape[1:] != (3, 3) or not np.isfinite(triangles).all():
+        raise ValueError('Expected finite mesh triangles')
+    if len(triangles) == 0:
+        raise ValueError('Empty finger mesh')
+    cross = np.cross(triangles[:, 1] - triangles[:, 0], triangles[:, 2] - triangles[:, 0])
+    twice_area = np.linalg.norm(cross, axis=1)
+    normal = cross / np.maximum(twice_area[:, None], 1e-30)
+    bounds = np.array([triangles.min(axis=(0, 1)), triangles.max(axis=(0, 1))])
+    faces = []
+    # Keep different depth steps separate instead of merging the full dark side.
+    aligned = np.abs(normal[:, 1]) > .999999
+    plane_y_mm = np.round(triangles.mean(axis=1)[:, 1] * 1000, 3)
+    for value in np.unique(plane_y_mm[aligned]):
+        selected = aligned & (plane_y_mm == value)
+        area = twice_area[selected].sum() / 2
+        if area < 1e-5:
+            continue
+        face = triangles[selected]
+        centre = np.average(face.mean(axis=1), axis=0, weights=twice_area[selected])
+        faces.append({'y_tool_m': float(value / 1000), 'area_m2': float(area),
+                      'bounds_tool_m': [face.min(axis=(0, 1)).tolist(), face.max(axis=(0, 1)).tolist()],
+                      'area_weighted_centre_tool_m': centre.tolist()})
+    return {'bounds_tool_m': bounds.tolist(), 'extent_m': (bounds[1] - bounds[0]).tolist(),
+            'y_normal_planar_faces': faces, 'physical_contact_face_verified': False}
+
+
+def distal_end_triangles(triangles):
+    """Actual mesh end plane, not the silhouette of the whole finger body."""
+    triangles = np.asarray(triangles, dtype=float)
+    finger_structure(triangles)  # Shape/finite-data validation is shared.
+    selected = np.all(np.abs(triangles[:, :, 2] - triangles[:, :, 2].max()) < 2e-6, axis=1)
+    if not np.any(selected):
+        raise ValueError('No planar distal end in finger mesh')
+    return triangles[selected]
+
+
+def reviewed_free_end_regions(rgb_sha256, user_confirmed):
+    """A/B belong to this reviewed frame, not arbitrary future camera images."""
+    reviewed = '5b695ae3ad08b07f2b8e0895a897cdb7e11edd34057dda5109532b97511e412b'
+    if rgb_sha256 != reviewed:
+        if user_confirmed:
+            raise ValueError('A/B confirmation belongs only to the reviewed raw RGB frame')
+        return []
+    return [('A', [95., 311.]), ('B', [513., 315.])]
+
+
+def review_finger_structure(args):
+    """Archived model + raw colour structure chart; no ROS or pose fitting."""
+    import hashlib
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    from matplotlib.collections import PolyCollection
+    model_directory = args.model_directory or args.output
+    model_path = model_directory / 'move_group.urdf'
+    root = ET.fromstring(model_path.read_text())
+    scene = json.loads((model_directory / 'move_group_scene.json').read_text())
+    # Closed model is used only to state local finger dimensions, not real opening.
+    meshes = jaw_triangles_tool(root, scene['joint_positions'], args.mesh_share, 0.)
+    rgb = cv2.imread(str(args.structure_rgb))
+    if rgb is None:
+        raise ValueError('Raw RGB structure witness missing')
+    raw_digest = hashlib.sha256(args.structure_rgb.read_bytes()).hexdigest()
+    report = {'evidence': 'FINGER_FACE_AND_EDGE_INVENTORY_NOT_CALIBRATION',
+              'model_source': str(model_path), 'model_sha256': hashlib.sha256(model_path.read_bytes()).hexdigest(),
+              'raw_rgb': str(args.structure_rgb), 'image_size': [rgb.shape[1], rgb.shape[0]],
+              'raw_rgb_sha256': raw_digest,
+              'model_opening_m': 0., 'opening_is_not_hardware_measurement': True,
+              'pixel_to_mesh_correspondence_confirmed': False, 'motion_sent': False,
+              'production_modified': False, 'user_confirmed_corner_region_is_free_end': args.free_end_corners_confirmed,
+              'fingers': {name: finger_structure(t) for name, t in meshes.items()}}
+    # This is a diagnostic classification, not an exact physical vertex match.
+    corners = reviewed_free_end_regions(raw_digest, args.free_end_corners_confirmed)
+    report['reviewed_raw_corners'] = [{'label': name, 'pixel_at_640_480': point,
+                                      'exact_mesh_vertex_identity_verified': False} for name, point in corners]
+    captured = scene['live_static_tool_from_optical']['camera_depth_optical_frame']
+    camera = np.eye(4)
+    camera[:3, 3] = captured['translation']
+    camera[:3, :3] = Rotation.from_quat(captured['quaternion_xyzw']).as_matrix()
+    detector = yaml.safe_load(args.detector.read_text())['cube_detector']['ros__parameters']
+    r = np.array(detector['depth_to_color_rotation']).reshape(3, 3)
+    t = np.array(detector['depth_to_color_translation_m'])
+    end_projections = []
+    # Limit endpoints are an envelope, not a repeat opening/tilt sweep or a real command.
+    for half_open in (0., .035):
+        for name, triangles in jaw_triangles_tool(root, scene['joint_positions'], args.mesh_share, half_open).items():
+            pixels, mask = mesh_projection(distal_end_triangles(triangles), camera, r, t, detector,
+                                           rgb.shape[1], rgb.shape[0])
+            end_projections.append((half_open, name, pixels))
+            report.setdefault('configured_tf_distal_end_projections', []).append({
+                'finger': name, 'model_opening_m': 2 * half_open,
+                'pixel_bounds': [pixels.min(axis=(0, 1)).tolist(), pixels.max(axis=(0, 1)).tolist()],
+                'in_frame_distal_end_pixels': int(np.count_nonzero(mask))})
+    finger = meshes['link7']
+    fig, axes = plt.subplots(1, 3, figsize=(13, 6))
+    for ax, horizontal, title in ((axes[0], 0, 'CAD broad side: tool X / Z'),
+                                   (axes[1], 1, 'CAD thickness: tool Y / Z')):
+        ax.add_collection(PolyCollection(finger[:, :, [horizontal, 2]] * 1000,
+                                         facecolor='steelblue', edgecolor='none', alpha=.6))
+        front = report['fingers']['link7']['y_normal_planar_faces'][-1]
+        face = np.all(np.abs(finger[:, :, 1] - front['y_tool_m']) < 2e-6, axis=1)
+        ax.add_collection(PolyCollection(finger[face][:, :, [horizontal, 2]] * 1000,
+                                         facecolor='orange', edgecolor='none'))
+        for label, z in (('proximal / mounting', finger[:, :, 2].min()),
+                         ('distal end', finger[:, :, 2].max())):
+            ax.axhline(z * 1000, color='black', linestyle=':', linewidth=.8)
+            ax.text(-29, z * 1000 + 1, label, fontsize=8)
+        ax.set(xlim=(-32, 32), ylim=(54, 145), xlabel=('tool X' if horizontal == 0 else 'tool Y') + ' (mm)',
+               ylabel='tool +Z (mm)', title=title)
+        ax.set_aspect('equal'); ax.grid(alpha=.3)
+    axes[2].imshow(cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB))
+    axes[2].set_title('Actual raw RGB: ' + ('A/B confirmed as free ends' if args.free_end_corners_confirmed
+                                         else 'finger BODY is visible') + '\nExact CAD corner identity remains unverified')
+    height, width = rgb.shape[:2]
+    for name, pixel in corners:
+        label, point = name + ': visible free-end region', (pixel[0] * width / 640, pixel[1] * height / 480)
+        axes[2].plot(*point, 'o', color='cyan', markersize=5)
+        axes[2].annotate(label, point, xytext=(point[0] - 85, point[1] - 45), fontsize=8,
+                         color='cyan', arrowprops={'arrowstyle': '->', 'color': 'cyan'})
+    for half_open, name, pixels in end_projections:
+        axes[2].add_collection(PolyCollection(pixels, facecolor='none', linewidth=.7,
+                                              edgecolor='magenta' if half_open == 0 else 'orange'))
+    axes[2].axhline(height - .5, color='black', linestyle='--')
+    axes[2].text(10, height + 28, 'Configured TF predicts distal ends BELOW raw image\nmagenta: closed model; orange: 70 mm model\nBoth openings are hypotheses, NOT measured',
+                 fontsize=7, color='black', bbox={'facecolor': 'white', 'alpha': .9})
+    axes[2].set(xlim=(-.5, width - .5), ylim=(height * 1.3, -.5), xlabel='raw RGB u (px)', ylabel='v (px)')
+    fig.suptitle('Structure comparison only: CAD orange = frontmost inward plane; NOT calibrated camera overlay')
+    fig.tight_layout(); fig.savefig(args.output / 'finger_structure.png', dpi=140); plt.close(fig)
+    (args.output / 'finger_structure.json').write_text(json.dumps(report, indent=2))
+    print(json.dumps(report, indent=2), flush=True)
+
+
 def compare_pitch_opening_candidates(root, positions, mesh_share, rgb, tool_from_depth,
                                      r, t, detector, measured_tip, tip_tool, output, holdout):
     """Restricted silhouette comparison. Unknown X/roll/yaw prevent calibration."""
@@ -599,10 +734,19 @@ def main():
     parser.add_argument('--compare-pitch-opening', action='store_true',
                         help='Restricted visible silhouette comparison, NOT extrinsic calibration')
     parser.add_argument('--holdout-rgb', type=Path, help='Earlier raw RGB for mask-only comparison')
+    parser.add_argument('--structure-rgb', type=Path,
+                        help='Only compare finger structure against this raw RGB; no depth required or pose fit')
+    parser.add_argument('--free-end-corners-confirmed', action='store_true',
+                        help='Record explicit user identification of reviewed A/B regions; not exact CAD vertex matching')
     args = parser.parse_args()
     if args.capture_model and args.model_directory and args.model_directory.resolve() != args.output.resolve():
         parser.error('--capture-model must review its newly captured output, not a different archived model')
     args.output.mkdir(parents=True, exist_ok=True)
+    if args.structure_rgb:
+        if args.capture_model:
+            parser.error('--structure-rgb is archive-only; do not combine with --capture-model')
+        review_finger_structure(args)
+        return
     if args.capture_model:
         capture_model(args.output)
     review(args)
