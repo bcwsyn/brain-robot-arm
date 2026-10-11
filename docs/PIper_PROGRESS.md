@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+## 2026-10-11 21:44：获准 J5 +6°大步已实际完成，完整原图恢复；原检测器仍拒绝
+
+- 起点e12944a，用户“确认”批准上轮明确的J5约+6°/看图后小修及原RGB形状关联真实深度方案。这是新具体单次范围，不重置已用完4段旧采样预算。沿原高级MoveIt→piper_jog_adapter，未新增生产入口/基础控制器、未改TF/TCP/YAML、未闭爪/失能/回零/固件操作。ROS2技能核实际部署，surgical-change限定检测器责任，不覆盖vendor/reference已有改动。
+- 唯一SDK50857/PGID50855复用；原Astra、cam2image320×240、cube_visual_search.launch.py有限600秒窗，visual保持IDLE/WAITING_FOR_START。只读GetParameters/GetPlanningScene/GetMotionPlan从新反馈构造完整六轴，Pilz/PTP速度及加速度比例.002；实际模型SHA382d79345b286047a09c0941d638248b3f6c5f51a94a8a4dfb4359e2a69443ac，206点/20.453293秒/返回1，限位、全点FK和完整关节顺序核验通过。tip模型弧长23.750442mm、最大距起点23.739592mm；空world/关闭Octomap和模型占位开口不证明桌面实测间隙。
+- 执行前51反馈/250ms、199.8366Hz、年龄1.751ms。原enable_srv(true)/enable_motion/arm成功；1791725850.336846087适配器实际接受206点，24秒后采图。J5从.850115896rad(48.708053°)到.953384376rad(54.624901°)，实增5.916848°，目标54.708053°/残差-.083152°；其余五轴不变。原disarm成功只停命令，不是Disable；正向使能驱动已解耦夹爪，没有本轮显式夹爪命令，.1019缓存仍非开口证据。
+- 原时间配对采集6.335858秒/exit0取得5组，最大跨度11.371ms、六轴组内range0；1256反馈/61depth/74info/18RGB，9个非同帧info拒绝。已实际查看0005原图：方块完整bbox(90,125,61,71)，中心约(119.69,160.56)，底196<240；两指可见。这是恢复视野，不证明深度位于实体两指之间。
+- 随后沿原cube_detector.launch.py静止核验，原target_valid/depth_valid仍false，depth_diagnostic=DEPTH_REJECTED_TARGET_LOST；已看0008注册debug黑洞/残片，不归因夹爪实体挡住/CAN/磁盘。原检测器80秒timeout，分析observer实际上无时限而持续约118秒，已手动INT退出，不能把它说成65秒有界。采图/高级栈也已INT退出；21:43只读确认只有原50855/50857驱动，未发Disable，不会自动续跑。
+- 证据/home/johnwick/brain_robot_logs/large_j5_view_20261011.7cb6Gu；plan1.json SHA926f86d53f0e4c57c5cf0d033bd8cecc4794b683d4e2b25826ab78b055fa9c3b，capture1/observer.jsonl SHA7966e42d42792f642516b0cd84ce014b9012a6a70f1bfc062e58f3c9f9122aaa，0005_rgb.png SHA09261631f9b1cc9e7c51a70bd37e44ee8b3eb60456b68276ea11ebad6579e753；visual.log记录206点接受及disarm。临时诊断脚本/tmp/piper_live_microplan_20261011.py、/tmp/piper_microstep_cli_20261011.sh只编排原服务/规划和一次原轨迹话题，非生产替代入口。
+- 原部署cup_detector源SHA90510e5f…，规范源7ebfc1e2…只多既已提交的只读raw观察，尚未部署；原executor也与规范有既有OFF预览差异，本轮不顺带同步。下一最小动作仅修检测器：原RGB做完整形状门，原工厂D2C把真实非零深度关联同一个原RGB轮廓，保留原640×400误差/深度optical三维接口、样本/MAD/稳定/尺寸门；先隔离回放/测试再只部署检测器。目标尚未抓取，未得新外参，不删除70/105mm、不复活旧26°候选。
+
 ## 2026-10-11 21:26：预算内三段实体完成，定位原彩色/注册深度形状门差异
 
 记录提交fee3acd，三实时成功响应与3×5采集及诊断脚本语法核验通过。首次不限定路径的diff--check报告既有vendor CRLF空白，未改这些用户文件；首次归档提交自身末尾多空行也有check告警，随后仅移除该记录EOF空行再提交，不以最后status退出0冒充check通过。
