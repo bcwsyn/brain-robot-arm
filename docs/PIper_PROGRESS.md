@@ -1,5 +1,11 @@
 # PiPER 调试进度
 
+### 2026-10-11 10:45：澄清0.60秒是单帧新鲜度，不是抓取期限；入口应等待而非一次失败退出
+
+- 用户要求至少完成靠近并将目标放入两指之间，反对短TF延迟立即停止。核对现实现：target_timeout_s=0.60用于相机点/有效标志/尺寸等观测新鲜度；原一键等待整个抓取的期限默认900秒。上轮实际并未等待0.60秒重试，而是CaptureTargetModel一次检查失败立即FAULT，脚本再见FAULT退出；本轮不把两种时间混淆。
+- 修订下一单项方案（仍待代码修改批准）：保留每帧0.60秒新鲜度，抓取入口在TF短暂缺失时进入等待状态而非FAULT，保持当前姿态/使能，持续接收新鲜帧，对各帧原采样时间戳TF重试；建立有效base三维点后立即锁定并自动执行原预抓取/5°下俯/末段。总等待仍受原脚本900秒任务期限和用户停止/已有反馈故障约束，不承诺无限等待或盲目用过期坐标运动。
+- 不新增保护门、不改SEARCH/ALIGN/相机安装参数/工具长度/碰撞链、不增加单关节裸步进；保持静态目标锁存，靠近过程不用随画面移动重新ALIGN。两指之间是否实际到位仍由同期视觉/关节反馈判断，不把FK计算或锁定目标当作实体抓住。当前只是解释/方案记录，无运动、源码或YAML改动，不能宣称入口等待已经修好。
+
 ### 2026-10-11 10:42：新下俯参数已部署，但原一键在抓取入口TF缓存未建立即退出；未执行靠近
 
 - 实现提交`8f5f701`；实际工作区colcon构建返回0（126秒）。默认install仍链接到`/home/johnwick/piper_ws/build/brain_robot_pick_place/grasp_lift_executor`，二进制SHA=`c1d06b01d32d27418f0c886b8a996026d79a0c990ce7a597c05446048dcb72ad`，含ALIGNED_GRASP_PITCH_DOWN和精确采样TF日志。实际原一键命令`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5 /home/johnwick/start_brain_robot_cube_real.sh`，使用默认实际工作区，不用旧overlay。运行读取参数5°=0.08726646259971647、落点0.01，原脚本未改。
