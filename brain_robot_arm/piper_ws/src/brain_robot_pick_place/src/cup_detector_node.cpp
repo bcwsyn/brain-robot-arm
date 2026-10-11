@@ -26,6 +26,8 @@
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/string.hpp>
 
+#include "brain_robot_pick_place/rgbd_shape_geometry.hpp"
+
 class CupDetectorNode final : public rclcpp::Node
 {
 public:
@@ -455,7 +457,7 @@ private:
 
   bool software_register_color_to_depth(
     const sensor_msgs::msg::Image::ConstSharedPtr & depth_message,
-    const cv::Mat & source_image, cv::Mat & registered_image)
+    const cv::Mat & source_image, cv::Mat & registered_image, cv::Mat & source_pixels)
   {
     if (!software_registration_calibration_valid_ || !camera_info_ready_) {
       RCLCPP_WARN_THROTTLE(
@@ -487,6 +489,7 @@ private:
 
     registered_image = cv::Mat::zeros(
       static_cast<int>(depth_message->height), static_cast<int>(depth_message->width), CV_8UC3);
+    source_pixels = cv::Mat(registered_image.size(), CV_32SC2, cv::Scalar(-1, -1));
     std::size_t mapped_pixels = 0;
     for (int row = 0; row < registered_image.rows; ++row) {
       for (int col = 0; col < registered_image.cols; ++col) {
@@ -534,6 +537,7 @@ private:
         }
         registered_image.at<cv::Vec3b>(row, col) =
           source_image.at<cv::Vec3b>(source_y, source_x);
+        source_pixels.at<cv::Vec2i>(row, col) = cv::Vec2i(source_x, source_y);
         ++mapped_pixels;
       }
     }
@@ -569,9 +573,10 @@ private:
     // not turn visible colour into a black occlusion or hide a cropped candidate.
     PublishRawColorObservation(bridge_image->image, rgb_message->header);
     cv::Mat processing_image;
+    cv::Mat source_pixels;
     if (software_registration_enabled_) {
       if (!software_register_color_to_depth(
-          depth_message, bridge_image->image, processing_image))
+          depth_message, bridge_image->image, processing_image, source_pixels))
       {
         publish_valid(false);
         publish_depth_valid(false);
@@ -695,6 +700,25 @@ private:
       publish_candidate_valid(false);
     }
 
+    // Shape evidence comes from the complete ORIGINAL RGB, not the black holes
+    // in the registered depth grid. Candidate/output error units stay unchanged.
+    if (software_registration_enabled_) {
+      cv::Mat raw_hsv, raw_mask, second;
+      cv::cvtColor(bridge_image->image, raw_hsv, cv::COLOR_BGR2HSV);
+      cv::inRange(raw_hsv, cv::Scalar(hue_low_1_, saturation_min_, value_min_),
+        cv::Scalar(hue_high_1_, 255, 255), raw_mask);
+      if (hue_high_2_ > hue_low_2_) {
+        cv::inRange(raw_hsv, cv::Scalar(hue_low_2_, saturation_min_, value_min_),
+          cv::Scalar(hue_high_2_, 255, 255), second);
+        raw_mask |= second;
+      }
+      cv::morphologyEx(raw_mask, raw_mask, cv::MORPH_OPEN, kernel);
+      cv::morphologyEx(raw_mask, raw_mask, cv::MORPH_CLOSE, kernel);
+      target_mask = raw_mask;
+      contours.clear();
+      cv::findContours(target_mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    }
+
     double largest_area = 0.0;
     double selected_rectangularity = 0.0;
     double selected_aspect_ratio = 0.0;
@@ -749,24 +773,53 @@ private:
       return;
     }
 
-    const cv::Point target_center(
-      static_cast<int>(std::lround(moments.m10 / moments.m00)),
-      static_cast<int>(std::lround(moments.m01 / moments.m00)));
+    const cv::Point2d shape_center(moments.m10 / moments.m00, moments.m01 / moments.m00);
     const cv::Rect target_box = cv::boundingRect(largest_contour);
     const cv::Point image_center(debug_image.cols / 2, debug_image.rows / 2);
-    const int dx = target_center.x - image_center.x;
-    const int dy = target_center.y - image_center.y;
-    const double normalized_error = std::max(
-      std::abs(static_cast<double>(dx)) / static_cast<double>(debug_image.cols),
-      std::abs(static_cast<double>(dy)) / static_cast<double>(debug_image.rows));
     const bool clipped = target_box.x <= 1 || target_box.y <= 1 ||
-      target_box.x + target_box.width >= debug_image.cols - 1 ||
-      target_box.y + target_box.height >= debug_image.rows - 1;
+      target_box.x + target_box.width >= target_mask.cols - 1 ||
+      target_box.y + target_box.height >= target_mask.rows - 1;
 
     cv::Mat selected_mask = cv::Mat::zeros(target_mask.size(), CV_8UC1);
     std::vector<std::vector<cv::Point>> selected_contours{largest_contour};
     cv::drawContours(selected_mask, selected_contours, 0, cv::Scalar(255), cv::FILLED);
-    DepthResult depth = measure_depth(depth_message, selected_mask, target_box);
+    cv::Rect depth_box = target_box;
+    if (software_registration_enabled_) {
+      selected_mask = brain_robot_pick_place::associate_color_mask(selected_mask, source_pixels);
+      std::vector<cv::Point> measured_pixels;
+      cv::findNonZero(selected_mask, measured_pixels);
+      depth_box = measured_pixels.empty() ? cv::Rect() : cv::boundingRect(measured_pixels);
+    }
+    DepthResult depth = measure_depth(depth_message, selected_mask, depth_box);
+    cv::Vec3d aim_point;
+    double color_z = 0.0;
+    cv::Point target_center = software_registration_enabled_ ? image_center : cv::Point(
+      static_cast<int>(std::lround(shape_center.x)),
+      static_cast<int>(std::lround(shape_center.y)));
+    if (depth.valid && camera_info_ready_) {
+      if (software_registration_enabled_) {
+        const auto & r = depth_to_color_rotation_;
+        const auto & t = depth_to_color_translation_m_;
+        const cv::Matx33d rotation(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8]);
+        depth.valid = brain_robot_pick_place::color_center_at_depth_z(
+          shape_center, bridge_image->image.size(), cv::Size(color_image_width_, color_image_height_),
+          color_fx_, color_fy_, color_cx_, color_cy_, color_mirror_horizontal_,
+          rotation, cv::Vec3d(t[0], t[1], t[2]), depth.meters, aim_point, color_z);
+        if (depth.valid) {
+          target_center = cv::Point(
+            static_cast<int>(std::lround(camera_fx_ * aim_point[0] / aim_point[2] + camera_cx_)),
+            static_cast<int>(std::lround(camera_fy_ * aim_point[1] / aim_point[2] + camera_cy_)));
+        }
+      } else {
+        aim_point = cv::Vec3d((target_center.x - camera_cx_) * depth.meters / camera_fx_,
+          (target_center.y - camera_cy_) * depth.meters / camera_fy_, depth.meters);
+      }
+    }
+    const int dx = target_center.x - image_center.x;
+    const int dy = target_center.y - image_center.y;
+    const double normalized_error = std::max(
+      std::abs(static_cast<double>(dx)) / debug_image.cols,
+      std::abs(static_cast<double>(dy)) / debug_image.rows);
     update_depth_temporal_quality(depth);
     const bool depth_grasp_allowed = depth.valid && depth.dispersion_valid &&
       depth.frame_delta_valid && depth.stable_frame_count >= required_depth_stable_frames_ &&
@@ -778,6 +831,12 @@ private:
     if (depth.valid && camera_info_ready_) {
       target_width_m = static_cast<double>(target_box.width) * depth.meters / camera_fx_;
       target_height_m = static_cast<double>(target_box.height) * depth.meters / camera_fy_;
+      if (software_registration_enabled_) {
+        target_width_m = target_box.width * color_z / color_fx_ *
+          double(color_image_width_ - 1) / (bridge_image->image.cols - 1);
+        target_height_m = target_box.height * color_z / color_fy_ *
+          double(color_image_height_ - 1) / (bridge_image->image.rows - 1);
+      }
       const double largest_size_m = std::max(target_width_m, target_height_m);
       const double smallest_size_m = std::max(1e-6, std::min(target_width_m, target_height_m));
       const double size_aspect_ratio = largest_size_m / smallest_size_m;
@@ -800,11 +859,9 @@ private:
       geometry_msgs::msg::PointStamped target_point_camera;
       target_point_camera.header = rgb_message->header;
       target_point_camera.header.frame_id = camera_optical_frame_;
-      target_point_camera.point.x =
-        (static_cast<double>(target_center.x) - camera_cx_) * depth.meters / camera_fx_;
-      target_point_camera.point.y =
-        (static_cast<double>(target_center.y) - camera_cy_) * depth.meters / camera_fy_;
-      target_point_camera.point.z = depth.meters;
+      target_point_camera.point.x = aim_point[0];
+      target_point_camera.point.y = aim_point[1];
+      target_point_camera.point.z = aim_point[2];
       target_point_camera_publisher_->publish(target_point_camera);
 
       if (software_registration_enabled_ && software_registration_calibration_valid_) {
@@ -832,8 +889,8 @@ private:
 
       geometry_msgs::msg::Vector3Stamped target_size;
       target_size.header = target_point_camera.header;
-      target_size.vector.x = static_cast<double>(target_box.width) * depth.meters / camera_fx_;
-      target_size.vector.y = static_cast<double>(target_box.height) * depth.meters / camera_fy_;
+      target_size.vector.x = target_width_m;
+      target_size.vector.y = target_height_m;
       target_size.vector.z = depth.meters;
       target_size_publisher_->publish(target_size);
     } else if (depth.valid) {
@@ -858,7 +915,9 @@ private:
 
     const cv::Scalar yellow(0, 255, 255);
     const cv::Scalar cyan(255, 255, 0);
-    cv::rectangle(debug_image, target_box, yellow, 3);
+    // Yellow marks the measured DEPTH support, cyan the full RGB shape centre.
+    // These may differ when the target's depth has holes.
+    if (depth_box.area() > 0) {cv::rectangle(debug_image, depth_box, yellow, 3);}
     cv::drawMarker(
       debug_image, target_center, cyan, cv::MARKER_CROSS, 24, 3);
     cv::line(debug_image, image_center, target_center, cyan, 2);
@@ -901,8 +960,8 @@ private:
     if (depth.valid && camera_info_ready_) {
       std::ostringstream size_status;
       size_status << std::fixed << std::setprecision(3)
-                  << "SIZE=" << (static_cast<double>(target_box.width) * depth.meters / camera_fx_)
-                  << "x" << (static_cast<double>(target_box.height) * depth.meters / camera_fy_)
+                  << "SIZE=" << target_width_m
+                  << "x" << target_height_m
                   << " m";
       cv::putText(
         debug_image, size_status.str(), cv::Point(20, 115),

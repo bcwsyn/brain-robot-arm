@@ -1,5 +1,11 @@
 # PiPER ROS 调试完整交接记录
 
+## 最新检测修复待部署（2026-10-11 21:50）
+
+起点2473f22，仅detector/纯OpenCV几何头/6项测试/域78有界回放及CMake改动。原RGB形状＋工厂D2C同轮廓真实深度；完整RGB中心射线结合实测中值Depth-Z回DEP光学，保留原640×400误差/时刻/质量与尺寸门，不填洞、不改TF/执行器/YAML。旧同五包false/TARGET_LOST，新稳态5帧target/depth全true、.151m，四类合成否定全拒绝。编译/6测试/两个回放exit0，详docs/evidence/piper_raw_shape_depth_association_20261011.md。
+
+生产此刻仍旧detector，下一仅部署这一个已测二进制及source/header/实际CMake include，静止两相机+原detector launch核实际图/点。**不全包同步规范OFF-preview executor或其他配置**。新源2deb634f…/bin099969f9…，临时build/tmp/piper_rgbd_shape_build_20261011.fygBnq；旧/新输出在large_j5_view_20261011.7cb6Gu。SDK唯一50857保持，末J5 54.624901°，未新运动/闭爪；目标未抓取，实际接触区外参仍需核准。
+
 ## 最新大步实体结果（2026-10-11 21:44）
 
 起点e12944a，用户明确批准J5约+6°。原MoveIt/Pilz/PTP比例.002生成206点/20.453293秒，经原adapter真实接受；J5 48.708053→54.624901°(实增5.916848°)，其余五轴不变，5组原时间同步采图最大11.371ms/组内range0。已看0005原RGB，完整方块bbox(90,125,61,71)、中心(119.69,160.56)，恢复视野但未证明物体已处两指内；没有闭爪/失能/新TF或固件操作。旧4段预算未重置。

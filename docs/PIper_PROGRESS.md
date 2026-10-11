@@ -1,5 +1,11 @@
 # PiPER 调试进度
 
+## 2026-10-11 21:50：原RGB形状/真实深度关联补丁通过同图A/B和四个否定例，待静止部署验证
+
+- 起点2473f22，仅原cup_detector_node增加完整原RGB形状选择、工厂D2C有效像素关联及完整形状中心射线/实测Depth-Z转换，纯OpenCV头与6测试、一个只限域78的有界相机输入回放工具、CMake目标登记。保持640×400误差/深度optical三维/时刻、原质量/尺寸阈值，未填洞/删门/改TF或主线，像素面积在软件配准分支改按原RGB解释，不能承诺所有远距灵敏度完全相同。具体官方几何与项目推断分别见docs/evidence/piper_raw_shape_depth_association_20261011.md。
+- 只构建cup_detector_node及rgbd_shape_geometry_test，exit0、6项全通过；域78实际同YAML/同5包A/B，原最后5帧false/TARGET_LOST，新最后5帧target/depth全true/DEPTH_GRASP_ALLOWED，Depth-Z .151m、尺寸约.037×.044m，回投原RGB中心约(119.82,160.28)、DEP误差(34,111)px。新26.427秒，旧7.677秒，客户端均exit0。新零深度/无颜色/细长色块/高MAD四合成例各5帧全拒绝，深度黑洞仍显示、不伪造成物理遮挡。
+- 新源2deb634f…/二进制099969f9…；证据原J5目录下new_detector_replay、old_detector_same_packets。只观察相机输入，无实物命令；SDK50857保留，生产仍旧detector，本提交尚未部署。下一只同步detector及所需头/实际include再静止验证，不全包同步既有OFF preview executor，不借检测通过声称几何已标定/方块已入两指或抓取完成。
+
 ## 2026-10-11 21:44：获准 J5 +6°大步已实际完成，完整原图恢复；原检测器仍拒绝
 
 - 起点e12944a，用户“确认”批准上轮明确的J5约+6°/看图后小修及原RGB形状关联真实深度方案。这是新具体单次范围，不重置已用完4段旧采样预算。沿原高级MoveIt→piper_jog_adapter，未新增生产入口/基础控制器、未改TF/TCP/YAML、未闭爪/失能/回零/固件操作。ROS2技能核实际部署，surgical-change限定检测器责任，不覆盖vendor/reference已有改动。

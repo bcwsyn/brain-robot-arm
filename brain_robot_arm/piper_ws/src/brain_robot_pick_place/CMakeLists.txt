@@ -53,7 +53,7 @@ ament_target_dependencies(pick_place_node
 )
 
 add_executable(cup_detector_node src/cup_detector_node.cpp)
-target_include_directories(cup_detector_node PRIVATE ${OpenCV_INCLUDE_DIRS})
+target_include_directories(cup_detector_node PRIVATE include ${OpenCV_INCLUDE_DIRS})
 ament_target_dependencies(cup_detector_node
   cv_bridge
   geometry_msgs
@@ -149,6 +149,9 @@ ament_environment_hooks(
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(rgbd_shape_geometry_test test/test_rgbd_shape_geometry.cpp)
+  target_include_directories(rgbd_shape_geometry_test PRIVATE include ${OpenCV_INCLUDE_DIRS})
+  target_link_libraries(rgbd_shape_geometry_test ${OpenCV_LIBRARIES})
   ament_add_gtest(grasp_geometry_test test/test_grasp_geometry.cpp)
   target_include_directories(grasp_geometry_test PRIVATE include)
   ament_add_gtest(visual_grasp_feedback_test test/test_visual_grasp_feedback.cpp)
