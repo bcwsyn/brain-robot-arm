@@ -1,5 +1,14 @@
 # PiPER 调试进度
 
+### 2026-10-11 10:42：新下俯参数已部署，但原一键在抓取入口TF缓存未建立即退出；未执行靠近
+
+- 实现提交`8f5f701`；实际工作区colcon构建返回0（126秒）。默认install仍链接到`/home/johnwick/piper_ws/build/brain_robot_pick_place/grasp_lift_executor`，二进制SHA=`c1d06b01d32d27418f0c886b8a996026d79a0c990ce7a597c05446048dcb72ad`，含ALIGNED_GRASP_PITCH_DOWN和精确采样TF日志。实际原一键命令`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5 /home/johnwick/start_brain_robot_cube_real.sh`，使用默认实际工作区，不用旧overlay。运行读取参数5°=0.08726646259971647、落点0.01，原脚本未改。
+- 根盘34%，CAN按原脚本复用且RX持续，RGB/深度/MoveIt就绪，[1/7]–[7/7]通过；起始实际六轴`[-0.245332,1.809902,-1.040238,-0.089557,0.217649,0.111101]rad`、夹爪102.1mm。12点原观测轨迹接受；10:39:55.078 OBSERVE_POSE_REACHED→SEARCH，中心小扫/回中心/full真实执行；10:40:27.497 ALIGN，10:40:29.494 GRASP_READY。下一毫秒抓取入口报STATIC_TARGET_MODEL_UNAVAILABLE，退出码1。没有锁存base目标、张爪/预抓取/下俯/下降/闭爪/抬升/释放，因此本轮不能判断已批准5°方案的实机效果。
+- 根因证据：目标帧时间1791686427.048713领先最新TF44.8ms；1791686429.048775领先29.8ms，后续帧仍有15–22ms超前。目标回调没有等待精确TF，失败时只保存camera点、不初始化base缓存。CaptureTargetModel立即检查缓存后失败。日志age169620.545s是默认steady-clock time_point为0导致的uptime差值，不是本轮观测已47小时陈旧。10:40:35.883才出现第一次成功TARGET_TF，点`base_link (0.4317,-0.1116,0.0814)m`，但抓取器已FAULT，不会自动续跑。此为历史已记录的入口竞争问题复现，不是CAN故障，不是开爪反馈/新保护门阻止靠近。
+- 已看实际图像`evidence/0042_rgb.png`和`0043_debug.png`：紫色块明确可见，debug dx=-3/dy=6、深度0.299m、面尺寸0.040×0.036m；因此不把本轮失败说成目标不见/灯光不够或J5下俯失败。末次/joint_states六轴`[-0.265864,0.988691,-0.754732,0,0.738335,0]rad`，仍停在ALIGN后的抓取前姿态，夹爪102.1mm。采集数据`/home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5/observer.jsonl`及同目录evidence图像保存。相机depth CameraInfo K fx=fy478.756866、cx326.135559、cy199.873489，640×400；读取原文已归档，不改外参。
+- 收尾：原脚本停止输出并保持使能，未ResetPiper/DisableArm/自动回零；控制栈和只读采集器全部退出。精选原始日志及参数/版本见`docs/evidence/piper_onekey_20261011_pitchdown5_run.txt`、CameraInfo见同前缀_camera_info.txt。本轮保留5°实现，不重复相同运行，不把隔离80+8点结果写成实机靠近成功。
+- 用户问“为什么对齐了没有抓取”：视觉ALIGN成功只表示图像门通过，抓取器还须以原图像时间戳建立base三维点；本代码把短时TF异步处理成一次检查即失败，是软件入口时序缺陷。下一单项修复需按用户要求说明并获批准：在抓取工作线程最多沿现有0.60秒新鲜度窗口，对仍新鲜的camera PointStamped重试**同一采样时刻**TF，再锁存base点；不退回latest-TF、不扩大超时/目标门、不改变5°姿态/一键/轨迹/夹爪。获准后先模拟TF延迟单测，再重跑原入口；此轮未擅自实现该项。
+
 ### 2026-10-11 10:38：用户批准抓取向下俯仰5°，现有Pose链实现与隔离MoveIt验证通过
 
 - 用户“好”批准上轮单项方案：仅允许抓取姿态相对ALIGN小幅下俯，锁定同一base目标、复用原一键/MoveIt/adapter。起始HEAD=`54a8cc6`；只改抓取器Pose生成和实体参数，不改SEARCH/ALIGN/相机外参/夹爪/门控，也不直接篡改单关节轨迹。

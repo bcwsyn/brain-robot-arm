@@ -1,0 +1,37 @@
+Original one-key real test after approved pitch-down implementation 8f5f701.
+Command: BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5 /home/johnwick/start_brain_robot_cube_real.sh
+Return code: 1. No close, approach or wrist-down pose constructed; fault before target lock/open.
+Native app build return 0 (126 seconds); actual executor binary SHA256 c1d06b01d32d27418f0c886b8a996026d79a0c990ce7a597c05446048dcb72ad.
+Runtime parameters: aligned_grasp_pitch_down_rad=0.08726646259971647; grasp_landing_tolerance_m=0.01.
+No DisableArm or ResetPiper. Script stopped controller output; control stack and read-only observer exited.
+Image reviewed: evidence/0042_rgb.png and evidence/0043_debug.png, cube visible; debug dx=-3 dy=6, depth=0.299m, size=0.040x0.036m.
+Age 169620.545s is computed from a default steady-clock time point because the reference cache had never been initialized, NOT proof of a 47-hour-old camera observation.
+
+SOURCE: /home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5/visual_stack.log
+[visual_search_controller-7] [INFO] [1791686345.728227935] [visual_search_controller]: STATE -> STOPPED (USER_STOP)
+[piper_jog_adapter.py-6] [WARN] [1791686352.494482161] [piper_jog_adapter]: PHYSICAL MOTION ARMED
+[visual_search_controller-7] [INFO] [1791686354.000233462] [visual_search_controller]: STATE -> PREPARE (START_AUTHORIZED)
+[piper_jog_adapter.py-6] [INFO] [1791686354.009285969] [piper_jog_adapter]: REAL ARM trajectory accepted: 12 points
+[visual_search_controller-7] [INFO] [1791686395.077729603] [visual_search_controller]: STATE -> SEARCH (OBSERVE_POSE_REACHED)
+[grasp_lift_executor-8] [WARN] [1791686427.085730850] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1791686427.048712730 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1791686427.048713 but the latest data is at time 1791686427.003875, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[visual_search_controller-7] [INFO] [1791686427.497313890] [visual_search_controller]: STATE -> ALIGN (TARGET_ACQUIRED)
+[grasp_lift_executor-8] [WARN] [1791686429.110160514] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1791686429.048774719 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1791686429.048775 but the latest data is at time 1791686429.018972, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[visual_search_controller-7] [INFO] [1791686429.494478608] [visual_search_controller]: STATE -> GRASP_READY (DIRECT_VISUAL_ALIGN_ACQUIRED)
+[grasp_lift_executor-8] [WARN] [1791686429.497482567] [grasp_lift_executor]: Cannot lock base-frame target model (age 169620.545 s).
+[grasp_lift_executor-8] [ERROR] [1791686429.498348424] [grasp_lift_executor]: Grasp sequence stopped: STATIC_TARGET_MODEL_UNAVAILABLE.
+[grasp_lift_executor-8] [WARN] [1791686431.281693326] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1791686431.248752117 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1791686431.248752 but the latest data is at time 1791686431.226871, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1791686433.311661348] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1791686433.248722076 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1791686433.248722 but the latest data is at time 1791686433.234067, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[visual_search_controller-7] [INFO] [1791686434.389065083] [visual_search_controller]: STATE -> STOPPED (USER_STOP)
+[grasp_lift_executor-8] [WARN] [1791686435.493106507] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1791686435.450380802 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1791686435.450381 but the latest data is at time 1791686435.447006, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [INFO] [1791686435.883432226] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1791686435.848806143 tf_stamp=1791686435.848806143 camera_xyz=(-0.0057,0.0038,0.2990) reference=base_link xyz=(0.4317,-0.1116,0.0814)
+
+SOURCE: /home/johnwick/brain_robot_logs/real_full_20261011_pitchdown5/cube_detector.log
+[cup_detector_node-1] [INFO] [1791686326.414464845] [cube_detector]: PURPLE_CUBE target LOST
+[cup_detector_node-1] [INFO] [1791686427.483673299] [cube_detector]: PURPLE_CUBE target DETECTED
+
+ABSENCE CHECK:
+'ALIGNED_GRASP_PITCH_DOWN radians=': 0
+'Publishing real gripper open': 0
+'Locked base-frame target model:': 0
+'GRASP_LANDING frame=': 0
+'CLOSING_GRIPPER': 0

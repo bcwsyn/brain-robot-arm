@@ -1,6 +1,10 @@
 # PiPER ROS 调试完整交接记录
 
-更新时间：2026-10-11 10:26（后文保留历史背景）
+更新时间：2026-10-11 10:42（后文保留历史背景）
+
+## 最新实机断点（2026-10-11 10:42）
+
+实现`8f5f701`已完成5°下俯Pose、隔离MoveIt80+8点规划和6套/52 tests验证，并部署到默认`/home/johnwick/piper_ws`（构建0，二进制c1d06b01…）。原一键5°参数回读正确，实测观测→SEARCH→ALIGN→GRASP_READY，但立即STATIC_TARGET_MODEL_UNAVAILABLE，未生成新抓取Pose、未张爪/靠近/闭爪。本次精确图像TF超前15–45ms，base缓存此前未成功初始化；age169620.545s是默认steady时间点的差值，不是47小时旧观测。FAULT之后6.4秒才有成功base点。相机确实看到居中的方块（dx=-3/dy=6），不是灯光或目标缺失。脚本退出1，保持使能，无ResetPiper/DisableArm，栈/采集器退出。日志real_full_20261011_pitchdown5，原始精选证据docs/evidence/piper_onekey_20261011_pitchdown5_run.txt。下一步先获准修复工作线程有界等待同一新鲜采样时刻TF，保持既有0.60秒门/不回退latest；不原样重跑、不把新下俯方案说成已实机验证。详细命令/哈希/下一步见进度首条。
 
 ## 最新已批准实现（2026-10-11 10:38，尚待实机结果）
 
