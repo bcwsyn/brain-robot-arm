@@ -1,5 +1,15 @@
 # PiPER 调试进度
 
+### 2026-10-11 13:56：获准J5+1°可逆实测成功，方向支持但目标仍未入画；用户追加批准增量对比
+
+- 起始HEAD c47a385。沿仓库ROS技能用唯一原一键AUTO_START=0及LOG_DIR=/home/johnwick/brain_robot_logs/j5_positive_probe_20261011启动到[7/7]；控制器IDLE，不执行观测/SEARCH/抓取。根盘33%、原CAN ERROR-ACTIVE 1Mbps/.75、RX持续/无总线错误，直接复用；新鲜被动高速每轴150帧/1.5s、速度0，六使能true/故障位0。没有修改源码、默认YAML或入口文件。
+- 当前六轴[-.262724084,1.888278112,-1.280686148,.0095942,.610731884,0]rad。原驱动enable_srv握手会对异常夹爪缓存选0并发送夹爪命令，故只将本轮已解析驱动退出，临时启动同一已部署驱动gripper_exist=false、auto_enable=false；唯一实例确认后调用现使能服务及adapter enable_motion/arm。默认文件及gripper_exist=true入口不改，未发夹爪目标。初次查入口元数据时PYTHONNOUSERSITE屏蔽python-can导致只读import失败，改为读取真实导入piper_ctrl_single_node.py，没有依据错误的_new.py控制链动作。
+- 一次性ROS服务编排客户端读取真实全模型状态，现GetMotionPlan/Pilz PTP六轴目标，仅J5+1°；原任务限位/0.005margin、路径连续及非目标轴保持检查通过。规划速度/加速度比例.002，61点5.908s返回1，通过现/brain_robot_grasp/arm_trajectory→adapter→/joint_commands执行。13:53:06.409稳定反馈J5从34.99236°到35.94985°；其余五轴反馈逐值未变，夹爪.1019m不变。静止采图4秒后同MoveIt规划59点5.781s返回起点，13:53:16.305实测35.06232°，相对初始+.06996°，在试验.002rad反馈容差内。客户端返回0、adapter软件disarm成功，没有闭爪/抬升/释放。
+- 实际看过0106/0109/0112原始RGB，方块均不可见/target_valid=false；LK跟踪24个桌面点median dy=-6.3845px，dx=-.1639px。这支持用户的J5正向下看方向，但1°尚不足以恢复目标，不能当作夹持区已对上或模型外参已校准的证据。图像与六轴新鲜stamp归档docs/evidence/piper_j5_positive_probe_20261011.txt，大图与observer留在上述LOG_DIR。
+- 原CAN大日志受到既有大小守护截断，实验时段帧已不在保留文件中；离实验65–75秒的最近帧拒绝作为阶段证据。阶段角度引用新鲜ROS，不冒称原CAN阶段验证。收尾后被动CAN测得J5=35.081°、其他轴[-15.061,108.248,-73.417,.550,0]°，六使能true、速度0、约100Hz；验证成功，组合命令末尾ps空列表返回1非CAN失败。
+- 原一键定向TERM退出143，观察器INT正常退出0；临时driver INT后未退出，定向TERM结束143。没有DisableArm/ResetPiper/MasterSlaveConfig/全零回位，控制栈与采集器均退出，未改变默认运行参数文件。入口SHA仍e8c9f85c…，控制源/YAML无本轮diff。
+- 用户随后明确要求角度更大且小幅比较，已说明下一组每步J5正向2°、累计最多8°，其余五轴保持、每步MoveIt规划/反馈确认/采图，目标首次入画即停止增大并核对两指，不闭爪；失败停止输出并保持使能，默认不发额外抓取运动。当前本条仅是已完成1°试验及新增权限记录，较大组尚未执行，不伪造结果。下一动作复用原AUTO_START=0及现驱动arm-only临时诊断路径，不修改闭环代码或盲重复全抓取。
+
 ### 2026-10-11 13:44：检索成熟视觉伺服实现；纠正模型落点不等于实体正确落点
 
 - 用户指出已提供镜头到指尖的70mm/105mm，并要求优先复用GitHub成果，询问按画面偏移权重修正是否合适。本轮HEAD `62a3aef`，只读核对规范/实际executor SHA均107ce501…、实体YAML、adapter输入与原图/实测记录，使用ros2-piper-debug技能；不修改源/配置、不安装依赖、不启动ROS、不发J5或抓取命令。原观测姿态完成证据复用13:28，不因本轮方案研究重新运动。

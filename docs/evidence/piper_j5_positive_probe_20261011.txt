@@ -1,0 +1,65 @@
+Approved reversible J5-only real experiment, 2026-10-11 13:53.
+Canonical starting HEAD c47a385; no source/config changes.
+Original entry BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0
+BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws
+BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/j5_positive_probe_20261011
+/home/johnwick/start_brain_robot_cube_real.sh
+All seven startup steps passed; visual state IDLE, no observe/search/grasp.
+
+Temporary same deployed piper_single_ctrl with auto_enable=false,
+gripper_exist=false, usual /joint_states and /joint_commands mappings.
+Only one driver remained before enabling output. Avoided the existing
+enable_srv gripper handshake; no code changes or gripper goal published.
+
+One-shot ROS client used GetPlanningScene ROBOT_STATE and GetMotionPlan
+/plan_kinematic_path, arm group, pilz_industrial_motion_planner/PTP.
+Six joint goal constraints, tolerance_above/below0.0001rad,
+velocity/acceleration scaling0.002, planning allowance5s.
+Original task limits+0.005 margin and continuity checked before publishing.
+Other five axes unchanged, J5 endpoint exactly current+1deg.
+Published only MoveIt's returned trajectory to existing
+/brain_robot_grasp/arm_trajectory -> piper_jog_adapter -> /joint_commands.
+Fresh measured state before each move; feedback/image/driver fault and
+non-target-axis deviations would stop output. No basic CAN motion program.
+
+Exact selected trial stdout:
+{"stage": "J5_PLUS_1_DEGREE", "moveit_code": 1, "points": 61, "duration_s": 5.908179502, "start_rad": [-0.262724084, 1.8882781120000003, -1.280686148, 0.0095942, 0.6107318840000001, 0.0], "target_rad": [-0.262724084, 1.8882781120000003, -1.280686148, 0.0095942, 0.6281851765199434, 0.0], "J5_degrees": [34.99235936727337, 35.99235936727338]}
+PUBLISHED OUTBOUND
+{"stage": "OUTBOUND", "settled_epoch": 1791697986.4088178, "actual_rad": [-0.262724084, 1.8882781120000003, -1.280686148, 0.0095942, 0.6274432360000001, 0.0], "actual_J5_deg": 35.94984930683088, "gripper_m": 0.1019}
+{"stage": "RETURN_TO_TEST_START", "moveit_code": 1, "points": 59, "duration_s": 5.781237236, "start_rad": [-0.262724084, 1.8882781120000003, -1.280686148, 0.0095942, 0.6274432360000001, 0.0], "target_rad": [-0.262724084, 1.8882781120000003, -1.280686148, 0.0095942, 0.6107318840000001, 0.0], "J5_degrees": [35.94984930683088, 34.99235936727337]}
+PUBLISHED RETURN
+{"stage": "RETURN", "settled_epoch": 1791697996.305388, "actual_rad": [-0.262724084, 1.8882781120000003, -1.280686148, 0.0095942, 0.6119529640000001, 0.0], "actual_J5_deg": 35.06232209772121, "gripper_m": 0.1019}
+J5_ONLY_PROBE_COMPLETE_NO_GRASP
+SOFTWARE_DISARM True
+
+Original adapter log accepts61 points at1791697980.358538915,
+59 points at1791697990.745820969, operator disarm1791698000.393386218.
+Observer106 before: joint5=.610731884, feedback stamp1791697980.182135,
+RGB stamp1791697980.006177, evidence/0106_rgb.png.
+Observer109 positive: joint5=.627443236, stamp1791697989.1920087,
+RGB stamp1791697989.0063405, evidence/0109_rgb.png.
+Observer112 returned: joint5=.611952964, stamp1791697998.202106,
+RGB stamp1791697998.0065186, evidence/0112_rgb.png.
+All three raw RGBs viewed; cube absent throughout, target_valid=false.
+OpenCV LK flow for24 tabletop points between0106/0109:
+median dx=-.1639328px, dy=-6.3845367px, RGB320x240.
+Supports down-looking direction, not target reacquisition or physical grasp.
+
+Important raw CAN evidence limitation: original log guard truncated the large
+gripper_can.log; retained frames begin around1791698055, later than experiment.
+Nearest CAN frames65-75s away are NOT valid stage measurements.
+Stage angles above come from fresh ROS feedback, not claimed raw stage CAN.
+Passive post-cleanup raw frames show J5=35.081deg, other joint pairs
+[-15.061,108.248],[-73.417,.550], J6=0; six enable=true, fault_bits0,
+all speeds0 and150 high-speed frames per axis in1.5s.
+
+Trial client exit0, observer exit0; original entry terminated intentionally143.
+Temporary driver SIGINT did not finish; targeted TERM ended it143.
+No hardware disable/reset/zero-return, no close/lift/release.
+No control/collector process remains. Default script SHA unchanged
+e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb.
+
+User then explicitly requested larger angle with incremental comparisons.
+Next authorized proposal: +2deg per step, maximum+8deg from fresh start,
+stop as soon as actual cube returns to view, compare jaws, do not close.
+This file describes the completed+1deg trial, NOT the pending larger trial.
