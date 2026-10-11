@@ -1,5 +1,12 @@
 # PiPER 调试进度
 
+### 2026-10-11 10:20：用户批准落点容差8→10mm，已同步规范与生效实体配置
+
+- 起始HEAD=`aec3cae`。用户“确认”明确批准上一轮提出的单项修改和原一键实测；仅把`brain_robot_arm/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml`的`grasp_landing_tolerance_m: 0.008`改为`0.010`，同步`/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml`。实际install配置是指向此源码的符号链接，无需编译；启动脚本/执行器/轨迹/夹爪/相机安装外参均未改。
+- YAML解析通过，规范文件与install实际配置逐字节一致，位置容差确为0.010m；新配置SHA-256=`cc64e723c4b325f0ee7c29efcb6d072bf7f62bf8eae081fddf655dc6dc9d2a24`。原启动脚本SHA仍`e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb`。启动前未发现遗留控制节点。
+- 下一步直接实跑：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/tmp/ub_tf_stamp_workspace BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261011_landing10mm /home/johnwick/start_brain_robot_cube_real.sh`。以本轮运行日志确认观测、目标锁定、下降落点及闭爪；8.6mm历史残差不是本轮实体到位证据。异常沿原脚本停止输出并保持使能，禁止ResetPiper/未经回位失能。
+- 回退：恢复此单行0.008并同步实际源码/install符号链接；精确实现提交哈希见Git，不回滚其他未提交vendor/reference改动。
+
 ### 2026-10-10 22:46:40–22:48:35：一键实机已执行下降；落点FK容差差0.6mm而未闭爪
 
 - 运行原入口，没有改启动脚本、源码、YAML、夹爪策略或外参。命令：`BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/tmp/ub_tf_stamp_workspace BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/real_full_20261010_retry_2242 /home/johnwick/start_brain_robot_cube_real.sh`。规范仓库起始HEAD=`bd5330d`；实时日志在`/home/johnwick/brain_robot_logs/real_full_20261010_retry_2242/`。
