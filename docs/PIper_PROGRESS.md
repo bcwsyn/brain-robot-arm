@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+### 2026-10-11 13:19：用户批准目标定向变姿态；实现/隔离规划通过，准备原一键实测
+
+- 用户“确认”批准13:04方案。沿仓库ROS/最小修改技能实现现TopDown抓取入口的新target_directed_grasp_enabled分支；实体配置true、preserve_aligned_grasp_orientation=false。不把关闭旧开关当作方案，不进入旧tilt/yaw枚举，不直接改J5轨迹。原SEARCH/ALIGN、精确TF等待、静态base目标、夹爪开闭/末段鲜RGB-D检查及原一键未改。
+- 共用纯C++ TargetDirectedApproach：先在同一工具基点小步把实际夹爪伸出轴对准目标（不是相机光轴），然后将朝向从该目标射线逐步转向桌面夹入方向；每点根据工具长度/当前朝向重算工具原点，并缩小到预抓取/尺寸推算插入间距。最小旋转保留绕轴方向，不额外按方块边角扭腕。两个Pose序列都经现MoveIt computeCartesianPath/连续性/任务限位规划成功后才交adapter。末段检查/失败保持使能均复用原实现。
+- 最新真实GRASP_READY关节/锁点/面尺寸冻结为docs/evidence/piper_onekey_20261011_target_directed_snapshot.json（不是实时输入，50mm模型开口仍是假设）。复用原隔离域78规划器，实读allow_trajectory_execution=False，无实体驱动/adapter/Servo/执行请求。首版完全从上方夹入在71%处失败，J3=-1.39869接近原-1.4任务下限；失败路点及最终垂直Pose禁碰撞IK也-31。故不修改限位，不归因于实体点云/硬件。
+- 修改同一几何方案的下俯比例target_directed_downward_fraction=0.5（目标射线到竖直向下之间的旋转比例，非固定角度/关节值），保留斜向可达夹入。共用同一个C++几何helper复核：75个pre路点产生29点轨迹、13个末段路点产生9点轨迹，两个fraction=1.0，原限位/步进通过；最大步进0.08648/0.03407rad。J5模型先42.408→28.691→32.882°，末段32.882→34.773°连续增大；不声称全程单调或实测已经如此。末段tip=[0.43458655,-0.11405907,0.06905799]m，模型误差3.91e-10m仅是数学一致性。
+- 源码完整隔离构建122秒/更新91秒均返回0；最终CTest7/7套通过（几何13项、抓取回放14项）。早期临时工作区缺相邻ball_pick/Astra配置导致CTest失败，补只读源码symlink后通过；未改相机/检测逻辑或测试断言掩盖失败。旧固定朝向配置断言改为已批准新模式，新增变化Pose/先规划后执行/原落点及闭爪链结构检查。
+- 通过apply_patch同步实际默认/home/johnwick/piper_ws的8个源/测试/配置文件，源码SHA107ce501…/YAML75612194…与规范一致；实际colcon构建进行中。原入口SHA仍e8c9f85c…，不另建启动脚本、不使用隔离overlay实机。规划精选日志docs/evidence/piper_onekey_20261011_target_directed_plan.txt。当前尚无本方案实机靠近/闭爪成功证据。
+- 同步复核现模型相机投影：使用历史深度K，预抓取表面v459.7、最终v560.2，仍在640×400下界外；rotation_calibrated=false。因此变姿态不保证末段目标可见，本轮不删除鲜视觉闭爪检查；实际测试旨在核对新姿态/J5/夹爪指向和实际画面，不能预先承诺完整抓取。只读采集器增加CameraInfo订阅以保存本轮K，不发布控制。若末段再丢目标，按原流程停止且保持使能，不用过期坐标直接闭爪。
+- 下一步实际构建/测试通过后，退出隔离规划器，从默认工作区执行原命令AUTO_START=1、STOP_AFTER_TARGET_ACQUIRED=0、DEPTH_ONLY_TARGET=0，日志real_full_20261011_target_directed；同步图像/六轴/目标/诊断，实读新模式参数，比较下降阶段J5和视觉。当前许可覆盖本方案实现与该原入口验证，无需重复询问。回退本轮实现提交的git revert并同步实际8路径/重建，即恢复旧5°固定朝向/TF等待基线；仅参数回退须target_directed_grasp_enabled=false且preserve_aligned_grasp_orientation=true。
+
 ### 2026-10-11 13:04：提出“目标定向、连续变姿态”方案，等待用户批准实现
 
 - 用户明确不要固定夹爪朝向，询问解决方案。本轮仅只读核对，未改源/YAML/脚本、未启动控制栈或发运动。规范/实际executor源码SHA256均9983738886003766c50274fd7efbf37160d4b558c9010c6e8027f8b5248c520a，接续实测提交5000a3d；观测/靠近证据复用上轮，不重跑底层检查。

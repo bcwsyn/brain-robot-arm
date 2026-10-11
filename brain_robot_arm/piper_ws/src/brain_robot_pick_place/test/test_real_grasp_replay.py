@@ -139,7 +139,8 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["auto_execute"] is True
     assert grasp["depth_only_target_enabled"] is False
     assert grasp["static_target_lock"] is True
-    assert grasp["preserve_aligned_grasp_orientation"] is True
+    assert grasp["target_directed_grasp_enabled"] is True
+    assert grasp["preserve_aligned_grasp_orientation"] is False
     assert grasp["gripper_open_value"] == 50000
     assert abs(0.0462 - grasp["gripper_open_value"] / 1e6) > grasp["gripper_position_tolerance_m"]
     assert grasp["gripper_close_value"] == 0
@@ -257,6 +258,28 @@ def test_approved_pitch_down_changes_pose_goal_not_joint_trajectory():
     assert "grasp_geometry::RotateOrientationAboutAxis(" in body
     assert body.index("RotateOrientationAboutAxis(") < body.index("for (const double clearance")
     assert "POSE_GOAL_ONLY_NO_JOINT_TRAJECTORY_EDIT" in body
+
+
+def test_target_directed_grasp_uses_variable_pose_waypoints_and_original_finish():
+    params = yaml.safe_load(CONFIG.read_text())["grasp_lift_executor"]["ros__parameters"]
+    assert params["target_directed_grasp_enabled"] is True
+    assert params["preserve_aligned_grasp_orientation"] is False
+    source = EXECUTOR.read_text()
+    owner = source[source.index("void TargetDirectedPointGraspAndLift()"):
+                   source.index("void TopDownPointGraspAndLift()")]
+    assert "grasp_geometry::TargetDirectedApproach(" in owner
+    assert owner.count("PlanArmCartesianWaypointsFromState(") == 2
+    assert owner.index("predicted_pre, descent_plan") < owner.index("if (!execute(pre_plan)")
+    assert owner.index("RealTrajectoryWithinLimits(") < owner.index("if (!execute(pre_plan)")
+    assert owner.index("EnsureRealTopDownLanding(final_target)") < owner.index(
+        "FinishGraspAndLift(retreat)")
+    assert "locked_approach_orientation_ =" not in owner
+    assert "CommandRealGripper" not in owner
+    assert "top_down_tilt_candidates_" not in owner
+    entry = source[source.index("void TopDownPointGraspAndLift()"):
+                   source.index("bool EnsureRealTopDownLanding(")]
+    assert entry.index("TargetDirectedPointGraspAndLift();") < entry.index(
+        "if (preserve_aligned_grasp_orientation_)")
 
 
 def test_real_close_needs_fresh_face_inside_jaw_capture_not_only_locked_fk():

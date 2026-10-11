@@ -11,13 +11,14 @@ import os
 import copy
 import argparse
 import json
+import subprocess
 from pathlib import Path
 import yaml
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Pose, Quaternion
 from moveit_msgs.msg import Constraints, PositionConstraint, OrientationConstraint, RobotState
-from moveit_msgs.srv import GetMotionPlan, GetCartesianPath, GetPositionFK
+from moveit_msgs.srv import GetMotionPlan, GetCartesianPath, GetPositionFK, GetPositionIK
 from shape_msgs.msg import SolidPrimitive
 from sensor_msgs.msg import JointState
 
@@ -27,7 +28,9 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--config', type=Path, default=Path(
     '/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml'))
 parser.add_argument('--snapshot', type=Path)
-parser.add_argument('--orientation', choices=['top_down', 'measured'], default='top_down')
+parser.add_argument('--orientation', choices=['top_down', 'measured', 'target_directed'], default='top_down')
+parser.add_argument('--geometry-helper', type=Path,
+                    help='Compiled read-only C++ target-directed geometry helper')
 args = parser.parse_args()
 with args.config.open() as f:
     P = yaml.safe_load(f)['grasp_lift_executor']['ros__parameters']
@@ -53,7 +56,7 @@ if args.snapshot:
     if not all(lo <= q <= hi for q, lo, hi in zip(
             Q, P['real_trajectory_joint_min'], P['real_trajectory_joint_max'])):
         raise RuntimeError('Snapshot start violates unchanged task limits')
-if args.orientation == 'measured' and not args.snapshot:
+if args.orientation in ('measured', 'target_directed') and not args.snapshot:
     raise RuntimeError('Measured orientation review requires an explicit frozen snapshot')
 INSERTION = min(FACE_EDGE * P['surface_insertion_fraction'], P['surface_insertion_max_m'])
 NAMES = [f'joint{i}' for i in range(1,7)]
@@ -88,6 +91,7 @@ n.create_timer(.05,publish)
 plan = n.create_client(GetMotionPlan,'/plan_kinematic_path')
 cart = n.create_client(GetCartesianPath,'/compute_cartesian_path')
 fk = n.create_client(GetPositionFK,'/compute_fk')
+ik = n.create_client(GetPositionIK, '/compute_ik')
 
 def call(client, request):
     if not client.wait_for_service(timeout_sec=12.):
@@ -109,7 +113,115 @@ def checked(trajectory):
     return all(max(abs(x-y) for x,y in zip(a.positions,b.positions)) <= .35
                for a,b in zip(trajectory.points,trajectory.points[1:]))
 
+
+def review_target_directed():
+    if not args.geometry_helper or not P.get('target_directed_grasp_enabled'):
+        raise RuntimeError('Target-directed review requires its configured mode and C++ helper')
+    request = GetPositionFK.Request()
+    request.header.frame_id = 'base_link'
+    request.fk_link_names = ['link6']
+    request.robot_state = copy.deepcopy(state)
+    start_fk = call(fk, request)
+    if start_fk.error_code.val != 1 or not start_fk.pose_stamped:
+        raise RuntimeError('Frozen start FK unavailable')
+    start = start_fk.pose_stamped[0].pose
+    q = start.orientation
+    tip_offset = P['gripper_tip_offset_m']
+    numbers = [start.position.x, start.position.y, start.position.z,
+               q.x, q.y, q.z, q.w] + OBJECT + [tip_offset,
+               P['top_down_pregrasp_clearance_m'] + P.get('grasp_height_offset_m', 0.),
+               INSERTION - P.get('grasp_height_offset_m', 0.), P.get('cartesian_eef_step_m', .005),
+               P.get('target_directed_downward_fraction', .5)]
+    path = json.loads(subprocess.check_output(
+        [str(args.geometry_helper.resolve())] + [str(v) for v in numbers], text=True))
+    print('TARGET_DIRECTED_EXACT_CPP_GEOMETRY_NO_EXECUTION',
+          'frozen_start', Q, 'surface', OBJECT, 'start_pose', start, flush=True)
+    for stage in ('pregrasp', 'descent'):
+        waypoints = []
+        for item in path[stage]:
+            p = Pose()
+            p.position.x, p.position.y, p.position.z = item['origin']
+            p.orientation = Quaternion(**dict(zip(('x', 'y', 'z', 'w'), item['orientation'])))
+            waypoints.append(p)
+        cart_request = GetCartesianPath.Request()
+        cart_request.header.frame_id = 'base_link'
+        cart_request.group_name = 'arm'
+        cart_request.link_name = 'link6'
+        cart_request.start_state = copy.deepcopy(state)
+        cart_request.max_step = P.get('cartesian_eef_step_m', .005)
+        cart_request.jump_threshold = 0.
+        cart_request.avoid_collisions = True
+        cart_request.waypoints = waypoints
+        result = call(cart, cart_request)
+        jt = result.solution.joint_trajectory
+        max_step = max((max(abs(x-y) for x, y in zip(a.positions, b.positions))
+                        for a, b in zip(jt.points, jt.points[1:])), default=0.)
+        print('TARGET_DIRECTED_CARTESIAN', stage, 'fraction', result.fraction,
+              'code', result.error_code.val, 'requested_waypoints', len(waypoints),
+              'points', len(jt.points), 'limits', checked(jt), 'max_joint_step', max_step, flush=True)
+        if (result.error_code.val != 1 or result.fraction < .995 or not checked(jt) or
+                max_step > P.get('cartesian_max_joint_step_rad', .35)):
+            print('PARTIAL_LAST_JOINTS', dict(zip(jt.joint_names,
+                  jt.points[-1].positions)) if jt.points else {}, flush=True)
+            index = min(len(waypoints) - 1, int(result.fraction * len(waypoints)))
+            print('FAILED_WAYPOINT_APPROX_INDEX', index, 'pose', waypoints[index], flush=True)
+            for collide, candidate in ((False, waypoints[index]), (True, waypoints[index]),
+                                       (False, path['descent'][-1])):
+                test = GetPositionIK.Request()
+                test.ik_request.group_name = 'arm'
+                test.ik_request.ik_link_name = 'link6'
+                test.ik_request.pose_stamped.header.frame_id = 'base_link'
+                if isinstance(candidate, dict):
+                    test.ik_request.pose_stamped.pose.position.x, test.ik_request.pose_stamped.pose.position.y, test.ik_request.pose_stamped.pose.position.z = candidate['origin']
+                    test.ik_request.pose_stamped.pose.orientation = Quaternion(**dict(zip(
+                        ('x', 'y', 'z', 'w'), candidate['orientation'])))
+                else:
+                    test.ik_request.pose_stamped.pose = candidate
+                test.ik_request.robot_state = copy.deepcopy(state)
+                if jt.points:
+                    last = dict(zip(jt.joint_names, jt.points[-1].positions))
+                    test.ik_request.robot_state.joint_state.position = [last.get(name, x)
+                        for name, x in zip(state.joint_state.name, state.joint_state.position)]
+                test.ik_request.timeout.sec = 1
+                test.ik_request.avoid_collisions = collide
+                answer = call(ik, test)
+                print('FAILED_WAYPOINT_IK', 'avoid_collisions', collide,
+                      'final_endpoint', isinstance(candidate, dict),
+                      'code', answer.error_code.val, 'joints', answer.solution.joint_state.position,
+                      flush=True)
+            raise RuntimeError('Target-directed path incomplete/limited; no execution permitted')
+        values = dict(zip(jt.joint_names, jt.points[-1].positions))
+        state.joint_state.position = [values.get(name, x) for name, x in
+            zip(state.joint_state.name, state.joint_state.position)]
+        j5 = jt.joint_names.index('joint5')
+        print('JOINT5_MODEL_ONLY_DEGREES', stage,
+              [round(math.degrees(p.positions[j5]), 3) for p in jt.points], flush=True)
+        request.robot_state = copy.deepcopy(state)
+        end_fk = call(fk, request)
+        if end_fk.error_code.val != 1 or not end_fk.pose_stamped:
+            raise RuntimeError('Segment endpoint FK unavailable')
+        measured = end_fk.pose_stamped[0].pose
+        q = measured.orientation
+        axis = [2*(q.x*q.z+q.w*q.y), 2*(q.y*q.z-q.w*q.x), 1-2*(q.x*q.x+q.y*q.y)]
+        tip = [v+a*tip_offset for v, a in zip(
+            [measured.position.x, measured.position.y, measured.position.z], axis)]
+        goal = waypoints[-1]
+        gq = goal.orientation
+        goal_axis = [2*(gq.x*gq.z+gq.w*gq.y), 2*(gq.y*gq.z-gq.w*gq.x),
+                     1-2*(gq.x*gq.x+gq.y*gq.y)]
+        expected = [v+a*tip_offset for v, a in zip(
+            [goal.position.x, goal.position.y, goal.position.z], goal_axis)]
+        error = math.sqrt(sum((a-b)**2 for a, b in zip(tip, expected)))
+        print('TARGET_DIRECTED_ENDPOINT_MODEL_ONLY', stage, 'joints', values,
+              'axis', axis, 'tip', tip, 'tip_error_m', error, flush=True)
+        if error > P['grasp_landing_tolerance_m']:
+            raise RuntimeError('Target-directed model landing failed')
+    print('TARGET_DIRECTED_BOTH_SEGMENTS_PLANNED_NO_EXECUTION', flush=True)
+
 try:
+    if args.orientation == 'target_directed':
+        review_target_directed()
+        raise SystemExit(0)
     if args.orientation == 'measured':
         start_fk = GetPositionFK.Request()
         start_fk.header.frame_id = 'base_link'

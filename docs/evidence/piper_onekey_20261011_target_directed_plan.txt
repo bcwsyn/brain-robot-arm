@@ -1,0 +1,43 @@
+Target-directed variable-attitude grasp; isolated historical model review.
+NO EXECUTION. ROS_DOMAIN_ID=78, allow_trajectory_execution=False (parameter readback).
+Planner: existing review_surface_grasp_plan.launch.py, default PiPER MoveIt model,
+unchanged real task limits, disabled wrist Octomap input. No PiPER/adapter/Servo.
+Snapshot: piper_onekey_20261011_target_directed_snapshot.json.
+Same compiled C++ geometry is used by review helper and real executor.
+
+First vertical-entry candidate (downward_fraction=1.0):
+pregrasp fraction0.71, requested_waypoints100, points29, max_joint_step0.083997975.
+Last partial joints:
+[-0.260282557,1.698171726,-1.398692551,0.006122704,0.961503554,0.000905453]
+J3 close to unchanged -1.4 rad task limit.
+Approximate failed waypoint origin [0.349515682,-0.092579290,0.281712186].
+IK failed -31 both avoid_collisions=False and True; final vertical endpoint also -31.
+This is model IK unavailability, not a live point-cloud collision/hardware conclusion.
+
+Geometry-derived slanted entry (downward_fraction=0.5, no preset yaw/J5):
+TARGET_DIRECTED_CARTESIAN pregrasp fraction 1.0 code 1 requested_waypoints 75 points 29 limits True max_joint_step 0.08648175892545673
+JOINT5_MODEL_ONLY_DEGREES pregrasp [42.408,42.122,41.262,39.830,37.824,35.321,33.156,31.564,30.545,30.017,29.723,29.603,29.418,29.194,28.967,28.782,28.691,28.749,29.016,29.493,30.073,30.684,31.275,31.805,32.247,32.581,32.795,32.880,32.882]
+pregrasp_end [-0.260432128,1.747577733,-1.180518272,0.011955550,0.573897775,-0.005073970]
+pregrasp_axis [0.479328900,-0.121027070,-0.869250398]
+pregrasp_tip [0.418096106,-0.109895350,0.100762010]; FK goal error6.0767e-10m.
+TARGET_DIRECTED_CARTESIAN descent fraction 1.0 code 1 requested_waypoints 13 points 9 limits True max_joint_step 0.03406581801953723
+JOINT5_MODEL_ONLY_DEGREES descent [32.882,32.948,33.146,33.483,33.954,34.362,34.633,34.762,34.773]
+descent_end [-0.259241963,1.884066478,-1.275843245,0.008973891,0.606894902,-0.001779155]
+descent_axis [0.415545577,-0.104922244,-0.903500524]
+descent_tip [0.434586547,-0.114059067,0.069057994]; FK goal error3.9071e-10m.
+TARGET_DIRECTED_BOTH_SEGMENTS_PLANNED_NO_EXECUTION
+
+Existing model camera projection (historical 10:39 depth K, not a new live reading):
+pregrasp surface_optical [0,0.070,0.129], pixel[326.135559,459.664037], outside640x400.
+final surface_optical [0,0.070,0.093], pixel[326.135559,560.228120], outside640x400.
+rotation_calibrated=False. Whole-tool rotation does not guarantee target visibility
+in the rigid wrist camera when the final local grasp point is unchanged.
+No fresh-vision gate removal/automatic close/physical grasp claimed.
+
+Build: /tmp/ub_directed_workspace first122s, updated91s, both exit0.
+CTest final7/7 suites passed;13 geometry gtests +14 real-grasp replay pytest cases.
+Early CTest failures were missing sibling YAML/Astra paths in temporary workspace;
+fixed by read-only source symlinks, not by changing camera/runtime configuration.
+Canonical/deployed source SHA256107ce501ee2cbf1862f96bf9096ed8fec7c396809fb8c36749222b35d633ce49.
+Canonical/deployed YAML SHA2567561219416c17c9e0685d5fefcf19a9ab88d63fbc5b3aa99a212d241d34b3f74.
+Original one-key script unchanged SHA256e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb.

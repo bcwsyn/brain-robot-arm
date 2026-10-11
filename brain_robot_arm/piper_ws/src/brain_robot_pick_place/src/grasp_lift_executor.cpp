@@ -37,6 +37,7 @@
 #include <tf2/LinearMath/Vector3.h>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
+#include "brain_robot_pick_place/target_directed_grasp.hpp"
 
 #include "brain_robot_pick_place/grasp_geometry.hpp"
 #include "brain_robot_pick_place/target_model_wait.hpp"
@@ -397,6 +398,9 @@ private:
     static_target_lock_ = ParameterOr<bool>("static_target_lock", false);
     preserve_aligned_grasp_orientation_ = ParameterOr<bool>(
       "preserve_aligned_grasp_orientation", false);
+    target_directed_grasp_enabled_ = ParameterOr<bool>("target_directed_grasp_enabled", false);
+    target_directed_downward_fraction_ = ParameterOr<double>(
+      "target_directed_downward_fraction", 0.5);
     aligned_grasp_pitch_down_rad_ = ParameterOr<double>("aligned_grasp_pitch_down_rad", 0.0);
     grasp_height_offset_m_ = ParameterOr<double>("grasp_height_offset_m", 0.0);
     gripper_tip_offset_m_ = ParameterOr<double>("gripper_tip_offset_m", 0.1358);
@@ -505,6 +509,10 @@ private:
       cartesian_eef_step_m_ > 0.0 && cartesian_max_joint_step_rad_ > 0.0 &&
       grasp_height_offset_m_ >= 0.0 &&
       std::isfinite(aligned_grasp_pitch_down_rad_) && aligned_grasp_pitch_down_rad_ >= 0.0 &&
+      (!target_directed_grasp_enabled_ ||
+      (top_down_surface_grasp_enabled_ && !preserve_aligned_grasp_orientation_ &&
+      std::isfinite(target_directed_downward_fraction_) &&
+      target_directed_downward_fraction_ > 0.0 && target_directed_downward_fraction_ <= 1.0)) &&
       gripper_tip_offset_m_ > 0.0 && top_down_pregrasp_clearance_m_ > 0.0 &&
       grasp_center_offset_m_ > 0.0 && grasp_contact_tolerance_m_ > 0.0 &&
       top_down_grasp_clearance_m_ >= 0.0 &&
@@ -1205,10 +1213,127 @@ private:
     }
   }
 
+  void TargetDirectedPointGraspAndLift()
+  {
+    PublishState("TARGET_DIRECTED_PREGRASP_PLANNING");
+    if (!static_target_lock_ || !target_model_locked_) {
+      Fail("TARGET_DIRECTED_STATIC_MODEL_UNAVAILABLE");
+      return;
+    }
+    geometry_msgs::msg::PointStamped surface;
+    const auto state = FreshMeasuredState("TARGET_DIRECTED_START");
+    if (!state || !PredictedTargetInReference(surface)) {
+      Fail("TARGET_DIRECTED_START_UNAVAILABLE");
+      return;
+    }
+    const auto start = CurrentPoseInFrame(lift_reference_frame_);
+    if (start.header.frame_id.empty()) {
+      Fail("TARGET_DIRECTED_START_POSE_UNAVAILABLE");
+      return;
+    }
+    std::vector<geometry_msgs::msg::Pose> pre_waypoints;
+    std::vector<geometry_msgs::msg::Pose> descent_waypoints;
+    try {
+      const double insertion = grasp_geometry::SurfaceInsertion(
+        locked_object_min_size_m_, surface_insertion_fraction_, surface_insertion_max_m_);
+      const auto path = grasp_geometry::TargetDirectedApproach(
+        {start.pose.position.x, start.pose.position.y, start.pose.position.z},
+        {start.pose.orientation.x, start.pose.orientation.y, start.pose.orientation.z,
+          start.pose.orientation.w},
+        {surface.point.x, surface.point.y, surface.point.z}, gripper_tip_offset_m_,
+        top_down_pregrasp_clearance_m_ + grasp_height_offset_m_,
+        insertion - grasp_height_offset_m_, cartesian_eef_step_m_,
+        target_directed_downward_fraction_);
+      const auto convert = [](const auto & poses, auto & waypoints) {
+          for (const auto & p : poses) {
+            geometry_msgs::msg::Pose pose;
+            pose.position.x = p.origin[0];
+            pose.position.y = p.origin[1];
+            pose.position.z = p.origin[2];
+            pose.orientation.x = p.orientation[0];
+            pose.orientation.y = p.orientation[1];
+            pose.orientation.z = p.orientation[2];
+            pose.orientation.w = p.orientation[3];
+            waypoints.push_back(pose);
+          }
+        };
+      convert(path.pregrasp, pre_waypoints);
+      convert(path.descent, descent_waypoints);
+      RCLCPP_INFO(get_logger(),
+        "TARGET_DIRECTED_VARIABLE_ATTITUDE surface=(%.4f,%.4f,%.4f) insertion=%.4f "
+        "pre_waypoints=%zu descent_waypoints=%zu downward_fraction=%.3f "
+        "NO_JOINT_TRAJECTORY_EDIT",
+        surface.point.x, surface.point.y, surface.point.z, insertion,
+        pre_waypoints.size(), descent_waypoints.size(), target_directed_downward_fraction_);
+    } catch (const std::invalid_argument & error) {
+      RCLCPP_ERROR(get_logger(), "Target-directed geometry rejected: %s", error.what());
+      Fail("TARGET_DIRECTED_GEOMETRY_UNAVAILABLE");
+      return;
+    }
+    moveit_msgs::msg::RobotTrajectory pre_plan;
+    moveit_msgs::msg::RobotTrajectory descent_plan;
+    if (!PlanArmCartesianWaypointsFromState(
+        pre_waypoints, lift_reference_frame_, "TARGET_DIRECTED_PREGRASP", state, pre_plan))
+    {
+      Fail("TARGET_DIRECTED_PREGRASP_PLAN_FAILED");
+      return;
+    }
+    const auto predicted_pre = StateAtTrajectoryEnd(
+      pre_plan.joint_trajectory, "TARGET_DIRECTED_DESCENT_START");
+    if (!PlanArmCartesianWaypointsFromState(
+        descent_waypoints, lift_reference_frame_, "TARGET_DIRECTED_DESCENT",
+        predicted_pre, descent_plan))
+    {
+      Fail("TARGET_DIRECTED_DESCENT_PLAN_FAILED");
+      return;
+    }
+    std::string rejection;
+    if (!simulation_only_ &&
+      (!RealTrajectoryWithinLimits(pre_plan.joint_trajectory, rejection) ||
+      !RealTrajectoryWithinLimits(descent_plan.joint_trajectory, rejection)))
+    {
+      PublishDiagnostic("TARGET_DIRECTED_REAL_LIMIT_REJECTED:" + rejection);
+      Fail("TARGET_DIRECTED_REAL_LIMIT_REJECTED");
+      return;
+    }
+    // Both changing-attitude segments must be planned before any adapter output.
+    const auto execute = [this](const auto & plan) {
+        return simulation_only_ ? static_cast<bool>(arm_->execute(plan)) :
+               ExecuteArmTrajectory(plan.joint_trajectory);
+      };
+    if (!execute(pre_plan) || cancel_requested_) {
+      Fail("TARGET_DIRECTED_PREGRASP_EXECUTION_FAILED");
+      return;
+    }
+    PublishState("TOP_DOWN_PREGRASP_REACHED");
+    PublishState("TOP_DOWN_DESCENT_EXECUTING");
+    if (!execute(descent_plan) || cancel_requested_) {
+      Fail("TARGET_DIRECTED_DESCENT_EXECUTION_FAILED");
+      return;
+    }
+    geometry_msgs::msg::PoseStamped final_target;
+    final_target.header.frame_id = lift_reference_frame_;
+    final_target.header.stamp = now();
+    final_target.pose = descent_waypoints.back();
+    target_pose_publisher_->publish(final_target);
+    if (!simulation_only_ && !EnsureRealTopDownLanding(final_target)) {
+      Fail("GRASP_LANDING_UNCONFIRMED_NO_CLOSE");
+      return;
+    }
+    geometry_msgs::msg::PoseStamped retreat;
+    retreat.header = final_target.header;
+    retreat.pose = pre_waypoints.back();
+    FinishGraspAndLift(retreat);
+  }
+
   void TopDownPointGraspAndLift()
   {
     selected_top_down_yaw_valid_ = false;
     locked_approach_orientation_valid_ = false;
+    if (target_directed_grasp_enabled_) {
+      TargetDirectedPointGraspAndLift();
+      return;
+    }
     if (preserve_aligned_grasp_orientation_) {
       if (!static_target_lock_ || !target_model_locked_ ||
         !WaitForFreshJointState("ALIGNED_ORIENTATION_LOCK"))
@@ -2707,12 +2832,20 @@ private:
     const std::shared_ptr<moveit::core::RobotState> & start_state,
     moveit_msgs::msg::RobotTrajectory & trajectory)
   {
-    if (!start_state) {
+    return PlanArmCartesianWaypointsFromState(
+      {target.pose}, target.header.frame_id, stage, start_state, trajectory);
+  }
+
+  bool PlanArmCartesianWaypointsFromState(
+    const std::vector<geometry_msgs::msg::Pose> & waypoints, const std::string & frame,
+    const std::string & stage, const std::shared_ptr<moveit::core::RobotState> & start_state,
+    moveit_msgs::msg::RobotTrajectory & trajectory)
+  {
+    if (!start_state || waypoints.empty()) {
       return false;
     }
     arm_->setStartState(*start_state);
-    arm_->setPoseReferenceFrame(target.header.frame_id);
-    std::vector<geometry_msgs::msg::Pose> waypoints{target.pose};
+    arm_->setPoseReferenceFrame(frame);
     const double previous_velocity_scaling = velocity_scaling_;
     arm_->setMaxVelocityScalingFactor(linear_approach_velocity_scaling_);
     const double fraction = arm_->computeCartesianPath(
@@ -2989,6 +3122,8 @@ private:
   bool preserve_aligned_grasp_orientation_{false};
   double aligned_grasp_pitch_down_rad_{0.0};
   bool locked_approach_orientation_valid_{false};
+  bool target_directed_grasp_enabled_{false};
+  double target_directed_downward_fraction_{0.5};
   geometry_msgs::msg::Quaternion locked_approach_orientation_;
   double diagonal_pregrasp_standoff_m_{0.17};
   double diagonal_grasp_standoff_m_{0.045};
