@@ -2,6 +2,7 @@
 
 ### 2026-10-11 12:49：主机提权与Git写通道恢复；提交TF等待修复，实体USB尚未透传
 
+- 实现/证据提交已成功：`e48e4c9`（9个指定文件，246新增/8删除）；`git diff --cached --check`及`git show --check --oneline HEAD`返回0。完整回退命令为`git revert e48e4c9`，随后仅同步实际工作区相应源码并重新构建；此前5°/10mm及精确采样TF提交保留。无需再修Git权限。本轮没有真实机械臂运动，新断点仅为当前VMware实体USB接入，首条只读检查为提权主机执行`lsusb`。
 - 本轮从HEAD=`d67a544`接续已批准的TF等待修改，未新增运动代码/参数。使用`exec_command sandbox_permissions=require_escalated`成功（审批没有再报额度错误）；主机视图`findmnt /mnt/hgfs`为`fuse.vmhgfs-fuse rw`，普通沙箱仍为ro；`sudo -n true`返回0。因此旧“无法提权/提交”不再是当前阻断，无需chmod/index修复或重启机械臂。
 - 主机最小只读检查：`ip -details -statistics link show can0`报Device can0 does not exist，`ip -brief link`仅lo/ens33；`lsusb`仅Linux root hubs与VMware虚拟hub/mouse，没有USB-CAN `1d50:606f`或Astra相机，`/dev/video*`不存在。`journalctl -k -b`显示当前Ubuntu于12:46启动，尚无实体设备枚举记录。这是当前虚拟机看不到实体USB的事实；不能用重启前sysfs RX增长记录证明现在链路存在，也不能断言设备自身损坏。
 - 没有运行grasp/visual/adapter/piper控制进程。未发使能/运动/夹爪/ResetPiper/MasterSlaveConfig；未在无USB情况下反复modprobe或启动一键。当前根盘33%、可用51G，非空间不足。需在VMware可移动设备把USB-CAN和Astra/彩色相机连接到当前虚拟机；代理在Ubuntu内没有可枚举的实体USB，驱动重载无法代替宿主机透传。
