@@ -1,5 +1,17 @@
 # PiPER 调试进度
 
+### 2026-10-11 13:44：检索成熟视觉伺服实现；纠正模型落点不等于实体正确落点
+
+- 用户指出已提供镜头到指尖的70mm/105mm，并要求优先复用GitHub成果，询问按画面偏移权重修正是否合适。本轮HEAD `62a3aef`，只读核对规范/实际executor SHA均107ce501…、实体YAML、adapter输入与原图/实测记录，使用ros2-piper-debug技能；不修改源/配置、不安装依赖、不启动ROS、不发J5或抓取命令。原观测姿态完成证据复用13:28，不因本轮方案研究重新运动。
+- 明确接受已确认测量，不要求重复量取。前轮J5+5°偏移计算只表示离开当前URDF/锁点模型落点；当前实体夹持区与目标吻合尚未验收，不能据此断言该修正一定离实体目标更远。用户观察“J5增大能更接近/看回方块”是应优先实测的方向，不把模型一致性当作实体精度证明；也不将其未经实测写成已经抓取成功。
+- 已实际搜索并读取一手来源：ViSP仓库与纯相机仿真源码 https://github.com/lagadic/visp/blob/master/tutorial/visual-servo/ibvs/tutorial-ibvs-4pts.cpp （EYEINHAND_CAMERA、每轮更新视觉特征并计算控制律）；实臂示例 https://github.com/lagadic/visp/blob/master/example/servo-franka/servoFrankaIBVS.cpp （4个AprilTag角点、Franka/Realsense专用驱动，不能直接运行PiPER；GPL源码不得无视许可搬入）。官方ROS2 Humble接口 https://moveit.picknik.ai/humble/doc/examples/realtime_servo/realtime_servo_tutorial.html 确认TwistStamped/JointJog及闭环控制输入。资料说明算法/接口可复用，不证明当前本机已接通实机视觉抓取。
+- 同机器人候选 https://github.com/vanstrong12138/GraspGen 已读README：ROS1 Noetic/Ubuntu20.04、YoloV8-Pose、CUDA/TensorRT及RealSense链，与当前Humble/Astra不同；不照抄安装脚本/重装驱动/替换项目。另读 https://github.com/RobotKitAI/piper-astra-jev README：PiPER实物但使用固定RealSense、RTX4090类工作站和不同控制栈，自述单次演示非benchmark；仅参考任务阶段/接触确认，不能当作腕相机可见性或即插即用成果。上游文档访问两条ViSP教程URL失败，已改读实际GitHub仿真/实臂源码，不声称不存在的教程已验证。
+- 原论文 https://arxiv.org/abs/2001.05650 提出RGB-D抓取末段近距深度不可用时用RGB图像特征引导的IBVS。这是备选算法参考，不证明本次LOST由深度量程导致；本机原RGB确实出画面，且原FreshFaceInsideJaws依赖新鲜depth_valid。如要允许末段RGB-only，必须单独说明闭爪验证如何替代并获准，不能悄悄绕过原门。
+- 真实接线核对：piper_servo_real.yaml输出/piper_servo/unused_joint_trajectory，adapter只收JointJog和既有arm_trajectory等，不收TwistStamped；因此直接发官方Twist不会完成实机靠近，不允许盲接另一路控制器。现visual_search_controller已用J1/J5像素P对齐，但GRASP_READY之后executor停Servo并执行预先规划的整段Pose；末段没有持续图像纠偏。检测器实际为cup_detector_node.cpp（由cube_detector.launch.py启动），已有target_pixel/pixel_error/target_point_camera/color_candidate话题，不另写全新识别器。
+- 待批准路线：先沿现MoveIt规划/唯一adapter做一次J5正向小步、静止后取原始RGB/新鲜六轴与目标证据，验证用户局部方向和真实夹持区，不据模型“落点已经正确”阻止这个验证；幅度/终止/原点回退在获取当前实际反馈后列明。随后只在现抓取执行器将末段整段开环改为有界视觉闭环小步：远处保持已有RGB-D/static目标，近处用实际目标相对夹持区的图像误差+距离/进度修正姿态与位置；使用ViSP公开控制思路并复用现MoveIt IK/轨迹+adapter，不另建基本运动或一键入口。中心误差只是起始对齐项，最终目标是夹持区，不能只改像素P增益或只保证看得见。
+- 同一静止目标的身份与base模型作为参考保留，图像漂移区分相机自运动；不因每帧漂移重新SEARCH/锁别的背景紫色。不能把旧base点作为不可纠正的实体真值：若实图证实模型偏差，提出局部修正范围而非硬坚持旧落点。权重建议随靠近进度由画面内/对齐转向夹持区与距离，并以运动平滑项抑制抖动；当前尚未实现、参数化或仿真验证，不承诺仅靠一个像素中心就能确定6轴/抓取深度。
+- 下一步需要用户批准新增J5小步实测/闭环具体改动，当前询问方案不自动扩大权限；仍保持停栈/不发命令，不据旧记录重新测当前使能。首次文档记录提交前只检查本轮路径，保留全部vendor/reference改动。后续代码修改、RGB-only验证政策与落点等待分别明确范围；不能把本轮检索当作已部署/实机成功。
+
 ### 2026-10-11 13:36：只读定位末段出画面与J5不足的关系；未批准新代码或运动
 
 - 用户询问末段目标丢失是否由J5不够大导致。本轮从HEAD `6dec494`检查规范Git、当前文档、仓库ROS技能、实际日志/observer与原始RGB；无源码/参数修改、无ROS启动/机械臂命令，未重跑CAN或既有失败实机。使用ros2-piper-debug按真实部署证据定位，保留全部无关vendor/reference改动。没有新增观测姿态验证，因为本轮是原因解释，复用13:28的完整实测。
