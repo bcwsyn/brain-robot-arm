@@ -1,5 +1,16 @@
 # PiPER 调试进度
 
+### 2026-10-11 14:07：J5正向每档2°实体对比，累计6°使紫块重新露出画面下沿
+
+- 起始HEAD `c5d41fc`，执行用户“角度大一点、小幅比较”授权。原入口命令 `BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/j5_positive_steps_20261011 /home/johnwick/start_brain_robot_cube_real.sh`，到[7/7]后IDLE。健康CAN直接复用，盘33%/约51GB可用，不运行SEARCH/自动抓取。沿仓库ROS技能检查实际反馈、图像和执行链，不改源码/默认参数。
+- 确认原驱动退出，再临时启动同一驱动gripper_exist=false、auto_enable=false，避免使能握手发夹爪命令；采集器复用/tmp/piper_onekey_observer_20261011.py。起点六轴[-.262724084,1.888278112,-1.280686148,.0095942,.611952964,0]rad，J5=35.062322°。第一客户端只因新订阅者未收到RGB退出，未规划/使能/发运动；等待真实首帧后才执行，保持.8秒图像/.3秒反馈新鲜度。
+- GetPlanningScene完整robot_state→GetMotionPlan/Pilz PTP，六轴约束只增加J5、速度/加速度比例.002，原任务限位/.005margin/连续性检查通过。现/brain_robot_grasp/arm_trajectory→唯一adapter→/joint_commands执行；累计+2/+4/+6°目标37.0623/39.0623/41.0623°，MoveIt返回1，90/92/92点、8.8178/9.0534/9.0798秒。每档稳定后采图4秒及软件disarm，客户端均退出0，无额外基础控制程序。
+- 实际静止RGB0033/0043/0052/0067对应J5=35.0623/36.9813/38.9722/41.0661°。+2°底部很小紫片，+4°明显露出紫块，+6°更多但仍被下沿截断。离线诊断HSV[120,70,25]–[165,255,255]最大下沿块bbox：无/[131,236,16,4]/[105,225,42,15]/[101,212,50,28]，RGB320×240；只用于对比，不改检测器或当作合格方块识别。全程target_valid/depth_valid/candidate_valid=false，调试图仍TARGET LOST；不是完整入画/居中/两指包围/抓取成功。
+- 时序偏差如实记录：+4°查看原图与下一档启动放在同一批调用，确认紫块出现时+6°已开始并完成；随后追加软件disarm，不执行+8°。以后必须先单独查看静止原图再发下一档，不能以检测器false代替图像查看。后验+2°的小片段也保留，不宣称严格首次出现紫色像素即停。
+- 每档额外短窗被动CAN：J5=37.001/38.993/41.088°，其他轴[-15.061,108.248,-73.417,.550,0]°，六使能true/故障0/当时速度0；ROS度数因原.017444换算略异。其余五轴及夹爪.1019m反馈不变，未闭爪/抬升/释放。
+- 收尾原入口/临时驱动TERM退出143，采集器INT退出0，栈/采集无残留；未DisableArm/ResetPiper/MasterSlaveConfig/归零或返回起点，保持当前原CAN J5=41.088°。启动时驱动短暂反馈恢复.08秒发生在运动前，TERM收尾ExternalShutdownException不是运行期断联。退出后1秒位置帧全轴逐值不变、使能true/故障0，但高速速度字段部分波动（J4 -147..111/J6 -93..130），据实记录，不宣称全零或由单值判定实物运动。
+- 结论：用户J5正向方向得到实体原图支持，6°优于1°，但目标仍部分出画面，未证明两指到位；另有原落点等待时序问题。本轮不把用户70mm/105mm测量作废，也不把模型一致当作实体正确。下一建议先确认是否继续有限角度恢复完整视野，再按实测夹持区联动位置/姿态；任何生产代码修改仍先提范围获准，不硬写J5、不删闭爪验证。精选证据docs/evidence/piper_j5_positive_steps_20261011.txt；原入口/executor/YAML SHA e8c9f85c…/107ce501…/75612194…未变。
+
 ### 2026-10-11 13:56：获准J5+1°可逆实测成功，方向支持但目标仍未入画；用户追加批准增量对比
 
 - 起始HEAD c47a385。沿仓库ROS技能用唯一原一键AUTO_START=0及LOG_DIR=/home/johnwick/brain_robot_logs/j5_positive_probe_20261011启动到[7/7]；控制器IDLE，不执行观测/SEARCH/抓取。根盘33%、原CAN ERROR-ACTIVE 1Mbps/.75、RX持续/无总线错误，直接复用；新鲜被动高速每轴150帧/1.5s、速度0，六使能true/故障位0。没有修改源码、默认YAML或入口文件。

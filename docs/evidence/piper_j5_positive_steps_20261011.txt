@@ -1,0 +1,91 @@
+PiPER real incremental J5 comparison, 2026-10-11 14:07 +0800
+Starting HEAD c5d41fc. User requested larger angle with incremental comparisons.
+This is not a complete grasp test. No close/lift/release or default source/config changes.
+
+ENTRY:
+BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_WS=/home/johnwick/piper_ws BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/j5_positive_steps_20261011 /home/johnwick/start_brain_robot_cube_real.sh
+Entry reached [7/7]; visual state IDLE, WAITING_FOR_START. CAN reused; disk 33%.
+Original driver stopped completely before temporary same piper_single_ctrl driver:
+can_port:=can0 auto_enable:=false gripper_exist:=false
+joint_states_single:=/joint_states joint_ctrl_single:=/joint_commands
+This avoids gripper commands during enable handshake; default entry remains unchanged.
+
+OBSERVER:
+/tmp/piper_onekey_observer_20261011.py /home/johnwick/brain_robot_logs/j5_positive_steps_20261011
+Logs and PNGs remain in this directory, not committed into Git.
+
+CONTROL CONTRACT / REPRODUCTION:
+Subscribe actual /joint_states_feedback, /arm_status, raw RGB, visual state.
+Require feedback/status <.3s, RGB <.8s, IDLE, arm_status=0/err_code=0.
+GetPlanningScene ROBOT_STATE, replace actual six-axis positions, preserve gripper model joints.
+GetMotionPlan: arm / pilz_industrial_motion_planner / PTP, allowed_planning_time=5,
+velocity and acceleration scaling=.002, six JointConstraints tolerance=.0001rad.
+Other five axes held at [-.262724084,1.888278112,-1.280686148,.0095942,0]rad.
+Base J5=.611952964rad. Goals base+2/4/6deg. Original task limits/.005 margin,
+non-J5 planned deviation <=.001rad, adjacent <=.035rad, endpoint <=.0005rad.
+Existing /enable_srv enable_request=true, adapter enable_motion/arm, publish returned
+JointTrajectory to /brain_robot_grasp/arm_trajectory -> existing adapter -> /joint_commands.
+Non-J5 actual deviation <.003rad; J5 <=.002rad for 1s; hold4s, software disarm.
+No Twist, direct CAN commands, separate low-level control program or auto-search.
+First client received no RGB before deadline and exited before planning or motion.
+Subsequent initialization waited <=8s for actual first frames, same freshness thresholds.
+
+STAGE +2deg:
+PLAN epoch1791698629.7520235 goalJ5=.6468595490398867rad /37.062322deg;
+MoveIt1,90points,8.817764172s; adapter accepted1791698630.592021817.
+SETTLED epoch1791698639.1191914 J5=.645445444rad /36.981299847deg.
+HOLD epoch1791698643.1230977 target_valid=false candidate_valid=false gripper=.1019m.
+PASSIVE CAN epoch1791698643.836916 J5=37.001deg J6=0; all enabled true/fault0/speed0.
+RGB0043 stamp1791698643.8406892; feedback1791698644.0393476.
+
+STAGE +4deg:
+PLAN epoch1791698658.4715552 goalJ5=.6817661340797733rad /39.062322deg;
+MoveIt1,92points,9.053448345s; adapter accepted1791698659.314043987.
+SETTLED epoch1791698668.2093482 J5=.680193892rad /38.972239262deg.
+HOLD epoch1791698672.2108052 target_valid=false candidate_valid=false gripper=.1019m.
+PASSIVE CAN epoch1791698672.9232092 J5=38.993deg J6=0; all enabled true/fault0/speed0.
+RGB0052 stamp1791698671.0416088; feedback1791698671.0475645.
+
+STAGE +6deg:
+PLAN epoch1791698688.7454925 goalJ5=.7166727191196599rad /41.062322deg;
+MoveIt1,92points,9.079804518s; adapter accepted1791698689.664730892.
+SETTLED epoch1791698698.453325 J5=.714977228rad /40.965177612deg.
+HOLD epoch1791698702.4587588 J5=.716739072rad /41.066123838deg;
+target_valid=false candidate_valid=false gripper=.1019m.
+PASSIVE CAN epoch1791698703.25447 J5=41.088deg J6=0; all enabled true/fault0/speed0.
+RGB0067 stamp1791698716.041777; feedback1791698716.0976725.
+Additional operator software disarm1791698707.512751888 succeeded.
+Other axes raw CAN every stage [-15.061,108.248,-73.417,.550,0]deg unchanged.
+ROS degrees differ slightly due deployed driver's .017444 conversion.
+
+IMAGE REVIEW:
+0033_rgb.png baseline no purple blob; 0043 (+2) tiny purple strip at bottom;
+0052 (+4) clearly purple lower edge; 0067 (+6) larger but still cropped by bottom.
+Diagnostic only HSV[120,70,25]..[165,255,255], maximum bottom blob x,y,w,h/area:
+0033 none; 0043 [131,236,16,4]/42; 0052 [105,225,42,15]/434;
+0067 [101,212,50,28]/1042. RGB320x240. Not production detector/target-validation change.
+All target_valid/depth_valid remained false; debug0067 TARGET LOST.
+Object is not fully visible, not proven inside jaws, no successful grasp claimed.
+Sequencing deviation: +4 image viewing and +6 launching shared one tool batch;
+purple edge recognized after +6 started/completed. Stopped here, +8 never sent.
+Future viewing and next motion must be separate calls; false detector is not proof of absence.
+Post-hoc +2 tiny strip was also retained, not hidden as a claimed first-visible stop.
+
+CLEANUP / CURRENT STATE:
+Entry and temporary driver targeted TERM exited143, observer INT exited0;
+no remaining driver/controller/observer. Entry explicitly did not DisableArm.
+No ResetPiper/MasterSlaveConfig/full zero/return-to-start/close/lift/release.
+Driver startup feedback recovered .08s before movement, exit ExternalShutdownException
+belongs to intentional TERM, not an in-motion link fault.
+After controllers exit raw angles same [-15.061,108.248,-73.417,.550,41.088,0]deg;
+six enabled true, fault0. One-second sample epoch1791698808.575924 had one unique
+position pair per 0x3A4/5/6; high-speed 100frames each, speed raw ranges:
+J1[0,0], J2[-27,0], J3[0,0], J4[-147,111], J5[0,21], J6[-93,130].
+Do not claim every velocity field zero after cleanup; position feedback held unchanged.
+
+UNCHANGED DEPLOYED SHA256:
+entry e8c9f85c9e41cc3c4c288d96ab15cc91f2cae42a8ade9bfea6f1c71d79784acb
+executor source 107ce501ee2cbf1862f96bf9096ed8fec7c396809fb8c36749222b35d633ce49
+cube_task_real.yaml 7561219416c17c9e0685d5fefcf19a9ab88d63fbc5b3aa99a212d241d34b3f74
+NEXT: proposal for bounded further visibility recovery and coupled pose/jaw-image control;
+production code or validation-policy changes still require user's specific approval.
