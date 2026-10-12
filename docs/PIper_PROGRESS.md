@@ -3079,3 +3079,10 @@
 - 用户确认在规范仓库内提供供 Ubuntu Codex 接力使用的技能。新增 `.agents/skills/ros2-piper-debug/SKILL.md` 与 `.agents/skills/surgical-change/SKILL.md`；前者聚焦本仓库 ROS 2 Humble/PiPER、TF/QoS/MoveIt/点云证据，后者强调行为归属、窄 diff、验证及保护未提交用户改动。
 - 已审阅上游 ROS2 `SKILL.md`（994行）及当前真实存在的 `ln-41-surgical-change-implementer`。未原样搬入：上游 ROS2 有未经此项目证据支持的通用 DDS 建议，且完整技能体积不利于低 token 接力；新文件保留来源链接并限定按需触发，不修改运行代码或机械臂状态。
 - 验证范围：检查技能 frontmatter、触发描述、路径及 Git diff；无 ROS 构建、启动或实机运动。仅本条记录和两个新技能文件属于本次改动；同一工作树中已有的进度/决策及其他用户改动不应并入本次提交。
+
+## 2026-10-12：按活动断点复核 Linux 状态，等待 ArmRobotUA 现场使能
+
+- 本轮先按当前动态文档顶部恢复，不使用冻结的 `docs/PIper_HANDOFF_20261010.md` 作为活动状态。当前 HEAD 为 `f363a49`，本地 `main` 比 `origin/main` 领先 32 个提交；既有 vendor/Astra/reference/PDF/deb 工作树改动保持不动。
+- 只读命令：`pgrep -af 'piper|brain_robot|astra|move_group|servo|visual_search|cube'`、`ip -brief link show can0`、`ip -details -statistics link show can0`、读取 `/sys/class/net/can0/statistics/rx_packets` 前后等待3秒、`df -h /`。本轮 shell 返回0；除检查命令自身外没有控制进程。`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750；RX 从 21142934 增至 21150226（增量7292），bus error/error/drop/missed 均0；根分区34%。没有发送CAN控制帧、没有启动一键脚本、没有运动/夹爪/失能/复位命令。
+- 当前活动阻断以 `CODEX_HANDOFF.md`/动态进度顶部为准：ArmRobotUA 现场仍需在机械臂有支撑且零点状态稳定时完成整机 CAN/关节模式使能，并在夹爪页完成一次夹爪状态切换；在此之前不得运行唯一一键流程、滑动夹爪、重复写零点或继续 SDK 夹爪实验。Linux 接收链健康不能替代上位机状态切换证据。
+- 下一步：现场完成上述最小 ArmRobotUA 操作后，回 Linux 只读确认 `0x3A7 status=0x40`/新鲜六轴反馈，再执行一次有界50 mm开口响应验证；若夹爪反馈有真实位移且照明/RGB-D恢复，才回到唯一一键视觉链。当前总目标仍未完成；本轮无新的代码或实体动作。
