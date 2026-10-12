@@ -3086,3 +3086,10 @@
 - 只读命令：`pgrep -af 'piper|brain_robot|astra|move_group|servo|visual_search|cube'`、`ip -brief link show can0`、`ip -details -statistics link show can0`、读取 `/sys/class/net/can0/statistics/rx_packets` 前后等待3秒、`df -h /`。本轮 shell 返回0；除检查命令自身外没有控制进程。`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750；RX 从 21142934 增至 21150226（增量7292），bus error/error/drop/missed 均0；根分区34%。没有发送CAN控制帧、没有启动一键脚本、没有运动/夹爪/失能/复位命令。
 - 当前活动阻断以 `CODEX_HANDOFF.md`/动态进度顶部为准：ArmRobotUA 现场仍需在机械臂有支撑且零点状态稳定时完成整机 CAN/关节模式使能，并在夹爪页完成一次夹爪状态切换；在此之前不得运行唯一一键流程、滑动夹爪、重复写零点或继续 SDK 夹爪实验。Linux 接收链健康不能替代上位机状态切换证据。
 - 下一步：现场完成上述最小 ArmRobotUA 操作后，回 Linux 只读确认 `0x3A7 status=0x40`/新鲜六轴反馈，再执行一次有界50 mm开口响应验证；若夹爪反馈有真实位移且照明/RGB-D恢复，才回到唯一一键视觉链。当前总目标仍未完成；本轮无新的代码或实体动作。
+
+## 2026-10-12：现场使能恢复后的夹爪闭合前置复核仍缺 0x3A7
+
+- 用户反馈 ArmRobotUA 现场使能问题已解决，要求进入正常夹爪闭合任务。本轮先做闭合前只读门控，没有启动 ROS/一键流程，也没有发送夹爪或六轴目标。
+- 实际命令：检查 `pgrep -af 'piper|brain_robot|astra|move_group|servo|visual_search|cube'`；读取 `ip -brief link show can0`、`ip -details -statistics link show can0`；`timeout 3s candump -L can0` 保存 `/tmp/candump_20261012_feedback.log`，统计 `0x3A0..0x3A7`、`0x159` 与 `0x251..0x256`；检查 `df -h /`。命令均完成；除检查 shell 外无控制进程。`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750，RX 抓包共7255行，bus error/error/drop/missed均0，根分区34%。
+- 抓包含持续 `0x251..0x256` 六轴高速反馈，但 `grep -Ec ' can0 3A[0-9A-Fa-f]#'` 返回0，`grep -Ec ' can0 159#'` 返回0。当前尚无新鲜夹爪聚合反馈，更没有本轮闭合控制帧。六轴 CAN 接收正常不能替代夹爪状态恢复。
+- 结论：虽然现场报告 ArmRobotUA 已恢复，Linux 侧仍未达到活动断点要求的 `0x3A7 status=0x40` 前置门；本轮禁止盲发正常闭合目标。需先确认 ArmRobotUA 已退出/释放 CAN 且夹爪状态确实切换为使能，然后重复一次被动抓包；只有观察到稳定 `0x3A7` 状态和六轴静止，才执行一次有界闭合命令并记录反馈变化。
