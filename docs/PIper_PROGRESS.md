@@ -3093,3 +3093,9 @@
 - 实际命令：检查 `pgrep -af 'piper|brain_robot|astra|move_group|servo|visual_search|cube'`；读取 `ip -brief link show can0`、`ip -details -statistics link show can0`；`timeout 3s candump -L can0` 保存 `/tmp/candump_20261012_feedback.log`，统计 `0x3A0..0x3A7`、`0x159` 与 `0x251..0x256`；检查 `df -h /`。命令均完成；除检查 shell 外无控制进程。`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point 0.750，RX 抓包共7255行，bus error/error/drop/missed均0，根分区34%。
 - 抓包含持续 `0x251..0x256` 六轴高速反馈，但 `grep -Ec ' can0 3A[0-9A-Fa-f]#'` 返回0，`grep -Ec ' can0 159#'` 返回0。当前尚无新鲜夹爪聚合反馈，更没有本轮闭合控制帧。六轴 CAN 接收正常不能替代夹爪状态恢复。
 - 结论：虽然现场报告 ArmRobotUA 已恢复，Linux 侧仍未达到活动断点要求的 `0x3A7 status=0x40` 前置门；本轮禁止盲发正常闭合目标。需先确认 ArmRobotUA 已退出/释放 CAN 且夹爪状态确实切换为使能，然后重复一次被动抓包；只有观察到稳定 `0x3A7` 状态和六轴静止，才执行一次有界闭合命令并记录反馈变化。
+
+## 2026-10-12：权限已恢复，但当前总线仍是上位机/低速反馈帧
+
+- 按仓库规定核对权限：`whoami=johnwick`、用户属于 `sudo` 组，当前 Codex 执行终端 `sudo -n true` 返回0。未修改 `/etc/sudoers`，未保存或记录密码；后续确需特权命令时可使用同一受控提升通道。
+- 对前一轮 `/tmp/candump_20261012_feedback.log` 做只读全ID统计：3秒共7255行，包含 `0x251..0x256` 各300帧、`0x261..0x266` 各60帧、`0x2A1..0x2A8` 各约599帧及 `0x1C0..0x1C3`；`0x3A0..0x3A7` 计数为0，`0x159` 计数为0。典型 `0x261` 为 `00E6002520400000`，`0x2A1` 为 `0100010001000000`，未见本任务要求的夹爪聚合反馈或 Linux 夹爪控制帧。
+- 结论：权限问题已排除，但“现场状态已解决”尚未在 Linux 侧表现为可验证的 `0x3A7 status=0x40`。在确认 ArmRobotUA 已退出/释放总线、夹爪页确实切换为使能并重新出现稳定 `0x3A7` 前，不执行正常闭合目标，不启动一键视觉链。
