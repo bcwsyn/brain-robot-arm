@@ -1,3 +1,10 @@
+### 2026-10-12 17:44：抓取前必须先达到当前运行链的完全张爪端点
+
+- 本轮一键链已经从 `PREPARE` 到 `GRASP_READY` 并发布预抓取轨迹；真正停止原因是 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`，适配器已确认停止并保持使能。不得把“没有靠近”或“夹爪阻止靠近”作为本轮结论。
+- 本轮旧50 mm张爪命令实际反馈49.4 mm并通过旧反馈门，但实体参数查询报告最大量程100 mm，且运行适配器/供应商ROS链安全上限为80 mm。今后“完全打开”定义为发送80000（0.001 mm单位）并等待新鲜反馈在现有3 mm容差内确认，即目标80 mm±3 mm；未确认严禁发布任何预抓取轨迹。
+- 已将规范/实际实体YAML的 `gripper_open_value` 改为 `80000`，`allow_open_feedback_unconfirmed_for_approach` 改为 `false`，三份SHA一致。保留真实反馈门、夹持区门、近距RGB保护门和故障保持使能路径，不用放宽门限来推进。
+- 下一轮只运行同一一键入口验证新开口端点；如果80 mm反馈不可达，必须记录 `OPEN_GRIPPER_FEEDBACK_UNCONFIRMED` 并停止，不闭爪、不下降、不抬升。若开口通过，再单独定位 `MEASURED_TARGET_CHANGED` 的同帧目标变化。
+
 ### 2026-10-12：不手调 J5，给下降末端增加专用端点反馈等待
 
 - 决策：不依据肉眼现象直接增加 J5 角度，也不修改全局 `trajectory_feedback_tolerance_rad`。日志已经给出 J2 仍差约 `2.15°` 时就通过 `0.04 rad` 门，随后 FK tip 残差 `17.2/11.4 mm`；根因是下降端点反馈过早确认。

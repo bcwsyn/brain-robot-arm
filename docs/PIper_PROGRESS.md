@@ -1,3 +1,13 @@
+### 2026-10-12 17:27–17:44：一键已进入靠近，严格张爪配置已收紧
+
+- 实际状态：运行前无一键/ROS控制进程；`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point `0.750`，RX 持续，bus error/error/drop/missed 均为0，根分区34%，`sudo -n true` 返回0。硬件保持使能，未发送新的六轴目标。
+- 最小动作一：执行唯一入口 `BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/full_grasp_20261012_1727 /home/johnwick/start_brain_robot_cube_real.sh`。`[1/7]..[7/7]` 全部通过；实际状态按 `PREPARE → OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，随后适配器接受29点 `TARGET_DIRECTED_PREGRASP` 轨迹，证明本轮确实进入靠近。
+- 靠近停止的直接证据：`/home/johnwick/brain_robot_logs/full_grasp_20261012_1727/visual_stack.log` 在 `1791797344.870` 报 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`；视觉状态进入 `FAULT (EOG_OR_EXTERNAL_EMERGENCY_STOP)`，抓取器诊断为 `LOCKED_RGB_LOST_ADAPTER_DISARM_CONFIRMED_HOLD_ENABLED`。这是近距同帧 RGB-D 目标关联保护门触发，不是搜索失败，也不是夹爪开口门；随后没有闭爪、下降完成、抬升或释放。
+- 抓取前开口证据：日志/只读观察记录 `GRIPPER_COMMAND_OPEN_50000`，随后 `GRIPPER_OPEN_FEEDBACK_CONFIRMED before_m=0.000400 current_m=0.049400 target_m=0.050000`；即本轮原50 mm目标已经达到49.4 mm，但旧实体YAML允许未确认开口继续靠近。`/home/johnwick/brain_robot_logs/full_grasp_20261012_1727/observer.jsonl` 保存同帧真实反馈。
+- 最小动作二：只读 `0x477→0x47E` 夹爪参数查询，未写参数、未发运动目标、六轴角度增量全0；新鲜 `0x2A8` 反馈为49.4 mm/status `0x40`。设备报告 `max_range_config=100 mm`、teaching=100%，但实际适配器与供应商ROS路径将出站目标安全截断到80 mm，故不能把49.4 mm称为完全打开。
+- 配置修复：规范、实际源码和symlink install三份 `cube_task_real.yaml` 已同步为 SHA-256 `f65a71a4b2decb548dc0a1f08f893b577f2ae9cabd6fa8e6ece61328618d41c9`；`gripper_open_value=80000`（当前运行链安全上限），`allow_open_feedback_unconfirmed_for_approach=false`。因此后续必须先收到新鲜反馈 `80 mm ± 3 mm` 才能进入预抓取靠近；否则安全停止并保持使能。此次仅改配置，symlink install无需重建二进制。
+- 当前阻断：`MEASURED_TARGET_CHANGED` 仍未修复，不能通过关闭近距保护绕过。下一步先用新严格配置运行同一唯一入口，验证夹爪是否能真实达到80 mm；若不能，将在张爪门安全停止；若能，再针对目标关联门做最小离线/实机证据修复。
+
 ### 2026-10-12：靠近末段专用严格反馈门（approach 分支）
 
 - 审查 2026-10-11 实机证据：下降轨迹已经发布并执行，J2 约在目标 `108.20°` 之前以全局 `0.04 rad` 门通过；首次 landing FK tip 残差 `17.2 mm`，第二次 `11.4 mm`，数秒后才收敛。这解释了“离方块仍远却停止”，不支持手写 J5 角度补偿。

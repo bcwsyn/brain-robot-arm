@@ -173,16 +173,14 @@ grasp_lift_executor:
     # this single path completes on the physical arm.
     candidate_grasp_enabled: false
     candidate_grasp_order: [NONE]
-    # SDK unit: 0.001 mm. A static 46.2 mm feedback is NOT evidence of the
-    # maximum opening. Keep the existing 50 mm baseline: it clears the
-    # measured cube, but is not called "fully open" without calibration.
-    # With the unchanged 3 mm tolerance the known 46.2 mm stall is reported
-    # unconfirmed; the explicit approach override below does not mean open.
-    gripper_open_value: 50000
-    # User-authorized basic grasp path: continue to visual pregrasp when the
-    # installed jaw stalls below the nominal 50 mm endpoint. Fresh jaw capture,
-    # close feedback, and lift feedback remain required.
-    allow_open_feedback_unconfirmed_for_approach: true
+    # SDK unit: 0.001 mm. Use the current guarded runtime maximum (80 mm).
+    # The device parameter query reports 100 mm, while the adapter and vendor
+    # ROS path intentionally cap outbound targets at 80 mm. Approach is gated
+    # on fresh feedback reaching this command within the existing 3 mm tolerance.
+    gripper_open_value: 80000
+    # A target-directed approach is forbidden unless the full bounded-open
+    # command is physically confirmed by fresh gripper feedback.
+    allow_open_feedback_unconfirmed_for_approach: false
     # Command the bounded closed endpoint; feedback motion, rather than
     # reaching zero through the cube, confirms that contact-closing occurred.
     gripper_close_value: 0
