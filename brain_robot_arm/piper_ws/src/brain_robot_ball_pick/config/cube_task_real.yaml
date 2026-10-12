@@ -231,6 +231,10 @@ grasp_lift_executor:
     grasp_landing_tolerance_m: 0.010
     grasp_landing_orientation_tolerance_rad: 0.12
     grasp_landing_max_correction_m: 0.020
+    # The generic trajectory gate is intentionally wider for transport. Before
+    # FK landing/close, require the descent endpoint itself to settle within 0.01 rad.
+    grasp_landing_feedback_tolerance_rad: 0.010
+    grasp_landing_feedback_timeout_s: 8.0
     # Intermediate wrist yaw gives J6 a bounded alternative to the measured
     # +/-0.814 rad plans that narrowly exceeded the unchanged +/-0.80 gate.
     # This is the measured reachable tilted branch; neighboring values let

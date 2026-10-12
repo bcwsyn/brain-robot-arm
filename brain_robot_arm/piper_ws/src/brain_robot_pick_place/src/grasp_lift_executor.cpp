@@ -535,6 +535,10 @@ private:
     grasp_landing_orientation_tolerance_rad_ = ParameterOr<double>(
       "grasp_landing_orientation_tolerance_rad", 0.05);
     grasp_landing_max_correction_m_ = ParameterOr<double>("grasp_landing_max_correction_m", 0.020);
+    grasp_landing_feedback_tolerance_rad_ = ParameterOr<double>(
+      "grasp_landing_feedback_tolerance_rad", 0.010);
+    grasp_landing_feedback_timeout_s_ = ParameterOr<double>(
+      "grasp_landing_feedback_timeout_s", 8.0);
     top_down_grasp_yaw_ = ParameterOr<double>("top_down_grasp_yaw", 0.0);
     top_down_yaw_candidates_ = ParameterOr<std::vector<double>>(
       "top_down_yaw_candidates", {0.0, 1.57079632679, -1.57079632679, 3.14159265359});
@@ -1835,7 +1839,8 @@ private:
     final_target.header.stamp = now();
     final_target.pose = descent_waypoints.back();
     target_pose_publisher_->publish(final_target);
-    if (!simulation_only_ && !EnsureRealTopDownLanding(final_target)) {
+    if (!simulation_only_ && !EnsureRealTopDownLanding(
+        final_target, descent_plan.joint_trajectory)) {
       Fail("GRASP_LANDING_UNCONFIRMED_NO_CLOSE");
       return;
     }
@@ -2023,16 +2028,63 @@ private:
     // Joint endpoints are not proof that the fingertips reached the intended
     // grasp region. Check FK from fresh measured joints, with one bounded
     // fixed-pose Cartesian correction, before issuing any close command.
-    if (!simulation_only_ && !EnsureRealTopDownLanding(final_grasp_target)) {
+    if (!simulation_only_ && !EnsureRealTopDownLanding(
+        final_grasp_target, descent_plan.joint_trajectory)) {
       Fail("GRASP_LANDING_UNCONFIRMED_NO_CLOSE");
       return;
     }
     FinishGraspAndLift(pregrasp_target);
   }
 
-  bool EnsureRealTopDownLanding(const geometry_msgs::msg::PoseStamped & expected)
+  bool WaitForStrictLandingFeedback(const trajectory_msgs::msg::JointTrajectory & trajectory)
+  {
+    if (trajectory.joint_names.empty() || trajectory.points.empty()) {
+      PublishDiagnostic("GRASP_LANDING_STRICT_FEEDBACK_TRAJECTORY_INVALID");
+      return false;
+    }
+    const auto & endpoint = trajectory.points.back();
+    if (endpoint.positions.size() != trajectory.joint_names.size()) {
+      PublishDiagnostic("GRASP_LANDING_STRICT_FEEDBACK_ENDPOINT_INVALID");
+      return false;
+    }
+    const auto deadline = std::chrono::steady_clock::now() +
+      std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+      std::chrono::duration<double>(grasp_landing_feedback_timeout_s_));
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      const auto state = FreshMeasuredState("GRASP_LANDING_STRICT_FEEDBACK");
+      bool reached = static_cast<bool>(state);
+      if (reached) {
+        for (std::size_t index = 0; index < trajectory.joint_names.size(); ++index) {
+          const auto * joint = state->getRobotModel()->getJointModel(
+            trajectory.joint_names[index]);
+          if (!joint || endpoint.positions[index] == 0.0 &&
+            !std::isfinite(endpoint.positions[index])) {
+            reached = false;
+            break;
+          }
+          reached = reached && std::abs(
+            state->getVariablePosition(trajectory.joint_names[index]) - endpoint.positions[index]) <=
+            grasp_landing_feedback_tolerance_rad_;
+        }
+      }
+      if (reached) {
+        PublishDiagnostic("GRASP_LANDING_STRICT_FEEDBACK_CONFIRMED");
+        return true;
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    PublishDiagnostic("GRASP_LANDING_STRICT_FEEDBACK_TIMEOUT");
+    return false;
+  }
+
+  bool EnsureRealTopDownLanding(
+    const geometry_msgs::msg::PoseStamped & expected,
+    const trajectory_msgs::msg::JointTrajectory & descent_trajectory)
   {
     if (expected.header.frame_id.empty() || !arm_) {
+      return false;
+    }
+    if (!WaitForStrictLandingFeedback(descent_trajectory)) {
       return false;
     }
     tf2::Transform expected_transform;
@@ -3715,6 +3767,8 @@ private:
   double grasp_landing_tolerance_m_{0.008};
   double grasp_landing_orientation_tolerance_rad_{0.05};
   double grasp_landing_max_correction_m_{0.020};
+  double grasp_landing_feedback_tolerance_rad_{0.010};
+  double grasp_landing_feedback_timeout_s_{8.0};
   double top_down_grasp_yaw_{0.0};
   std::vector<double> top_down_yaw_candidates_;
   std::vector<double> top_down_tilt_candidates_;

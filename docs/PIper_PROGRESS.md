@@ -1,3 +1,12 @@
+### 2026-10-12：靠近末段专用严格反馈门（approach 分支）
+
+- 审查 2026-10-11 实机证据：下降轨迹已经发布并执行，J2 约在目标 `108.20°` 之前以全局 `0.04 rad` 门通过；首次 landing FK tip 残差 `17.2 mm`，第二次 `11.4 mm`，数秒后才收敛。这解释了“离方块仍远却停止”，不支持手写 J5 角度补偿。
+- 在规范源和实际运行源 `grasp_lift_executor.cpp` 中，`EnsureRealTopDownLanding()` 现在接收已规划的下降 `JointTrajectory`；进入 FK 落点比较前，`WaitForStrictLandingFeedback()` 要求六轴逐关节误差 `<=0.010 rad`，最长等待 `8.0 s`。全局观测/运输反馈门 `0.04 rad` 未改，未改 J5 方向和夹爪分支。
+- 规范与实际 `cube_task_real.yaml` 增加 `grasp_landing_feedback_tolerance_rad: 0.010`、`grasp_landing_feedback_timeout_s: 8.0`。实际一键入口使用 `$HOME/piper_ws`，已重建 `brain_robot_pick_place` 和 `brain_robot_ball_pick`；安装二进制含 `GRASP_LANDING_STRICT_FEEDBACK_*`，安装 YAML 含新参数。
+- 验证：`colcon build --packages-select brain_robot_pick_place brain_robot_ball_pick --symlink-install` 返回0；`brain_robot_pick_place` 全部 7/7 测试通过，回放测试 14/14 通过。首轮旧字符串断言失败已改为适配跨行调用并补参数断言，随后全绿。
+- 本轮没有启动完整视觉链、没有发送靠近/闭爪/失能/复位命令；没有执行 ResetPiper、MasterSlaveConfig 或固件操作。证据见 `docs/evidence/piper_approach_strict_landing_20261012.txt`。
+- 独立阻断仍由夹爪分支处理：`FinishGraspAndLift()` 的既有 `FreshFaceInsideJaws()` 门控未绕过，另一成员继续处理夹爪反馈；本分支下一步是在其结果可用后，用同一安装二进制实测一次下降是否等到严格端点，再观察是否到达现有闭爪前状态。
+
 ## 2026-10-12 13:01：固件升级时间线成为夹爪阻断的首要待验证假设
 
 - 现场恢复操作已固定为独立步骤：使用最新版 ArmRobotUA 进入 CPV（密码 `agx123`）完成一次 CPV 复位，再按上位机提示重新设置夹爪/必要时全臂零点；过程期间停止 Linux 控制程序，避免两个 CAN 主机同时发帧。详细步骤见 [`docs/evidence/piper_armrobotua_cpv_field_procedure_20261012.md`](evidence/piper_armrobotua_cpv_field_procedure_20261012.md)。

@@ -261,12 +261,14 @@ def test_top_down_surface_landing_is_checked_before_close():
     assert params["surface_insertion_max_m"] == 0.012
     assert params["grasp_landing_tolerance_m"] == 0.010
     assert params["grasp_landing_max_correction_m"] == 0.020
+    assert params["grasp_landing_feedback_tolerance_rad"] == 0.010
+    assert params["grasp_landing_feedback_timeout_s"] == 8.0
     source = EXECUTOR.read_text(encoding="utf-8")
     start = source.index("void TopDownPointGraspAndLift()")
     end = source.index("bool EnsureRealTopDownLanding(", start)
     body = source[start:end]
     assert "candidate_grasp_target, true" in body
-    assert body.index("EnsureRealTopDownLanding(final_grasp_target)") < body.index(
+    assert body.index("EnsureRealTopDownLanding(") < body.index(
         "FinishGraspAndLift(pregrasp_target)")
     check = source[end:source.index("void FinishGraspAndLift(", end)]
     assert 'FreshMeasuredState("GRASP_LANDING")' in check
@@ -318,7 +320,7 @@ def test_target_directed_grasp_uses_variable_pose_waypoints_and_original_finish(
     assert owner.count("PlanArmCartesianWaypointsFromState(") == 2
     assert owner.index("predicted_pre, descent_plan") < owner.index("if (!execute(pre_plan)")
     assert owner.index("RealTrajectoryWithinLimits(") < owner.index("if (!execute(pre_plan)")
-    assert owner.index("EnsureRealTopDownLanding(final_target)") < owner.index(
+    assert owner.index("EnsureRealTopDownLanding(") < owner.index(
         "FinishGraspAndLift(retreat)")
     assert "locked_approach_orientation_ =" not in owner
     assert "CommandRealGripper" not in owner

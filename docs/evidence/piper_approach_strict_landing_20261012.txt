@@ -1,0 +1,33 @@
+Date: 2026-10-12
+Scope: approach branch only; no gripper or robot motion command was issued by this change.
+
+Cause evidence:
+- The real run accepted descent while J2 was about 2.15 degrees from its planned
+  endpoint because the generic trajectory feedback gate was 0.04 rad.
+- Logged landing tip residual was 17.2 mm, then 11.4 mm; later feedback settled
+  near the endpoint. This is endpoint-feedback timing, not evidence that J5 needs
+  a hand-written angle.
+
+Change:
+- Canonical and runtime grasp_lift_executor.cpp now pass the planned descent
+  JointTrajectory into EnsureRealTopDownLanding().
+- Before FK landing comparison, WaitForStrictLandingFeedback() waits for every arm
+  joint in that trajectory to be within 0.010 rad of the endpoint, with an 8.0 s
+  bounded timeout. The generic 0.04 rad transport gate is unchanged.
+- Runtime cube_task_real.yaml contains grasp_landing_feedback_tolerance_rad: 0.010
+  and grasp_landing_feedback_timeout_s: 8.0.
+- The landing check remains before FinishGraspAndLift(); no close command was added
+  or removed by this approach change.
+
+Verification:
+- colcon build --packages-select brain_robot_pick_place brain_robot_ball_pick
+  --symlink-install: exit 0.
+- Installed executable contains GRASP_LANDING_STRICT_FEEDBACK_* diagnostics; the
+  installed YAML contains both dedicated parameters.
+- Full brain_robot_pick_place colcon test: 7/7 tests passed. Replay test: 14 passed.
+- No ResetPiper, MasterSlaveConfig, firmware operation, disable, or physical motion
+  was performed in this round.
+
+Remaining independent blocker:
+- FinishGraspAndLift() still has the existing FreshFaceInsideJaws() close gate. The
+  gripper member owns that branch; this change intentionally does not bypass it.
