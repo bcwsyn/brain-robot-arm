@@ -1,0 +1,74 @@
+{
+  "start_asia_shanghai": "2026-10-12T08:07:22.209721+08:00",
+  "query_id": "0x477",
+  "query_payload": "0400000003000000",
+  "query_count": 1,
+  "settings_written": false,
+  "physical_motion_commands": 0,
+  "opt_in": true,
+  "query_sent_wall_time_s": 1791763642.524528,
+  "frame_counts": {
+    "0x3A4": 362,
+    "0x3A5": 361,
+    "0x3A6": 361,
+    "0x3A7": 361,
+    "0x477": 1,
+    "0x47E": 1
+  },
+  "replies": [
+    {
+      "raw": "6464ff0000000000",
+      "timestamp": 1791763642.5279338,
+      "teaching_range_per": 100,
+      "max_range_config_mm": 100,
+      "teaching_friction": 255
+    }
+  ],
+  "arm_before_001deg": {
+    "joint1": -11882,
+    "joint2": 108351,
+    "joint3": -71052,
+    "joint4": 0,
+    "joint5": 52082,
+    "joint6": 0
+  },
+  "arm_after_001deg": {
+    "joint3": -71052,
+    "joint4": 0,
+    "joint5": 52082,
+    "joint6": 0,
+    "joint1": -11882,
+    "joint2": 108351
+  },
+  "arm_delta_001deg": {
+    "joint1": 0,
+    "joint2": 0,
+    "joint3": 0,
+    "joint4": 0,
+    "joint5": 0,
+    "joint6": 0
+  },
+  "gripper_position_status": [
+    {
+      "position_001mm": 101900,
+      "status": 64,
+      "count": 361
+    }
+  ],
+  "query_echo_note": "0x477 is SocketCAN local echo, not proof of device ACK",
+  "real_open_close_verified": false,
+  "probe_sha256": "630c7700af79d6b5f2d6eebfbde36817010977eb2688bb72d88438aadcf450f1",
+  "driver_sha256": "c0153c88e0e5ac5ff9d8d1b299e4c911c62e14b8f0834e25d5c0d67f6de299cb",
+  "oneclick_sha256": "0e976b0ab21b0417a0f2d01b84e39309af37adc269eca2b05232be4c5fdf811e",
+  "settings_changed": false,
+  "arm_motion": false,
+  "gripper_motion": false,
+  "zero_written": false,
+  "physical_open_close_verified": false,
+  "notes": [
+    "0x477 payload 04 00 00 00 03 00 00 00 asks only for gripper/teaching-pendant parameter feedback.",
+    "0x47E raw 64 64 ff 00 00 00 00 00 decodes to teaching_range_per=100%, max_range_config=100mm, friction=255 (reserved/unsupported on this firmware response).",
+    "0x477 local echo is not treated as device acknowledgement; 0x47E reply was observed.",
+    "101900 is above the reported 100mm configuration and remains an unresolved physical/firmware position-semantic discrepancy."
+  ]
+}
