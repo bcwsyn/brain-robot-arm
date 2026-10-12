@@ -1,5 +1,12 @@
 # PiPER 调试进度
 
+## 2026-10-12 11:16：夹爪做了张开/闭合往返，反馈仍不变
+
+- 按接力计划保持唯一驱动和适配器，未启动视觉、MoveIt或六轴轨迹。`/enable_srv`、`/piper_jog_adapter/enable_motion`、`/piper_jog_adapter/arm`均返回成功。
+- 通过现有 `/brain_robot_grasp/gripper_command` 依次发送 `0.08 m` 张开目标和 `0.0 m` 闭合目标，适配器配置各保持5帧、力矩1.0 N.m；随后调用 `/piper_jog_adapter/disarm`成功。没有写0xAE、ResetPiper、DisableArm或发送六轴目标。
+- 同时被动抓取CAN约14秒：`0x3A7` 2715帧，position全部 `101900`，首尾相同；`0x251..0x256`各约1357帧，RX持续，错误/丢帧为0。未见0x159回显；当前SDK local_loopback=false，不能用本机无回显否认GripperCtrl发送。ROS收尾夹爪仍 `0.1019 m`，六轴速度全0。
+- 结论：本轮证明ROS话题→适配器服务/命令接受路径可用，但没有证明实体夹爪完成张开或闭合；一次或两次目标都不能恢复硬件。继续重复相同目标不再是最小动作。下一步转为读取本轮实际驱动调用/发送证据、核对控制器夹爪状态与实体机械/线缆/位置语义；不改软件门限、不写未知零点。
+
 ## 2026-10-12 11:12：接力计划确认，先做静止夹爪单次验证
 
 - 接力入口保持唯一 `/home/johnwick/start_brain_robot_cube_real.sh`，不另写运动程序、不复用旧目标快照。当前实际 `can0` 已持续RX，唯一驱动和适配器运行，视觉/MoveIt/抓取栈未运行；先保持这个静止状态。
