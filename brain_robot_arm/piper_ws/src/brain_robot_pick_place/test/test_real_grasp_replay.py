@@ -188,7 +188,9 @@ def test_real_profile_is_one_shot_locked_grasp():
     assert grasp["static_target_lock"] is True
     assert grasp["target_directed_grasp_enabled"] is True
     assert grasp["preserve_aligned_grasp_orientation"] is False
-    assert grasp["gripper_open_value"] == 50000
+    assert grasp["gripper_open_value"] == 80000
+    assert grasp["allow_open_feedback_unconfirmed_for_approach"] is False
+    assert grasp["near_rgb_association_bad_frames"] == 5
     assert abs(0.0462 - grasp["gripper_open_value"] / 1e6) > grasp["gripper_position_tolerance_m"]
     assert grasp["gripper_close_value"] == 0
     assert grasp["gripper_position_tolerance_m"] == 0.003

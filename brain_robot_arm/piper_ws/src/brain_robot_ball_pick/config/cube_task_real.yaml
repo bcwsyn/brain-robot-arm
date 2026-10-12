@@ -197,6 +197,9 @@ grasp_lift_executor:
     visual_view_recovery_steps: 3
     visual_microstep_max_steps: 4
     visual_target_association_m: 0.04
+    # Tolerate a short RGB-D outlier burst while keeping the locked target;
+    # persistent disagreement still triggers the association stop.
+    near_rgb_association_bad_frames: 5
     # No invented jaw ROI: current contact projection lies outside raw RGB.
     # Empty YAML arrays also cannot reliably retain the ROS double-array type.
     visual_jaw_image_roi_confirmed: false

@@ -511,6 +511,8 @@ private:
     visual_view_recovery_steps_ = ParameterOr<int>("visual_view_recovery_steps", 3);
     visual_microstep_max_steps_ = ParameterOr<int>("visual_microstep_max_steps", 4);
     visual_target_association_m_ = ParameterOr<double>("visual_target_association_m", .04);
+    near_rgb_association_bad_frames_ = ParameterOr<int>(
+      "near_rgb_association_bad_frames", 5);
     visual_jaw_image_roi_ = ParameterOr<std::vector<double>>("visual_jaw_image_roi", {});
     visual_jaw_image_roi_confirmed_ = ParameterOr<bool>("visual_jaw_image_roi_confirmed", false);
     gripper_feedback_topic_ = ParameterOr<std::string>(
@@ -611,7 +613,8 @@ private:
       std::isfinite(near_depth_prediction_max_age_s_) && near_depth_prediction_max_age_s_ > 0 &&
       near_depth_prediction_max_age_s_ <= 30 &&
       std::isfinite(near_depth_prediction_max_travel_m_) &&
-      near_depth_prediction_max_travel_m_ > 0 && near_depth_prediction_max_travel_m_ <= .030)) &&
+      near_depth_prediction_max_travel_m_ > 0 && near_depth_prediction_max_travel_m_ <= .030 &&
+      near_rgb_association_bad_frames_ > 0 && near_rgb_association_bad_frames_ <= 10)) &&
       (!visual_microsteps_enabled_ ||
       (target_directed_grasp_enabled_ && static_target_lock_ && !depth_only_target_enabled_ &&
       std::isfinite(visual_microstep_m_) && visual_microstep_m_ > 0 && visual_microstep_m_ <= .005 &&
@@ -848,6 +851,7 @@ private:
     approach_locked_ = false;
     target_model_locked_ = false;
     near_seed_ = {};
+    near_rgb_association_bad_frames_seen_ = 0;
     near_seed_stamp_ns_ = near_last_image_stamp_ns_ = 0;
     near_camera_travel_m_ = 0;
     near_last_mode_predicted_ = false;
@@ -1460,6 +1464,7 @@ private:
             observed_reference.point.y - reference.point.y),
           observed_reference.point.z - reference.point.z);
         if (association_distance > visual_target_association_m_) {
+          ++near_rgb_association_bad_frames_seen_;
           RCLCPP_WARN(
             get_logger(),
             "NEAR_RGB_TARGET_ASSOCIATION distance=%.4f threshold=%.4f "
@@ -1468,8 +1473,15 @@ private:
             reference.point.x, reference.point.y, reference.point.z,
             observed_reference.point.x, observed_reference.point.y, observed_reference.point.z,
             image_time.seconds());
+          if (near_rgb_association_bad_frames_seen_ < near_rgb_association_bad_frames_) {
+            PublishDiagnostic(
+              "NEAR_RGB_ASSOCIATION_TRANSIENT_TOLERATED count=" +
+              std::to_string(near_rgb_association_bad_frames_seen_));
+            return true;
+          }
           return reject("MEASURED_TARGET_CHANGED");
         }
+        near_rgb_association_bad_frames_seen_ = 0;
         geometry_msgs::msg::PointStamped measured_camera;
         tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
         near_depth::Projection measured_projection;
@@ -3752,6 +3764,8 @@ private:
   int visual_view_recovery_steps_{3};
   int visual_microstep_max_steps_{4};
   double visual_target_association_m_{.04};
+  int near_rgb_association_bad_frames_{5};
+  int near_rgb_association_bad_frames_seen_{0};
   std::vector<double> visual_jaw_image_roi_;
   bool visual_jaw_image_roi_confirmed_{false};
   std::mutex visual_mutex_;

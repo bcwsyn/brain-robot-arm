@@ -1,3 +1,10 @@
+### 2026-10-12：将近距目标变化门改为有界去抖
+
+- 用户指出单次测量点跳变可能是偶发误差，要求继续完成抓取。本轮没有删除目标关联保护，而是把 `MEASURED_TARGET_CHANGED` 改为有界去抖：连续前4帧异常仅发布 `NEAR_RGB_ASSOCIATION_TRANSIENT_TOLERATED` 并继续使用已锁定目标；第5个连续异常才停止。任何一帧恢复到40 mm内都会清零计数。最大容忍帧数由实体YAML `near_rgb_association_bad_frames: 5` 配置，源码限制为1..10。
+- 规范与实际 `grasp_lift_executor.cpp` 选择性同步该逻辑，保留40 mm阈值、同帧TF、真实反馈、夹爪完全张开门和适配器异常停止。实际 `colcon build --symlink-install --packages-select brain_robot_pick_place` 返回0，安装二进制包含新诊断字符串。
+- 规范实体YAML、实际源码和install symlink同步SHA：`ae244fd263ee277b7f496f80290071e54267b563e2cb702d2e215cc4cc078945`。聚焦回归 `python3 -m pytest -q .../test_near_depth_wiring.py .../test_real_grasp_replay.py` 返回 `19 passed`；旧50 mm断言已更新为80 mm并断言严格开口门。
+- 本轮尚未用去抖版本发送新的真实运动；下一最小验证是运行唯一一键脚本一次，观察短暂跳变是否被容忍、持续错误是否仍安全停止。禁止无限循环重复运行。
+
 ### 2026-10-12 18:08：近距目标变化拒绝增加数值诊断
 
 - 当前最小实现只改拒绝日志：在 `ObserveLockedTarget()` 的 `MEASURED_TARGET_CHANGED` 分支记录关联距离、40 mm阈值、锁定/测量基座三维点和精确图像时间戳。拒绝逻辑、目标静态锁定、同帧TF、夹爪门和故障保持使能均未改。
