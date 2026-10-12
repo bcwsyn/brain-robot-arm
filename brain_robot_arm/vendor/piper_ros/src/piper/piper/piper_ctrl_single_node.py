@@ -380,8 +380,15 @@ class PiperRosNode(Node):
             if pos_data.gripper < 0:
                 gripper = 0
             if self.gripper_exist:
-                gripper_code = 0x03 if self._gripper_clear_pending else 0x01
-                self.piper.GripperCtrl(abs(gripper), 1000, gripper_code, 0)
+                if self._gripper_clear_pending:
+                    # The vendor V2 sequence clears a stale gripper state
+                    # with 0x02, enables it with 0x01, then applies the first
+                    # explicit target.  This is one-shot; do not repeat it
+                    # on steady-state target frames.
+                    self.piper.GripperCtrl(0, 1000, 0x02, 0)
+                    self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                    self._gripper_clear_pending = False
+                self.piper.GripperCtrl(abs(gripper), 1000, 0x01, 0)
                 self._gripper_clear_pending = False
 
     def joint_callback(self, joint_data):
@@ -464,15 +471,20 @@ class PiperRosNode(Node):
                     else:
                         # self.get_logger().warning("Gripper effort is NaN, using default value.")
                         gripper_effort = 1000  # 设置默认值
-                    gripper_code = 0x03 if self._gripper_clear_pending else 0x01
+                    if self._gripper_clear_pending:
+                        self.get_logger().warning(
+                            f'Calling GripperCtrl handshake: angle=0 '
+                            f'effort={gripper_effort} code=0x02 set_zero=0x00')
+                        self.piper.GripperCtrl(0, gripper_effort, 0x02, 0)
+                        self.get_logger().warning(
+                            f'Calling GripperCtrl handshake: angle=0 '
+                            f'effort={gripper_effort} code=0x01 set_zero=0x00')
+                        self.piper.GripperCtrl(0, gripper_effort, 0x01, 0)
+                        self._gripper_clear_pending = False
                     self.get_logger().warning(
                         f'Calling GripperCtrl: angle={abs(joint_6)} '
-                        f'effort={gripper_effort} code=0x{gripper_code:02x} set_zero=0x00')
-                    # Match the verified V2 demo for the first explicit target:
-                    # 0x03 enables and clears a stale gripper error; steady
-                    # targets then use 0x01 without repeated error clearing.
-                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, gripper_code, 0)
-                    self._gripper_clear_pending = False
+                        f'effort={gripper_effort} code=0x01 set_zero=0x00')
+                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x01, 0)
                 else:
                     self.get_logger().warning(
                         f'Explicit gripper frame rejected: '

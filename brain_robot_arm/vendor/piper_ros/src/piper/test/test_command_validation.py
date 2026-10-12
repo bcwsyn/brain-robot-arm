@@ -50,17 +50,17 @@ class TestAbsoluteJointStateValidation(unittest.TestCase):
                 self.assertIsNone(values)
                 self.assertIsNotNone(reason)
 
-    def test_explicit_gripper_stream_uses_clear_then_steady_code(self):
+    def test_explicit_gripper_stream_uses_v2_handshake_then_steady_code(self):
         source_path = Path(__file__).resolve().parents[1] / 'piper' / 'piper_ctrl_single_node.py'
         tree = ast.parse(source_path.read_text(encoding='utf-8'))
         callback = next(node for node in ast.walk(tree)
                         if isinstance(node, ast.FunctionDef) and node.name == 'joint_callback')
         calls = [node for node in ast.walk(callback) if isinstance(node, ast.Call)
                  and isinstance(node.func, ast.Attribute) and node.func.attr == 'GripperCtrl']
-        self.assertEqual(len(calls), 1)
-        self.assertIsInstance(calls[0].args[2], ast.Name)
-        self.assertEqual(calls[0].args[2].id, 'gripper_code')
-        self.assertEqual(calls[0].args[3].value, 0x00)
+        calls.sort(key=lambda node: (node.lineno, node.col_offset))
+        self.assertEqual(len(calls), 3)
+        self.assertEqual([call.args[2].value for call in calls], [0x02, 0x01, 0x01])
+        self.assertEqual([call.args[3].value for call in calls], [0x00, 0x00, 0x00])
 
     def test_both_arm_enable_entries_do_not_send_a_jaw_target(self):
         for entry in ('enable_callback', 'handle_enable_service'):
@@ -114,7 +114,8 @@ class TestAbsoluteJointStateValidation(unittest.TestCase):
         method(fake, packet)
         method(fake, packet)
         self.assertEqual([args for kind, args in calls if kind == 'gripper'],
-                         [(50000., 1000, 0x03, 0), (50000., 1000, 0x01, 0)])
+                         [(0, 1000, 0x02, 0), (0, 1000, 0x01, 0),
+                          (50000., 1000, 0x01, 0), (50000., 1000, 0x01, 0)])
 
     def test_failed_arm_enable_does_not_clear_gate_or_inject_a_gripper_target(self):
         for entry in ('enable_callback', 'handle_enable_service'):
