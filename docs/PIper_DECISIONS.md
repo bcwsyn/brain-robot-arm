@@ -1,5 +1,14 @@
 # PiPER 调试决策
 
+## 2026-10-12 11:12：接力计划确认，先做静止夹爪单次验证
+
+- 接力入口保持唯一 `/home/johnwick/start_brain_robot_cube_real.sh`，不另写运动程序、不复用旧目标快照。当前实际 `can0` 已持续RX，唯一驱动和适配器运行，视觉/MoveIt/抓取栈未运行；先保持这个静止状态。
+- 阶段一：在同一唯一驱动/适配器上确认新鲜 `0x251..0x256`、`0x3A7` 和ROS反馈，确保六轴速度为0；同一有界编排中完成一次 `enable/arm → gripper target`，记录 `0x02→0x01→target`、`0x159`发送证据、`0x3A7`变化和适配器响应。只做一次，不写0xAE、不增加帧数、不移动六轴。
+- 阶段二：恢复/确认实际照明和原始RGB可见性，采集同一时刻RGB、深度、检测框、目标点和关节反馈；没有新鲜合格RGB-D就不启动视觉运动。
+- 阶段三：用新鲜目标和当前实时关节做ROS域78、禁止轨迹执行的MoveIt规划，核对夹爪两指中线、相机70/105mm测量、目标高度和预抓取/下降连续性；不发送裸J5增量，不扩大限位，不把模型FK当实体接触证明。
+- 阶段四：只在阶段一至三通过后运行唯一一键脚本，验收 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY → PREGRASP → DESCENT → CLOSE_FEEDBACK → LIFT → RELEASE → SAFE_RETURN`；任何反馈丢失、目标不新鲜、规划失败或闭爪无位移立即停止新增输出并保持使能。
+- 阶段五：每轮把实际命令、日志、相机帧、CAN/ROS反馈、阻断和下一步写入三份交接文档，只暂存本轮文件并提交Git；不触碰现有vendor/Astra/reference/PDF/deb脏改，不向origin/main推送。
+
 ## 2026-10-12 11:08：现场接收链已恢复，当前仅保留驱动和适配器
 
 - 本轮按固定顺序完整读取任务提示、交接、进度和决策文档后，重新核对主机实际状态。最新提交为 `5fb66e6`；规范工作树仍有既有 vendor/Astra/reference/PDF/deb 修改，当前仅 `brain_robot_arm/vendor/piper_ros/src/piper/piper/piper_ctrl_single_node_new.py` 显示为新增未提交修改，未触碰它。
