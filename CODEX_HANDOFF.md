@@ -1,3 +1,12 @@
+## 最新断点（2026-10-12 18:08，起点 `f8f3743`）
+
+- ArmRobotUA现场状态和夹爪开闭已恢复；当前SDK反馈使用 `0x2A8`，不要继续按历史 `0x3A7` 判为缺反馈。正常闭合已证明50.2→0.4 mm且六轴漂移0；新严格张爪一键实机证明49.4→79.5 mm/status0x40。
+- 一键两次均通过 `[7/7] → OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，并接受29点TARGET_DIRECTED_PREGRASP轨迹；当前停止原因是 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`，约42 mm模型/测量偏差超过40 mm关联门。没有完成下降/闭爪/抬升/释放；故障disarm软件适配器并保持硬件使能，未DisableArm/ResetPiper。
+- 用户要求抓取前完全打开夹爪：规范/实际/install实体YAML已同步 `gripper_open_value=80000`、`allow_open_feedback_unconfirmed_for_approach=false`，SHA `f65a71a4b2decb548dc0a1f08f893b577f2ae9cabd6fa8e6ece61328618d41c9`。设备查询量程100 mm但当前受保护ROS链上限80 mm；79.5 mm证明达到当前命令端点，不把它当机械最大行程标定。
+- 已选择性部署近距拒绝数值日志，实际 `brain_robot_pick_place` 构建返回0并核安装二进制字符串；日志含锁定/实测点、距离、阈值、精确图像时间戳，不改变安全门。
+- 当前无控制进程残留，CAN UP/ERROR-ACTIVE且无错误；下一步无运动采同帧RGB-D/实际TF时间序列，定位目标42 mm变化，再决定最小输入修复。不要重复未改变输入的靠近实验或放宽40 mm门。
+- 实机日志 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1727` 与 `full_grasp_20261012_1747`；进度/决策顶部有本轮证据。仍仅本地提交，未推送GitHub。
+
 ## 最新断点（2026-10-12 13:01，起点 `0e14678`）
 
 - 切回关节运动/CAN 后截图仍显示底部“控制:待机”、顶部绿色“使能”；整机尚未进入可发 CAN 命令的使能态。下一动作：机械臂有支撑且零点姿态稳定时点击顶部“使能”一次，等待状态切换后再回夹爪页。

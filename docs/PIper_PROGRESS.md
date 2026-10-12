@@ -1,3 +1,10 @@
+### 2026-10-12 18:08：近距目标变化拒绝增加数值诊断
+
+- 当前最小实现只改拒绝日志：在 `ObserveLockedTarget()` 的 `MEASURED_TARGET_CHANGED` 分支记录关联距离、40 mm阈值、锁定/测量基座三维点和精确图像时间戳。拒绝逻辑、目标静态锁定、同帧TF、夹爪门和故障保持使能均未改。
+- 规范源SHA `50d3cfe1c270b8e3a1a004fd4cf3a632576e96111e19e56a41b2f04d407b181f`，实际源SHA `839cd85ea49b5ad4296b22c6a091045061751ff65213fefe1d13ce1dba90bc3d`；两份源既有差异为规范OFF-preview功能，未整份覆盖实际源，只选择性同步同一日志块。
+- 实际 `source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select brain_robot_pick_place` 返回0；安装二进制字符串同时包含 `NEAR_RGB_TARGET_ASSOCIATION` 和 `MEASURED_TARGET_CHANGED`。验证级别为编译/安装检查，尚未进行新增诊断的实机验证，不宣称已修复靠近。
+- 下一动作：先采一次无运动同帧目标/TF时间序列，按新诊断和原始RGB-D证据定位42 mm偏差，不重复未改变输入的实机靠近。
+
 ### 2026-10-12 17:59–18:01：严格80 mm张爪已实机通过，靠近仍被目标变化保护停止
 
 - 实际命令：再次运行唯一 `/home/johnwick/start_brain_robot_cube_real.sh`，日志目录 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1747`；`[1/7]..[7/7]`、观测姿态和搜索均通过，脚本返回码1。退出信息明确为 `FAULT_ESTOP`、不自动回零/失能，未发送 `DisableArm`。

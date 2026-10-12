@@ -1455,10 +1455,21 @@ private:
         const auto reference_from_measurement = tf_buffer_->lookupTransform(
           lift_reference_frame_, frame, image_time, rclcpp::Duration::from_seconds(.3));
         tf2::doTransform(measured, observed_reference, reference_from_measurement);
-        if (std::hypot(std::hypot(observed_reference.point.x - reference.point.x,
+        const double association_distance = std::hypot(
+          std::hypot(observed_reference.point.x - reference.point.x,
             observed_reference.point.y - reference.point.y),
-            observed_reference.point.z - reference.point.z) > visual_target_association_m_)
-        {return reject("MEASURED_TARGET_CHANGED");}
+          observed_reference.point.z - reference.point.z);
+        if (association_distance > visual_target_association_m_) {
+          RCLCPP_WARN(
+            get_logger(),
+            "NEAR_RGB_TARGET_ASSOCIATION distance=%.4f threshold=%.4f "
+            "locked=(%.4f,%.4f,%.4f) measured=(%.4f,%.4f,%.4f) image_stamp=%.9f",
+            association_distance, visual_target_association_m_,
+            reference.point.x, reference.point.y, reference.point.z,
+            observed_reference.point.x, observed_reference.point.y, observed_reference.point.z,
+            image_time.seconds());
+          return reject("MEASURED_TARGET_CHANGED");
+        }
         geometry_msgs::msg::PointStamped measured_camera;
         tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
         near_depth::Projection measured_projection;
