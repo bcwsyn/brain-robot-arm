@@ -1,5 +1,7 @@
 ## 最新断点（2026-10-12 13:01，起点 `0e14678`）
 
+- 用户现场截图确认 ArmRobotUA `V1.6.3.260828_release` 已连接；下一步从左侧“电机配置”进入 CPV 页面。当前运动控制页的“回零”不是 CPV 复位，暂不点击“回零”或“版本升级”。
+
 - 现场 CPV 操作步骤已写入 `docs/evidence/piper_armrobotua_cpv_field_procedure_20261012.md`：最新版 ArmRobotUA → CPV 密码 `agx123` → CPV 复位 → 重新设置夹爪/必要时全臂零点 → 上位机内开合确认 → 释放 USB-CAN 后再回 Linux 验证。不要把仓库旧 EXE 当作最新版，不要与 Linux 控制程序并发占用 CAN。
 
 - 当前无 ROS 控制栈、视觉或一键进程；仅有独立 ros2-daemon。`can0` 为 1 Mbps、ERROR-ACTIVE、RX 持续且错误/丢包为 0；六轴已通过仅 `EnableArm(7)` 三次恢复为低速反馈末字节 `0x40`。
