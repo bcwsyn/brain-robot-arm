@@ -1,3 +1,12 @@
+### 2026-10-12 17:59–18:01：严格80 mm张爪已实机通过，靠近仍被目标变化保护停止
+
+- 实际命令：再次运行唯一 `/home/johnwick/start_brain_robot_cube_real.sh`，日志目录 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1747`；`[1/7]..[7/7]`、观测姿态和搜索均通过，脚本返回码1。退出信息明确为 `FAULT_ESTOP`、不自动回零/失能，未发送 `DisableArm`。
+- 严格张爪结果：抓取器发布 `0.080000 m`，适配器接受并发送80 mm目标；`gripper_can.log` 的实际 `0x2A8` 反馈从49.4 mm变化到79.5 mm、状态恢复并保持 `0x40`，在现有3 mm容差内确认。因此“未完全打开夹爪”不是本轮阻断，且目标物前已完全打开到当前安全上限。
+- 运动阶段：`PREPARE → OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`；在真实预抓取轨迹发布后约3.9 s，`visual_stack.log` 再次记录 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`，随后 `LOCKED_RGB_LOST_ADAPTER_DISARM_CONFIRMED_HOLD_ENABLED`。所以当前仍没有完成下降、闭爪、抬升或释放。
+- 关联证据：锁定模型约 `base_link=(0.396,-0.205,0.085)m`；停止前后新鲜目标TF约为 `(0.420,-0.213,0.052)m`，与锁定点相差约42 mm，超过 `visual_target_association_m=0.040 m`。这是现有近距目标关联保护的真实触发，不能通过关闭该保护继续运动。MoveIt反复打印的 `Joint 'gripper' not found in model 'piper'` 是模型噪声，未作为本轮直接停止原因。
+- 当前安全状态：无控制进程残留；`can0` 仍 `UP/ERROR-ACTIVE`、1 Mbps、错误/丢包0；适配器异常保持使能。证据完整保留在上述日志目录。
+- 下一步：给近距拒绝增加一次性数值诊断（不放宽阈值、不改目标），区分相机/深度噪声与时间TF错配，再做最小离线回放；修复前不重复同一实机靠近。
+
 ### 2026-10-12 17:27–17:44：一键已进入靠近，严格张爪配置已收紧
 
 - 实际状态：运行前无一键/ROS控制进程；`can0` 为 `UP/ERROR-ACTIVE`、1 Mbps、sample-point `0.750`，RX 持续，bus error/error/drop/missed 均为0，根分区34%，`sudo -n true` 返回0。硬件保持使能，未发送新的六轴目标。
