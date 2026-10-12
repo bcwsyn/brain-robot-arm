@@ -852,6 +852,7 @@ private:
     target_model_locked_ = false;
     near_seed_ = {};
     near_rgb_association_bad_frames_seen_ = 0;
+    near_last_bad_association_stamp_ns_ = 0;
     near_seed_stamp_ns_ = near_last_image_stamp_ns_ = 0;
     near_camera_travel_m_ = 0;
     near_last_mode_predicted_ = false;
@@ -1464,7 +1465,10 @@ private:
             observed_reference.point.y - reference.point.y),
           observed_reference.point.z - reference.point.z);
         if (association_distance > visual_target_association_m_) {
-          ++near_rgb_association_bad_frames_seen_;
+          if (image_time.nanoseconds() != near_last_bad_association_stamp_ns_) {
+            ++near_rgb_association_bad_frames_seen_;
+            near_last_bad_association_stamp_ns_ = image_time.nanoseconds();
+          }
           RCLCPP_WARN(
             get_logger(),
             "NEAR_RGB_TARGET_ASSOCIATION distance=%.4f threshold=%.4f "
@@ -1482,6 +1486,7 @@ private:
           return reject("MEASURED_TARGET_CHANGED");
         }
         near_rgb_association_bad_frames_seen_ = 0;
+        near_last_bad_association_stamp_ns_ = 0;
         geometry_msgs::msg::PointStamped measured_camera;
         tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
         near_depth::Projection measured_projection;
@@ -3766,6 +3771,7 @@ private:
   double visual_target_association_m_{.04};
   int near_rgb_association_bad_frames_{5};
   int near_rgb_association_bad_frames_seen_{0};
+  int64_t near_last_bad_association_stamp_ns_{0};
   std::vector<double> visual_jaw_image_roi_;
   bool visual_jaw_image_roi_confirmed_{false};
   std::mutex visual_mutex_;

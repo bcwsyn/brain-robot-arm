@@ -1,3 +1,9 @@
+### 2026-10-12：新增规范要求：每轮必须查看真实RGB、深度和debug图
+
+- 用户明确要求把真实相机画面分析写入仓库规范。已在 `CODEX_TASK_PROMPT.md` 增加硬性规则：每次启动、重跑或视觉/靠近逻辑修改后，必须查看对应实际机械臂视野的原始RGB、原始深度和debug叠加图，记录路径、时间戳、目标位置、深度有效性及夹爪/支架遮挡；没有这三类图不得把视觉运行记为已验证或继续盲目靠近。
+- 已实际查看 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1727/evidence/0026_{rgb,depth,debug}.png`：RGB中紫块清晰可见但位于画面右下，debug显示 `dx=126,dy=108`、`DEPTH=0.340 m`、尺寸约 `0.038x0.039 m`；该debug同时标记 `DEPTH_REJECTED_WAITING_FOR_STABLE_FRAMES`，深度图几乎全黑。结论是该帧不能作为稳定RGB-D靠近依据，必须与同帧目标/TF和实际关节反馈配对。
+- 2026-10-12 18:30 一键运行日志 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1830` 已保存；实际到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，但去抖版首次运行仍在同一 `image_stamp=1791803395.448803663` 重复回调5次后触发目标关联门。该事实促成下一修复：异常计数只按唯一图像时间戳增加。
+
 ### 2026-10-12：将近距目标变化门改为有界去抖
 
 - 用户指出单次测量点跳变可能是偶发误差，要求继续完成抓取。本轮没有删除目标关联保护，而是把 `MEASURED_TARGET_CHANGED` 改为有界去抖：连续前4帧异常仅发布 `NEAR_RGB_ASSOCIATION_TRANSIENT_TOLERATED` 并继续使用已锁定目标；第5个连续异常才停止。任何一帧恢复到40 mm内都会清零计数。最大容忍帧数由实体YAML `near_rgb_association_bad_frames: 5` 配置，源码限制为1..10。

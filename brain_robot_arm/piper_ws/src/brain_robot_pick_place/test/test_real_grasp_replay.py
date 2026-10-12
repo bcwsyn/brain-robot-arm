@@ -26,7 +26,7 @@ EXECUTOR = Path(__file__).parents[1] / "src" / "grasp_lift_executor.cpp"
 def test_static_entry_waits_for_sampled_tf_before_gripper_or_approach():
     source = EXECUTOR.read_text(encoding="utf-8")
     entry = source[source.index("void PointGraspAndLift()"):
-                   source.index("void PointGraspAndLift()") + 1900]
+                   source.index("void CandidatePointGraspAndLift()")]
     assert "!WaitForTargetModel()" in entry
     assert "STATIC_TARGET_MODEL_UNAVAILABLE" not in entry
     assert entry.index("!WaitForTargetModel()") < entry.index("CommandRealGripper(true)")
