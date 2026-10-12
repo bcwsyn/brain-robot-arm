@@ -1,4 +1,5 @@
 # PiPER ROS 调试完整交接记录
++\n## 实机夹爪闭合验证：调用链完成但反馈未动（2026-10-12 08:44）\n\n用户确认夹爪内无障碍物并要求闭合。现有adapter接受0mm目标，driver日志确认首轮0x03后0x01、复核轮5次0x01的GripperCtrl调用；0x3A7仍101900/status0x40，六轴未动。第一次期间adapter遇到短暂joint反馈超时自动disarm，3秒复核恢复199.66Hz后重新arm；当前已disarm、driver保持使能。不是适配器未接受或六轴误动。建议经用户批准后将首目标状态机改为官方0x02→0x01→target；证据见docs/evidence/piper_gripper_close_20261012.{md,json,_probe.py}。\n
 +
 ## 夹爪量程查询：实体报告100 mm，仍未验证开闭（2026-10-12 08:08）
 

@@ -1,0 +1,186 @@
+{
+  "date": "2026-10-12",
+  "command_chain": "existing piper_jog_adapter -> /joint_commands -> piper_ctrl_single_node -> SDK GripperCtrl",
+  "requests": [
+    {
+      "label": "first",
+      "result": {
+        "start_asia_shanghai": "2026-10-12T08:34:26.099775+08:00",
+        "request_target_m": 0,
+        "request_target_mm": 0,
+        "command_sent": true,
+        "command_topic": "/brain_robot_grasp/gripper_command",
+        "frames": {
+          "0x3A7": 591
+        },
+        "tx_0x159_payloads": [],
+        "rx_gripper_position_status": [
+          {
+            "position_001mm": 101900,
+            "status": 64,
+            "count": 591
+          }
+        ],
+        "ros_feedback_count": 580,
+        "ros_feedback_before": {
+          "joint1": -0.20726960800000002,
+          "joint2": 1.8900748440000001,
+          "joint3": -1.2394310880000001,
+          "joint4": 0,
+          "joint5": 0.908518408,
+          "joint6": 0,
+          "gripper": 0.1019
+        },
+        "ros_feedback_after": {
+          "joint1": -0.20726960800000002,
+          "joint2": 1.8900748440000001,
+          "joint3": -1.2394310880000001,
+          "joint4": 0,
+          "joint5": 0.908518408,
+          "joint6": 0,
+          "gripper": 0.1019
+        },
+        "physical_commands": 1,
+        "six_axis_target_sent": false,
+        "zero_written": false
+      },
+      "driver_log_calls": [
+        "0x03 target0",
+        "0x01 target0",
+        "0x01 target0",
+        "0x01 target0"
+      ],
+      "adapter": "accepted 5 frames; then joint state timeout disarmed"
+    },
+    {
+      "label": "second",
+      "result": {
+        "start_asia_shanghai": "2026-10-12T08:37:16.966091+08:00",
+        "request_target_m": 0,
+        "request_target_mm": 0,
+        "command_sent": true,
+        "command_topic": "/brain_robot_grasp/gripper_command",
+        "frames": {
+          "0x3A7": 591
+        },
+        "tx_0x159_payloads": [],
+        "rx_gripper_position_status": [
+          {
+            "position_001mm": 101900,
+            "status": 64,
+            "count": 591
+          }
+        ],
+        "ros_feedback_count": 588,
+        "ros_feedback_before": {
+          "joint1": -0.20726960800000002,
+          "joint2": 1.8900748440000001,
+          "joint3": -1.2394310880000001,
+          "joint4": 0,
+          "joint5": 0.908518408,
+          "joint6": 0,
+          "gripper": 0.1019
+        },
+        "ros_feedback_after": {
+          "joint1": -0.20726960800000002,
+          "joint2": 1.8900748440000001,
+          "joint3": -1.2394310880000001,
+          "joint4": 0,
+          "joint5": 0.908518408,
+          "joint6": 0,
+          "gripper": 0.1019
+        },
+        "physical_commands": 1,
+        "six_axis_target_sent": false,
+        "zero_written": false
+      },
+      "driver_log_calls": [],
+      "adapter": "rejected while disarmed"
+    },
+    {
+      "label": "third",
+      "result": {
+        "start_asia_shanghai": "2026-10-12T08:43:10.935764+08:00",
+        "request_target_m": 0,
+        "request_target_mm": 0,
+        "command_sent": true,
+        "command_topic": "/brain_robot_grasp/gripper_command",
+        "frames": {
+          "0x3A7": 592
+        },
+        "tx_0x159_payloads": [],
+        "rx_gripper_position_status": [
+          {
+            "position_001mm": 101900,
+            "status": 64,
+            "count": 592
+          }
+        ],
+        "ros_feedback_count": 484,
+        "ros_feedback_before": {
+          "joint1": -0.20726960800000002,
+          "joint2": 1.8900748440000001,
+          "joint3": -1.2394310880000001,
+          "joint4": 0,
+          "joint5": 0.908518408,
+          "joint6": 0,
+          "gripper": 0.1019
+        },
+        "ros_feedback_after": {
+          "joint1": -0.20726960800000002,
+          "joint2": 1.8900748440000001,
+          "joint3": -1.2394310880000001,
+          "joint4": 0,
+          "joint5": 0.908518408,
+          "joint6": 0,
+          "gripper": 0.1019
+        },
+        "physical_commands": 1,
+        "six_axis_target_sent": false,
+        "zero_written": false
+      },
+      "driver_log_calls": [
+        "0x01 target0",
+        "0x01 target0",
+        "0x01 target0",
+        "0x01 target0",
+        "0x01 target0"
+      ],
+      "adapter": "accepted 5 frames after re-arm"
+    }
+  ],
+  "feedback_stability": {
+    "duration_s": 3,
+    "samples": 600,
+    "frequency_hz": 199.6586680079635,
+    "max_inter_sample_gap_ms": 11.227313007111661,
+    "last_age_ms": 0.02537,
+    "last_position": {
+      "joint1": -0.20726960800000002,
+      "joint2": 1.8900748440000001,
+      "joint3": -1.2394310880000001,
+      "joint4": 0,
+      "joint5": 0.908518408,
+      "joint6": 0,
+      "gripper": 0.1019
+    }
+  },
+  "final_gripper_feedback": {
+    "position_001mm": 101900,
+    "status": 64,
+    "ros_m": 0.1019
+  },
+  "physical_motion": {
+    "six_axis": false,
+    "gripper_close_verified": false,
+    "zero_written": false,
+    "adapter_disarmed": true,
+    "driver_left_enabled": true
+  },
+  "probe_listener_note": "No 0x159 echo was seen by the probe because the vendor SDK send socket uses local_loopback=False; this is not used as evidence that GripperCtrl was not called. Driver log is the forwarding evidence.",
+  "driver_log": "/home/johnwick/brain_robot_logs/near_depth_deploy_20261011.C7wU3n/stack_retry/piper_driver.log",
+  "probe_sha256": "140565c8bf0aa8c123c6bebd3fd163a8481b753108735fd8897f912a3085e8ed",
+  "stability_probe_sha256": "f8948e5e184012949120e714e8a648b09d96feb47deb4d4c37192324f043bf57",
+  "driver_sha256": "c0153c88e0e5ac5ff9d8d1b299e4c911c62e14b8f0834e25d5c0d67f6de299cb",
+  "oneclick_sha256": "0e976b0ab21b0417a0f2d01b84e39309af37adc269eca2b05232be4c5fdf811e"
+}

@@ -1,4 +1,5 @@
 # PiPER 调试进度
++\n## 2026-10-12 08:44：实机闭合到达GripperCtrl但反馈未变化\n\n- 起点e5371f0。用户确认无障碍；未改生产代码/YAML。/enable_srv=true成功，adapter通过0mm/1.0Nm/5帧发起闭合，六轴只保持当前反馈。\n- 首轮驱动日志为0x03+3次0x01，随后adapter因反馈超时disarm；中间3秒反馈600样本/199.66Hz/最大间隔11.23ms，重新arm后复核为5次0x01。第二次请求在disarm状态被拒绝。\n- 有效请求前后六轴未动，0x3A7始终101900/status0x40，ROS .1019m；driver与adapter链路调用成立，实体闭合未发生。探针不见0x159回显是SDK local_loopback=false，不作否认GripperCtrl的证据。\n- 当前adapter已disarm，driver保持使能；未写0xAE、未失能、未ResetPiper、未刷固件。待批准最小修复为首目标0x02→0x01→target，保持其他门控不变。\n
 +
 ## 2026-10-12 08:08：只读查询实体夹爪量程，报告100 mm；未发送开闭
 
