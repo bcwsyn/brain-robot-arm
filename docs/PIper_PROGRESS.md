@@ -1,3 +1,8 @@
+### 2026-10-12：1915重跑仍在同一偏差处停止，ROS原生取证参数需修正
+
+- `/home/johnwick/start_brain_robot_cube_real.sh` 在 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1915` 再次到达 `GRASP_READY`，但预抓取阶段仍出现持续RGB-D关联偏差并报告 `EOG_OR_EXTERNAL_EMERGENCY_STOP`，没有闭爪、抬升或释放。
+- 三个只读 `image_saver` 节点已接收到图像，但本轮没有形成有效文件：`stamped_filename=true` 将时间戳直接拼到绝对路径前，RGB/debug保存失败；深度保存器按 `.jpg` 尝试把 `16UC1` 转为 `bgr8`，同样失败。下一轮固定 `.png` 扩展并关闭时间戳文件名前缀，保存后逐张查看。
+
 ### 2026-10-12：1900实机重跑到预抓取后因持续RGB-D偏差停止
 
 - 本轮提交 `165f81d` 后重新运行 `/home/johnwick/start_brain_robot_cube_real.sh`，日志目录为 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1900`。流程到达 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，严格打开夹爪命令为 `0.080000 m`，随后发布预抓取轨迹；未闭爪、未抬升、未释放。
