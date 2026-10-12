@@ -16,6 +16,15 @@
 
 # PiPER 调试进度
 
+## 2026-10-12 12:44：SDK CPV 复位路径已复现，但夹爪仍失能且无位移
+
+- 实际状态：本轮起点 `a50db1c`，无 ROS/视觉/MoveIt/适配器/一键脚本进程。`can0` 最终仍 `UP/LOWER_UP`、1 Mbps、ERROR-ACTIVE，1 秒收到 2422 帧，错误/丢包/仲裁丢失均为 0；六轴低速反馈持续、六轴使能位均为真；夹爪原始 `0x3A7=0000000000000000`，位置 0、状态 0（失能）。
+- 先将此前误写的夹爪参数 `100/70/1` 恢复为此前只读查询到的 `100/100/1`，回读一致；`EnableArm(7)` 三次后六轴低速使能位全部为真。单次 `GripperCtrl(50000,1000,0x03)` 仍未产生夹爪位移。
+- 按本机 SDK `piper_set_joint_zero_cpv.py` 的夹爪 CPV 分支执行了失能、`MotionCtrl_2(0x01,0x05)`、原始 `0x187=77 65 65 65 00 00 00`、回到普通 CAN 模式，并在用户已确认的闭合位置按官方示例写入 `0xAE`。CAN 发送均返回成功，但随后夹爪反馈仍为位置 0、状态 0。
+- 为排除编排错误，又分别验证了 `0x02→等待100ms→0x01`、重新 `EnableArm(7)` 后再使能、单帧 `0x03`、以及 `0x03` 角度0后保持50mm目标约2秒；全部保持 `status=0`、`angle=0`。这轮没有再发关节目标、没有 `ResetPiper`、没有主从切换或固件操作。
+- 结论：六轴使能和 SocketCAN 发送链路已排除为当前夹爪无位移的直接原因；CPV SDK 校准分支已复现，但不能证明它就是官方上位机所称的 CPV 复位。官方 issue #128 的处理要求是 ArmRobotUA 最新版执行 CPV 复位后重新闭合写零；当前 Linux 环境未运行该 Windows 上位机。目标仍未完成，不能进入紫块下降、闭爪、抬升或释放验收。
+- 证据：[`docs/evidence/piper_gripper_cpv_20261012.md`](evidence/piper_gripper_cpv_20261012.md)。下一步不是重复相同 SDK 帧，而是由现场进行一次实体断电重启或使用 ArmRobotUA 完成官方 CPV 复位；恢复后先只做 `status=0x40` 与单次50mm位移验证，再回到唯一一键抓取流程。
+
 ## 2026-10-12 11:38：找到并复现旧夹爪路径；官方参数恢复后反馈发生位移
 
 - 查到仓库旧 `brain_robot_arm/piper_demo_V2/auto_sequence_speed50.py`：`EnableArm(1)`三次、`MotionCtrl_2(0x01,0x01,50,0)`、`GripperCtrl(50000,1000,0x03,0)`、等待、`GripperCtrl(40000,200,0x03,0)`。控制台旧路径则是`EnableArm(1)`两次、`GripperCtrl(position,1000,0x01,0)`。两条旧路径均已在停止ROS驱动后直接SDK复现，CAN TX计数增加，但参数未恢复前`0x3A7`始终101900。
