@@ -1,5 +1,7 @@
 ## 2026-10-12 13:01：固件升级时间线成为夹爪阻断的首要待验证假设
 
+- 现场恢复操作已固定为独立步骤：使用最新版 ArmRobotUA 进入 CPV（密码 `agx123`）完成一次 CPV 复位，再按上位机提示重新设置夹爪/必要时全臂零点；过程期间停止 Linux 控制程序，避免两个 CAN 主机同时发帧。详细步骤见 [`docs/evidence/piper_armrobotua_cpv_field_procedure_20261012.md`](evidence/piper_armrobotua_cpv_field_procedure_20261012.md)。
+
 - 用户补充现场时间线：中途升级某版固件后机械臂和原有代码都不能驱动；再次升级后六轴恢复可驱动，但夹爪尚未验证。这与当前“六轴 CAN/反馈正常而夹爪独立失能”的现象相符，记录为固件/夹爪驱动兼容性假设，尚未当作已证实根因。
 - 起点提交为 `0e14678`；本轮无 ROS 控制栈、视觉、适配器或一键进程；仅有独立 ros2-daemon。只读 SDK `0x4AF` 固件查询前后均返回 `S-V1.9-1`，与仓库资料包的 MC 标注一致；SDK 没有独立 DRV 子版本回读字段。`can0` 为 UP/LOWER_UP、1 Mbps、ERROR-ACTIVE，4 秒只读采样 `0x3A7` 共 800 帧，位置稳定 `98200`（约 98.2 mm），状态稳定 `0`；六轴高速反馈持续，错误/丢包为 0。
 - 只做了一次有界恢复实验：发送 `EmergencyStop(0x02)`，再发送 `EnableArm(7)` 三次、普通 CAN 模式和一次 50 mm 夹爪目标；没有 `JointCtrl`、没有六轴目标。SDK 读数仍 `angle=0/status=0`，未恢复夹爪。
