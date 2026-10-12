@@ -68,12 +68,6 @@ struct NearDepthReplayAccess
   static void MissingAxis(GraspLiftExecutor & n) {n.latest_joint_state_.name.pop_back();}
   static void BadOpening(GraspLiftExecutor & n) {n.latest_gripper_feedback_.position[0] = .1019;}
   static bool DepthFlag(GraspLiftExecutor & n) {return n.depth_valid_;}
-  static void ChangedDepth(GraspLiftExecutor & n) {n.target_point_camera_.point.z += .050;}
-  static int64_t SeedStamp(GraspLiftExecutor & n) {return n.near_seed_stamp_ns_;}
-  static void ExhaustTravel(GraspLiftExecutor & n) {n.near_camera_travel_m_ = .03001;}
-  static void ExhaustAge(GraspLiftExecutor & n) {
-    n.near_seed_stamp_ns_ = n.now().nanoseconds() - 31000000000LL;
-  }
   static auto Lock(GraspLiftExecutor & n) {return n.locked_target_reference_;}
   static void InvalidateCalibration(GraspLiftExecutor & n) {n.near_calibration_ready_ = false;}
   static bool FactoryLoaded(GraspLiftExecutor & n) {
@@ -131,38 +125,6 @@ TEST_F(NearDepthExecutor, NoInitialDepthCannotBootstrapPrediction)
   NearDepthReplayAccess::Inputs(*node, false);
   NearDepthReplayAccess::NoSeed(*node);
   geometry_msgs::msg::PointStamped p; bool predicted = false;
-  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
-}
-
-TEST_F(NearDepthExecutor, InconsistentDepthUsesBoundedPredictionWithoutRefreshingSeed)
-{
-  geometry_msgs::msg::PointStamped p; bool predicted = false;
-  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
-  const auto seed_stamp = NearDepthReplayAccess::SeedStamp(*node);
-  const auto locked = NearDepthReplayAccess::Lock(*node);
-  for (int i = 0; i < 6; ++i) {
-    NearDepthReplayAccess::Inputs(*node);
-    NearDepthReplayAccess::ChangedDepth(*node);
-    ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
-    EXPECT_TRUE(predicted);
-    EXPECT_TRUE(NearDepthReplayAccess::DepthFlag(*node));  // Raw detector flag is untouched.
-    EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed_stamp);
-    EXPECT_EQ(p.header.stamp, locked.header.stamp);
-    EXPECT_DOUBLE_EQ(p.point.z, locked.point.z);
-  }
-  NearDepthReplayAccess::ExhaustTravel(*node);
-  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
-}
-
-TEST_F(NearDepthExecutor, InconsistentDepthCannotExtendAgeOrBootstrapMissingSeed)
-{
-  geometry_msgs::msg::PointStamped p; bool predicted = false;
-  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
-  NearDepthReplayAccess::Inputs(*node);
-  NearDepthReplayAccess::ChangedDepth(*node);
-  NearDepthReplayAccess::ExhaustAge(*node);
-  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
-  NearDepthReplayAccess::NoSeed(*node);
   EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
 }
 

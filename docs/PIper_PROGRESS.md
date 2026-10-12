@@ -1,3 +1,10 @@
+### 2026-10-12：回退无法下降的有界预测改动，保留完全张爪门
+
+- 实际观察器证据：`/home/johnwick/brain_robot_logs/bounded_depth_recovery_20261012_2015` 的 `0059_rgb.png` 可见紫块和两侧夹爪，`0059_debug.png` 报告紫块约 `0.322 m`、尺寸约 `0.038x0.037 m`；`0059_depth.png` 是有效16UC1数值图（640×400，非零180728/256000，非零中位381，方块附近约328–345）。因此本轮不是无深度，而是锁定点和同帧深度点持续相差约46–55 mm。
+- 42283ec 的有界预测改动已证明不能推进到下降：一键脚本到 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY → TARGET_DIRECTED_PREGRASP` 后耗尽 `near_depth_prediction_max_travel_m=0.030`，日志为 `NEAR_RGB_REJECTED:PREDICTION_RANGE_EXHAUSTED`，仍没有 `TARGET_DIRECTED_DESCENT`。
+- 按用户要求回退该改动，恢复此前“同帧关联偏差累计后 `MEASURED_TARGET_CHANGED` 停止”的已提交路径；没有扩大预测范围、没有删除目标关联门。用户要求的抓取前完全张爪仍保留：`gripper_open_value=80000` 且 `allow_open_feedback_unconfirmed_for_approach=false`。实际源码与规范源码同步回退了执行器分支和对应离线测试。
+- 回退后的下一最小动作：构建实际 `brain_robot_pick_place`，再用唯一一键脚本跑一轮并保存RGB、16UC1深度、debug图；验收是否出现 `TARGET_DIRECTED_DESCENT`。若仍在关联门停止，阻断就是当前输入的46–55 mm系统偏差，不能把回退误报为抓取完成。
+
 ### 2026-10-12：恢复昨天靠近/下降路径的最小修复已构建通过
 
 - 针对当前在预抓取阶段被持续 `MEASURED_TARGET_CHANGED` 截断、而昨日已执行下降的回退，修改 `ObserveLockedTarget()`：同帧深度点偏离锁定目标时不刷新目标/种子，转入已有的锁定RGB预测检查；原有 `target_timeout_s`、`near_depth_prediction_max_age_s=30s`、`near_depth_prediction_max_travel_m=0.030m`、目标框匹配、精确图像TF、六轴反馈和最终夹爪捕获门全部保留。该改动不跟随偏离深度点，也不删除过期/出画/反馈停止条件。
