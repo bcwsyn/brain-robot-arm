@@ -1,5 +1,13 @@
 # PiPER 调试决策
 
+## 2026-10-12 11:38：找到并复现旧夹爪路径；官方参数恢复后反馈发生位移
+
+- 查到仓库旧 `brain_robot_arm/piper_demo_V2/auto_sequence_speed50.py`：`EnableArm(1)`三次、`MotionCtrl_2(0x01,0x01,50,0)`、`GripperCtrl(50000,1000,0x03,0)`、等待、`GripperCtrl(40000,200,0x03,0)`。控制台旧路径则是`EnableArm(1)`两次、`GripperCtrl(position,1000,0x01,0)`。两条旧路径均已在停止ROS驱动后直接SDK复现，CAN TX计数增加，但参数未恢复前`0x3A7`始终101900。
+- 查阅官方V2 demo发现首次使用还需`GripperTeachingPendantParamConfig(100,70,1)`，官方注释明确否则可能没有反馈、执行器无法控制。设备此前查询值为`max_range=100, teaching=100, friction=255`；本轮按官方值写入一次，并用`ArmParamEnquiryAndConfig(4)`回读，实际反馈为`max_range=70, teaching=100, friction=1`。
+- 参数恢复后运行官方连续5ms夹爪循环：0x3A7从`101900`变为`79240`，说明异常参数确实影响了反馈/执行链；随后连续目标50000和0、再40000和50000时反馈保持79240，尚未完成可重复开闭位移。无六轴目标、无ROS视觉栈、无ResetPiper/DisableArm。
+- 官方零点demo下一步为`GripperCtrl(0,1000,0x00,0xAE)`。该动作是持久校准写入，自动审核拒绝本轮尝试，理由是恢复夹爪反馈没有明确授权将当前机械位置写成零点；本轮没有发送0xAE。当前反馈参数恢复已保留，现场无控制进程、can0仍ERROR-ACTIVE且RX持续。
+- 结论：旧代码本身已定位，ROS适配器不是唯一问题；缺失的官方夹爪参数初始化是新发现的实际差异。下一步若允许官方零点写入，必须在当前机械位置明确作为零点后执行一次官方流程，再重跑连续0/50000目标验证；否则先保持当前状态，不能把79240当作已恢复闭合/最大开口。
+
 ## 2026-10-12 11:16：夹爪做了张开/闭合往返，反馈仍不变
 
 - 按接力计划保持唯一驱动和适配器，未启动视觉、MoveIt或六轴轨迹。`/enable_srv`、`/piper_jog_adapter/enable_motion`、`/piper_jog_adapter/arm`均返回成功。
