@@ -1,3 +1,9 @@
+### 2026-10-12 22:00：回退关联门后仍未下降，准备关闭新增近距追踪阶段
+
+- 提升权限重跑 `/home/johnwick/start_brain_robot_cube_real.sh`，日志 `/home/johnwick/brain_robot_logs/rollback_20261012_2200`。实际通过 `[7/7] → OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，张爪/预抓取已发布；随后同一图像时间戳去抖后的关联距离为 `0.0448、0.0462、0.0461、0.0481、0.0507 m`，在第5个新鲜样本触发 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`，控制器进入 `FAULT`，没有执行下降、闭爪、抬升或释放。
+- 回退 42283ec 已验证仍受40 mm近距关联门阻断。为了恢复用户指出的昨日下降路径，下一最小回退是将实体YAML `near_depth_rgb_tracking_enabled` 从 `true` 改为 `false`，仅跳过新增的运动中同帧关联阶段；初始RGB-D目标获取、80 mm完全张爪确认、预抓取/下降轨迹反馈、严格落点和闭爪反馈门全部保留。
+- 本轮观察器在域78没有收到图像（counts为空），因此不把该轮相机图像记为已验证；沿用上一轮同一现场的RGB/debug和数值16UC1深度证据，仅作阻断定位。下一轮必须修正观察器域/传输后重新查看三类图像，再验证该YAML回退是否进入 `TARGET_DIRECTED_DESCENT`。
+
 ### 2026-10-12 21:40：回退后首次重跑被普通沙箱权限阻断
 
 - 使用回退提交 `be072ee` 对应的实际安装空间启动唯一脚本，命令进入脚本前置阶段即报 `[错误] 无法加载 gs_usb 驱动`，返回码1；没有进入 `[7/7]`、没有发送六轴/夹爪目标，也没有形成新的RGB-D视觉证据。
