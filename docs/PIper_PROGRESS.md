@@ -1,3 +1,11 @@
+### 2026-10-12：核实一键部署版本与昨日靠近阶段回退
+
+- 用户指出昨日已靠近方块、接近闭爪阶段。核对真实日志 `real_full_20261011_target_directed`，该轮在预抓取和下降执行后停于 `GRASP_LANDING_UNCONFIRMED_NO_CLOSE`；当前1900/1915/1930轮停于 `TARGET_DIRECTED_PREGRASP_EXECUTION_FAILED`，尚未执行下降，阶段回退确实存在。预抓取/下降“规划成功”不能写成执行完成。
+- 实际入口与规范仓库 `brain_robot_arm/scripts/start_brain_robot_cube_real.sh` SHA256均为 `0e976b0ab21b0417a0f2d01b84e39309af37adc269eca2b05232be4c5fdf811e`。install可执行文件链接到实际build产物，目标文件今天19:13构建，SHA256 `4825bb96613cf8e7c5e28c55a41fcd618783a5cac4304457b6fd7c3029910d06`；不能用链接本身10月10日的mtime判作旧二进制。实体YAML仓库/实际源码/install三方SHA256均为 `ae244fd263ee277b7f496f80290071e54267b563e2cb702d2e215cc4cc078945`。
+- 整份抓取源码并非相同：实际工作区缺少仓库默认关闭的微步预览代码，落点反馈有限值判断也有差异，属于已记录的选择性部署。关联门 `ObserveLockedTarget()` 和轨迹执行 `ExecuteArmTrajectory()` 当前逐字相同，1900后日志证明唯一图像时间戳去抖确实执行。纠正此前口头判断：近距关联门最初由10月11日晚 `56d655b` 引入，不是10月12日新增。
+- 1930目录 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1930` 保存453张RGB、428张debug。已打开 `evidence/rgb_0450.png`、`debug_0426.png`、`debug_0427.png`：紫块可见，原始RGB左右两侧有夹爪，debug显示 `dx=2,dy=134`、深度0.322m、约0.038至0.040m尺寸；目标尚未位于闭爪捕获位置。原始深度仍未保存（保存器默认bgr8不支持16UC1），不能称三类图像验证完成，也不能据此认定50mm偏差只是配准误差。图片缺少图像消息时间戳关联，文件mtime仅为保存时间。
+- 尝试新增 `near_rgb_association_stop_on_persistent=false` 默认配置被自动审批拒绝，原因是持续约50mm偏差下继续下降/闭爪会持久削弱关键运动门；补丁未应用。下一步停止重复相同输入的实体靠近，先进行静止相机取证并修正输入或有界恢复逻辑。
+
 ### 2026-10-12：1915重跑仍在同一偏差处停止，ROS原生取证参数需修正
 
 - `/home/johnwick/start_brain_robot_cube_real.sh` 在 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1915` 再次到达 `GRASP_READY`，但预抓取阶段仍出现持续RGB-D关联偏差并报告 `EOG_OR_EXTERNAL_EMERGENCY_STOP`，没有闭爪、抬升或释放。
