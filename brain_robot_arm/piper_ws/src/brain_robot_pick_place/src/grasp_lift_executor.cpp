@@ -1466,7 +1466,8 @@ private:
           observed_reference.point.z - reference.point.z);
         if (association_distance > visual_target_association_m_) {
           if (image_time.nanoseconds() != near_last_bad_association_stamp_ns_) {
-            ++near_rgb_association_bad_frames_seen_;
+            near_rgb_association_bad_frames_seen_ = std::min(
+              near_rgb_association_bad_frames_seen_ + 1, near_rgb_association_bad_frames_);
             near_last_bad_association_stamp_ns_ = image_time.nanoseconds();
           }
           RCLCPP_WARN(
@@ -1477,30 +1478,31 @@ private:
             reference.point.x, reference.point.y, reference.point.z,
             observed_reference.point.x, observed_reference.point.y, observed_reference.point.z,
             image_time.seconds());
-          if (near_rgb_association_bad_frames_seen_ < near_rgb_association_bad_frames_) {
-            PublishDiagnostic(
-              "NEAR_RGB_ASSOCIATION_TRANSIENT_TOLERATED count=" +
-              std::to_string(near_rgb_association_bad_frames_seen_));
-            return true;
-          }
-          return reject("MEASURED_TARGET_CHANGED");
+          // A disagreeing depth point is not a new reliable seed. Treat it
+          // like missing depth and require the SAME bounded RGB prediction
+          // checks below; never refresh the seed or follow the changed point.
+          measured_same_image = false;
+          PublishDiagnostic("NEAR_RGB_INCONSISTENT_DEPTH_CHECK_BOUNDED_PREDICTION");
         }
-        near_rgb_association_bad_frames_seen_ = 0;
-        near_last_bad_association_stamp_ns_ = 0;
-        geometry_msgs::msg::PointStamped measured_camera;
-        tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
-        near_depth::Projection measured_projection;
-        if (!near_depth::Project(calibration,
-            {measured_camera.point.x, measured_camera.point.y, measured_camera.point.z},
-            info.width, info.height, measured_projection))
-        {return reject("INVALID_MEASURED_RGBD_SEED");}
-        near_seed_ = {box, measured_projection.z, true};
-        near_seed_stamp_ns_ = image_time.nanoseconds();
-        near_last_camera_origin_ = camera_origin;
-        near_last_image_stamp_ns_ = image_time.nanoseconds();
-        near_camera_travel_m_ = 0;
-        reference = observed_reference;  // Fresh output, never mutate the static target lock.
-      } else {
+        if (measured_same_image) {
+          near_rgb_association_bad_frames_seen_ = 0;
+          near_last_bad_association_stamp_ns_ = 0;
+          geometry_msgs::msg::PointStamped measured_camera;
+          tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
+          near_depth::Projection measured_projection;
+          if (!near_depth::Project(calibration,
+              {measured_camera.point.x, measured_camera.point.y, measured_camera.point.z},
+              info.width, info.height, measured_projection))
+          {return reject("INVALID_MEASURED_RGBD_SEED");}
+          near_seed_ = {box, measured_projection.z, true};
+          near_seed_stamp_ns_ = image_time.nanoseconds();
+          near_last_camera_origin_ = camera_origin;
+          near_last_image_stamp_ns_ = image_time.nanoseconds();
+          near_camera_travel_m_ = 0;
+          reference = observed_reference;  // Fresh output, never mutate the static target lock.
+        }
+      }
+      if (!measured_same_image) {
         if (!near_seed_.valid) {return reject("NO_RELIABLE_RGBD_LOCK");}
         const double increment = image_time.nanoseconds() > near_last_image_stamp_ns_ ?
           (camera_origin - near_last_camera_origin_).length() : 0;
@@ -1512,7 +1514,7 @@ private:
         near_camera_travel_m_ += increment;
         near_last_camera_origin_ = camera_origin;
         near_last_image_stamp_ns_ = image_time.nanoseconds();
-        predicted = true;  // depth_valid is still false; old measurement stamp is retained.
+        predicted = true;  // No valid depth accepted here; retain the original measurement stamp.
       }
       if (predicted != near_last_mode_predicted_) {
         PublishDiagnostic(predicted ? "NEAR_RGB_LOCKED_3D_PREDICTION_NOT_MEASURED_DEPTH" :

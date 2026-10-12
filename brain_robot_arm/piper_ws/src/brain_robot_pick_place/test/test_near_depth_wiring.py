@@ -27,7 +27,9 @@ def test_prediction_retains_lock_and_measurement_stamp_and_uses_exact_tf():
     assert 'latest_joint_state_' in body
     assert 'near_seed_stamp_ns_ = image_time.nanoseconds()' in body
     seed = body.index('near_seed_stamp_ns_ =')
-    assert body.index('if (measured_same_image)') < seed < body.index('} else {', seed)
+    assert body.index('if (measured_same_image)') < seed < body.index('if (!measured_same_image)', seed)
+    assert 'NEAR_RGB_INCONSISTENT_DEPTH_CHECK_BOUNDED_PREDICTION' in body
+    assert 'return reject("MEASURED_TARGET_CHANGED")' not in body
     assert 'near_depth::PredictionRejection' in body
     assert 'raw_box_' not in body
 

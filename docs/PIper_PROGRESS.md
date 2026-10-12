@@ -1,3 +1,9 @@
+### 2026-10-12：恢复昨天靠近/下降路径的最小修复已构建通过
+
+- 针对当前在预抓取阶段被持续 `MEASURED_TARGET_CHANGED` 截断、而昨日已执行下降的回退，修改 `ObserveLockedTarget()`：同帧深度点偏离锁定目标时不刷新目标/种子，转入已有的锁定RGB预测检查；原有 `target_timeout_s`、`near_depth_prediction_max_age_s=30s`、`near_depth_prediction_max_travel_m=0.030m`、目标框匹配、精确图像TF、六轴反馈和最终夹爪捕获门全部保留。该改动不跟随偏离深度点，也不删除过期/出画/反馈停止条件。
+- 同步更新规范源码和实际工作区源码；实机工作区 `colcon build --symlink-install --packages-select brain_robot_pick_place` 返回0（约74秒）。`PYTHONNOUSERSITE=1 /usr/bin/python3 -m pytest -q ...test_near_depth_wiring.py ...test_real_grasp_replay.py` 返回 `19 passed`；隔离构建的 `near_depth_tracking_test` 与 `near_depth_executor_test` 通过，`ctest` 为 `2/2 passed`。
+- 只读观察器在无运行节点时未收到图像（域78，counts/images为空），此结果不作为相机验证。下一步与一键脚本并行启动观察器，保存对应运行的RGB、16UC1深度和debug图，再验证是否能从预抓取进入下降。
+
 ### 2026-10-12：核实一键部署版本与昨日靠近阶段回退
 
 - 用户指出昨日已靠近方块、接近闭爪阶段。核对真实日志 `real_full_20261011_target_directed`，该轮在预抓取和下降执行后停于 `GRASP_LANDING_UNCONFIRMED_NO_CLOSE`；当前1900/1915/1930轮停于 `TARGET_DIRECTED_PREGRASP_EXECUTION_FAILED`，尚未执行下降，阶段回退确实存在。预抓取/下降“规划成功”不能写成执行完成。
