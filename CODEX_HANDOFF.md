@@ -1,4 +1,11 @@
 # PiPER ROS 调试完整交接记录
+
+## 最新断点：夹爪握手已修改，实机验证未发送成功（2026-10-12 10:05）
+
+用户继续批准上一方案，最小实现提交 `1e489de`：显式首目标使用0x02→0x01→target，之后0x01；原adapter/反馈门/六轴/零点不改。规范与实际driver/build解析源SHA均d607ec10854f231588fcdfc9f334c4766d5b8c4474e10fd72f79ef5723984b2e，symlink源同步并重载，没有colcon重建。15项聚焦pytest通过。两次probe publish没有观察到新握手调用，不能说新握手已经实机失败；第一次adapter已因反馈超时disarm，第二次原始CAN/ROS均无帧。can0 RX180987617两秒不增；一次down后type重配报No such device，后续up未执行，最后can0 DOWN/USB仍枚举。详 `docs/evidence/piper_gripper_handshake_20261012.md`。
+
+当前本轮driver/adapter已退出，无自动续跑；未发送DisableArm、ResetPiper、0xAE或固件操作，当前硬件使能/实际姿态因无反馈未重新确认。旧63403/63407以及本轮75274/75292均不能当仍存活。先恢复实体USB-CAN/VMware接收流，再用原driver/adapter单次有界编排验新握手及0x3A7；不继续无反馈发目标，不重复历史无效重载。回退实现用git revert 1e489de并同步实际源、核hash/重载，基准f605d47。总目标未完成，仅本地提交未同步GitHub，原main审核阻断不重试。
+
 +\n## 实机夹爪闭合验证：调用链完成但反馈未动（2026-10-12 08:44）\n\n用户确认夹爪内无障碍物并要求闭合。现有adapter接受0mm目标，driver日志确认首轮0x03后0x01、复核轮5次0x01的GripperCtrl调用；0x3A7仍101900/status0x40，六轴未动。第一次期间adapter遇到短暂joint反馈超时自动disarm，3秒复核恢复199.66Hz后重新arm；当前已disarm、driver保持使能。不是适配器未接受或六轴误动。建议经用户批准后将首目标状态机改为官方0x02→0x01→target；证据见docs/evidence/piper_gripper_close_20261012.{md,json,_probe.py}。\n
 +
 ## 夹爪量程查询：实体报告100 mm，仍未验证开闭（2026-10-12 08:08）

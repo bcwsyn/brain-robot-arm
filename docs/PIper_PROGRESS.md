@@ -1,4 +1,16 @@
 # PiPER 调试进度
+
+## 2026-10-12 10:05：首夹爪握手修复提交；实机反馈链中断，未完成闭合
+
+- 起点f605d47，用户“继续完成”批准已说明0x02→0x01→target最小方案；实现提交 `1e489de`，仅driver两个显式入口及测试。实际源/build解析源与规范SHA均d607ec10854f231588fcdfc9f334c4766d5b8c4474e10fd72f79ef5723984b2e；原启动脚本/YAML/adapter/反馈/零点不改，无colcon重建。完整命令/时间/观察/失败/回退见 `docs/evidence/piper_gripper_handshake_20261012.md`。
+- 本轮没有推进新观测姿态：当前专项是用户授权无障碍闭爪，未开视觉/MoveIt，后续出现实际RX=0反证。内存语法compile通过，8项unittest通过；两次unittest discovery的0项不算验收，最终两个指定文件pytest **15 passed in0.71s/exit0**。初次AST顺序检查失败已以源行序修正，py_compile路径/只读pyc错误已记录，不归因实体故障。
+- 普通沙箱无主机PID/网络权限，首次启动失败；提升后停止旧63403/63407，再用持久PTY唯一driver75274/75292重载，唯一adapter75488。域78仅本次诊断，生产域不改。实时q[-.207269608,1.890074844,-1.239431088,0,.908518408,0]rad、gripper.1019m；enable_srv/enable_motion/arm响应成功，不代替保存逐轴硬件使能位证据。
+- 09:36 probe收到592条3A7均101900/status64和524 ROS样本，无变化；随后3秒601条199.934671Hz/max8.101482ms。adapter早在约09:34因反馈timeout disarm，未见新Calling GripperCtrl；不能写成新握手执行后硬件无响应。重新arm后09:44 probe CAN/ROS均0样本，driver1791769447.653报无反馈25秒receive-only。probe内两段main导致两个JSON，第二段是只读稳定性；command_sent/physical_commands仅publish尝试，不是物理完成计数。
+- 当前原始RX两秒180987617→180987617，candump4秒无帧exit124；can0初UP/ERROR-ACTIVE/1Mbps/.75，USB1d50:606f在，sudo-n=0。一次既有恢复down成功后type报No such device/exit1，txqueuelen/up未执行，最终ip显示can0 DOWN。09:52 gs_usb CPU警告不是根因证明，tail里的xHCI错误是10月11日历史，不伪称本轮新增。未重复USB reset/gs_usb/xHCI/刷固件/主从/Reset实验。
+- adapter disarm响应success；中断后核适配器已退出，driver Ctrl-C最终退出；10:04核75274/75292不存在，补TERM无目标。本轮未发DisableArm/0xAE/Reset，不能因无反馈声明当前硬件仍使能。六轴无新轨迹，闭爪/抓取/抬升/释放均未完成；无自动续跑。
+- 下一从主机确认USB-CAN/VMware接收恢复，新枚举DOWN才固定配置并验RX增长；不依靠ERROR-ACTIVE字样。重用原driver/adapter，在同一有界编排内等新鲜反馈/订阅发现、arm、一次publish，核实际握手日志及前后3A7。回退用git revert 1e489de并同步实际源、重载唯一实例；基准f605d47。灯光恢复后再原一键抓取，不拿历史seed盲跑。
+- 本轮代码及本条证据仅本地提交，origin/main共享分支审核授权阻断未解除，不重试push；未暂存其他既有vendor/Astra、reference/PDF/固件/deb。接手首条 `git -C /mnt/hgfs/ub show --stat --oneline HEAD`。
+
 +\n## 2026-10-12 08:44：实机闭合到达GripperCtrl但反馈未变化\n\n- 起点e5371f0。用户确认无障碍；未改生产代码/YAML。/enable_srv=true成功，adapter通过0mm/1.0Nm/5帧发起闭合，六轴只保持当前反馈。\n- 首轮驱动日志为0x03+3次0x01，随后adapter因反馈超时disarm；中间3秒反馈600样本/199.66Hz/最大间隔11.23ms，重新arm后复核为5次0x01。第二次请求在disarm状态被拒绝。\n- 有效请求前后六轴未动，0x3A7始终101900/status0x40，ROS .1019m；driver与adapter链路调用成立，实体闭合未发生。探针不见0x159回显是SDK local_loopback=false，不作否认GripperCtrl的证据。\n- 当前adapter已disarm，driver保持使能；未写0xAE、未失能、未ResetPiper、未刷固件。待批准最小修复为首目标0x02→0x01→target，保持其他门控不变。\n
 +
 ## 2026-10-12 08:08：只读查询实体夹爪量程，报告100 mm；未发送开闭
