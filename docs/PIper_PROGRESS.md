@@ -1,3 +1,9 @@
+### 2026-10-12：1900实机重跑到预抓取后因持续RGB-D偏差停止
+
+- 本轮提交 `165f81d` 后重新运行 `/home/johnwick/start_brain_robot_cube_real.sh`，日志目录为 `/home/johnwick/brain_robot_logs/full_grasp_20261012_1900`。流程到达 `OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，严格打开夹爪命令为 `0.080000 m`，随后发布预抓取轨迹；未闭爪、未抬升、未释放。
+- 唯一时间戳去抖已生效：同一 `image_stamp=1791804514.324792862` 的重复回调只计一次；之后不同图像时间戳的关联距离连续为 `0.0463、0.0467、0.0474、0.0484、0.0501 m`，达到配置的5个异常样本后触发 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`，控制器报告 `EOG_OR_EXTERNAL_EMERGENCY_STOP`。这属于持续偏差，不能继续盲目放宽门限。
+- 本轮原计划的Python观察器未能启动：系统 `cv2` 与 NumPy 2 ABI 不兼容（`_ARRAY_API not found`），因此本轮没有合格的RGB、深度、debug三类图像证据，不能把相机状态记为已验证。下一轮改用ROS原生 `image_saver` 分别保存三类图像，再分析同一图像时间戳、目标框、深度有效区和遮挡关系。
+
 ### 2026-10-12：新增规范要求：每轮必须查看真实RGB、深度和debug图
 
 - 用户明确要求把真实相机画面分析写入仓库规范。已在 `CODEX_TASK_PROMPT.md` 增加硬性规则：每次启动、重跑或视觉/靠近逻辑修改后，必须查看对应实际机械臂视野的原始RGB、原始深度和debug叠加图，记录路径、时间戳、目标位置、深度有效性及夹爪/支架遮挡；没有这三类图不得把视觉运行记为已验证或继续盲目靠近。
