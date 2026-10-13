@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-13",
+  "entrypoint": "/home/johnwick/start_brain_robot_cube_real.sh",
+  "runtime_logs": "/home/johnwick/brain_robot_logs/open_approach_close_20261013",
+  "open_command_m": 0.1,
+  "open_measured_m": [0.0994, 0.0996],
+  "initial_stages": ["OBSERVE_POSE_REACHED", "SEARCH", "ALIGN", "GRASP_READY", "AUTOMATIC_RGB_PREGRASP"],
+  "attempts": [
+    {
+      "version": "fb874bd",
+      "failure_epoch": 1791870592.594,
+      "diagnosis": "Automatic segment incorrectly required preview endpoint precision for 45 seconds after original trajectory feedback confirmation",
+      "j6_command_rad": -0.0114086,
+      "j6_feedback_rad": 0.0,
+      "preview_tolerance_rad": 0.002,
+      "original_trajectory_tolerance_rad": 0.04
+    },
+    {
+      "version": "3fb34b3",
+      "published_real_trajectories": 29,
+      "failure_epoch": 1791871028.485738,
+      "last_waypoint": "22/97",
+      "failure": "AUTOMATIC_RGB_STEP_EXECUTION_FAILED",
+      "diagnosis_at_that_time": "Returned after successful planning, before publication; exact branch was not yet logged"
+    },
+    {
+      "version": "ce6da63",
+      "published_real_trajectories": 9,
+      "failure_epoch": 1791871397.89144,
+      "diagnosis": "AUTOMATIC_RGB_STEP_13_POSE_STEP_BOUND_REJECTED",
+      "wrist_step_m": 0.000837802,
+      "wrist_limit_m": 0.010370127,
+      "tip_step_m": 0.001581973,
+      "tip_limit_m": 0.008,
+      "angle_step_rad": 0.017453373,
+      "angle_limit_rad": 0.017453293,
+      "numerical_angle_excess_rad": 0.00000008
+    }
+  ],
+  "final_joint_feedback_rad": [-0.279923868, 1.07908584, -0.748591816, 0.0, 0.639985472, 0.03453912],
+  "close_command_executed": false,
+  "grasp_lift_release_verified": false,
+  "hardware_enable_preserved": true,
+  "not_done": "Physical capture, close, lift, release and safe return remain unverified"
+}
