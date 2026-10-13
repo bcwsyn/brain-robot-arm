@@ -1,4 +1,10 @@
-## 最新接续（2026-10-13，0c14428两阶段已部署；原AUTO1实测正在启动）
+## 最新接续（2026-10-13，20cm新阶段实体通过；原预抓取25.6%失败，下一同步转向几何待确认）
+
+应用0c14428/部署265a150，actual binaryb9f1c1…/CPP76458e…/原入口87039b…不变。原AUTO1 SEARCH4648→ALIGN4662→GRASP_READY4666→13条粗段轨迹/13真实到位→20.2cm停稳三帧冻结4687.363；原43预抓路点25.6%失败，没执行末段/闭爪/抬升。不是CAN/深度失效，不再等待20cm同意。SDK4754/high100Hz、六true/静止、q[-.293948353,1.318753330,-.646836474,0,.330879520,0]rad、夹爪99.6mm，原cleanup无Disable/Reset/回零，主rc1/读采INT0/隔离INT0，无活动栈。
+
+新同快照域78对照：start有效无自碰撞，五下降倾角在同一原地aim第11路点后失败，最后J4.723/J5.086/J6-.731，不能唯一定因J4；“同步转向靠近、同最终捕获点/24mm预抓距离”模型预抓取16点/100%、下降8点/100%、原范围/相邻界通过。但未改应用/新实体执行，已请求用户同意这一个原末段几何局部替换；须收到同意再实现，不原样重跑。工具/持久禁止执行launcher与详细证据SHA/三图/回退见docs/evidence/piper_terminal_depth_stage_20261013.md。Git只本地/历史推送审查未完成，用户原wiring注释/vendor/reference保留。下一第一条命令cd /mnt/hgfs/ub然后git status --short，先读本条和用户对新几何回复，不复用旧等待/激光/固件结论。
+
+## 本轮启动记录（下条已被最新结果覆盖）
 
 0c14428/73项通过，actual binaryb9f1c1…/CPP76458e…，旧1cf6423备份terminal_stage_previous_1cf6423.bin/a20a541…，入口87039b…不改。SDK4508六使能/静止、q[-.284226869,.989741312,-.757525255,0,.706910707,0]rad、99.6mm；CANRX连续error0复用。原AUTO1主93879→view_guard_20261013/terminal_stage_onekey，读采64185/23249→terminal_stage_exact/live，正在启动。下一先读取terminal_stage_onekey_console/visual_stack及新三图，勿启动第二栈或把启动/73回归当抓取。当前任务无授权等待；详细命令/限位/收尾见进度顶部。
 
