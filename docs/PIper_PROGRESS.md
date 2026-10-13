@@ -1,7 +1,17 @@
+### 2026-10-13 10:40–10:46：第三段恢复完整目标与有效深度，停止继续加J5
+
+- 起点 `a2b5e67`。只读原规划器产物 `j5_plus5_20261013/plan/step3.json` 返回0；J5目标51.648150°，177点/17.544410432 s、比例.002、tip弧19.792 mm，原任务限位/连续性通过。新鲜起点/三图与视觉IDLE通过后，原adapter的enable_motion/arm成功，原 `/brain_robot_grasp/arm_trajectory` 单次发布rc0，日志明确1791859257.658643606接受177点。随后software disarm成功，未闭爪/回零/失能。
+- 实体J5 46.648150→51.606509°（+4.958359°），六轴最终 `[-.31809134,1.897715316,-1.34467074,.007274148,.900703496,0] rad`，其他五轴变化0、夹爪仍79.6 mm。第三段后target_valid/depth_valid于1791859272.862811/1791859272.8863056变true。既有逐段增角的“恢复完整视野”子目标已取得证据，立即停止继续加角度；这不是抓取成功。
+- 已打开 `.../observer_step3/evidence/0022_{rgb,depth,debug}.png` 和0040三图。最后原RGB紫区bbox `(78,161,51,63)`，不再被图像边缘裁切，但左夹指遮挡部分轮廓，目标仍偏左；debug `DEPTH=0.190m samples=551 MAD=.001`、估计尺寸.040×.049m、dx=-12/dy=169。depth整图非零89064、中位184 mm、最小170 mm。0040 RGB/debug stamp同为1791859328.8098962，depth1791859328.9023833，差约92.49 ms；latest组不是硬同步。图像SHA及简短原始证据见 `docs/evidence/piper_j5_recovered_target_20261013.md`。
+- 新鲜目标depth optical约 `(-.00681,.06711,.190)m`。已只读确认实际 `gripper_base<-camera_depth_optical_frame` 为平移[-.070,0,.0308]、旋转optical XYZ→[Y,-X,Z]；据此配置模型局部face约 `(-.00289,.00681,.2208)m`，相对tip_z=.1358仍前方约85 mm。因此“完整看到目标”不等于“位于指尖闭合夹持区”，不继续靠增J5代替靠近。85 mm是配置模型推算，不是新增实体距离测量，不直接据此发布85 mm运动或修改外参。
+- 后续只读复用 `review_camera_jaw_alignment.py --goal-pixel 169 174 --maximum-m .015 --forward-m 0`；该像素仅两指屏幕参考，非接触标定。程序在严格图像时间TF的.3秒等待退出，rc1、validated=false、hardware_executed=false，产物 `plan/jaw_reference_review.json`。随后tf2_echo最初缺frame，约1–2秒后完整链可读；不能把新分析器TF初始化失败说成现场CAN/相机断联或改用latest发运动。已请求用户批准仅修分析器TF初始化，尚未应用其他代码。
+- 长时旧观察器PID127783已INT正常停止，两份本轮观察器分别限90/120秒已退出；保留全部图像和JSONL。唯一驱动/控制栈仍IDLE、adapter disarmed、硬件使能，无自动续抓。已运行旧shell仍需下一启动才能加载503bfd7相机检查补丁。根分区不足85%未清理文件。
+- 更正上一条记录接受时间：第二段正确日志stamp为1791859066.382264591；先前1791859067.474546154没有日志依据，不采用。下一步先完善只读分析器初始化并核对新鲜目标与实际夹持区，再提议有界靠近方案；不把模型落点、屏幕中线或未经标定85 mm当实际抓住。仅本地提交、未同步GitHub；总目标仍未完成。
+
 ### 2026-10-13 10:37–10:39：第二段J5正向观察，方块仍裁切
 
 - 起点 `503bfd7`。复用原只读规划器 `/tmp/piper_live_microplan_j5plus5_20261012.py --axis 5 --angle-deg 5 --output /home/johnwick/brain_robot_logs/j5_plus5_20261013/plan/step2.json`，返回0；177点/17.544410432 s，比例.002，最大速度.006 rad/s、加速度.002 rad/s²，模型tip弧19.792 mm，六轴任务限位/连续性通过。场景world/Octomap为空，不能称环境碰撞或实体桌面间隙已核实。
-- 运动前被动1秒0x251..256各100帧、最后帧年龄约9 ms，0x261..266状态byte5全64；新鲜三图和当前六轴与规划起点一致、视觉IDLE。`enable_motion/arm`成功；通过原 `/brain_robot_grasp/arm_trajectory` 单次发布（rc0），原adapter于1791859067.474546154接受177点；没有另写基础运动程序或直接SDK关节输出。
+- 运动前被动1秒0x251..256各100帧、最后帧年龄约9 ms，0x261..266状态byte5全64；新鲜三图和当前六轴与规划起点一致、视觉IDLE。`enable_motion/arm`成功；通过原 `/brain_robot_grasp/arm_trajectory` 单次发布（rc0），原adapter于1791859066.382264591接受177点；没有另写基础运动程序或直接SDK关节输出。
 - 真实J5 41.733768→46.648150°（+4.914382°），相对规划目标46.733768°仍差0.085618°，其余五轴与79.6 mm开口不变。软件disarm成功，硬件保持使能；无闭爪/抬升/释放/回零/失能。新采集器使用 `timeout -s INT -k 2s 90s` 限时，证据 `/home/johnwick/brain_robot_logs/j5_plus5_20261013/observer/observer.jsonl`。
 - 已打开0030原RGB、16UC1 depth、debug。RGB紫区bbox `(81,192,47,48)`，下边缘仍到240被裁切，左侧有夹指遮挡，未完整位于可闭合夹持区；debug为 `PURPLE CUBE ... CLIPPED` / `DEPTH_REJECTED_INSUFFICIENT_SAMPLES`，target/depth_valid仍false。深度整图非零115980、中位193 mm、最小181 mm，不是全图无深度。RGB/depth/debug stamp1791859095.6116996/1791859095.717327/1791859095.4125888，latest组非严格同步。零星target_point输出及TF日志不是有效门通过。
 - 第二段改善真实RGB可见范围但尚未完成“恢复完整视野”；下一最小动作仍按用户授权以新鲜46.648150°起点规划第三段+5°，每段停稳看图并记录。完整目标出现就不继续盲加J5，转实际夹持区/距离核对；不以背景深度或屏幕对齐闭爪。仅本地提交、未同步GitHub。

@@ -1,4 +1,11 @@
-## 最新断点（2026-10-13 10:39，J5第二段已执行）
+## 最新断点（2026-10-13 10:46，完整目标/有效深度已恢复）
+
+- 第三段原MoveIt→adapter +5°真实完成，J5最终51.606509°/0.900703496 rad，其余五轴与79.6 mm开口未变。原RGB方块bbox78,161,51,63不再被图像边缘裁切，左指遮挡部分轮廓；target/depth_valid均true、深度约.190m。停止继续增J5，没有闭爪/抬升/释放。
+- 原观察器和两份本轮限时采集器均已停止，资料保留 `j5_plus5_20261013/observer{,_step3}/observer.jsonl` / `plan/step{2,3}.json`；IDLE控制栈仍运行，软件adapter disarmed、硬件保持使能。三图、消息stamp、SHA、实际关节和命令见进度顶部及 `docs/evidence/piper_j5_recovered_target_20261013.md`。
+- 当前配置模型局部face z=.2208、tip_z=.1358，约85 mm前方残差，非实体标定距离。下一应核对实际夹持区再规划有界靠近，不继续盲加J5或直接按85 mm推入；复用只读 `review_camera_jaw_alignment.py` 首次被TF初始化/.3秒严格等待阻断，tf2_echo后续证明链存在。请求只修分析器初始化、保持严格图像时间TF，未擅改运行算法或相机外参。
+- 503bfd7相机检查修复13项测试通过、两份入口SHA一致；旧运行shell没有热加载新函数。Git仅本地，未push origin/main。先 `git -C /mnt/hgfs/ub show --stat --oneline HEAD`，再读最新进度，后续动作从这个真实末姿态和新目标继续，不复做固件/CAN基线。下方所有旧断点按时间判为历史。
+
+## 历史断点（2026-10-13 10:39，J5第二段已执行）
 
 - 原MoveIt→adapter第二段+5°已执行，实际J5 46.648150°（其他五轴及79.6 mm开口不变），software disarm成功、硬件保持使能。0030 RGB中紫块bbox81,192,47,48，下边缘仍裁切；debug为CLIPPED/目标区域深度样本不足。完整目标尚未恢复，无闭爪。证据 `/home/johnwick/brain_robot_logs/j5_plus5_20261013/observer/observer.jsonl` / `plan/step2.json`，详情见进度顶部。
 - 下一最小动作：从新鲜46.648150°规划第三段+5°，保持其他轴，仍使用原MoveIt/adapter；完整方块出现即停止增量，分析实际夹持区而非自动闭爪。下方10:35与昨日记录为历史。
