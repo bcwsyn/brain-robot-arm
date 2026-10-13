@@ -1,0 +1,41 @@
+{
+  "model": "/home/young1x/robot_projects/piper_robot/simulation/artifacts/yolo/yolov8n-seg.pt",
+  "target_class": "cup",
+  "confidence": 0.25,
+  "task": "instance_segmentation",
+  "images": 5,
+  "predictions": [
+    {
+      "image": "validation/cup_vision/stepped_cup_probe/images/view1.png",
+      "elapsed_s": 0.09265977099857992,
+      "cup_instances": [],
+      "overlay": "0000-view1.jpg"
+    },
+    {
+      "image": "validation/cup_vision/stepped_cup_probe/images/view2.png",
+      "elapsed_s": 0.05795231999945827,
+      "cup_instances": [],
+      "overlay": "0001-view2.jpg"
+    },
+    {
+      "image": "validation/cup_vision/stepped_cup_probe/images/view3.png",
+      "elapsed_s": 0.057327015998453135,
+      "cup_instances": [],
+      "overlay": "0002-view3.jpg"
+    },
+    {
+      "image": "validation/cup_vision/stepped_cup_probe/images/view4.png",
+      "elapsed_s": 0.05983403900245321,
+      "cup_instances": [],
+      "overlay": "0003-view4.jpg"
+    },
+    {
+      "image": "validation/cup_vision/stepped_cup_probe/images/view5.png",
+      "elapsed_s": 0.05776773499746923,
+      "cup_instances": [],
+      "overlay": "0004-view5.jpg"
+    }
+  ],
+  "accuracy_evaluated": false,
+  "limitation": "Predictions alone do not measure accuracy or prove 3-D graspability."
+}

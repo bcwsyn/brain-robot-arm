@@ -1,0 +1,32 @@
+ball_detector:
+  ros__parameters:
+    # Same RGB-D input contract as Gemini2: only these topic/frame values change on hardware.
+    rgb_topic: /wrist_camera/wrist_camera/image_raw
+    depth_topic: /wrist_camera/wrist_camera/depth/image_raw
+    camera_info_topic: /wrist_camera/wrist_camera/camera_info
+    camera_optical_frame: wrist_camera_optical_frame
+    debug_topic: /brain_robot_vision/debug_image
+    target_topic: /brain_robot_vision/target_pixel
+    target_point_camera_topic: /brain_robot_vision/target_point_camera
+    error_topic: /brain_robot_vision/pixel_error
+    valid_topic: /brain_robot_vision/target_valid
+    depth_valid_topic: /brain_robot_vision/depth_valid
+    input_reliability: reliable
+    hue_low_1: 0
+    hue_high_1: 12
+    hue_low_2: 168
+    hue_high_2: 179
+    saturation_min: 90
+    value_min: 70
+    # Small red sphere: reject red cup-sized blobs and non-round red areas.
+    min_area_px: 40.0
+    max_area_px: 12000.0
+    min_circularity: 0.62
+    target_label: BALL
+    morphology_kernel: 3
+    sync_queue_size: 10
+    sync_age_penalty: 0.05
+    min_depth_m: 0.05
+    max_depth_m: 3.0
+    min_depth_samples: 10
+    depth_erode_px: 1

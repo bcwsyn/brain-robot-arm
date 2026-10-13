@@ -21,3 +21,10 @@ Simulation, vision, and real-arm control must remain separately validated. Befor
 ## Repository scope
 
 Git metadata, local caches, Python bytecode, ROS 2 build output, runtime logs, and the local Conda installer are excluded. Third-party source and license files under `brain_robot_arm/vendor/` are retained with the workspace snapshot.
+
+
+## 2026-10-14: Cup training and RGB-D sizing / 水杯训练与视觉估径
+
+New independent workspace: `simulation_cup/`. Previous `simulation/` and `brain_robot_arm/` remain available without source replacement. 已新增独立工作区，原目录和历史版本保留。
+
+[中文复现指南](docs/cup_simulation/README.zh-CN.md) · [English guide](docs/cup_simulation/README.en.md) · [中文阶段报告](docs/第四步_水杯训练与自适应夹持基础验证.md) · [English report](docs/stage4_cup_training_report.en.md). Trained weights, both dataset/training revisions, raw RGB-D, checkpoints and checksummed archives are included. Integrated force-controlled cup pick-and-place remains pending. 完整水杯力控取放尚待集成，当前已验证训练、视觉估径、只读 ROS 接口和离线夹持策略。

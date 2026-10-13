@@ -1,0 +1,27 @@
+{
+  "stage": "cup_vision",
+  "status": "trained synthetic cup segmentation and read-only RGB-D/ROS interfaces verified; offline force policy verified; integrated cup force-controlled pick/place pending",
+  "scope": "simulation only",
+  "target": {
+    "kind": "empty opaque handleless plastic cup",
+    "body_diameter_m": 0.075,
+    "body_height_m": 0.16,
+    "mouth_outer_diameter_m": 0.063,
+    "mouth_height_m": 0.04,
+    "height_m": 0.2,
+    "transition": "approximate step",
+    "estimated_mass_kg": 0.08,
+    "mass_is_measured": false
+  },
+  "model_baseline": "official COCO YOLOv8 instance segmentation; evaluate before fine-tuning",
+  "mandatory_interfaces": "image-stamped segmentation, RGB-D localization, target ID/validity, controlled physical grasp and release",
+  "pending_user_details": [],
+  "hardware_allowed": false,
+  "gripper_maximum_opening_m": 0.1,
+  "grasp_strategy": "estimate local grasp cross-section from RGB-D, preopen with uncertainty margin, close/hold with bounded contact force",
+  "feedback_scope": "Gazebo contact normal force; real SDK torque conversion not calibrated",
+  "training_debugging_complete": true,
+  "github_directory": "simulation_cup",
+  "publication_status": "clean build/private environment/model/ROS/legacy physics/archive checks passed; ready to upload",
+  "shutdown_requested": true
+}

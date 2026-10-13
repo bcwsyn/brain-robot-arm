@@ -1,0 +1,66 @@
+Collecting numpy==1.24.4
+  Downloading numpy-1.24.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.3/17.3 MB 5.2 MB/s eta 0:00:00
+Collecting opencv-python==4.11.0.86
+  Downloading opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (63.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 63.0/63.0 MB 3.2 MB/s eta 0:00:00
+Collecting ultralytics==8.3.203
+  Downloading ultralytics-8.3.203-py3-none-any.whl (1.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 1.9 MB/s eta 0:00:00
+Collecting onnx==1.17.0
+  Downloading onnx-1.17.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.0/16.0 MB 4.6 MB/s eta 0:00:00
+Collecting onnxruntime==1.20.1
+  Downloading onnxruntime-1.20.1-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (13.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.3/13.3 MB 3.6 MB/s eta 0:00:00
+Requirement already satisfied: requests>=2.23.0 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203) (2.25.1)
+Requirement already satisfied: torch>=1.8.0 in ./simulation/.venv-yolo/lib/python3.10/site-packages (from ultralytics==8.3.203) (2.6.0+cpu)
+Collecting ultralytics-thop>=2.0.0
+  Downloading ultralytics_thop-2.2.2-py3-none-any.whl (32 kB)
+Requirement already satisfied: pyyaml>=5.3.1 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203) (5.4.1)
+Requirement already satisfied: scipy>=1.4.1 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203) (1.8.0)
+Requirement already satisfied: pillow>=7.1.2 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203) (9.0.1)
+Collecting polars
+  Downloading polars-2.0.0-py3-none-any.whl (876 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 876.6/876.6 KB 5.7 MB/s eta 0:00:00
+Requirement already satisfied: torchvision>=0.9.0 in ./simulation/.venv-yolo/lib/python3.10/site-packages (from ultralytics==8.3.203) (0.21.0+cpu)
+Requirement already satisfied: psutil in /usr/lib/python3/dist-packages (from ultralytics==8.3.203) (5.9.0)
+Requirement already satisfied: matplotlib>=3.3.0 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203) (3.5.1)
+Collecting protobuf>=3.20.2
+  Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 343.2/343.2 KB 1.6 MB/s eta 0:00:00
+Requirement already satisfied: packaging in /home/young1x/.local/lib/python3.10/site-packages (from onnxruntime==1.20.1) (26.1)
+Collecting flatbuffers
+  Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+Requirement already satisfied: sympy in ./simulation/.venv-yolo/lib/python3.10/site-packages (from onnxruntime==1.20.1) (1.13.1)
+Collecting coloredlogs
+  Downloading coloredlogs-15.0.1-py2.py3-none-any.whl (46 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.0/46.0 KB 19.0 MB/s eta 0:00:00
+Requirement already satisfied: fsspec in ./simulation/.venv-yolo/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203) (2026.7.0)
+Requirement already satisfied: networkx in ./simulation/.venv-yolo/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203) (3.4.2)
+Requirement already satisfied: jinja2 in /usr/lib/python3/dist-packages (from torch>=1.8.0->ultralytics==8.3.203) (3.0.3)
+Requirement already satisfied: filelock in ./simulation/.venv-yolo/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203) (3.32.3)
+Requirement already satisfied: typing-extensions>=4.10.0 in /home/young1x/.local/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203) (4.15.0)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in ./simulation/.venv-yolo/lib/python3.10/site-packages (from sympy->onnxruntime==1.20.1) (1.3.0)
+Collecting humanfriendly>=9.1
+  Downloading humanfriendly-10.0-py2.py3-none-any.whl (86 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 KB 1.7 MB/s eta 0:00:00
+Collecting polars-runtime-32==2.0.0
+  Downloading polars_runtime_32-2.0.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (54.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.5/54.5 MB 4.7 MB/s eta 0:00:00
+Installing collected packages: flatbuffers, protobuf, polars-runtime-32, numpy, humanfriendly, polars, opencv-python, onnx, coloredlogs, ultralytics-thop, onnxruntime, ultralytics
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 3.12.4
+    Not uninstalling protobuf at /usr/lib/python3/dist-packages, outside environment /home/young1x/robot_projects/piper_robot/simulation/.venv-yolo
+    Can't uninstall 'protobuf'. No files were found to uninstall.
+  Attempting uninstall: numpy
+    Found existing installation: numpy 2.2.6
+    Not uninstalling numpy at /home/young1x/.local/lib/python3.10/site-packages, outside environment /home/young1x/robot_projects/piper_robot/simulation/.venv-yolo
+    Can't uninstall 'numpy'. No files were found to uninstall.
+  Attempting uninstall: opencv-python
+    Found existing installation: opencv-python 4.13.0.92
+    Not uninstalling opencv-python at /home/young1x/.local/lib/python3.10/site-packages, outside environment /home/young1x/robot_projects/piper_robot/simulation/.venv-yolo
+    Can't uninstall 'opencv-python'. No files were found to uninstall.
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+opencv-contrib-python 4.13.0.92 requires numpy>=2; python_version >= "3.9", but you have numpy 1.24.4 which is incompatible.
+Successfully installed coloredlogs-15.0.1 flatbuffers-25.12.19 humanfriendly-10.0 numpy-1.24.4 onnx-1.17.0 onnxruntime-1.20.1 opencv-python-4.11.0.86 polars-2.0.0 polars-runtime-32-2.0.0 protobuf-7.36.2 ultralytics-8.3.203 ultralytics-thop-2.2.2
