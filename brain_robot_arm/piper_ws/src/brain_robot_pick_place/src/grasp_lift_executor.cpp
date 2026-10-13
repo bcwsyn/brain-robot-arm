@@ -2300,8 +2300,7 @@ private:
         for (std::size_t index = 0; index < trajectory.joint_names.size(); ++index) {
           const auto * joint = state->getRobotModel()->getJointModel(
             trajectory.joint_names[index]);
-          if (!joint || endpoint.positions[index] == 0.0 &&
-            !std::isfinite(endpoint.positions[index])) {
+          if (!joint || !std::isfinite(endpoint.positions[index])) {
             reached = false;
             break;
           }

@@ -1,3 +1,11 @@
+### 2026-10-13 13:42–13:48：部署自动靠近，已实测100mm全开并启动原观测/抓取链
+
+- 用户最新要求立即按“全开100mm → 靠近 → 闭爪”实测，不新增推测性条件。e7db52a/3386455已同步七个实际源码/配置；真实工作区 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 成功，两包2min57s。日志 `jaw_approach_20261013/runtime_automatic_rgb_build.txt`。保留实际树原有端点非有限值检查并同步到规范源码，不改变有限反馈下的运动行为。源码双份SHA256 fb92f2d5f1dbd0466955ad206c641feb7ce41d478f0b840a77e8b19bd0dfe371；实际grasp可执行SHA256 626833ce77c3fde1320af26f488eb4d8aff307141f309cfcf22c97562254dfa3。
+- 原入口首次启动卡在历史LOG_DIR的du统计，未运动，Ctrl+C正常退出、未DisableArm；未删除旧采集证据。重用同一脚本并指定本次独立日志目录：`BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/open_approach_close_20261013/runtime bash /home/johnwick/start_brain_robot_cube_real.sh`。AUTO_START=0仅为先全开、再由代理调用原start服务，不等待用户按键；没有新脚本。原脚本清理遗留驱动/控制栈，旧驱动未响应TERM由既有清理逻辑KILL；新驱动成功，复用健康CAN，未重配/刷写/ResetPiper。已到[7/7]。现根分区68%、可用约25GB，不能把本轮等待说成磁盘不足或CAN断联。
+- live参数 automatic_rgb_approach_enabled=True、gripper_open_value=100000。原 `/enable_srv true`、adapter enable_motion/arm均成功，再经 `/brain_robot_grasp/gripper_command` 发布position=.100m；adapter真实发20帧、effort=1Nm，反馈从79.6到99.4mm，六轴不变[-.292187,1.894121852,-1.328657148,0,.888719468,.026305552]rad。全开实际验证完成，不以配置值代替反馈。
+- 1791870486.599原 `/visual_search_controller/start` 返回成功，PREPARE轨迹45.7s/13点/最大步.080rad已由adapter接受；没有再调用重复使能导致重新闭爪，也未另写基础运动程序。当前沿原配置观测[0,.98,-.75,0,.30,0]运动；随后由既有自动执行器搜索/对齐/锁定/靠近/闭爪。当前尚未到闭爪或抓取，不提前报告成功。
+- 连续只读采集 `/home/johnwick/brain_robot_logs/open_approach_close_20261013/observer.jsonl` 与evidence三图（RGB/depth/debug），有界360秒；0067原RGB确认两指全开、紫块可见，0074真实q/目标深度.219m显示观测运动正在执行。下一步按本次真实状态输出定位失败所属阶段，不重复旧固件/CAN/TF基础排查；若成功，保留物体随抬升、释放/安全返回证据。其他既有vendor/reference和测试注释未纳入；Git仍本地，原远程权限阻断不变。
+
 ### 2026-10-13 13:01–13:32：原执行器自动RGB分段靠近已实现，构建/隔离方法回归通过
 
 - 100mm修正已提交3386455。按用户继续完成的授权，在原grasp_lift_executor增加automatic_rgb_approach_enabled，配合near_depth_rgb_tracking_enabled接入原TargetDirectedPointGraspAndLift，不新建基础运动程序；两段原全路径先通过MoveIt和关节限位预检，随后每段由真实q重新规划，经原ExecuteArmTrajectory→adapter执行并等待端点/新图。
