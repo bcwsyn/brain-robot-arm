@@ -18,6 +18,7 @@ def test_automatic_approach_uses_original_endpoint_tolerance():
     assert 'settled_positions[i]) > .002' in method
     assert 'settled).count() >= .5' in method
     assert 'raw_full_frames_ = 0' in method
+    assert 'if (!completed)' in method  # Three-frame wait retained for preview, not automatic.
 
 
 def test_observed_j6_error_is_inside_original_not_preview_tolerance():
@@ -64,7 +65,7 @@ def test_rgb_correction_reuses_observation_snapshot_across_tf_wait():
     assert '*observed_calibration = calibration' in observe
     correction = source[source.index('  bool LockedRgbCorrection('):
                         source.index('  void AutomaticRgbApproach(')]
-    assert 'ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c)' in correction
+    assert 'ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c, &snapshot)' in correction
     assert 'box = qualified_box_message_' not in correction
     assert 'info = raw_image_info_' not in correction
     assert 'rclcpp::Time(box.header.stamp) != image_time' in correction
@@ -82,3 +83,21 @@ def test_automatic_waypoints_use_existing_real_landing_tolerances():
     assert .006872936 <= parameters['trajectory_feedback_tolerance_rad']
     assert parameters['grasp_landing_tolerance_m'] == .010
     assert parameters['grasp_landing_orientation_tolerance_rad'] == .12
+
+
+def test_automatic_uses_distinct_fresh_frame_and_tip_preserving_view_guard():
+    source = SOURCE.read_text()
+    automatic = source[source.index('  void AutomaticRgbApproach('):
+                       source.index('  void TargetDirectedPointGraspAndLift(')]
+    assert 'if (!WaitApproachVisualBox())' in automatic
+    assert 'GuardApproachView(nominal, tool_to_camera, view)' in automatic
+    assert 'if (recovery) {nominal = current;}' in automatic
+    assert 'near_last_command_image_stamp_ns_ = view.valid ? view.stamp_ns' in automatic
+    wait = source[source.index('  bool WaitApproachVisualBox('):
+                  source.index('  bool VisualFaceInReference(')]
+    assert 'raw_box_stamp_ns_ > near_last_command_image_stamp_ns_' in wait
+    assert 'qualified_same_frame || clipped_known_frame' in wait
+    guard = source[source.index('  bool GuardApproachView('):
+                   source.index('  void AutomaticRgbApproach(')]
+    assert 'AimCameraAtFixedTip' in guard
+    assert 'JointCtrl' not in guard and 'joint_commands' not in guard

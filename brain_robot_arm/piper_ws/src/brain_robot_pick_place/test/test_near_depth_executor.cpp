@@ -66,6 +66,22 @@ struct NearDepthReplayAccess
   static bool Correction(GraspLiftExecutor & n, Eigen::Vector3d & delta) {
     return n.LockedRgbCorrection(delta);
   }
+  static void ShiftCameraY(GraspLiftExecutor & n, double value) {
+    geometry_msgs::msg::TransformStamped t;
+    t.header.frame_id = "base_link"; t.child_frame_id = "camera_depth_optical_frame";
+    t.header.stamp = n.now(); t.transform.rotation.w = 1; t.transform.translation.y = value;
+    n.tf_buffer_->setTransform(t, "synthetic_offline_fixture", true);
+  }
+  static void ColourBoxY(GraspLiftExecutor & n, float top, float bottom) {
+    auto & p = n.qualified_box_message_.polygon.points;
+    p[0].y = p[1].y = top; p[2].y = p[3].y = bottom;
+  }
+  static void ClippedRaw(GraspLiftExecutor & n) {
+    n.qualified_box_message_.polygon.points.clear();
+    n.raw_box_ = {.4, .85, .6, 1}; n.raw_box_valid_ = true;
+    n.raw_box_stamp_ns_ = n.now().nanoseconds()-1000000;
+    n.raw_box_received_ = std::chrono::steady_clock::now();
+  }
   static void NoSeed(GraspLiftExecutor & n) {n.near_seed_.valid = false;}
   static void LostRGB(GraspLiftExecutor & n) {n.qualified_box_message_.polygon.points.clear();}
   static void MissingAxis(GraspLiftExecutor & n) {n.latest_joint_state_.name.pop_back();}
@@ -203,6 +219,37 @@ TEST_F(NearDepthExecutor, ProgramComputesRgbCorrectionWhenCurrentDepthIsMissing)
   EXPECT_NEAR(correction.z(), 0, 1e-12);
   EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
   EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+}
+
+TEST_F(NearDepthExecutor, ProjectionOutsideSilhouetteCanActuallyProduceBoundedCorrection)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::ShiftColourBox(*node, .12f);
+  Eigen::Vector3d correction;
+  ASSERT_TRUE(NearDepthReplayAccess::Correction(*node, correction));
+  EXPECT_GT(correction.x(), .025);
+  EXPECT_LT(correction.norm(), .04);
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+}
+
+TEST_F(NearDepthExecutor, PartialViewRecoversKnownIdentityButCannotAuthorizeClose)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::ReviewedAllowance(*node, .15);
+  NearDepthReplayAccess::ShiftCameraY(*node, -.10);
+  NearDepthReplayAccess::ColourBoxY(*node, .78f, .98f);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto seed_stamp = NearDepthReplayAccess::SeedStamp(*node);
+  NearDepthReplayAccess::ClippedRaw(*node);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_TRUE(predicted);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed_stamp);
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));
 }
 
 TEST_F(NearDepthExecutor, CheckedPathAllowanceCanExceed30mmButRemainsFinite)

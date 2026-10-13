@@ -112,4 +112,41 @@ inline grasp_geometry::DirectedPose CorrectedPoseStep(
   }
   return {origin, q};
 }
+
+// Rotate the tool/camera about the desired TIP, not about the wrist. Solve the
+// camera lever-arm geometry before changing attitude; impossible rays leave the
+// original pose untouched (they are not permission to displace the capture tip).
+inline bool AimCameraAtFixedTip(
+  grasp_geometry::DirectedPose & goal,
+  const grasp_geometry::DirectedPose & tool_from_camera,
+  const grasp_geometry::Point & target, const grasp_geometry::Point & camera_ray,
+  double tip_offset)
+{
+  namespace gg = grasp_geometry;
+  const auto tip = gg::Tip(goal.origin, gg::Rotate(goal.orientation, {0, 0, 1}), tip_offset);
+  const gg::Point lever{tool_from_camera.origin[0], tool_from_camera.origin[1],
+    tool_from_camera.origin[2] - tip_offset};
+  const auto bearing = gg::Rotate(tool_from_camera.orientation, gg::Unit(camera_ray));
+  const gg::Point wanted{target[0] - tip[0], target[1] - tip[1], target[2] - tip[2]};
+  const double ab = gg::Dot(lever, bearing);
+  const double discriminant = ab*ab - gg::Dot(lever, lever) + gg::Dot(wanted, wanted);
+  if (!std::isfinite(discriminant) || discriminant < -1e-12) {return false;}
+  const double root = std::sqrt(std::max(0., discriminant));
+  const double range = -ab + root > 0 ? -ab + root : -ab - root;
+  if (range <= .001 || gg::Dot(wanted, wanted) < 1e-12) {return false;}
+  const gg::Point local{lever[0] + range*bearing[0], lever[1] + range*bearing[1],
+    lever[2] + range*bearing[2]};
+  const auto from = gg::Unit(gg::Rotate(goal.orientation, local));
+  const auto to = gg::Unit(wanted);
+  const double angle = std::acos(std::clamp(gg::Dot(from, to), -1., 1.));
+  if (angle > 1e-8) {
+    auto axis = gg::Cross(from, to);
+    if (gg::Dot(axis, axis) < 1e-12) {axis = gg::Rotate(goal.orientation, {1, 0, 0});}
+    goal.orientation = gg::UnitQuaternion(gg::RotateOrientationAboutAxis(
+      goal.orientation, gg::Unit(axis), angle));
+  }
+  const auto axis = gg::Rotate(goal.orientation, {0, 0, 1});
+  for (int i = 0; i < 3; ++i) {goal.origin[i] = tip[i] - tip_offset*axis[i];}
+  return true;
+}
 }  // namespace brain_robot_pick_place::visual_grasp

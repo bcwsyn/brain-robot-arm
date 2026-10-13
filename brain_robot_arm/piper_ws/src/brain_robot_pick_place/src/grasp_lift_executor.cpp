@@ -859,6 +859,10 @@ private:
     near_rgb_association_bad_frames_seen_ = 0;
     near_last_bad_association_stamp_ns_ = 0;
     near_seed_stamp_ns_ = near_last_image_stamp_ns_ = 0;
+    near_last_command_image_stamp_ns_ = 0;
+    near_last_full_rgb_view_ = {};
+    near_last_visible_rgb_box_ = {};
+    near_view_recovery_ = false;
     near_camera_travel_m_ = 0;
     near_path_allowance_ready_ = false;
     near_last_mode_predicted_ = false;
@@ -1373,12 +1377,24 @@ private:
     }
   }
 
+  struct LockedRgbView
+  {
+    bool valid{false}, recovering{false};
+    visual_grasp::Box box{};
+    near_depth::Calibration calibration{};
+    int width{}, height{};
+    std::int64_t stamp_ns{};
+    Eigen::Vector3d target_reference{Eigen::Vector3d::Zero()};
+    Eigen::Vector3d correction{Eigen::Vector3d::Zero()};
+  };
+
   bool ObserveLockedTarget(
     geometry_msgs::msg::PointStamped & reference, rclcpp::Time & image_time,
     bool & predicted,
     geometry_msgs::msg::PolygonStamped * observed_box = nullptr,
     sensor_msgs::msg::CameraInfo * observed_info = nullptr,
-    near_depth::Calibration * observed_calibration = nullptr)
+    near_depth::Calibration * observed_calibration = nullptr,
+    LockedRgbView * observed_view = nullptr)
   {
     predicted = false;
     if (!near_depth_rgb_tracking_enabled_ || !static_target_lock_ ||
@@ -1386,12 +1402,31 @@ private:
     geometry_msgs::msg::PolygonStamped message;
     sensor_msgs::msg::CameraInfo info;
     near_depth::Calibration calibration;
+    bool recovering = false;
     std::chrono::steady_clock::time_point received;
     {
       std::lock_guard<std::mutex> lock(visual_mutex_);
       if (!near_calibration_ready_) {return false;}
       message = qualified_box_message_; info = raw_image_info_;
       received = qualified_box_received_; calibration = near_calibration_;
+      // A clipped raw contour may recover an ALREADY qualified identity. Never
+      // bootstrap from it, use its truncated centre as depth, or authorize close.
+      if (message.polygon.points.empty() && near_seed_.valid &&
+        near_last_full_rgb_view_.valid && raw_box_valid_ &&
+        near_depth::Cropped(raw_box_, info.width, info.height) &&
+        visual_grasp::Associated(near_last_visible_rgb_box_, raw_box_))
+      {
+        message.header = info.header;
+        message.header.stamp = rclcpp::Time(raw_box_stamp_ns_);
+        for (const auto & xy : {std::pair<double, double>{raw_box_.left, raw_box_.top},
+          {raw_box_.right, raw_box_.top}, {raw_box_.right, raw_box_.bottom},
+          {raw_box_.left, raw_box_.bottom}})
+        {
+          geometry_msgs::msg::Point32 point;
+          point.x = xy.first; point.y = xy.second; message.polygon.points.push_back(point);
+        }
+        received = raw_box_received_; recovering = true;
+      }
       if (observed_box) {*observed_box = message;}
       if (observed_info) {*observed_info = info;}
       if (observed_calibration) {*observed_calibration = calibration;}
@@ -1439,7 +1474,7 @@ private:
           return t != std::chrono::steady_clock::time_point{} &&
                  std::chrono::duration<double>(steady - t).count() <= target_timeout_s_;
         };
-      measured_same_image = target_valid_ && depth_valid_ && fresh(target_point_received_time_) &&
+      measured_same_image = !recovering && target_valid_ && depth_valid_ && fresh(target_point_received_time_) &&
         fresh(target_valid_received_time_) && fresh(depth_valid_received_time_) &&
         fresh(target_size_received_time_) && measured.header.stamp == message.header.stamp &&
         target_size_.header.stamp == message.header.stamp;
@@ -1454,15 +1489,34 @@ private:
       tf2::doTransform(reference, camera, camera_from_reference);
       near_depth::Projection projection;
       if (!near_depth::Project(calibration, {camera.point.x, camera.point.y, camera.point.z},
-          info.width, info.height, projection)) {return reject("LOCKED_TARGET_OUT_OF_VIEW");}
+          info.width, info.height, projection, false)) {return reject("LOCKED_TARGET_OUT_OF_VIEW");}
       tf2::Transform camera_transform;
       tf2::fromMsg(camera_from_reference.transform, camera_transform);
       const auto camera_origin = camera_transform.inverse().getOrigin();
-      // Colour association applies to measured observations too: a new purple
-      // background must not refresh the seed belonging to the locked cube.
-      // A frozen surface point need not stay at the changing silhouette centre.
-      if (projection.x < box.left || projection.x > box.right ||
-        projection.y < box.top || projection.y > box.bottom)
+      std::array<double, 3> rgb_delta{};
+      if (recovering) {
+        // Propagate the last COMPLETE colour ray with exact ego-motion TF.
+        // Its range remains a model estimate. Do not use the clipped centroid.
+        const auto & cached = near_last_full_rgb_view_;
+        const auto ray = camera_transform * tf2::Vector3(cached.target_reference.x(),
+          cached.target_reference.y(), cached.target_reference.z());
+        near_depth::Projection expected;
+        if (!near_depth::Project(calibration, {ray.x(), ray.y(), ray.z()},
+            info.width, info.height, expected, false)) {return reject("COLOR_SHAPE_UNAVAILABLE");}
+        const double growth = near_seed_.color_z / expected.z;
+        const double half_w = (near_seed_.box.right - near_seed_.box.left)*growth/2;
+        const double half_h = (near_seed_.box.bottom - near_seed_.box.top)*growth/2;
+        if (box.right < expected.x - half_w || box.left > expected.x + half_w ||
+          box.bottom < expected.y - half_h || box.top > expected.y + half_h)
+        {return reject("CLIPPED_RGB_IDENTITY_MISMATCH");}
+        rgb_delta = {ray.x()-camera.point.x, ray.y()-camera.point.y, ray.z()-camera.point.z};
+      } else if (!near_depth::RgbResidual(calibration,
+          {camera.point.x, camera.point.y, camera.point.z}, box, info.width, info.height, rgb_delta))
+      {return reject("INVALID_RGB_CORRECTION");}
+      const auto delta = camera_transform.getBasis().transpose() *
+        tf2::Vector3(rgb_delta[0], rgb_delta[1], rgb_delta[2]);
+      const Eigen::Vector3d correction(delta.x(), delta.y(), delta.z());
+      if (correction.norm() > visual_target_association_m_)
       {return reject("LOCKED_TARGET_RGB_MISMATCH");}
       if (measured_same_image) {
         geometry_msgs::msg::PointStamped observed_reference;
@@ -1524,7 +1578,8 @@ private:
         if (const auto reason = near_depth::PredictionRejection(near_seed_, evidence, box, projection,
             target_timeout_s_,
             near_path_allowance_ready_ ? near_path_max_age_s_ : near_depth_prediction_max_age_s_,
-            near_path_allowance_ready_ ? near_path_max_travel_m_ : near_depth_prediction_max_travel_m_))
+            near_path_allowance_ready_ ? near_path_max_travel_m_ : near_depth_prediction_max_travel_m_,
+            correction.norm(), visual_target_association_m_, recovering, info.width, info.height))
         {return reject(reason);}
         predicted = true;  // depth_valid is still false; old measurement stamp is retained.
       }
@@ -1540,6 +1595,16 @@ private:
           "NEAR_RGB_MEASURED_DEPTH_RESTORED_STATIC_TARGET_UNCHANGED");
         near_last_mode_predicted_ = predicted;
       }
+      LockedRgbView view;
+      view.valid = true; view.recovering = recovering; view.box = box;
+      view.calibration = calibration; view.width = info.width; view.height = info.height;
+      view.stamp_ns = image_time.nanoseconds(); view.correction = correction;
+      view.target_reference = Eigen::Vector3d(reference.point.x, reference.point.y,
+        reference.point.z) + correction;
+      near_view_recovery_ = recovering;
+      near_last_visible_rgb_box_ = box;
+      if (!recovering) {near_last_full_rgb_view_ = view;}
+      if (observed_view) {*observed_view = view;}
       return true;
     } catch (const tf2::TransformException &) {return reject("EXACT_IMAGE_TF_UNAVAILABLE");}
   }
@@ -1567,6 +1632,27 @@ private:
     while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
       visual_grasp::Box box{};
       if (ReadVisualBox(box, true)) {return true;}
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    return false;
+  }
+
+  bool WaitApproachVisualBox()
+  {
+    const auto deadline = std::chrono::steady_clock::now() +
+      std::chrono::duration<double>(target_timeout_s_);
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      visual_grasp::Box box{};
+      if (ReadVisualBox(box, false)) {
+        std::lock_guard<std::mutex> lock(visual_mutex_);
+        const bool qualified_same_frame = qualified_box_message_.polygon.points.size() == 4 &&
+          rclcpp::Time(qualified_box_message_.header.stamp).nanoseconds() == raw_box_stamp_ns_;
+        const bool clipped_known_frame = qualified_box_message_.polygon.points.empty() &&
+          near_last_full_rgb_view_.valid && near_depth::Cropped(raw_box_,
+          raw_image_info_.width, raw_image_info_.height);
+        if (raw_box_stamp_ns_ > near_last_command_image_stamp_ns_ &&
+          (qualified_same_frame || clipped_known_frame)) {return true;}
+      }
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
     return false;
@@ -1692,8 +1778,10 @@ private:
           std::chrono::steady_clock::now() - settled).count() >= .5)
       {
         std::lock_guard<std::mutex> lock(visual_mutex_);
-        raw_full_frames_ = 0;  // Three distinct new frames AFTER measured settling.
-        raw_box_stamp_ns_ = std::max(raw_box_stamp_ns_, now().nanoseconds());
+        if (!completed) {
+          raw_full_frames_ = 0;  // Independent preview still requires three post-settle frames.
+          raw_box_stamp_ns_ = std::max(raw_box_stamp_ns_, now().nanoseconds());
+        }
         if (completed) {*completed = plan.joint_trajectory;}
         PublishDiagnostic(stage + "_MEASURED_SETTLING_CONFIRMED");
         return true;
@@ -1810,7 +1898,7 @@ private:
     Fail("VISUAL_PREVIEW_STEP_BUDGET_EXHAUSTED_NO_CLOSE");
   }
 
-  bool LockedRgbCorrection(Eigen::Vector3d & correction)
+  bool LockedRgbCorrection(Eigen::Vector3d & correction, LockedRgbView * view = nullptr)
   {
     geometry_msgs::msg::PointStamped locked;
     rclcpp::Time image_time(0, 0, get_clock()->get_clock_type());
@@ -1818,45 +1906,68 @@ private:
     near_depth::Calibration c;
     geometry_msgs::msg::PolygonStamped box;
     sensor_msgs::msg::CameraInfo info;
-    if (!ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c)) {return false;}
+    LockedRgbView snapshot;
+    if (!ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c, &snapshot)) {return false;}
     if (near_rgb_association_bad_frames_seen_ != 0) {
       // Preserve the existing bounded outlier tolerance while advancing the
       // original lock. Suspect depth must never generate an RGB correction.
-      correction.setZero(); return true;
+      correction.setZero(); if (view) {*view = {};}
+      return true;
     }
     if (box.polygon.points.size() != 4 ||
       rclcpp::Time(box.header.stamp) != image_time) {
       PublishDiagnostic("LOCKED_RGB_SNAPSHOT_INVALID"); return false;
     }
-    try {
-      const auto t = tf_buffer_->lookupTransform(camera_optical_frame_,
-        lift_reference_frame_, image_time, rclcpp::Duration::from_seconds(.3));
-      geometry_msgs::msg::PointStamped camera;
-      tf2::doTransform(locked, camera, t);
-      const Eigen::Vector3d depth(camera.point.x, camera.point.y, camera.point.z);
-      Eigen::Matrix3d r;
-      r << c.rotation[0], c.rotation[1], c.rotation[2],
-        c.rotation[3], c.rotation[4], c.rotation[5],
-        c.rotation[6], c.rotation[7], c.rotation[8];
-      const Eigen::Vector3d translation(c.translation[0], c.translation[1], c.translation[2]);
-      const Eigen::Vector3d color = r * depth + translation;
-      const auto & p = box.polygon.points;
-      if (info.width <= 1 || info.height <= 1) {return false;}
-      double u = (p[0].x + p[2].x) * .5 * info.width * (c.width - 1) / (info.width - 1);
-      const double v = (p[0].y + p[2].y) * .5 * info.height * (c.height - 1) / (info.height - 1);
-      if (c.mirror) {u = c.width - 1 - u;}
-      // RGB ray at the LOCKED model range, explicitly not a new measurement.
-      const Eigen::Vector3d observed_color((u - c.cx) * color.z() / c.fx,
-        (v - c.cy) * color.z() / c.fy, color.z());
-      const Eigen::Vector3d delta_depth = r.inverse() * (observed_color - color);
-      tf2::Transform depth_from_reference;
-      tf2::fromMsg(t.transform, depth_from_reference);
-      const auto delta = depth_from_reference.getBasis().transpose() *
-        tf2::Vector3(delta_depth.x(), delta_depth.y(), delta_depth.z());
-      correction = Eigen::Vector3d(delta.x(), delta.y(), delta.z());
-      return correction.allFinite() && color.z() > .001 &&
-        correction.norm() <= visual_target_association_m_;
-    } catch (const tf2::TransformException &) {return false;}
+    correction = snapshot.correction;
+    if (view) {*view = snapshot;}
+    return snapshot.valid && correction.allFinite() &&
+           correction.norm() <= visual_target_association_m_;
+  }
+
+  bool GuardApproachView(grasp_geometry::DirectedPose & nominal,
+    const Eigen::Isometry3d & tool_to_depth, const LockedRgbView & view)
+  {
+    if (!view.valid) {return false;}  // Existing transient-depth tolerance: no new correction.
+    const auto & c = view.calibration;
+    Eigen::Matrix3d r;
+    r << c.rotation[0], c.rotation[1], c.rotation[2], c.rotation[3], c.rotation[4],
+      c.rotation[5], c.rotation[6], c.rotation[7], c.rotation[8];
+    Eigen::Isometry3d depth_to_color = Eigen::Isometry3d::Identity();
+    depth_to_color.linear() = r.inverse();
+    depth_to_color.translation() = -r.inverse()*Eigen::Vector3d(
+      c.translation[0], c.translation[1], c.translation[2]);
+    const Eigen::Isometry3d tool_to_color = tool_to_depth * depth_to_color;
+    const Eigen::Quaterniond q_camera(tool_to_color.linear());
+    const grasp_geometry::DirectedPose camera_pose{{tool_to_color.translation().x(),
+      tool_to_color.translation().y(), tool_to_color.translation().z()},
+      {q_camera.x(), q_camera.y(), q_camera.z(), q_camera.w()}};
+    Eigen::Isometry3d candidate = Eigen::Isometry3d::Identity();
+    candidate.linear() = Eigen::Quaterniond(nominal.orientation[3], nominal.orientation[0],
+      nominal.orientation[1], nominal.orientation[2]).normalized().toRotationMatrix();
+    candidate.translation() = Eigen::Vector3d(nominal.origin[0], nominal.origin[1], nominal.origin[2]);
+    const auto color = (candidate * tool_to_color).inverse() * view.target_reference;
+    if (color.z() <= .001) {return false;}
+    double u = c.fx*color.x()/color.z() + c.cx;
+    const double v = c.fy*color.y()/color.z() + c.cy;
+    if (c.mirror) {u = c.width - 1 - u;}
+    const double x = u/(c.width-1)*(view.width-1)/view.width;
+    const double y = v/(c.height-1)*(view.height-1)/view.height;
+    // Begin recovery one half-box BEFORE the original 2% full-view margin.
+    // This is a geometry-derived look-ahead, not a new acceptance threshold.
+    const double inset_x = .02 + view.box.right - view.box.left;
+    const double inset_y = .02 + view.box.bottom - view.box.top;
+    const double desired_x = inset_x < .5 ? std::clamp(x, inset_x, 1-inset_x) : .5;
+    const double desired_y = inset_y < .5 ? std::clamp(y, inset_y, 1-inset_y) : .5;
+    if (std::hypot(desired_x-x, desired_y-y) < 1e-8) {return false;}
+    double ray_u = desired_x*view.width*(c.width-1)/(view.width-1);
+    const double ray_v = desired_y*view.height*(c.height-1)/(view.height-1);
+    if (c.mirror) {ray_u = c.width - 1 - ray_u;}
+    const bool aimed = visual_grasp::AimCameraAtFixedTip(nominal, camera_pose,
+      {view.target_reference.x(), view.target_reference.y(), view.target_reference.z()},
+      {(ray_u-c.cx)/c.fx, (ray_v-c.cy)/c.fy, 1}, gripper_tip_offset_m_);
+    PublishDiagnostic(aimed ? "RGB_VIEW_GUARD_TIP_PRESERVED" :
+      "RGB_VIEW_GUARD_RAY_INFEASIBLE_TIP_NOT_DISPLACED");
+    return aimed;
   }
 
   void AutomaticRgbApproach(
@@ -1875,6 +1986,7 @@ private:
     waypoints.insert(waypoints.end(), descent_waypoints.begin(), descent_waypoints.end());
     const double angle_limit = .01745329252;
     double camera_arc = 0, tip_arc = 0, angle_arc = 0, planned_seconds = 0;
+    Eigen::Isometry3d tool_to_camera = Eigen::Isometry3d::Identity();
     try {
       // Only derive an allowance from the two already limit/collision-checked
       // plans. Fixed 30mm remains the finite extra correction allowance.
@@ -1882,7 +1994,6 @@ private:
         end_effector_link_, camera_optical_frame_, tf2::TimePointZero);
       tf2::Transform camera_tf;
       tf2::fromMsg(camera_from_tool.transform, camera_tf);
-      Eigen::Isometry3d tool_to_camera = Eigen::Isometry3d::Identity();
       for (int row = 0; row < 3; ++row) {
         for (int col = 0; col < 3; ++col) {
           tool_to_camera.linear()(row, col) = camera_tf.getBasis()[row][col];
@@ -1937,10 +2048,11 @@ private:
     for (std::size_t step = 0; rclcpp::ok() && !cancel_requested_ &&
       step < static_cast<std::size_t>(iterations) && cursor < waypoints.size(); ++step)
     {
-      if (!WaitFullVisualBox()) {Fail("AUTOMATIC_RGB_FULL_TARGET_UNAVAILABLE"); return;}
+      if (!WaitApproachVisualBox()) {Fail("AUTOMATIC_RGB_FRESH_TARGET_UNAVAILABLE"); return;}
       const auto state = FreshMeasuredState("AUTOMATIC_RGB_APPROACH");
       Eigen::Vector3d correction;
-      if (!state || !LockedRgbCorrection(correction)) {
+      LockedRgbView view;
+      if (!state || !LockedRgbCorrection(correction, &view)) {
         Fail("AUTOMATIC_RGB_LOCKED_OBSERVATION_UNAVAILABLE"); return;
       }
       const auto & fk = state->getGlobalLinkTransform(end_effector_link_);
@@ -1948,12 +2060,20 @@ private:
       const gg::DirectedPose current{{fk.translation().x(), fk.translation().y(), fk.translation().z()},
         {q.x(), q.y(), q.z(), q.w()}};
       const auto & pose = waypoints[cursor];
-      const gg::DirectedPose nominal{{pose.position.x, pose.position.y, pose.position.z},
+      gg::DirectedPose nominal{{pose.position.x, pose.position.y, pose.position.z},
         {pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w}};
+      const double scale = correction.norm() > extra ? extra / correction.norm() : 1.;
+      const bool recovery = view.valid &&
+        (view.recovering || !visual_grasp::FullView(view.box));
+      if (recovery) {nominal = current;}  // Restore view, not blind forward motion.
+      else {
+        for (int i = 0; i < 3; ++i) {nominal.origin[i] += correction[i]*scale;}
+      }
+      const bool gaze = GuardApproachView(nominal, tool_to_camera, view);
       gg::DirectedPose goal;
       try {
         goal = visual_grasp::CorrectedPoseStep(current, nominal,
-          {correction.x(), correction.y(), correction.z()}, gripper_tip_offset_m_,
+          {0, 0, 0}, gripper_tip_offset_m_,
           approach_microstep_m_, angle_limit, extra);
       } catch (const std::invalid_argument &) {
         Fail("AUTOMATIC_RGB_CORRECTION_INVALID"); return;
@@ -1962,16 +2082,16 @@ private:
         gripper_tip_offset_m_);
       auto expected_tip = gg::Tip(nominal.origin, gg::Rotate(nominal.orientation, {0, 0, 1}),
         gripper_tip_offset_m_);
-      const double scale = correction.norm() > extra ? extra / correction.norm() : 1.;
       double gap_squared = 0;
       for (int i = 0; i < 3; ++i) {
-        expected_tip[i] += correction[i] * scale;
         gap_squared += std::pow(expected_tip[i] - current_tip[i], 2);
       }
       if (std::sqrt(gap_squared) <= grasp_landing_tolerance_m_ &&
         gg::QuaternionDistance(current.orientation, nominal.orientation) <=
         grasp_landing_orientation_tolerance_rad_) {
-        ++cursor; continue;
+        if (!recovery) {++cursor;}
+        else {near_last_command_image_stamp_ns_ = view.stamp_ns;}
+        continue;
       }
       last_goal.header.frame_id = lift_reference_frame_; last_goal.header.stamp = now();
       last_goal.pose.position.x = goal.origin[0]; last_goal.pose.position.y = goal.origin[1];
@@ -1982,6 +2102,10 @@ private:
         "AUTOMATIC_RGB_PREGRASP" : "AUTOMATIC_RGB_DESCENT");
       RCLCPP_INFO(get_logger(), "AUTOMATIC_RGB_STEP=%zu waypoint=%zu/%zu correction=%.4f "
         "LOCKED_RANGE_ESTIMATE_NOT_NEW_DEPTH", step, cursor, waypoints.size(), correction.norm());
+      RCLCPP_INFO(get_logger(), "RGB_VIEW image_stamp=%ld box=(%.3f,%.3f,%.3f,%.3f) "
+        "gaze=%s recovery=%s", view.stamp_ns, view.box.left, view.box.top,
+        view.box.right, view.box.bottom, gaze ? "true" : "false", recovery ? "true" : "false");
+      near_last_command_image_stamp_ns_ = view.valid ? view.stamp_ns : near_last_image_stamp_ns_;
       if (!ExecuteVisualPose(last_goal, state, "AUTOMATIC_RGB_STEP_" + std::to_string(step),
         approach_microstep_m_, angle_limit, &last_trajectory)) {
         Fail("AUTOMATIC_RGB_STEP_EXECUTION_FAILED"); return;
@@ -3279,7 +3403,7 @@ private:
       // Use one autonomous identity check for BOTH fresh-depth and RGB-only
       // modes. A newly detected purple point cannot replace the locked cube
       // at the final closure decision.
-      if (!ObserveLockedTarget(face, capture_stamp, predicted) ||
+      if (!ObserveLockedTarget(face, capture_stamp, predicted) || near_view_recovery_ ||
         near_rgb_association_bad_frames_seen_ != 0)
       {
         PublishDiagnostic("JAW_CAPTURE_LOCKED_OBJECT_UNCONFIRMED_NO_CLOSE");
@@ -4003,6 +4127,10 @@ private:
   double near_depth_prediction_max_age_s_{30.0};
   double near_depth_prediction_max_travel_m_{.030};
   near_depth::Seed near_seed_{};
+  LockedRgbView near_last_full_rgb_view_{};
+  visual_grasp::Box near_last_visible_rgb_box_{};
+  bool near_view_recovery_{false};
+  int64_t near_last_command_image_stamp_ns_{0};
   int64_t near_seed_stamp_ns_{0};
   int64_t near_last_image_stamp_ns_{0};
   tf2::Vector3 near_last_camera_origin_{0, 0, 0};

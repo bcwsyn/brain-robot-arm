@@ -71,3 +71,37 @@ TEST(VisualGrasp, AutomaticRgbPoseCorrectionsConvergeWithoutJointCommands)
   EXPECT_THROW(vg::CorrectedPoseStep(current, goal, {NAN, 0, 0}, .1358, .008, .01745, .03),
     std::invalid_argument);
 }
+
+TEST(VisualGrasp, CameraGazeRestoresLowerTargetWithoutMovingCaptureTip)
+{
+  gg::DirectedPose goal{{0, 0, 0}, {0, 0, 0, 1}};
+  const gg::DirectedPose camera{{.03, 0, .03}, {0, 0, 0, 1}};
+  const gg::Point target{.03, .10, .25};
+  const auto before = gg::Tip(goal.origin, {0, 0, 1}, .1358);
+  ASSERT_TRUE(vg::AimCameraAtFixedTip(goal, camera, target, {0, .2, 1}, .1358));
+  const auto after = gg::Tip(goal.origin, gg::Rotate(goal.orientation, {0, 0, 1}), .1358);
+  EXPECT_LT(gg::CompareTips(after, before, {0, 0, 1}).distance_m, 1e-12);
+  const auto camera_offset = gg::Rotate(goal.orientation, camera.origin);
+  const gg::Point camera_world{goal.origin[0]+camera_offset[0], goal.origin[1]+camera_offset[1],
+    goal.origin[2]+camera_offset[2]};
+  const auto q = goal.orientation;
+  const auto ray = gg::Rotate({-q[0], -q[1], -q[2], q[3]},
+    {target[0]-camera_world[0], target[1]-camera_world[1], target[2]-camera_world[2]});
+  EXPECT_NEAR(ray[0]/ray[2], 0, 1e-10);
+  EXPECT_NEAR(ray[1]/ray[2], .2, 1e-10);
+  const gg::DirectedPose actual{{0, 0, 0}, {0, 0, 0, 1}};
+  const auto step = vg::CorrectedPoseStep(actual, goal, {0, 0, 0}, .1358, .008, .01745, .03);
+  EXPECT_LE(gg::QuaternionDistance(actual.orientation, step.orientation), .01745+1e-12);
+  const auto step_tip = gg::Tip(step.origin, gg::Rotate(step.orientation, {0, 0, 1}), .1358);
+  EXPECT_LT(gg::CompareTips(step_tip, before, {0, 0, 1}).distance_m, 1e-12);
+}
+
+TEST(VisualGrasp, ImpossibleFixedTipCameraRayDoesNotDisplaceTipToChaseImageCentre)
+{
+  gg::DirectedPose goal{{0, 0, 0}, {0, 0, 0, 1}};
+  const auto before = goal;
+  EXPECT_FALSE(vg::AimCameraAtFixedTip(goal, {{.2, 0, 0}, {0, 0, 0, 1}},
+    {0, 0, .1358}, {0, 0, 1}, .1358));
+  EXPECT_EQ(goal.origin, before.origin);
+  EXPECT_EQ(goal.orientation, before.orientation);
+}

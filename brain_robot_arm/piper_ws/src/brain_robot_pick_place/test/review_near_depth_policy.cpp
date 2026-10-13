@@ -61,7 +61,13 @@ int main(int argc, char ** argv)
   nd::Projection projection;
   const char * rejected = "PROJECTION_UNAVAILABLE";
   if (nd::Project(c, point, image.cols, image.rows, projection)) {
-    rejected = nd::PredictionRejection(seed, e, box, projection, .6, 30, .030);
+    std::array<double, 3> delta{};
+    rejected = "INVALID_RGB_CORRECTION";
+    if (nd::RgbResidual(c, point, box, image.cols, image.rows, delta)) {
+      const double residual = std::hypot(std::hypot(delta[0], delta[1]), delta[2]);
+      rejected = nd::PredictionRejection(seed, e, box, projection, .6, 30, .030,
+        residual, .04);
+    }
   }
   std::cout << std::setprecision(15) << (rejected ? rejected : "ASSOCIATED_LOCKED_RGB") << " "
     << box.left << " " << box.top << " " << box.right << " " << box.bottom << " "

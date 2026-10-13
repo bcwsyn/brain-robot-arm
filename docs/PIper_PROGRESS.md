@@ -1,3 +1,14 @@
+### 2026-10-13 16:05–16:32：用户批准视觉纠偏入口、视野保持与新帧等待修复，44项回归通过
+
+- 用户明确“确认改动”。本轮先核对规范Git/近期历史、两个聚焦技能及原生效路径，保留已有test_near_depth_wiring.py注释、vendor/reference等无关改动。原driver3672131/controller3672604/grasp3714652唯一栈仍在，未重启固件/CAN/驱动；源运行CPP修复前与HEAD SHA均9371423e8ed336db54303cbd343eb315a5bd535832ea50671bdf0cbcf881b5ca。
+- 18s既有只读observer确认STOPPED/USER_STOP、硬件保持使能路径、99.6mm全开，真实q[-.256095364,1.556092020,-.883468824,-.026602100,.346943716,.053029760]，区间反馈183.58Hz/RGB4.998Hz。查看before/evidence/0006原RGB/深度/debug：方块完整在下部、depth样本0；arm_status另一次3s采样err_code=0、六轴角度限位及通信标志false、motion_status0、反馈592帧。初次误用旧observer的命名参数已仅结束确切只读进程3741197，改用真实位置参数和timeout -k2s -sINT18s，rc124表示预期有界结束；误传参数产生/home/johnwick/--duration只读图档未删除，未影响实体。
+- 应用修复仅原执行器/两个几何头与对应测试：统一RgbResidual以精确工厂矩阵逆在锁定模型距离计算同帧彩色残差；Observe与PredictionRejection复用原visual_target_association_m=.04，不再先要求预测点在颜色框内。原真实3D关联、尺寸/范围/时间、反馈、MoveIt/adapter限制保留，seed/测量stamp不刷新，RGB估计明确不是新测深。
+- 视野保持对下一名义路点做相机投影，使用原2%FullView边界及半个物体尺寸的提前量生成所需视线；AimCameraAtFixedTip解相机相对指尖杠杆几何并保持目标指尖位置，由原CorrectedPoseStep按8mm/1°生成位姿、MoveIt解六轴。不能实现的固定指尖视线保留原位姿并明确诊断，不为追画面移动指尖或新增硬停止。记录0041离线重现：RGB中心[.39375,.829167]，拟恢复[.39375,.796667]，解需3.859°（将分段执行），另一个几何根需140.919°，当前选正向远距离根；这些是模型回放，不是外参标定。
+- 自动段改为一张独立新RGB与同stamp合格框准备好即可推进，普通靠近不再清空计数等待3张post-settle完整帧；独立预览和最终夹持仍保留完整框要求，真实q稳定.5s不改。同一帧不重复驱动新段。部分裁切只允许已有完整合格身份、原连续性/投影重叠与未裁切轴尺寸条件下恢复视野；用最后完整射线的ego-motion投影而非截断框中心，优先指尖保持/转视野，不重锁，不允许恢复中的裁切证据闭爪。检测器、YAML、安装TF/TCP、真实限位、开合参数不改。
+- Python连接10 passed；纯几何14、视野/指尖8 passed。原执行器/隔离实际方法构建曾发现Humble Time没有to_msg，已改为本机隐式消息转换；明确识别并停止旧失败构建树，保留最终构建防同目标并发写入。第一次隔离方法11/12，恢复夹具模拟10cm视点改变但未设置原已检查路径额度，已补ReviewedAllowance(.15)，实体默认30mm/完整路径预算未放宽，正在重建到最终同帧等待版本。日志view_guard_20261013/{runtime_build,tests_build,geometry_tests,view_geometry_tests,executor_tests}.txt；尚未本轮新实体运动。
+- 最终实体/隔离方法构建均rc0；Python10、几何14、视野8、最终domain78实际方法12全部通过（方法1233ms），44项合计。实体执行器SHA256 18f7132588e651aa09485ae216e8ef255eee37420c26f535c6d96599d3a2950d。实际方法日志executor_tests_final.txt，之前夹具失败保留，不混当最终成功。真实参数只读命令中几个旧/不存在名称返回Parameter not set，已依代码核对真实名称，未将其当节点/硬件异常。
+- 下一步仅替换原grasp节点并保留原参数/remap；按已有观测轨迹取一次初始RGB-D锁点，再原SEARCH/ALIGN/自动靠近/下降/最终夹持/闭爪。当前缺深图不造新seed，不重复P0/P1；动作前打印actual q、原目标/速度/限位和停止/回退，连续采集三图与反馈。实际抓取仍未完成；构建/合成测试不当实体成功，Git仅本地。
+
 ### 2026-10-13：用户要求出画前及时纠偏；确认新帧频率、等待与视野控制缺口
 
 - 本轮用户询问完整视野停止和缩短观测/及时修正，没有实施或运动授权。按ROS2/小范围审阅技能只读核对实际/home/johnwick/start_brain_robot_cube_real.sh及原执行器：RGB入口cam2image配置5Hz（约200ms/新帧，配置不代替实时频率实测）；ExecuteArmTrajectory约20ms检查关联，但不是20ms产生新图或进行连续纠偏。ExecuteVisualPose每段到位后要求真实q稳定.5s，随后清raw_full_frames_，下一段WaitFullVisualBox需要3个新完整框，等待上限2.5s；持续不能满足才报AUTOMATIC_RGB_FULL_TARGET_UNAVAILABLE，并不是首次裁切瞬间一定报该故障。

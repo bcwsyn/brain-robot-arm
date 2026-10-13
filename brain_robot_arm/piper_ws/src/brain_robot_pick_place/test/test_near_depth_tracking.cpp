@@ -30,8 +30,10 @@ struct Example
   nd::Evidence evidence{true, true, true, .05, .02, 3, .012};
   Box box{120. / 320, 126. / 240, 184. / 320, 201. / 240};
   nd::Projection projection{149.457 / 320, 157.265 / 240, .1424};
+  double rgb_residual_m{.005};
   const char * reject() const {
-    return nd::PredictionRejection(seed, evidence, box, projection, .6, 30, .030);
+    return nd::PredictionRejection(seed, evidence, box, projection, .6, 30, .030,
+      rgb_residual_m, .04);
   }
 };
 
@@ -59,11 +61,14 @@ TEST(NearDepth, LockedSurfacePointMayStayInsideChangingSilhouetteAwayFromCentre)
   EXPECT_EQ(e.reject(), nullptr);
 }
 
-TEST(NearDepth, SmallCentreErrorDoesNotAllowProjectionOutsideCube)
+TEST(NearDepth, CorrectableProjectionOutsideCubeCanReachCorrection)
 {
   Example e;
-  e.box = {e.projection.x + .001, e.projection.y - .02,
-    e.projection.x + .04, e.projection.y + .02};
+  e.box.left += .15; e.box.right += .15;
+  ASSERT_GT(e.box.left, e.projection.x);
+  e.rgb_residual_m = .03;
+  EXPECT_EQ(e.reject(), nullptr);
+  e.rgb_residual_m = .040001;
   EXPECT_STREQ(e.reject(), "LOCKED_TARGET_RGB_MISMATCH");
 }
 
@@ -90,9 +95,39 @@ TEST(NearDepth, StaleFutureAndLostRGBRejected)
 TEST(NearDepth, PurpleBackgroundCannotReplaceLockedObject)
 {
   Example e; e.box = {.02, .03, .22, .3};
+  e.rgb_residual_m = .08;
   EXPECT_STREQ(e.reject(), "LOCKED_TARGET_RGB_MISMATCH");
   e.box = {.2, .2, .8, .95};
   EXPECT_NE(e.reject(), nullptr);  // Large same-colour background is not the cube.
+}
+
+TEST(NearDepth, SharedRayResidualUsesSameFactoryTransformAndImageGrid)
+{
+  auto c = Factory();
+  const std::array<double, 3> point{.0273996760089357, .03124879082799753,
+    .14251473272302967};
+  nd::Projection p;
+  ASSERT_TRUE(nd::Project(c, point, 320, 240, p));
+  std::array<double, 3> delta;
+  EXPECT_TRUE(nd::RgbResidual(c, point, {p.x-.02, p.y-.02, p.x+.02, p.y+.02},
+    320, 240, delta));
+  for (double x : delta) {EXPECT_NEAR(x, 0, 1e-12);}
+  c.mirror = true;
+  ASSERT_TRUE(nd::Project(c, point, 320, 240, p));
+  EXPECT_TRUE(nd::RgbResidual(c, point, {p.x-.02, p.y-.02, p.x+.02, p.y+.02},
+    320, 240, delta));
+  for (double x : delta) {EXPECT_NEAR(x, 0, 1e-12);}
+}
+
+TEST(NearDepth, ClippedRecoveryChecksUnclippedDimensionWithoutInventingFullBox)
+{
+  Example e;
+  e.box = {.375, .9, .575, 1};
+  EXPECT_EQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, .03, .01, .04, true), nullptr);
+  e.box.right = .395;
+  EXPECT_STREQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, .03, .01, .04, true), "LOCKED_TARGET_SCALE_MISMATCH");
 }
 
 TEST(NearDepth, SameCentreWrongSizeRejected)

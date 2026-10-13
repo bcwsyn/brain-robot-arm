@@ -31,7 +31,11 @@ def test_prediction_retains_lock_and_measurement_stamp_and_uses_exact_tf():
     assert body.index('if (measured_same_image)') < seed < body.index('} else {', seed)
     assert 'return reject("MEASURED_TARGET_CHANGED")' in body
     assert 'near_depth::PredictionRejection' in body
-    assert 'raw_box_' not in body
+    # A clipped raw contour can only RECOVER an already qualified identity;
+    # it cannot seed a new lock or supply a fabricated colour/depth centroid.
+    assert 'near_last_full_rgb_view_.valid && raw_box_valid_' in body
+    assert 'near_depth::Cropped(raw_box_' in body
+    assert 'view.recovering = recovering' in body
 
 
 def test_actual_adapter_stop_and_final_capture_checks_remain():
