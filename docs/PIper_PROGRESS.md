@@ -1,3 +1,10 @@
+### 2026-10-13：说明视觉纠偏的计算、执行链及被关联预条件截断的问题
+
+- 用户本轮询问纠偏机制，没有授权修改或运动。按ROS2/手术式审阅技能只读核对LockedRgbCorrection、CorrectedPoseStep、AutomaticRgbApproach：原RGB框中心与锁定base点经精确图像TF/工厂D→C投影位置比较，在当前锁定模型的color.z深度上构造中心射线；差向量经镜头变换及图像TF转回base，作为原名义路点的平移补偿。不是新测深，也不是把方块强制拉到IMAGE CENTER。原函数给出平移，姿态仍朝原nominal_goal插值，不单独指定J5向下。
+- CorrectedPoseStep将平移补偿加到模型指尖目标并按原8mm/1°步长生成末端位姿，ExecuteVisualPose交给原MoveIt规划，再由原arm_trajectory/adapter/driver执行六轴关节轨迹、用actual q验收。因此视觉不直接决定单个关节角，也没有从实际双指自由末端实时估计出经过校准的夹持中心。
+- 关键结构问题：LockedRgbCorrection首先调用ObserveLockedTarget，后者要求预测点在当前框内；一旦本次那样投影跑出框，函数在计算可用RGB残差之前失败，而且ExecuteArmTrajectory的循环也触发同样硬停止。存在纠偏代码不代表本次偏差被有效纠正；停止前日志correction=.0176m仅证明曾计算并用过估计，不证明实际落点已到位。
+- 更正上一轮“相机只记录”建议的适用范围：完全改成开环会失去纠偏，不能同时承诺持续视觉修正。当前更合适的拟讨论方向是保留初始静止三维锁点/名义靠近，分离同一目标身份关联与纠偏误差，确认同一方块后让可修正的残差进入MoveIt，而不是普通投影偏差即拒绝；自身相机运动仍由exact image TF解释，不重锁。真实夹持参考点需要模型/实物对应支持，不能把IMAGE CENTER直接当接触位置。该控制建议未实施，具体关联规则与闭爪规则修改仍先说明并取得同意。本轮无新的实体状态采样、无代码/TF修改、Git仅本地。
+
 ### 2026-10-13：用户质疑锁定后持续视觉门控；澄清直接停止原因与流程差异
 
 - 本轮是解释请求，未修改控制代码或运行实体。按聚焦ROS2/小范围审阅技能只读核对AutomaticRgbApproach、ExecuteArmTrajectory和FinishGraspAndLift：不只每段等待完整RGB并纠偏，实体轨迹等待循环还每20ms调用ObserveLockedTarget；框外关联失败直接software stop/disarm。最终FreshFaceInsideJaws仍要求视觉关联。当前实现不是用户所描述的“一次锁定→完整计划→按关节反馈执行→闭爪”。
