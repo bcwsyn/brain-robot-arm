@@ -1,3 +1,9 @@
+### 2026-10-13：4b0dd26已部署，原AUTO1反向候选实测启动（结果待核对）
+
+- 64项回归通过/4b0dd26提交后，无活动运动栈时保留旧79e06bc为view_guard_20261013/reverse_attitude_previous_79e06bc.bin（SHA2b309aa302157ccd43f4c080f724c0e70d1ab1384c79a35142cec39cb3b00343），仅部署新同源原CPP/binary。实际binary298448…/CPP18beea…一致，入口87039b…不改，未另写一键脚本。
+- 实测前SDK1791899895.646173/200Hz、high9895.646179/100Hz、六轴true/速度0，q[-.324247268,1.778822120,-1.396926627,.014992378,.908600955,-.023195426]rad；can0 ifindex9 ERROR-ACTIVE/1Mbps/.75/queue1000/RX20827349/错误0继续复用。原观测[0,.98,-.75,0,.30,0]rad/原速度加速度比例.01、prepare步长.08rad/约40秒/六轴原轨迹；task范围min[-1.5,-.3,-1.4,-.8,-1.2,-pi] max[1.5,pi,.4,.8,1.2,pi]，原adapter限速保持，异常停止输出保持使能、不Disable/Reset。
+- 原AUTO_START=1/STOP_AFTER_TARGET_ACQUIRED=0/DEPTH_ONLY_TARGET=0，LOG_DIR reverse_attitude_onekey，主session68857；只读exact70951/observer38982分别reverse_attitude_exact/live，600秒INT边界/kill宽限。尚无本轮观测/候选执行/闭爪证据，下一读reverse_attitude_onekey_console及visual_stack.log、查看新三图和实际反向分支，优先推进到两指实际夹持区，不以启动/软件测试替代抓取。Git仅本地/原用户改动和远程历史审查阻断保持。
+
 ### 2026-10-13：反向候选局部修复64项回归通过，待原入口部署实测
 
 - 规范cmake构建grasp_lift_executor/near_depth_executor_test rc0，域78原方法23/23（2326ms）、原wiring3/尺度15/几何13/视觉10合计64通过。负候选固定指尖/严格反向/非恒等当前朝向/帧时间及原角步长约束被验证；预览/最终阶段不豁免。软件回归不等于实体抓取。

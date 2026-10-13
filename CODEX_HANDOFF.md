@@ -1,4 +1,8 @@
-## 最新接续（2026-10-13，反向候选原局部修复64项通过；已获授权，待部署原入口实测）
+## 最新接续（2026-10-13，4b0dd26原执行器已部署，原AUTO1反向候选实测正在启动）
+
+新binary298448…/CPP18beea…已同步原运行树，旧79e06bc/2b309a…保留reverse_attitude_previous_79e06bc.bin；原入口87039b…不改。SDK9895.646/200Hz&high100Hz/6true，q[-.324247268,1.778822120,-1.396926627,.014992378,.908600955,-.023195426]，CANRX20827349/error0，不重载。原AUTO1主session68857，日志view_guard_20261013/reverse_attitude_onekey_console/onekey；读采exact70951/observer38982（reverse_attitude_exact/live），600秒INT边界。下一第一条tail该console并看新visual_stack.log/三图/反向candidate完整规划与实际反馈；当前未有新抓取验收，不拿旧attitude图当新画面。动作前原观测/速度加速度/范围/异常保持使能已说明记录，不Disable/Reset。用户原改动/本地Git/远程审查阻断保持。
+
+## 历史接续（2026-10-13，反向候选原局部修复64项通过；已获授权，待部署原入口实测）
 
 用户允许按实际情况反向候选可大可小，原自动段追加-.25/-.50/-.75/-1，保持原同指尖/1°工具朝向与8mm输出步长/完整MoveIt与限位/碰撞/反馈/最终夹持。规范构建0、方法23/23（2326ms）+尺度15/几何13/视觉10/wiring3=64通过，新binary2984483358063069517a71f06405359c75ba6374f8663c8f7eae99f9ff74438e、CPP18beeaf14d6aba3334b931297339463ee4798dbea762ef7337eed68cf4b00da0。暂未部署/新运动，原runtime仍79e06bc/2b309a…/入口87039b…；下一第一条读reverse_attitude_executor_tests.txt，备份79e06bc并同步新同源执行器，再SDK新读原AUTO1实测三图/负候选真实靠近。不能称软件64通过即抓取；用户原改动/本地Git/远程审查阻断保持。
 
