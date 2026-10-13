@@ -1,3 +1,11 @@
+### 2026-10-13 13:55–13:58：停稳修复实测跨过首段；29段运动后发布前检查退出
+
+- 3fb34b3实际工作区构建成功rc0/2min32s；源码双份SHA256 98b71989c9734f186de641b9b28eb1c49a8003149f1d02c9e25620bfcd91e7ec。只停止旧grasp PID3672608，保留原driver/camera/MoveIt/adapter；新执行器原参数 `/tmp/launch_params_4xakdp6v`、原cube_task_real.yaml、use_sim_time=false及 `/joint_states:=/piper_moveit_joint_states` 全部复用。日志runtime/grasp_settle_fix.txt。没有新启动脚本或SDK直控。
+- 原resume第一次因当刻target_valid=false拒绝、未动。随后只订阅新鲜target_valid并在有效帧调用原resume_current_pose（最多5次/60s/第一次成功即结束），首请求即成功；CURRENT_POSE_ACCEPTED → SEARCH/ALIGN → GRASP_READY，未走观测轨迹/重复硬件使能。新请求锁定点约[.454,-.134,.057]m，100mm张爪反馈99.4mm继续有效。
+- 1791870983.283–1026.867共发布29段真实轨迹，后续均反馈到位、停稳后继续；最大步编号51是包含路点跳过的循环序号，不是51段实体运动。已至路点22/97，J2从.9876→1.0888、J5从.7176→.5045rad，J1到-.273888rad；原45s/.002rad误用卡点确已消失。初始checked camera弧.3102m/tip弧.2799m，depth失效期间出现LOCKED_3D_PREDICTION，恢复时保持原目标不变；不能把这些估计称为新深度。
+- 第51步1028.482规划4点成功，但尚未发布端点即在ExecuteVisualPose内部返回false；1028.486 FAULT_AUTOMATIC_RGB_STEP_EXECUTION_FAILED。目前无具体支路诊断，不能凭同一总故障名断言仍是停稳超时。真实RGB0045方块完整，反馈/深度约.288m在线、夹爪99.4mm全开，未闭爪/抓住。已软件disarm并STOPPED，硬件保持使能。
+- 用户再次明确同意仅补诊断并续测：为既有关节行程/位姿步界/输出前起点变化/停稳超时补具体原因，位姿拒绝打印wrist/tip/angle实值与上限。所有阈值/规划/目标/TF/闭爪规则不变，源与实际树同步；诊断版增量构建进行中。下一步同一当前姿态接续，以新输出确定真实检查项后再提出最小修复，不盲目放宽。连续证据retry_settle_fix/observer.jsonl及三图；Git仍本地。
+
 ### 2026-10-13 13:49–13:51：实测已至自动靠近；定位并获准修复预览停稳要求误用
 
 - 同一轮真实状态：1791870531.934 OBSERVE_POSE_REACHED/SEARCH，0542.830 TARGET_ACQUIRED/ALIGN，0545.229 DIRECT_VISUAL_ALIGN_ACQUIRED/GRASP_READY。张爪99.4mm已确认；可靠图像锁定base目标约[.430,-.129,.086]m，原预抓取/下降规划成功，checked camera弧.2747m/tip弧.2444m，不是IK失败或近距无初始种子。

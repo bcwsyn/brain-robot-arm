@@ -1625,7 +1625,9 @@ private:
       moveit::core::RobotState planned(*state);
       for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
         if (std::abs(point.positions[i] - state->getVariablePosition(
-            plan.joint_trajectory.joint_names[i])) > .08) {return false;}
+            plan.joint_trajectory.joint_names[i])) > .08) {
+          PublishDiagnostic(stage + "_JOINT_TRAVEL_LIMIT"); return false;
+        }
         planned.setVariablePosition(plan.joint_trajectory.joint_names[i], point.positions[i]);
       }
       planned.update();
@@ -1635,13 +1637,26 @@ private:
       if ((pose.translation() - start_pose.translation()).norm() > wrist_limit + 1e-9 ||
         (pose * local_tip - start_pose * local_tip).norm() > tip_limit + 1e-9 ||
         Eigen::Quaterniond(start_pose.rotation()).angularDistance(
-          Eigen::Quaterniond(pose.rotation())) > angle_limit) {return false;}
+          Eigen::Quaterniond(pose.rotation())) > angle_limit) {
+        RCLCPP_WARN(get_logger(),
+          "%s bounds: wrist=%.9f/%.9f tip=%.9f/%.9f angle=%.9f/%.9f",
+          stage.c_str(), (pose.translation() - start_pose.translation()).norm(), wrist_limit,
+          (pose * local_tip - start_pose * local_tip).norm(), tip_limit,
+          Eigen::Quaterniond(start_pose.rotation()).angularDistance(
+            Eigen::Quaterniond(pose.rotation())), angle_limit);
+        PublishDiagnostic(stage + "_POSE_STEP_BOUND_REJECTED"); return false;
+      }
     }
     const auto before_output = FreshMeasuredState(stage + "_BEFORE_OUTPUT");
     if (!before_output) {return false;}
     for (const auto & name : plan.joint_trajectory.joint_names) {
       if (std::abs(before_output->getVariablePosition(name) -
-          state->getVariablePosition(name)) > .002) {return false;}
+          state->getVariablePosition(name)) > .002) {
+        RCLCPP_WARN(get_logger(), "%s start changed: %s planned=%.9f measured=%.9f",
+          stage.c_str(), name.c_str(), state->getVariablePosition(name),
+          before_output->getVariablePosition(name));
+        PublishDiagnostic(stage + "_START_FEEDBACK_CHANGED"); return false;
+      }
     }
     if (!ExecuteArmTrajectory(plan.joint_trajectory)) {return false;}
     const auto & end = plan.joint_trajectory.points.back();
@@ -1675,10 +1690,12 @@ private:
         raw_full_frames_ = 0;  // Three distinct new frames AFTER measured settling.
         raw_box_stamp_ns_ = std::max(raw_box_stamp_ns_, now().nanoseconds());
         if (completed) {*completed = plan.joint_trajectory;}
+        PublishDiagnostic(stage + "_MEASURED_SETTLING_CONFIRMED");
         return true;
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
+    PublishDiagnostic(stage + "_MEASURED_SETTLING_TIMEOUT");
     return false;
   }
 

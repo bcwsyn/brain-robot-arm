@@ -30,3 +30,16 @@ def test_observed_j6_error_is_inside_original_not_preview_tolerance():
     # Final closure/landing checks are independent and remain unchanged.
     assert parameters['fresh_jaw_capture_required']
     assert parameters['grasp_landing_feedback_tolerance_rad'] == .010
+
+
+def test_prepublication_rejections_report_metrics_without_new_bounds():
+    source = SOURCE.read_text()
+    method = source[source.index('  bool ExecuteVisualPose('):
+                    source.index('  void VisualMicrostepPreview(')]
+    assert '_POSE_STEP_BOUND_REJECTED' in method
+    assert '_START_FEEDBACK_CHANGED' in method
+    assert 'wrist=%.9f/%.9f tip=%.9f/%.9f angle=%.9f/%.9f' in method
+    assert '> wrist_limit + 1e-9' in method
+    assert '> tip_limit + 1e-9' in method
+    assert 'Eigen::Quaterniond(pose.rotation())) > angle_limit' in method
+    assert 'state->getVariablePosition(name)) > .002' in method
