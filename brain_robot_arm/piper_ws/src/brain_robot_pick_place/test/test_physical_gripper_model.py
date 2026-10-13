@@ -21,8 +21,8 @@ def test_only_finger_position_bounds_are_updated():
       <limit lower="-.035" upper="0" velocity="1" effort="10"/></joint></robot>'''
     expected = ET.fromstring(original)
     expected.find("joint[@name='joint7']/limit").set('lower', '0.0')
-    expected.find("joint[@name='joint7']/limit").set('upper', '0.04')
-    expected.find("joint[@name='joint8']/limit").set('lower', '-0.04')
+    expected.find("joint[@name='joint7']/limit").set('upper', '0.05')
+    expected.find("joint[@name='joint8']/limit").set('lower', '-0.05')
     expected.find("joint[@name='joint8']/limit").set('upper', '0.0')
     assert namespace['_physical_gripper_description'](original) == ET.tostring(expected, encoding='unicode')
 

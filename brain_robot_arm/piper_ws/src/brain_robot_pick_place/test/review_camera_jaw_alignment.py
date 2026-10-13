@@ -184,7 +184,7 @@ def main():
             raise RuntimeError('MoveIt execution must remain disabled')
         root = ET.fromstring(values[0].string_value)
         opening = qmap.get('gripper')
-        if opening is None or not math.isfinite(opening) or not 0 <= opening <= .080:
+        if opening is None or not math.isfinite(opening) or not 0 <= opening <= .100:
             raise RuntimeError('Measured physical opening unavailable')
         finger_positions = [opening / 2., -opening / 2.]
         for name, position in zip(['joint7', 'joint8'], finger_positions):

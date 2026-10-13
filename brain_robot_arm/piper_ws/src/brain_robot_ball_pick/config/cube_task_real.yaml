@@ -173,11 +173,11 @@ grasp_lift_executor:
     # this single path completes on the physical arm.
     candidate_grasp_enabled: false
     candidate_grasp_order: [NONE]
-    # SDK unit: 0.001 mm. Use the current guarded runtime maximum (80 mm).
-    # The device parameter query reports 100 mm, while the adapter and vendor
-    # ROS path intentionally cap outbound targets at 80 mm. Approach is gated
+    # SDK unit: 0.001 mm. Current 0x47E read-back confirms 100 mm range,
+    # and the active ROS driver multiplier is 1. Adapter and loaded finger
+    # model share this range. Approach is gated
     # on fresh feedback reaching this command within the existing 3 mm tolerance.
-    gripper_open_value: 80000
+    gripper_open_value: 100000
     # A target-directed approach is forbidden unless the full bounded-open
     # command is physically confirmed by fresh gripper feedback.
     allow_open_feedback_unconfirmed_for_approach: false

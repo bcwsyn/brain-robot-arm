@@ -115,7 +115,7 @@ def main():
         if max(spreads) > .001:
             raise RuntimeError('Physical start not stationary')
         opening = measured['gripper']
-        if not 0 <= opening <= .080:
+        if not 0 <= opening <= .100:
             raise RuntimeError('Invalid physical gripper opening')
         fingers = [opening / 2., -opening / 2.]
         transform = wait_for_stamped_transform(buffer, 'base_link', 'camera_depth_optical_frame',

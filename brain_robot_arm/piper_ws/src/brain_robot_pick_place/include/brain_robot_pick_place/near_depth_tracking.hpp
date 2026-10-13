@@ -32,11 +32,11 @@ inline bool Valid(const Calibration & c)
 
 struct Projection {double x{}, y{}, z{};};
 
-// Existing PiPER adapter/SDK command interval is 0..80 mm. An out-of-range
+// Current device 0x47E and adapter command interval is 0..100 mm. An out-of-range
 // cache (e.g. 101.9 mm) cannot be evidence of a physical jaw opening.
 inline bool PlausibleOpening(double opening)
 {
-  return std::isfinite(opening) && opening > 0 && opening <= .080;
+  return std::isfinite(opening) && opening > 0 && opening <= .100;
 }
 
 inline bool Project(

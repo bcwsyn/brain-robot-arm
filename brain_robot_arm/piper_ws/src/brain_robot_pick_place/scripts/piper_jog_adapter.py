@@ -21,7 +21,7 @@ from trajectory_msgs.msg import JointTrajectory
 
 def measured_finger_positions(opening_m):
     """Vendor feedback is TOTAL opening; URDF fingers move by +/- half."""
-    if opening_m is None or not math.isfinite(opening_m) or not 0.0 <= opening_m <= 0.080:
+    if opening_m is None or not math.isfinite(opening_m) or not 0.0 <= opening_m <= 0.100:
         return None
     return {'joint7': opening_m / 2.0, 'joint8': -opening_m / 2.0}
 
@@ -244,7 +244,7 @@ class PiperJogAdapter(Node):
                 'Rejected gripper command because joint feedback is stale')
             return
         value = float(message.position[0])
-        self.pending_gripper_target = max(0.0, min(0.08, value))
+        self.pending_gripper_target = max(0.0, min(0.100, value))
         self.pending_gripper_frames = self.gripper_command_repeats
         self.last_command_time = time.monotonic()
         self.get_logger().info(

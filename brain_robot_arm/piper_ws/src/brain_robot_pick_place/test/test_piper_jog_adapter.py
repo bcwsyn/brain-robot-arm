@@ -108,13 +108,32 @@ def test_explicit_gripper_frame_carries_vendor_effort_in_bounded_burst():
     assert list(arm_only.effort) == []
 
 
-@pytest.mark.parametrize('opening', [0.0, .050, .0796, .080])
+def test_full_open_100mm_is_forwarded_without_changing_arm_targets():
+    adapter = make_adapter()
+    adapter.armed = True
+    adapter._state_fresh = lambda: True
+    adapter.gripper_command_repeats = 5
+    adapter.gripper_effort_nm = 1.0
+    adapter.get_logger = lambda: SimpleNamespace(info=lambda _: None, error=lambda _: None)
+    request = JointState()
+    request.name = ['gripper']
+    request.position = [.100]
+    adapter._gripper_command(request)
+    output = JointState()
+    output.name = list(adapter.joint_names)
+    output.position = [.01] * 6
+    assert adapter._append_pending_gripper(output)
+    assert output.position == pytest.approx([.01] * 6 + [.100])
+    assert output.effort[-1] == 1.0
+
+
+@pytest.mark.parametrize('opening', [0.0, .050, .0796, .080, .0996, .100])
 def test_actual_total_opening_maps_to_opposed_fingers(opening):
     assert MODULE.measured_finger_positions(opening) == {
         'joint7': opening / 2, 'joint8': -opening / 2}
 
 
-@pytest.mark.parametrize('opening', [None, -.001, .081, math.nan, math.inf])
+@pytest.mark.parametrize('opening', [None, -.001, .101, math.nan, math.inf])
 def test_bad_opening_is_not_zeroed_or_clamped(opening):
     assert MODULE.measured_finger_positions(opening) is None
 

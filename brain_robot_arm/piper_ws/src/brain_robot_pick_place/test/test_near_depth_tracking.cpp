@@ -117,5 +117,7 @@ TEST(NearDepth, OriginalJawGeometryNeedsPlausibleActualOpening)
   EXPECT_FALSE(nd::PlausibleOpening(.1019));
   EXPECT_FALSE(nd::PlausibleOpening(NAN));
   EXPECT_TRUE(nd::PlausibleOpening(.05));
+  EXPECT_TRUE(nd::PlausibleOpening(.100));
+  EXPECT_FALSE(nd::PlausibleOpening(.100001));
   EXPECT_TRUE(gg::FaceInsideJawCapture({0, 0, .1238}, .1358, .04, .05));
 }

@@ -28,9 +28,9 @@ def _camera_mount_arguments(task_profile):
 
 
 def _physical_gripper_description(description):
-    """Match the existing 80mm physical opening, without editing vendor URDF."""
+    """Match the read-back 100mm physical range, without editing vendor URDF."""
     root = ET.fromstring(description)
-    for name, lower, upper in [('joint7', 0.0, .040), ('joint8', -.040, 0.0)]:
+    for name, lower, upper in [('joint7', 0.0, .050), ('joint8', -.050, 0.0)]:
         joint = root.find(f"joint[@name='{name}']")
         if joint is None or joint.get('type') != 'prismatic' or joint.find('limit') is None:
             raise RuntimeError('Expected PiPER prismatic finger: ' + name)
