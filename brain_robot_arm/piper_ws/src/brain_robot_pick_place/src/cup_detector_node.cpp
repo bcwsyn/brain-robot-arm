@@ -27,6 +27,7 @@
 #include <std_msgs/msg/string.hpp>
 
 #include "brain_robot_pick_place/rgbd_shape_geometry.hpp"
+#include "brain_robot_pick_place/rgbd_observation.hpp"
 
 class CupDetectorNode final : public rclcpp::Node
 {
@@ -54,6 +55,8 @@ public:
       "/brain_robot_vision/raw_color_debug", rclcpp::QoS(1).reliable());
     raw_target_projection_publisher_ = create_publisher<geometry_msgs::msg::PointStamped>(
       "/brain_robot_vision/raw_target_projection", rclcpp::QoS(1).reliable());
+    rgbd_observation_publisher_ = create_publisher<diagnostic_msgs::msg::DiagnosticArray>(
+      "/brain_robot_vision/rgbd_observation", rclcpp::QoS(1).reliable());
     target_topic_ = declare_parameter<std::string>(
       "target_topic", "/brain_robot_vision/target_pixel");
     target_point_camera_topic_ = declare_parameter<std::string>(
@@ -561,6 +564,14 @@ private:
     const sensor_msgs::msg::Image::ConstSharedPtr & rgb_message,
     const sensor_msgs::msg::Image::ConstSharedPtr & depth_message)
   {
+    brain_robot_pick_place::rgbd_observation::Snapshot observation;
+    observation.header = rgb_message->header;
+    observation.header.frame_id = camera_optical_frame_;
+    // Exactly one final quality result per RGB frame, including early failures.
+    struct PublishScope {std::function<void()> send; ~PublishScope() {send();}} observation_scope{
+      [this, &observation]() {
+        rgbd_observation_publisher_->publish(brain_robot_pick_place::rgbd_observation::Encode(observation));
+      }};
     cv_bridge::CvImagePtr bridge_image;
     try {
       bridge_image = cv_bridge::toCvCopy(
@@ -772,6 +783,7 @@ private:
     cv::Mat selected_mask = cv::Mat::zeros(target_mask.size(), CV_8UC1);
     std::vector<std::vector<cv::Point>> selected_contours{largest_contour};
     cv::drawContours(selected_mask, selected_contours, 0, cv::Scalar(255), cv::FILLED);
+    const cv::Mat full_color_mask = selected_mask.clone();
     cv::Rect depth_box = target_box;
     if (software_registration_enabled_) {
       selected_mask = brain_robot_pick_place::associate_color_mask(selected_mask, source_pixels);
@@ -780,6 +792,34 @@ private:
       depth_box = measured_pixels.empty() ? cv::Rect() : cv::boundingRect(measured_pixels);
     }
     DepthResult depth = measure_depth(depth_message, selected_mask, depth_box);
+    // Coverage belongs to the COMPLETE original RGB shape. A depth strip must
+    // not become a new small 'complete' object after registration/erosion.
+    cv::Mat support = selected_mask.clone();
+    if (depth_erode_px_ > 0) {
+      const int n = 2*depth_erode_px_+1;
+      cv::erode(support, support, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(n, n)));
+    }
+    cv::Mat covered = cv::Mat::zeros(full_color_mask.size(), CV_8UC1);
+    if (software_registration_enabled_) {
+      for (int row = 0; row < support.rows; ++row) {
+        for (int col = 0; col < support.cols; ++col) {
+          if (!support.at<std::uint8_t>(row, col)) {continue;}
+          const auto pixel = source_pixels.at<cv::Vec2i>(row, col);
+          if (pixel[0] >= 0 && pixel[0] < covered.cols && pixel[1] >= 0 && pixel[1] < covered.rows) {
+            covered.at<std::uint8_t>(pixel[1], pixel[0]) = 255;
+          }
+        }
+      }
+    } else {covered = support;}
+    const int total_pixels = cv::countNonZero(full_color_mask);
+    observation.coverage = total_pixels > 0 ? double(cv::countNonZero(covered))/total_pixels : 0;
+    std::vector<cv::Point> covered_pixels; cv::findNonZero(covered, covered_pixels);
+    if (!covered_pixels.empty() && target_box.area() > 0) {
+      observation.span = std::min(1., double(cv::boundingRect(covered_pixels).area())/target_box.area());
+    }
+    observation.samples = depth.sample_count;
+    observation.mad_m = std::isfinite(depth.median_absolute_deviation_m) ?
+      depth.median_absolute_deviation_m : 0;
     cv::Vec3d aim_point;
     double color_z = 0.0;
     cv::Point target_center = software_registration_enabled_ ? image_center : cv::Point(
@@ -836,6 +876,13 @@ private:
     }
     const bool target_confirmed = !require_depth_for_target_valid_ ||
       (depth_grasp_allowed && target_size_valid);
+    observation.qualified = depth_grasp_allowed && target_size_valid;
+    if (depth.valid && camera_info_ready_) {
+      observation.point.x = aim_point[0]; observation.point.y = aim_point[1];
+      observation.point.z = aim_point[2];
+      observation.size.x = target_width_m; observation.size.y = target_height_m;
+      observation.size.z = depth.meters;
+    }
 
     geometry_msgs::msg::PointStamped target_message;
     target_message.header = rgb_message->header;
@@ -1151,6 +1198,7 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr debug_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr target_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr target_point_camera_publisher_;
+  rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr rgbd_observation_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::Vector3Stamped>::SharedPtr target_size_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::Vector3Stamped>::SharedPtr error_publisher_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr valid_publisher_;

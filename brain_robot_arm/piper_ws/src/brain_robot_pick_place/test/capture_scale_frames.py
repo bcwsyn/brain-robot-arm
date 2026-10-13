@@ -9,6 +9,7 @@ from cv_bridge import CvBridge
 from geometry_msgs.msg import PolygonStamped, PointStamped
 from sensor_msgs.msg import Image, JointState
 from std_msgs.msg import String
+from diagnostic_msgs.msg import DiagnosticArray
 from rclpy.qos import qos_profile_sensor_data, QoSProfile, DurabilityPolicy
 
 out = Path(sys.argv[1])
@@ -63,6 +64,12 @@ def receive_state(m):
     latest['state']=m.data
     emit({'kind':'state','epoch':time.time(),'state':m.data})
 
+def receive_observation(m):
+    if len(m.status) == 1:
+        emit({'kind':'rgbd_observation','stamp_ns':stamp(m),'frame':m.header.frame_id,
+              'qualified':m.status[0].level == m.status[0].OK,
+              'values':{v.key:v.value for v in m.status[0].values}})
+
 def receive_debug(m):
     k=stamp(m)
     p=out/(str(k)+'_debug.png')
@@ -70,6 +77,7 @@ def receive_debug(m):
     emit({'kind':'debug','stamp_ns':k,'path':str(p)})
 
 for topic,kind,fn,qos in [
+    ('/brain_robot_vision/rgbd_observation',DiagnosticArray,receive_observation,10),
     ('/camera/color/image_raw',Image,receive_rgb,qos_profile_sensor_data),
     ('/camera/depth/image_raw',Image,receive_depth,qos_profile_sensor_data),
     ('/joint_states_feedback',JointState,receive_feedback,qos_profile_sensor_data),

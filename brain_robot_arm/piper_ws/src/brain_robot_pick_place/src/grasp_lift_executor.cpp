@@ -46,6 +46,7 @@
 #include "brain_robot_pick_place/target_model_wait.hpp"
 #include "brain_robot_pick_place/visual_grasp_feedback.hpp"
 #include "brain_robot_pick_place/near_depth_tracking.hpp"
+#include "brain_robot_pick_place/rgbd_observation.hpp"
 
 namespace brain_robot_pick_place
 {
@@ -82,6 +83,16 @@ public:
       emergency_stop_topic_, rclcpp::QoS(10));
     reacquire_publisher_ = create_publisher<std_msgs::msg::Bool>(
       grasp_reacquire_topic_, rclcpp::QoS(10));
+    rgbd_observation_subscription_ = create_subscription<diagnostic_msgs::msg::DiagnosticArray>(
+      "/brain_robot_vision/rgbd_observation", rclcpp::QoS(1).reliable(),
+      [this](const diagnostic_msgs::msg::DiagnosticArray::SharedPtr message) {
+        rgbd_observation::Snapshot observation;
+        if (!rgbd_observation::Decode(*message, observation)) {return;}
+        std::lock_guard<std::mutex> lock(target_mutex_);
+        rgbd_observations_[rclcpp::Time(observation.header.stamp).nanoseconds()] =
+          {observation, std::chrono::steady_clock::now()};
+        while (rgbd_observations_.size() > 24) {rgbd_observations_.erase(rgbd_observations_.begin());}
+      });
     visual_state_subscription_ = create_subscription<std_msgs::msg::String>(
       visual_state_topic_, rclcpp::QoS(1).transient_local(),
       [this](const std_msgs::msg::String::SharedPtr message) {
@@ -503,6 +514,7 @@ private:
     near_depth_rgb_tracking_enabled_ = ParameterOr<bool>("near_depth_rgb_tracking_enabled", false);
     automatic_rgb_approach_enabled_ = ParameterOr<bool>("automatic_rgb_approach_enabled", false);
     terminal_depth_stage_enabled_ = ParameterOr<bool>("terminal_depth_stage_enabled", true);
+    quality_driven_depth_stage_enabled_ = ParameterOr<bool>("quality_driven_depth_stage_enabled", true);
     terminal_depth_lock_range_m_ = ParameterOr<double>("terminal_depth_lock_range_m", .20);
     near_depth_prediction_max_age_s_ = ParameterOr<double>("near_depth_prediction_max_age_s", 30.0);
     near_depth_prediction_max_travel_m_ = ParameterOr<double>(
@@ -873,6 +885,8 @@ private:
     coarse_depth_tracking_ = false;
     coarse_motion_in_progress_ = false;
     terminal_target_frozen_ = false;
+    reliable_depth_models_.clear();
+    coarse_depth_quality_declined_ = false;
     struct TrackingScope
     {
       bool & active;
@@ -1394,6 +1408,14 @@ private:
     std::int64_t stamp_ns{};
     Eigen::Vector3d target_reference{Eigen::Vector3d::Zero()};
     Eigen::Vector3d correction{Eigen::Vector3d::Zero()};
+    Eigen::Vector3d camera_origin_reference{Eigen::Vector3d::Zero()};
+  };
+
+  struct ReliableDepthModel
+  {
+    geometry_msgs::msg::PointStamped reference;
+    LockedRgbView view;
+    rgbd_observation::Snapshot quality;
   };
 
   bool ObserveLockedTarget(
@@ -1482,6 +1504,8 @@ private:
     if (!feedback_fresh()) {return false;}
     geometry_msgs::msg::PointStamped measured;
     geometry_msgs::msg::Vector3Stamped measured_size;
+    rgbd_observation::Snapshot quality;
+    bool quality_matched = false;
     bool measured_same_image = false;
     {
       std::lock_guard<std::mutex> lock(target_mutex_);
@@ -1496,6 +1520,30 @@ private:
         fresh(target_valid_received_time_) && fresh(depth_valid_received_time_) &&
         fresh(target_size_received_time_) && measured.header.stamp == message.header.stamp &&
         target_size_.header.stamp == message.header.stamp;
+      if (automatic_rgb_approach_enabled_ && quality_driven_depth_stage_enabled_ &&
+        !terminal_target_frozen_) {
+        // Never combine this frame's raw point with an adjacent frame's Bool.
+        measured_same_image = false;
+        const auto found = rgbd_observations_.find(image_time.nanoseconds());
+        if (found != rgbd_observations_.end() && fresh(found->second.second)) {
+          quality = found->second.first; quality_matched = true;
+          measured_same_image = quality.qualified && !recovering;
+          measured.header = quality.header; measured.point = quality.point;
+          measured_size.header = quality.header; measured_size.vector = quality.size;
+        }
+      }
+    }
+    if (coarse_depth_tracking_ && !coarse_motion_in_progress_ &&
+      quality_driven_depth_stage_enabled_ && quality_matched) {
+      std::vector<rgbd_observation::Snapshot> history;
+      for (const auto & model : reliable_depth_models_) {history.push_back(model.quality);}
+      if (rgbd_observation::Declined(quality, history)) {
+        coarse_depth_quality_declined_ = true;
+        RCLCPP_INFO(get_logger(), "COARSE_RGBD_QUALITY_HANDOFF stamp=%ld qualified=%d "
+          "samples=%.0f coverage=%.6f span=%.6f KEEP_LAST_RELIABLE_WORLD_MODEL",
+          image_time.nanoseconds(), quality.qualified, quality.samples, quality.coverage, quality.span);
+        return reject("COARSE_DEPTH_QUALITY_DECLINED_USE_RELIABLE_MODEL");
+      }
     }
     if (coarse_depth_tracking_ && !coarse_motion_in_progress_ &&
       (!measured_same_image || !identity_continuous)) {
@@ -1777,11 +1825,19 @@ private:
       }
       view.calibration = calibration; view.width = info.width; view.height = info.height;
       view.stamp_ns = image_time.nanoseconds(); view.correction = correction;
+      view.camera_origin_reference = Eigen::Vector3d(camera_origin.x(), camera_origin.y(), camera_origin.z());
       view.target_reference = Eigen::Vector3d(reference.point.x, reference.point.y,
         reference.point.z) + correction;
       near_view_recovery_ = recovering;
       near_last_visible_rgb_box_ = box;
       if (!recovering) {near_last_full_rgb_view_ = view;}
+      if (coarse_depth_tracking_ && !coarse_motion_in_progress_ &&
+        quality_driven_depth_stage_enabled_ && quality_matched && quality.qualified &&
+        view.measured_rgbd && (reliable_depth_models_.empty() ||
+        view.stamp_ns > reliable_depth_models_.back().view.stamp_ns)) {
+        reliable_depth_models_.push_back({reference, view, quality});
+        if (reliable_depth_models_.size() > 3) {reliable_depth_models_.erase(reliable_depth_models_.begin());}
+      }
       if (observed_view) {*observed_view = view;}
       return true;
     } catch (const tf2::TransformException & error) {
@@ -2412,6 +2468,7 @@ private:
 
   bool WaitCoarseDepthView(geometry_msgs::msg::PointStamped & reference, LockedRgbView & view)
   {
+    coarse_depth_quality_declined_ = false;
     const auto deadline = std::chrono::steady_clock::now() +
       std::chrono::duration<double>(target_timeout_s_);
     while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
@@ -2420,13 +2477,14 @@ private:
       if (ObserveLockedTarget(reference, stamp, predicted, nullptr, nullptr, nullptr, &view, true) &&
         view.measured_rgbd && !predicted && !view.recovering &&
         view.stamp_ns > near_last_command_image_stamp_ns_) {return true;}
+      if (coarse_depth_quality_declined_) {return false;}
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
     return false;
   }
 
   bool CommitTerminalDepthLock(const geometry_msgs::msg::PointStamped & reference,
-    const LockedRgbView & view)
+    const LockedRgbView & view, bool quality_handoff = false)
   {
     if (!automatic_rgb_approach_enabled_ || !coarse_depth_tracking_ || terminal_target_frozen_ ||
       !view.valid || !view.measured_rgbd || view.recovering ||
@@ -2434,7 +2492,11 @@ private:
       !std::isfinite(reference.point.x) || !std::isfinite(reference.point.y) ||
       !std::isfinite(reference.point.z) || view.stamp_ns <= 0 ||
       !std::isfinite(view.measured_color_range_m) || view.measured_color_range_m <= .001 ||
-      view.measured_color_range_m > terminal_depth_lock_range_m_ + grasp_landing_tolerance_m_ ||
+      (!quality_handoff &&
+      view.measured_color_range_m > terminal_depth_lock_range_m_ + grasp_landing_tolerance_m_) ||
+      (quality_handoff && (!quality_driven_depth_stage_enabled_ || reliable_depth_models_.size() < 3 ||
+      reference != reliable_depth_models_.back().reference ||
+      view.stamp_ns != reliable_depth_models_.back().view.stamp_ns)) ||
       !std::isfinite(view.measured_size_m) || !std::isfinite(view.measured_min_size_m) ||
       view.measured_size_m < min_object_size_m_ || view.measured_size_m > max_object_size_m_ ||
       view.measured_min_size_m < min_object_size_m_) {return false;}
@@ -2450,6 +2512,8 @@ private:
     near_seed_ = {view.box, view.measured_color_range_m, true};
     near_seed_stamp_ns_ = near_seed_image_stamp_ns_ = view.stamp_ns;
     near_last_image_stamp_ns_ = near_last_command_image_stamp_ns_ = view.stamp_ns;
+    near_last_camera_origin_ = tf2::Vector3(view.camera_origin_reference.x(),
+      view.camera_origin_reference.y(), view.camera_origin_reference.z());
     near_camera_travel_m_ = 0;
     near_path_allowance_ready_ = false;
     near_rgb_association_bad_frames_seen_ = 0;
@@ -2463,6 +2527,33 @@ private:
       view.stamp_ns, view.measured_color_range_m, reference.point.x, reference.point.y,
       reference.point.z, view.measured_size_m);
     return true;
+  }
+
+  bool FreezeReliableDepthModel(const std::string & reason)
+  {
+    if (!quality_driven_depth_stage_enabled_ || reliable_depth_models_.size() < 3 ||
+      !coarse_depth_tracking_ || terminal_target_frozen_) {return false;}
+    const auto model = reliable_depth_models_.back();  // No invented fresh measurement or timestamp.
+    // The last accepted step has settled. Validate TODAY's RGB identity and
+    // exact image-time ego-motion/fresh physical feedback before any next output.
+    coarse_depth_tracking_ = false; terminal_target_frozen_ = true;
+    geometry_msgs::msg::PointStamped visible;
+    rclcpp::Time stamp(0, 0, get_clock()->get_clock_type());
+    bool predicted = false; LockedRgbView live;
+    const bool observed = ObserveLockedTarget(visible, stamp, predicted, nullptr, nullptr,
+      nullptr, &live, true);
+    coarse_depth_tracking_ = true; terminal_target_frozen_ = false;
+    if (!observed || !live.valid || live.recovering || !visual_grasp::FullView(live.box) ||
+      !visual_grasp::Associated(model.view.box, live.box, .12+1e-6)) {return false;}
+    if (!CommitTerminalDepthLock(model.reference, model.view, true)) {return false;}
+    PublishDiagnostic("QUALITY_DRIVEN_TERMINAL_MODEL_FROZEN:"+reason);
+    RCLCPP_INFO(get_logger(), "QUALITY_DRIVEN_TERMINAL_MODEL_FROZEN reason=%s "
+      "measurement_stamp=%ld current_rgb_stamp=%ld measurement_age_s=%.6f "
+      "range_at_measurement=%.6f NOT_NEW_DEPTH_NO_FIXED_SWITCH_RANGE",
+      reason.c_str(), model.view.stamp_ns, stamp.nanoseconds(),
+      (now().nanoseconds()-model.view.stamp_ns)*1e-9, model.view.measured_color_range_m);
+    // Count camera travel since the genuine old measurement; do not erase it.
+    return ObserveLockedTarget(visible, stamp, predicted, nullptr, nullptr, nullptr, nullptr, true);
   }
 
   bool RemeasureTerminalTarget()
@@ -2522,7 +2613,8 @@ private:
 
   bool DepthApproachAndFreezeTerminal()
   {
-    if (!std::isfinite(terminal_depth_lock_range_m_) || terminal_depth_lock_range_m_ <= .15 ||
+    if ((!quality_driven_depth_stage_enabled_ && (!std::isfinite(terminal_depth_lock_range_m_) ||
+      terminal_depth_lock_range_m_ <= .15)) ||
       !near_depth_tracking_active_ || !near_seed_.valid) {return false;}
     coarse_depth_tracking_ = true;
     struct CoarseScope {bool & active; ~CoarseScope() {active = false;}} scope{coarse_depth_tracking_};
@@ -2540,15 +2632,26 @@ private:
       tool_to_camera.translation()[row] = mount_tf.getOrigin()[row];
     }
     for (std::size_t step = 0; rclcpp::ok() && !cancel_requested_ && step < max_steps; ++step) {
-      if (step != 0 && !WaitCoarseDepthView(reference, view)) {return false;}
+      if (step != 0 && !WaitCoarseDepthView(reference, view)) {
+        return FreezeReliableDepthModel(coarse_depth_quality_declined_ ?
+          "DEPTH_QUALITY_DECLINED" : "QUALIFIED_DEPTH_UNAVAILABLE");
+      }
       RCLCPP_INFO(get_logger(), "COARSE_DEPTH_STEP=%zu measured_color_range=%.6f target_range=%.3f",
         step, view.measured_color_range_m, terminal_depth_lock_range_m_);
-      if (view.measured_color_range_m <= terminal_depth_lock_range_m_ + grasp_landing_tolerance_m_) {
+      if (!quality_driven_depth_stage_enabled_ &&
+        view.measured_color_range_m <= terminal_depth_lock_range_m_ + grasp_landing_tolerance_m_) {
         return RemeasureTerminalTarget();
       }
       const auto state = FreshMeasuredState("COARSE_DEPTH_APPROACH");
       if (!state) {return false;}
       const auto & fk = state->getGlobalLinkTransform(end_effector_link_);
+      const double wrist_gap = (Eigen::Vector3d(reference.point.x, reference.point.y,
+        reference.point.z)-fk.translation()).norm();
+      if (quality_driven_depth_stage_enabled_ && reliable_depth_models_.size() >= 3 &&
+        wrist_gap <= gripper_tip_offset_m_ + top_down_pregrasp_clearance_m_ +
+        grasp_height_offset_m_ + 2*approach_microstep_m_) {
+        return FreezeReliableDepthModel("MEASURED_PREGRASP_GEOMETRY_REACHED");
+      }
       const Eigen::Quaterniond q(fk.rotation());
       const grasp_geometry::DirectedPose current{{fk.translation().x(), fk.translation().y(), fk.translation().z()},
         {q.x(), q.y(), q.z(), q.w()}};
@@ -2557,7 +2660,8 @@ private:
         (fk * tool_to_camera).translation();
       if (!ray.allFinite() || ray.norm() <= .001) {return false;}
       // Move along the measured ray, not a long-range guessed grasp landing.
-      const auto shift = ray.normalized() * std::max(0.0, ray.norm()-terminal_depth_lock_range_m_);
+      const auto shift = ray.normalized() * (quality_driven_depth_stage_enabled_ ?
+        approach_microstep_m_ : std::max(0.0, ray.norm()-terminal_depth_lock_range_m_));
       for (int i = 0; i < 3; ++i) {nominal.origin[i] += shift[i];}
       GuardApproachView(nominal, tool_to_camera, view);
       const auto step_pose = visual_grasp::CorrectedPoseStep(current, nominal, {0, 0, 0},
@@ -4602,6 +4706,12 @@ private:
   bool near_depth_rgb_tracking_enabled_{false};
   bool automatic_rgb_approach_enabled_{false};
   bool terminal_depth_stage_enabled_{true};
+  bool quality_driven_depth_stage_enabled_{true};
+  bool coarse_depth_quality_declined_{false};
+  std::vector<ReliableDepthModel> reliable_depth_models_;
+  std::map<int64_t, std::pair<rgbd_observation::Snapshot, std::chrono::steady_clock::time_point>>
+    rgbd_observations_;
+  rclcpp::Subscription<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr rgbd_observation_subscription_;
   double terminal_depth_lock_range_m_{.20};
   bool coarse_depth_tracking_{false}, coarse_motion_in_progress_{false};
   bool terminal_target_frozen_{false};

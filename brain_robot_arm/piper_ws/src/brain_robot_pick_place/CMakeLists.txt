@@ -12,6 +12,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(control_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(diagnostic_msgs REQUIRED)
 find_package(gazebo_dev REQUIRED)
 find_package(gazebo_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -56,6 +57,7 @@ add_executable(cup_detector_node src/cup_detector_node.cpp)
 target_include_directories(cup_detector_node PRIVATE include ${OpenCV_INCLUDE_DIRS})
 ament_target_dependencies(cup_detector_node
   cv_bridge
+  diagnostic_msgs
   geometry_msgs
   message_filters
   rclcpp
@@ -85,6 +87,7 @@ ament_target_dependencies(visual_search_controller
 add_executable(grasp_lift_executor src/grasp_lift_executor.cpp)
 target_include_directories(grasp_lift_executor PRIVATE include)
 ament_target_dependencies(grasp_lift_executor
+  diagnostic_msgs
   geometry_msgs
   moveit_core
   moveit_msgs
@@ -164,9 +167,12 @@ if(BUILD_TESTING)
   ament_add_gtest(near_depth_executor_test test/test_near_depth_executor.cpp)
   target_include_directories(near_depth_executor_test PRIVATE include)
   ament_target_dependencies(near_depth_executor_test
-    geometry_msgs moveit_core moveit_msgs moveit_ros_planning_interface rclcpp
+    diagnostic_msgs geometry_msgs moveit_core moveit_msgs moveit_ros_planning_interface rclcpp
     sensor_msgs std_msgs std_srvs trajectory_msgs tf2 tf2_geometry_msgs tf2_ros)
   set_tests_properties(near_depth_executor_test PROPERTIES ENVIRONMENT "ROS_DOMAIN_ID=78")
+  ament_add_gtest(rgbd_observation_test test/test_rgbd_observation.cpp)
+  target_include_directories(rgbd_observation_test PRIVATE include)
+  ament_target_dependencies(rgbd_observation_test diagnostic_msgs geometry_msgs)
   add_executable(review_target_directed_geometry test/review_target_directed_geometry.cpp)
   target_include_directories(review_target_directed_geometry PRIVATE include)
   ament_add_gtest(center_search_test test/test_center_search.cpp)

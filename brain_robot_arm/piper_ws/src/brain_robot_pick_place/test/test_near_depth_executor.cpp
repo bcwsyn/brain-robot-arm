@@ -116,8 +116,37 @@ struct NearDepthReplayAccess
     n.raw_box_received_ = std::chrono::steady_clock::now();
   }
   static void NoSeed(GraspLiftExecutor & n) {n.near_seed_.valid = false;}
-  static void Automatic(GraspLiftExecutor & n) {n.automatic_rgb_approach_enabled_ = true;}
-  static void Coarse(GraspLiftExecutor & n) {n.coarse_depth_tracking_ = true;}
+  static void Automatic(GraspLiftExecutor & n) {
+    n.automatic_rgb_approach_enabled_ = true;
+    n.quality_driven_depth_stage_enabled_ = false;  // Preserve legacy regressions explicitly.
+  }
+  static void Coarse(GraspLiftExecutor & n) {
+    n.coarse_depth_tracking_ = true; n.quality_driven_depth_stage_enabled_ = false;
+  }
+  static void QualityStage(GraspLiftExecutor & n) {
+    n.automatic_rgb_approach_enabled_ = n.coarse_depth_tracking_ = true;
+    n.quality_driven_depth_stage_enabled_ = true;
+  }
+  static void AtomicObservation(GraspLiftExecutor & n, bool qualified = true, double z = .23,
+    double coverage = .5, double span = .9) {
+    rgbd_observation::Snapshot s;
+    s.header = n.target_point_camera_.header; s.point = n.target_point_camera_.point;
+    s.point.z = z; s.size = n.target_size_.vector; s.size.z = z;
+    s.qualified = qualified; s.samples = qualified ? 1800 : 16;
+    s.coverage = coverage; s.span = span; s.mad_m = .002;
+    n.rgbd_observations_[rclcpp::Time(s.header.stamp).nanoseconds()] =
+      {s, std::chrono::steady_clock::now()};
+  }
+  static void ReliableHistory(GraspLiftExecutor & n, double range = .23) {
+    QualityStage(n);
+    for (int i = 0; i < 3; ++i) {
+      Inputs(n, true); AtomicObservation(n, true, range);
+      bool predicted = false; geometry_msgs::msg::PointStamped p;
+      ASSERT_TRUE(Observe(n, predicted, p));
+    }
+  }
+  static bool QualityFreeze(GraspLiftExecutor & n) {return n.FreezeReliableDepthModel("TEST_QUALITY_DROP");}
+  static auto QualityHistorySize(GraspLiftExecutor & n) {return n.reliable_depth_models_.size();}
   static void CoarseMotion(GraspLiftExecutor & n) {n.coarse_motion_in_progress_ = true;}
   static void OldSeed(GraspLiftExecutor & n, double age_s) {
     n.near_seed_stamp_ns_ = (n.now()-rclcpp::Duration::from_seconds(age_s)).nanoseconds();
@@ -558,6 +587,70 @@ TEST_F(NearDepthExecutor, TerminalCommitRejectsWrongFrameOrOutsideTheStagingRang
   NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
   EXPECT_FALSE(NearDepthReplayAccess::TerminalCommit(*node, .25));
   EXPECT_FALSE(NearDepthReplayAccess::TerminalCommit(*node, .1238, "other_reference"));
+}
+
+TEST_F(NearDepthExecutor, AtomicQualityRejectsAdjacentFrameBoolAndKeepsLastWorldModel)
+{
+  NearDepthReplayAccess::ReliableHistory(*node);
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  const auto seed = NearDepthReplayAccess::SeedStamp(*node);
+  NearDepthReplayAccess::Inputs(*node, true);  // Stale Bool/raw may still claim validity.
+  NearDepthReplayAccess::AtomicObservation(*node, false, .255, .04, .03);
+  bool predicted = false; geometry_msgs::msg::PointStamped p;
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+  ASSERT_TRUE(NearDepthReplayAccess::QualityFreeze(*node));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed);  // Never turn old depth into fresh depth.
+  EXPECT_TRUE(NearDepthReplayAccess::DepthFlag(*node));
+}
+
+TEST_F(NearDepthExecutor, QualifiedButShrunkenDepthStripCannotReplaceTarget)
+{
+  NearDepthReplayAccess::ReliableHistory(*node);
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Inputs(*node, true);
+  NearDepthReplayAccess::AtomicObservation(*node, true, .255, .04, .03);
+  bool predicted = false; geometry_msgs::msg::PointStamped p;
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+  ASSERT_TRUE(NearDepthReplayAccess::QualityFreeze(*node));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+}
+
+TEST_F(NearDepthExecutor, QualityFreezeCompensatesCameraMotionAndDoesNotRequireTwentyCm)
+{
+  NearDepthReplayAccess::ReliableHistory(*node, .3);
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::AtomicObservation(*node, false, .33, .02, .03);
+  NearDepthReplayAccess::ShiftCameraZ(*node, .005);
+  ASSERT_TRUE(NearDepthReplayAccess::QualityFreeze(*node));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+  EXPECT_NEAR(NearDepthReplayAccess::Travel(*node), .005, 1e-9);
+  bool predicted = false; geometry_msgs::msg::PointStamped p;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_TRUE(predicted); EXPECT_EQ(p, locked);
+}
+
+TEST_F(NearDepthExecutor, QualityFreezeStillNeedsLiveSameObjectAndActualSixAxisFeedback)
+{
+  NearDepthReplayAccess::ReliableHistory(*node);
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Inputs(*node, false); NearDepthReplayAccess::LostRGB(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::QualityFreeze(*node));
+  NearDepthReplayAccess::Inputs(*node, false); NearDepthReplayAccess::MissingAxis(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::QualityFreeze(*node));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+}
+
+TEST_F(NearDepthExecutor, MissingAtomicObservationCannotUseRawBoolToBuildReliableHistory)
+{
+  NearDepthReplayAccess::QualityStage(*node);
+  bool predicted = false; geometry_msgs::msg::PointStamped p;
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_EQ(NearDepthReplayAccess::QualityHistorySize(*node), 0u);
+  EXPECT_FALSE(NearDepthReplayAccess::QualityFreeze(*node));
 }
 
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)
