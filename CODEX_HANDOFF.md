@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：质量v1已部署/AUTO0原脚本7/7；批准最终中心条件v2/87回归通过，无新运动）
+## 最新接续（2026-10-14：099bbc9/v2已部署，原AUTO1完整实体实测启动，结果待验证）
+
+actual/install97b154c…/8e763f4…/CPPac99410…/56df03d…/hpp6b6e2e…，入口87039b…；质量v1备份center_capture_previous_361cb55，无旧栈。新SDK1359.295/high1359.284/100Hz、六true/静止、q[-.272114284,1.292049792,-.644707172,0,.340199578,0]rad、99.6mm，RX持续复用。原AUTO1/视觉/不停目标获取→quality_stage_onekey，读采quality_stage_exact/live，600INT原边界；下一读对应进程/console/visual_stack/v2质量与新三图，不重复启动。观测[0,.98,-.75,0,.30,0]/prepare1%/原范围/.189rad/s/8mm1°/.08前缀保持；异常原hold不Disable/Reset。087软件与回放只辅助，用户同意最终中心条件/多次纠偏已解决，需实体证据。其他既有改动/远端left1/right114分叉保持、不强推。
+
+## 历史接续（质量v1/AUTO0与最终中心条件验证）
 
 actual361cb55 executor27f8b25…/detector27f9059…，旧198f2a5备份quality_stage_previous_198f2a5，原入口87039b…不变。原AUTO0仅无运动部署核验7/7，新三图/22原子质量/反馈有证据；相机短断流后原守护恢复，RGB完整方块在中心左侧，当前框right.45625<.5。原native图近黑为毫米显示，64.1%非零，不能当全幅零。准确script PID INT收尾/ps无栈，SDK0350.843/high100Hz/六true/速度0/q[-.272114284,1.292049792,-.644707172,0,.340199578,0]rad/99.6mm，未Disable/Reset或新轨迹。
 
