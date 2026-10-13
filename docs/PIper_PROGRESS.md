@@ -1,3 +1,12 @@
+### 2026-10-13：198f2a5首跑粗段深度空洞停止；用户未批准23cm，已搜索官方/GitHub并复用原只读工具量化
+
+- 应用198f2a5/部署e8954d9，原AUTO1 PREPARE6229.137→SEARCH6248.711/OBSERVE_POSE_REACHED→ALIGN6263.091→GRASP_READY6266.038；粗段0..11共12轨迹/12真实反馈确认，step10 .227168m后RGB完整但depth目标区空洞，step11 .255249m后原.6s同帧等待6284.217失败。未freeze/未synchronized_turn主几何调用/未闭爪抬升释放，不能称新几何实体失败或已抓取；74项/共享完整双段软件证据保留。停止早于批准的新几何、粗段/检测器未修改，不归因CAN或新同步改动。具体真实三图/源SHA/回退见docs/evidence/piper_synchronized_turn_20261013.md。
+- 主19312 rc1/原cleanup保持使能，无Disable/Reset/回零；读采42097/92438 INT各0、隔离10581 INT0，最终ps无相关栈。新SDK1791906435.513070/high6435.508979/100Hz、六true/速度全0，q[-.272114284,1.292049792,-.644707172,0,.340199578,0]rad、夹爪99.6mm/使能无错误；root清理前后90%7.8GB/固定clean0，结束90%7.6GB无ENOSPC/扩删。不用0045旧缓存当当前新鲜目标。
+- 原0018/0041三图已看，0041原RGB完整/两指可见未包围，debug仅窄条支撑255mm16样本/WAITING_FOR_STABLE_FRAMES。原检测器raw点在depth.valid时即发布、稳定/尺寸门的Bool随后无header，raw点不是同帧质量通过；异步旧Bool接受残余背景是待核验风险，非唯一定因。没有修改检测门、TF或目标坐标。
+- 用户没有明确批准固定23cm，指出高度/尺寸变化也有空洞，要求搜索官方/GitHub。实际PID2bc5:0657/序列CC1365304DG，官方ROS2规则对应dabai dc1；查Orbbec SDK兼容/后处理、RealSense官方遮挡/occlusion-filter.cpp/补洞时间拖影、ViSP眼在手IBVS模型Z/图像误差。只参考兼容的算法结构，不装SDK2/换驱动/刷固件/关激光/加网络或复制特定硬件接口。
+- 复用原review_depth_registration.py读取新同帧6280.183/6282.184（RGB-depth差9.1/8.4ms）、当前工厂参数/CameraInfo，shell rc0；方块mask1318→1461，project_measured腐蚀后1811→36（median227→255mm、后者仅2行）；last-good Z=.227假设反投影ROI100%在FOV而原生足迹非零624/1318≈47.3%→66/1461≈4.5%。独立原RGBmask不是正式registered轮廓bit-exact，因此不把36称现场16复现；证明局部原生缺失、非整幅故障或单纯out-FOV，不唯一定因目标高度/材质/IR遮挡或标定。无ROS/运动/控制改动，完整一手链接/数字/建议见docs/evidence/piper_depth_holes_reuse_20261013.md。
+- 下一建议“带戳合格RGB-D观测→质量下降时保留最后可靠同一世界模型、真实关节/图像TF补偿相机运动→已批准同步靠近/原RGB纠偏”，不强制20/23cm、不把补洞/背景/预测当新测量；保留原最终实际夹持/闭爪/MoveIt/adapter链。新的阶段需按修改前规则明确确认，不将用户搜索请求当实现授权。本轮只记录实測/研究，Git仅本地origin/main历史推送审查未完成、用户原wiring注释/vendor/reference保持，总目标未完成。
+
 ### 2026-10-13：198f2a5已部署，原AUTO1同步转向靠近实测正在启动
 
 - 新原CPPcd05f4…/geometry hpp58c623…/binaryfd0d086…已机械部署，runtime/install同SHA；旧actual0c14428/b9f1c1…备份synchronized_turn_previous_0c14428.bin，原入口87039b…不改、无活动旧栈。新SDK1791906121.000385/high6121.001154/100Hz、六true/速度全0、q[-.293948353,1.318753330,-.646836474,0,.330879520,0]rad，夹爪99.6mm/200Hz/0.081N·m/使能无错误；CANRX35809440→35812384/ERROR-ACTIVE/1Mbps/.750/queue1000/error0，复用不重载。

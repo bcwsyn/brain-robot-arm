@@ -1,4 +1,10 @@
-## 最新接续（2026-10-13，198f2a5已部署；原AUTO1同步转向实测正在启动）
+## 最新接续（2026-10-13，198f2a5粗段局部深度空洞停止；同步末段未触发，用户改为要求GitHub通用方案）
+
+实际binaryfd0d086…/CPPcd05f4…/hpp58c623…/原入口87039b…，同步几何74项/共享生产完整规划通过。原AUTO1 PREPARE6229→SEARCH6248/OBSERVE_POSE_REACHED→ALIGN6263→GRASP_READY6266→12粗段真实发布/到位；step10测227mm后depth支撑几乎归零，step11残余255mm后6284.217等待同帧深度失败，没有20cm冻结/同步分支/闭爪。原主19312 rc1/cleanup、读采42097/92438 INT0，无活动栈/失能/Reset。新SDK6435.513/high100Hz/六true/静止，q[-.272114284,1.292049792,-.644707172,0,.340199578,0]rad，99.6mm。
+
+23cm提前重测仅提案，用户未明确同意，指出高度尺寸使固定距离不通用，要求搜索官方/GitHub。已核对Orbbec设备兼容/RealSense遮挡与补洞局限/ViSP模型视觉伺服；复用原review_depth_registration.py同帧读数1811→36/原生足迹47.3%→4.5%，完整RGB/ROI100%在FOV，非全幅相机失效。source事实/推断/兼容与建议分开记录docs/evidence/piper_depth_holes_reuse_20261013.md，本轮详细实测/源SHA见piper_synchronized_turn_20261013.md。新的质量驱动合格观测/最后可靠模型冻结→原RGB纠偏需先具体确认后实施，不能误改23cm/安装SDK2/复制厂商特定扫描或盲填depth_valid；同步几何授权保持。Git仅本地/历史推送审查未完成，用户既有wiring/vendor/reference不动。下一首命令cd /mnt/hgfs/ub然后git status --short，读上述研究与用户后续决定，不重复底层/激光/相同失败实测。
+
+## 本轮部署启动记录（以最新结果为准）
 
 actual fd0d086…/CPPcd05f4…/hpp58c623…/入口87039b…，旧0c14428备份synchronized_turn_previous_0c14428.bin/b9f1c1…。SDK6121新鲜六true/静止、q[-.293948353,1.318753330,-.646836474,0,.330879520,0]rad、99.6mm；CAN连续/error0复用。原AUTO1主19312→synchronized_turn_onekey，读采42097/92438→synchronized_turn_exact/live，正在启动。下一先读取新console/visual_stack和三图，不启动第二栈/自动旧策略；尚无本轮新同步实体/夹持验收，74软件和域78完整不算抓取。详细清单/命令见进度顶部，用户授权已解决，Git本地/历史推送审查阻断保持。
 
