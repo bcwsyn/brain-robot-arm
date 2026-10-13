@@ -1,3 +1,14 @@
+### 2026-10-13 12:03–12:26：静止确认原生深度空洞，当前设备官方D→C接口验证方向
+
+- 起点d676447，用户确认继续静止核对。规范/实际差异不变：新设备YAML只在规范仓库，运行旧参数；其他vendor/reference与他人test修改保留。未执行新机械臂轨迹；当前q与79.6mm开口不变，visual IDLE、grasp WAITING_FOR_LEVEL_ALIGN。RGB设备by-id和depth服务均CC1365304DG，没有混用两台相机。
+- 新采5组静止配对rc0/3.15秒，并限时15秒观察原RGB/16UC1/debug（预定timeout124）；已实际打开三图。原RGB方块完整在左下、夹指局部遮挡，原depth目标预测区域大空洞，旧参数target_valid仍会跳变。详细stamp/SHA/数值在 `docs/evidence/piper_depth_registration_review_20261013.md`，原文件 `jaw_approach_20261013/direction_review_{capture,live}`。
+- 可复用纯离线 `review_depth_registration.py` 用真实形状/椭圆核/腐蚀复现两批共20帧：当前参数全0样本；两畸变顺序最多6/2点，变化约1.24RGB像素，不能解缺失。约80%轮廓投在depth FOV内，但原深度仅1–2非零，约20%底部裁切不能解释主体空洞。正式数字替代初稿方形核近似；本轮脚本实际运行rc0、逐图SHA校验通过，报告 `direction_review_analysis/report.json`。不把假设Z=.186m当测量。
+- 官方已安装libOrbbecSDK纯计算3点6调用成功，与R·P+t误差1.518e-5像素；仍不足以定向旧r2l，因此短时独占当前深度设备，用原OpenNI `convertD2CCoordinateByIntrinsic` 查询6点。未启动流时status1，原生流首帧初始化后6点正反status0，输出均等于当前正向R·P+t整数截断；**方向被当前设备确认**。没有依靠“逆矩阵样本多”选参数，没有刷写、启硬件D2C或操作机械臂。诊断源码已归档到test/review_{orbbec_projection,openni_coordinates}.cpp，构建/运行rc0，原日志openni_coordinate_probe{,_stream}.txt。
+- 相机诊断暂停守护/正常停止唯一Astra组并在EXIT恢复。前两次因Z僵尸被当成活进程而跳过探针（rc4），修正非Z判断后再执行；不作为相机/机械臂故障。原camera_health.log于12:22:28记录FRAMES_RECOVERED；原机械臂驱动/adapter始终保留，未回零/失能。
+- 独立查明工厂D2C与实际镜头TF对同点相差59.6498mm（wrapper的t符号/父子表达冲突）；没有修改TF。当前近距抓取使用depth TF+显式R/T，color TF主要用于active_scan_supervisor，故不能直接宣称它就是历史50mm关联错误根因。
+- 已完成只读相机-Z退10mm候选，rc0/validated=true，图stamp1791865577140989839ns、66个静止样本spread0、反馈1.089ms；沿用MoveIt LIN26点/2.444秒、v/a=.005、tip路径10.00000014mm。base delta[-1.938,+.583,+9.793]mm；J2 108.525188→107.422485°、J3 -76.126447→-76.836223°、J5 50.919875→52.732354°，其余三轴基本保持。实际开口/模型一致，未依赖无效目标深度；`plan/depth_retreat_review.json`与同stamp RGB已查看，纯规划器归档为test/review_depth_retreat.py。
+- 当前主要阻断为方块原生深度观测缺失，近距/IR遮挡/材质还未独立分开。后退候选未执行；本轮已授权静止核验不自动发送该段，需要新增实体段确认，批准后仍从新鲜起点重规划。相机探针后额外3组配对rc0/3.70秒、q不变，恢复确有新帧。未闭爪/抓取/抬升/释放，总目标未完成。Git仅本地，原远程授权阻断不变，不重试push。
+
 ### 2026-10-13 11:20–11:44：真实开口模型已加载，1cm样段执行；当前相机参数错配已确认并局部更正
 
 - 起点7516de1；原唯一入口AUTO_START=0到[7/7]，未自动重做观测/搜索。实际MoveIt描述两指±40mm，模型SHA256=2df6efa9213b988b94da028019a1b0db0126c9885c57c319bb8b348f59028965；反馈79.6mm→joint7=.0398、joint8=-.0398，是真实开口而非补零。单驱动/adapter保持。
