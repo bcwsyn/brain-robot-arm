@@ -1,4 +1,12 @@
-## 最新接续（2026-10-13，ea67b83已部署；首轮原脚本到64-89被原图像TF查询停止，正在同代码唯一重试）
+## 最新接续（2026-10-13，同代码唯一重试亦到65-90后原精确图像TF失败；未抓取，保持使能/控制栈已退出）
+
+用户批准的自动尺度异常改诊断已ea67b83提交/47项通过并部署，binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485、CPP98fb19769cfa606095bcd87e4f911be1d926e4a5543ca044fb94c51fbeb528d8、原脚本87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0。两轮36段靠近到64-89/65-90，都是原EXACT_IMAGE_TF_UNAVAILABLE，不是尺度/CAN/本段IK；均0尺度advisory，不能称实体续调已验收。第二PREPARE3938.911(35秒)→SEARCH3973.525→ALIGN3987.695→GRASP_READY3991.087，77+13点；loop100/65-90/gaze=true于4047.075停止，未最终下降/闭爪/抬升。
+
+相邻TF未来差72.595/15.424ms是线索，最终catch不含异常，已有独立监听/4线程不能归为未spin/DDS。下一第一条rg -n 'EXACT_IMAGE_TF_UNAVAILABLE|Cannot save target' /home/johnwick/brain_robot_logs/view_guard_20261013/scale_advisory_retry_onekey/visual_stack.log；拟具体TF异常/严格同图stamp的短暂等待修复，修改前先用户确认。相同故障已重现，无第三次盲试，不改外参/限位/反馈或套普通CAN巡检。
+
+第二主rc1/原cleanup完成、无Disable/Reset；600秒读采集均已结束143，主机无运动栈/采集，不自动续跑。最终SDK4150.641 joint200Hz/high100Hz/6使能true，q[-.294663938,1.662321393,-1.192182052,0,.697189223,-.021031217]rad，最后ROS全开99.6mm；CANRX6939904/error0，不需机械臂重启。0168/0199三图已看完整方块十字下方、debug .211m/2519样本，未夹持；0199图4057/反馈4058是在墙钟4139缓存快照，不能当新实时帧。证据scale_advisory_retry_console/onekey、共享scale_advisory_exact/live；细节哈希/时间/初轮见progress顶部。旧binary备份scale_advisory_previous_60a9895.bin仅无运行grasp时可回退，不自动恢复。用户原注释/vendor/reference保留，Git仅本地/remote历史审查阻断沿用。
+
+## 历史接续（2026-10-13，ea67b83已部署；首轮原脚本到64-89被原图像TF查询停止，正在同代码唯一重试）
 
 用户批准实际视觉纠偏优先、仅自动尺度硬停止改诊断，CPP/实际方法回归已ea67b83提交；47项通过。新binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485、CPP98fb19769cfa606095bcd87e4f911be1d926e4a5543ca044fb94c51fbeb528d8已同步原运行树/install symlink；旧binary备份view_guard_20261013/scale_advisory_previous_60a9895.bin。脚本87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0不改。
 
