@@ -83,6 +83,7 @@ struct NearDepthReplayAccess
     n.raw_box_received_ = std::chrono::steady_clock::now();
   }
   static void NoSeed(GraspLiftExecutor & n) {n.near_seed_.valid = false;}
+  static void Automatic(GraspLiftExecutor & n) {n.automatic_rgb_approach_enabled_ = true;}
   static void LostRGB(GraspLiftExecutor & n) {n.qualified_box_message_.polygon.points.clear();}
   static void MissingAxis(GraspLiftExecutor & n) {n.latest_joint_state_.name.pop_back();}
   static void BadOpening(GraspLiftExecutor & n) {n.latest_gripper_feedback_.position[0] = .1019;}
@@ -233,6 +234,41 @@ TEST_F(NearDepthExecutor, ProjectionOutsideSilhouetteCanActuallyProduceBoundedCo
   EXPECT_GT(correction.x(), .025);
   EXPECT_LT(correction.norm(), .04);
   EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+}
+
+TEST_F(NearDepthExecutor, LargeRgbCorrectionContinuesSameIdentityWithoutRelocking)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  const auto seed_stamp = NearDepthReplayAccess::SeedStamp(*node);
+  NearDepthReplayAccess::Automatic(*node);
+  Eigen::Vector3d correction;
+  for (float shift : {.10f, .20f}) {
+    NearDepthReplayAccess::Inputs(*node, false);
+    NearDepthReplayAccess::ShiftColourBox(*node, shift);
+    ASSERT_TRUE(NearDepthReplayAccess::Correction(*node, correction));
+  }
+  EXPECT_GT(correction.norm(), .04);
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed_stamp);
+  NearDepthReplayAccess::Inputs(*node, false);
+  EXPECT_FALSE(NearDepthReplayAccess::Correction(*node, correction));  // Identity jump, not magnitude.
+}
+
+TEST_F(NearDepthExecutor, RecoveredDepthOutlierDoesNotAbortRgbApproachOrAuthorizeClose)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Automatic(*node);
+  NearDepthReplayAccess::Inputs(*node, true);
+  NearDepthReplayAccess::MoveObservation(*node, .06);
+  Eigen::Vector3d correction;
+  EXPECT_TRUE(NearDepthReplayAccess::Correction(*node, correction));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+  EXPECT_TRUE(NearDepthReplayAccess::DepthFlag(*node));  // Do not falsify detector flags.
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));
 }
 
 TEST_F(NearDepthExecutor, PartialViewRecoversKnownIdentityButCannotAuthorizeClose)

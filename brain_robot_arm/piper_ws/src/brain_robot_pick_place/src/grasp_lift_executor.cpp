@@ -1394,7 +1394,7 @@ private:
     geometry_msgs::msg::PolygonStamped * observed_box = nullptr,
     sensor_msgs::msg::CameraInfo * observed_info = nullptr,
     near_depth::Calibration * observed_calibration = nullptr,
-    LockedRgbView * observed_view = nullptr)
+    LockedRgbView * observed_view = nullptr, bool allow_bounded_compensation = false)
   {
     predicted = false;
     if (!near_depth_rgb_tracking_enabled_ || !static_target_lock_ ||
@@ -1450,6 +1450,11 @@ private:
     const auto & p = message.polygon.points;
     const visual_grasp::Box box{p[0].x, p[0].y, p[2].x, p[2].y};
     if (!visual_grasp::Valid(box)) {return reject("COLOR_SHAPE_UNAVAILABLE");}
+    const bool identity_continuous = !near_seed_.valid ||
+      visual_grasp::Associated(near_last_visible_rgb_box_, box, .12 + 1e-6);
+    if (allow_bounded_compensation && !identity_continuous) {
+      return reject("LOCKED_RGB_IDENTITY_JUMP");
+    }
     // /joint_states contains physical feedback, not the planned endpoint.
     {
       std::lock_guard<std::mutex> lock(feedback_mutex_);
@@ -1516,7 +1521,7 @@ private:
       const auto delta = camera_transform.getBasis().transpose() *
         tf2::Vector3(rgb_delta[0], rgb_delta[1], rgb_delta[2]);
       const Eigen::Vector3d correction(delta.x(), delta.y(), delta.z());
-      if (correction.norm() > visual_target_association_m_)
+      if (!allow_bounded_compensation && correction.norm() > visual_target_association_m_)
       {return reject("LOCKED_TARGET_RGB_MISMATCH");}
       if (measured_same_image) {
         geometry_msgs::msg::PointStamped observed_reference;
@@ -1530,46 +1535,55 @@ private:
             observed_reference.point.y - reference.point.y),
           observed_reference.point.z - reference.point.z);
         if (association_distance > visual_target_association_m_) {
-          if (image_time.nanoseconds() != near_last_bad_association_stamp_ns_) {
-            ++near_rgb_association_bad_frames_seen_;
-            near_last_bad_association_stamp_ns_ = image_time.nanoseconds();
+          if (allow_bounded_compensation && near_seed_.valid) {
+            // A recovered near-range sample is not allowed to replace the
+            // frozen object. Keep the same RGB identity and original model.
+            measured_same_image = false;
+            PublishDiagnostic("RECOVERED_DEPTH_OUTLIER_IGNORED_STATIC_RGB_LOCK_RETAINED");
+          } else {
+            if (image_time.nanoseconds() != near_last_bad_association_stamp_ns_) {
+              ++near_rgb_association_bad_frames_seen_;
+              near_last_bad_association_stamp_ns_ = image_time.nanoseconds();
+            }
+            RCLCPP_WARN(
+              get_logger(),
+              "NEAR_RGB_TARGET_ASSOCIATION distance=%.4f threshold=%.4f "
+              "locked=(%.4f,%.4f,%.4f) measured=(%.4f,%.4f,%.4f) image_stamp=%.9f",
+              association_distance, visual_target_association_m_,
+              reference.point.x, reference.point.y, reference.point.z,
+              observed_reference.point.x, observed_reference.point.y, observed_reference.point.z,
+              image_time.seconds());
+            if (near_rgb_association_bad_frames_seen_ < near_rgb_association_bad_frames_) {
+              PublishDiagnostic(
+                "NEAR_RGB_ASSOCIATION_TRANSIENT_TOLERATED count=" +
+                std::to_string(near_rgb_association_bad_frames_seen_));
+              return true;
+            }
+            return reject("MEASURED_TARGET_CHANGED");
           }
-          RCLCPP_WARN(
-            get_logger(),
-            "NEAR_RGB_TARGET_ASSOCIATION distance=%.4f threshold=%.4f "
-            "locked=(%.4f,%.4f,%.4f) measured=(%.4f,%.4f,%.4f) image_stamp=%.9f",
-            association_distance, visual_target_association_m_,
-            reference.point.x, reference.point.y, reference.point.z,
-            observed_reference.point.x, observed_reference.point.y, observed_reference.point.z,
-            image_time.seconds());
-          if (near_rgb_association_bad_frames_seen_ < near_rgb_association_bad_frames_) {
-            PublishDiagnostic(
-              "NEAR_RGB_ASSOCIATION_TRANSIENT_TOLERATED count=" +
-              std::to_string(near_rgb_association_bad_frames_seen_));
-            return true;
+        }
+        if (measured_same_image) {
+          near_rgb_association_bad_frames_seen_ = 0;
+          near_last_bad_association_stamp_ns_ = 0;
+          geometry_msgs::msg::PointStamped measured_camera;
+          tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
+          near_depth::Projection measured_projection;
+          if (!near_depth::Project(calibration,
+              {measured_camera.point.x, measured_camera.point.y, measured_camera.point.z},
+              info.width, info.height, measured_projection))
+          {return reject("INVALID_MEASURED_RGBD_SEED");}
+          if (!near_seed_.valid) {
+            // One identity/scale seed for the immutable base-frame object.
+            // Later recovery verifies it; never replenish age/travel allowance.
+            near_seed_ = {box, projection.z, true};
+            near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds();
+            near_last_camera_origin_ = camera_origin;
+            near_last_image_stamp_ns_ = image_time.nanoseconds();
+            near_camera_travel_m_ = 0;
           }
-          return reject("MEASURED_TARGET_CHANGED");
         }
-        near_rgb_association_bad_frames_seen_ = 0;
-        near_last_bad_association_stamp_ns_ = 0;
-        geometry_msgs::msg::PointStamped measured_camera;
-        tf2::doTransform(observed_reference, measured_camera, camera_from_reference);
-        near_depth::Projection measured_projection;
-        if (!near_depth::Project(calibration,
-            {measured_camera.point.x, measured_camera.point.y, measured_camera.point.z},
-            info.width, info.height, measured_projection))
-        {return reject("INVALID_MEASURED_RGBD_SEED");}
-        if (!near_seed_.valid) {
-          // One identity/scale seed for the immutable base-frame object.
-          // Later depth recovery verifies this lock; it does not move it or
-          // replenish the missing-depth episode's age/travel allowance.
-          near_seed_ = {box, projection.z, true};
-          near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds();
-          near_last_camera_origin_ = camera_origin;
-          near_last_image_stamp_ns_ = image_time.nanoseconds();
-          near_camera_travel_m_ = 0;
-        }
-      } else {
+      }
+      if (!measured_same_image) {
         if (!near_seed_.valid) {return reject("NO_RELIABLE_RGBD_LOCK");}
         const double increment = image_time.nanoseconds() > near_last_image_stamp_ns_ ?
           (camera_origin - near_last_camera_origin_).length() : 0;
@@ -1579,7 +1593,8 @@ private:
             target_timeout_s_,
             near_path_allowance_ready_ ? near_path_max_age_s_ : near_depth_prediction_max_age_s_,
             near_path_allowance_ready_ ? near_path_max_travel_m_ : near_depth_prediction_max_travel_m_,
-            correction.norm(), visual_target_association_m_, recovering, info.width, info.height))
+            correction.norm(), visual_target_association_m_, recovering, info.width, info.height,
+            allow_bounded_compensation, identity_continuous))
         {return reject(reason);}
         predicted = true;  // depth_valid is still false; old measurement stamp is retained.
       }
@@ -1712,6 +1727,7 @@ private:
     }
     const auto start_pose = state->getGlobalLinkTransform(end_effector_link_);
     const Eigen::Vector3d local_tip(0, 0, gripper_tip_offset_m_);
+    std::size_t accepted_points = 0;
     for (const auto & point : plan.joint_trajectory.points) {
       moveit::core::RobotState planned(*state);
       for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
@@ -1725,8 +1741,10 @@ private:
       const auto & pose = planned.getGlobalLinkTransform(end_effector_link_);
       const double wrist_limit = completed ?
         tip_limit + 2 * gripper_tip_offset_m_ * std::sin(angle_limit / 2) : .005;
-      if ((pose.translation() - start_pose.translation()).norm() > wrist_limit + 1e-9 ||
-        (pose * local_tip - start_pose * local_tip).norm() > tip_limit + 1e-9 ||
+      if (!visual_grasp::DistanceStepWithin(
+          (pose.translation() - start_pose.translation()).norm(), wrist_limit, completed != nullptr) ||
+        !visual_grasp::DistanceStepWithin(
+          (pose * local_tip - start_pose * local_tip).norm(), tip_limit, completed != nullptr) ||
         Eigen::Quaterniond(start_pose.rotation()).angularDistance(
           Eigen::Quaterniond(pose.rotation())) > angle_limit + (completed ? 1e-6 : 0.0)) {
         RCLCPP_WARN(get_logger(),
@@ -1735,8 +1753,16 @@ private:
           (pose * local_tip - start_pose * local_tip).norm(), tip_limit,
           Eigen::Quaterniond(start_pose.rotation()).angularDistance(
             Eigen::Quaterniond(pose.rotation())), angle_limit);
+        if (completed && accepted_points >= 2) {
+          // Execute only the already collision-checked prefix, then replan
+          // from actual feedback/new RGB. Never publish the oversized suffix.
+          plan.joint_trajectory.points.resize(accepted_points);
+          PublishDiagnostic(stage + "_CHECKED_PREFIX_CLIPPED_REPLAN_NEXT_FRAME");
+          break;
+        }
         PublishDiagnostic(stage + "_POSE_STEP_BOUND_REJECTED"); return false;
       }
+      ++accepted_points;
     }
     const auto before_output = FreshMeasuredState(stage + "_BEFORE_OUTPUT");
     if (!before_output) {return false;}
@@ -1907,7 +1933,8 @@ private:
     geometry_msgs::msg::PolygonStamped box;
     sensor_msgs::msg::CameraInfo info;
     LockedRgbView snapshot;
-    if (!ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c, &snapshot)) {return false;}
+    if (!ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c, &snapshot,
+        automatic_rgb_approach_enabled_)) {return false;}
     if (near_rgb_association_bad_frames_seen_ != 0) {
       // Preserve the existing bounded outlier tolerance while advancing the
       // original lock. Suspect depth must never generate an RGB correction.
@@ -1921,7 +1948,7 @@ private:
     correction = snapshot.correction;
     if (view) {*view = snapshot;}
     return snapshot.valid && correction.allFinite() &&
-           correction.norm() <= visual_target_association_m_;
+           (automatic_rgb_approach_enabled_ || correction.norm() <= visual_target_association_m_);
   }
 
   bool GuardApproachView(grasp_geometry::DirectedPose & nominal,
@@ -2063,6 +2090,10 @@ private:
       gg::DirectedPose nominal{{pose.position.x, pose.position.y, pose.position.z},
         {pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w}};
       const double scale = correction.norm() > extra ? extra / correction.norm() : 1.;
+      if (scale < 1) {
+        RCLCPP_INFO(get_logger(), "RGB_CORRECTION_CLAMPED estimate=%.6f applied=%.6f "
+          "REPLAN_FROM_ACTUAL_NEXT_FRAME", correction.norm(), extra);
+      }
       const bool recovery = view.valid &&
         (view.recovering || !visual_grasp::FullView(view.box));
       if (recovery) {nominal = current;}  // Restore view, not blind forward motion.
@@ -3238,7 +3269,8 @@ private:
         geometry_msgs::msg::PointStamped target;
         rclcpp::Time stamp(0, 0, get_clock()->get_clock_type());
         bool predicted = false;
-        return ObserveLockedTarget(target, stamp, predicted);
+        return ObserveLockedTarget(target, stamp, predicted, nullptr, nullptr, nullptr,
+          nullptr, automatic_rgb_approach_enabled_);
       };
     if (!observation_ok()) {
       PublishDiagnostic("LOCKED_RGB_OBSERVATION_UNAVAILABLE_BEFORE_ARM_OUTPUT"); return false;

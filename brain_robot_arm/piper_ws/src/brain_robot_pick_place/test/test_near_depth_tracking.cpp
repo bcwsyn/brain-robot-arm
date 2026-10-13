@@ -72,6 +72,18 @@ TEST(NearDepth, CorrectableProjectionOutsideCubeCanReachCorrection)
   EXPECT_STREQ(e.reject(), "LOCKED_TARGET_RGB_MISMATCH");
 }
 
+TEST(NearDepth, LargeCompensationCanBeClampedForSameIdentityWithoutWeakeningClose)
+{
+  Example e;
+  EXPECT_EQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, .03, .060, .04, false, 320, 240, true, true), nullptr);
+  EXPECT_STREQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, .03, .060, .04, false, 320, 240, true, false), "LOCKED_RGB_IDENTITY_JUMP");
+  // Initial seed/closure remain strict, not a large-error close authorization.
+  EXPECT_STREQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, .03, .060, .04), "LOCKED_TARGET_RGB_MISMATCH");
+}
+
 TEST(NearDepth, FeedbackAndExactImageTFRequired)
 {
   Example e; e.evidence.exact_image_tf = false;

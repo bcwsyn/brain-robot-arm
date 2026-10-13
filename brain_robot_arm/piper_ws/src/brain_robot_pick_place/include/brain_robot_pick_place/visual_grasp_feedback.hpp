@@ -7,6 +7,13 @@ namespace brain_robot_pick_place::visual_grasp
 // Normalized coordinates in ORIGINAL colour image, never registered depth pixels.
 struct Box {double left, top, right, bottom;};
 
+// FK solver roundoff is not physical overtravel. Preview remains unchanged.
+inline bool DistanceStepWithin(double distance, double limit, bool automatic)
+{
+  return std::isfinite(distance) && std::isfinite(limit) && distance >= 0 && limit > 0 &&
+         distance <= limit + (automatic ? 1e-6 : 1e-9);
+}
+
 inline bool Valid(const Box & b)
 {
   return std::isfinite(b.left) && std::isfinite(b.top) &&

@@ -12,6 +12,14 @@ TEST(VisualGrasp, CroppedPurpleIsNotFullView)
   EXPECT_FALSE(vg::FullView({.5, .2, .3, .8}));
 }
 
+TEST(VisualGrasp, AutomaticFkRoundoffIsNotPhysicalOvertravel)
+{
+  EXPECT_TRUE(vg::DistanceStepWithin(.008000002, .008, true));
+  EXPECT_FALSE(vg::DistanceStepWithin(.008000002, .008, false));
+  EXPECT_FALSE(vg::DistanceStepWithin(.008002, .008, true));
+  EXPECT_FALSE(vg::DistanceStepWithin(NAN, .008, true));
+}
+
 TEST(VisualGrasp, BackgroundJumpDoesNotAssociate)
 {
   EXPECT_TRUE(vg::Associated({.3, .7, .5, 1}, {.3, .6, .5, .9}));

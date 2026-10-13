@@ -114,7 +114,8 @@ inline const char * PredictionRejection(
   const Seed & seed, const Evidence & e, const visual_grasp::Box & box,
   const Projection & projection, double timeout_s, double maximum_age_s,
   double maximum_travel_m, double rgb_residual_m, double maximum_association_m,
-  bool clipped_recovery = false, int image_width = 320, int image_height = 240)
+  bool clipped_recovery = false, int image_width = 320, int image_height = 240,
+  bool allow_bounded_compensation = false, bool identity_continuous = true)
 {
   for (double value : {e.image_age_s, e.receipt_age_s, e.seed_age_s, e.camera_travel_m,
     timeout_s, maximum_age_s, maximum_travel_m, projection.x, projection.y, projection.z,
@@ -137,8 +138,11 @@ inline const char * PredictionRejection(
   // Correctable error is not loss of identity. Reuse the existing metric
   // association bound, rather than requiring correction to have already worked.
   if (rgb_residual_m < 0 || maximum_association_m <= 0 ||
-    rgb_residual_m > maximum_association_m)
+    (!allow_bounded_compensation && rgb_residual_m > maximum_association_m))
   {return "LOCKED_TARGET_RGB_MISMATCH";}
+  if (allow_bounded_compensation && !identity_continuous) {
+    return "LOCKED_RGB_IDENTITY_JUMP";
+  }
   const double growth = seed.color_z / projection.z;
   const double width_ratio = (box.right - box.left) / (seed.box.right - seed.box.left) / growth;
   const double height_ratio = (box.bottom - box.top) / (seed.box.bottom - seed.box.top) / growth;

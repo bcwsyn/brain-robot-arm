@@ -40,8 +40,11 @@ def test_prepublication_rejections_report_metrics_without_new_bounds():
     assert '_POSE_STEP_BOUND_REJECTED' in method
     assert '_START_FEEDBACK_CHANGED' in method
     assert 'wrist=%.9f/%.9f tip=%.9f/%.9f angle=%.9f/%.9f' in method
-    assert '> wrist_limit + 1e-9' in method
-    assert '> tip_limit + 1e-9' in method
+    assert 'visual_grasp::DistanceStepWithin(' in method
+    assert 'wrist_limit, completed != nullptr' in method
+    assert 'tip_limit, completed != nullptr' in method
+    assert 'completed && accepted_points >= 2' in method
+    assert 'plan.joint_trajectory.points.resize(accepted_points)' in method
     assert 'Eigen::Quaterniond(pose.rotation())) > angle_limit' in method
     assert 'state->getVariablePosition(name)) > (completed ? trajectory_feedback_tolerance_rad_ : .002)' in method
 
@@ -65,7 +68,7 @@ def test_rgb_correction_reuses_observation_snapshot_across_tf_wait():
     assert '*observed_calibration = calibration' in observe
     correction = source[source.index('  bool LockedRgbCorrection('):
                         source.index('  void AutomaticRgbApproach(')]
-    assert 'ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c, &snapshot)' in correction
+    assert 'ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c, &snapshot,' in correction
     assert 'box = qualified_box_message_' not in correction
     assert 'info = raw_image_info_' not in correction
     assert 'rclcpp::Time(box.header.stamp) != image_time' in correction
@@ -101,3 +104,19 @@ def test_automatic_uses_distinct_fresh_frame_and_tip_preserving_view_guard():
                    source.index('  void AutomaticRgbApproach(')]
     assert 'AimCameraAtFixedTip' in guard
     assert 'JointCtrl' not in guard and 'joint_commands' not in guard
+
+
+def test_large_compensation_clamps_instead_of_terminating_automatic_approach():
+    source = SOURCE.read_text()
+    observe = source[source.index('  bool ObserveLockedTarget('):
+                     source.index('  bool ReadVisualBox(')]
+    assert '!allow_bounded_compensation && correction.norm()' in observe
+    assert 'if (allow_bounded_compensation && near_seed_.valid)' in observe
+    assert 'RECOVERED_DEPTH_OUTLIER_IGNORED_STATIC_RGB_LOCK_RETAINED' in observe
+    automatic = source[source.index('  void AutomaticRgbApproach('):
+                       source.index('  void TargetDirectedPointGraspAndLift(')]
+    assert 'extra / correction.norm()' in automatic
+    assert 'RGB_CORRECTION_CLAMPED' in automatic
+    capture = source[source.index('  bool FreshFaceInsideJaws()'):
+                     source.index('  bool WaitForGripperCommand(')]
+    assert 'ObserveLockedTarget(face, capture_stamp, predicted)' in capture

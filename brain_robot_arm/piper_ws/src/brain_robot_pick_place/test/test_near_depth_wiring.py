@@ -28,7 +28,7 @@ def test_prediction_retains_lock_and_measurement_stamp_and_uses_exact_tf():
     assert 'near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds()' in body
     assert 'if (!near_seed_.valid)' in body
     seed = body.index('near_seed_stamp_ns_ =')
-    assert body.index('if (measured_same_image)') < seed < body.index('} else {', seed)
+    assert body.index('if (measured_same_image)') < seed < body.index('if (!measured_same_image)', seed)
     assert 'return reject("MEASURED_TARGET_CHANGED")' in body
     assert 'near_depth::PredictionRejection' in body
     # A clipped raw contour can only RECOVER an already qualified identity;
