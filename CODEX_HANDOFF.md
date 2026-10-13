@@ -1,4 +1,14 @@
-## 最新接续（2026-10-13 17:45，7b769fd实体48段至67/90；视野姿态重规划失败，高度停滞）
+## 最新接续（2026-10-13 18:10，ee213bc修复下降/转角耦合已部署；复测PREPARE新RX停滞，can0 DOWN）
+
+用户已确认定位与局部修复。CorrectedPoseStep旧共同min比例让20mm待下降/0.6rad待转向的一步仅降.581776mm；已改tip/angle独立限幅，原8mm/1°和MoveIt/adapter/最终夹持不变，红绿回归及50项测试通过、规范构建rc0。ExecuteVisualPose规划前打印/发布精确pose，Cartesian失败带error_code/PLAN_START，便于下一精确只读IK/碰撞区分。修复commit ee213bc，新部署二进制SHA7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1，同原入口/install symlink/params，旧7b769fd二进制副本view_guard_20261013/height_previous_7b769fd.bin；没有另写启动脚本/改YAML/TF/限位。真实树重复构建rc143但使用规范同源构建部署，不能混称两个构建均成功。
+
+原服务启动实际PREPARE(1791885764.414)，初始q age.000705s、3秒581样本；5771.068最后反馈[-.248733996,1.643678344,-1.284471496,0,.838288864,0]rad/99.6mm。原driver反馈丢失，18:02:54 can_health守护CAN_RX_STALLED_3S软件停住并结束原driver/controller/MoveIt/adapter；未到观测/SEARCH/新靠近代码，不能称下降实机修复已验收。新grasp3794891已TERM/session1219退出0，不会自动续跑；没有硬件DisableArm/Reset，但反馈丢失后不能保证实际使能。
+
+can0曾ERROR-ACTIVE但RX241532148连续不增长、USB可枚举、sudo-n0；一次固定down/type1Mbps/.75/txqueue1000/up恢复No such device，candump Network is down，最终DOWN/STOPPED，不重复同一失败恢复或USB/固件实验。第一条只读ip -details -statistics link show can0；需恢复USB-CAN/VMware接收并验证RX增长后才原/home/johnwick/start_brain_robot_cube_real.sh实测。根分区85%/12GB，既有clean_disk_space.sh0清后仍85%，没有ENOSPC证据，不归因磁盘。
+
+证据view_guard_20261013/height_{runtime,live_sampler,fix_build,executor_tests,disk_cleanup}.txt、height_live/observer.jsonl。0005前置三图/0078结束三图已看；结束RGB/深度新但debug旧5782.824/q旧5771.068，不能同帧抓取判断。本轮软件改动已提交，接续文档记录所有阻断，保留用户测试原注释/vendor/reference，Git仅本地/远程历史审查沿用。下一接手从新RX恢复后原入口复测开始，不重复已证明的浮点/补偿旧门，不把测试通过宣称抓取完成。
+
+## 历史接续（2026-10-13 17:45，7b769fd实体48段至67/90；视野姿态重规划失败，高度停滞）
 
 原grasp已重载3778087，driver3672131/controller3672604不重启。原流程观测→SEARCH→ALIGN→GRASP_READY→自动48段到67/90；初始规划77个pregrasp+13个descent，本轮gaze=true已实际触发。下一loop115 Cartesian fraction=0.000，未进入最终下降/闭爪。用户问高度：实际q+保存URDF模型指尖Z从GRASP_READY附近.200841降到.129815m，最后阶段仅下降2.44mm，J5已增到.93342844rad≈53.48°；GuardApproachView保持名义模型指尖改变朝向、推进需位置/姿态同时到位，不能等同继续下探。当前碰撞check_state_validity=True/contacts=[]；下一路径具体IK/途中碰撞原因未定位。J3=-1.37757接近adapter -1.4软件下限，但URDF -2.967，不能冒称本次限位失败。
 
