@@ -1,4 +1,10 @@
-## 最新接续（2026-10-13，1cf6423已部署/66项；用户讨论20cm重测冻结，实測启动阶段收尾，无新运动验收）
+## 最新接续（2026-10-13，20cm提案晚种子92帧离线支持；仍待实施确认，无运动/应用变更）
+
+runtime仍1cf6423/a20a541…/入口87039b…且无控制/采集。新只读review_late_rgbd_seed.py复用attitude精确RGB/raw/框与20ms内latest q、归档FK/原policy，以约21.1cm三帧低运动候选冻结；后续92帧/21.6秒有实际轴变化，距离误差中位51.7→7.1mm、最大64.0→16.9mm。两个尺度/关联均92通过，勿假称避免尺度拒绝或已标定/抓取；近似FK非image-time TF、freshness模拟、候选native depth附件/同stamp debug缺失，只有RGB已看，base候选未应用。下一第一条读docs/evidence/piper_late_seed_replay_20261013.md，再明确向用户确认原执行器20cm停稳重测/冻结末段/RGB纠偏，然后才能实施/原一键实测；goal续轮不是应用修改同意。
+
+replay0/语法0，最终late_seed_replay_final.json SHAb2203018…、源15776dbc…，原policy未改。root90%8.1GB固定清理0仍90，无扩删，Git仅本地/原用户改动/远程审查阻断保持。最后实体六使能true来自上一SDK1297，本轮未新读不冒充新状态；不自动续跑、未闭爪。旧1cf部署/前缀66项与收尾证据保持下述历史。
+
+## 历史接续（2026-10-13，1cf6423已部署/66项；用户讨论20cm重测冻结，实測启动阶段收尾，无新运动验收）
 
 当前原runtimebinarya20a541…/CPP7495d0…已同步，旧4b0dd26/298448…备份joint_prefix_previous_4b0dd26.bin；入口87039b…不改。原新AUTO1 joint_prefix_onekey已启动至[6/7]，用户转为讨论后准确TERM主3829419、原cleanup完成，未PREPARE/新观测/前缀/负候选实测。主62992 rc143、exact48219/observer82195 INT各0，全栈与采集退出，不Disable/Reset/自动零点/自动续跑。结束SDK1297.568/high1297.564六true，q[-.284226869,.989741312,-.757525255,0,.706910707,0]/最后ROS99.6mm全开。0036三图已看完整近十字未夹持，debug340mm17样本/各stamp不同，不作新可靠锁点。
 
