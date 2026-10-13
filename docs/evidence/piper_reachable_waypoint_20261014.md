@@ -30,3 +30,24 @@
 - 原观测目标[0,.98,-.75,0,.30,0]rad，prepare速度/加速度1%、原反馈生成持续时间（预计20s附近，按实际轨迹计）、适配器最大.189rad/s；原任务min[-1.5,-.3,-1.4,-.8,-1.2,-pi]/max[1.5,pi,.4,.8,1.2,pi]，既有官方物理速度/加速度300/500单位.001rad/s及.001rad/s²复用。当前保持→观测可涉及六轴，后续MoveIt全轴路径/8mm1°/.08rad前缀照旧。原异常停止输出保持使能、禁止Disable/Reset，只有原成功释放/安全回位支持后失能；回退点为备份099bbc9，不自动回滚或重新启动。
 - 命令：BRAIN_ROBOT_AUTO_START=1 STOP_AFTER_TARGET_ACQUIRED=0 DEPTH_ONLY_TARGET=0（各变量完整前缀BRAIN_ROBOT_），LOG_DIR=.../waypoint_advance_onekey，timeout -s INT -k8s600s /home/johnwick/start_brain_robot_cube_real.sh。host主timeout3854063/script3854064，session30940。复用ERROR-ACTIVE/RX增长CAN，不重载；相机启动首帧等待中，未冒称观测完成。
 - 同步只读capture_scale_frames.py →waypoint_advance_exact（python3854209/session17393）、旧observer→waypoint_advance_live（python3854294/session38220），各590sINT/-k3s；不发布控制。下一读同一次日志/新三图/推进与原最终夹持输出，不重复启动。
+
+## 实体结果：原卡点已推进，新25/37完整规划失败
+
+- 原主session30940实际返回1，非600s外部超时。PREPARE1791914788.443/12点adapter接受→SEARCH4831.293/OBSERVE_POSE_REACHED→ALIGN4842.877→GRASP_READY4845.281。准备实42.85s，不将此前20s估计当实测。
+- 11粗段后4862.605质量下降冻结最后真实测量图1791914861014939775/range.228294m/world[.417483205,-.119328520,.067747602]m/size.037422m，当前RGB4862414419247，测量age1.590514s。原同步预抓取/下降完整规划通过，组合37路点、原75循环预算。
+- 45迭代/23路点选-.25，4896.209明确COMPLETED_REACHABLE推进；47迭代/24路点选-.50，4897.800明确COMPLETED_REACHABLE推进。已批准修改确实越过旧朝向追逐卡点，不只是规划成功。
+- 49迭代/25路点的原全朝向及全部缩角/反向候选均fraction0，FAULT_AUTOMATIC_RGB_STEP_EXECUTION_FAILED；没有执行这个失败段。仍PREGRASP、未最终下降/闭爪/抬升/释放，JAW_CAPTURE/GRIPPER_CLOSE_REQUESTED均0，最终中心条件仍未调用，不是中心/深度/CAN当前阻断。
+- 总43 adapter accepted，11粗段、24已执行末段及准备/搜索/对齐其余8段；25次末段尝试包括最后失败，不写成25已执行。只读observer独立收到34个REAL_ARM_TRAJECTORY_FEEDBACK_CONFIRMED/35个MEASURED_SETTLING_CONFIRMED，投递数量不强行等同主43。
+- 精确失败请求RGB1791914897614911235已看：完整紫色方块仍左下，原bbox[.271875,.7125,.415625,.933333]，center0；同戳原子qualified1/z191mm/samples2840/coverage.366351/span.389664/MAD0，深度已恢复。原RGB与debug都核看，native配对图4897380834816与RGB4897414485918差33.651ms，仅最近配对不冒称精确失败请求同戳；native毫米图近黑是显示尺度，不当全零。
+- 原cleanup保持位置/未Disable/Reset/回零；两个准确collector PID INT收尾各rc0。新SDK接收rc0 epoch1791914994.289918/high4994.281452/103.333Hz、六true/速度全0、99.6mm夹爪无错误，q[-.337808477,1.849734848,-1.392912369,.049933870,.909822686,-.101857415]rad。host最后无实体/隔离/采集栈，未自动续跑。
+
+## 新阻断隔离对照与下一局部提案（尚未应用）
+
+复用域78原model/raw任务范围、execution=false，无driver/adapter。分析脚本仅增加可选--fractions/--tip-fractions（默认保留原分析行为），扩大离线比较，不改变生产候选。准确step49 PLAN_START q[-.337628620,1.848750008,-1.392170752,.049907284,.909338276,-.101803184]rad，起点模型valid/contacts[]；不是实体外部碰撞证明。
+
+- waypoint_advance_step49_review.json rc0：原6.122117mm指尖平移、1°转向；1/.75/.5/.25/0/-.25/-.5/-.75/-1/-2/-4/-8全fraction0。甚至更大反向转角未通过，不能说加大反向必能解决。失败返回的起点在bounds不代表失败路径通过。
+- waypoint_advance_step49_prefix_review.json rc0：保留原+1°朝向，指尖平移50%约3.061059mm、25%约1.530529mm、0%当前指尖转向三项均fraction1且所有路径点原范围内；J3端点分别-1.385325276/-1.377844285/-1.370402747，离开当前下边界。相同三种平移下负向-1/-2/-4/-8均失败。模型支持“同方向先转少靠，再继续原目标”，不证明实际夹持成功或外参正确。
+- 隔离launch原100s边界自然INT rc124后退出；随后精确PID INT返回no such process，未操作其他进程。两分析rc0、errors空；最后host无栈。
+- 下一提案：仅原ExecuteVisualPose在完整原候选不可达时，再尝试50%/25%平移前缀、保留原转向步；每个仍须完整MoveIt/原限位碰撞/8mm1°/.08rad和真实停稳，随后从新RGB/实反馈重规划。不是执行fraction<1路径，不增大步长，不换最终抓取点或TF/中心夹持。这个新增策略需用户具体同意后实施/回归/同原AUTO1，本轮未擅改应用或重复运行。
+
+Git：仅本地提交，未同步GitHub；既有origin/main分叉及历史全提交敏感/大文件审查未完成，不强推/改写。下一第一命令cd /mnt/hgfs/ub后git status --short，先读本记录和新提案答复。回退点099bbc9备份保持。

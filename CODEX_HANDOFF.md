@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：推进修复及实测明确获准）
+## 最新接续（2026-10-14：推进修复已实机生效，新25/37规划阻断）
+
+c0f56da/actual cf5777e…原AUTO1已观测→SEARCH→ALIGN→GRASP_READY→质量冻结228.294mm→23/24路点已选可达姿态真实到位推进。新step49/25路点全候选fraction0，原FAULT/主rc1退出，未下降/闭爪，原中心夹持还未调用；RGB完整左下/191mm深度恢复，不是底层当前阻断。新SDK4994.290/high103.333Hz/六true/速度0/99.6mm、q[-.337808477,1.849734848,-1.392912369,.049933870,.909822686,-.101857415]rad，host无实体/隔离/采集栈。隔离对照原6.12mm移位即使反向8°仍失败，但+1°配50%/25%移位完整可达、原限位内；只分析、未改生产。下一需同意原owner补完整可规划平移前缀→实反馈/RGB重规划策略，不增步长/改落点TF或中心夹持；详情piper_reachable_waypoint_20261014.md，不复跑或重新泛查底层。Git仅本地，分叉/历史审查未完。
+
+## 历史接续（部署启动，已由上方完整实测覆盖）
 
 c0f56da已43方法+10RGB测试通过，单actual cf5777e…/source0043c923…部署、原099bbc9备份waypoint_advance_previous_099bbc9，detector8e763f4…/入口87039b…不变。新SDK4645.305/high100Hz/六true/99.6mm/q仍上次保持姿态，motor_speed J1原值-14不冒称全0。原AUTO1主timeout3854063/script3854064启动，证据waypoint_advance_onekey、exact3854209/live3854294，相机首帧等待中；下一读同一次进程/日志/三图，不再次启动。详细piper_reachable_waypoint_20261014.md；原blocked的缺同意已解决，完整目标未完成。
 

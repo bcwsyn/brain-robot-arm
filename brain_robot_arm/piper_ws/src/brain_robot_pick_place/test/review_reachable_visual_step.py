@@ -4,6 +4,7 @@ Domain 78 only. No driver, motion publisher, execution or enable client.
 """
 import argparse
 import copy
+import itertools
 import json
 import os
 from pathlib import Path
@@ -23,6 +24,11 @@ def main():
     parser.add_argument('--log', type=Path, required=True)
     parser.add_argument('--task', type=Path, required=True)
     parser.add_argument('--steps', type=int, nargs='+', required=True)
+    parser.add_argument('--fractions', type=float, nargs='+',
+                        default=[1., .75, .5, .25, 0., -.25, -.5, -.75, -1.],
+                        help='Isolated counterfactuals only; does not change production candidates')
+    parser.add_argument('--tip-fractions', type=float, nargs='+', default=[1.],
+                        help='Isolated translation prefixes; zero rotates about current tip only')
     args = parser.parse_args()
     assert os.environ.get('ROS_DOMAIN_ID') == '78'
     log = args.log.read_text()
@@ -68,14 +74,16 @@ def main():
             wanted = np.array(list(map(float, match.group(1).split(','))))
             local = np.array([0, 0, task['gripper_tip_offset_m']])
             fixed_tip = wanted + desired.apply(local)
+            start_tip = origin + base.apply(local)
             row = {'step': step, 'start_q': q, 'start_valid': valid.valid,
                    'contacts': [[c.contact_body_1, c.contact_body_2] for c in valid.contacts],
                    'requested_tip_step_m': float(np.linalg.norm(fixed_tip-origin-base.apply(local))),
                    'requested_turn_rad': float((base.inv()*desired).magnitude()), 'candidates': []}
-            for fraction in [1., .75, .5, .25, 0., -.25, -.5, -.75, -1.]:
+            for tip_fraction, fraction in itertools.product(args.tip_fractions, args.fractions):
                 # Counterfactual zero turn is analysis only; production still omits it.
                 rotation = base*Rotation.from_rotvec((base.inv()*desired).as_rotvec()*fraction)
-                xyz = fixed_tip-rotation.apply(local)
+                candidate_tip = start_tip + tip_fraction*(fixed_tip-start_tip)
+                xyz = candidate_tip-rotation.apply(local)
                 pose = Pose()
                 pose.position.x, pose.position.y, pose.position.z = map(float, xyz)
                 (pose.orientation.x, pose.orientation.y,
@@ -92,10 +100,12 @@ def main():
                              task['real_trajectory_joint_max'][i] for v in values
                              for i, name in enumerate(names))
                 row['candidates'].append({'orientation_fraction': fraction,
+                    'tip_fraction': tip_fraction,
+                    'absolute_turn_rad': float((base.inv()*rotation).magnitude()),
                     'path_fraction': response.fraction, 'error_code': response.error_code.val,
                     'within_original_task_bounds': within, 'points': len(jt.points),
                     'endpoint': values[-1] if values else {},
-                    'tip_preservation_error_m': float(np.linalg.norm(xyz+rotation.apply(local)-fixed_tip))})
+                    'tip_preservation_error_m': float(np.linalg.norm(xyz+rotation.apply(local)-candidate_tip))})
             report['stages'].append(row)
         print(json.dumps(report, indent=2))
     finally:
