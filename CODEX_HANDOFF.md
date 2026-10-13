@@ -1,4 +1,8 @@
-## 最新接续（2026-10-13，等待20cm实施明确确认，goal blocked；三维规划路线/失败归因已核对，无新运动）
+## 最新接续（2026-10-13，用户明确同意20cm两阶段；原执行器实现/回归中，待部署实测）
+
+用户“确认实施这个”已经解决上一轮授权边界，直接继续同一完整目标，不重复等待。当前原grasp_lift_executor.cpp改为DEPTH_GUIDED_COARSE_APPROACH→约20cm TERMINAL_DEPTH_REMEASURE_HOLDING→同帧三次静止中值→TERMINAL_RGBD_TARGET_FROZEN→原预抓取/下降+RGB微调；后续不取新深度重锁，原最终夹持/闭爪保持。粗段下一步需同帧新深度，已发布步监测不因异步深度暂缺误停/改锁点，预测种子只在粗段新测量时刷新。构建0/73项通过（实际方法32），新binary b9f1c1…/CPP76458e…待部署，当前实际仍1cf6423/a20a541…；尚无本轮新实体输出。旧下面“等待同意”仅历史。工具goal metadata仍blocked（API无resume），不代表当前任务仍缺授权。详见进度最新条目，部署/实测结束须再更新本顶部。
+
+## 历史接续（20cm同意前，已被上文覆盖）
 
 当前a2ea48a/actual1cf6423 binarya20a541…/入口87039b…不变，主机无控制/采集/回放。用户确实之前要求三维锁点后MoveIt规划，当前TargetDirectedPointGraspAndLift亦已实现此路线；曾靠近但未成功抓取。精确同相机154.49vs216.51mm/差62.02已证明坐标/观测不一致，不等于CAD尺寸/轴向错误已唯一证实；两指/.1358m存在不代表安装TF标定完成，当前rotation_calibrated/horizontal_offset_measured仍false。J3可达性/.08行程有独立停止证据，勿全部归因坐标偏差。
 

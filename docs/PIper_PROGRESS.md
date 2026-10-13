@@ -1,3 +1,11 @@
+### 2026-10-13：用户已确认20cm两阶段，原组件实现与回归中（尚未部署/实体输出）
+
+- 最终构建/回归已完成：cmake rc0、域78实际执行器方法32/32（2281ms），尺度15/几何13/视觉10/wiring3合计73项通过；包括粗段持续新深度/身份跳变拒绝、单步锁点与异步监测、旧预测额度只在粗段新测量时刷新、末段只冻结一次、之后新深度不重锁、缺反馈仍拒绝。binary SHA b9f1c1a4567b68dd21e245a322a37f4d3593bca0f98ace8ee6eab65f5f192461、CPP76458e61b3e7d64ba163a2e476ecc0c24195086d73fef8830fbee598c8767313；软件通过不是实体通过。下一提交后备份actual1cf6423并部署同源原入口实测。
+- 基线1182b3e，用户明确“确认实施这个”，原授权阻断已解决；不重复固件/CAN限位/激光基线、不自动运行旧策略。按ROS2和手术式技能，仅修改原grasp_lift_executor.cpp及原方法/wiring测试，原入口87039b…/YAML/安装TF/TCP/最终夹持、MoveIt完整路径/限位碰撞/adapter/反馈不变。
+- 粗段以同一连续RGB身份的同帧RGB-D刷新下一步base点，原8mm/1°请求与已检查关节前缀推进。约20cm（沿彩色光轴，沿用原10mm落点容差）停稳、三帧同图时间戳精确TF/新鲜反馈的中值重测，冻结一次末段目标/尺寸/尺度；随后原主规划及RGB小纠偏，后续深度有效也不重锁。运动监测保留单步锁点、允许原异步RGB-only监测，不把新深度要求施加到每个运动tick。失败停止输出保持使能、不闭爪/Reset/失能。
+- 初次构建0、原方法30/30、尺度15/几何13/视觉10/wiring3合计71通过；额外异步粗段监测回归正在构建（session26093），尚未部署/运动，不算实体抓取。命令cmake --build /tmp/piper_visual_feedback.NhxMgk/build/brain_robot_pick_place --target grasp_lift_executor near_depth_executor_test -j2；ROS_DOMAIN_ID=78/原UDP profile运行方法，不启动控制栈。记录view_guard_20261013/terminal_stage_{build,executor_tests,policy_tests,geometry_tests,visual_tests}.txt。
+- 开始无活动控制/采集，actual仍1cf6423/binarya20a541…/CPP7495d0…；磁盘90%/8.1GB，仅clean_disk_space.sh返回0后仍90，无ENOSPC、不扩删。保留用户原wiring首test注释及vendor/reference变化，不纳入本轮。Git本地/原历史推送审查未完成继续记录；下一完成新回归→提交→备份旧binary/同源部署→新SDK六使能/最小RX复用→原AUTO1实测两阶段并查看新三图，最终未达到。
+
 ### 2026-10-13：核对用户原三维锁点路线与失败归因；20cm实施仍待明确确认，结束自动续轮
 
 - 当前HEAD a2ea48a/actual1cf6423 binarya20a541…/入口87039b…不变，主机无控制/采集/回放进程。本轮上一回放为有效进展，不重复数据/CAN/固件/激光实验；按ROS2/手术式技能只读核对原TargetDirectedPointGraspAndLift及历史决策。static_target_lock在GRASP_READY锁定base目标后原MoveIt构造预抓取/下降/抓取，用户之前确实要求此路线，并非缺少三维坐标规划。

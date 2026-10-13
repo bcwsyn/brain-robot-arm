@@ -117,6 +117,25 @@ struct NearDepthReplayAccess
   }
   static void NoSeed(GraspLiftExecutor & n) {n.near_seed_.valid = false;}
   static void Automatic(GraspLiftExecutor & n) {n.automatic_rgb_approach_enabled_ = true;}
+  static void Coarse(GraspLiftExecutor & n) {n.coarse_depth_tracking_ = true;}
+  static void CoarseMotion(GraspLiftExecutor & n) {n.coarse_motion_in_progress_ = true;}
+  static void OldSeed(GraspLiftExecutor & n, double age_s) {
+    n.near_seed_stamp_ns_ = (n.now()-rclcpp::Duration::from_seconds(age_s)).nanoseconds();
+  }
+  static void MeasurementZ(GraspLiftExecutor & n, double z) {n.target_point_camera_.point.z = z;}
+  static void WrongDepthStamp(GraspLiftExecutor & n) {
+    n.target_point_camera_.header.stamp = n.now()-rclcpp::Duration::from_seconds(.01);
+  }
+  static bool TerminalCommit(GraspLiftExecutor & n, double range = .1238,
+    const std::string & frame = "base_link") {
+    GraspLiftExecutor::LockedRgbView view;
+    view.valid = view.measured_rgbd = true; view.box = {.4, .4, .6, .6};
+    view.stamp_ns = rclcpp::Time(n.qualified_box_message_.header.stamp).nanoseconds();
+    view.measured_color_range_m = range;
+    view.measured_size_m = view.measured_min_size_m = .033;
+    auto reference = n.locked_target_reference_; reference.header.frame_id = frame;
+    return n.CommitTerminalDepthLock(reference, view);
+  }
   static void LostRGB(GraspLiftExecutor & n) {n.qualified_box_message_.polygon.points.clear();}
   static void MissingAxis(GraspLiftExecutor & n) {n.latest_joint_state_.name.pop_back();}
   static void BadOpening(GraspLiftExecutor & n) {n.latest_gripper_feedback_.position[0] = .1019;}
@@ -444,6 +463,101 @@ TEST_F(NearDepthExecutor, JointTravelCannotClipPreviewOrAnInsufficientCheckedPre
   EXPECT_FALSE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 4));
   EXPECT_FALSE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 5));
   EXPECT_EQ(trajectory, original);
+}
+
+TEST_F(NearDepthExecutor, CoarseDepthRefreshesSameIdentityDespiteLongRangeModelBias)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  NearDepthReplayAccess::MeasurementZ(*node, .22);
+  geometry_msgs::msg::PointStamped reference; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_FALSE(predicted);
+  EXPECT_DOUBLE_EQ(reference.point.z, .22);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Lock(*node).point.z, .22);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Seed(*node).color_z, .22);
+}
+
+TEST_F(NearDepthExecutor, CoarseDepthCannotAdvanceWithoutSameFrameDepthOrContinuousIdentity)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  geometry_msgs::msg::PointStamped reference; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  NearDepthReplayAccess::Inputs(*node, true); NearDepthReplayAccess::WrongDepthStamp(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  NearDepthReplayAccess::Inputs(*node, true); NearDepthReplayAccess::ShiftColourBox(*node, .3f);
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+}
+
+TEST_F(NearDepthExecutor, TerminalCommitOnceIgnoresLaterDepthWithoutChangingTheLock)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  geometry_msgs::msg::PointStamped reference; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  ASSERT_TRUE(NearDepthReplayAccess::TerminalCommit(*node));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  const auto seed = NearDepthReplayAccess::SeedStamp(*node);
+  NearDepthReplayAccess::Inputs(*node, true); NearDepthReplayAccess::MeasurementZ(*node, .35);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_TRUE(predicted);  // The control point is frozen, not a new depth claim.
+  EXPECT_EQ(reference, locked);
+  EXPECT_TRUE(NearDepthReplayAccess::DepthFlag(*node));
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed);
+  EXPECT_FALSE(NearDepthReplayAccess::TerminalCommit(*node));
+}
+
+TEST_F(NearDepthExecutor, CoarseMotionKeepsStepPointAndAllowsAsynchronousDepth)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  geometry_msgs::msg::PointStamped reference; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::CoarseMotion(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_TRUE(predicted); EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+  NearDepthReplayAccess::Inputs(*node, true); NearDepthReplayAccess::MeasurementZ(*node, .14);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), locked);
+}
+
+TEST_F(NearDepthExecutor, FreshCoarseDepthRefreshesOnlyItsOwnStepPredictionAllowance)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  NearDepthReplayAccess::OldSeed(*node, 31);
+  NearDepthReplayAccess::Travel(*node, .04);
+  geometry_msgs::msg::PointStamped reference; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Travel(*node), 0);
+  EXPECT_EQ(NearDepthReplayAccess::SeedImageStamp(*node),
+    rclcpp::Time(NearDepthReplayAccess::ImageStamp(*node)).nanoseconds());
+  NearDepthReplayAccess::CoarseMotion(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_TRUE(predicted);
+}
+
+TEST_F(NearDepthExecutor, FrozenTerminalUsesRGBWithoutDepthButStillRequiresActualFeedback)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  geometry_msgs::msg::PointStamped reference; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  ASSERT_TRUE(NearDepthReplayAccess::TerminalCommit(*node));
+  NearDepthReplayAccess::Inputs(*node, false);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+  EXPECT_TRUE(predicted); EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
+  NearDepthReplayAccess::MissingAxis(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, reference));
+}
+
+TEST_F(NearDepthExecutor, TerminalCommitRejectsWrongFrameOrOutsideTheStagingRange)
+{
+  NearDepthReplayAccess::Automatic(*node); NearDepthReplayAccess::Coarse(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::TerminalCommit(*node, .25));
+  EXPECT_FALSE(NearDepthReplayAccess::TerminalCommit(*node, .1238, "other_reference"));
 }
 
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)

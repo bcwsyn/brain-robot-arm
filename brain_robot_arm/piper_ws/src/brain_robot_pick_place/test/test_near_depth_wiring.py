@@ -20,13 +20,19 @@ def test_near_depth_is_in_original_executor_and_search_depth_contract_unchanged(
 def test_prediction_retains_lock_and_measurement_stamp_and_uses_exact_tf():
     s = EXECUTOR.read_text()
     body = s[s.index('bool ObserveLockedTarget('):s.index('bool ReadVisualBox(')]
-    assert 'locked_target_reference_ =' not in body
+    # The approved coarse RGB-D stage may refresh the same identity; RGB
+    # prediction after the deliberate terminal commit must remain immutable.
+    coarse_start = body.index('if (coarse_depth_tracking_ && !coarse_motion_in_progress_) {')
+    coarse_end = body.index('geometry_msgs::msg::PointStamped camera;', coarse_start)
+    assert 'locked_target_reference_ = reference;' in body[coarse_start:coarse_end]
+    assert 'locked_target_reference_ =' not in body[:coarse_start] + body[coarse_end:]
+    assert 'measured_same_image = !terminal_target_frozen_' in body
     assert 'depth_valid_ =' not in body and 'target_valid_ =' not in body
     assert 'tf2::TimePointZero' not in body
     assert 'image_time,' in body
     assert 'latest_joint_state_' in body
     assert 'near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds()' in body
-    assert 'if (!near_seed_.valid)' in body
+    assert 'if (!near_seed_.valid || (coarse_depth_tracking_ && !coarse_motion_in_progress_))' in body
     seed = body.index('near_seed_stamp_ns_ =')
     assert body.index('if (measured_same_image)') < seed < body.index('if (!measured_same_image)', seed)
     assert 'return reject("MEASURED_TARGET_CHANGED")' in body
@@ -36,6 +42,10 @@ def test_prediction_retains_lock_and_measurement_stamp_and_uses_exact_tf():
     assert 'near_last_full_rgb_view_.valid && raw_box_valid_' in body
     assert 'near_depth::Cropped(raw_box_' in body
     assert 'view.recovering = recovering' in body
+    commit = s[s.index('bool CommitTerminalDepthLock('):s.index('bool RemeasureTerminalTarget(')]
+    assert '!coarse_depth_tracking_ || terminal_target_frozen_' in commit
+    assert 'coarse_depth_tracking_ = false;' in commit
+    assert 'terminal_target_frozen_ = true;' in commit
 
 
 def test_actual_adapter_stop_and_final_capture_checks_remain():
