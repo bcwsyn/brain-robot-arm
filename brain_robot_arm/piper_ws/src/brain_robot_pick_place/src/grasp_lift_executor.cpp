@@ -3953,6 +3953,33 @@ private:
     return JointPosition(latest_gripper_feedback_, "gripper");
   }
 
+  bool FreshColorCenterCovered(const rclcpp::Time & image_stamp)
+  {
+    const auto deadline = std::chrono::steady_clock::now() +
+      std::chrono::duration<double>(target_timeout_s_);
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      const double image_age = (now() - image_stamp).seconds();
+      if (image_stamp.nanoseconds() <= 0 || image_age < 0 || image_age > target_timeout_s_) {break;}
+      {
+        std::lock_guard<std::mutex> lock(target_mutex_);
+        const auto found = rgbd_observations_.find(image_stamp.nanoseconds());
+        if (found != rgbd_observations_.end() &&
+          std::chrono::duration<double>(std::chrono::steady_clock::now()-found->second.second).count() <=
+          target_timeout_s_) {
+          const bool covered = found->second.first.color_center_covered;
+          PublishDiagnostic(covered ? "JAW_CAPTURE_ORIGINAL_RGB_CENTER_COVERED" :
+            "JAW_CAPTURE_ORIGINAL_RGB_CENTER_OUTSIDE_CUBE_NO_CLOSE");
+          return covered;
+        }
+      }
+      // The contour and its final diagnostic travel on separate topics.
+      // Wait only for THIS frame within the original freshness allowance.
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    PublishDiagnostic("JAW_CAPTURE_SAME_FRAME_CENTER_UNAVAILABLE_NO_CLOSE");
+    return false;
+  }
+
   bool FreshFaceInsideJaws()
   {
     geometry_msgs::msg::PointStamped face;
@@ -3985,6 +4012,7 @@ private:
         PublishDiagnostic("JAW_CAPTURE_LOCKED_OBJECT_UNCONFIRMED_NO_CLOSE");
         return false;
       }
+      if (!FreshColorCenterCovered(capture_stamp)) {return false;}
       std::lock_guard<std::mutex> lock(target_mutex_);
       size = locked_object_size_m_;
     } else if (!fresh_rgbd) {

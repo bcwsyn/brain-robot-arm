@@ -784,6 +784,10 @@ private:
     std::vector<std::vector<cv::Point>> selected_contours{largest_contour};
     cv::drawContours(selected_mask, selected_contours, 0, cv::Scalar(255), cv::FILLED);
     const cv::Mat full_color_mask = selected_mask.clone();
+    // User's final-close prerequisite: the ORIGINAL RGB image centre lies
+    // in the selected cube contour, not merely its enclosing rectangle.
+    observation.color_center_covered =
+      full_color_mask.at<std::uint8_t>(full_color_mask.rows / 2, full_color_mask.cols / 2) != 0;
     cv::Rect depth_box = target_box;
     if (software_registration_enabled_) {
       selected_mask = brain_robot_pick_place::associate_color_mask(selected_mask, source_pixels);

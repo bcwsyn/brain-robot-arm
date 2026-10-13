@@ -1,4 +1,12 @@
-## 2026-10-14：361cb55质量驱动实现、84测试及真实空洞帧回放通过（未部署/未新运动）
+## 2026-10-14：361cb55已部署、原脚本无运动到7/7；用户批准最终原RGB中心必要条件/多次纠偏
+
+- actual质量v1双节点已从规范代码机械部署（executor27f8b25…/detector27f9059…），旧198f2a5回退quality_stage_previous_198f2a5；唯一入口87039b…不改。健康CAN复用，新SDK100Hz/六true/速度0、q[-.272114284,1.292049792,-.644707172,0,.340199578,0]rad、99.6mm。不是仅本地源码完成。
+- 用户新增“方块部分覆盖原图中心”作为必要条件，现代码没有；局部修改/实测已明确同意，并允许多次纠偏。等待同意期间原AUTO0诊断quality_stage_no_motion到7/7，保存新三图/同戳质量/真实反馈，无观测/靠近/闭爪轨迹；原相机启动两次断流后自动恢复，不能称永久修好。原RGB方块在左、框right.45625不含中心.5；原深度64.1%非零，近黑显示不是整帧失效。
+- 主exec handle143但host原进程仍活，已查准确PID后INT本轮script走原cleanup，无Disable/Reset、最终ps无栈；最终SDK0350.843/high100Hz六true/静止/99.6mm，q与前相同。脚本自身清理90%/7704MB，无ENOSPC/广泛删；详情/命令/失败工具调用见[evidence/piper_center_capture_20261014.md](evidence/piper_center_capture_20261014.md)。
+- 最新原owner局部补v2同戳color_center_covered（完整原RGB轮廓而非外接框/注册图，独立深度质量）、FreshFaceInsideJaws最终必要条件；不用于中途停止，原多次RGB小步纠偏、TF/落点/限位/碰撞/反馈/夹持保持。候选97b154c…/8e763f4…build0、39实际方法/6观测/15尺度/14几何/10视觉/3wiring合计87通过；隔离真实好/空洞回放0，两帧center均false且质量下降切换不变。首个新方法正例过期fixture已按新帧修正、生产新鲜度不放宽；软件测试不算实体成功。
+- 当前无新授权阻断；下一限定Git提交、备份actual质量v1后同步v2、新鲜清单、原AUTO1完整实测quality_stage_onekey/exact/live。不能把AUTO0的7/7当自动观测/抓取，用户既有wiring/vendor/reference不动。只读Git证实origin/main bb99f90与本地分叉left1/right114，禁止无审查强推/抹掉远端仿真资源，Git历史推送审查与分叉协调另行保持，不据此冻结已授权实机。
+
+## 历史：361cb55质量驱动实现、84测试及真实空洞帧回放通过（未部署/未新运动）
 
 - 实际状态：实际executor仍fd0d086…/detector4d5e9ac…，install均链接实际build；host ps无活动控制栈。仅执行已有clean_disk_space.sh rc0，余7.6GB/90%，未作广泛删除。没有新实体运动、SDK控制或失能。
 - 最小动作：原检测器同RGB戳发布合格点/尺寸/支撑质量，原执行器只用同戳记录更新最近三帧可靠世界模型；质量下降时冻结最后真实坐标/测量戳并用当前RGB+精确TF/真实六轴补偿，接原同步转向靠近。取消固定20/23cm必达条件，旧距离分支仅兼容旧模式；不改SEARCH门/外参/落点/碰撞限位/adapter/反馈/最终闭爪。

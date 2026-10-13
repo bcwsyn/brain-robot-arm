@@ -128,11 +128,12 @@ struct NearDepthReplayAccess
     n.quality_driven_depth_stage_enabled_ = true;
   }
   static void AtomicObservation(GraspLiftExecutor & n, bool qualified = true, double z = .23,
-    double coverage = .5, double span = .9) {
+    double coverage = .5, double span = .9, bool color_center_covered = true) {
     rgbd_observation::Snapshot s;
     s.header = n.target_point_camera_.header; s.point = n.target_point_camera_.point;
     s.point.z = z; s.size = n.target_size_.vector; s.size.z = z;
     s.qualified = qualified; s.samples = qualified ? 1800 : 16;
+    s.color_center_covered = color_center_covered;
     s.coverage = coverage; s.span = span; s.mad_m = .002;
     n.rgbd_observations_[rclcpp::Time(s.header.stamp).nanoseconds()] =
       {s, std::chrono::steady_clock::now()};
@@ -810,11 +811,37 @@ TEST_F(NearDepthExecutor, ActualJawCheckSupportsBothModesButRejectsImpossibleOpe
 {
   geometry_msgs::msg::PointStamped p; bool predicted = false;
   ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::AtomicObservation(*node);
   EXPECT_TRUE(NearDepthReplayAccess::Capture(*node));  // Fresh measured branch.
   NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::AtomicObservation(*node, false);
   EXPECT_TRUE(NearDepthReplayAccess::Capture(*node));  // Associated prediction branch.
   NearDepthReplayAccess::BadOpening(*node);
   EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));
+}
+
+TEST_F(NearDepthExecutor, FinalCenterIsNecessaryButDoesNotBlockIntermediateRgbObservation)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  NearDepthReplayAccess::AtomicObservation(*node, true, .1238, .5, .9, false);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));
+  NearDepthReplayAccess::AtomicObservation(*node, true, .1238, .5, .9, true);
+  EXPECT_TRUE(NearDepthReplayAccess::Capture(*node));
+  NearDepthReplayAccess::BadOpening(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));  // Centre alone is not enough.
+}
+
+TEST_F(NearDepthExecutor, FinalCenterRequiresExactFrameRatherThanAnOlderTrueFlag)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::AtomicObservation(*node);
+  NearDepthReplayAccess::Inputs(*node, false);  // New image, no matching centre record.
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));
+  NearDepthReplayAccess::Inputs(*node, false);  // The bounded wait expired the previous RGB frame.
+  NearDepthReplayAccess::AtomicObservation(*node, false, .1238, .5, .9, true);
+  EXPECT_TRUE(NearDepthReplayAccess::Capture(*node));  // RGB works without new depth.
 }
 
 TEST_F(NearDepthExecutor, FactoryCalibrationReadThroughStandardROSParameterService)

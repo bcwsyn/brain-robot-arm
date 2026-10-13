@@ -26,6 +26,22 @@ TEST(RgbdObservation, InvalidDepthCannotBecomeQualifiedBecauseRawPointStillExist
   EXPECT_TRUE(ro::Declined(parsed, {Good(), Good(), Good()}));
 }
 
+TEST(RgbdObservation, OriginalColourCentreEvidenceIsIndependentOfDepthQualification)
+{
+  auto s = Good(); s.qualified = false; s.color_center_covered = true;
+  ro::Snapshot parsed; ASSERT_TRUE(ro::Decode(ro::Encode(s), parsed));
+  EXPECT_FALSE(parsed.qualified); EXPECT_TRUE(parsed.color_center_covered);
+  s.color_center_covered = false;
+  ASSERT_TRUE(ro::Decode(ro::Encode(s), parsed)); EXPECT_FALSE(parsed.color_center_covered);
+  auto message = ro::Encode(s);
+  for (auto & v : message.status[0].values) {
+    if (v.key == "color_center_covered") {v.value = "2";}
+  }
+  EXPECT_FALSE(ro::Decode(message, parsed));
+  message = ro::Encode(s); message.status[0].name = "purple_cube_rgbd_observation/v1";
+  EXPECT_FALSE(ro::Decode(message, parsed));  // Older producer cannot imply centre coverage.
+}
+
 TEST(RgbdObservation, RelativeSupportLossSwitchesWithoutFixedRangeOrObjectSize)
 {
   auto bad = Good(); bad.samples = 36; bad.coverage = .045; bad.span = .03;
