@@ -203,6 +203,42 @@ TEST_F(NearDepthExecutor, ScaleDiagnosticsExposeOriginalRatiosWithoutChangingRej
   EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
 }
 
+TEST_F(NearDepthExecutor, AutomaticScaleMismatchContinuesVisualCorrectionWithoutRelockOrClose)
+{
+  // Exercise the owning executor, not only the standalone scale-policy helper.
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  const auto seed = NearDepthReplayAccess::Seed(*node);
+  const auto stamp = NearDepthReplayAccess::SeedStamp(*node);
+  const auto image_stamp = NearDepthReplayAccess::SeedImageStamp(*node);
+  NearDepthReplayAccess::Automatic(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::ShiftCameraZ(*node, .070);
+  NearDepthReplayAccess::ReviewedAllowance(*node, .080);
+  NearDepthReplayAccess::ShiftColourBox(*node, .03f);
+  Eigen::Vector3d correction;
+  testing::internal::CaptureStderr();
+  const bool accepted = NearDepthReplayAccess::Correction(*node, correction);
+  const auto log = testing::internal::GetCapturedStderr();
+  EXPECT_TRUE(accepted);
+  EXPECT_GT(correction.norm(), .001);  // Live colour residual still reaches correction.
+  EXPECT_NE(log.find("NEAR_RGB_SCALE_ADVISORY_CONTINUE_VISUAL_CORRECTION"), std::string::npos);
+  EXPECT_NE(log.find("NEAR_RGB_SCALE_DETAIL"), std::string::npos);
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Lock(*node).point.z, locked.point.z);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), stamp);
+  EXPECT_EQ(NearDepthReplayAccess::SeedImageStamp(*node), image_stamp);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Seed(*node).color_z, seed.color_z);
+  EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));  // Final jaw decision unchanged.
+  NearDepthReplayAccess::LostRGB(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::Correction(*node, correction));
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::MissingAxis(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::Correction(*node, correction));
+}
+
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)
 {
   geometry_msgs::msg::PointStamped p; bool predicted = false;

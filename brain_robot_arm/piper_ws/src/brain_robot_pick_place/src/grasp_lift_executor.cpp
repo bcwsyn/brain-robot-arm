@@ -1603,9 +1603,14 @@ private:
             correction.norm(), visual_target_association_m_, recovering, info.width, info.height,
             allow_bounded_compensation, identity_continuous))
         {
-          if (std::string(reason) == "LOCKED_TARGET_SCALE_MISMATCH") {
-            // Observability only: reproduce the ORIGINAL scale formula and
-            // preserve the exact rejection below. Do not change seed or gates.
+          const bool scale_mismatch = std::string(reason) == "LOCKED_TARGET_SCALE_MISMATCH";
+          const bool scale_advisory = scale_mismatch && automatic_rgb_approach_enabled_ &&
+            allow_bounded_compensation && identity_continuous;
+          if (scale_mismatch && (!scale_advisory ||
+              image_time.nanoseconds() > near_last_image_stamp_ns_)) {
+            // Keep the original scale evidence. During automatic approach a
+            // continuous live RGB identity can still supply visual correction;
+            // model scale alone must not abort it. Final capture stays strict.
             const double growth = near_seed_.color_z / projection.z;
             const double wr = (box.right-box.left) /
               (near_seed_.box.right-near_seed_.box.left) / growth;
@@ -1652,7 +1657,16 @@ private:
                 JointPosition(q, "joint4"), JointPosition(q, "joint5"), JointPosition(q, "joint6"));
             }
           }
-          return reject(reason);
+          if (scale_advisory) {
+            if (image_time.nanoseconds() > near_last_image_stamp_ns_) {
+              PublishDiagnostic("NEAR_RGB_SCALE_ADVISORY_CONTINUE_VISUAL_CORRECTION");
+              RCLCPP_WARN_THROTTLE(get_logger(), *get_clock(), 2000,
+                "NEAR_RGB_SCALE_ADVISORY_CONTINUE_VISUAL_CORRECTION: "
+                "same live RGB identity retained; frozen target and final jaw check unchanged.");
+            }
+          } else {
+            return reject(reason);
+          }
         }
         predicted = true;  // depth_valid is still false; old measurement stamp is retained.
       }

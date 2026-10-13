@@ -1,3 +1,11 @@
+### 2026-10-13：用户批准尺度异常降级，原自动靠近局部修复/47项验证通过，待部署实测
+
+- 基线d220a91，用户同意只将自动靠近LOCKED_TARGET_SCALE_MISMATCH从立即停止改诊断，以同一方块实际视觉纠偏继续；不改TF/TCP/YAML/锁点/名义轨迹/限位/入口。使用并完整读取ROS2与手术式技能，保留他人test_near_depth_wiring.py原注释及vendor/reference改动。
+- 修改原grasp_lift_executor.cpp owning分支，仅automatic_rgb_approach_enabled_ && allow_bounded_compensation && identity_continuous时尺度warning续调；原诊断/比例保留，新NEAR_RGB_SCALE_ADVISORY_CONTINUE_VISUAL_CORRECTION。同一RGB不重复大型TF/q日志；其他拒绝、反馈、初始锁定、模型预算、碰撞及最终FreshFaceInsideJaws严格判断不变，没有新参数或保护门，不将此称为纯视觉无模型控制。
+- 新增原方法回归AutomaticScaleMismatchContinuesVisualCorrectionWithoutRelockOrClose，包含持续RGB产生非零纠偏/不重锁或刷新seed/不伪造depth/不授权close/实际lostRGB与missingaxis拒绝。旧执行器隔离域78 red构建0/test1确实复现失败；新应用grasp_lift_executor规范构建0。首次green构建未重编red期间生成的旧对象（对象mtime晚于include源修改），15/16仍旧行为失败，不算新补丁结果；更新测试注释触发重编后scale_advisory_green_rebuild/执行器全16项0通过(1066ms)。原纯尺度15项/几何13项/wiring3项通过，共47项。初次--gtest_brief在旧gtest只显示帮助，未算测试，随后无该选项实际运行28项均0。新应用binary SHA91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485，尚待运行树部署，测试通过不称抓取成功。
+- 主机开始无控制栈，原binary79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62/入口87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0；can0 ifindex9 ERROR-ACTIVE/1Mbps/.75持续RX，未重载。SDK只读1791892956.566970/200Hz/high2956.562942/100Hz，6轴enable true，q[-.314665411,1.716094987,-1.294912132,0,.816342851,0]rad。root87%/9.9GB，仅已有clean_disk_space.sh0后仍87%，scale_advisory_disk_cleanup.txt，无ENOSPC，不扩删。
+- 证据view_guard_20261013/scale_advisory_{red_build,red_test,executor_build,green_build,green_rebuild,executor_tests,executor_tests_rebuilt,policy_tests,geometry_tests}.txt。下一保留旧binary、同步唯一原执行器/源码，从当前反馈运行原AUTO_START=1并采三图/真实feedback，验证突破旧69-92尺度停点及最终夹持；未完成前不称抓取成功。Git只本轮代码/测试/记录，本地，origin/main历史推送审查阻断沿用。
+
 ### 2026-10-13：澄清夹爪模型与相机深度参考点，仅只读核对
 
 - 用户问模型是否包括夹爪、实测是否来自相机。原规划/夹持模型包含夹爪，使用gripper_base/指尖偏移及手指结构；不代表所有数值都以指尖为原点。ObserveLockedTarget对冻结base目标按精确图像TF先变换到camera_depth_optical_frame，near_depth::Project再以工厂D→C转成彩色光学坐标，其projection.z是模型color深度。
