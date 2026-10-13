@@ -1,3 +1,14 @@
+### 2026-10-13 11:20–11:44：真实开口模型已加载，1cm样段执行；当前相机参数错配已确认并局部更正
+
+- 起点7516de1；原唯一入口AUTO_START=0到[7/7]，未自动重做观测/搜索。实际MoveIt描述两指±40mm，模型SHA256=2df6efa9213b988b94da028019a1b0db0126c9885c57c319bb8b348f59028965；反馈79.6mm→joint7=.0398、joint8=-.0398，是真实开口而非补零。单驱动/adapter保持。
+- 第一次26点发布被adapter接受1791861724.343240156，但六轴不动。**本代理遗漏原驱动/enable_srv步骤**：AUTO_START=0加载auto_enable=false，硬件使能不代表驱动内部enable_flag=true。软件disarm后检查原callback，调用 `/enable_srv piper_msgs/srv/Enable '{enable_request: true}'` 返回true；不把自己的漏步骤归咎CAN/硬件，不重复无变化运动或ResetPiper。
+- 驱动内部允许后用新图重新规划 `plan/open_jaws_enabled_step1.json`：stamp1791861866947663295ns、真实反馈年龄.000768998s，MoveIt LIN26点/2.444444425s、model tip弧.010000007m；目标基座[.408522375,-.125580672,-.018597958]m，位移基座[.000567818,.009665613,-.002500700]m。这是总10mm相机平面诊断（横向约9.8mm、前向约2mm），不是前向10mm接触，也不是生产抓取固定朝向策略。
+- 仅该样段经原 `/brain_robot_grasp/arm_trajectory`→adapter执行，接受stamp1791861927.277142443，发布rc0；1791861934.537158898软件disarm成功、硬件保持使能。最终真实q=[-.292187,1.894121852,-1.328657148,0,.888719468,.026305552]rad，端点最大误差.00343027rad<.01；J5 51.606509°→50.919875°，J2/J3/J6补偿实现整体位移，不是单独J5下俯。J6初帧滞后而后到位，不能写所有轴在首次图就完成。开口79.6mm保持，未闭爪/抬升/释放，未验证实际两指包围。
+- 已查看运动前/运动后RGB、16UC1 depth、debug。仅约2mm前向却出现检测中位189→156mm，停稳又回185–186mm；不能称靠近33mm成功。之后严格新图只读规划 `plan/after_step1_readonly.json` rc0/hardware_executed=false：stamp1791862016949852081ns，基座点[.408080707,-.120838511,-.017944410]m，与前种子约4.81mm差；这仍用旧镜头参数，不能证明实际三维已正确标定。
+- 四路只读服务确认当前Astra **CC1365304DG**，旧YAML却用 **CC136530302** 的K/R/T。用户明确同意“仅局部更新并离线验证”：只改规范cube_detector.yaml的彩色K和现有D→C R/T，平移mm→m；保留镜像false、TF/TCP、所有检测/运动/抓取门。未改畸变实现，未热部署域0检测器，未发下一运动。数值见 `docs/evidence/piper_camera_factory_20261013.json`。
+- 静止采集15组rc0（10.87秒），原stamp软件配对23.64–96.85ms；同批图在隔离域78各回放一次，**新参数9帧均深度/目标无效、INSUFFICIENT_SAMPLES；旧参数6帧有效约.186m/589样本**。两次回放rc0、域78没有控制器。全图depth非零49916不代表方块区域有效。完整命令、图SHA/stamp及对照见 `docs/evidence/piper_camera_replay_20261013.md`；源数据根 `jaw_approach_20261013`。新工厂匹配测试+静止采集回归22 passed；初次数值分析缺PYTHONNOUSERSITE引入NumPy ABI错误，补回该既定环境后分析成功，未改系统依赖。
+- 结论/下一步：纠正“恢复有效目标就有正确3D种子”的假设，旧配准不能继续用于靠近。当前只完成模型与1cm样段，实际夹持/总目标未完成。下一先静止分离配准方向、原深度可见性与畸变约定，不退回CAN/固件巡检、不按85mm推入、不放宽近距门；需要实体换视角或修改控制逻辑时先提方案。原栈最后确认IDLE、adapter disarmed、硬件使能。规范新YAML尚未同步实际工作区，已启动检测器仍旧值，不能自动接续。Git仅本地未push，既有vendor/reference/他人test修改不纳入。最终六组聚焦回归61 passed/rc0，指定路径diff --check通过；未执行全树改动清理。
+
 ### 2026-10-13 11:16：原控制器当前姿态接续入口构建通过，重新加载原一键栈
 
 - 在471916f基础上按已确认方案增加显式 `/visual_search_controller/resume_current_pose` Trigger；仅IDLE/STOPPED、新鲜有效目标/六轴反馈和既有实体配置门通过才能接续。复用HandleStart与既有skip_prepare分支的一次性请求，发布CURRENT_POSE_ACCEPTED后继续原SEARCH/ALIGN；不伪造GRASP_READY、不改默认观测准备、不跳过后续抓取门。正常start/reset清除接续请求。该服务会续入原完整视觉流程，**本轮1cm限定验证不调用它**。

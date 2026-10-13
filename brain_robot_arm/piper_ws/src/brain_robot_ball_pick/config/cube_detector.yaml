@@ -19,23 +19,24 @@ cube_detector:
     depth_valid_topic: /brain_robot_vision/depth_valid
     depth_diagnostic_topic: /brain_robot_vision/depth_diagnostic
     input_reliability: reliable
-    # Factory calibration read from serial CC136530302 via
-    # /camera/get_camera_info and /camera/extrinsic/depth_to_color.
-    # Translation is converted from millimetres to metres. A synchronized
-    # static RGB/depth capture at the real target pose shows the kernel V4L2
-    # image already has the calibration's physical left/right orientation.
+    # Factory calibration read on 2026-10-13 from current serial CC1365304DG
+    # via /camera/get_device_info, /camera/get_camera_info,
+    # /camera/get_camera_params and /camera/extrinsic/depth_to_color.
+    # Translation is converted from millimetres to metres; see the numeric
+    # evidence in docs/evidence/piper_camera_factory_20261013.json.
+    # This is lens-to-lens registration, not the robot mounting TF/TCP.
     software_registration_enabled: true
     color_calibration_width: 640
     color_calibration_height: 480
-    color_fx: 488.86849976
-    color_fy: 488.86849976
-    color_cx: 310.73052979
-    color_cy: 209.03765869
+    color_fx: 488.80865478515625
+    color_fy: 488.80865478515625
+    color_cx: 315.5068054199219
+    color_cy: 214.38182067871094
     color_mirror_horizontal: false
-    depth_to_color_rotation: [0.99998426437, 0.00078827410, -0.00555561949,
-      -0.00080088340, 0.99999713898, -0.00226784474,
-      0.00555381598, 0.00227225851, 0.99998199940]
-    depth_to_color_translation_m: [-0.02993771553, 0.00001795782, -0.00032919908]
+    depth_to_color_rotation: [0.9998412728309631, 0.011080970056355, 0.01395333744585514,
+      -0.011040600016713142, 0.9999346137046814, -0.0029670665971934795,
+      -0.013985303230583668, 0.0028125427197664976, 0.9998982548713684]
+    depth_to_color_translation_m: [-0.029824851989746094, 0.0002287428230047226, 0.0001407688856124878]
 
     # OpenCV HSV hue is 0..179. These bounds are deliberately parameters:
     # purple depends on illumination and the material finish.
