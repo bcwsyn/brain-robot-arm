@@ -155,6 +155,15 @@ if pre['fraction'] >= .995:
     descent, _ = plan(pre_state, blended(pre_tip, end_tip, final_rot, final_rot))
     row['descent'] = descent
 report['counterfactual'] = row
+production = json.loads(subprocess.check_output([helper, *map(str, values), '1'], text=True))
+pre, pre_state = plan(state, production['pregrasp'])
+row = {'strategy': 'approved_shared_cpp_synchronized_geometry',
+       'pre_waypoints': len(production['pregrasp']), 'descent_waypoints': len(production['descent']),
+       'pre': pre}
+if pre['fraction'] >= .995:
+    descent, _ = plan(pre_state, production['descent'])
+    row['descent'] = descent
+report['shared_cpp_synchronized'] = row
 print(json.dumps(report, indent=2))
 node.destroy_node()
 rclpy.shutdown()

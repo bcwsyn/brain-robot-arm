@@ -2614,6 +2614,8 @@ private:
     try {
       const double insertion = grasp_geometry::SurfaceInsertion(
         locked_object_min_size_m_, surface_insertion_fraction_, surface_insertion_max_m_);
+      const bool synchronized_turn = !simulation_only_ && automatic_rgb_approach_enabled_ &&
+        terminal_target_frozen_;
       const auto path = grasp_geometry::TargetDirectedApproach(
         {start.pose.position.x, start.pose.position.y, start.pose.position.z},
         {start.pose.orientation.x, start.pose.orientation.y, start.pose.orientation.z,
@@ -2621,7 +2623,7 @@ private:
         {surface.point.x, surface.point.y, surface.point.z}, gripper_tip_offset_m_,
         top_down_pregrasp_clearance_m_ + grasp_height_offset_m_,
         insertion - grasp_height_offset_m_, cartesian_eef_step_m_,
-        target_directed_downward_fraction_);
+        target_directed_downward_fraction_, synchronized_turn);
       const auto convert = [](const auto & poses, auto & waypoints) {
           for (const auto & p : poses) {
             geometry_msgs::msg::Pose pose;
@@ -2639,10 +2641,11 @@ private:
       convert(path.descent, descent_waypoints);
       RCLCPP_INFO(get_logger(),
         "TARGET_DIRECTED_VARIABLE_ATTITUDE surface=(%.4f,%.4f,%.4f) insertion=%.4f "
-        "pre_waypoints=%zu descent_waypoints=%zu downward_fraction=%.3f "
+        "pre_waypoints=%zu descent_waypoints=%zu downward_fraction=%.3f synchronized_turn=%d "
         "NO_JOINT_TRAJECTORY_EDIT",
         surface.point.x, surface.point.y, surface.point.z, insertion,
-        pre_waypoints.size(), descent_waypoints.size(), target_directed_downward_fraction_);
+        pre_waypoints.size(), descent_waypoints.size(), target_directed_downward_fraction_,
+        synchronized_turn);
     } catch (const std::invalid_argument & error) {
       RCLCPP_ERROR(get_logger(), "Target-directed geometry rejected: %s", error.what());
       Fail("TARGET_DIRECTED_GEOMETRY_UNAVAILABLE");

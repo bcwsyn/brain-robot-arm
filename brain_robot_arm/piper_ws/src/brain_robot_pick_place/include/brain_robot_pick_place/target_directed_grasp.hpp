@@ -118,7 +118,8 @@ struct DirectedApproach
 inline DirectedApproach TargetDirectedApproach(
   const Point & start_origin, const Quaternion & start_orientation,
   const Point & surface, double tip_offset_m, double pregrasp_gap_m,
-  double insertion_m, double step_m, double downward_fraction = 1.0)
+  double insertion_m, double step_m, double downward_fraction = 1.0,
+  bool synchronize_turn_with_approach = false)
 {
   for (const double v : {tip_offset_m, pregrasp_gap_m, insertion_m, step_m}) {
     if (!std::isfinite(v) || v <= 0.0) {
@@ -148,6 +149,39 @@ inline DirectedApproach TargetDirectedApproach(
   // entry, not a fixed joint angle. Full vertical entry may be unreachable.
   const auto final = Slerp(aimed, AimTool(aimed, {0, 0, -1}), downward_fraction);
   DirectedApproach result;
+  if (synchronize_turn_with_approach) {
+    // Keep the original final capture point/attitude. Avoid a separate
+    // fixed-wrist aim that can cross the wrist's singular IK branch first.
+    const auto start_tip = Tip(start_origin, Rotate(q0, {0, 0, 1}), tip_offset_m);
+    const auto final_axis = Rotate(final, {0, 0, 1});
+    const auto pre_origin = ToolOrigin(surface, final_axis, tip_offset_m, pregrasp_gap_m);
+    const auto pre_tip = Tip(pre_origin, final_axis, tip_offset_m);
+    const auto final_origin = ToolOrigin(surface, final_axis, tip_offset_m, -insertion_m);
+    const auto final_tip = Tip(final_origin, final_axis, tip_offset_m);
+    const auto blend = [&](const Point & first_tip, const Point & last_tip,
+        const Quaternion & first_q, const Quaternion & last_q,
+        std::vector<DirectedPose> & output) {
+        const Point delta_tip{last_tip[0]-first_tip[0], last_tip[1]-first_tip[1],
+          last_tip[2]-first_tip[2]};
+        const double angle = QuaternionDistance(first_q, last_q);
+        const double wrist_travel_bound = std::sqrt(Dot(delta_tip, delta_tip)) + tip_offset_m*angle;
+        const auto count = static_cast<std::size_t>(std::max(1.0,
+            std::ceil(std::max(wrist_travel_bound/step_m, angle/.02))));
+        for (std::size_t i = 1; i <= count; ++i) {
+          const double s = double(i)/count;
+          const auto orientation = Slerp(first_q, last_q, s);
+          const auto axis = Rotate(orientation, {0, 0, 1});
+          Point origin{};
+          for (std::size_t k = 0; k < 3; ++k) {
+            origin[k] = first_tip[k] + s*delta_tip[k] - tip_offset_m*axis[k];
+          }
+          output.push_back({origin, orientation});
+        }
+      };
+    blend(start_tip, pre_tip, q0, final, result.pregrasp);
+    blend(pre_tip, final_tip, final, final, result.descent);
+    return result;
+  }
   const double angular_step = std::min(0.02, step_m / start_radius);
   const auto aim_steps = static_cast<std::size_t>(std::max(
       1.0, std::ceil(QuaternionDistance(q0, aimed) / angular_step)));

@@ -57,6 +57,39 @@ TEST(GraspGeometry, DirectedAimHasNoPresetYawAndHandlesOppositeDirections)
   EXPECT_NEAR(gg::QuaternionDistance(gg::Slerp(q, opposite, 0.5), q), 0.0, 1e-12);
 }
 
+TEST(GraspGeometry, SynchronizedTurnTranslatesImmediatelyAndPreservesCaptureEndpoint)
+{
+  const gg::Point start{.232925, -.070458, .213741};
+  const gg::Point surface{.413131, -.113936, .062490};
+  const gg::Quaternion q{.139338, .936617, -.047305, .317957};
+  const auto old_path = gg::TargetDirectedApproach(start, q, surface, .1358, .024, .012, .005, .5);
+  const auto path = gg::TargetDirectedApproach(start, q, surface, .1358, .024, .012, .005, .5, true);
+  ASSERT_FALSE(path.pregrasp.empty()); ASSERT_FALSE(path.descent.empty());
+  EXPECT_NE(path.pregrasp.front().origin, start);
+  EXPECT_GT(gg::QuaternionDistance(path.pregrasp.front().orientation, q), 1e-5);
+  const auto final = path.descent.back();
+  for (std::size_t i = 0; i < 3; ++i) {
+    EXPECT_NEAR(final.origin[i], old_path.descent.back().origin[i], 1e-12);
+  }
+  EXPECT_NEAR(gg::QuaternionDistance(final.orientation, old_path.descent.back().orientation), 0, 1e-7);
+  auto last = gg::DirectedPose{start, q};
+  for (const auto & segment : {path.pregrasp, path.descent}) {
+    for (const auto & p : segment) {
+      const gg::Point delta{p.origin[0]-last.origin[0], p.origin[1]-last.origin[1],
+        p.origin[2]-last.origin[2]};
+      EXPECT_LE(std::sqrt(gg::Dot(delta, delta)), .005+1e-10);
+      EXPECT_LE(gg::QuaternionDistance(p.orientation, last.orientation), .02+1e-10);
+      last = p;
+    }
+  }
+  const auto pre = path.pregrasp.back();
+  const auto pre_axis = gg::Rotate(pre.orientation, {0, 0, 1});
+  EXPECT_NEAR(gg::CompareTips(gg::Tip(pre.origin, pre_axis, .1358), surface,
+    pre_axis).axial_m, -.024, 1e-12);
+  const auto axis = gg::Rotate(final.orientation, {0, 0, 1});
+  EXPECT_NEAR(gg::CompareTips(gg::Tip(final.origin, axis, .1358), surface, axis).axial_m, .012, 1e-12);
+}
+
 TEST(GraspGeometry, DirectedSlantedEntryStillAimsAtTargetWithNoFixedAttitude)
 {
   const gg::Point start{0.17, -0.05, 0.29};

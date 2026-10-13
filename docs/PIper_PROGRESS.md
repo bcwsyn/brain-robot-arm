@@ -1,3 +1,10 @@
+### 2026-10-13：用户同意原末段同步转向靠近，原geometry owner局部实现/构建中
+
+- 最终构建0，原实际方法32/32（2363ms）/几何14/尺度15/视觉10/wiring3合计74项通过。域78共享生产C++几何25预抓/8下降路点，MoveIt分别16点/8点、fraction1/error1/原范围true、相邻max.068713/.028251；与先前Python对照同捕获终点，确认不是仅反事实实现通过。review0/语法0后隔离INT收尾；未部署/新实体输出。新binary fd0d086d1496dfe02d6c45b840ef430093eb1a444a5f335479a511bed914351c、CPPcd05f4adafa39e40bb754bf18a1e1d4ef09cfb59904a3e46166fca8738261034、hpp58c6235629789c252e72b1f453f0080842b6fc9ddae975237c2329e9e977c73c；日志synchronized_turn_{build,executor_tests,geometry_tests,policy_tests,visual_tests,plan_review.json}。固定清理rc0、90%7.8GB不变，无ENOSPC/扩删。下一提交备份0c14428/b9f1c1并部署原CPP/hpp/binary，SDK新读后原AUTO1实测。
+- 基线0a59bea/actual0c14428 b9f1c1…/原入口87039b…，用户明确“同意同步转向靠近并实测”；原授权等待已解除。读Git/最新规范/原geometry/部署SHA，无活动控制栈，不重复CAN固件限位/激光。使用ROS2与手术式技能，仅原共享geometry和原执行器选择开关/日志、几何回归及只读helper；其他既有wiring注释/vendor/reference不动。
+- 原TargetDirectedApproach新增bool可选同步分支，默认false保留旧调用；真实自动且terminal_target_frozen时true。当前FK指尖到同一个最终朝向下24mm预抓点同步平移/SLERP，再原最终捕获点/插入；取消旧初始固定腕aim，最终落点与朝向严格不变。采样仍5mm/.02rad保守界，MoveIt完整双段预检、原范围/碰撞/.08已检查前缀/真实反馈/最终夹持保持，TF/TCP/YAML/入口不改、不直接发J5或诊断q。
+- 新几何回归验证首点即平移并改朝向、最终点等同旧路线、预抓/插入及原步界；共享CLI支持true，域78诊断工具将直接规划生产C++几何而不是仅Python反事实。cmake构建session19460/synchronized_turn_build.txt尚未完成，不宣称新软件/实体通过。root90%7.8GB仅固定clean_disk_space.sh，本轮命令rc与清后df见同目录synchronized_turn_disk_cleanup.txt/构建输出，不扩删。下一回归完成→原快照只读完整规划→提交/备份actual→新SDK清单后原AUTO1实测并查看新三图。
+
 ### 2026-10-13：20cm两阶段实体通过；原主策略初始转腕25.6%失败，新同步转向仅模型对照/待同意
 
 - 应用0c14428/部署265a150，原AUTO1 PREPARE4628.637→SEARCH4648.631/OBSERVE_POSE_REACHED→ALIGN4662.952→GRASP_READY4666.820→粗段4668.858。原8mm小步step0..12共13条完整Cartesian发布、13条真实feedback确认；约20.2cm后HOLD4686.749/三帧中值freeze4687.363，stamp1791904687265971123/base[.413130775,-.113936370,.062490152]m/size.037309/range.202312m。新阶段真实通过，不仅软件回归；但随后原43预抓/14下降路点的预抓规划fraction.255814/error1被拒绝，没末段输出/闭爪/抬升/释放，不算最终目标。不是当前CAN、深度黑图或物体移动导致。
