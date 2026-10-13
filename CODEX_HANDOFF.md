@@ -1,4 +1,10 @@
-## 最新接续（2026-10-13，4b0dd26原执行器已部署，原AUTO1反向候选实测正在启动）
+## 最新接续（2026-10-13，4b0dd26原流程step0关节总行程拒绝；已获准前缀续调，正在构建，未抓取）
+
+原AUTO1 PREPARE0008.379→SEARCH0047.965→ALIGN0063.859→GRASP_READY0066.613，79+13/92预检通过，step0完整Cartesian100%/8点但原单点相对起点>.08rad0068.748拒绝，0自动靠近/0反向触发。不是本次IK/CAN或近距深度失败（301mm有效）。用户已同意仅原门复用至少2已检查点的完整路径前缀→停稳→反馈重规划，原.08/8mm/朝向/限位/碰撞/相机/闭爪不变；源码/原方法两测试已改，构建session99037/joint_prefix_build.txt。下一第一条tail构建/方法日志，通过后备份4b0dd26/298448…并部署原执行器，再SDK新读原AUTO1验证前缀与反向末段；不得重复同代码step0失败或据此判反向无效。
+
+用户提出LDP并引用官方0.15–5m范围后要求停止激光排查，已停止；新只读read_camera_ldp.cpp原生模式5样本emitter1/LDP1/status0/深度非零75–76%，不能排除历史近距状态、PS数值不当毫米，首默认模式无帧报告不作有效保护证据。细节docs/evidence/piper_ldp_and_joint_prefix_20261013.md。主68857 rc1/原cleanup无Disable/Reset，exact70951 INT0/observer38982 rc143，所有控制/采集/相机工具已退出。结束SDK0473.3765/high0473.3775六true，q[-.284226869,.989741312,-.757525255,0,.706910707,0]rad/最后ROS99.6mm。0048三图已看完整近十字301mm2008样本；0082是旧缓存。用户原改动/本地Git/远程审查阻断保持，不自动续跑未部署版。
+
+## 历史接续（2026-10-13，4b0dd26原执行器已部署，原AUTO1反向候选实测正在启动）
 
 新binary298448…/CPP18beea…已同步原运行树，旧79e06bc/2b309a…保留reverse_attitude_previous_79e06bc.bin；原入口87039b…不改。SDK9895.646/200Hz&high100Hz/6true，q[-.324247268,1.778822120,-1.396926627,.014992378,.908600955,-.023195426]，CANRX20827349/error0，不重载。原AUTO1主session68857，日志view_guard_20261013/reverse_attitude_onekey_console/onekey；读采exact70951/observer38982（reverse_attitude_exact/live），600秒INT边界。下一第一条tail该console并看新visual_stack.log/三图/反向candidate完整规划与实际反馈；当前未有新抓取验收，不拿旧attitude图当新画面。动作前原观测/速度加速度/范围/异常保持使能已说明记录，不Disable/Reset。用户原改动/本地Git/远程审查阻断保持。
 
