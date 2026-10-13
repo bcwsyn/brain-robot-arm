@@ -300,10 +300,10 @@ camera_has_required_frame() {
   # arrived. The depth-only profile must not depend on the UVC RGB interface.
   if [[ "$DEPTH_ONLY_TARGET" == "1" || "$DEPTH_ONLY_TARGET" == "true" ||
     "$DEPTH_ONLY_TARGET" == "yes" ]]; then
-    timeout 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1
+    timeout -k 2s 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1
   else
-    timeout 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1 &&
-      timeout 4s ros2 topic echo --once /camera/color/image_raw >/dev/null 2>&1
+    timeout -k 2s 4s ros2 topic echo --once /camera/depth/image_raw >/dev/null 2>&1 &&
+      timeout -k 2s 4s ros2 topic echo --once /camera/color/image_raw >/dev/null 2>&1
   fi
 }
 
@@ -312,7 +312,7 @@ wait_for_actual_frame() {
   local missing_frames=0 recovery_attempts=0
   echo "[等待] 等待 ${label} 首帧；收到真实图像后才继续启动..."
   while true; do
-    if timeout 4s ros2 topic echo --once "$topic" >/dev/null 2>&1; then
+    if timeout -k 2s 4s ros2 topic echo --once "$topic" >/dev/null 2>&1; then
       echo "[就绪] 已收到 ${label} 首帧。"
       return 0
     fi

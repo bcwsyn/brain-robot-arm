@@ -1,3 +1,22 @@
+### 2026-10-13 10:29–10:35：恢复停更相机，修复检查进程无强制退出
+
+- 起点 `8b019a5`；保留接力前未提交的10月12日J5第一段记录和全部无关vendor/Astra/reference改动。实测唯一控制栈仍运行，视觉 `IDLE/WAITING_FOR_START`、抓取 `WAITING_FOR_LEVEL_ALIGN`；新鲜六轴反馈 `[-0.31809134,1.897715316,-1.34467074,0.007274148,0.728391664,0] rad`，夹爪79.6 mm。未重新启动自动搜索、没有发送新关节/夹爪命令。本轮不重新执行观测轨迹：从已经完成下降及第一段J5观察的姿态继续。
+- 新故障不是CAN断联：RGB及关节仍更新，depth/debug消息停在 `1791817574.1829348/1791817574.0515294`，观察器不断另存同一旧帧。无daemon查询depth发布者为0。相机恢复子进程PID126896卡在PID/PGID699799的 `timeout 4s ros2 topic echo --once /camera/depth/image_raw`，已经约11小时；子CLI忽略/未退出TERM导致普通timeout不返回，是本轮可复现的恢复链阻断。没有据此推断TF/CAN/固件损坏。
+- 最小恢复：确认进程组后 `kill -KILL -- -699799`，既有守护在10:32:04记录 `CAMERA_NO_FRAMES` 并重启原RGB-D输入；depth/debug随后恢复。另外只TERM两名历史RGB保存器PID106358/109104，停止重复落盘，未删除任何材料。根分区60%、剩余31G，未执行清盘；运行日志部分为0字节，不能以此声称昨日未运行或重新制造证据。
+- 图像证据：已查看 `j5_plus5_20261012/observer/evidence/15132_{rgb,depth,debug}.png`（depth/debug旧帧）与 `15180_{rgb,depth,debug}.png`（恢复后新帧）。原RGB中紫块仅在下沿x约80–123局部出现，两夹指在两侧，仍非完整目标或可闭爪位置；debug `TARGET LOST`。快照15204的RGB/debug stamp同为1791858828.613949，depth1791858828.4775434；16UC1 640×400，非零137812，中位203 mm、最小191 mm；三图是latest采样、不是严格同步组，不把16位显示或重复旧图当无深度。
+- 用户本轮明确同意局部脚本修改：只在 `camera_has_required_frame()` 三个检查及 `wait_for_actual_frame()` 中将 `timeout 4s` 改为 `timeout -k 2s 4s`，不改变运动、目标/夹爪门、DDS或搜索轨迹。规范与实际入口SHA256均 `6ec00d3f4fd8fda82ac55b240a5630a4b3b5b09d76653013e828feb414084183`。已运行的旧shell不会自动加载新函数；本次当前恢复是终止已核实旧检查的结果，补丁从下一启动生效。
+- 验证：两份脚本 `bash -n` 返回0；`PYTHONNOUSERSITE=1 /usr/bin/python3 -m pytest -q -p no:cacheprovider .../test_startup_script.py` 返回0、13 passed，其中假ROS子进程忽略TERM仍在约6秒被强制结束，未涉及硬件。CAN UP/ERROR-ACTIVE且errors/drop=0，未重载；运动前另读现有反馈即可。
+- 下一最小动作：基于当前新鲜J5 41.733768°由原MoveIt→adapter规划第二段+5°，保持其余五轴与80 mm开口，停稳看新RGB/数值depth/debug，完整目标出现即停止增量并核对实际夹持区。禁止盲闭爪、ResetPiper/DisableArm。Git仅本地，origin/main同步授权阻断仍在；不重试push。目标未完成。
+
+### 2026-10-12 21:58：下降恢复后完成第一段 J5 +5°真实观察
+
+- 起点 `8b019a5`。上一轮目录 `static_descent_20261012_2230`（目录后缀是标签，实际约21:29）已执行29点预抓取和9点下降，出现 `TOP_DOWN_DESCENT_EXECUTING`、`GRASP_LANDING_STRICT_FEEDBACK_CONFIRMED`；模型tip残差3.6 mm。终止于 `FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE` / 新鲜RGB-D与锁定RGB不可用。原RGB中紫块已出下边缘，用户现场明确“夹爪还离方块有距离”，因此模型落点通过不等于实体已靠近到位，更不等于抓取成功。
+- 上轮已查看 `.../static_descent_20261012_2230/evidence/0035_{rgb,depth,debug}.png` 与0036 RGB/debug；0035 RGB/depth时间1791811782.4428017/1791811782.4168675，debug1791811781.8427022。原16UC1深度有效：0035非零154124、非零中位243 mm，0036非零138492、中位219 mm。原深度直接显示近黑是16位数值显示问题，不能称没有深度；方块在末帧RGB中不可见，夹爪在画面下部两侧。
+- 用户最新明确要求继续逐次J5 +5°观察，覆盖历史禁止凭肉眼裸加J5的旧动作范围。使用唯一入口 `BRAIN_ROBOT_AUTO_START=0` 到 `[7/7]` / `IDLE`，日志 `/home/johnwick/brain_robot_logs/j5_plus5_20261012`；没有重新返回观测姿态或自动搜索。实时六轴起点 `[-.31809134,1.897715316,-1.34467074,.007274148,.641450768,0] rad`，夹爪0.0795 m。
+- 原MoveIt Pilz/PTP比例.002规划J5目标.7287172306 rad（+5°），177点/17.544410432 s，任务限位/连续性通过，模型tip路径19.792 mm；原适配器于1791813357.681510879接受177点。实际反馈J5 .728391664 rad，36.752422→41.733768°（+4.981346°），其余五轴与夹爪保持。enable/enable_motion/arm成功，结束software disarm成功；没有闭爪、抬升、回零、ResetPiper或DisableArm。
+- 已打开运动前0062原RGB、运动后0067/0068/0069原RGB与0068 debug；0068 RGB时间1791813375.3251898、depth1791813375.4055982、debug1791813375.1237602。正向5°后紫块首次在RGB左下下边缘出现局部（约x80–122、y211–239），仍裁切，不是两指之间夹持到位；debug仍TARGET LOST。0062/0068原深度均uint16 640×400、非零165464/149832、中位216/201 mm，并查看0068数值显示图；不把深度显示黑当无数据，不把latest三图当硬同步帧。
+- 首次壳层执行因 `set -u` 导致ROS setup未绑定变量，在任何服务/发布前退出；修正后单次发布成功，CLI末尾超时但适配器接受和真实反馈到位已独立确认，未重复发同一轨迹。下一轮从新鲜41.73°反馈再规划+5°，每段停稳看图，不自动闭爪；测试同步覆盖8b019a5关闭可选near追踪的配置事实。仅本地提交，GitHub授权阻断不变。
+
 ### 2026-10-12 22:00：回退关联门后仍未下降，准备关闭新增近距追踪阶段
 
 - 提升权限重跑 `/home/johnwick/start_brain_robot_cube_real.sh`，日志 `/home/johnwick/brain_robot_logs/rollback_20261012_2200`。实际通过 `[7/7] → OBSERVE_POSE_REACHED → SEARCH → ALIGN → GRASP_READY`，张爪/预抓取已发布；随后同一图像时间戳去抖后的关联距离为 `0.0448、0.0462、0.0461、0.0481、0.0507 m`，在第5个新鲜样本触发 `NEAR_RGB_REJECTED:MEASURED_TARGET_CHANGED`，控制器进入 `FAULT`，没有执行下降、闭爪、抬升或释放。

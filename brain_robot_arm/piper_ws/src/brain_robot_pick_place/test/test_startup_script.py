@@ -64,6 +64,29 @@ def test_log_writer_stays_append_after_guard_truncation(tmp_path):
     assert path.read_bytes() == b"new CAN evidence\n"
 
 
+def test_camera_checks_have_a_forced_exit_deadline():
+    health = function("camera_has_required_frame")
+    startup = function("wait_for_actual_frame")
+    assert health.count("timeout -k 2s 4s ros2 topic echo --once") == 3
+    assert 'timeout -k 2s 4s ros2 topic echo --once "$topic"' in startup
+
+
+def test_camera_check_terminates_a_term_resistant_ros_cli(tmp_path):
+    """Fake subscriber ignores TERM; no ROS, USB or robot is involved."""
+    cli = tmp_path / "ros2"
+    cli.write_text('#!/bin/bash\ntrap "" TERM\nexec sleep 60\n')
+    cli.chmod(0o700)
+    started = time.monotonic()
+    result = subprocess.run(
+        ["bash", "-c", function("camera_has_required_frame") +
+         "\nDEPTH_ONLY_TARGET=1; camera_has_required_frame"],
+        env={**os.environ, "PATH": str(tmp_path) + ":" + os.environ["PATH"]},
+        capture_output=True, timeout=10, start_new_session=True,
+    )
+    assert result.returncode == 137, result.stderr
+    assert 4 <= time.monotonic() - started < 9
+
+
 @pytest.mark.parametrize("grasp,visual,expected,returns_home", [
     ("IDLE", "FAULT", 1, False),
     ("IDLE", "'FAULT'", 1, False),
