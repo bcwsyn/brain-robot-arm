@@ -1,3 +1,11 @@
+### 2026-10-13：用户批准严格同图TF有限重试/具体错误，构建及50项通过，待部署实测
+
+- 基线262f51a，用户在说明TF查询及拟短暂等待/重试后确认。使用ROS2/手术式技能，只修改原ObserveLockedTarget及原方法测试；不改TF外参、目标锁点、模型/轨迹/限位/碰撞/最终闭爪、YAML或原一键入口。ea67b83自动尺度诊断续调保持，用户原wiring注释/vendor/reference改动保留。
+- 新exact_transform只在automatic_rgb_approach_enabled_ && allow_bounded_compensation允许原300ms查询失败后最多两次明确50ms等待/0秒同stamp重查；约400ms上限，不无限放宽、无latestTF或旧图替换。每次失败打印target/source/精确image_stamp/attempt/age/elapsed/error.what，恢复NEAR_RGB_EXACT_TF_RECOVERED；保持原RGB/框/raw点快照。查询前后复用原0.6秒反馈/图像新鲜度与六轴完整性，等待过期仍拒绝；初始/预览/最终严格调用不自动扩重试。
+- 新增3个域78无控制器实际方法回归：330ms迟到TF恢复且不重锁/换图（378ms）；仅旧latestTF仍在3次后失败（428ms）；等待中反馈变旧仍拒绝（350ms）。规范cmake构建grasp_lift_executor/near_depth_executor_test rc0，域78实际方法19/19(2183ms)/原wiring3/尺度15/几何13合计50项通过。新binary827923fc5a19c6b08b6e11ea107b07859e421440011e1f54e978899b2d62f338，CPP35227cb9b7bc02781517661bc400a5d6966cac0f19ec40bcc23b9dc882e1df09，尚未部署或新运动。不把有限等待隔离验证当作实机TF根因已修复。
+- 主机开始无运动栈；can0 ifindex9 ERROR-ACTIVE/1Mbps/.75/RX7876903/错误0，继续复用不重载。原实际binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485/原入口87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0不变；SDK当前使能/q仅沿用上一轮4150新读，部署前再读，不伪称本轮新SDK确认。
+- root88%/9.2GB，按规则仅已有clean_disk_space.sh0，清后仍88%；tf_wait_disk_cleanup.txt，无ENOSPC，不扩删。日志view_guard_20261013/tf_wait_{build,executor_tests,policy_tests,geometry_tests}.txt。下一方法回归通过后备份ea67b83 binary、同步唯一执行器，并原AUTO_START=1实测三图/TF重试具体错误与靠近进度。Git仅本轮源码/测试/记录，本地，origin/main既有远程历史审查阻断沿用。
+
 ### 2026-10-13：同代码唯一重试到65-90，再次原精确图像TF失败；未抓取，控制栈全部退出且保持使能
 
 - 未再修改代码，ea67b83/runtime binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485沿用。同原入口AUTO_START=1，scale_advisory_retry_console与scale_advisory_retry_onekey；PREPARE3938.911（10点35秒）→SEARCH3973.525/OBSERVE_POSE_REACHED→ALIGN3987.695→GRASP_READY3991.087。seed3991002803550/框[.412499994040,.379166662693,.506250023842,.508333325386]/colorZ .297923193，surface(.4320,-.1286,.0879)m，77+13=90路点。

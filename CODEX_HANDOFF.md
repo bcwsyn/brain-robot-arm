@@ -1,4 +1,12 @@
-## 最新接续（2026-10-13，同代码唯一重试亦到65-90后原精确图像TF失败；未抓取，保持使能/控制栈已退出）
+## 最新接续（2026-10-13，用户批准同图TF有限重试/具体异常；构建/50项通过，待原入口部署实测）
+
+基线262f51a，用户确认解释后的短暂等待/重试。原ObserveLockedTarget中仅自动bounded分支：保留300ms首次查询，最多再两次50ms等待/0秒严格同图stamp重查，打印frames/image_stamp/attempt/age/elapsed/error；恢复明确RECOVERED，持续失败仍拒绝。原图/框/raw快照与seed/base不变，无latestTF替代，等待后复核原0.6秒图像/六轴反馈完整性。初始/预览/最终闭爪不自动扩等待，ea67b83尺度诊断修复继续保留。
+
+仅cpp/原方法测试改动，3个新回归(330ms迟到恢复/旧latest拒绝/反馈等待过期拒绝)，规范构建rc0、方法19/19(2183ms)/纯尺度15/几何13/wiring3合计50通过。新binary827923fc5a19c6b08b6e11ea107b07859e421440011e1f54e978899b2d62f338、CPP35227cb9b7bc02781517661bc400a5d6966cac0f19ec40bcc23b9dc882e1df09，尚未部署，不声称实机验证通过。主机无运动栈；CANRX7876903持续/ERROR-ACTIVE/错误0、不重载，原实际binary91ce055f…和原脚本87039b…仍旧。SDK初检只引用上一轮4150，实测前再新读。root88%9.2GB/固定清理0后仍88，无ENOSPC，tf_wait_disk_cleanup.txt。
+
+下一确认tf_wait_executor_tests19项全通过，再备份ea67b83 binary/同步原执行器，SDK新读q/使能后原AUTO1实测三图和TF重试原错误。不得改外参/目标/限位/DDS/启动入口或最终闭爪；保留用户原改动，Git仅本地远程历史审查阻断不变。当前软件验证未完，无实体动作/自动续跑。
+
+## 历史接续（2026-10-13，同代码唯一重试亦到65-90后原精确图像TF失败；未抓取，保持使能/控制栈已退出）
 
 用户批准的自动尺度异常改诊断已ea67b83提交/47项通过并部署，binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485、CPP98fb19769cfa606095bcd87e4f911be1d926e4a5543ca044fb94c51fbeb528d8、原脚本87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0。两轮36段靠近到64-89/65-90，都是原EXACT_IMAGE_TF_UNAVAILABLE，不是尺度/CAN/本段IK；均0尺度advisory，不能称实体续调已验收。第二PREPARE3938.911(35秒)→SEARCH3973.525→ALIGN3987.695→GRASP_READY3991.087，77+13点；loop100/65-90/gaze=true于4047.075停止，未最终下降/闭爪/抬升。
 

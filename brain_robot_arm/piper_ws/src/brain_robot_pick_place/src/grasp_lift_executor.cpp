@@ -1457,19 +1457,22 @@ private:
       return reject("LOCKED_RGB_IDENTITY_JUMP");
     }
     // /joint_states contains physical feedback, not the planned endpoint.
-    {
+    const auto feedback_fresh = [&]() {
       std::lock_guard<std::mutex> lock(feedback_mutex_);
       const auto & q = latest_joint_state_;
+      const auto current = std::chrono::steady_clock::now();
       const double q_age = (now() - rclcpp::Time(q.header.stamp, get_clock()->get_clock_type())).seconds();
       if (joint_state_received_time_ == std::chrono::steady_clock::time_point{} ||
-        std::chrono::duration<double>(steady - joint_state_received_time_).count() > target_timeout_s_ ||
+        std::chrono::duration<double>(current - joint_state_received_time_).count() > target_timeout_s_ ||
         q_age < 0 || q_age > target_timeout_s_) {return reject("STALE_ACTUAL_FEEDBACK");}
       for (int axis = 1; axis <= 6; ++axis) {
         if (!std::isfinite(JointPosition(q, "joint" + std::to_string(axis)))) {
           return reject("INCOMPLETE_ACTUAL_FEEDBACK");
         }
       }
-    }
+      return true;
+    };
+    if (!feedback_fresh()) {return false;}
     geometry_msgs::msg::PointStamped measured;
     bool measured_same_image = false;
     {
@@ -1488,9 +1491,46 @@ private:
     try {
       // Exact image-time TF comes from actual feedback. Allow normal TF delivery
       // latency; do not use latest or the trajectory's planned terminal joints.
-      const auto camera_from_reference = tf_buffer_->lookupTransform(
-        camera_optical_frame_, lift_reference_frame_, image_time,
-        rclcpp::Duration::from_seconds(.3));
+      const auto exact_transform = [&](const std::string & target, const std::string & source) {
+          const auto started = std::chrono::steady_clock::now();
+          const bool retry_allowed = automatic_rgb_approach_enabled_ && allow_bounded_compensation;
+          for (unsigned attempt = 1; ; ++attempt) {
+            try {
+              auto transform = tf_buffer_->lookupTransform(target, source, image_time,
+                rclcpp::Duration::from_seconds(attempt == 1 ? .3 : 0.0));
+              if (attempt > 1) {
+                RCLCPP_INFO(get_logger(),
+                  "NEAR_RGB_EXACT_TF_RECOVERED target=%s source=%s image_stamp=%ld "
+                  "attempt=%u elapsed_s=%.6f",
+                  target.c_str(), source.c_str(), image_time.nanoseconds(), attempt,
+                  std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count());
+              }
+              return transform;
+            } catch (const tf2::TransformException & error) {
+              RCLCPP_WARN(get_logger(),
+                "NEAR_RGB_EXACT_TF_WAIT target=%s source=%s image_stamp=%ld "
+                "attempt=%u image_age_s=%.6f elapsed_s=%.6f error=%s",
+                target.c_str(), source.c_str(), image_time.nanoseconds(), attempt,
+                (now()-image_time).seconds(),
+                std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count(),
+                error.what());
+              const double age = (now()-image_time).seconds();
+              const double received_age = std::chrono::duration<double>(
+                std::chrono::steady_clock::now()-received).count();
+              if (!retry_allowed || attempt >= 3 || age < 0 || age > target_timeout_s_ ||
+                received_age > target_timeout_s_ || !feedback_fresh()) {throw;}
+              PublishDiagnostic("NEAR_RGB_EXACT_TF_WAIT_RETRY_SAME_IMAGE");
+              // Preserve this exact RGB/box/measurement snapshot. Two explicit
+              // 50ms waits supplement the original 300ms lookup, never latest TF.
+              std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            }
+          }
+        };
+      const auto camera_from_reference = exact_transform(camera_optical_frame_, lift_reference_frame_);
+      if ((now()-image_time).seconds() < 0 || (now()-image_time).seconds() > target_timeout_s_ ||
+        std::chrono::duration<double>(std::chrono::steady_clock::now()-received).count() >
+        target_timeout_s_) {return reject("STALE_RGB");}
+      if (!feedback_fresh()) {return false;}
       geometry_msgs::msg::PointStamped camera;
       tf2::doTransform(reference, camera, camera_from_reference);
       near_depth::Projection projection;
@@ -1528,8 +1568,11 @@ private:
         geometry_msgs::msg::PointStamped observed_reference;
         const std::string frame = measured.header.frame_id.empty() ?
           camera_optical_frame_ : measured.header.frame_id;
-        const auto reference_from_measurement = tf_buffer_->lookupTransform(
-          lift_reference_frame_, frame, image_time, rclcpp::Duration::from_seconds(.3));
+        const auto reference_from_measurement = exact_transform(lift_reference_frame_, frame);
+        if ((now()-image_time).seconds() < 0 || (now()-image_time).seconds() > target_timeout_s_ ||
+          std::chrono::duration<double>(std::chrono::steady_clock::now()-received).count() >
+          target_timeout_s_) {return reject("STALE_RGB");}
+        if (!feedback_fresh()) {return false;}
         tf2::doTransform(measured, observed_reference, reference_from_measurement);
         const double association_distance = std::hypot(
           std::hypot(observed_reference.point.x - reference.point.x,
@@ -1693,7 +1736,11 @@ private:
       if (!recovering) {near_last_full_rgb_view_ = view;}
       if (observed_view) {*observed_view = view;}
       return true;
-    } catch (const tf2::TransformException &) {return reject("EXACT_IMAGE_TF_UNAVAILABLE");}
+    } catch (const tf2::TransformException & error) {
+      RCLCPP_WARN(get_logger(), "NEAR_RGB_EXACT_TF_FAILED image_stamp=%ld error=%s",
+        image_time.nanoseconds(), error.what());
+      return reject("EXACT_IMAGE_TF_UNAVAILABLE");
+    }
   }
 
   bool ReadVisualBox(visual_grasp::Box & box, bool full = false)

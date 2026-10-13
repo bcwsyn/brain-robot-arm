@@ -66,6 +66,27 @@ struct NearDepthReplayAccess
   static bool Correction(GraspLiftExecutor & n, Eigen::Vector3d & delta) {
     return n.LockedRgbCorrection(delta);
   }
+  static auto DelayedCamera(GraspLiftExecutor & n, bool old_only = false) {
+    n.camera_optical_frame_ = "delayed_camera_fixture";
+    geometry_msgs::msg::TransformStamped t;
+    t.header.frame_id = "base_link"; t.child_frame_id = n.camera_optical_frame_;
+    t.header.stamp = n.qualified_box_message_.header.stamp;
+    t.transform.rotation.w = 1;
+    if (old_only) {
+      t.header.stamp = rclcpp::Time(t.header.stamp)-rclcpp::Duration::from_seconds(.01);
+      n.tf_buffer_->setTransform(t, "synthetic_old_only_fixture", false);
+    }
+    return t;
+  }
+  static void DeliverCamera(GraspLiftExecutor & n, const geometry_msgs::msg::TransformStamped & t) {
+    n.tf_buffer_->setTransform(t, "synthetic_delayed_fixture", true);
+  }
+  static auto ImageStamp(GraspLiftExecutor & n) {return n.qualified_box_message_.header.stamp;}
+  static void AgeFeedback(GraspLiftExecutor & n, double seconds) {
+    n.latest_joint_state_.header.stamp = n.now()-rclcpp::Duration::from_seconds(seconds);
+    n.joint_state_received_time_ = std::chrono::steady_clock::now()-
+      std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<double>(seconds));
+  }
   static void ShiftCameraY(GraspLiftExecutor & n, double value) {
     geometry_msgs::msg::TransformStamped t;
     t.header.frame_id = "base_link"; t.child_frame_id = "camera_depth_optical_frame";
@@ -237,6 +258,72 @@ TEST_F(NearDepthExecutor, AutomaticScaleMismatchContinuesVisualCorrectionWithout
   NearDepthReplayAccess::Inputs(*node, false);
   NearDepthReplayAccess::MissingAxis(*node);
   EXPECT_FALSE(NearDepthReplayAccess::Correction(*node, correction));
+}
+
+TEST_F(NearDepthExecutor, DelayedExactTfRecoversSameFrameWithoutRelock)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto lock = NearDepthReplayAccess::Lock(*node);
+  const auto seed_stamp = NearDepthReplayAccess::SeedStamp(*node);
+  NearDepthReplayAccess::Automatic(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  const auto image_stamp = NearDepthReplayAccess::ImageStamp(*node);
+  const auto t = NearDepthReplayAccess::DelayedCamera(*node);
+  std::thread arrival([this, t]() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(330));
+    NearDepthReplayAccess::DeliverCamera(*node, t);
+  });
+  Eigen::Vector3d correction;
+  testing::internal::CaptureStderr();
+  const bool accepted = NearDepthReplayAccess::Correction(*node, correction);
+  arrival.join();
+  const auto log = testing::internal::GetCapturedStderr();
+  EXPECT_TRUE(accepted);
+  EXPECT_NE(log.find("NEAR_RGB_EXACT_TF_WAIT"), std::string::npos);
+  EXPECT_NE(log.find("NEAR_RGB_EXACT_TF_RECOVERED"), std::string::npos);
+  EXPECT_NE(log.find("image_stamp="+std::to_string(rclcpp::Time(image_stamp).nanoseconds())), std::string::npos);
+  EXPECT_EQ(NearDepthReplayAccess::ImageStamp(*node), image_stamp);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed_stamp);
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, lock.header.stamp);
+  EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
+}
+
+TEST_F(NearDepthExecutor, OldLatestTfCannotSubstituteForExactImageAfterFiniteRetries)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::Automatic(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::DelayedCamera(*node, true);
+  Eigen::Vector3d correction;
+  testing::internal::CaptureStderr();
+  const bool accepted = NearDepthReplayAccess::Correction(*node, correction);
+  const auto log = testing::internal::GetCapturedStderr();
+  EXPECT_FALSE(accepted);
+  EXPECT_NE(log.find("attempt=3"), std::string::npos);
+  EXPECT_NE(log.find("NEAR_RGB_EXACT_TF_FAILED"), std::string::npos);
+  EXPECT_NE(log.find("error="), std::string::npos);
+  EXPECT_EQ(log.find("NEAR_RGB_EXACT_TF_RECOVERED"), std::string::npos);
+}
+
+TEST_F(NearDepthExecutor, FeedbackAgingDuringExactTfWaitStillBlocksCorrection)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::Automatic(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::AgeFeedback(*node, .4);
+  const auto t = NearDepthReplayAccess::DelayedCamera(*node);
+  std::thread arrival([this, t]() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(330));
+    NearDepthReplayAccess::DeliverCamera(*node, t);
+  });
+  Eigen::Vector3d correction;
+  const bool accepted = NearDepthReplayAccess::Correction(*node, correction);
+  arrival.join();
+  EXPECT_FALSE(accepted);
+  EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
 }
 
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)
