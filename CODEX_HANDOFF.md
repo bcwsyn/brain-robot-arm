@@ -1,4 +1,14 @@
-## 最新接续（2026-10-13 18:55，尺度诊断/离线核对完成；51项回归，诊断文件已部署，无新实机动作）
+## 最新接续（2026-10-13 19:16，诊断版原一键已尝试；[1/7]新RX停滞/当前xHCI异常，无运动/新尺度数据）
+
+用户已确认原实测，不改门/TF/落点。原60a9895 binary79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62/唯一启动脚本SHA87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0未变。启动前SDK只读stamp9478.121/high9478.117、q=[-.329291270,1.680455364,-1.236583228,.045396014,.759183318,-.048432887]rad、6轴enable全true；CAN RX6840640/candump251/252新帧，健康接口未重载。AUTO_START=1原脚本scale_onekey main3802713启动后仅到[1/7]driver；9623.080反馈丢失、RX7271725多次不增长、独立candump无帧。没有观测/靠近/闭爪或本轮使能请求。
+
+当前19:10:49/19:12:40–42 xHCI0000:03:00.0反复ERROR Transfer event TRB DMA ptr not part of current TD ep_index2 comp_code1，driver退出后仍发生。此为新内核线索，具体USB端点/宿主机原因未唯一证明，不重复旧USB/reset/固件/xHCI实验。当前can0仍UP/ERROR-ACTIVE但无新RX，不是DOWN；需恢复USB-CAN到VM的真实接收才能复测。根分区86%/约11GB，已有清理0后仍86%/10854MB，无ENOSPC证据，不扩删构建或拿磁盘替代已见异常。
+
+另原startup wait_for_joint_feedback的timeout3s echo3802913挂住，主deadline未及时结束。拟仅加-k2s硬结束、不改门结果/运动，但代码仍待用户具体同意，本轮未改启动脚本。仅TERM main/挂住echo/采集器后原cleanup完成、未Disable/Reset，全部本轮PID含driver退出、不会自动续跑；main50342 rc143，两采集rc1。当前实际使能无法在无反馈下新读，只可引用9478全true/未发失能。
+
+本轮test/capture_scale_frames.py是只读精确RGB/框/邻近原生depth/反馈采集工具，临时实际/tmp/piper_scale_frame_capture_20261013.py同SHA3ee60ad6931684f73212906c1a5da2b6b26100e553bdbe4d7dc9e9c574e739ae、语法rc0。scale_exact_frames/frames.jsonl0行、scale_live/observer90条全空；没有新三图/seed/比值，不能拿旧图当新实测。证据view_guard_20261013/scale_onekey_console.txt、scale_onekey/piper_driver.log、scale_usb_kernel_tail.txt、scale_live_disk_cleanup.txt。下一第一条只读ip -details -statistics link show can0；真RX恢复后再原入口采精确seed，另行确认现有CLI硬超时局部补丁。控制代码仍60a9895/51回归，不把此次启动阻断归为新下降失败。Git仅本轮采集器/记录、本地，原注释/vendor/reference及远程审查阻断保留。
+
+## 历史接续（2026-10-13 18:55，尺度诊断/离线核对完成；51项回归，诊断文件已部署，无新实机动作）
 
 用户本轮只批准日志/离线，不改尺度门/TF/落点/运动，不追加实测。原ObserveLockedTarget增加首次seed创建image_stamp（仅诊断、不改年龄）与seed框/colorZ；尺度拒绝打印原比例、精确image-time TF/锁点/模型点/raw点，latest q明确不是image-time插值。所有原判断/seed/.65..1.5门/运动不变。源码e41df558be11b0225690c3c9cd993b5e421b1adb5160e6f139391eae74cf4049已同步runtime，原install symlink新binary79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62，旧ee213bc副本view_guard_20261013/scale_previous_ee213bc.bin，SHA7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1。未启动任何控制节点/运动；上一轮实际静止/6轴使能证据仍见下条，不伪称本轮新SDK核验。
 
