@@ -1720,6 +1720,14 @@ private:
     trajectory_msgs::msg::JointTrajectory * completed = nullptr)
   {
     moveit_msgs::msg::RobotTrajectory plan;
+    // Analysis topic only: expose the EXACT requested pose before planning.
+    // It is not an adapter command and cannot execute a failed path.
+    target_pose_publisher_->publish(target);
+    RCLCPP_INFO(get_logger(),
+      "%s POSE_REQUEST frame=%s xyz=(%.12f,%.12f,%.12f) q=(%.12f,%.12f,%.12f,%.12f)",
+      stage.c_str(), target.header.frame_id.c_str(), target.pose.position.x,
+      target.pose.position.y, target.pose.position.z, target.pose.orientation.x,
+      target.pose.orientation.y, target.pose.orientation.z, target.pose.orientation.w);
     if (!PlanArmCartesianFromState(target, stage, state, plan)) {return false;}
     std::string rejection;
     if (!RealTrajectoryWithinLimits(plan.joint_trajectory, rejection)) {
@@ -3902,12 +3910,21 @@ private:
     arm_->setPoseReferenceFrame(frame);
     const double previous_velocity_scaling = velocity_scaling_;
     arm_->setMaxVelocityScalingFactor(linear_approach_velocity_scaling_);
+    moveit_msgs::msg::MoveItErrorCodes planning_error;
     const double fraction = arm_->computeCartesianPath(
-      waypoints, cartesian_eef_step_m_, 0.0, trajectory, true);
+      waypoints, cartesian_eef_step_m_, 0.0, trajectory, true, &planning_error);
     arm_->setMaxVelocityScalingFactor(previous_velocity_scaling);
     if (fraction < 0.995 || trajectory.joint_trajectory.points.empty() || cancel_requested_) {
       RCLCPP_ERROR(
-        get_logger(), "%s Cartesian path incomplete (fraction=%.3f).", stage.c_str(), fraction);
+        get_logger(), "%s Cartesian path incomplete (fraction=%.3f error_code=%d).",
+        stage.c_str(), fraction, planning_error.val);
+      const auto * group = start_state->getRobotModel()->getJointModelGroup(arm_group_);
+      if (group) {
+        for (const auto & name : group->getVariableNames()) {
+          RCLCPP_ERROR(get_logger(), "%s PLAN_START %s=%.12f", stage.c_str(), name.c_str(),
+            start_state->getVariablePosition(name));
+        }
+      }
       return false;
     }
     if (!CartesianTrajectoryContinuous(trajectory.joint_trajectory, stage)) {

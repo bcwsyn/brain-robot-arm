@@ -108,14 +108,15 @@ inline grasp_geometry::DirectedPose CorrectedPoseStep(
   }
   const double distance = std::sqrt(gg::Dot(delta, delta));
   const double angle = gg::QuaternionDistance(current.orientation, nominal_goal.orientation);
-  double fraction = 1.;
-  if (distance > maximum_tip_step) {fraction = maximum_tip_step / distance;}
-  if (angle > maximum_angle) {fraction = std::min(fraction, maximum_angle / angle);}
-  const auto q = gg::Slerp(current.orientation, nominal_goal.orientation, fraction);
+  // A large view-restoration angle must not throttle a valid tip descent.
+  // Both limits remain unchanged; MoveIt checks the resulting pose/path.
+  const double tip_fraction = distance > maximum_tip_step ? maximum_tip_step / distance : 1.;
+  const double angle_fraction = angle > maximum_angle ? maximum_angle / angle : 1.;
+  const auto q = gg::Slerp(current.orientation, nominal_goal.orientation, angle_fraction);
   const auto axis = gg::Rotate(q, {0, 0, 1});
   gg::Point origin{};
   for (std::size_t i = 0; i < 3; ++i) {
-    origin[i] = old_tip[i] + delta[i] * fraction - axis[i] * tip_offset;
+    origin[i] = old_tip[i] + delta[i] * tip_fraction - axis[i] * tip_offset;
   }
   return {origin, q};
 }

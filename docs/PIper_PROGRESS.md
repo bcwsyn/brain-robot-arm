@@ -1,3 +1,12 @@
+### 2026-10-13 17:49–18:00：批准高度耦合局部修复；下降/转角独立限幅，50项回归与构建通过
+
+- 用户确认上一轮范围。恢复9d9959d/Git五项检查，完整读取两项仓库技能，复用P0/P1与原栈，不改CAN/限位/TF/YAML。代码实证：CorrectedPoseStep把tip位移和姿态转角共用min比例；大视野转角的1°限幅把下降同步缩小。新用例20mm下降/0.6rad待转角/8mm位移上限，旧代码实际只降.581776mm，预期8mm，测试先失败（rc1）。改为tip_fraction与angle_fraction独立限幅后同用例通过，仍经原MoveIt碰撞规划/adapter，末端腕部补偿及最终夹持条件不变；不硬指定J5、不忽略姿态落点条件。
+- ExecuteVisualPose在规划前向已有只读target_pose话题发布并输出精确xyz/quat；computeCartesianPath增加原库支持的error_code输出，失败记录真实PLAN_START逐关节值。没有新增运动接口，不使用无碰撞规划执行。历史失败pose未保存，不能声称新回归已唯一解释历史fraction=0；下一次失败可由精确pose只读区分IK/途中碰撞。
+- 规范CMake构建三目标（visual_grasp_feedback_test/near_depth_executor_test/grasp_lift_executor）rc0；视野10+几何15+Python11+域78实际方法14=50项全部通过。实际方法1120ms，无实机控制器调用；pytest只有只读缓存警告。日志height_{regression_build,fix_build,executor_tests}.txt。实际工作区并行构建中途rc143、无编译错误，未称实体构建成功；准备采用已测试同源执行器并保留原二进制回退。新二进制SHA256=7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1，ldd无not found。CPP规范/runtime SHA一致a29dcbb159514426524cbf889c068872d857009d4d710e23dbb4b5d022587fc0。
+- 原grasp3778087/driver3672131/controller3672604仍原节点、软件STOPPED，尚未本轮新运动。18秒只读height_before采集rc124为正常边界，0005三图均实际查看：方块完整，位于RGB下方/两指之间尚有距离，debug深度.219m、4003样本、size约.034×.038m，原深度可视化极暗不等于数值全零。q停点基本不变、J5=.933533104rad、开口99.6mm，硬件保持使能；首次相机采样部分topic正在恢复，最终三图齐全，不因此重做CAN。
+- 根分区到85%/可用12GB，按固定规则只执行/home/johnwick/clean_disk_space.sh，rc0；清理后仍85%，日志height_disk_cleanup.txt。脚本清理缓存/已有受管日志，未删除源码/.git/工作区build/install或任意日志；不扩展删除范围，剩余12GB没有ENOSPC证据，不将本次规划失败归咎磁盘。后续只要触发规定阈值按脚本记录，不借机破坏构建或运行树。
+- 下一最小动作：仅替换原grasp同params/remap，不重启driver/controller；从当前→原观测轨迹取得可靠新seed，验证独立位移限幅是否改善下降，并保存本轮三图/真实q/每步目标。若失败仅software stop/disarm保持使能，基于精确pose只读定位，不扩大限位/强制J5/旁路运动。当前修复验证级别是复现/单元/构建，尚未实机验证或完成抓取。Git只暂存三项应用路径与对应记录，保留原test_near_depth_wiring.py注释/vendor/reference；本地提交，远程审查阻断沿用不重试。
+
 ### 2026-10-13 17:27–17:45：7b769fd实测48段至67/90；高度停滞定位到视野姿态重规划，尚未最终下降
 
 - 本轮延续用户已批准的超补偿续调改动，部署7b769fd后只替换原grasp节点为3778087（同原params/remap）；driver3672131/controller3672604不重启，不改YAML/相机TF/关节限位。原enable_motion/arm/start服务成功，自动当前→观测→OBSERVE_POSE_REACHED/SEARCH(1791883691.824)→ALIGN(3704.075)→GRASP_READY(3707.154)。新冻结surface=(.4335,-.1276,.0883)m，初始完整路径预检成功：pre_waypoints=77、descent_waypoints=13，总90。原执行日志计数48个Real arm trajectory endpoint，跨过上一轮54/89数值误停位置。

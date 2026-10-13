@@ -104,6 +104,24 @@ TEST(VisualGrasp, CameraGazeRestoresLowerTargetWithoutMovingCaptureTip)
   EXPECT_LT(gg::CompareTips(step_tip, before, {0, 0, 1}).distance_m, 1e-12);
 }
 
+TEST(VisualGrasp, LargeGazeRotationDoesNotThrottleTipDescent)
+{
+  const gg::DirectedPose current{{0, 0, .2}, {0, 0, 0, 1}};
+  const auto q = gg::RotateOrientationAboutAxis(current.orientation, {0, 1, 0}, .6);
+  auto tip = gg::Tip(current.origin, {0, 0, 1}, .1358);
+  tip[2] -= .020;
+  const auto axis = gg::Rotate(q, {0, 0, 1});
+  const gg::DirectedPose nominal{{tip[0]-.1358*axis[0], tip[1]-.1358*axis[1],
+    tip[2]-.1358*axis[2]}, q};
+  const auto next = vg::CorrectedPoseStep(current, nominal, {0, 0, 0},
+    .1358, .008, .01745329252, .030);
+  const auto actual_tip = gg::Tip(next.origin, gg::Rotate(next.orientation, {0, 0, 1}), .1358);
+  EXPECT_NEAR(actual_tip[2], tip[2]+.012, 1e-12);
+  EXPECT_NEAR(actual_tip[0], 0, 1e-12);
+  EXPECT_NEAR(gg::QuaternionDistance(current.orientation, next.orientation),
+    .01745329252, 1e-12);
+}
+
 TEST(VisualGrasp, ImpossibleFixedTipCameraRayDoesNotDisplaceTipToChaseImageCentre)
 {
   gg::DirectedPose goal{{0, 0, 0}, {0, 0, 0, 1}};
