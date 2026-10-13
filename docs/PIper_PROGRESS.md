@@ -1,3 +1,12 @@
+### 2026-10-13 15:13–15:31：关联修复实测23段至40/75；定位初始中心深度是边缘外推
+
+- 用户批准的局部关联修复已提交26424f5；Python9、纯几何C++12、隔离实际方法10项通过，实体执行器构建rc0。仅重载原grasp节点，保持原YAML/remap/MoveIt/adapter；软件enable_motion、arm及原resume_current_pose成功。没有重新硬件使能、闭爪、CAN恢复、修改安装TF或执行完整复位；初始ALIGN前有一次TARGET_LOST_DURING_ALIGN→LOCAL_SEARCH→TARGET_REACQUIRED，这发生在本轮新seed锁定之前，不能说完全没有搜索。
+- 可靠性门当时通过并锁定base约[.4412,-.1214,.0370]，seed RGB stamp1791875597.429085255。随后AUTOMATIC_RGB_PREGRASP连续发布23条实体轨迹，62号循环至40/75路点，1791875635.324624456再次NEAR_RGB_REJECTED:LOCKED_TARGET_RGB_MISMATCH；原框中心硬阈值已移除，此时拒绝来自冻结点投影不在颜色框内。未到下降/闭爪/抬升；不能把部分推进写成抓取成功。日志/home/johnwick/brain_robot_logs/ego_motion_review_20261013/grasp_association_fix.txt与live_association_fix/observer.jsonl。
+- 原controller stop成功，状态STOPPED/USER_STOP，适配器software disarm确认，硬件保持使能而非失能。有界600s只读采集器已结束。最终静止q约[-.256095364,1.556092020,-.883468824,-.026602100,.345356312,.053029760]rad，夹爪反馈99.6mm；反馈持续到采集结束。最后原RGB0041/0199方块完整可见，故障不是实物方块出画，也没有本轮证据支持CAN断联或碰撞。
+- 只读回放锁定帧0013：RGB1791875597.429085、最近原深度1791875597.4257195（相差3.37ms），原彩色框[109,89,37,37]。用当前工厂D→C参数、实际椭圆3×3形态学及腐蚀复现21个有效深度样本、median=.263m，全部来自原RGB x121–125/y89–91的上边缘；同帧debug也明确samples=21/MAD=0。发布的中心射线落在原深度[313,201]，该点及5×5邻域全零。检测器measure_depth取关联区域median，再color_center_at_depth_z把这个Z套到RGB轮廓中心；因此“depth_valid=true/样本MAD=0”不等于中心真实测深。此前快速诊断使用方形核得16个样本，已纠正为实际椭圆核21；不把16写成现场计数。
+- 只读复用DepthCubeProbe.fit_table_plane（未实例化ROS节点）：0013全图平面2325采样内点、锁点距拟合平面3.70mm；当前0041相同锁点距平面-20.71mm。这是桌面/可见表面混入或几何不一致线索，不是经标定的真实桌面或确定外参错误，不能据此改TF。已有MoveIt模型/安装TF、13–25原RGB与对应真实q的多射线离线交叉估计约base[.41269,-.11937,.08572]，射线残差0.18–2.75mm，与seed差56.48mm；早段条件数16120，前后子集结果不一致，q比图像晚55–96ms，轮廓中心亦非固定材质点，故该估计不用于实体运动或宣称完成标定。
+- compact证据docs/evidence/piper_association_retest_20261013.json。当前最大阻断是初始锁点/夹持几何未被真实观测支持，不是再增加J5或放宽框关联即可证明抓取。下一步先离线核对/修正“稀疏边缘深度搬到中心”的测量语义与来源；任何检测器、外参或运动规则改动先说明并获同意。不再重复本次关联放宽实验，不关闭最终夹持检查，不从这些近似离线估计直接发布运动。其他既有test注释/vendor/reference改动保留；总目标未完成，Git仅本地。
+
 ### 2026-10-13 14:44–15:05：静止同帧投影核对与已批准的框中心误停修复
 
 - 用户确认继续定位关联偏差。本轮先只读恢复e4c0be6与实际进程：driver3672131、controller3672604、grasp3694144，实体静止保持使能；既有测试注释仍dirty不纳入。按ros2-piper-debug/surgical-change使用原review_jaw_scene.py与24s有界observer，不启动ROS新控制栈或发送运动。真实MoveIt读数：joint7/8=±.0498m、allow_trajectory_execution=false、Octomap0字节；这些仅为当前模型证据。
