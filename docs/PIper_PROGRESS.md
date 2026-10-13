@@ -1,3 +1,10 @@
+### 2026-10-13 13:49–13:51：实测已至自动靠近；定位并获准修复预览停稳要求误用
+
+- 同一轮真实状态：1791870531.934 OBSERVE_POSE_REACHED/SEARCH，0542.830 TARGET_ACQUIRED/ALIGN，0545.229 DIRECT_VISUAL_ALIGN_ACQUIRED/GRASP_READY。张爪99.4mm已确认；可靠图像锁定base目标约[.430,-.129,.086]m，原预抓取/下降规划成功，checked camera弧.2747m/tip弧.2444m，不是IK失败或近距无初始种子。
+- 0547.334自动第一段通过MoveIt并发至adapter，原ExecuteArmTrajectory在0547.590报告反馈到位。新ExecuteVisualPose却沿用了NO_CLOSE预览的硬编码.002rad到位要求，原profile容差为.04rad；目标J6=-.0114086而实际J6=0，J4目标.0086492而实际0，随后六轴稳定[-.312230156,.987626948,-.75366802,0,.717628716,0]。0592.594等45s后FAULT_AUTOMATIC_RGB_STEP_EXECUTION_FAILED。真实RGB/深度约.298m持续有效、反馈新鲜、CAN健康；此轮停止是本项目软件停稳条件，不能归为硬件故障或深度丢失。未发闭爪、未抓住/抬升。
+- 用户明确同意局部修复并继续实测。仅自动完成轨迹（completed非空）采用原trajectory_feedback_tolerance_rad，预览仍.002；同时连续.5s真实q相对停稳基准变化≤.002才继续，下一段仍从实际q/FK规划。最终FreshFaceInsideJaws/严格落点/闭爪条件、目标、TF、限位不改。新增无实体命令的test_automatic_rgb_settle.py；联合near_depth wiring共5 passed/rc0（只读共享目录pytest缓存警告，不是测试失败）。源码同步实际树，增量colcon构建进行中。
+- 已software disarm并停止原visual controller，硬件保持使能、夹爪全开和当前实体姿态。下一步只重载单个grasp节点的原参数/remap，原resume_current_pose接续，不重走观测轨迹、不重复使能导致闭爪；继续程序自动靠近。当前证据仍open_approach_close_20261013目录；Git本地、无关改动不纳入。
+
 ### 2026-10-13 13:42–13:48：部署自动靠近，已实测100mm全开并启动原观测/抓取链
 
 - 用户最新要求立即按“全开100mm → 靠近 → 闭爪”实测，不新增推测性条件。e7db52a/3386455已同步七个实际源码/配置；真实工作区 `colcon build --symlink-install --packages-select brain_robot_pick_place brain_robot_ball_pick` 成功，两包2min57s。日志 `jaw_approach_20261013/runtime_automatic_rgb_build.txt`。保留实际树原有端点非有限值检查并同步到规范源码，不改变有限反馈下的运动行为。源码双份SHA256 fb92f2d5f1dbd0466955ad206c641feb7ce41d478f0b840a77e8b19bd0dfe371；实际grasp可执行SHA256 626833ce77c3fde1320af26f488eb4d8aff307141f309cfcf22c97562254dfa3。

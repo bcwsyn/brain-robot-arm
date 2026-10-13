@@ -1648,17 +1648,26 @@ private:
     const auto deadline = std::chrono::steady_clock::now() +
       std::chrono::duration<double>(trajectory_feedback_timeout_s_);
     auto settled = std::chrono::steady_clock::time_point{};
+    const double endpoint_tolerance = completed ? trajectory_feedback_tolerance_rad_ : .002;
+    std::vector<double> settled_positions;
     while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
       const auto measured = FreshMeasuredState(stage + "_SETTLE");
       if (!measured) {return false;}
       bool reached = true;
       for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
         reached = reached && std::abs(measured->getVariablePosition(
-          plan.joint_trajectory.joint_names[i]) - end.positions[i]) <= .002;
+          plan.joint_trajectory.joint_names[i]) - end.positions[i]) <= endpoint_tolerance;
+        if (completed && settled != std::chrono::steady_clock::time_point{} &&
+          std::abs(measured->getVariablePosition(plan.joint_trajectory.joint_names[i]) -
+          settled_positions[i]) > .002) {settled = {};}
       }
       if (!reached) {settled = {};}
       else if (settled == std::chrono::steady_clock::time_point{}) {
         settled = std::chrono::steady_clock::now();
+        settled_positions.clear();
+        for (const auto & name : plan.joint_trajectory.joint_names) {
+          settled_positions.push_back(measured->getVariablePosition(name));
+        }
       } else if (std::chrono::duration<double>(
           std::chrono::steady_clock::now() - settled).count() >= .5)
       {
