@@ -1,3 +1,10 @@
+### 2026-10-13 14:17–14:22：同帧修复续测29段；获准修齐自动段起点/路点到位标准
+
+- 041b412真实目标构建rc0，8项聚焦回归通过；原节点参数/remap、唯一adapter不变，旧grasp退出后加载runtime/grasp_snapshot_fix.txt。新鲜RGB年龄.052s时原resume首请求成功，从当前姿态接续SEARCH/ALIGN/GRASP_READY，无观测回跑。2271.948–2315.320共发布29段真实轨迹；同帧竞态故障未再出现，不能将此结果称为最终抓取。
+- 原路点6/92循环多次，35号循环2316.739明确START_FEEDBACK_CHANGED：J6规划起点0、真实.006872936rad，仍被预览式.002rad输出前要求拒绝；此误差在原.04rad实体轨迹标准内。路点推进另写死2mm/.01rad，导致反复微调而非执行已有完整靠近。实际六轴[-.282837016,1.044599052,-.696381924,0,.545072668,.006872936]、开口99.6mm、RGB0027方块完整、CAN/反馈在线。未发闭爪。
+- 用户明确批准两处一次修齐：自动段输出前误差采用原trajectory_feedback_tolerance_rad，独立预览仍.002；自动路点推进用既有grasp_landing_tolerance_m=.010与grasp_landing_orientation_tolerance_rad=.12，而不是新增无参数的精度要求。新鲜反馈、真实停稳、按actual q重新规划及最终FreshFaceInsideJaws/EnsureRealTopDownLanding/闭爪判定全部不变。规范/实际源码同补丁，9项针对性回归通过，cmake实际目标构建进行中(runtime_rgb_waypoint_fix_build.txt)。
+- software disarm和原controller stop均成功，实体保持使能/全开/当前位置。下一步只重载grasp并原当前姿态接续，观察路点是否实际连续推进到下降和闭爪；不得把阶段推进或ROS成功当成已夹住方块。其他成员测试注释/vendor/reference保持，Git本地。
+
 ### 2026-10-13 14:09–14:11：朝向修复后11段运动；已获准消除纠偏同帧双读竞态
 
 - 0f283ce实际cmake目标构建rc0，新执行器只重载一次；原软件arm/首个有效帧resume成功。1791871780–1794共发布11段轨迹，16号循环/路点6已实际停稳，原微小朝向误拒绝未重现。1791871795.929发生FAULT_AUTOMATIC_RGB_LOCKED_OBSERVATION_UNAVAILABLE，不是之前POSE_STEP_BOUND_REJECTED。真实q[-.297612084,1.059443896,-.717785712,.014670404,.543624816,.01203636]、开口99.6mm、RGB0032方块完整/深度.281m、反馈连续，仍未闭爪。

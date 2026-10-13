@@ -42,7 +42,7 @@ def test_prepublication_rejections_report_metrics_without_new_bounds():
     assert '> wrist_limit + 1e-9' in method
     assert '> tip_limit + 1e-9' in method
     assert 'Eigen::Quaterniond(pose.rotation())) > angle_limit' in method
-    assert 'state->getVariablePosition(name)) > .002' in method
+    assert 'state->getVariablePosition(name)) > (completed ? trajectory_feedback_tolerance_rad_ : .002)' in method
 
 
 def test_automatic_angle_comparison_ignores_observed_solver_roundoff_only():
@@ -68,3 +68,17 @@ def test_rgb_correction_reuses_observation_snapshot_across_tf_wait():
     assert 'box = qualified_box_message_' not in correction
     assert 'info = raw_image_info_' not in correction
     assert 'rclcpp::Time(box.header.stamp) != image_time' in correction
+
+
+def test_automatic_waypoints_use_existing_real_landing_tolerances():
+    source = SOURCE.read_text()
+    automatic = source[source.index('  void AutomaticRgbApproach('):
+                       source.index('  void TargetDirectedPointGraspAndLift(')]
+    assert 'std::sqrt(gap_squared) <= grasp_landing_tolerance_m_' in automatic
+    assert 'grasp_landing_orientation_tolerance_rad_' in automatic
+    assert '!FreshFaceInsideJaws()' in automatic
+    assert '!EnsureRealTopDownLanding(last_goal, last_trajectory)' in automatic
+    parameters = yaml.safe_load(PROFILE.read_text())['grasp_lift_executor']['ros__parameters']
+    assert .006872936 <= parameters['trajectory_feedback_tolerance_rad']
+    assert parameters['grasp_landing_tolerance_m'] == .010
+    assert parameters['grasp_landing_orientation_tolerance_rad'] == .12

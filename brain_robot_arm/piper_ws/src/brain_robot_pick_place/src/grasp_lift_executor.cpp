@@ -1657,7 +1657,7 @@ private:
     if (!before_output) {return false;}
     for (const auto & name : plan.joint_trajectory.joint_names) {
       if (std::abs(before_output->getVariablePosition(name) -
-          state->getVariablePosition(name)) > .002) {
+          state->getVariablePosition(name)) > (completed ? trajectory_feedback_tolerance_rad_ : .002)) {
         RCLCPP_WARN(get_logger(), "%s start changed: %s planned=%.9f measured=%.9f",
           stage.c_str(), name.c_str(), state->getVariablePosition(name),
           before_output->getVariablePosition(name));
@@ -1969,8 +1969,9 @@ private:
         expected_tip[i] += correction[i] * scale;
         gap_squared += std::pow(expected_tip[i] - current_tip[i], 2);
       }
-      if (std::sqrt(gap_squared) <= .002 &&
-        gg::QuaternionDistance(current.orientation, nominal.orientation) <= .01) {
+      if (std::sqrt(gap_squared) <= grasp_landing_tolerance_m_ &&
+        gg::QuaternionDistance(current.orientation, nominal.orientation) <=
+        grasp_landing_orientation_tolerance_rad_) {
         ++cursor; continue;
       }
       last_goal.header.frame_id = lift_reference_frame_; last_goal.header.stamp = now();
