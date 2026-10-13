@@ -744,6 +744,23 @@ restart_visual_sequence() {
   start_visual_sequence
 }
 
+resume_current_visual_sequence() {
+  # Explicit operator entry only: preserve the recovered camera pose. The
+  # controller still acquires/aligns the real target before GRASP_READY.
+  local result
+  enable_physical_motion || return 1
+  result=$(timeout -k 2s 30s ros2 service call /visual_search_controller/resume_current_pose \
+    std_srvs/srv/Trigger '{}' 2>&1) || result=""
+  echo "$result"
+  if ! grep -Eq 'success=True' <<<"$result"; then
+    timeout -k 2s 5s ros2 service call /piper_jog_adapter/disarm \
+      std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
+    echo "[保持] 当前姿态接续未被接受；不发送观测/复位轨迹、不失能。"
+    return 1
+  fi
+  echo "[接续] 从当前姿态进入原视觉流程；仍需真实目标对齐和抓取门。"
+}
+
 execute_grasp_sequence() {
   echo "[抓取] 请求抓取；当前状态必须为 GRASP_READY..."
   local result
@@ -963,7 +980,7 @@ if [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" 
 else
   echo "[手动] 自动运动已关闭；按 1 从当前反馈姿态开始观测/搜索。"
 fi
-echo "操作：1=重试观测/搜索；2=GRASP_READY 后抓取；0=显式零点复位；Ctrl+C=停止控制并保持使能退出。"
+echo "操作：1=重试观测/搜索；r=当前姿态接续；2=GRASP_READY 后抓取；0=显式零点复位；Ctrl+C=停止控制并保持使能退出。"
 while true; do
   if [[ -t 0 ]] && read -r -s -n 1 -t 1 key; then
     case "$key" in
@@ -975,6 +992,11 @@ while true; do
       2)
         if ! execute_grasp_sequence; then
           echo "[保持] 抓取请求未被接受；PiPER 保持当前使能状态。"
+        fi
+        ;;
+      r|R)
+        if ! resume_current_visual_sequence; then
+          echo "[保持] 当前姿态接续失败；PiPER 保持当前使能状态。"
         fi
         ;;
       0)

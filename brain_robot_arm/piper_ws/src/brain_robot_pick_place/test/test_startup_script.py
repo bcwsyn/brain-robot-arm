@@ -71,6 +71,29 @@ def test_camera_checks_have_a_forced_exit_deadline():
     assert 'timeout -k 2s 4s ros2 topic echo --once "$topic"' in startup
 
 
+@pytest.mark.parametrize('ack,expected', [('True', 0), ('False', 1)])
+def test_explicit_resume_does_not_request_observation_or_zero(tmp_path, ack, expected):
+    trace = tmp_path / 'trace'
+    mock = r'''
+enable_physical_motion() { return 0; }
+timeout() { shift 2; shift; "$@"; }
+ros2() {
+  printf '%s\n' "$*" >> "$TRACE"
+  printf 'success=%s\n' "$ACK"
+}
+'''
+    result = subprocess.run(['bash', '-c', mock + function('resume_current_visual_sequence') +
+                             '\nresume_current_visual_sequence'], capture_output=True,
+                            env={**os.environ, 'TRACE': str(trace), 'ACK': ack}, timeout=5)
+    assert result.returncode == expected
+    calls = trace.read_text().splitlines()
+    assert calls[0].startswith('service call /visual_search_controller/resume_current_pose ')
+    assert len(calls) == (1 if ack == 'True' else 2)
+    if ack == 'False':
+        assert calls[1].startswith('service call /piper_jog_adapter/disarm ')
+    assert not any('/reset ' in call or '/start ' in call or '/enable_srv ' in call for call in calls)
+
+
 def test_camera_check_terminates_a_term_resistant_ros_cli(tmp_path):
     """Fake subscriber ignores TERM; no ROS, USB or robot is involved."""
     cli = tmp_path / "ros2"

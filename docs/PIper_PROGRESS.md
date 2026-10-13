@@ -1,3 +1,11 @@
+### 2026-10-13 11:16：原控制器当前姿态接续入口构建通过，重新加载原一键栈
+
+- 在471916f基础上按已确认方案增加显式 `/visual_search_controller/resume_current_pose` Trigger；仅IDLE/STOPPED、新鲜有效目标/六轴反馈和既有实体配置门通过才能接续。复用HandleStart与既有skip_prepare分支的一次性请求，发布CURRENT_POSE_ACCEPTED后继续原SEARCH/ALIGN；不伪造GRASP_READY、不改默认观测准备、不跳过后续抓取门。正常start/reset清除接续请求。该服务会续入原完整视觉流程，**本轮1cm限定验证不调用它**。
+- 同一 `/home/johnwick/start_brain_robot_cube_real.sh` 增显式r入口调用上述服务；拒绝则软件disarm、不回零/失能。无新启动脚本。两份入口SHA256=87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0，控制器源码双份SHA256=8fbed20c627c310e6cb0d7147df8a309dba9d7c168749ebe76e3a1d6a9f40711；adapter/launch已按471916f同步，install均symlink到实际源码。
+- 实际 `colcon build --symlink-install --packages-select brain_robot_pick_place` rc0、3min27s；启动入口/既有抓取回归pytest31 passed/rc0（包含新入口两种响应），bash语法通过。`ros2 launch ... --show-args`返回0，真实描述生成成功；这不是运动或接续服务实机验收。
+- 原IDLE栈先software disarm成功，TERM主PID126507正常cleanup；确认旧驱动/adapter/控制器均退出，未发DisableArm/ResetPiper。单独KILL已核实遗留只读检查组3575653。随后用原唯一入口 `BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/jaw_approach_20261013/runtime /home/johnwick/start_brain_robot_cube_real.sh` 启动（PTY session4146），以加载真实两指模型和503bfd7检查修复。脚本复用现有ERROR-ACTIVE/RX链，不重配CAN；目前至RGB首帧等待，尚未新运动。既有脚本自动调用磁盘维护：62%→62%、日志vacuum释放0B、剩29637MB；本代理未另行删资料，brain_robot_logs证据保留。
+- 下一步等[7/7]，只读核对/joint_states、/piper_moveit_joint_states=真实半开口、MoveIt描述±40mm、严格新图TF规划。通过后仅一次约1cm样段走原adapter，停稳查看三图/真实q；不能用此前补零规划，不能启动完整抓取或按85mm直推。Git仅本地未同步，原远程权限阻断不变。
+
 ### 2026-10-13 11:02–11:10：已确认方案，修复只读TF初始化与实际开口模型映射
 
 - 用户最新“确认”批准从当前完整视野继续：新鲜RGB-D/真实反馈/严格图像时间TF锁定，真实夹爪开口模型映射，随后仅约1 cm有界靠近；不直接执行未经标定的85 mm、不伪造GRASP_READY、不重走观测轨迹。后续用户询问全开抓取：继续复用已配置80 mm完全张爪，不按目标尺寸缩小开口；闭爪须在实际夹持区到位后，不能把接口力度值直接当N。

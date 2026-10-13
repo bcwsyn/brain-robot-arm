@@ -567,6 +567,14 @@ private:
       {
         HandleStart(response);
       });
+    resume_service_ = create_service<std_srvs::srv::Trigger>(
+      "~/resume_current_pose",
+      [this](
+        const std_srvs::srv::Trigger::Request::SharedPtr,
+        std_srvs::srv::Trigger::Response::SharedPtr response)
+      {
+        HandleStart(response, true);
+      });
     stop_service_ = create_service<std_srvs::srv::Trigger>(
       "~/stop",
       [this](
@@ -601,6 +609,7 @@ private:
           }
           cancel_requested_ = false;
           reset_requested_ = true;
+          resume_prepare_requested_ = false;
           target_valid_frames_ = 0;
           aligned_frames_ = 0;
           SetStateLocked(ControlState::PREPARE, "RESET_AUTHORIZED");
@@ -715,7 +724,9 @@ private:
     }
   }
 
-  void HandleStart(const std_srvs::srv::Trigger::Response::SharedPtr & response)
+  void HandleStart(
+    const std_srvs::srv::Trigger::Response::SharedPtr & response,
+    bool resume_current_pose = false)
   {
     JoinCompletedSearchPlanThread();
     {
@@ -736,6 +747,11 @@ private:
           "Physical motion remains locked: calibrate the observation pose and enable real motion.";
         return;
       }
+      if (resume_current_pose && state_ != ControlState::IDLE && state_ != ControlState::STOPPED) {
+        response->success = false;
+        response->message = "Current-pose resume is only available while idle or stopped.";
+        return;
+      }
       if (state_ == ControlState::PREPARE || state_ == ControlState::SEARCH ||
         state_ == ControlState::LOCAL_SEARCH || state_ == ControlState::ALIGN ||
         state_ == ControlState::LEVEL_ALIGN || state_ == ControlState::FINAL_ALIGN)
@@ -749,17 +765,29 @@ private:
         response->message = "No fresh joint state; the robot controller is not ready.";
         return;
       }
+      if (resume_current_pose && !TargetFreshLocked()) {
+        response->success = false;
+        response->message = "Current-pose resume requires a fresh valid target; no motion started.";
+        return;
+      }
 
       cancel_requested_ = false;
+      resume_prepare_requested_ = resume_current_pose;
+      if (resume_current_pose) {
+        reset_requested_ = false;
+      }
       full_search_retries_ = 0;
       target_valid_frames_ = 0;
       aligned_frames_ = 0;
-      SetStateLocked(ControlState::PREPARE, "START_AUTHORIZED");
+      SetStateLocked(ControlState::PREPARE,
+        resume_current_pose ? "CURRENT_POSE_RESUME_AUTHORIZED" : "START_AUTHORIZED");
     }
 
     LaunchPrepareWorker();
     response->success = true;
-    response->message = "PREPARE started; J2/J3 will move to the configured observation pose.";
+    response->message = resume_current_pose ?
+      "Current pose accepted for existing visual flow; no observation trajectory requested." :
+      "PREPARE started; J2/J3 will move to the configured observation pose.";
   }
 
   void LaunchPrepareWorker()
@@ -783,7 +811,13 @@ private:
       return;
     }
 
-    if (skip_prepare_) {
+    bool skip_this_prepare = skip_prepare_;
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      skip_this_prepare = skip_this_prepare || resume_prepare_requested_;
+      resume_prepare_requested_ = false;  // one explicit request, not a new default
+    }
+    if (skip_this_prepare) {
       if (
         backend_ != "piper" &&
         !CallServoService(servo_start_client_, "start", true))
@@ -2539,6 +2573,7 @@ private:
   bool observe_pose_calibrated_{true};
   bool execute_prepare_{true};
   bool skip_prepare_{false};
+  bool resume_prepare_requested_{false};
   std::vector<std::string> joint_names_;
   std::vector<double> observe_joint_positions_;
   std::vector<double> reset_joint_positions_;
@@ -2725,6 +2760,7 @@ private:
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr servo_start_client_;
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr servo_stop_client_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr start_service_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr resume_service_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr stop_service_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr reset_service_;
   rclcpp::TimerBase::SharedPtr timer_;
