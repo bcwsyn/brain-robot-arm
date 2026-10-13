@@ -1,4 +1,12 @@
-## 最新接续（2026-10-13 18:31，链路已恢复；原默认一键37段到67/91，尺度门拒绝非IK/CAN）
+## 最新接续（2026-10-13 18:55，尺度诊断/离线核对完成；51项回归，诊断文件已部署，无新实机动作）
+
+用户本轮只批准日志/离线，不改尺度门/TF/落点/运动，不追加实测。原ObserveLockedTarget增加首次seed创建image_stamp（仅诊断、不改年龄）与seed框/colorZ；尺度拒绝打印原比例、精确image-time TF/锁点/模型点/raw点，latest q明确不是image-time插值。所有原判断/seed/.65..1.5门/运动不变。源码e41df558be11b0225690c3c9cd993b5e421b1adb5160e6f139391eae74cf4049已同步runtime，原install symlink新binary79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62，旧ee213bc副本view_guard_20261013/scale_previous_ee213bc.bin，SHA7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1。未启动任何控制节点/运动；上一轮实际静止/6轴使能证据仍见下条，不伪称本轮新SDK核验。
+
+新增纯离线test/review_scale_failure.py及既有review_near_depth_policy显式--scale-details，复用原颜色/矩形/尺度函数。4候选55–58×7帧，仅候选56在0071/72宽比例.639/.634拒绝，其余候选过；0072模型colorZ≈.158776、工厂换算实测≈.217467，差58.69mm。纯尺度反事实换实测距离，候选56比值.868/1.014过；未应用到控制。历史精确seed/失败TF没保存、旧URDF/四位小数锁点/快照时间差必须保留，不能认为已恢复历史准确width ratio或已标定外参。详情docs/evidence/piper_scale_review_20261013.md、scale_review.json SHA1a150baefa7775ad2229eff02d95dde3e205e00173504971d2b75419f8d28681。
+
+51项（域78实际方法15/纯几何15/视野10/Python11）最终全通过、构建rc0；初次夹具先触发路径额度、二次通用reject节流断言问题均修在合成测试，不改实体策略。Pythonpycache只读已用/tmp前缀解决；磁盘86%/11GB既有清理0仍86%，不扩删。日志scale_{diagnostic_build,policy_build,tests_final_build,executor_tests_pass,review_console,disk_cleanup}.txt。下一在允许原实测时用唯一脚本收NEAR_RGB_SCALE_SEED/DETAIL/GEOMETRY，精确定位初始范围/视角/坐标链；当前无控制栈、不自动续跑。Git仅本轮源码/小证据/交接，本地，原注释/vendor/reference保留，远程历史审查阻断沿用。
+
+## 历史接续（2026-10-13 18:31，链路已恢复；原默认一键37段到67/91，尺度门拒绝非IK/CAN）
 
 用户恢复后USB-CAN重新枚举ifindex8/DOWN，固定1Mbps/.75/queue1000成功、RX持续，sudo-n0；当前CAN仍健康，不沿用下条DOWN。ee213bc执行器SHA7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1不变，无新应用改动。原/home/johnwick/start_brain_robot_cube_real.sh规范/运行SHA87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0，AUTO_START=1/STOP_AFTER_TARGET_ACQUIRED=0/DEPTH_ONLY=0；实际通过[1/7]..[7/7]→观测/SEARCH(6942.567)→ALIGN→GRASP_READY(6956.667)，seed surface=(.4278,-.1316,.0874)m、78pre+13descent。37段发布/36段确认到位，loop103 cursor67/91失败，未最终下降/闭爪/抬升。
 

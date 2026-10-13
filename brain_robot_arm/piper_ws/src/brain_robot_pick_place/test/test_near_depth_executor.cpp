@@ -89,6 +89,13 @@ struct NearDepthReplayAccess
   static void BadOpening(GraspLiftExecutor & n) {n.latest_gripper_feedback_.position[0] = .1019;}
   static bool DepthFlag(GraspLiftExecutor & n) {return n.depth_valid_;}
   static auto SeedStamp(GraspLiftExecutor & n) {return n.near_seed_stamp_ns_;}
+  static auto SeedImageStamp(GraspLiftExecutor & n) {return n.near_seed_image_stamp_ns_;}
+  static void ShiftCameraZ(GraspLiftExecutor & n, double value) {
+    geometry_msgs::msg::TransformStamped t;
+    t.header.frame_id = "base_link"; t.child_frame_id = "camera_depth_optical_frame";
+    t.header.stamp = n.now(); t.transform.rotation.w = 1; t.transform.translation.z = value;
+    n.tf_buffer_->setTransform(t, "synthetic_offline_fixture", true);
+  }
   static auto Seed(GraspLiftExecutor & n) {return n.near_seed_;}
   static void Travel(GraspLiftExecutor & n, double value) {n.near_camera_travel_m_ = value;}
   static double Travel(GraspLiftExecutor & n) {return n.near_camera_travel_m_;}
@@ -159,6 +166,41 @@ TEST_F(NearDepthExecutor, NoInitialDepthCannotBootstrapPrediction)
   NearDepthReplayAccess::NoSeed(*node);
   geometry_msgs::msg::PointStamped p; bool predicted = false;
   EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+}
+
+TEST_F(NearDepthExecutor, ScaleDiagnosticsExposeOriginalRatiosWithoutChangingRejectionOrSeed)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto seed = NearDepthReplayAccess::Seed(*node);
+  const auto stamp = NearDepthReplayAccess::SeedStamp(*node);
+  const auto image_stamp = NearDepthReplayAccess::SeedImageStamp(*node);
+  EXPECT_GT(image_stamp, 0);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::ShiftCameraZ(*node, .070);
+  // This synthetic view change exceeds the normal 30mm episode allowance.
+  // Model an already-reviewed path so the ORIGINAL scale branch is reached.
+  NearDepthReplayAccess::ReviewedAllowance(*node, .080);
+  testing::internal::CaptureStderr();
+  const bool accepted = NearDepthReplayAccess::Observe(*node, predicted, p);
+  const auto log = testing::internal::GetCapturedStderr();
+  EXPECT_FALSE(accepted);
+  EXPECT_NE(log.find("NEAR_RGB_SCALE_DETAIL"), std::string::npos);
+  const auto ratio_position = log.find("width_ratio=");
+  EXPECT_NE(ratio_position, std::string::npos);
+  if (ratio_position != std::string::npos) {
+    EXPECT_NEAR(std::stod(log.substr(ratio_position+12)), (.1238-.070)/.1238, 1e-12);
+  }
+  EXPECT_NE(log.find("original_bounds=(0.65,1.5)"), std::string::npos);
+  EXPECT_NE(log.find("NEAR_RGB_SCALE_GEOMETRY"), std::string::npos);
+  EXPECT_NE(log.find("NOT_IMAGE_TIME_Q"), std::string::npos);
+  // The existing generic reject warning is throttled across observations.
+  // DETAIL is emitted only by the scale branch; don't depend on that throttle.
+  EXPECT_NE(log.find("depth_used=0"), std::string::npos);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), stamp);
+  EXPECT_EQ(NearDepthReplayAccess::SeedImageStamp(*node), image_stamp);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Seed(*node).color_z, seed.color_z);
+  EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
 }
 
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)

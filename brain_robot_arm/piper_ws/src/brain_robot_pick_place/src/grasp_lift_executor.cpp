@@ -859,6 +859,7 @@ private:
     near_rgb_association_bad_frames_seen_ = 0;
     near_last_bad_association_stamp_ns_ = 0;
     near_seed_stamp_ns_ = near_last_image_stamp_ns_ = 0;
+    near_seed_image_stamp_ns_ = 0;  // Diagnostic provenance only, never an age gate.
     near_last_command_image_stamp_ns_ = 0;
     near_last_full_rgb_view_ = {};
     near_last_visible_rgb_box_ = {};
@@ -1576,7 +1577,13 @@ private:
             // One identity/scale seed for the immutable base-frame object.
             // Later recovery verifies it; never replenish age/travel allowance.
             near_seed_ = {box, projection.z, true};
+            near_seed_image_stamp_ns_ = image_time.nanoseconds();
             near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds();
+            RCLCPP_INFO(get_logger(),
+              "NEAR_RGB_SCALE_SEED image_stamp=%ld lock_stamp=%ld "
+              "box=(%.12f,%.12f,%.12f,%.12f) color_z=%.12f",
+              near_seed_image_stamp_ns_, near_seed_stamp_ns_, box.left, box.top,
+              box.right, box.bottom, projection.z);
             near_last_camera_origin_ = camera_origin;
             near_last_image_stamp_ns_ = image_time.nanoseconds();
             near_camera_travel_m_ = 0;
@@ -1595,7 +1602,58 @@ private:
             near_path_allowance_ready_ ? near_path_max_travel_m_ : near_depth_prediction_max_travel_m_,
             correction.norm(), visual_target_association_m_, recovering, info.width, info.height,
             allow_bounded_compensation, identity_continuous))
-        {return reject(reason);}
+        {
+          if (std::string(reason) == "LOCKED_TARGET_SCALE_MISMATCH") {
+            // Observability only: reproduce the ORIGINAL scale formula and
+            // preserve the exact rejection below. Do not change seed or gates.
+            const double growth = near_seed_.color_z / projection.z;
+            const double wr = (box.right-box.left) /
+              (near_seed_.box.right-near_seed_.box.left) / growth;
+            const double hr = (box.bottom-box.top) /
+              (near_seed_.box.bottom-near_seed_.box.top) / growth;
+            const bool wc = recovering &&
+              (box.left <= 1./info.width || box.right >= 1-1./info.width);
+            const bool hc = recovering &&
+              (box.top <= 1./info.height || box.bottom >= 1-1./info.height);
+            RCLCPP_WARN(get_logger(),
+              "NEAR_RGB_SCALE_DETAIL image_stamp=%ld seed_image_stamp=%ld lock_stamp=%ld "
+              "seed_box=(%.12f,%.12f,%.12f,%.12f) seed_color_z=%.12f "
+              "box=(%.12f,%.12f,%.12f,%.12f) model_color_z=%.12f growth=%.12f "
+              "width_ratio=%.12f height_ratio=%.12f width_clipped=%d height_clipped=%d "
+              "recovery=%d image_size=(%u,%u) original_bounds=(0.65,1.5)",
+              image_time.nanoseconds(), near_seed_image_stamp_ns_, near_seed_stamp_ns_,
+              near_seed_.box.left, near_seed_.box.top, near_seed_.box.right,
+              near_seed_.box.bottom, near_seed_.color_z, box.left, box.top, box.right,
+              box.bottom, projection.z, growth, wr, hr, wc, hc, recovering,
+              info.width, info.height);
+            const auto & t = camera_from_reference.transform;
+            RCLCPP_WARN(get_logger(),
+              "NEAR_RGB_SCALE_GEOMETRY image_stamp=%ld tf_stamp=%ld tf_parent=%s "
+              "tf_child=%s tf_xyz=(%.12f,%.12f,%.12f) tf_q=(%.12f,%.12f,%.12f,%.12f) "
+              "locked_base=(%.12f,%.12f,%.12f) model_depth=(%.12f,%.12f,%.12f) "
+              "raw_point_stamp=%ld raw_point_frame=%s raw_point=(%.12f,%.12f,%.12f) "
+              "depth_used=%d raw_same_stamp=%d",
+              image_time.nanoseconds(), rclcpp::Time(camera_from_reference.header.stamp).nanoseconds(),
+              camera_from_reference.header.frame_id.c_str(), camera_from_reference.child_frame_id.c_str(),
+              t.translation.x, t.translation.y, t.translation.z, t.rotation.x, t.rotation.y,
+              t.rotation.z, t.rotation.w, reference.point.x, reference.point.y, reference.point.z,
+              camera.point.x, camera.point.y, camera.point.z,
+              rclcpp::Time(measured.header.stamp).nanoseconds(), measured.header.frame_id.c_str(),
+              measured.point.x, measured.point.y, measured.point.z, measured_same_image,
+              measured.header.stamp == message.header.stamp);
+            {
+              std::lock_guard<std::mutex> lock(feedback_mutex_);
+              const auto & q = latest_joint_state_;
+              RCLCPP_WARN(get_logger(),
+                "NEAR_RGB_SCALE_LATEST_FEEDBACK_NOT_IMAGE_TIME_Q stamp=%ld "
+                "q=(%.12f,%.12f,%.12f,%.12f,%.12f,%.12f)",
+                rclcpp::Time(q.header.stamp).nanoseconds(), JointPosition(q, "joint1"),
+                JointPosition(q, "joint2"), JointPosition(q, "joint3"),
+                JointPosition(q, "joint4"), JointPosition(q, "joint5"), JointPosition(q, "joint6"));
+            }
+          }
+          return reject(reason);
+        }
         predicted = true;  // depth_valid is still false; old measurement stamp is retained.
       }
       // Account actual motion on distinct RGB frames in both modes. New
@@ -4203,6 +4261,7 @@ private:
   int near_rgb_association_bad_frames_{5};
   int near_rgb_association_bad_frames_seen_{0};
   int64_t near_last_bad_association_stamp_ns_{0};
+  int64_t near_seed_image_stamp_ns_{0};  // Metadata only; locked seed age is unchanged.
   std::vector<double> visual_jaw_image_roi_;
   bool visual_jaw_image_roi_confirmed_{false};
   std::mutex visual_mutex_;

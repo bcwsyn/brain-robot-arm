@@ -11,7 +11,8 @@ int main(int argc, char ** argv)
 {
   namespace br = brain_robot_pick_place;
   namespace nd = br::near_depth;
-  if (argc != 2) {return 2;}
+  const bool scale_details = argc == 3 && std::string(argv[2]) == "--scale-details";
+  if (argc != 2 && !scale_details) {return 2;}
   const auto image = cv::imread(argv[1]);
   if (image.empty()) {return 3;}
   nd::Calibration c;
@@ -60,17 +61,24 @@ int main(int argc, char ** argv)
   }
   nd::Projection projection;
   const char * rejected = "PROJECTION_UNAVAILABLE";
-  if (nd::Project(c, point, image.cols, image.rows, projection)) {
+  if (nd::Project(c, point, image.cols, image.rows, projection, !scale_details)) {
     std::array<double, 3> delta{};
     rejected = "INVALID_RGB_CORRECTION";
     if (nd::RgbResidual(c, point, box, image.cols, image.rows, delta)) {
       const double residual = std::hypot(std::hypot(delta[0], delta[1]), delta[2]);
-      rejected = nd::PredictionRejection(seed, e, box, projection, .6, 30, .030,
-        residual, .04);
+      rejected = nd::PredictionRejection(seed, e, box, projection, .6,
+        scale_details ? 10000 : 30, scale_details ? 1000 : .030,
+        residual, .04, false, image.cols, image.rows, scale_details);
     }
   }
   std::cout << std::setprecision(15) << (rejected ? rejected : "ASSOCIATED_LOCKED_RGB") << " "
     << box.left << " " << box.top << " " << box.right << " " << box.bottom << " "
     << projection.x << " " << projection.y << " " << projection.z << "\n";
+  if (scale_details && seed.valid && seed.color_z > .001 && projection.z > .001) {
+    const double growth = seed.color_z / projection.z;
+    std::cout << "OFFLINE_SCALE_ONLY_NOT_RUNTIME_FRESHNESS " << growth << ' '
+      << (box.right-box.left)/(seed.box.right-seed.box.left)/growth << ' '
+      << (box.bottom-box.top)/(seed.box.bottom-seed.box.top)/growth << '\n';
+  }
   return 0;
 }
