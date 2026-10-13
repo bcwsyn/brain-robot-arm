@@ -1,3 +1,9 @@
+### 2026-10-13：198f2a5已部署，原AUTO1同步转向靠近实测正在启动
+
+- 新原CPPcd05f4…/geometry hpp58c623…/binaryfd0d086…已机械部署，runtime/install同SHA；旧actual0c14428/b9f1c1…备份synchronized_turn_previous_0c14428.bin，原入口87039b…不改、无活动旧栈。新SDK1791906121.000385/high6121.001154/100Hz、六true/速度全0、q[-.293948353,1.318753330,-.646836474,0,.330879520,0]rad，夹爪99.6mm/200Hz/0.081N·m/使能无错误；CANRX35809440→35812384/ERROR-ACTIVE/1Mbps/.750/queue1000/error0，复用不重载。
+- 动作清单：原观测[0,.98,-.75,0,.30,0]rad，预计主要J1/J2/J3/J5、J4/J6保持实际0，prepare速度/加速度.01/步长.08rad/约30–40s、adapter原.189rad/s和原物理速度/加速度基线，task min[-1.5,-.3,-1.4,-.8,-1.2,-pi]/max[1.5,pi,.4,.8,1.2,pi]不变。20cm冻结后新同步路径仍逐小段8mm/1°/已检查.08前缀与真实反馈；任何限位/碰撞/反馈或身份异常停止输出保持使能、不直接Disable/Reset/回零。最终真实夹持/闭爪/安全返回验收不改。
+- 唯一命令BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/view_guard_20261013/synchronized_turn_onekey timeout -s INT -k 8s 600s /home/johnwick/start_brain_robot_cube_real.sh；主session19312，只读exact42097→synchronized_turn_exact、observer92438→synchronized_turn_live，console同名前缀。当前启动，不声称新完整预检/运动/闭爪已通过，下一看visual_stack日志与新三图。74软件/域78完整仅辅助，Git本地198f2a5/原用户改动/历史推送审查阻断保持。
+
 ### 2026-10-13：用户同意原末段同步转向靠近，原geometry owner局部实现/构建中
 
 - 最终构建0，原实际方法32/32（2363ms）/几何14/尺度15/视觉10/wiring3合计74项通过。域78共享生产C++几何25预抓/8下降路点，MoveIt分别16点/8点、fraction1/error1/原范围true、相邻max.068713/.028251；与先前Python对照同捕获终点，确认不是仅反事实实现通过。review0/语法0后隔离INT收尾；未部署/新实体输出。新binary fd0d086d1496dfe02d6c45b840ef430093eb1a444a5f335479a511bed914351c、CPPcd05f4adafa39e40bb754bf18a1e1d4ef09cfb59904a3e46166fca8738261034、hpp58c6235629789c252e72b1f453f0080842b6fc9ddae975237c2329e9e977c73c；日志synchronized_turn_{build,executor_tests,geometry_tests,policy_tests,visual_tests,plan_review.json}。固定清理rc0、90%7.8GB不变，无ENOSPC/扩删。下一提交备份0c14428/b9f1c1并部署原CPP/hpp/binary，SDK新读后原AUTO1实测。
