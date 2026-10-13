@@ -366,8 +366,38 @@ TEST_F(NearDepthExecutor, ReducedVisualAttitudeRejectsZeroFractionAndInvalidQuat
   const auto current = Eigen::Isometry3d::Identity();
   EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, 0), std::invalid_argument);
   EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, 1), std::invalid_argument);
+  EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, -1.01), std::invalid_argument);
   p.pose.orientation.w = 0;
   EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, .5), std::invalid_argument);
+}
+
+TEST_F(NearDepthExecutor, ReverseVisualAttitudesPreserveTipAndStayWithinRequestedAngularStep)
+{
+  Eigen::Isometry3d current = Eigen::Isometry3d::Identity();
+  const Eigen::Quaterniond start(Eigen::AngleAxisd(.6, Eigen::Vector3d::UnitX()));
+  current.linear() = start.toRotationMatrix();
+  current.translation() = Eigen::Vector3d(.35, -.12, .26);
+  geometry_msgs::msg::PoseStamped target;
+  target.header.frame_id = "base_link"; target.header.stamp = node->now();
+  const Eigen::Vector3d origin(.356, -.116, .255), local_tip(0, 0, .1358);
+  const Eigen::Quaterniond desired = start * Eigen::Quaterniond(
+    Eigen::AngleAxisd(.01745329252, Eigen::Vector3d::UnitY()));
+  target.pose.position.x = origin.x(); target.pose.position.y = origin.y();
+  target.pose.position.z = origin.z();
+  target.pose.orientation.x = desired.x(); target.pose.orientation.y = desired.y();
+  target.pose.orientation.z = desired.z(); target.pose.orientation.w = desired.w();
+  for (double fraction : {-.25, -.50, -.75, -1.0}) {
+    const auto p = NearDepthReplayAccess::ReducedAttitude(target, current, fraction);
+    const Eigen::Quaterniond q(p.pose.orientation.w, p.pose.orientation.x,
+      p.pose.orientation.y, p.pose.orientation.z);
+    const Eigen::Vector3d position(p.pose.position.x, p.pose.position.y, p.pose.position.z);
+    EXPECT_LT((position + q * local_tip - origin - desired * local_tip).norm(), 1e-12);
+    EXPECT_NEAR(start.angularDistance(q), -fraction * .01745329252, 1e-12);
+    EXPECT_LE(start.angularDistance(q), .01745329252 + 1e-12);
+    EXPECT_LT((start.conjugate() * q).vec().dot(Eigen::Vector3d::UnitY()), 0);
+    EXPECT_EQ(p.header.frame_id, target.header.frame_id);
+    EXPECT_EQ(p.header.stamp, target.header.stamp);
+  }
 }
 
 TEST_F(NearDepthExecutor, ReducedAttitudeRetryIsOnlyAutomaticApproachPlanning)

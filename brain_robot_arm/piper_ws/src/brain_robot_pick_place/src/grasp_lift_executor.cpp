@@ -1839,7 +1839,7 @@ private:
     const Eigen::Quaterniond desired(target.pose.orientation.w, target.pose.orientation.x,
       target.pose.orientation.y, target.pose.orientation.z);
     const Eigen::Vector3d origin(target.pose.position.x, target.pose.position.y, target.pose.position.z);
-    if (!std::isfinite(fraction) || fraction <= 0 || fraction >= 1 ||
+    if (!std::isfinite(fraction) || fraction == 0 || fraction < -1 || fraction >= 1 ||
       !std::isfinite(tip_offset) || tip_offset <= 0 || !origin.allFinite() ||
       !desired.coeffs().allFinite() || desired.norm() < 1e-12 || !current.matrix().allFinite())
     {throw std::invalid_argument("Invalid reduced visual attitude");}
@@ -1887,7 +1887,9 @@ private:
     if (!planned && CanRetryVisualOrientation(stage, completed != nullptr)) {
       const Eigen::Isometry3d current = state->getGlobalLinkTransform(target.header.frame_id).inverse() *
         state->getGlobalLinkTransform(end_effector_link_);
-      for (const double fraction : {.75, .50, .25}) {
+      // Try smaller toward-target turns first, then bounded reverse turns.
+      // All candidates preserve the requested capture tip; no joint edits.
+      for (const double fraction : {.75, .50, .25, -.25, -.50, -.75, -1.0}) {
         const auto candidate = ReducedVisualOrientationAtSameTip(
           target, current, gripper_tip_offset_m_, fraction);
         const auto candidate_stage = stage + "_ORIENTATION_" +
