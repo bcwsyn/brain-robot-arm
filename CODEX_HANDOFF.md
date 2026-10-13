@@ -1,4 +1,8 @@
-## 最新接续（2026-10-13，用户明确同意20cm两阶段；原执行器实现/回归中，待部署实测）
+## 最新接续（2026-10-13，0c14428两阶段已部署；原AUTO1实测正在启动）
+
+0c14428/73项通过，actual binaryb9f1c1…/CPP76458e…，旧1cf6423备份terminal_stage_previous_1cf6423.bin/a20a541…，入口87039b…不改。SDK4508六使能/静止、q[-.284226869,.989741312,-.757525255,0,.706910707,0]rad、99.6mm；CANRX连续error0复用。原AUTO1主93879→view_guard_20261013/terminal_stage_onekey，读采64185/23249→terminal_stage_exact/live，正在启动。下一先读取terminal_stage_onekey_console/visual_stack及新三图，勿启动第二栈或把启动/73回归当抓取。当前任务无授权等待；详细命令/限位/收尾见进度顶部。
+
+## 实现说明（已部署，上条为当前状态）
 
 用户“确认实施这个”已经解决上一轮授权边界，直接继续同一完整目标，不重复等待。当前原grasp_lift_executor.cpp改为DEPTH_GUIDED_COARSE_APPROACH→约20cm TERMINAL_DEPTH_REMEASURE_HOLDING→同帧三次静止中值→TERMINAL_RGBD_TARGET_FROZEN→原预抓取/下降+RGB微调；后续不取新深度重锁，原最终夹持/闭爪保持。粗段下一步需同帧新深度，已发布步监测不因异步深度暂缺误停/改锁点，预测种子只在粗段新测量时刷新。构建0/73项通过（实际方法32），新binary b9f1c1…/CPP76458e…待部署，当前实际仍1cf6423/a20a541…；尚无本轮新实体输出。旧下面“等待同意”仅历史。工具goal metadata仍blocked（API无resume），不代表当前任务仍缺授权。详见进度最新条目，部署/实测结束须再更新本顶部。
 

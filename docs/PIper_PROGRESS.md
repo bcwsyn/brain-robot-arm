@@ -1,3 +1,9 @@
+### 2026-10-13：0c14428两阶段已部署，原AUTO1实测启动（结果待核对）
+
+- 部署前无活动控制栈；旧actual1cf6423备份terminal_stage_previous_1cf6423.bin/a20a541…，只同步原CPP76458e…和binaryb9f1c1…，runtime/install同SHA、原入口87039b…不改。新SDK1791904508.492427/high4508.493019六true/速度全0，q[-.284226869,.989741312,-.757525255,0,.706910707,0]rad，夹爪99.6mm/0.082N·m/使能/无错误；频率沿用当前协议高速100Hz/夹爪读数200Hz基线。can0 ERROR-ACTIVE/1Mbps/.750/queue1000，RX31897514→31965582、error/drop/bus-error0，复用不重载。
+- 动作清单：原六轴观测[0,.98,-.75,0,.30,0]rad、prepare速度/加速度.01/步长.08rad/约40秒，task原min[-1.5,-.3,-1.4,-.8,-1.2,-pi]/max[1.5,pi,.4,.8,1.2,pi]，adapter原限速/速度加速度基线不改；自动靠近原8mm/1°/.08关节前缀，反馈/限位/碰撞/身份异常停止输出并保持使能、未安全回位不失能。约20cm不是指尖剩余20cm，原最终两指/闭爪/抬升验收保留。
+- 命令BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=/home/johnwick/brain_robot_logs/view_guard_20261013/terminal_stage_onekey timeout -s INT -k 8s 600s /home/johnwick/start_brain_robot_cube_real.sh；原入口仅外部600秒采集/收尾边界。主session93879，原同帧只读采集64185→terminal_stage_exact、观察23249→terminal_stage_live；日志terminal_stage_onekey_console.txt及visual_stack.log。正在启动，不称观测/重测/冻结/闭爪已通过。下一读取新阶段日志和三图、记录首个实际失败/成功，Git本地0c14428/历史推送审查阻断保持。
+
 ### 2026-10-13：用户已确认20cm两阶段，原组件实现与回归中（尚未部署/实体输出）
 
 - 最终构建/回归已完成：cmake rc0、域78实际执行器方法32/32（2281ms），尺度15/几何13/视觉10/wiring3合计73项通过；包括粗段持续新深度/身份跳变拒绝、单步锁点与异步监测、旧预测额度只在粗段新测量时刷新、末段只冻结一次、之后新深度不重锁、缺反馈仍拒绝。binary SHA b9f1c1a4567b68dd21e245a322a37f4d3593bca0f98ace8ee6eab65f5f192461、CPP76458e61b3e7d64ba163a2e476ecc0c24195086d73fef8830fbee598c8767313；软件通过不是实体通过。下一提交后备份actual1cf6423并部署同源原入口实测。
