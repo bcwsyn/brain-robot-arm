@@ -49,3 +49,25 @@ TEST(VisualGrasp, NoOvershootAtNearContact)
   EXPECT_THROW(vg::TipMicrostep(start, {0, 0, .2}, .1358, .012, NAN, .02),
     std::invalid_argument);
 }
+
+TEST(VisualGrasp, AutomaticRgbPoseCorrectionsConvergeWithoutJointCommands)
+{
+  gg::DirectedPose current{{0, 0, 0}, {0, 0, 0, 1}};
+  const gg::DirectedPose goal{{.06, .01, -.02}, {0, std::sin(.1), 0, std::cos(.1)}};
+  const gg::Point correction{.004, -.002, 0};
+  for (int iteration = 0; iteration < 80; ++iteration) {
+    const auto before = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}), .1358);
+    const auto next = vg::CorrectedPoseStep(current, goal, correction, .1358, .008, .01745, .030);
+    const auto after = gg::Tip(next.origin, gg::Rotate(next.orientation, {0, 0, 1}), .1358);
+    EXPECT_LE(gg::CompareTips(after, before, {0, 0, 1}).distance_m, .008 + 1e-12);
+    EXPECT_LE(gg::QuaternionDistance(current.orientation, next.orientation), .01745 + 1e-12);
+    current = next;
+  }
+  auto expected = gg::Tip(goal.origin, gg::Rotate(goal.orientation, {0, 0, 1}), .1358);
+  for (int i = 0; i < 3; ++i) {expected[i] += correction[i];}
+  const auto actual = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}), .1358);
+  EXPECT_LT(gg::CompareTips(actual, expected, {0, 0, 1}).distance_m, 1e-10);
+  EXPECT_LT(gg::QuaternionDistance(current.orientation, goal.orientation), 1e-10);
+  EXPECT_THROW(vg::CorrectedPoseStep(current, goal, {NAN, 0, 0}, .1358, .008, .01745, .03),
+    std::invalid_argument);
+}

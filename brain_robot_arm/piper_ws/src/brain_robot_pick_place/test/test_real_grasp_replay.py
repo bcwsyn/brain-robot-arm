@@ -55,7 +55,7 @@ def test_visual_preview_is_off_and_strictly_bounded_on_real_default():
     assert params["visual_jaw_image_roi_confirmed"] is False
     source = EXECUTOR.read_text()
     body = source[source.index("void VisualMicrostepPreview()"):
-                  source.index("void TargetDirectedPointGraspAndLift()")]
+                  source.index("bool LockedRgbCorrection(")]
     assert "total_travel + travel > .020" in body
     assert "from_start > .020" in body
     assert "travel > .005" in body and "tip_travel > .005" in body

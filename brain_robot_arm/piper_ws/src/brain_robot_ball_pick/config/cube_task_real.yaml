@@ -276,10 +276,11 @@ grasp_lift_executor:
     # Near-distance DEPTH loss does not imply loss of the RGB cube. Initial
     # locking still requires RGB-D; predictions use actual image-time TF.
     # These bounds apply since the last same-object measured-depth seed only.
-    # Roll back live near-depth association to the previously validated
-    # target-directed descent path. Initial RGB-D acquisition remains required;
-    # trajectory, landing, jaw and close feedback gates stay active.
-    near_depth_rgb_tracking_enabled: false
+    # One reliable RGB-D lock, then program-driven ORIGINAL-RGB correction
+    # and actual-feedback segments. The integrated path derives its finite
+    # allowance from two checked plans and never refreshes the static lock.
+    near_depth_rgb_tracking_enabled: true
+    automatic_rgb_approach_enabled: true
     near_depth_prediction_max_age_s: 30.0
     near_depth_prediction_max_travel_m: 0.030
     # Reuse the two-segment grasp path with the aligned tool attitude as the

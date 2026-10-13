@@ -71,4 +71,45 @@ inline grasp_geometry::DirectedPose TipMicrostep(
   }
   return {origin, q};
 }
+
+// Advance a checked pose path using an ORIGINAL-RGB lateral correction.
+// The correction is an estimate at the locked model range, not new depth.
+inline grasp_geometry::DirectedPose CorrectedPoseStep(
+  const grasp_geometry::DirectedPose & current,
+  const grasp_geometry::DirectedPose & nominal_goal,
+  const grasp_geometry::Point & correction, double tip_offset,
+  double maximum_tip_step, double maximum_angle, double maximum_correction)
+{
+  namespace gg = grasp_geometry;
+  for (double value : {tip_offset, maximum_tip_step, maximum_angle, maximum_correction}) {
+    if (!std::isfinite(value) || value <= 0) {
+      throw std::invalid_argument("Invalid RGB pose-step bounds");
+    }
+  }
+  for (double value : correction) {
+    if (!std::isfinite(value)) {throw std::invalid_argument("Invalid RGB correction");}
+  }
+  const auto old_tip = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}), tip_offset);
+  auto goal_tip = gg::Tip(nominal_goal.origin, gg::Rotate(nominal_goal.orientation, {0, 0, 1}), tip_offset);
+  const double correction_length = std::sqrt(gg::Dot(correction, correction));
+  const double bounded = correction_length > maximum_correction ?
+    maximum_correction / correction_length : 1.;
+  gg::Point delta{};
+  for (std::size_t i = 0; i < 3; ++i) {
+    goal_tip[i] += correction[i] * bounded;
+    delta[i] = goal_tip[i] - old_tip[i];
+  }
+  const double distance = std::sqrt(gg::Dot(delta, delta));
+  const double angle = gg::QuaternionDistance(current.orientation, nominal_goal.orientation);
+  double fraction = 1.;
+  if (distance > maximum_tip_step) {fraction = maximum_tip_step / distance;}
+  if (angle > maximum_angle) {fraction = std::min(fraction, maximum_angle / angle);}
+  const auto q = gg::Slerp(current.orientation, nominal_goal.orientation, fraction);
+  const auto axis = gg::Rotate(q, {0, 0, 1});
+  gg::Point origin{};
+  for (std::size_t i = 0; i < 3; ++i) {
+    origin[i] = old_tip[i] + delta[i] * fraction - axis[i] * tip_offset;
+  }
+  return {origin, q};
+}
 }  // namespace brain_robot_pick_place::visual_grasp

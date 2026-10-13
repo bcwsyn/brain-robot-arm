@@ -9,7 +9,7 @@ EXECUTOR = PACKAGE / 'src/grasp_lift_executor.cpp'
 def test_near_depth_is_in_original_executor_and_search_depth_contract_unchanged():
     p = yaml.safe_load((PACKAGE.parent / 'brain_robot_ball_pick/config/cube_task_real.yaml').read_text())
     grasp = p['grasp_lift_executor']['ros__parameters']
-    assert grasp['near_depth_rgb_tracking_enabled']
+    assert not grasp['near_depth_rgb_tracking_enabled'] or grasp['automatic_rgb_approach_enabled']
     assert grasp['static_target_lock'] and grasp['fresh_jaw_capture_required']
     assert not grasp['preserve_aligned_grasp_orientation']
     assert not grasp['visual_microsteps_enabled']
@@ -25,7 +25,8 @@ def test_prediction_retains_lock_and_measurement_stamp_and_uses_exact_tf():
     assert 'tf2::TimePointZero' not in body
     assert 'image_time,' in body
     assert 'latest_joint_state_' in body
-    assert 'near_seed_stamp_ns_ = image_time.nanoseconds()' in body
+    assert 'near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds()' in body
+    assert 'if (!near_seed_.valid)' in body
     seed = body.index('near_seed_stamp_ns_ =')
     assert body.index('if (measured_same_image)') < seed < body.index('} else {', seed)
     assert 'return reject("MEASURED_TARGET_CHANGED")' in body

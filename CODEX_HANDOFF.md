@@ -1,4 +1,12 @@
-## 最新接续（2026-10-13 13:01，100mm开口更正；自动近距末段待集成）
+## 最新接续（2026-10-13 13:32，自动近距末段已写/构建，实体部署待验证）
+
+100mm修正已提交3386455，源码新增的automatic_rgb_approach_enabled已与near_depth模式一起接入原TargetDirectedPointGraspAndLift：原两段全路径预检后从真实反馈分段规划/执行，原图RGB在冻结模型范围上做有限纠偏，种子/目标不重锁，额度由已检查路径计算，最后调用原闭爪/抬升链。运行判断由执行器自己做，不靠聊天代理逐图发步。旧NO_CLOSE预览仍关闭。
+
+构建rc0、domain78执行器9方法回归、几何6项、Python19回归通过；这是隔离方法/策略验证，不是完整实体抓取证明。规范profile已启用集成模式，但实际运行树仍旧80mm/旧镜头校准/旧二进制，未新运动。下一先同步源码/config/adapter/launch并重载同一个入口，确认模型±50mm和新设备参数，然后100mm张爪实测，取新初始可靠RGB-D锁定后跑自动末段。不能沿用旧设备.186m种子。
+
+证据根 `/home/johnwick/brain_robot_logs/jaw_approach_20261013`，新构建在 `/tmp/piper_visual_feedback.NhxMgk/build/brain_robot_pick_place`。保留他人test_near_depth_wiring.py原注释及全部vendor/reference改动。Git仅本地，原远程阻断不变。
+
+## 历史接续（2026-10-13 13:01，100mm开口更正；自动近距末段待集成）
 
 用户明确全开100mm，基本同意远距三维锁定、近距RGB+真实反馈继续靠近、到位闭爪；必须由程序自动判断/修正/执行，不能依赖聊天代理逐段看图下令。一次新0x47E确认100mm量程、驱动倍率1，SDK主通道支持100000，历史80mm只是软件上限。规范adapter/loaded模型±50mm/profile100000/近距开口范围及分析器已统一，原实际栈尚未部署重载。实际开口仍79.6mm，没有本轮新运动/开合/后退。
 

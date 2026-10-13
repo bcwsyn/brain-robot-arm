@@ -1,3 +1,11 @@
+### 2026-10-13 13:01–13:32：原执行器自动RGB分段靠近已实现，构建/隔离方法回归通过
+
+- 100mm修正已提交3386455。按用户继续完成的授权，在原grasp_lift_executor增加automatic_rgb_approach_enabled，配合near_depth_rgb_tracking_enabled接入原TargetDirectedPointGraspAndLift，不新建基础运动程序；两段原全路径先通过MoveIt和关节限位预检，随后每段由真实q重新规划，经原ExecuteArmTrajectory→adapter执行并等待端点/新图。
+- ObserveLockedTarget始终返回原base锁定点，初始可靠seed只建立一次；深度恢复仅验证对象一致性，不换目标、刷新种子时间或充值路径。RGB纠偏用当前原图框中心与冻结模型深度构造有限横向位姿修正，明确标记LOCKED_RANGE_ESTIMATE_NOT_NEW_DEPTH，不置depth_valid为true。原40mm/5个不同图像帧持续错误关联停止保留，短期深度离群期间只走原锁点、不生成纠偏；最终闭爪两种感知模式统一身份检查。
+- 自动路径的相机/指尖弧长、朝向变化和时长从已通过的两段规划逐点FK计算；原30mm作为有限额外纠偏额度，实际运动逐帧扣减，种子不因新深度重置。每次位姿步长沿用profile approach_microstep_m=.008m，姿态1°，保持旧NO_CLOSE预览独立关闭；最后由同一个执行器核对夹持/严格实际端点，再调用原FinishGraspAndLift。自动判定不是聊天代理逐帧看图下指令。
+- 隔离构建最初旧CMake缓存没有near_depth_executor_test目标（rc2），重新configure后目标/执行器构建rc0；日志automatic_rgb_{configure,final_build}.txt。最终domain78真实方法回归9 passed/rc0（初次旧二进制8项结果不作为最终版本）；6项纯几何回归含多步纠偏收敛通过，Python已有wiring/profile回归19 passed。原测试按函数边界截取包含新函数而误判preview会闭爪，修正边界后通过；实际preview仍NO_CLOSE。
+- 规范实体profile已选择集成自动模式，原实际树仍旧参数/二进制，尚无该模式实机执行。下一同步并重载原唯一栈，先100mm张爪实测与新设备相机参数，再用现有入口验证初始可靠锁定和自动末段。新相机当前近姿态20帧无可靠深度，未将旧设备.186m种子带入新模式；不能假称已抓取/抬升/释放。其他成员test_near_depth_wiring.py的既有注释保留，只暂存本轮相关断言；vendor/reference未纳入。Git仅本地，原远程阻断不变。
+
 ### 2026-10-13 12:47–13:01：更正全开为100mm，明确由程序自动判断和执行末段
 
 - 用户更正全开100mm，并基本同意静态锁定+近距RGB末段方案，明确要求由机械臂程序自动结合彩色/关节反馈判断、修正、闭爪，不依赖聊天代理逐图发下一段命令；后续多次“继续完成”接续此实现。代理此前把软件80mm上限称为实体全开不准确：仓库历史早有0x47E量程100mm，已纠正。

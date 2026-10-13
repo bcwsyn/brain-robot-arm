@@ -501,6 +501,7 @@ private:
     gripper_settle_s_ = ParameterOr<double>("gripper_settle_s", 2.0);
     fresh_jaw_capture_required_ = ParameterOr<bool>("fresh_jaw_capture_required", false);
     near_depth_rgb_tracking_enabled_ = ParameterOr<bool>("near_depth_rgb_tracking_enabled", false);
+    automatic_rgb_approach_enabled_ = ParameterOr<bool>("automatic_rgb_approach_enabled", false);
     near_depth_prediction_max_age_s_ = ParameterOr<double>("near_depth_prediction_max_age_s", 30.0);
     near_depth_prediction_max_travel_m_ = ParameterOr<double>(
       "near_depth_prediction_max_travel_m", .030);
@@ -608,6 +609,10 @@ private:
       "servo_stop_service", "/servo_node/stop_servo");
 
     configuration_ok_ = (simulation_only_ ? auto_execute_ : real_grasp_enabled_) &&
+      (!automatic_rgb_approach_enabled_ || (near_depth_rgb_tracking_enabled_ &&
+      static_target_lock_ && target_directed_grasp_enabled_ && fresh_jaw_capture_required_ &&
+      !visual_microsteps_enabled_ && std::isfinite(approach_microstep_m_) &&
+      approach_microstep_m_ > 0 && approach_microstep_m_ <= .010)) &&
       (!near_depth_rgb_tracking_enabled_ ||
       (static_target_lock_ && !depth_only_target_enabled_ &&
       std::isfinite(near_depth_prediction_max_age_s_) && near_depth_prediction_max_age_s_ > 0 &&
@@ -855,6 +860,7 @@ private:
     near_last_bad_association_stamp_ns_ = 0;
     near_seed_stamp_ns_ = near_last_image_stamp_ns_ = 0;
     near_camera_travel_m_ = 0;
+    near_path_allowance_ready_ = false;
     near_last_mode_predicted_ = false;
     near_depth_tracking_active_ = false;
     struct TrackingScope
@@ -1494,12 +1500,16 @@ private:
             {measured_camera.point.x, measured_camera.point.y, measured_camera.point.z},
             info.width, info.height, measured_projection))
         {return reject("INVALID_MEASURED_RGBD_SEED");}
-        near_seed_ = {box, measured_projection.z, true};
-        near_seed_stamp_ns_ = image_time.nanoseconds();
-        near_last_camera_origin_ = camera_origin;
-        near_last_image_stamp_ns_ = image_time.nanoseconds();
-        near_camera_travel_m_ = 0;
-        reference = observed_reference;  // Fresh output, never mutate the static target lock.
+        if (!near_seed_.valid) {
+          // One identity/scale seed for the immutable base-frame object.
+          // Later depth recovery verifies this lock; it does not move it or
+          // replenish the missing-depth episode's age/travel allowance.
+          near_seed_ = {box, projection.z, true};
+          near_seed_stamp_ns_ = rclcpp::Time(reference.header.stamp).nanoseconds();
+          near_last_camera_origin_ = camera_origin;
+          near_last_image_stamp_ns_ = image_time.nanoseconds();
+          near_camera_travel_m_ = 0;
+        }
       } else {
         if (!near_seed_.valid) {return reject("NO_RELIABLE_RGBD_LOCK");}
         const double increment = image_time.nanoseconds() > near_last_image_stamp_ns_ ?
@@ -1507,12 +1517,18 @@ private:
         near_depth::Evidence evidence{true, true, true, image_age, receipt_age,
           (now().nanoseconds() - near_seed_stamp_ns_) * 1e-9, near_camera_travel_m_ + increment};
         if (const auto reason = near_depth::PredictionRejection(near_seed_, evidence, box, projection,
-            target_timeout_s_, near_depth_prediction_max_age_s_, near_depth_prediction_max_travel_m_))
+            target_timeout_s_,
+            near_path_allowance_ready_ ? near_path_max_age_s_ : near_depth_prediction_max_age_s_,
+            near_path_allowance_ready_ ? near_path_max_travel_m_ : near_depth_prediction_max_travel_m_))
         {return reject(reason);}
-        near_camera_travel_m_ += increment;
+        predicted = true;  // depth_valid is still false; old measurement stamp is retained.
+      }
+      // Account actual motion on distinct RGB frames in both modes. New
+      // measured depth must not reset a frozen target's path consumption.
+      if (image_time.nanoseconds() > near_last_image_stamp_ns_) {
+        near_camera_travel_m_ += (camera_origin - near_last_camera_origin_).length();
         near_last_camera_origin_ = camera_origin;
         near_last_image_stamp_ns_ = image_time.nanoseconds();
-        predicted = true;  // depth_valid is still false; old measurement stamp is retained.
       }
       if (predicted != near_last_mode_predicted_) {
         PublishDiagnostic(predicted ? "NEAR_RGB_LOCKED_3D_PREDICTION_NOT_MEASURED_DEPTH" :
@@ -1593,7 +1609,9 @@ private:
 
   bool ExecuteVisualPose(
     const geometry_msgs::msg::PoseStamped & target,
-    const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage)
+    const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage,
+    double tip_limit = .005, double angle_limit = .017453293,
+    trajectory_msgs::msg::JointTrajectory * completed = nullptr)
   {
     moveit_msgs::msg::RobotTrajectory plan;
     if (!PlanArmCartesianFromState(target, stage, state, plan)) {return false;}
@@ -1612,10 +1630,12 @@ private:
       }
       planned.update();
       const auto & pose = planned.getGlobalLinkTransform(end_effector_link_);
-      if ((pose.translation() - start_pose.translation()).norm() > .005 + 1e-9 ||
-        (pose * local_tip - start_pose * local_tip).norm() > .005 + 1e-9 ||
+      const double wrist_limit = completed ?
+        tip_limit + 2 * gripper_tip_offset_m_ * std::sin(angle_limit / 2) : .005;
+      if ((pose.translation() - start_pose.translation()).norm() > wrist_limit + 1e-9 ||
+        (pose * local_tip - start_pose * local_tip).norm() > tip_limit + 1e-9 ||
         Eigen::Quaterniond(start_pose.rotation()).angularDistance(
-          Eigen::Quaterniond(pose.rotation())) > .017453293) {return false;}
+          Eigen::Quaterniond(pose.rotation())) > angle_limit) {return false;}
     }
     const auto before_output = FreshMeasuredState(stage + "_BEFORE_OUTPUT");
     if (!before_output) {return false;}
@@ -1645,6 +1665,7 @@ private:
         std::lock_guard<std::mutex> lock(visual_mutex_);
         raw_full_frames_ = 0;  // Three distinct new frames AFTER measured settling.
         raw_box_stamp_ns_ = std::max(raw_box_stamp_ns_, now().nanoseconds());
+        if (completed) {*completed = plan.joint_trajectory;}
         return true;
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
@@ -1758,6 +1779,196 @@ private:
     Fail("VISUAL_PREVIEW_STEP_BUDGET_EXHAUSTED_NO_CLOSE");
   }
 
+  bool LockedRgbCorrection(Eigen::Vector3d & correction)
+  {
+    geometry_msgs::msg::PointStamped locked;
+    rclcpp::Time image_time(0, 0, get_clock()->get_clock_type());
+    bool predicted = false;
+    if (!ObserveLockedTarget(locked, image_time, predicted)) {return false;}
+    if (near_rgb_association_bad_frames_seen_ != 0) {
+      // Preserve the existing bounded outlier tolerance while advancing the
+      // original lock. Suspect depth must never generate an RGB correction.
+      correction.setZero(); return true;
+    }
+    near_depth::Calibration c;
+    geometry_msgs::msg::PolygonStamped box;
+    sensor_msgs::msg::CameraInfo info;
+    {
+      std::lock_guard<std::mutex> lock(visual_mutex_);
+      c = near_calibration_; box = qualified_box_message_; info = raw_image_info_;
+    }
+    if (box.polygon.points.size() != 4 ||
+      rclcpp::Time(box.header.stamp) != image_time) {return false;}
+    try {
+      const auto t = tf_buffer_->lookupTransform(camera_optical_frame_,
+        lift_reference_frame_, image_time, rclcpp::Duration::from_seconds(.3));
+      geometry_msgs::msg::PointStamped camera;
+      tf2::doTransform(locked, camera, t);
+      const Eigen::Vector3d depth(camera.point.x, camera.point.y, camera.point.z);
+      Eigen::Matrix3d r;
+      r << c.rotation[0], c.rotation[1], c.rotation[2],
+        c.rotation[3], c.rotation[4], c.rotation[5],
+        c.rotation[6], c.rotation[7], c.rotation[8];
+      const Eigen::Vector3d translation(c.translation[0], c.translation[1], c.translation[2]);
+      const Eigen::Vector3d color = r * depth + translation;
+      const auto & p = box.polygon.points;
+      if (info.width <= 1 || info.height <= 1) {return false;}
+      double u = (p[0].x + p[2].x) * .5 * info.width * (c.width - 1) / (info.width - 1);
+      const double v = (p[0].y + p[2].y) * .5 * info.height * (c.height - 1) / (info.height - 1);
+      if (c.mirror) {u = c.width - 1 - u;}
+      // RGB ray at the LOCKED model range, explicitly not a new measurement.
+      const Eigen::Vector3d observed_color((u - c.cx) * color.z() / c.fx,
+        (v - c.cy) * color.z() / c.fy, color.z());
+      const Eigen::Vector3d delta_depth = r.inverse() * (observed_color - color);
+      tf2::Transform depth_from_reference;
+      tf2::fromMsg(t.transform, depth_from_reference);
+      const auto delta = depth_from_reference.getBasis().transpose() *
+        tf2::Vector3(delta_depth.x(), delta_depth.y(), delta_depth.z());
+      correction = Eigen::Vector3d(delta.x(), delta.y(), delta.z());
+      return correction.allFinite() && color.z() > .001 &&
+        correction.norm() <= visual_target_association_m_;
+    } catch (const tf2::TransformException &) {return false;}
+  }
+
+  void AutomaticRgbApproach(
+    const std::vector<geometry_msgs::msg::Pose> & pre_waypoints,
+    const std::vector<geometry_msgs::msg::Pose> & descent_waypoints,
+    const moveit_msgs::msg::RobotTrajectory & pre_plan,
+    const moveit_msgs::msg::RobotTrajectory & descent_plan,
+    const std::shared_ptr<moveit::core::RobotState> & start)
+  {
+    namespace gg = grasp_geometry;
+    if (!near_seed_.valid || !near_depth_tracking_active_ ||
+      pre_waypoints.empty() || descent_waypoints.empty()) {
+      Fail("AUTOMATIC_RGB_INITIAL_LOCK_UNAVAILABLE"); return;
+    }
+    std::vector<geometry_msgs::msg::Pose> waypoints = pre_waypoints;
+    waypoints.insert(waypoints.end(), descent_waypoints.begin(), descent_waypoints.end());
+    const double angle_limit = .01745329252;
+    double camera_arc = 0, tip_arc = 0, angle_arc = 0, planned_seconds = 0;
+    try {
+      // Only derive an allowance from the two already limit/collision-checked
+      // plans. Fixed 30mm remains the finite extra correction allowance.
+      const auto camera_from_tool = tf_buffer_->lookupTransform(
+        end_effector_link_, camera_optical_frame_, tf2::TimePointZero);
+      tf2::Transform camera_tf;
+      tf2::fromMsg(camera_from_tool.transform, camera_tf);
+      Eigen::Isometry3d tool_to_camera = Eigen::Isometry3d::Identity();
+      for (int row = 0; row < 3; ++row) {
+        for (int col = 0; col < 3; ++col) {
+          tool_to_camera.linear()(row, col) = camera_tf.getBasis()[row][col];
+        }
+        tool_to_camera.translation()[row] = camera_tf.getOrigin()[row];
+      }
+      moveit::core::RobotState state(*start);
+      const Eigen::Vector3d local_tip(0, 0, gripper_tip_offset_m_);
+      auto previous = state.getGlobalLinkTransform(end_effector_link_);
+      for (const auto * plan : {&pre_plan, &descent_plan}) {
+        const auto & jt = plan->joint_trajectory;
+        if (jt.points.empty()) {throw std::invalid_argument("Empty checked plan");}
+        for (const auto & point : jt.points) {
+          for (std::size_t i = 0; i < jt.joint_names.size(); ++i) {
+            state.setVariablePosition(jt.joint_names[i], point.positions.at(i));
+          }
+          state.update();
+          const Eigen::Isometry3d current = state.getGlobalLinkTransform(end_effector_link_);
+          camera_arc += ((current * tool_to_camera).translation() -
+            (previous * tool_to_camera).translation()).norm();
+          tip_arc += (current * local_tip - previous * local_tip).norm();
+          angle_arc += Eigen::Quaterniond(previous.rotation()).angularDistance(
+            Eigen::Quaterniond(current.rotation()));
+          previous = current;
+        }
+        const auto & duration = jt.points.back().time_from_start;
+        planned_seconds += duration.sec + duration.nanosec * 1e-9;
+      }
+    } catch (const std::exception & error) {
+      RCLCPP_ERROR(get_logger(), "Cannot review automatic RGB path: %s", error.what());
+      Fail("AUTOMATIC_RGB_PATH_REVIEW_FAILED"); return;
+    }
+    const double extra = near_depth_prediction_max_travel_m_;
+    const double iterations = waypoints.size() + std::ceil((tip_arc + extra) /
+      approach_microstep_m_) + std::ceil(angle_arc / angle_limit) + 2;
+    const double age = planned_seconds + iterations *
+      (planning_time_s_ + trajectory_feedback_timeout_s_ + target_timeout_s_ + .5);
+    if (!std::isfinite(iterations) || !std::isfinite(age) || !std::isfinite(camera_arc) ||
+      iterations < 1 || camera_arc < 0 || age <= 0) {
+      Fail("AUTOMATIC_RGB_PATH_BUDGET_INVALID"); return;
+    }
+    near_path_max_travel_m_ = near_camera_travel_m_ + camera_arc + extra;
+    near_path_max_age_s_ = std::max(near_depth_prediction_max_age_s_, age +
+      (now().nanoseconds() - near_seed_stamp_ns_) * 1e-9);
+    near_path_allowance_ready_ = true;
+    RCLCPP_INFO(get_logger(),
+      "AUTOMATIC_RGB_CHECKED_PATH camera_arc=%.4f tip_arc=%.4f extra=%.4f max_steps=%.0f",
+      camera_arc, tip_arc, extra, iterations);
+    std::size_t cursor = 0;
+    trajectory_msgs::msg::JointTrajectory last_trajectory;
+    geometry_msgs::msg::PoseStamped last_goal;
+    for (std::size_t step = 0; rclcpp::ok() && !cancel_requested_ &&
+      step < static_cast<std::size_t>(iterations) && cursor < waypoints.size(); ++step)
+    {
+      if (!WaitFullVisualBox()) {Fail("AUTOMATIC_RGB_FULL_TARGET_UNAVAILABLE"); return;}
+      const auto state = FreshMeasuredState("AUTOMATIC_RGB_APPROACH");
+      Eigen::Vector3d correction;
+      if (!state || !LockedRgbCorrection(correction)) {
+        Fail("AUTOMATIC_RGB_LOCKED_OBSERVATION_UNAVAILABLE"); return;
+      }
+      const auto & fk = state->getGlobalLinkTransform(end_effector_link_);
+      const Eigen::Quaterniond q(fk.rotation());
+      const gg::DirectedPose current{{fk.translation().x(), fk.translation().y(), fk.translation().z()},
+        {q.x(), q.y(), q.z(), q.w()}};
+      const auto & pose = waypoints[cursor];
+      const gg::DirectedPose nominal{{pose.position.x, pose.position.y, pose.position.z},
+        {pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w}};
+      gg::DirectedPose goal;
+      try {
+        goal = visual_grasp::CorrectedPoseStep(current, nominal,
+          {correction.x(), correction.y(), correction.z()}, gripper_tip_offset_m_,
+          approach_microstep_m_, angle_limit, extra);
+      } catch (const std::invalid_argument &) {
+        Fail("AUTOMATIC_RGB_CORRECTION_INVALID"); return;
+      }
+      const auto current_tip = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}),
+        gripper_tip_offset_m_);
+      auto expected_tip = gg::Tip(nominal.origin, gg::Rotate(nominal.orientation, {0, 0, 1}),
+        gripper_tip_offset_m_);
+      const double scale = correction.norm() > extra ? extra / correction.norm() : 1.;
+      double gap_squared = 0;
+      for (int i = 0; i < 3; ++i) {
+        expected_tip[i] += correction[i] * scale;
+        gap_squared += std::pow(expected_tip[i] - current_tip[i], 2);
+      }
+      if (std::sqrt(gap_squared) <= .002 &&
+        gg::QuaternionDistance(current.orientation, nominal.orientation) <= .01) {
+        ++cursor; continue;
+      }
+      last_goal.header.frame_id = lift_reference_frame_; last_goal.header.stamp = now();
+      last_goal.pose.position.x = goal.origin[0]; last_goal.pose.position.y = goal.origin[1];
+      last_goal.pose.position.z = goal.origin[2]; last_goal.pose.orientation.x = goal.orientation[0];
+      last_goal.pose.orientation.y = goal.orientation[1]; last_goal.pose.orientation.z = goal.orientation[2];
+      last_goal.pose.orientation.w = goal.orientation[3];
+      PublishState(cursor < pre_waypoints.size() ?
+        "AUTOMATIC_RGB_PREGRASP" : "AUTOMATIC_RGB_DESCENT");
+      RCLCPP_INFO(get_logger(), "AUTOMATIC_RGB_STEP=%zu waypoint=%zu/%zu correction=%.4f "
+        "LOCKED_RANGE_ESTIMATE_NOT_NEW_DEPTH", step, cursor, waypoints.size(), correction.norm());
+      if (!ExecuteVisualPose(last_goal, state, "AUTOMATIC_RGB_STEP_" + std::to_string(step),
+        approach_microstep_m_, angle_limit, &last_trajectory)) {
+        Fail("AUTOMATIC_RGB_STEP_EXECUTION_FAILED"); return;
+      }
+    }
+    if (cancel_requested_) {return;}
+    if (cursor != waypoints.size() || last_trajectory.points.empty() ||
+      !WaitFullVisualBox() || !FreshFaceInsideJaws() ||
+      !EnsureRealTopDownLanding(last_goal, last_trajectory)) {
+      Fail("AUTOMATIC_RGB_CAPTURE_UNCONFIRMED_NO_CLOSE"); return;
+    }
+    geometry_msgs::msg::PoseStamped retreat;
+    retreat.header = last_goal.header; retreat.pose = pre_waypoints.back();
+    PublishDiagnostic("AUTOMATIC_RGB_MODEL_CAPTURE_CONFIRMED");
+    FinishGraspAndLift(retreat);
+  }
+
   void TargetDirectedPointGraspAndLift()
   {
     PublishState("TARGET_DIRECTED_PREGRASP_PLANNING");
@@ -1845,6 +2056,10 @@ private:
     // measured states and short Cartesian pose goals, never edits those joint points.
     if (!simulation_only_ && visual_microsteps_enabled_) {
       VisualMicrostepPreview();
+      return;
+    }
+    if (!simulation_only_ && automatic_rgb_approach_enabled_) {
+      AutomaticRgbApproach(pre_waypoints, descent_waypoints, pre_plan, descent_plan, state);
       return;
     }
     // Both changing-attitude segments must be planned before any adapter output.
@@ -3031,15 +3246,21 @@ private:
     }
     bool predicted = false;
     rclcpp::Time capture_stamp(0, 0, get_clock()->get_clock_type());
-    if (!fresh_rgbd) {
-      if (!near_depth_rgb_tracking_enabled_ ||
-        !ObserveLockedTarget(face, capture_stamp, predicted))
+    if (near_depth_rgb_tracking_enabled_) {
+      // Use one autonomous identity check for BOTH fresh-depth and RGB-only
+      // modes. A newly detected purple point cannot replace the locked cube
+      // at the final closure decision.
+      if (!ObserveLockedTarget(face, capture_stamp, predicted) ||
+        near_rgb_association_bad_frames_seen_ != 0)
       {
-        PublishDiagnostic("JAW_CAPTURE_FRESH_RGBD_AND_LOCKED_RGB_UNAVAILABLE_NO_CLOSE");
+        PublishDiagnostic("JAW_CAPTURE_LOCKED_OBJECT_UNCONFIRMED_NO_CLOSE");
         return false;
       }
       std::lock_guard<std::mutex> lock(target_mutex_);
       size = locked_object_size_m_;
+    } else if (!fresh_rgbd) {
+      PublishDiagnostic("JAW_CAPTURE_FRESH_RGBD_AND_LOCKED_RGB_UNAVAILABLE_NO_CLOSE");
+      return false;
     } else {
       capture_stamp = rclcpp::Time(face.header.stamp, get_clock()->get_clock_type());
     }
@@ -3745,6 +3966,10 @@ private:
   double gripper_settle_s_{2.0};
   bool fresh_jaw_capture_required_{false};
   bool near_depth_rgb_tracking_enabled_{false};
+  bool automatic_rgb_approach_enabled_{false};
+  bool near_path_allowance_ready_{false};
+  double near_path_max_age_s_{0};
+  double near_path_max_travel_m_{0};
   bool near_depth_tracking_active_{false};
   double near_depth_prediction_max_age_s_{30.0};
   double near_depth_prediction_max_travel_m_{.030};

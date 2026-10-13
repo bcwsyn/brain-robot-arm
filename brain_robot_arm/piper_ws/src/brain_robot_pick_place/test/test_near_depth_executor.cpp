@@ -63,11 +63,24 @@ struct NearDepthReplayAccess
     return n.ObserveLockedTarget(p, stamp, predicted);
   }
   static bool Capture(GraspLiftExecutor & n) {return n.FreshFaceInsideJaws();}
+  static bool Correction(GraspLiftExecutor & n, Eigen::Vector3d & delta) {
+    return n.LockedRgbCorrection(delta);
+  }
   static void NoSeed(GraspLiftExecutor & n) {n.near_seed_.valid = false;}
   static void LostRGB(GraspLiftExecutor & n) {n.qualified_box_message_.polygon.points.clear();}
   static void MissingAxis(GraspLiftExecutor & n) {n.latest_joint_state_.name.pop_back();}
   static void BadOpening(GraspLiftExecutor & n) {n.latest_gripper_feedback_.position[0] = .1019;}
   static bool DepthFlag(GraspLiftExecutor & n) {return n.depth_valid_;}
+  static auto SeedStamp(GraspLiftExecutor & n) {return n.near_seed_stamp_ns_;}
+  static auto Seed(GraspLiftExecutor & n) {return n.near_seed_;}
+  static void Travel(GraspLiftExecutor & n, double value) {n.near_camera_travel_m_ = value;}
+  static double Travel(GraspLiftExecutor & n) {return n.near_camera_travel_m_;}
+  static void ReviewedAllowance(GraspLiftExecutor & n, double path_m) {
+    n.near_path_allowance_ready_ = true;
+    n.near_path_max_travel_m_ = path_m + n.near_depth_prediction_max_travel_m_;
+    n.near_path_max_age_s_ = 100;
+  }
+  static void MoveObservation(GraspLiftExecutor & n, double x) {n.target_point_camera_.point.x = x;}
   static auto Lock(GraspLiftExecutor & n) {return n.locked_target_reference_;}
   static void InvalidateCalibration(GraspLiftExecutor & n) {n.near_calibration_ready_ = false;}
   static bool FactoryLoaded(GraspLiftExecutor & n) {
@@ -125,6 +138,65 @@ TEST_F(NearDepthExecutor, NoInitialDepthCannotBootstrapPrediction)
   NearDepthReplayAccess::Inputs(*node, false);
   NearDepthReplayAccess::NoSeed(*node);
   geometry_msgs::msg::PointStamped p; bool predicted = false;
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+}
+
+TEST_F(NearDepthExecutor, DepthRecoveryDoesNotReplaceTargetOrRefreshSeed)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  const auto seed_stamp = NearDepthReplayAccess::SeedStamp(*node);
+  const auto seed = NearDepthReplayAccess::Seed(*node);
+  NearDepthReplayAccess::Travel(*node, .012);
+  NearDepthReplayAccess::Inputs(*node, false);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  ASSERT_TRUE(predicted);
+  NearDepthReplayAccess::Inputs(*node, true);
+  NearDepthReplayAccess::MoveObservation(*node, .001);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_FALSE(predicted);
+  EXPECT_DOUBLE_EQ(p.point.x, locked.point.x);
+  EXPECT_EQ(p.header.stamp, locked.header.stamp);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed_stamp);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Seed(*node).color_z, seed.color_z);
+  EXPECT_DOUBLE_EQ(NearDepthReplayAccess::Travel(*node), .012);
+}
+
+TEST_F(NearDepthExecutor, FreshDepthCannotBypassLockedIdentityAtClosure)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::Inputs(*node, true);
+  NearDepthReplayAccess::MoveObservation(*node, .06);
+  EXPECT_FALSE(NearDepthReplayAccess::Capture(*node));
+}
+
+TEST_F(NearDepthExecutor, ProgramComputesRgbCorrectionWhenCurrentDepthIsMissing)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  Eigen::Vector3d correction;
+  ASSERT_TRUE(NearDepthReplayAccess::Correction(*node, correction));
+  EXPECT_TRUE(correction.allFinite());
+  EXPECT_NEAR(correction.z(), 0, 1e-12);
+  EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
+}
+
+TEST_F(NearDepthExecutor, CheckedPathAllowanceCanExceed30mmButRemainsFinite)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::Travel(*node, .05);
+  NearDepthReplayAccess::Inputs(*node, false);
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  NearDepthReplayAccess::ReviewedAllowance(*node, .10);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_TRUE(predicted);
+  NearDepthReplayAccess::Travel(*node, .131);
   EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
 }
 
