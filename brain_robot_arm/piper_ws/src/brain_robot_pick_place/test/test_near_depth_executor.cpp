@@ -81,6 +81,9 @@ struct NearDepthReplayAccess
     n.near_path_max_age_s_ = 100;
   }
   static void MoveObservation(GraspLiftExecutor & n, double x) {n.target_point_camera_.point.x = x;}
+  static void ShiftColourBox(GraspLiftExecutor & n, float x) {
+    for (auto & p : n.qualified_box_message_.polygon.points) {p.x += x;}
+  }
   static auto Lock(GraspLiftExecutor & n) {return n.locked_target_reference_;}
   static void InvalidateCalibration(GraspLiftExecutor & n) {n.near_calibration_ready_ = false;}
   static bool FactoryLoaded(GraspLiftExecutor & n) {
@@ -138,6 +141,22 @@ TEST_F(NearDepthExecutor, NoInitialDepthCannotBootstrapPrediction)
   NearDepthReplayAccess::Inputs(*node, false);
   NearDepthReplayAccess::NoSeed(*node);
   geometry_msgs::msg::PointStamped p; bool predicted = false;
+  EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
+}
+
+TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)
+{
+  geometry_msgs::msg::PointStamped p; bool predicted = false;
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  const auto locked = NearDepthReplayAccess::Lock(*node);
+  const auto seed_stamp = NearDepthReplayAccess::SeedStamp(*node);
+  NearDepthReplayAccess::Inputs(*node, false);
+  NearDepthReplayAccess::ShiftColourBox(*node, .05f);
+  ASSERT_TRUE(NearDepthReplayAccess::Observe(*node, predicted, p));
+  EXPECT_TRUE(predicted);
+  EXPECT_EQ(p.header.stamp, locked.header.stamp);
+  EXPECT_EQ(NearDepthReplayAccess::SeedStamp(*node), seed_stamp);
+  NearDepthReplayAccess::ShiftColourBox(*node, .2f);
   EXPECT_FALSE(NearDepthReplayAccess::Observe(*node, predicted, p));
 }
 

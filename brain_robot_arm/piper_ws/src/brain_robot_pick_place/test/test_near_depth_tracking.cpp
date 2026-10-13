@@ -50,6 +50,23 @@ TEST(NearDepth, NoInitialReliableLockNeverBecomesDepthOnlyGrasp)
   EXPECT_STREQ(e.reject(), "NO_RELIABLE_RGBD_LOCK");
 }
 
+TEST(NearDepth, LockedSurfacePointMayStayInsideChangingSilhouetteAwayFromCentre)
+{
+  Example e;
+  e.box.left += .055; e.box.right += .055;
+  ASSERT_GT(std::hypot((e.box.left + e.box.right) / 2 - e.projection.x,
+    (e.box.top + e.box.bottom) / 2 - e.projection.y), .04);
+  EXPECT_EQ(e.reject(), nullptr);
+}
+
+TEST(NearDepth, SmallCentreErrorDoesNotAllowProjectionOutsideCube)
+{
+  Example e;
+  e.box = {e.projection.x + .001, e.projection.y - .02,
+    e.projection.x + .04, e.projection.y + .02};
+  EXPECT_STREQ(e.reject(), "LOCKED_TARGET_RGB_MISMATCH");
+}
+
 TEST(NearDepth, FeedbackAndExactImageTFRequired)
 {
   Example e; e.evidence.exact_image_tf = false;

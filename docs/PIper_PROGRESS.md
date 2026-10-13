@@ -1,3 +1,12 @@
+### 2026-10-13 14:44–15:05：静止同帧投影核对与已批准的框中心误停修复
+
+- 用户确认继续定位关联偏差。本轮先只读恢复e4c0be6与实际进程：driver3672131、controller3672604、grasp3694144，实体静止保持使能；既有测试注释仍dirty不纳入。按ros2-piper-debug/surgical-change使用原review_jaw_scene.py与24s有界observer，不启动ROS新控制栈或发送运动。真实MoveIt读数：joint7/8=±.0498m、allow_trajectory_execution=false、Octomap0字节；这些仅为当前模型证据。
+- 原脚本 --capture-model读取实际URDF/scene/静态TF，输出ego_motion_review_20261013/model。静止模型投影：初始锁点采用TARGET_TF_RETRY四位小数[.4518,-.1302,.0559]（每轴±.00005m日志舍入）到当前RGB约[139.018,167.294]px；raw框[117,159,34,34]，预测点仍在方块内、中心误差.03952接近原.04停止线。模型指尖中心[93.746,269.419]超出240行RGB，真实图有可见指结构；不能把指尖中心与可见自由末端角点直接等同，亦不能凭此擅自修安装TF。
+- 独立只读同帧核对使用live /cube_detector/get_parameters，订阅qualified_color_bbox/RGB/target_point_camera，冻结一个共同stamp并等该精确时刻TF（无latest替代）：1791874466464545516ns的图像与TF stamp一致；预测点[139.018,167.294]在框[118,158]–[151,194]内，中心误差.038926，当前同帧表面测量base[.4372446,-.1225298,.0659096]与初始锁点差19.258mm。compact数据docs/evidence/piper_ego_motion_projection_20261013.json。本样本没有重现旧失败帧；它证明投影仍在物体内且靠近旧中心硬阈值，不证明方块实际移动，也不确定差异是可见表面变化还是外参/时序。
+- 用户明确同意局部修复并实测：只取消“预测表面点必须距当前轮廓中心≤.04”的硬拒绝，ObserveLockedTarget和共享PredictionRejection同步改为预测点仍在同一框内；尺寸、三维关联、实际反馈、冻结目标/测量stamp和最终夹持规则均不改。新增纯几何“框中心改变但仍包围预测点可接受/点在框外即便中心误差小也拒绝”，以及实际方法“RGB预测不重锁、不刷新seed、移出框拒绝”回归。规范与实际CPP/header同步。
+- Python绑定回归9 passed；实体grasp目标与隔离C++方法/纯几何构建均rc0。实际运行纯几何12 passed、domain78真实方法10 passed（850ms），没有域内机械臂控制器或运动命令；初次--gtest_brief为本机不支持的开关，仅打印帮助，未当成通过；改用--gtest_color=no核对实际执行项数后才验收。日志runtime_rgb_association_fix_build.txt、association_fix_test_build.txt、association_fix_{geometry,executor}_tests.txt。实体可执行SHA256 dfa51b7508aa16358301dbfc3b4a8cd211948cd3882dd3a669c4c2897c8e6220。
+- 下一步只重载原grasp、清软件停止/arm、原当前姿态接续一次实测；不重锁途中目标/改外参/重跑底层检查。模型与实物夹持对应仍未实机验收，不能把取消中心误停等同已可闭爪或已完成抓取。
+
 ### 2026-10-13：用户提醒自身运动误判历史；更正“持续十字居中”的表述
 
 - 本轮用户是在质疑方案，不是授权新增运动/改代码。只读核对HEAD a1400a1、ObserveLockedTarget/LockedRgbCorrection及原grasp_waypoint_fix.txt：基座目标保持冻结，当前原图时间TF补偿确在代码里；日志只有LOCKED_TARGET_RGB_MISMATCH，不能将它说成方块实际移动，也不能宣称补偿已彻底解决。

@@ -1,0 +1,29 @@
+{
+  "motion_sent": false,
+  "exact_image_stamp_ns": 1791874466464545516,
+  "transform_stamp_ns": 1791874466464545516,
+  "latest_tf_fallback_used": false,
+  "seed_base_xyz_from_four_decimal_log_not_exact": [0.4518, -0.1302, 0.0559],
+  "initial_lock_log_uncertainty_m_per_axis": 0.00005,
+  "live_detector_factory_color_k": [488.80865478515625, 488.80865478515625, 315.5068054199219, 214.38182067871094],
+  "rgb_size": [320, 240],
+  "predicted_pixel": [139.0177103164185, 167.29380253363863],
+  "qualified_bbox_pixel": [118.00000190734863, 158.00000667572021, 151.00000381469727, 194.00000095367432],
+  "qualified_center_pixel": [134.50000286102295, 176.00000381469727],
+  "normalized_center_error": 0.038926209151579065,
+  "old_center_cutoff": 0.04,
+  "predicted_inside_bbox": true,
+  "same_image_measured_base_xyz": [0.4372446228927058, -0.12252979758416906, 0.06590960438027793],
+  "world_difference_m": 0.01925832774892568,
+  "capture_review": {
+    "directory": "/home/johnwick/brain_robot_logs/ego_motion_review_20261013",
+    "actual_model_source": "/move_group robot_description",
+    "moveit_finger_joint_positions": [0.0498, -0.0498],
+    "model_tip_rgb_pixel": [93.7463414659249, 269.41857933742267],
+    "physical_contact_calibrated": false,
+    "model_review_rgb_joint_delta_s": 0.13917160034179688,
+    "note": "Model FK review is static and separate from the exact image-time TF check above. Model tip centre projection is not an identification of visible physical finger corners."
+  },
+  "finding": "Static locked surface point is inside the cube silhouette but near the old fixed centre-error cutoff. This current sample does not itself reproduce the historical rejected frame.",
+  "approved_change": "Remove the centre-error cutoff only; retain projection-inside-box, size, 3D identity, real feedback and final jaw checks. Do not relock the static target or change camera extrinsics."
+}

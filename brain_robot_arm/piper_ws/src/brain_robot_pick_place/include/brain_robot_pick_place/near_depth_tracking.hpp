@@ -94,10 +94,8 @@ inline const char * PredictionRejection(
   if (!visual_grasp::Valid(box) || !visual_grasp::Valid(seed.box) ||
     !std::isfinite(seed.color_z) || seed.color_z <= .001 || projection.z <= .001)
   {return "COLOR_SHAPE_UNAVAILABLE";}
-  const double cx = (box.left + box.right) / 2;
-  const double cy = (box.top + box.bottom) / 2;
-  if (std::hypot(cx - projection.x, cy - projection.y) > .04 ||
-    projection.x < box.left || projection.x > box.right ||
+  // Changing viewpoint changes the silhouette centre, not the locked object.
+  if (projection.x < box.left || projection.x > box.right ||
     projection.y < box.top || projection.y > box.bottom)
   {return "LOCKED_TARGET_RGB_MISMATCH";}
   const double growth = seed.color_z / projection.z;

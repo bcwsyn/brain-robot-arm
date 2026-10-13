@@ -1460,9 +1460,8 @@ private:
       const auto camera_origin = camera_transform.inverse().getOrigin();
       // Colour association applies to measured observations too: a new purple
       // background must not refresh the seed belonging to the locked cube.
-      const double error = std::hypot((box.left + box.right) / 2 - projection.x,
-        (box.top + box.bottom) / 2 - projection.y);
-      if (error > .04 || projection.x < box.left || projection.x > box.right ||
+      // A frozen surface point need not stay at the changing silhouette centre.
+      if (projection.x < box.left || projection.x > box.right ||
         projection.y < box.top || projection.y > box.bottom)
       {return reject("LOCKED_TARGET_RGB_MISMATCH");}
       if (measured_same_image) {
