@@ -43,3 +43,13 @@ def test_prepublication_rejections_report_metrics_without_new_bounds():
     assert '> tip_limit + 1e-9' in method
     assert 'Eigen::Quaterniond(pose.rotation())) > angle_limit' in method
     assert 'state->getVariablePosition(name)) > .002' in method
+
+
+def test_automatic_angle_comparison_ignores_observed_solver_roundoff_only():
+    source = SOURCE.read_text()
+    assert 'angle_limit + (completed ? 1e-6 : 0.0)' in source
+    limit = .017453293
+    observed = .017453373
+    assert observed > limit
+    assert observed <= limit + 1e-6
+    assert limit + 2e-6 > limit + 1e-6

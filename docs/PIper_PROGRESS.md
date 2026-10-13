@@ -1,3 +1,9 @@
+### 2026-10-13 14:06：用户同意忽略微小朝向数值误差，立即推进原靠近/闭爪
+
+- 用户同意仅朝向数值余量，并要求不再斤斤计较这些现实难免的微小误差。只将自动段计划FK朝向比较改为 angle_limit+1e-6rad（completed非空）；原1°目标、8mm位移、全部关节/反馈/最终夹持/闭爪判定不改，独立预览仍原精度。规范与实际源码同一补丁，非新保护/运动策略。
+- 观测的8e-8rad误差回归新增到test_automatic_rgb_settle.py；连同已有wiring共7 passed/rc0。为减少无关重构建直接 `cmake --build /home/johnwick/piper_ws/build/brain_robot_pick_place --target grasp_lift_executor -j2`，使用原配置；install可执行原本symlink到该目标，构建成功即可加载，无需重复完整colcon。日志runtime_rgb_roundoff_fix_build.txt。当前构建进行中，实体STOPPED/software disarmed/硬件保持使能，全开99.6mm。
+- 下一步只重载执行器、软件arm、原当前姿态接续并自动靠近/闭爪；不重做CAN/固件/相机基础检查，不新写启动脚本。总目标仍以真实闭爪接触及物体随抬升/释放证据为准。
+
 ### 2026-10-13 14:03–14:05：诊断续测确认朝向浮点误拒绝，非物理步长超限
 
 - ce6da63实际构建成功rc0/3min32s；执行器SHA256 ef52161bdb92bdc29177a137743f091dffc5a149d6e247871445e8348fe0d2ef；6项聚焦测试通过。仅重载旧手工接续grasp节点，原参数/remap不变；原adapter arm和首个新鲜目标resume均成功，不重走观测、不重新硬件使能。新可靠锁定约[.426,-.127,.079]m，实际张爪99.6mm。

@@ -1637,7 +1637,7 @@ private:
       if ((pose.translation() - start_pose.translation()).norm() > wrist_limit + 1e-9 ||
         (pose * local_tip - start_pose * local_tip).norm() > tip_limit + 1e-9 ||
         Eigen::Quaterniond(start_pose.rotation()).angularDistance(
-          Eigen::Quaterniond(pose.rotation())) > angle_limit) {
+          Eigen::Quaterniond(pose.rotation())) > angle_limit + (completed ? 1e-6 : 0.0)) {
         RCLCPP_WARN(get_logger(),
           "%s bounds: wrist=%.9f/%.9f tip=%.9f/%.9f angle=%.9f/%.9f",
           stage.c_str(), (pose.translation() - start_pose.translation()).norm(), wrist_limit,
