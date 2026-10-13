@@ -1,3 +1,14 @@
+### 2026-10-13 19:34–19:47：USB重新透传后原一键完成观测/搜索/对齐及40段靠近；精确尺度拒绝已定位，保持使能
+
+- 基线2b4e286，用户确认USB-CAN已连接VM；新枚举1d50:606f/can0 ifindex9 DOWN，一次sudo-n固定1Mbps/.75/queue1000/up与8帧candump成功。只读SDK初始joint1791891288.030558、高速1288.026543，q约[-.035238198,-.002076942,0,.052028265,.284314135,-.129154365]rad，六轴enable false。原脚本正常使能；不重载健康接口、不执行Reset/MasterSlave/刷写。通用xHCI历史错误不替代本轮真实RX证据。
+- 原入口AUTO_START=1/STOP_AFTER_TARGET_ACQUIRED=0/DEPTH_ONLY_TARGET=0；binary79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62、script87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0未改。原相机恢复机制重启无帧输入后[7/7]成功。启动stop服务已执行STOPPED但CLI3805756超过160秒不退出；只kill-KILL该精准客户端让原脚本继续，不改应用timeout/另起运动。该临时释放不代表永久修好超时。
+- 原PREPARE1791891694.191：14路点/49.1秒/.08rad步长、adapter接受；1743.026 OBSERVE_POSE_REACHED→SEARCH，1755.615 ALIGN，1757.913 GRASP_READY。初始79pregrasp+13descent预检，自动40段accepted至loop108/cursor69/92；边界前观察器采到25个真实反馈确认，未采全不声称40个确认。1817.040精确LOCKED_TARGET_SCALE_MISMATCH，未执行最终DESCENT/闭爪/抬升/释放；不是本次CAN停滞或IK拒绝。
+- seed RGB1791891758007141583/框[.396874994040,.375,.487500011921,.504166662693]/colorZ .304045674；失败RGB/精确TF1791891817006498016，模型colorZ .154489430，增长1.968067804、宽.648281400/高.704801367，完整未裁切，原下限.65导致宽拒绝。执行器当时raw是前帧，depth_used=0；只读采集器另存本次同RGB stamp raw [-.011551916195,.081714647347,.216]。工厂D→C colorZ .216510175，比模型大62.021mm；3D残差74.279mm、按同精确TF反算base Z .02352对冻结.09686差约73mm，不解释为目标真实移动。纯离线仅改尺度所用距离时宽/高.908538/.987748通过，不应用到实机/seed/TF。
+- 已实际看seed/失败RGB与debug、失败原生uint16 depth，以及observer0091/0135三图。方块始终完整、末段十字下方略左，两指可见但未夹持；失败深度前RGB10.297ms、182324/256000像素非零、debug2869样本/.216m，不是目标深度归零。本轮精确证据替代历史候选seed；详细TF/命令/哈希/限制见docs/evidence/piper_exact_scale_run_20261013.md，原始大图/日志不提交。
+- 主session31123 rc1，原cleanup完成未Disable/Reset；控制栈与采集均退出、不自动续跑。结束CAN RX1420323/TX16172/error-drop0；最后SDK joint1791891883.445390/200Hz/high1883.446392/100Hz，6轴enable true/速度0/无collision-stall-drivererror；末q[-.314665411,1.716094987,-1.294912132,0,.816342851,0]rad/J5 46.773°、最后ROS开口99.6mm。旧归档URDF纯FK tipZ .1283265仅近似，非实物/同帧验证。新续采snapshot启动已在cleanup后为空，不能拿它冒充末点实时ROS。
+- 只读采集原420秒时限到期，另新目录续采保证精确失败帧，最终INT收尾exact rc0/续observer143；无发布器/运动调用。临时分析正则box曾误匹配seed_box已纠正为词边界后重算上述.908538/.987748，不把初算.7121当结果。root86%/约11GB，既有clean_disk_space.sh0/原脚本清后仍86%/10840MB，无ENOSPC，不扩删工作区或据此归因通信。
+- 下一优先此次数据离线核对模型距离/安装变换，不重复CAN/限位/固件、简单放宽尺度、盲增J5或将离群raw直接写为新目标。应用代码/TF/启动硬超时修复仍需用户事前确认（恢复消息不代替）。保留所有用户原测试注释/vendor/reference；本轮只文档，origin/main远程历史审查未解除，仅本地未推送。
+
 ### 2026-10-13 19:02–19:16：用户确认诊断版原一键实测；启动前反馈正常，驱动门控阶段新RX停滞/当前xHCI异常，未运动
 
 - 用户在说明“下一原脚本采精确seed/比例，不改变运动”的预期后再次确认，允许本轮原实测。恢复60a9895/Git五项/最新文档、完整读取两仓库技能；应用CPP/YAML/外参/限位/启动脚本均未改。实际诊断binary SHA79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62、原脚本87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0一致。开始无实机控制栈，不存在第二driver。

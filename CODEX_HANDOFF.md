@@ -1,4 +1,14 @@
-## 最新接续（2026-10-13 19:16，诊断版原一键已尝试；[1/7]新RX停滞/当前xHCI异常，无运动/新尺度数据）
+## 最新接续（2026-10-13 19:47，用户连接VM后原一键已到观测/搜索/对齐/靠近69-92；精确尺度拒绝、模型距离差62mm）
+
+基线2b4e286，应用诊断版60a9895与原入口不改；用户确认USB透传后新can0 ifindex9一次配置1Mbps/.75/queue1000成功，SDK1288初始6轴false、原脚本随后使能。原相机无帧恢复成功，[7/7]后stop服务CLI已STOPPED但超160秒不退出，只kill-KILL精准3805756让原脚本继续；未改硬超时、TF/YAML/门/运动，不把恢复消息视为代码授权。
+
+原PREPARE1694.191（14点49.1秒）→SEARCH1743.026/OBSERVE_POSE_REACHED→ALIGN1755.615→GRASP_READY1757.913；79pregrasp+13descent原预检，自动40段accepted，loop108/cursor69/92时1817.040 SCALE_MISMATCH。采集器边界前仅25次真实反馈确认，未采全不得说40次全确认。未最终下降/闭爪/抬升。主脚本rc1/cleanup已结束，无Disable/Reset、不自动续跑。结束CAN RX1420323/error0；最后SDK1883.445/200Hz新读六轴enable true、速度0/无碰撞或驱动error，q[-.314665411,1.716094987,-1.294912132,0,.816342851,0]rad/J5 46.773°，最后ROS全开99.6mm。
+
+精确seed1758007141583，失败RGB/TF1817006498016，框与same-stamp raw全部留存。原模型colorZ .154489m而同帧raw按工厂D→C .216510m、差62.021mm；3D残差74.279mm。尺度宽.6482814低于.65/高.7048014通过，方块完整、深度2869样本；并非失去目标/深度全零。只离线改尺度距值的反事实比.908538/.987748通过，未应用于实机。失败时程序所見raw前一帧/depth_used false，采集器后来存到同帧raw，必须区分。安装变换/运动学/测量表面唯一根因仍未知，不能简单扩门/直接重锁/盲增J5。
+
+下一先读docs/evidence/piper_exact_scale_run_20261013.md（精确TF/哈希/命令/图像/限制）、进度顶部，再用这次数据离线校核模型几何。证据根view_guard_20261013/scale_reconnected_{console,onekey,exact,exact_motion,live,motion_live}；后启动的motion_live在cleanup后全空，真正末帧来自exact_motion，勿混用。下一代码/TF/启动硬超时修改先具体告知获同意，不重复CAN/固件基线。root86%/10840MB，固定清理0无ENOSPC、不扩删。Git仅本轮文档/本地，原注释/vendor/reference以及远程历史审查阻断保持。
+
+## 历史接续（2026-10-13 19:16，诊断版原一键已尝试；[1/7]新RX停滞/当前xHCI异常，无运动/新尺度数据）
 
 用户已确认原实测，不改门/TF/落点。原60a9895 binary79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62/唯一启动脚本SHA87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0未变。启动前SDK只读stamp9478.121/high9478.117、q=[-.329291270,1.680455364,-1.236583228,.045396014,.759183318,-.048432887]rad、6轴enable全true；CAN RX6840640/candump251/252新帧，健康接口未重载。AUTO_START=1原脚本scale_onekey main3802713启动后仅到[1/7]driver；9623.080反馈丢失、RX7271725多次不增长、独立candump无帧。没有观测/靠近/闭爪或本轮使能请求。
 
