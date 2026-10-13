@@ -1,3 +1,9 @@
+### 2026-10-13：79e06bc已部署，原AUTO1实测开始（结果待核对）
+
+- 53项通过/79e06bc提交后，精确确认无遗留driver/controller/grasp/一键/采集进程；备份旧实际1de994f为view_guard_20261013/attitude_previous_1de994f.bin（827923fc5a19c6b08b6e11ea107b07859e421440011e1f54e978899b2d62f338）。仅机械部署原CPP/binary，runtime/install symlink SHA与上述新64054b…/2b309a…一致，原入口87039b…不变。没有替代启动脚本。
+- 新SDK1791898731.284785/200Hz、高速8731.285717/100Hz、六轴使能true/速度0，q[-.313408774,1.763515583,-1.368163601,0,.889803759,-.020699605]rad；can0 ifindex9 ERROR-ACTIVE/1Mbps/.75/queue1000/RX18017301/error-drop0复用不重载。动作前已说明原观测[0,.98,-.75,0,.30,0]rad/原速度与限位/异常保持使能。
+- 原一键AUTO_START=1、STOP_AFTER_TARGET_ACQUIRED=0、DEPTH_ONLY_TARGET=0、LOG_DIR attitude_onekey，主session39545开始；只读精确采集52347/observer36485，分别attitude_exact/attitude_live，外部600秒INT/kill宽限用于避免遗留，不改原脚本。当前日志正在原磁盘维护/启动，尚无新观测/候选可达/闭爪证据，不声称验收。下一读attitude_onekey_console.txt及新visual_stack.log，持续查看新三图与候选fraction/真实反馈；本轮未执行Disable/Reset。
+
 ### 2026-10-13：用户批准同指尖可达朝向重规划，53项通过；待部署原入口实测
 
 - 用户明确同意局部修改并实测：原自动靠近完整朝向规划失败时，保持同一指尖目标位置，依次尝试75%/50%/25%朝目标转角。唯一总目标/实体成功条件已写入CODEX_TASK_PROMPT；不是取消闭爪判定、放宽J3或执行原fraction .5半段路径授权。
