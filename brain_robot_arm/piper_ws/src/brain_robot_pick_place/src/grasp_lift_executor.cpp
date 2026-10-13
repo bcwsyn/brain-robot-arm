@@ -1862,6 +1862,16 @@ private:
            stage.rfind("AUTOMATIC_RGB_STEP_", 0) == 0;
   }
 
+  bool ClipCheckedJointPrefix(trajectory_msgs::msg::JointTrajectory & trajectory,
+    std::size_t accepted_points, const std::string & stage, bool automatic_segment)
+  {
+    if (!CanRetryVisualOrientation(stage, automatic_segment) || accepted_points < 2 ||
+      accepted_points >= trajectory.points.size()) {return false;}
+    trajectory.points.resize(accepted_points);
+    PublishDiagnostic(stage + "_CHECKED_JOINT_PREFIX_CLIPPED_REPLAN_NEXT_FRAME");
+    return true;
+  }
+
   bool ExecuteVisualPose(
     const geometry_msgs::msg::PoseStamped & target,
     const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage,
@@ -1918,12 +1928,21 @@ private:
     std::size_t accepted_points = 0;
     for (const auto & point : plan.joint_trajectory.points) {
       moveit::core::RobotState planned(*state);
+      bool joint_travel_rejected = false;
       for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
         if (std::abs(point.positions[i] - state->getVariablePosition(
             plan.joint_trajectory.joint_names[i])) > .08) {
-          PublishDiagnostic(stage + "_JOINT_TRAVEL_LIMIT"); return false;
+          joint_travel_rejected = true; break;
         }
         planned.setVariablePosition(plan.joint_trajectory.joint_names[i], point.positions[i]);
+      }
+      if (joint_travel_rejected) {
+        // The full Cartesian path and all retained earlier points passed the
+        // original checks. Replan after that bounded prefix from measured state.
+        if (ClipCheckedJointPrefix(plan.joint_trajectory, accepted_points, stage, completed != nullptr)) {
+          break;
+        }
+        PublishDiagnostic(stage + "_JOINT_TRAVEL_LIMIT"); return false;
       }
       planned.update();
       const auto & pose = planned.getGlobalLinkTransform(end_effector_link_);

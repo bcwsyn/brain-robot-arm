@@ -73,6 +73,11 @@ struct NearDepthReplayAccess
   static bool RetryAttitude(GraspLiftExecutor & n, const std::string & stage, bool segment) {
     return n.CanRetryVisualOrientation(stage, segment);
   }
+  static bool ClipJointPrefix(GraspLiftExecutor & n,
+    trajectory_msgs::msg::JointTrajectory & trajectory, std::size_t accepted,
+    bool automatic_segment = true) {
+    return n.ClipCheckedJointPrefix(trajectory, accepted, "AUTOMATIC_RGB_STEP_0", automatic_segment);
+  }
   static auto DelayedCamera(GraspLiftExecutor & n, bool old_only = false) {
     n.camera_optical_frame_ = "delayed_camera_fixture";
     geometry_msgs::msg::TransformStamped t;
@@ -408,6 +413,37 @@ TEST_F(NearDepthExecutor, ReducedAttitudeRetryIsOnlyAutomaticApproachPlanning)
   EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "AUTOMATIC_RGB_STEP_107", false));
   EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "VISUAL_PREVIEW", true));
   EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "TARGET_DIRECTED_DESCENT", true));
+}
+
+TEST_F(NearDepthExecutor, JointTravelReplansAfterOnlyTheAlreadyCheckedMovingPrefix)
+{
+  NearDepthReplayAccess::Automatic(*node);
+  trajectory_msgs::msg::JointTrajectory trajectory;
+  trajectory.joint_names = {"joint1"};
+  for (double angle : {0., .04, .081, .12}) {
+    trajectory_msgs::msg::JointTrajectoryPoint p; p.positions = {angle};
+    p.time_from_start.sec = trajectory.points.size(); trajectory.points.push_back(p);
+  }
+  const auto original = trajectory;
+  ASSERT_TRUE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 2));
+  ASSERT_EQ(trajectory.points.size(), 2u);
+  EXPECT_EQ(trajectory.joint_names, original.joint_names);
+  EXPECT_EQ(trajectory.points[0], original.points[0]);
+  EXPECT_EQ(trajectory.points[1], original.points[1]);
+  EXPECT_LE(std::abs(trajectory.points.back().positions[0]), .08);
+}
+
+TEST_F(NearDepthExecutor, JointTravelCannotClipPreviewOrAnInsufficientCheckedPrefix)
+{
+  NearDepthReplayAccess::Automatic(*node);
+  trajectory_msgs::msg::JointTrajectory trajectory;
+  trajectory.joint_names = {"joint1"}; trajectory.points.resize(4);
+  const auto original = trajectory;
+  EXPECT_FALSE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 2, false));
+  EXPECT_FALSE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 1));
+  EXPECT_FALSE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 4));
+  EXPECT_FALSE(NearDepthReplayAccess::ClipJointPrefix(*node, trajectory, 5));
+  EXPECT_EQ(trajectory, original);
 }
 
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)
