@@ -1,4 +1,12 @@
-## 最新接续（2026-10-13，用户批准自动尺度异常诊断续调，47项通过/构建成功，待部署实测）
+## 最新接续（2026-10-13，ea67b83已部署；首轮原脚本到64-89被原图像TF查询停止，正在同代码唯一重试）
+
+用户批准实际视觉纠偏优先、仅自动尺度硬停止改诊断，CPP/实际方法回归已ea67b83提交；47项通过。新binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485、CPP98fb19769cfa606095bcd87e4f911be1d926e4a5543ca044fb94c51fbeb528d8已同步原运行树/install symlink；旧binary备份view_guard_20261013/scale_advisory_previous_60a9895.bin。脚本87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0不改。
+
+首轮原AUTO1正常7/7/服务返回，PREPARE3621.544(11点36.8s)→SEARCH3658.024→ALIGN3673.379→GRASP_READY3676.524，76+13路点。自动36段accepted/34feedback确认到64-89/loop99，3732.854 EXACT_IMAGE_TF_UNAVAILABLE原门停止，不是尺度拒绝/本段IK或CAN；本轮尺度advisory0次，不能称实体尺度续调已验收。前日志future-TF差29.755ms只是邻近线索，最终catch没有详细exception。主rc143/原cleanup完成/未Disable或Reset，未最终下降/闭爪/抬升。0017/0059/0087三图已看完整方块，末debug213mm/2848样本，未包围；0087cleanup后旧/不同stamp，勿当新实时同帧。
+
+新SDK3830.526/200Hz&100Hz、6使能true，q[-.292237930,1.680926603,-1.233040210,-.006719518,.750439218,-.008028515]rad，CANRX6101654持续/error0。不重载CAN、不改TF/timeout/DDS/运动规则，原授权内仅再试一次同入口：scale_advisory_retry_console与scale_advisory_retry_onekey正在运行，沿用scale_advisory_exact/live600秒边界采集。下一第一条tail -n 20 /home/johnwick/brain_robot_logs/view_guard_20261013/scale_advisory_retry_console.txt；必须继续核对新三图及实际停止原因，不拿第一次旧图当第二次证据。若同故障重复不无限实测，改代码前仍需用户确认。root87%10020MB/既有清理0无ENOSPC，原用户改动保留，Git仅本地/remote审查阻断沿用。
+
+## 历史接续（2026-10-13，用户批准自动尺度异常诊断续调，47项通过/构建成功，待部署实测）
 
 用户已具体同意仅自动靠近的尺度硬停止改诊断，强调实际视觉纠偏优先；不改TF/YAML/TCP/锁点/路径/限位/入口。原ObserveLockedTarget只在automatic+bounded+持续RGB身份时尺度异常继续，保留seed/比例与精确TF诊断，其他拒绝及最终夹持不变；仅新RGB完整日志，避免20ms重复刷屏。源/test近距原方法回归已补，red旧行为失败被复现，新应用规范构建0/binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485。第一次green复用旧测试对象未生效，重建后域78方法16/16、纯尺度15/几何13/wiring3合计47通过；暂未部署/新运动，不能将测试成功当抓取。
 

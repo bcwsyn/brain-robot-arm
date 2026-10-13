@@ -1,3 +1,12 @@
+### 2026-10-13：ea67b83已部署；首轮原入口到64-89，原精确图像TF查询失败，保持使能；同代码重试中
+
+- 47项回归/规范构建完成后，无活动执行器时备份旧binary为view_guard_20261013/scale_advisory_previous_60a9895.bin（79d8d9bad392235a63b99c099a2887cc345a917f5ddabd30ebd6ca73b05b2f62），只复制规范CPP及新binary到原运行树/install symlink。实际新binary91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485，规范/runtime CPP同98fb19769cfa606095bcd87e4f911be1d926e4a5543ca044fb94c51fbeb528d8，原脚本SHA87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0未改。
+- 首次原AUTO_START=1/STOP_AFTER_TARGET_ACQUIRED=0/DEPTH_ONLY_TARGET=0，日志scale_advisory_onekey/console。SDK3505.560336 joint200Hz/high3505.556554100Hz新读6轴true，q[-.314665411,1.716094987,-1.294912132,0,.816342851,0]rad，CAN持续RX/未重载。动作前打印原观测[0,.98,-.75,0,.30,0]rad、.01速度/加速度、原限位/保持使能异常路径。输入首帧/7组件完成，本次stop服务正常退出，未手动kill CLI。原PREPARE3621.544，11点36.8s/.08rad，3658.024 OBSERVE_POSE_REACHED/SEARCH→3673.379 ALIGN→3676.524 GRASP_READY。
+- seed3676483089141/模型colorZ .299903285，冻结surface(.4328,-.1287,.0870)m，76pre+13descent89；自动36段accepted、采到34个真实feedback确认，loop99/cursor64-89段5点/fraction完整已被adapter接受。3732.854原EXACT_IMAGE_TF_UNAVAILABLE软件停止，非尺度门/CAN/本段IK失败。没有新增尺度advisory（0次），不能称本轮实体已验证尺度续调；仅方法回归通过。3731.338前一日志出现requested3731.283457/latestTF3731.253702未来外推差29.755ms，但不能据此断言最终catch也是唯一同原因，原catch不含详细exception。
+- 主session28307实际rc143，原cleanup日志完成且未Disable/Reset。末观察器q3746.440818/RGB3743.885693/depth3745.265586/debug3743.283709，0087三图已看：完整方块十字下方略左、debug213mm/2848样本，两指可见未夹持；三图时间不一致且cleanup后陈旧，不能当同帧闭爪证据。前0017/0059三图亦已看。仅原driver张爪100000日志，没有最终DESCENT/close/lift。
+- 结束CAN RX6101654/TX30099/error-drop0；新SDK3830.525551/200Hz/high3830.526428/100Hz使能6true，q[-.292237930,1.680926603,-1.233040210,-.006719518,.750439218,-.008028515]rad。用户原授权内从此实际反馈只再重试一次相同脚本/同补丁，scale_advisory_retry_onekey与scale_advisory_retry_console，未改TF/DDS/超时/运动规则。沿用600秒外部边界只读采集scale_advisory_exact/live，不用旧图替新图；第二次仍进行中，下一读取其原门控/当前三图。若相同TF失败重复，不无限重试，具体新代码修改仍先获确认。
+- 原脚本固定清理后root87%/10020MB无ENOSPC，未扩删。此前47回归仍有效、不把新TF阻断归为尺度代码失效；本轮只更新记录并本地提交，原注释/vendor/reference与remote历史阻断保持。
+
 ### 2026-10-13：用户批准尺度异常降级，原自动靠近局部修复/47项验证通过，待部署实测
 
 - 基线d220a91，用户同意只将自动靠近LOCKED_TARGET_SCALE_MISMATCH从立即停止改诊断，以同一方块实际视觉纠偏继续；不改TF/TCP/YAML/锁点/名义轨迹/限位/入口。使用并完整读取ROS2与手术式技能，保留他人test_near_depth_wiring.py原注释及vendor/reference改动。
