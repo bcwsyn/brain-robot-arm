@@ -1,0 +1,25 @@
+ball_scene_manager:
+  ros__parameters:
+    flow_demo: true
+    simulation_only: true
+    world_frame: world
+    table_x: 0.35
+    table_y: 0.00
+    table_length: 0.70
+    table_width: 0.50
+    table_thickness: 0.05
+    table_center_z: -0.025
+    planning_table_min_x: 0.10
+    ball_x: 0.40
+    ball_y: -0.12
+    ball_radius: 0.0175
+    ball_mass: 0.015
+ball_follow:
+  ros__parameters:
+    simulation_only: true
+    world_frame: world
+    gripper_frame: gripper_base
+    update_rate_hz: 30.0
+    ball_x: 0.40
+    ball_y: -0.12
+    ball_z: 0.0175

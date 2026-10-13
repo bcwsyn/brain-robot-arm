@@ -1,0 +1,51 @@
+{
+  "stage": "physics_grasp",
+  "positive_trials_per_model": 20,
+  "seed": 20261013,
+  "models": {
+    "ball": {
+      "radius_m": 0.0175,
+      "mass_kg": 0.015
+    },
+    "cylinder": {
+      "radius_m": 0.025,
+      "height_m": 0.1,
+      "mass_kg": 0.08
+    }
+  },
+  "start_bounds_xy": [
+    [
+      0.38,
+      0.42
+    ],
+    [
+      -0.12,
+      -0.08
+    ]
+  ],
+  "zones": {
+    "A": [
+      0.38,
+      0.12
+    ],
+    "B": [
+      0.42,
+      0.12
+    ]
+  },
+  "criteria": {
+    "bilateral_contact": true,
+    "peak_lift_m": 0.05,
+    "hold_seconds": 3,
+    "placement_error_m": 0.03,
+    "home_error_rad": 0.02,
+    "pose_following_disabled": true,
+    "ground_truth_xy_control_disabled": true
+  },
+  "negative_cases": [
+    "miss",
+    "drop",
+    "stop"
+  ],
+  "failure_policy": "stop batch at first moving trial failure; keep all earlier debug failures"
+}

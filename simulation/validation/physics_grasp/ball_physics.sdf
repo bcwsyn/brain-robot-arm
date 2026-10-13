@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="red_ball">
+    <static>false</static>
+    <link name="ball_link">
+      <gravity>true</gravity>
+      <self_collide>false</self_collide>
+      <velocity_decay><linear>0.2</linear><angular>0.2</angular></velocity_decay>
+      <inertial>
+        <mass>0.015</mass>
+        <inertia>
+          <ixx>1.8375000000000004e-06</ixx><iyy>1.8375000000000004e-06</iyy><izz>1.8375000000000004e-06</izz>
+          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="ball_collision"><geometry><sphere><radius>0.0175</radius></sphere></geometry>
+        <surface>
+          <friction><ode><mu>1.2</mu><mu2>1.2</mu2></ode></friction>
+          <contact><collide_without_contact>false</collide_without_contact>
+            <ode><kp>100000.0</kp><kd>10.0</kd><max_vel>0.05</max_vel><min_depth>0.0005</min_depth></ode>
+          </contact>
+          <bounce><restitution_coefficient>0.0</restitution_coefficient><threshold>0.1</threshold></bounce>
+        </surface>
+      </collision>
+      <visual name="ball_visual">
+        <geometry><sphere><radius>0.0175</radius></sphere></geometry>
+        <material><ambient>0.85 0.04 0.03 1</ambient><diffuse>0.98 0.08 0.05 1</diffuse><specular>0.25 0.25 0.25 1</specular></material>
+      </visual>
+    </link>
+    
+  </model>
+</sdf>
