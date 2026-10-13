@@ -1981,7 +1981,8 @@ private:
     const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage,
     double tip_limit = .005, double angle_limit = .017453293,
     trajectory_msgs::msg::JointTrajectory * completed = nullptr,
-    geometry_msgs::msg::PoseStamped * selected_goal = nullptr)
+    geometry_msgs::msg::PoseStamped * selected_goal = nullptr,
+    bool * reachable_attitude_selected = nullptr)
   {
     moveit_msgs::msg::RobotTrajectory plan;
     // Analysis topic only: expose the EXACT requested pose before planning.
@@ -1993,6 +1994,8 @@ private:
       target.pose.position.y, target.pose.position.z, target.pose.orientation.x,
       target.pose.orientation.y, target.pose.orientation.z, target.pose.orientation.w);
     auto planned_goal = target;
+    bool used_reachable_attitude = false;
+    if (reachable_attitude_selected) {*reachable_attitude_selected = false;}
     bool planned = PlanArmCartesianFromState(target, stage, state, plan);
     std::string rejection;
     if (planned && !RealTrajectoryWithinLimits(plan.joint_trajectory, rejection)) {
@@ -2021,6 +2024,7 @@ private:
           PublishDiagnostic(candidate_stage + ":" + rejection); continue;
         }
         plan = std::move(candidate_plan); planned_goal = candidate; planned = true;
+        used_reachable_attitude = true;
         RCLCPP_INFO(get_logger(), "%s REACHABLE_VISUAL_ATTITUDE fraction=%.2f "
           "SAME_TIP_FULL_PATH_ORIGINAL_LIMITS", stage.c_str(), fraction);
         break;
@@ -2086,7 +2090,6 @@ private:
         PublishDiagnostic(stage + "_START_FEEDBACK_CHANGED"); return false;
       }
     }
-    if (selected_goal) {*selected_goal = planned_goal;}
     if (!ExecuteArmTrajectory(plan.joint_trajectory)) {return false;}
     const auto & end = plan.joint_trajectory.points.back();
     const auto deadline = std::chrono::steady_clock::now() +
@@ -2121,6 +2124,26 @@ private:
           raw_box_stamp_ns_ = std::max(raw_box_stamp_ns_, now().nanoseconds());
         }
         if (completed) {*completed = plan.joint_trajectory;}
+        if (selected_goal) {
+          // The retained endpoint, not an unexecuted suffix of a clipped plan.
+          moveit::core::RobotState endpoint(*state);
+          for (std::size_t i = 0; i < plan.joint_trajectory.joint_names.size(); ++i) {
+            endpoint.setVariablePosition(plan.joint_trajectory.joint_names[i], end.positions[i]);
+          }
+          endpoint.update();
+          const Eigen::Isometry3d actual_goal = endpoint.getGlobalLinkTransform(planned_goal.header.frame_id).inverse() *
+            endpoint.getGlobalLinkTransform(end_effector_link_);
+          *selected_goal = planned_goal;
+          const Eigen::Quaterniond endpoint_q(actual_goal.rotation());
+          selected_goal->pose.position.x = actual_goal.translation().x();
+          selected_goal->pose.position.y = actual_goal.translation().y();
+          selected_goal->pose.position.z = actual_goal.translation().z();
+          selected_goal->pose.orientation.x = endpoint_q.x();
+          selected_goal->pose.orientation.y = endpoint_q.y();
+          selected_goal->pose.orientation.z = endpoint_q.z();
+          selected_goal->pose.orientation.w = endpoint_q.w();
+        }
+        if (reachable_attitude_selected) {*reachable_attitude_selected = used_reachable_attitude;}
         PublishDiagnostic(stage + "_MEASURED_SETTLING_CONFIRMED");
         return true;
       }
@@ -2309,6 +2332,22 @@ private:
     return aimed;
   }
 
+  static bool RgbWaypointReached(
+    const grasp_geometry::DirectedPose & current,
+    const grasp_geometry::DirectedPose & nominal, double tip_offset,
+    double position_tolerance, double angle_tolerance,
+    const grasp_geometry::DirectedPose * completed_reachable = nullptr)
+  {
+    namespace gg = grasp_geometry;
+    const auto current_tip = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}), tip_offset);
+    const auto nominal_tip = gg::Tip(nominal.origin, gg::Rotate(nominal.orientation, {0, 0, 1}), tip_offset);
+    double gap_squared = 0;
+    for (int i = 0; i < 3; ++i) {gap_squared += std::pow(nominal_tip[i] - current_tip[i], 2);}
+    return std::sqrt(gap_squared) <= position_tolerance &&
+      gg::QuaternionDistance(current.orientation,
+      completed_reachable ? completed_reachable->orientation : nominal.orientation) <= angle_tolerance;
+  }
+
   void AutomaticRgbApproach(
     const std::vector<geometry_msgs::msg::Pose> & pre_waypoints,
     const std::vector<geometry_msgs::msg::Pose> & descent_waypoints,
@@ -2384,6 +2423,8 @@ private:
     std::size_t cursor = 0;
     trajectory_msgs::msg::JointTrajectory last_trajectory;
     geometry_msgs::msg::PoseStamped last_goal;
+    gg::DirectedPose completed_reachable;
+    std::size_t completed_reachable_cursor = waypoints.size();
     for (std::size_t step = 0; rclcpp::ok() && !cancel_requested_ &&
       step < static_cast<std::size_t>(iterations) && cursor < waypoints.size(); ++step)
     {
@@ -2408,7 +2449,10 @@ private:
       }
       const bool recovery = view.valid &&
         (view.recovering || !visual_grasp::FullView(view.box));
-      if (recovery) {nominal = current;}  // Restore view, not blind forward motion.
+      if (recovery) {
+        nominal = current;  // Restore view, not blind forward motion.
+        completed_reachable_cursor = waypoints.size();
+      }
       else {
         for (int i = 0; i < 3; ++i) {nominal.origin[i] += correction[i]*scale;}
       }
@@ -2421,18 +2465,15 @@ private:
       } catch (const std::invalid_argument &) {
         Fail("AUTOMATIC_RGB_CORRECTION_INVALID"); return;
       }
-      const auto current_tip = gg::Tip(current.origin, gg::Rotate(current.orientation, {0, 0, 1}),
-        gripper_tip_offset_m_);
-      auto expected_tip = gg::Tip(nominal.origin, gg::Rotate(nominal.orientation, {0, 0, 1}),
-        gripper_tip_offset_m_);
-      double gap_squared = 0;
-      for (int i = 0; i < 3; ++i) {
-        gap_squared += std::pow(expected_tip[i] - current_tip[i], 2);
-      }
-      if (std::sqrt(gap_squared) <= grasp_landing_tolerance_m_ &&
-        gg::QuaternionDistance(current.orientation, nominal.orientation) <=
-        grasp_landing_orientation_tolerance_rad_) {
-        if (!recovery) {++cursor;}
+      const auto * selected = completed_reachable_cursor == cursor ? &completed_reachable : nullptr;
+      if (RgbWaypointReached(current, nominal, gripper_tip_offset_m_,
+        grasp_landing_tolerance_m_, grasp_landing_orientation_tolerance_rad_, selected)) {
+        if (!recovery) {
+          RCLCPP_INFO(get_logger(), "AUTOMATIC_RGB_WAYPOINT_REACHED waypoint=%zu/%zu "
+            "orientation=%s FRESH_FEEDBACK_ORIGINAL_TIP_TOLERANCE", cursor, waypoints.size(),
+            selected ? "COMPLETED_REACHABLE" : "NOMINAL");
+          ++cursor; completed_reachable_cursor = waypoints.size();
+        }
         else {near_last_command_image_stamp_ns_ = view.stamp_ns;}
         continue;
       }
@@ -2449,9 +2490,17 @@ private:
         "gaze=%s recovery=%s", view.stamp_ns, view.box.left, view.box.top,
         view.box.right, view.box.bottom, gaze ? "true" : "false", recovery ? "true" : "false");
       near_last_command_image_stamp_ns_ = view.valid ? view.stamp_ns : near_last_image_stamp_ns_;
+      bool selected_reachable = false;
       if (!ExecuteVisualPose(last_goal, state, "AUTOMATIC_RGB_STEP_" + std::to_string(step),
-        approach_microstep_m_, angle_limit, &last_trajectory, &last_goal)) {
+        approach_microstep_m_, angle_limit, &last_trajectory, &last_goal, &selected_reachable)) {
         Fail("AUTOMATIC_RGB_STEP_EXECUTION_FAILED"); return;
+      }
+      completed_reachable_cursor = waypoints.size();
+      if (selected_reachable && !recovery) {
+        const auto & p = last_goal.pose;
+        completed_reachable = {{p.position.x, p.position.y, p.position.z},
+          {p.orientation.x, p.orientation.y, p.orientation.z, p.orientation.w}};
+        completed_reachable_cursor = cursor;
       }
     }
     if (cancel_requested_) {return;}

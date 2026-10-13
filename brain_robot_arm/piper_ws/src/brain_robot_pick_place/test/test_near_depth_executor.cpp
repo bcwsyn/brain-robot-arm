@@ -73,6 +73,11 @@ struct NearDepthReplayAccess
   static bool RetryAttitude(GraspLiftExecutor & n, const std::string & stage, bool segment) {
     return n.CanRetryVisualOrientation(stage, segment);
   }
+  static bool WaypointReached(const grasp_geometry::DirectedPose & current,
+    const grasp_geometry::DirectedPose & nominal,
+    const grasp_geometry::DirectedPose * completed = nullptr) {
+    return GraspLiftExecutor::RgbWaypointReached(current, nominal, .1358, .01, .12, completed);
+  }
   static bool ClipJointPrefix(GraspLiftExecutor & n,
     trajectory_msgs::msg::JointTrajectory & trajectory, std::size_t accepted,
     bool automatic_segment = true) {
@@ -462,6 +467,50 @@ TEST_F(NearDepthExecutor, ReducedAttitudeRetryIsOnlyAutomaticApproachPlanning)
   EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "AUTOMATIC_RGB_STEP_107", false));
   EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "VISUAL_PREVIEW", true));
   EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "TARGET_DIRECTED_DESCENT", true));
+}
+
+TEST_F(NearDepthExecutor, CompletedReachableAttitudeAdvancesAtOriginalNominalTip)
+{
+  namespace gg = brain_robot_pick_place::grasp_geometry;
+  const gg::DirectedPose nominal{{.3, -.1, .2}, {0, std::sin(.3/2), 0, std::cos(.3/2)}};
+  const auto tip = gg::Tip(nominal.origin, gg::Rotate(nominal.orientation, {0, 0, 1}), .1358);
+  gg::DirectedPose completed{{tip[0], tip[1], tip[2]-.1358}, {0, 0, 0, 1}};
+  auto measured = completed;
+  measured.origin[0] += .0008;  // Actual stuck-step feedback was within 0.5--0.8 mm.
+  EXPECT_FALSE(NearDepthReplayAccess::WaypointReached(measured, nominal));
+  EXPECT_TRUE(NearDepthReplayAccess::WaypointReached(measured, nominal, &completed));
+}
+
+TEST_F(NearDepthExecutor, ReachableAttitudeCannotSkipAnUnreachedTipOrChangedCorrection)
+{
+  namespace gg = brain_robot_pick_place::grasp_geometry;
+  gg::DirectedPose nominal{{.3, -.1, .2}, {0, 0, 0, 1}};
+  const auto completed = nominal;
+  auto measured = completed; measured.origin[2] += .0101;
+  EXPECT_FALSE(NearDepthReplayAccess::WaypointReached(measured, nominal, &completed));
+  measured = completed; nominal.origin[0] += .02;
+  EXPECT_FALSE(NearDepthReplayAccess::WaypointReached(measured, nominal, &completed));
+}
+
+TEST_F(NearDepthExecutor, ReachableAttitudeStillRequiresActualOrientationArrival)
+{
+  namespace gg = brain_robot_pick_place::grasp_geometry;
+  const gg::DirectedPose completed{{.3, -.1, .2}, {0, 0, 0, 1}};
+  auto measured = completed;
+  measured.orientation = {0, std::sin(.13/2), 0, std::cos(.13/2)};
+  const auto axis = gg::Rotate(measured.orientation, {0, 0, 1});
+  const auto tip = gg::Tip(completed.origin, {0, 0, 1}, .1358);
+  for (int i = 0; i < 3; ++i) {measured.origin[i] = tip[i] - axis[i]*.1358;}
+  EXPECT_FALSE(NearDepthReplayAccess::WaypointReached(measured, completed, &completed));
+}
+
+TEST_F(NearDepthExecutor, WithoutCompletedCandidateOriginalOrientationRuleRemains)
+{
+  namespace gg = brain_robot_pick_place::grasp_geometry;
+  const gg::DirectedPose nominal{{.3, -.1, .2}, {0, 0, 0, 1}};
+  EXPECT_TRUE(NearDepthReplayAccess::WaypointReached(nominal, nominal));
+  auto measured = nominal; measured.origin[0] += .011;
+  EXPECT_FALSE(NearDepthReplayAccess::WaypointReached(measured, nominal));
 }
 
 TEST_F(NearDepthExecutor, JointTravelReplansAfterOnlyTheAlreadyCheckedMovingPrefix)
