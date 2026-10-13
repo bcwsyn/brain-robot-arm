@@ -1,4 +1,12 @@
-## 最新接续（2026-10-13，79e06bc已部署，原AUTO1实测正在启动，未完成验收）
+## 最新接续（2026-10-13，79e06bc实体50%候选完整执行，下一65/88同方向全失败；未抓取/已退出）
+
+53回归/原binary2b309a…、CPP64054b…已部署；原入口AUTO1 PREPARE8831.883→SEARCH8870.606→ALIGN8883.253→GRASP_READY8886.258，41自动accepted+41feedback确认。loop105原/75%fraction.5、50%完整5点实际执行；loop106/cursor65/88原及75/50/25%全fraction0/error1未发布，FAULT8943.807/STOPPED8948.515。未最终下降/闭爪，不能称越过旧不同seed66/89。主39545 rc1、读采52347/36485 INT0、隔离分析94113 INT0，无控制栈/采集、不自动续跑、不Disable/Reset。
+
+精确输入/有效只读MoveIt对照见docs/evidence/piper_reachable_attitude_run_20261013.md；105/106起点有效无模型自碰撞，106缩到0仍失败，而反向-.25/-.5/-1同指尖完整，J3-1.396233/-1.390749/-1.379835。负候选只是诊断不在原授权，未应用/执行；下一优先征得≤原1°少量反向候选局部修复同意，不重跑75/50/25同方向失败。当前runtime/task -1.4，旧数值margin -1.395不是现场起点门，不据此断言起点非法。只读首两份缺固定TF/-21无效，含RSP的_rsp.json有效；隔离无现场环境，勿冒充全程碰撞证明。
+
+结束SDK9002.266/high9002.262六使能true，q[-.324247268,1.778822120,-1.396926627,.014992378,.908600955,-.023195426]rad/最后ROS99.6mm全开，CANRX19353675/error0，无需重启。0065三图已看完整方块仍十字下方未夹持/debug218mm2390样本，0080墙钟8996是旧8950/8952缓存非当前图。日志attitude_onekey/exact/live，旧1de994f回退attitude_previous_1de994f.bin/827923fc…，入口87039b…不改。Git仅本地，原用户改动与远程审查阻断保留。下一第一条读本小证据，不再从TF/CAN/固件基线出发。
+
+## 历史接续（2026-10-13，79e06bc已部署，原AUTO1实测正在启动，未完成验收）
 
 原实际新binary2b309a…/CPP64054b…已部署，旧1de994f备份attitude_previous_1de994f.bin/827923fc…；入口87039b…原样。新SDK8731.285六轴true/200Hz/q[-.313408774,1.763515583,-1.368163601,0,.889803759,-.020699605]，can0持续RX18017301/error0、不重载。原AUTO1日志view_guard_20261013/attitude_onekey_console与attitude_onekey，主session39545；只读exact52347/observer36485（attitude_exact/live），均600秒INT边界。下一第一条tail该console，再看新visual_stack.log/三图/候选fraction及实际关节，不套用旧图或假称已越过66/89。不Disable/Reset、不改范围/外参/最终夹持，53项软件通过不等于实机成功。用户原改动/仅本地Git/远程审查阻断不变。
 
