@@ -1,5 +1,6 @@
 import math
 import os
+import xml.etree.ElementTree as ET
 
 import yaml
 from ament_index_python.packages import get_package_share_directory
@@ -26,6 +27,19 @@ def _camera_mount_arguments(task_profile):
         'gripper_base', 'camera_link']
 
 
+def _physical_gripper_description(description):
+    """Match the existing 80mm physical opening, without editing vendor URDF."""
+    root = ET.fromstring(description)
+    for name, lower, upper in [('joint7', 0.0, .040), ('joint8', -.040, 0.0)]:
+        joint = root.find(f"joint[@name='{name}']")
+        if joint is None or joint.get('type') != 'prismatic' or joint.find('limit') is None:
+            raise RuntimeError('Expected PiPER prismatic finger: ' + name)
+        limit = joint.find('limit')
+        limit.set('lower', str(lower))
+        limit.set('upper', str(upper))
+    return ET.tostring(root, encoding='unicode')
+
+
 def generate_launch_description():
     cube_share = get_package_share_directory('brain_robot_ball_pick')
     base_share = get_package_share_directory('brain_robot_pick_place')
@@ -45,6 +59,11 @@ def generate_launch_description():
     moveit = MoveItConfigsBuilder(
         'piper', package_name='piper_with_gripper_moveit').sensors_3d(
             os.path.join(cube_share, 'config', 'sensors_3d_real.yaml')).to_moveit_configs()
+    # Official current PiPER mapping is total opening = 2 * joint7; this
+    # archived vendor model still has +/-35mm. All consumers use one corrected
+    # description; meshes, origins, camera/TCP and six arm joints stay unchanged.
+    moveit.robot_description['robot_description'] = _physical_gripper_description(
+        moveit.robot_description['robot_description'])
     moveit_parameters = moveit.to_dict()
     for joint_name, min_position, max_position in zip(
             ("joint1", "joint2", "joint3", "joint4", "joint5", "joint6"),

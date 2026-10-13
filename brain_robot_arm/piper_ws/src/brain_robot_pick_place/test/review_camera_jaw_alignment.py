@@ -41,6 +41,16 @@ def wait_for_stamped_transform(buffer, target, source, stamp, pump, timeout_s=.3
     raise RuntimeError('Exact image-time TF did not arrive within bounded wait')
 
 
+def wait_for_tf_initialization(buffer, target, source, pump, timeout_s=5.):
+    """Warm up the listener only; this transform is NEVER a planning input."""
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        if buffer.can_transform(target, source, rclpy.time.Time()):
+            return
+        pump()
+    raise RuntimeError('TF listener initialization did not complete within bounded wait')
+
+
 def color_plane_translation(pixel, goal, color_z, image_size, params, maximum_m, forward_m=0.):
     if (not np.isfinite(list(pixel) + list(goal) + [color_z, maximum_m, forward_m]).all() or
             color_z <= .001 or not 0 < maximum_m <= .015 or not 0 <= forward_m <= .010 or
@@ -127,6 +137,13 @@ def main():
     report = {'read_only': True, 'hardware_executed': False,
               'jaw_goal_is_image_reference_not_contact_calibration': True, 'validated': False}
     try:
+        wait_for_tf_initialization(buffer, 'base_link', 'camera_depth_optical_frame',
+            lambda: rclpy.spin_once(node, timeout_sec=.025))
+        # Discard data received during discovery. Collect a NEW associated
+        # image after the listener has received the static and dynamic chain.
+        latest.clear()
+        receipts.clear()
+        feedback.clear()
         deadline = time.monotonic() + 8
         while time.monotonic() < deadline:
             rclpy.spin_once(node, timeout_sec=.025)
@@ -166,11 +183,19 @@ def main():
         if len(values) != 2 or values[1].type != 1 or values[1].bool_value:
             raise RuntimeError('MoveIt execution must remain disabled')
         root = ET.fromstring(values[0].string_value)
+        opening = qmap.get('gripper')
+        if opening is None or not math.isfinite(opening) or not 0 <= opening <= .080:
+            raise RuntimeError('Measured physical opening unavailable')
+        finger_positions = [opening / 2., -opening / 2.]
+        for name, position in zip(['joint7', 'joint8'], finger_positions):
+            limit = root.find(f"joint[@name='{name}']/limit")
+            if limit is None or not float(limit.get('lower')) <= position <= float(limit.get('upper')):
+                raise RuntimeError('Measured opening outside loaded finger model: ' + name)
         request = GetPositionFK.Request()
         request.header.frame_id = 'base_link'
         request.fk_link_names = ['link6']
         request.robot_state.joint_state.name = NAMES + ['joint7', 'joint8']
-        request.robot_state.joint_state.position = q + [0., 0.]
+        request.robot_state.joint_state.position = q + finger_positions
         start_state = request.robot_state
         answer = call(GetPositionFK, '/compute_fk', request)
         if answer.error_code.val != 1 or not answer.pose_stamped:
@@ -180,7 +205,11 @@ def main():
         delta_depth = color_plane_translation(raw_pixel, args.goal_pixel,
             projection.point.z, args.image_size, detector, args.maximum_m, args.forward_m)
         rotation = transform.transform.rotation
-        delta_base = Rotation.from_quat([rotation.x, rotation.y, rotation.z, rotation.w]).apply(delta_depth)
+        base_rotation = Rotation.from_quat([rotation.x, rotation.y, rotation.z, rotation.w])
+        delta_base = base_rotation.apply(delta_depth)
+        translation = transform.transform.translation
+        target_base = base_rotation.apply([point.point.x, point.point.y, point.point.z]) + [
+            translation.x, translation.y, translation.z]
         motion = GetMotionPlan.Request()
         m = motion.motion_plan_request
         m.group_name = 'arm'
@@ -212,6 +241,11 @@ def main():
         constraint.orientation_constraints = [oc]
         m.goal_constraints = [constraint]
         report.update(start_q_rad=q, feedback_age_s=age_s,
+                      image_stamp_ns=stamp.nanoseconds,
+                      measured_target_camera_m=[point.point.x, point.point.y, point.point.z],
+                      measured_target_base_m=target_base.tolist(),
+                      target_frame=point.header.frame_id,
+                      measured_gripper_opening_m=qmap.get('gripper'),
                       raw_pixel=raw_pixel, goal_pixel=args.goal_pixel,
                       forward_component_requested_m=args.forward_m,
                       delta_depth_m=delta_depth.tolist(), delta_base_m=delta_base.tolist(),

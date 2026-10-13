@@ -47,6 +47,32 @@ def test_tf_wait_times_out_without_latest_fallback():
                                          lambda: None, timeout_s=.001)
 
 
+def test_listener_warmup_never_returns_a_latest_transform():
+    class StartingBuffer:
+        ready = False
+
+        def can_transform(self, target, source, stamp):
+            assert stamp.nanoseconds == 0  # discovery only, not image lookup
+            return self.ready
+
+        def lookup_transform(self, *args):
+            raise AssertionError('Warmup must not supply any planning transform')
+
+    buffer = StartingBuffer()
+    assert module.wait_for_tf_initialization(buffer, 'base', 'camera',
+        lambda: setattr(buffer, 'ready', True)) is None
+
+
+def test_listener_warmup_remains_bounded():
+    class MissingBuffer:
+        def can_transform(self, *args):
+            return False
+
+    with pytest.raises(RuntimeError, match='TF listener initialization'):
+        module.wait_for_tf_initialization(MissingBuffer(), 'base', 'camera',
+                                         lambda: None, timeout_s=.001)
+
+
 @pytest.fixture
 def params():
     return {'color_calibration_width': 640, 'color_calibration_height': 480,

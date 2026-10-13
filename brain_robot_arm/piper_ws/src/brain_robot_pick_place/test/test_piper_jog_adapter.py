@@ -4,6 +4,9 @@
 import importlib.util
 import math
 from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
 
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
@@ -103,3 +106,33 @@ def test_explicit_gripper_frame_carries_vendor_effort_in_bounded_burst():
     arm_only.position = [0.0] * 6
     assert adapter._append_pending_gripper(arm_only) is False
     assert list(arm_only.effort) == []
+
+
+@pytest.mark.parametrize('opening', [0.0, .050, .0796, .080])
+def test_actual_total_opening_maps_to_opposed_fingers(opening):
+    assert MODULE.measured_finger_positions(opening) == {
+        'joint7': opening / 2, 'joint8': -opening / 2}
+
+
+@pytest.mark.parametrize('opening', [None, -.001, .081, math.nan, math.inf])
+def test_bad_opening_is_not_zeroed_or_clamped(opening):
+    assert MODULE.measured_finger_positions(opening) is None
+
+
+def test_filtered_model_uses_same_message_measured_opening_without_arm_command():
+    adapter = make_adapter()
+    adapter.armed = False
+    adapter.targets = {}
+    adapter.last_gripper_model_warning = 0.0
+    emitted = []
+    adapter.filtered_joint_state_publisher = SimpleNamespace(publish=emitted.append)
+    adapter.command_publisher = SimpleNamespace(
+        publish=lambda _: pytest.fail('Feedback mapping must not command hardware'))
+    message = JointState()
+    message.header.stamp.sec = 123
+    message.name = adapter.joint_names + ['gripper']
+    message.position = [.01] * 6 + [.0796]
+    adapter._joint_state(message)
+    assert len(emitted) == 1
+    assert emitted[0].header.stamp.sec == 123
+    assert emitted[0].position == pytest.approx([.01] * 6 + [.0398, -.0398])

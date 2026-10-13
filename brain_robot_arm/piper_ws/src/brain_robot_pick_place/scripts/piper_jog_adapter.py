@@ -19,6 +19,13 @@ from std_srvs.srv import Trigger
 from trajectory_msgs.msg import JointTrajectory
 
 
+def measured_finger_positions(opening_m):
+    """Vendor feedback is TOTAL opening; URDF fingers move by +/- half."""
+    if opening_m is None or not math.isfinite(opening_m) or not 0.0 <= opening_m <= 0.080:
+        return None
+    return {'joint7': opening_m / 2.0, 'joint8': -opening_m / 2.0}
+
+
 class PiperJogAdapter(Node):
     def __init__(self):
         super().__init__('piper_jog_adapter')
@@ -45,12 +52,7 @@ class PiperJogAdapter(Node):
         self.declare_parameter('gripper_command_topic', '/brain_robot_grasp/gripper_command')
 
         self.joint_names = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6']
-        # The physical driver exposes one vendor-specific "gripper" value,
-        # whereas the MoveIt model contains two prismatic finger joints.  The
-        # visual-alignment path never commands the gripper, but Servo still
-        # requires a complete RobotState.  Publish its closed, passive model
-        # state so the arm's six-axis feedback remains valid for Servo.
-        self.model_only_joint_positions = {'joint7': 0.0, 'joint8': 0.0}
+        self.last_gripper_model_warning = 0.0
         self.motion_enabled = bool(self.get_parameter('motion_enabled').value)
         self.command_timeout_s = float(self.get_parameter('command_timeout_s').value)
         self.joint_state_timeout_s = float(self.get_parameter('joint_state_timeout_s').value)
@@ -138,10 +140,18 @@ class PiperJogAdapter(Node):
                 filtered.name.append(name)
                 filtered.position.append(position)
         if len(filtered.name) == len(self.joint_names):
-            for name, position in self.model_only_joint_positions.items():
-                filtered.name.append(name)
-                filtered.position.append(position)
-            self.filtered_joint_state_publisher.publish(filtered)
+            opening = next((float(message.position[index]) for index in range(count)
+                            if message.name[index] == 'gripper'), None)
+            fingers = measured_finger_positions(opening)
+            if fingers is not None:
+                for name, position in fingers.items():
+                    filtered.name.append(name)
+                    filtered.position.append(position)
+                self.filtered_joint_state_publisher.publish(filtered)
+            elif time.monotonic() - self.last_gripper_model_warning > 5.0:
+                self.last_gripper_model_warning = time.monotonic()
+                self.get_logger().warn(
+                    'No valid measured gripper opening; not publishing a fabricated finger state.')
         self.last_state_time = time.monotonic()
         if not self.armed:
             self.targets.update(self.positions)

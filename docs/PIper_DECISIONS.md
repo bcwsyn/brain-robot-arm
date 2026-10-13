@@ -1,3 +1,9 @@
+### 2026-10-13：使用真实总开口的半行程映射，不再补零指状态
+
+- 用户确认当前姿态继续方案；完全张爪沿用80mm，不新增按方块尺寸调开口。adapter输入是vendor总开口米值，模型joint7=opening/2、joint8=-opening/2，保留同一消息时间戳。无有效开口不伪造闭合或截断开口；这不是新的六轴运动门。
+- 旧供应商URDF仅±35mm，实际79.6mm开口已验证；仅本任务launch加载描述两指范围同步为±40mm，各模型消费者共用，不改vendor源码/网格/六轴/相机外参/TCP。官方依据：[当前README](https://github.com/agilexrobotics/piper_ros)（80mm总行程/40mm半行程），[旧MoveIt说明](https://github.com/agilexrobotics/piper_ros/blob/noetic/src/piper_moveit/README.md)（70mm旧模型）。官方资料不构成当前接触区已标定的证据。
+- 新分析器先等待TF初始化、再取新图，严格原stamp才用于规划；初始化latest不进入目标变换或运动。1cm样段先规划、再核对实际新图与反馈，不把85mm模型残差直接转换成实体长段。
+
 ### 2026-10-13 10:46：完整视野已恢复，结束J5增量并转真实夹持区核对
 
 - 第三段后原RGB目标不再被图像边缘裁切，J5实际51.606509°，target/depth_valid均true；停止继续增J5。局部夹指遮挡和偏左仍存在，有效深度不等于实体捕获到位，尚未闭爪。
