@@ -1,6 +1,6 @@
 ## 最新接续（2026-10-14，质量驱动已实现/84回归及真实帧回放通过；尚未部署或新实体运动）
 
-授权86a231e已落实于原cup_detector_node/原grasp_lift_executor：同戳合格点/尺寸/质量快照→最近三帧可靠世界模型→局部支撑下降或合格深度不可用时冻结最后真实模型，继续原同步转向靠近/RGB纠偏，不以固定20/23cm为前提。保持真实测量戳/相机位移与原TF/落点/MoveIt/adapter/反馈/最终闭爪。84针对性测试通过；隔离78重放实际227→255mm空洞，1811→36支撑、coverage.393→.013/span.821→.012，9空洞观测均请求切换，无实体命令。详情、SHA、命令和初次工具假失败见docs/evidence/piper_quality_depth_stage_20261014.md。
+授权86a231e已在361cb55落实于原cup_detector_node/原grasp_lift_executor：同戳合格点/尺寸/质量快照→最近三帧可靠世界模型→局部支撑下降或合格深度不可用时冻结最后真实模型，继续原同步转向靠近/RGB纠偏，不以固定20/23cm为前提。保持真实测量戳/相机位移与原TF/落点/MoveIt/adapter/反馈/最终闭爪。84针对性测试通过；隔离78重放实际227→255mm空洞，1811→36支撑、coverage.393→.013/span.821→.012，9空洞观测均请求切换，无实体命令。详情、SHA、命令和初次工具假失败见docs/evidence/piper_quality_depth_stage_20261014.md。
 
 候选executor27f8b25…/detector27f9059…；实际仍198f2a5 fd0d086…/detector4d5e9ac…，唯一入口87039b…不改。无活动控制栈。下一步备份并同步双实际binary和原source/header/package/CMake，核对SHA，最小新鲜反馈后用原AUTO1视觉实测quality_stage_onekey，验证质量切换后确实进入同步末段，再实际夹持/闭爪抬升/原释放安全返回；离线通过不冒称抓取完成。不动既有wiring注释/vendor/reference，Git只本地提交，历史推送审查保持。
 
