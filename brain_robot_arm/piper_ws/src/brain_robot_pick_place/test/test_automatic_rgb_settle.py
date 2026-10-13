@@ -53,3 +53,18 @@ def test_automatic_angle_comparison_ignores_observed_solver_roundoff_only():
     assert observed > limit
     assert observed <= limit + 1e-6
     assert limit + 2e-6 > limit + 1e-6
+
+
+def test_rgb_correction_reuses_observation_snapshot_across_tf_wait():
+    source = SOURCE.read_text()
+    observe = source[source.index('  bool ObserveLockedTarget('):
+                     source.index('  bool ReadVisualBox(')]
+    assert observe.index('*observed_box = message') < observe.index('lookupTransform(')
+    assert '*observed_info = info' in observe
+    assert '*observed_calibration = calibration' in observe
+    correction = source[source.index('  bool LockedRgbCorrection('):
+                        source.index('  void AutomaticRgbApproach(')]
+    assert 'ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c)' in correction
+    assert 'box = qualified_box_message_' not in correction
+    assert 'info = raw_image_info_' not in correction
+    assert 'rclcpp::Time(box.header.stamp) != image_time' in correction

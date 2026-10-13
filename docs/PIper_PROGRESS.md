@@ -1,3 +1,10 @@
+### 2026-10-13 14:09–14:11：朝向修复后11段运动；已获准消除纠偏同帧双读竞态
+
+- 0f283ce实际cmake目标构建rc0，新执行器只重载一次；原软件arm/首个有效帧resume成功。1791871780–1794共发布11段轨迹，16号循环/路点6已实际停稳，原微小朝向误拒绝未重现。1791871795.929发生FAULT_AUTOMATIC_RGB_LOCKED_OBSERVATION_UNAVAILABLE，不是之前POSE_STEP_BOUND_REJECTED。真实q[-.297612084,1.059443896,-.717785712,.014670404,.543624816,.01203636]、开口99.6mm、RGB0032方块完整/深度.281m、反馈连续，仍未闭爪。
+- 该次没有NEAR_RGB_REJECTED原因输出。代码发现LockedRgbCorrection先Observe（可等精确TF .3s），随后再次读取持续更新的qualified_box_message_，要求第二次stamp仍等于第一帧；相机每.2s一帧，等待后新帧到达会无日志return false。存在确定代码竞态，但本次未捕获两次stamp，不能把它写成实测已逐项确认的唯一原因。
+- 用户同意同帧修复并续测。Observe新增可选输出，在原visual_mutex一次捕获box/info/calibration并传给纠偏；纠偏不再二次读取回调字段，仍使用该原图精确stamp查TF、原对象/步长/闭爪规则。旧三参数调用仍有效。规范/实际源码同补丁SHA256 0962d94e4247371785da3e261d03e1e9e55527e35b3106ef7a178e8e58b83683；源绑定回归新增同帧检查，实际cmake目标构建进行中，日志runtime_rgb_snapshot_fix_build.txt。
+- 已software disarm/原controller STOPPED，实体姿态/使能/全开保持；下一步仅重载grasp并原当前姿态接续，验证连续靠近至最终捕获/闭爪。证据retry_roundoff_fix/observer.jsonl与runtime/grasp_roundoff_fix.txt；不重启CAN/硬件，不重走观测；总目标未完成、Git仅本地。
+
 ### 2026-10-13 14:06：用户同意忽略微小朝向数值误差，立即推进原靠近/闭爪
 
 - 用户同意仅朝向数值余量，并要求不再斤斤计较这些现实难免的微小误差。只将自动段计划FK朝向比较改为 angle_limit+1e-6rad（completed非空）；原1°目标、8mm位移、全部关节/反馈/最终夹持/闭爪判定不改，独立预览仍原精度。规范与实际源码同一补丁，非新保护/运动策略。

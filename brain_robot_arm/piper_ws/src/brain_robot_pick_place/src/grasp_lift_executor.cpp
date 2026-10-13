@@ -1375,7 +1375,10 @@ private:
 
   bool ObserveLockedTarget(
     geometry_msgs::msg::PointStamped & reference, rclcpp::Time & image_time,
-    bool & predicted)
+    bool & predicted,
+    geometry_msgs::msg::PolygonStamped * observed_box = nullptr,
+    sensor_msgs::msg::CameraInfo * observed_info = nullptr,
+    near_depth::Calibration * observed_calibration = nullptr)
   {
     predicted = false;
     if (!near_depth_rgb_tracking_enabled_ || !static_target_lock_ ||
@@ -1389,6 +1392,9 @@ private:
       if (!near_calibration_ready_) {return false;}
       message = qualified_box_message_; info = raw_image_info_;
       received = qualified_box_received_; calibration = near_calibration_;
+      if (observed_box) {*observed_box = message;}
+      if (observed_info) {*observed_info = info;}
+      if (observed_calibration) {*observed_calibration = calibration;}
     }
     const auto steady = std::chrono::steady_clock::now();
     const auto reject = [this](const char * reason) {
@@ -1810,21 +1816,19 @@ private:
     geometry_msgs::msg::PointStamped locked;
     rclcpp::Time image_time(0, 0, get_clock()->get_clock_type());
     bool predicted = false;
-    if (!ObserveLockedTarget(locked, image_time, predicted)) {return false;}
+    near_depth::Calibration c;
+    geometry_msgs::msg::PolygonStamped box;
+    sensor_msgs::msg::CameraInfo info;
+    if (!ObserveLockedTarget(locked, image_time, predicted, &box, &info, &c)) {return false;}
     if (near_rgb_association_bad_frames_seen_ != 0) {
       // Preserve the existing bounded outlier tolerance while advancing the
       // original lock. Suspect depth must never generate an RGB correction.
       correction.setZero(); return true;
     }
-    near_depth::Calibration c;
-    geometry_msgs::msg::PolygonStamped box;
-    sensor_msgs::msg::CameraInfo info;
-    {
-      std::lock_guard<std::mutex> lock(visual_mutex_);
-      c = near_calibration_; box = qualified_box_message_; info = raw_image_info_;
-    }
     if (box.polygon.points.size() != 4 ||
-      rclcpp::Time(box.header.stamp) != image_time) {return false;}
+      rclcpp::Time(box.header.stamp) != image_time) {
+      PublishDiagnostic("LOCKED_RGB_SNAPSHOT_INVALID"); return false;
+    }
     try {
       const auto t = tf_buffer_->lookupTransform(camera_optical_frame_,
         lift_reference_frame_, image_time, rclcpp::Duration::from_seconds(.3));
