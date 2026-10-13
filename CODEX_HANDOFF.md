@@ -1,4 +1,14 @@
-## 最新接续（2026-10-13，用户批准同图TF有限重试/具体异常；构建/50项通过，待原入口部署实测）
+## 最新接续（2026-10-13，1de994f已部署/原实测至66-89；TF旧失败未复现，下一段fraction .5/J3范围线索，未抓取）
+
+局部TF有限等待/诊断50项通过、commit1de994f部署原CPP/binary（827923fc5a19c6b08b6e11ea107b07859e421440011e1f54e978899b2d62f338，CPP35227cb9b7bc02781517661bc400a5d6966cac0f19ec40bcc23b9dc882e1df09），保留旧ea67b83为tf_wait_previous_ea67b83.bin；原入口87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0不改。TF首次300ms+两50ms严格同图重试与ea67b83尺度advisory都保持，未改外参/锁点/轨迹/限位/最终夹持。
+
+原AUTO1完整PREPARE5284.769(34.1秒)→SEARCH5318.409→ALIGN5333.641→GRASP_READY5336.643，76+13路点；实际41段accepted/41条feedback确认消息到66-89，loop107下一pose(.356857981294,-.116217684731,.255850261273)/qxyzw(.142500640034,.973832380585,-.028854231209,.174675400261)路径fraction.5/error1，未发布该段、未最终下降/闭爪。TF失败本次没有复现，但WAIT/RECOVERED和尺度advisory均0，不能声称实体迟到恢复或尺度续调分支已验收。下一不要重复旧TF/CAN原因。
+
+精确PLAN_START与离线IK见docs/evidence/piper_cartesian_step107_20261013.md。归档URDF原范围卡J3=-1.4/带margin=-1.395；归档范围邻近精确IK需J3=-1.40791898，支持指定6D姿态与task范围冲突，不是全局无解/碰撞排除或新硬件限位授权。没有执行离线解/放宽限位。下一优先原MoveIt姿态容差内找可达末段朝向，代码改变前仍先用户确认。第一条rg -n 'AUTOMATIC_RGB_STEP_107' /home/johnwick/brain_robot_logs/view_guard_20261013/tf_wait_onekey/visual_stack.log，结合该小证据而非重跑底层。
+
+原主rc143/cleanup完成无Disable/Reset/自动零点；两采集INT各0、无本轮运动栈/采集，不自动续跑。最终SDK5746.997/200Hz/high5746.993100Hz、6使能true，q[-.313408774,1.763515583,-1.368163601,0,.890065559,-.020699605]rad/J5约51°，ROS99.6mm全开。CANRX10799245/error0，无需重启。0030/0068三图已看完整方块十字下方/未夹持，末debug215mm/3013样本；0180墙钟5741只是5400图与5401反馈缓存，勿冒充新视野。root88%9.2GB固定清理0无ENOSPC，证据tf_wait_onekey_console/onekey、exact/live及ik_comparison，图/binary不提交。用户改动保留，Git仅本地未推送、原remote历史审查阻断保持。
+
+## 历史接续（2026-10-13，用户批准同图TF有限重试/具体异常；构建/50项通过，待原入口部署实测）
 
 基线262f51a，用户确认解释后的短暂等待/重试。原ObserveLockedTarget中仅自动bounded分支：保留300ms首次查询，最多再两次50ms等待/0秒严格同图stamp重查，打印frames/image_stamp/attempt/age/elapsed/error；恢复明确RECOVERED，持续失败仍拒绝。原图/框/raw快照与seed/base不变，无latestTF替代，等待后复核原0.6秒图像/六轴反馈完整性。初始/预览/最终闭爪不自动扩等待，ea67b83尺度诊断修复继续保留。
 
