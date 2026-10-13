@@ -1,0 +1,164 @@
+{
+  "model": "models/cup_yolov8n_seg_v2.pt",
+  "model_sha256": "8f7afc15dd047edabc3fc0459e539e11220b19adbcc28c2da955aa07043cbeef",
+  "scope": "five synthetic held-out views of the user specimen; no real-camera claim",
+  "diameter_truth_is_not_an_estimator_input": true,
+  "records": [
+    {
+      "view": "view1",
+      "cup_instances": 1,
+      "inference_s": 0.04236971000136691,
+      "mask_iou": 0.9606795691391541,
+      "geometry": {
+        "diameter_m": 0.07487849801715882,
+        "sigma_m": 0.001,
+        "support_count": 2657,
+        "residual_p90_m": 3.7562828150714e-05,
+        "observed_height_m": 0.20052091856963883,
+        "grasp_height_m": 0.11028650521330137,
+        "preopening_m": 0.08287849801715882,
+        "world_target": [
+          0.3996058638448403,
+          0.0007037210485982216,
+          0.11028650521330137
+        ],
+        "camera_target": [
+          -0.0007829566131817289,
+          0.00931807466941241,
+          0.45750277294203995
+        ],
+        "pixel": [
+          319.55146503689036,
+          251.78864545493343
+        ]
+      },
+      "body_diameter_error_m": -0.00012150198284117952,
+      "height_error_m": 0.0005209185696388174
+    },
+    {
+      "view": "view2",
+      "cup_instances": 1,
+      "inference_s": 0.0468326549998892,
+      "mask_iou": 0.9765090692833779,
+      "geometry": {
+        "diameter_m": 0.07486879688171326,
+        "sigma_m": 0.001,
+        "support_count": 3411,
+        "residual_p90_m": 3.7878673943690655e-05,
+        "observed_height_m": 0.20054117686920997,
+        "grasp_height_m": 0.11029764727806549,
+        "preopening_m": 0.08286879688171327,
+        "world_target": [
+          0.4002549227535898,
+          0.0006616053629955714,
+          0.11029764727806549
+        ],
+        "camera_target": [
+          -0.0006616053629955714,
+          0.008718055530810537,
+          0.38910332167721823
+        ],
+        "pixel": [
+          319.55758225199185,
+          252.91835498907776
+        ]
+      },
+      "body_diameter_error_m": -0.00013120311828673792,
+      "height_error_m": 0.0005411768692099583
+    },
+    {
+      "view": "view3",
+      "cup_instances": 1,
+      "inference_s": 0.06858271500095725,
+      "mask_iou": 0.9747077500360802,
+      "geometry": {
+        "diameter_m": 0.07487608376114374,
+        "sigma_m": 0.001,
+        "support_count": 3269,
+        "residual_p90_m": 3.948449033359253e-05,
+        "observed_height_m": 0.20035238294021654,
+        "grasp_height_m": 0.11019381061711911,
+        "preopening_m": 0.08287608376114375,
+        "world_target": [
+          0.4005951108640682,
+          0.0004152110251384128,
+          0.11019381061711911
+        ],
+        "camera_target": [
+          -0.0006999546362820575,
+          0.009317402908740599,
+          0.41159729157473246
+        ],
+        "pixel": [
+          319.5574448648676,
+          253.0467644651647
+        ]
+      },
+      "body_diameter_error_m": -0.0001239162388562559,
+      "height_error_m": 0.00035238294021652794
+    },
+    {
+      "view": "view4",
+      "cup_instances": 1,
+      "inference_s": 0.020738610000989866,
+      "mask_iou": 0.9738486288301096,
+      "geometry": {
+        "diameter_m": 0.07486271951235152,
+        "sigma_m": 0.001,
+        "support_count": 2714,
+        "residual_p90_m": 3.892899895200505e-05,
+        "observed_height_m": 0.20051522232220673,
+        "grasp_height_m": 0.11028337227721371,
+        "preopening_m": 0.08286271951235152,
+        "world_target": [
+          0.3993744109177911,
+          0.0004770820595439025,
+          0.11028337227721371
+        ],
+        "camera_target": [
+          -0.0006917399813926514,
+          0.007705273909690669,
+          0.4031719291263197
+        ],
+        "pixel": [
+          319.5490406149996,
+          251.0927121975326
+        ]
+      },
+      "body_diameter_error_m": -0.00013728048764848066,
+      "height_error_m": 0.0005152223222067154
+    },
+    {
+      "view": "view5",
+      "cup_instances": 1,
+      "inference_s": 0.020833438000408933,
+      "mask_iou": 0.9677878988346649,
+      "geometry": {
+        "diameter_m": 0.07486385766421519,
+        "sigma_m": 0.001,
+        "support_count": 1647,
+        "residual_p90_m": 4.1000787678724404e-05,
+        "observed_height_m": 0.20046016437429612,
+        "grasp_height_m": 0.11025309040586287,
+        "preopening_m": 0.0828638576642152,
+        "world_target": [
+          0.40041467821719,
+          0.0008572509054348945,
+          0.11025309040586287
+        ],
+        "camera_target": [
+          -0.0007710048818746346,
+          0.005940093200789587,
+          0.4434083165123467
+        ],
+        "pixel": [
+          319.5362538166367,
+          247.92504008167114
+        ]
+      },
+      "body_diameter_error_m": -0.0001361423357848085,
+      "height_error_m": 0.000460164374296107
+    }
+  ],
+  "successful_sizing": 5
+}
