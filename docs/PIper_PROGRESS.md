@@ -1,3 +1,11 @@
+### 2026-10-13：用户批准同指尖可达朝向重规划，53项通过；待部署原入口实测
+
+- 用户明确同意局部修改并实测：原自动靠近完整朝向规划失败时，保持同一指尖目标位置，依次尝试75%/50%/25%朝目标转角。唯一总目标/实体成功条件已写入CODEX_TASK_PROMPT；不是取消闭爪判定、放宽J3或执行原fraction .5半段路径授权。
+- 原ExecuteVisualPose发布前增加有限候选；各自完整调用原PlanArmCartesianFromState及RealTrajectoryWithinLimits，成功候选仍走原FK步长、起点反馈、adapter、到位/停稳核验。仅AUTOMATIC_RGB_STEP且自动段允许；预览/最终夹持不豁免，已发布/执行失败不重试。将实际选中目标交回原落点判断，避免用失败的完整朝向继续比较。原8mm/1°、锁点、TF/TCP、任务范围、YAML/入口/闭爪保持。
+- 规范构建grasp_lift_executor与near_depth_executor_test rc0；域78原方法22/22（2359ms），新3项验证各候选指尖相同/仍向目标转、无效参数拒绝、仅自动阶段作用。原尺度15、几何13、wiring3合计53通过。没有物理轨迹输出，几何测试不证明真实候选可达。日志view_guard_20261013/attitude_{build,executor_tests,policy_tests,geometry_tests}.txt。
+- 新binary SHA2b309aa302157ccd43f4c080f724c0e70d1ab1384c79a35142cec39cb3b00343，CPP64054b75855799a8755e73b1ddec51c73b7707d17fc3f8463cf5950dbc6f1e1e；实际仍旧1de994f/827923fc…待部署，入口87039b…未改。原进程检查无控制栈，root89%/8.8GB仅既有clean_disk_space.sh rc0，无扩删/ENOSPC。下一无活动grasp时备份1de994f、部署原同源执行器，SDK新读起点/使能并原AUTO1采新三图/候选完整规划及真实反馈，优先验证能否越过末段旧限制点，未完成抓取不得称成功。
+- ROS2/手术式技能约束本轮最小原组件改动，用户原wiring注释/vendor/reference不纳入；仅本地Git，既有远程历史审查阻断保持，不刷写/Reset/MasterSlave/直接失能。
+
 ### 2026-10-13：1de994f已部署实测至66-89；原TF失败未复现，下一精确笛卡尔段fraction .5，离线邻近解受J3原范围限制
 
 - 用户批准局部TF等待，50项通过后提交1de994f。无活动grasp时保留旧ea67b83 binary为view_guard_20261013/tf_wait_previous_ea67b83.bin(SHA91ce055fdb875353e0f1c8a29865a153b606496a0cc5619fe3fbcd844a45e485)，只部署原CPP/同源binary；新binary827923fc5a19c6b08b6e11ea107b07859e421440011e1f54e978899b2d62f338、CPP35227cb9b7bc02781517661bc400a5d6966cac0f19ec40bcc23b9dc882e1df09规范/runtime一致，原install symlink与入口87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0不改。

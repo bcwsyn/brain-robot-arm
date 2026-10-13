@@ -66,6 +66,13 @@ struct NearDepthReplayAccess
   static bool Correction(GraspLiftExecutor & n, Eigen::Vector3d & delta) {
     return n.LockedRgbCorrection(delta);
   }
+  static auto ReducedAttitude(const geometry_msgs::msg::PoseStamped & p,
+    const Eigen::Isometry3d & current, double fraction) {
+    return GraspLiftExecutor::ReducedVisualOrientationAtSameTip(p, current, .1358, fraction);
+  }
+  static bool RetryAttitude(GraspLiftExecutor & n, const std::string & stage, bool segment) {
+    return n.CanRetryVisualOrientation(stage, segment);
+  }
   static auto DelayedCamera(GraspLiftExecutor & n, bool old_only = false) {
     n.camera_optical_frame_ = "delayed_camera_fixture";
     geometry_msgs::msg::TransformStamped t;
@@ -324,6 +331,53 @@ TEST_F(NearDepthExecutor, FeedbackAgingDuringExactTfWaitStillBlocksCorrection)
   arrival.join();
   EXPECT_FALSE(accepted);
   EXPECT_FALSE(NearDepthReplayAccess::DepthFlag(*node));
+}
+
+TEST_F(NearDepthExecutor, ReducedVisualAttitudesPreserveTipAndKeepTurningTowardTarget)
+{
+  Eigen::Isometry3d current = Eigen::Isometry3d::Identity();
+  current.translation() = Eigen::Vector3d(.35, -.12, .26);
+  geometry_msgs::msg::PoseStamped target;
+  target.header.frame_id = "base_link"; target.header.stamp = node->now();
+  target.pose.position.x = .356; target.pose.position.y = -.116; target.pose.position.z = .255;
+  const Eigen::Quaterniond desired(Eigen::AngleAxisd(.01745329252, Eigen::Vector3d::UnitY()));
+  target.pose.orientation.x = desired.x(); target.pose.orientation.y = desired.y();
+  target.pose.orientation.z = desired.z(); target.pose.orientation.w = desired.w();
+  const Eigen::Vector3d local_tip(0, 0, .1358);
+  const Eigen::Vector3d tip = Eigen::Vector3d(.356, -.116, .255) + desired * local_tip;
+  for (double fraction : {.75, .50, .25}) {
+    const auto p = NearDepthReplayAccess::ReducedAttitude(target, current, fraction);
+    const Eigen::Quaterniond q(p.pose.orientation.w, p.pose.orientation.x,
+      p.pose.orientation.y, p.pose.orientation.z);
+    const Eigen::Vector3d point(p.pose.position.x, p.pose.position.y, p.pose.position.z);
+    EXPECT_LT((point + q * local_tip - tip).norm(), 1e-12);
+    EXPECT_NEAR(Eigen::Quaterniond(current.rotation()).angularDistance(q),
+      fraction * .01745329252, 1e-12);
+    EXPECT_GT(Eigen::Quaterniond(current.rotation()).angularDistance(q), 0);
+    EXPECT_EQ(p.header.frame_id, target.header.frame_id);
+    EXPECT_EQ(p.header.stamp, target.header.stamp);
+  }
+}
+
+TEST_F(NearDepthExecutor, ReducedVisualAttitudeRejectsZeroFractionAndInvalidQuaternion)
+{
+  geometry_msgs::msg::PoseStamped p;
+  p.pose.orientation.w = 1;
+  const auto current = Eigen::Isometry3d::Identity();
+  EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, 0), std::invalid_argument);
+  EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, 1), std::invalid_argument);
+  p.pose.orientation.w = 0;
+  EXPECT_THROW(NearDepthReplayAccess::ReducedAttitude(p, current, .5), std::invalid_argument);
+}
+
+TEST_F(NearDepthExecutor, ReducedAttitudeRetryIsOnlyAutomaticApproachPlanning)
+{
+  EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "AUTOMATIC_RGB_STEP_107", true));
+  NearDepthReplayAccess::Automatic(*node);
+  EXPECT_TRUE(NearDepthReplayAccess::RetryAttitude(*node, "AUTOMATIC_RGB_STEP_107", true));
+  EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "AUTOMATIC_RGB_STEP_107", false));
+  EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "VISUAL_PREVIEW", true));
+  EXPECT_FALSE(NearDepthReplayAccess::RetryAttitude(*node, "TARGET_DIRECTED_DESCENT", true));
 }
 
 TEST_F(NearDepthExecutor, ChangingSilhouetteCentreDoesNotRelockOrStopSurfacePointInsideCube)

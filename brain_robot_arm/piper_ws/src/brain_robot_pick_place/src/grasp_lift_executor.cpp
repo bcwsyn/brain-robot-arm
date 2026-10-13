@@ -1832,11 +1832,42 @@ private:
     } catch (const tf2::TransformException &) {return false;}
   }
 
+  static geometry_msgs::msg::PoseStamped ReducedVisualOrientationAtSameTip(
+    const geometry_msgs::msg::PoseStamped & target, const Eigen::Isometry3d & current,
+    double tip_offset, double fraction)
+  {
+    const Eigen::Quaterniond desired(target.pose.orientation.w, target.pose.orientation.x,
+      target.pose.orientation.y, target.pose.orientation.z);
+    const Eigen::Vector3d origin(target.pose.position.x, target.pose.position.y, target.pose.position.z);
+    if (!std::isfinite(fraction) || fraction <= 0 || fraction >= 1 ||
+      !std::isfinite(tip_offset) || tip_offset <= 0 || !origin.allFinite() ||
+      !desired.coeffs().allFinite() || desired.norm() < 1e-12 || !current.matrix().allFinite())
+    {throw std::invalid_argument("Invalid reduced visual attitude");}
+    const Eigen::Vector3d local_tip(0, 0, tip_offset);
+    const Eigen::Vector3d fixed_tip = origin + desired.normalized() * local_tip;
+    const auto orientation = Eigen::Quaterniond(current.rotation()).slerp(
+      fraction, desired.normalized()).normalized();
+    const Eigen::Vector3d reduced_origin = fixed_tip - orientation * local_tip;
+    auto result = target;
+    result.pose.position.x = reduced_origin.x(); result.pose.position.y = reduced_origin.y();
+    result.pose.position.z = reduced_origin.z();
+    result.pose.orientation.x = orientation.x(); result.pose.orientation.y = orientation.y();
+    result.pose.orientation.z = orientation.z(); result.pose.orientation.w = orientation.w();
+    return result;
+  }
+
+  bool CanRetryVisualOrientation(const std::string & stage, bool automatic_segment) const
+  {
+    return automatic_rgb_approach_enabled_ && automatic_segment &&
+           stage.rfind("AUTOMATIC_RGB_STEP_", 0) == 0;
+  }
+
   bool ExecuteVisualPose(
     const geometry_msgs::msg::PoseStamped & target,
     const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage,
     double tip_limit = .005, double angle_limit = .017453293,
-    trajectory_msgs::msg::JointTrajectory * completed = nullptr)
+    trajectory_msgs::msg::JointTrajectory * completed = nullptr,
+    geometry_msgs::msg::PoseStamped * selected_goal = nullptr)
   {
     moveit_msgs::msg::RobotTrajectory plan;
     // Analysis topic only: expose the EXACT requested pose before planning.
@@ -1847,11 +1878,39 @@ private:
       stage.c_str(), target.header.frame_id.c_str(), target.pose.position.x,
       target.pose.position.y, target.pose.position.z, target.pose.orientation.x,
       target.pose.orientation.y, target.pose.orientation.z, target.pose.orientation.w);
-    if (!PlanArmCartesianFromState(target, stage, state, plan)) {return false;}
+    auto planned_goal = target;
+    bool planned = PlanArmCartesianFromState(target, stage, state, plan);
     std::string rejection;
-    if (!RealTrajectoryWithinLimits(plan.joint_trajectory, rejection)) {
-      PublishDiagnostic(stage + ":" + rejection); return false;
+    if (planned && !RealTrajectoryWithinLimits(plan.joint_trajectory, rejection)) {
+      PublishDiagnostic(stage + ":" + rejection); planned = false;
     }
+    if (!planned && CanRetryVisualOrientation(stage, completed != nullptr)) {
+      const Eigen::Isometry3d current = state->getGlobalLinkTransform(target.header.frame_id).inverse() *
+        state->getGlobalLinkTransform(end_effector_link_);
+      for (const double fraction : {.75, .50, .25}) {
+        const auto candidate = ReducedVisualOrientationAtSameTip(
+          target, current, gripper_tip_offset_m_, fraction);
+        const auto candidate_stage = stage + "_ORIENTATION_" +
+          std::to_string(static_cast<int>(fraction * 100));
+        target_pose_publisher_->publish(candidate);
+        RCLCPP_INFO(get_logger(),
+          "%s POSE_REQUEST frame=%s xyz=(%.12f,%.12f,%.12f) "
+          "q=(%.12f,%.12f,%.12f,%.12f) SAME_TIP_REPLAN_NO_PARTIAL_EXECUTION",
+          candidate_stage.c_str(), candidate.header.frame_id.c_str(), candidate.pose.position.x,
+          candidate.pose.position.y, candidate.pose.position.z, candidate.pose.orientation.x,
+          candidate.pose.orientation.y, candidate.pose.orientation.z, candidate.pose.orientation.w);
+        moveit_msgs::msg::RobotTrajectory candidate_plan;
+        if (!PlanArmCartesianFromState(candidate, candidate_stage, state, candidate_plan)) {continue;}
+        if (!RealTrajectoryWithinLimits(candidate_plan.joint_trajectory, rejection)) {
+          PublishDiagnostic(candidate_stage + ":" + rejection); continue;
+        }
+        plan = std::move(candidate_plan); planned_goal = candidate; planned = true;
+        RCLCPP_INFO(get_logger(), "%s REACHABLE_VISUAL_ATTITUDE fraction=%.2f "
+          "SAME_TIP_FULL_PATH_ORIGINAL_LIMITS", stage.c_str(), fraction);
+        break;
+      }
+    }
+    if (!planned) {return false;}
     const auto start_pose = state->getGlobalLinkTransform(end_effector_link_);
     const Eigen::Vector3d local_tip(0, 0, gripper_tip_offset_m_);
     std::size_t accepted_points = 0;
@@ -1902,6 +1961,7 @@ private:
         PublishDiagnostic(stage + "_START_FEEDBACK_CHANGED"); return false;
       }
     }
+    if (selected_goal) {*selected_goal = planned_goal;}
     if (!ExecuteArmTrajectory(plan.joint_trajectory)) {return false;}
     const auto & end = plan.joint_trajectory.points.back();
     const auto deadline = std::chrono::steady_clock::now() +
@@ -2265,7 +2325,7 @@ private:
         view.box.right, view.box.bottom, gaze ? "true" : "false", recovery ? "true" : "false");
       near_last_command_image_stamp_ns_ = view.valid ? view.stamp_ns : near_last_image_stamp_ns_;
       if (!ExecuteVisualPose(last_goal, state, "AUTOMATIC_RGB_STEP_" + std::to_string(step),
-        approach_microstep_m_, angle_limit, &last_trajectory)) {
+        approach_microstep_m_, angle_limit, &last_trajectory, &last_goal)) {
         Fail("AUTOMATIC_RGB_STEP_EXECUTION_FAILED"); return;
       }
     }
