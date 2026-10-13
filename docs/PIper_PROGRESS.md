@@ -1,3 +1,14 @@
+### 2026-10-13 17:27–17:45：7b769fd实测48段至67/90；高度停滞定位到视野姿态重规划，尚未最终下降
+
+- 本轮延续用户已批准的超补偿续调改动，部署7b769fd后只替换原grasp节点为3778087（同原params/remap）；driver3672131/controller3672604不重启，不改YAML/相机TF/关节限位。原enable_motion/arm/start服务成功，自动当前→观测→OBSERVE_POSE_REACHED/SEARCH(1791883691.824)→ALIGN(3704.075)→GRASP_READY(3707.154)。新冻结surface=(.4335,-.1276,.0883)m，初始完整路径预检成功：pre_waypoints=77、descent_waypoints=13，总90。原执行日志计数48个Real arm trajectory endpoint，跨过上一轮54/89数值误停位置。
+- 实体视野保持本轮实际触发gaze=true，末段loop107–115、cursor66–67持续修改姿态；并非上轮gaze始终false。loop115/waypoint67、同帧完整框(.331,.675,.453,.850)、纠偏约9.4mm时，MoveIt computeCartesianPath返回fraction=0.000，执行器停止AUTOMATIC_RGB_STEP_EXECUTION_FAILED。失败段没有发布，没有进入AUTOMATIC_RGB_DESCENT、闭爪、抬升。不存在本轮补偿幅度拒绝或2纳米比较拒绝。
+- 用户问高度为何降不下去。只读复用review_jaw_scene.py::poses与实际保存move_group.urdf，从compensation_live/observer.jsonl真实joint_states_feedback计算模型指尖（gripper_base+[0,0,.1358]）：GRASP_READY附近3706.616的base Z=.200841m；3745.681为.145142；3754.759为.132254；3784.745停点为.129815m。即总体下降约71mm，但最后阶段只下降约2.44mm，确有高度进展停滞。此为模型FK相对base高度，不能冒充实体指尖距桌面的尺量，也不证明安装TF已经标定。
+- 源码原因区分：GuardApproachView调用AimCameraAtFixedTip，保持该名义模型指尖、改变相机/工具姿态；AutomaticRgbApproach还要求位置与姿态均进入容差才能推进cursor。故为维持视野，J2/J3可补偿J5变化，不能用J5增大独自断言实体必下探。最新q=[-.292535880,1.754377968,-1.377570124,0,.933428440,0]rad，J5≈53.48°，已实际增大；J3距adapter软件下限-1.4仅.02243rad（约1.29°），但不能因此断定本次MoveIt失败就是adapter限位：此失败发生在规划阶段，保存URDF的J3下限是-2.967rad。未擅自放宽任何限位。
+- 只读ROS check_state_validity 当前反馈返回valid=True、contacts=[]（height_state_readonly节点，rc0）。当前姿态无碰撞，不代表失败的下一路径所有中间姿态无碰撞；真实失败日志只输出fraction，没有具体IK/途中碰撞原因。两次含Cartesian对照的受限只读诊断未取得结果，timeout -k 2s 25s以rc137终止（首个打印当前q/URDF限位，后一个无规划结果）；不能据此宣称5mm下降不可行或硬件故障，不继续重复短超时实验。本轮解释阶段没有新运动/应用代码改动。
+- 图像必查：已实际查看compensation_live/evidence/0059_{rgb,debug,depth}.png，关联snapshot epoch1791883784.745/q stamp3784.707。RGB方块完整、位于画面左中下方，两指黑色结构在左右下缘，尚无两指包围/夹持证明；debug框完整、目标在IMAGE CENTER下方，depth=.219m、samples3958、MAD≈0、size约.034×.039m。原深度可视化全黑/极暗，不等于原生深度值全零（debug本帧有数千有效样本）。冻结base Z=.0883与停止后测量投影base Z约.0231存在差异，需区分可见表面/坐标模型/观测来源，尚不能断言方块或桌面移动。
+- 软件收尾 /visual_search_controller/stop和/piper_jog_adapter/disarm均success=True（exec session24751，rc0），命令输出保持反馈；未DisableArm、未ResetPiper、未硬件失能。保持99.6mm全开/电机使能，没有自动续跑。当前阻断是视野保持后下一Cartesian步不可行、预抓取cursor未结束；下一应在原执行器精确保存失败目标位姿并只读区分IK/路径碰撞，以及核对视野姿态调整是否反复阻碍位置推进。新增诊断代码/控制修改先说明范围并取得同意；不强制J5、不改TCP/TF、不重复CAN基线，不以此宣称抓取完成。
+- 证据：/home/johnwick/brain_robot_logs/view_guard_20261013/compensation_runtime.txt、compensation_live/observer.jsonl及0059三图；对应MoveIt日志 /home/johnwick/brain_robot_logs/open_approach_close_20261013/runtime/ros/move_group_3672596_1791870400883.log（3764.8487仅1个起点/0%）。已有49项回归与构建保持通过，本轮新增验证为真实48段运动、FK趋势和当前无碰撞。Git仅提交本轮三份文档；保留原测试注释/vendor/reference改动，origin/main远程历史审查阻断未解除，仅本地提交不再尝试推送。
+
 ### 2026-10-13 17:08–17:22：用户要求补偿超量不终止，局部实现与49项回归完成
 
 - 用户明确要求“不要将超过补偿设置为终止条件，多了一点…超过了再往回调”。按ROS2/手术式修改技能恢复43f4202与实际唯一原节点，修改前说明：只改计算误差/自动补偿处理，不取消真实限位、碰撞、新鲜反馈或最终夹持规则。源码/运行CPP最终SHA一致f949073735f45a9bcc67ef39efae7a6755386878afd6569e5bfd660793900232。
