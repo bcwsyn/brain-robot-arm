@@ -1,5 +1,7 @@
 ## 最新接续（2026-10-14：推进修复及实测明确获准）
 
+c0f56da已43方法+10RGB测试通过，单actual cf5777e…/source0043c923…部署、原099bbc9备份waypoint_advance_previous_099bbc9，detector8e763f4…/入口87039b…不变。新SDK4645.305/high100Hz/六true/99.6mm/q仍上次保持姿态，motor_speed J1原值-14不冒称全0。原AUTO1主timeout3854063/script3854064启动，证据waypoint_advance_onekey、exact3854209/live3854294，相机首帧等待中；下一读同一次进程/日志/三图，不再次启动。详细piper_reachable_waypoint_20261014.md；原blocked的缺同意已解决，完整目标未完成。
+
 用户最新“同意修复推进并继续实测”覆盖仅隔离及历史blocked等待。原executor局部记录已执行可达候选末点，本路点下一新RGB/真实反馈满足原10mm/.12rad可推进；恢复/换点清除、普通规则不变。原落点/TF/预算/限位碰撞/最终中心夹持保持。构建回归进行中，尚未部署/新运动，下一备份099bbc9/同步单executor/唯一原AUTO1；详见docs/evidence/piper_reachable_waypoint_20261014.md。不再等本授权，用户dirty/远端分叉保持，完整目标未完成。
 
 ## 历史接续（第三轮同意缺失，已被最新授权覆盖）

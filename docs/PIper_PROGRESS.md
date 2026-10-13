@@ -1,5 +1,7 @@
 ## 2026-10-14：用户明确批准推进修复与实测，局部构建回归中
 
+接续：c0f56da已限定提交、build0/完整43方法与10RGB回归通过；首次60s超时/上下文关闭连带失败保留，独立原前缀2项和完整复测0，不改实体时限。actual cf5777e…/CPP0043c923…已备份099bbc9并同步，原detector/入口保持。新SDK4645.305/high100Hz/六true/99.6mm，原q保持、J1speed-14不伪称全0。原AUTO1主3854063/3854064、只读exact3854209/live3854294运行中，复用CAN、相机首帧等待；下一同一次观察新推进/最终夹持，不重复启动。详细同证据记录。本地提交未同步GitHub（已有分叉/历史审查）。
+
 基线978987c/实际099bbc9/入口87039b…，host无栈。最新“同意修复推进并继续实测”覆盖仅隔离/历史blocked。仅原executor与方法测试：成功执行可达候选保留末点，下一新RGB/真实反馈原nominal指尖10mm/已选朝向.12rad推进；恢复/换点清除，普通规则/原预算/目标TF/限位碰撞/最终中心夹持不改。4新用例、构建进行中，未部署/新运动。下一限定提交/备份099bbc9→单executor部署→唯一原AUTO1，详情[evidence/piper_reachable_waypoint_20261014.md](evidence/piper_reachable_waypoint_20261014.md)。91%按原clean_disk_space.sh rc0仍91%/7.1GB，无额外删除；不冒称磁盘引起通信。用户既有变更保持，origin缓存left1/right119分叉/历史审查未完，仅本地未同步GitHub。
 
 ## 历史：第三轮同一推进修改缺同意，blocked审计记录
