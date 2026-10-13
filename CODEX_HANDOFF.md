@@ -1,4 +1,14 @@
-## 最新接续（2026-10-13 18:10，ee213bc修复下降/转角耦合已部署；复测PREPARE新RX停滞，can0 DOWN）
+## 最新接续（2026-10-13 18:31，链路已恢复；原默认一键37段到67/91，尺度门拒绝非IK/CAN）
+
+用户恢复后USB-CAN重新枚举ifindex8/DOWN，固定1Mbps/.75/queue1000成功、RX持续，sudo-n0；当前CAN仍健康，不沿用下条DOWN。ee213bc执行器SHA7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1不变，无新应用改动。原/home/johnwick/start_brain_robot_cube_real.sh规范/运行SHA87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0，AUTO_START=1/STOP_AFTER_TARGET_ACQUIRED=0/DEPTH_ONLY=0；实际通过[1/7]..[7/7]→观测/SEARCH(6942.567)→ALIGN→GRASP_READY(6956.667)，seed surface=(.4278,-.1316,.0874)m、78pre+13descent。37段发布/36段确认到位，loop103 cursor67/91失败，未最终下降/闭爪/抬升。
+
+本次MoveIt路径100%/adapter已接受，直接NEAR_RGB_REJECTED:LOCKED_TARGET_SCALE_MISMATCH，不是旧fraction0、浮点误差或反馈失联。精确失败目标xyz=(.340196028186,-.114245151398,.252901681660)，quat=(.148904218564,.963826189934,-.022738598797,.219885346067)，轨迹目标q=[-.332291,1.70488,-1.27865,.046205,.787628,-.0509445]；7003.6366尺度拒绝→软件stop/disarm已确认→原入口异常收尾。三图0072方块仍完整/画面下方/两指未包围、depth.217m/3265有效样本。保存URDF+原变换/四位小数锁点近似模型投影Z≈.159m与实测.217m约58mm差，仅是坐标/尺度一致性线索，非已证明唯一外参错误。精确near_seed及失败帧比值尚未打印，不断言哪轴超界。
+
+当前原栈/采集已退出、不续跑，最后只读SDKjoint stamp1791887401.0877、高速7401.0886确认六轴enable全true，q=[-.329291270,1.680455364,-1.236583228,.045396014,.759165865,-.048432887]rad、开口始终99.6mm未闭爪，CAN RX1428451继续增长。先前恢复前enable均false/姿态近零，原脚本已正常使能，不声称恢复前即有使能。根分区86%/12GB，既有清理0后仍86%，无ENOSPC证据。
+
+证据view_guard_20261013/recovered_onekey_console.txt、recovered_onekey/visual_stack.log/piper_driver.log/can_health.log，recovered_live/observer.jsonl及0013/0056/0072三图。主/采集session终止码143不代表完成；最后SDK新反馈使能确认是只读。下一先读progress顶部和本次scale日志，拟局部打印seed尺寸/预测距离/框比例并同帧离线核对；该新增应用诊断仍待用户同意，不放宽scale/改TF/落点/强制J5、不重复CAN或固件。Git仅文档/本地，保留原注释/vendor/reference，远程历史审查阻断沿用。
+
+## 历史接续（2026-10-13 18:10，ee213bc修复下降/转角耦合已部署；复测PREPARE新RX停滞，can0 DOWN）
 
 用户已确认定位与局部修复。CorrectedPoseStep旧共同min比例让20mm待下降/0.6rad待转向的一步仅降.581776mm；已改tip/angle独立限幅，原8mm/1°和MoveIt/adapter/最终夹持不变，红绿回归及50项测试通过、规范构建rc0。ExecuteVisualPose规划前打印/发布精确pose，Cartesian失败带error_code/PLAN_START，便于下一精确只读IK/碰撞区分。修复commit ee213bc，新部署二进制SHA7cbb8de7d36e762cd5dd329233d3e342126799a8e9e6f617a39e3a964ae7c9b1，同原入口/install symlink/params，旧7b769fd二进制副本view_guard_20261013/height_previous_7b769fd.bin；没有另写启动脚本/改YAML/TF/限位。真实树重复构建rc143但使用规范同源构建部署，不能混称两个构建均成功。
 

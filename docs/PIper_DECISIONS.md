@@ -1,3 +1,9 @@
+### 2026-10-13：恢复后新实测尺度门失败，不继续沿用旧CAN/IK停止原因
+
+- 用户恢复后新枚举can0固定配置成功、RX持续；原默认AUTO_START=1一键通过观测/SEARCH/ALIGN/GRASP_READY，37段发布到67/91，36段确认到位。失败段MoveIt100%/adapter接受，直接NEAR_RGB_REJECTED:LOCKED_TARGET_SCALE_MISMATCH，与旧fraction0/前轮CAN RX停滞不同。相机仍有完整方块，尺度门拒绝不是目标物理移动/消失的证明。
+- 原尺度检查依赖seed.color_z/current model colorZ与二维宽高比，不可未经诊断继续扩大比例。当前近似模型预测Z≈.159m、实测depthZ≈.217m存在约58mm一致性线索，尚不唯一证明哪个外参/表面有错；RGB尺度还随可见面/视角变化。下一拟精确记录seed/当前TF/比例再离线定位，应用修改前须获同意，不改落点/限位/TF或绕过adapter。
+- 本轮停止后新的只读SDK六轴enable均true、CAN健康，原栈已自动异常收尾，不自动续跑、未闭爪/抬升。覆盖旧交接can0 DOWN描述，不要求重复恢复链路或固件。ee213bc仍当前部署、50项回归仍构建级证据，不能把37段靠近称抓取完成。
+
 ### 2026-10-13：ee213bc实体复测因新RX停滞中断，不冒称下降修复已验收
 
 - 同源新执行器已部署，原enable/arm/start成功并开始PREPARE；随后原驱动反馈丢失、守护CAN_RX_STALLED_3S停止/收尾整个原栈。尚未进入新靠近代码，50项测试通过不等于实体下降/抓取完成。当前USB可枚举但RX停止，固定CAN恢复一次No such device后DOWN，不反复重置/刷固件或无反馈运动。
