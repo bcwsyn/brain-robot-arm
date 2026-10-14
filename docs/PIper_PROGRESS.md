@@ -1,4 +1,13 @@
-## 2026-10-14 16:11：新观测目标J5=70°及获准J5上界已同步，无运动
+## 2026-10-14：原观测实测结果入库，明确配对标定采样断点
+
+- 使用仓库ROS2与手术式技能，核对原入口/actual脚本及真实反馈，保留无关dirty。首次原AUTO0在5/7 rc1：101.5mm夹爪反馈被旧0–100mm模型换算拒绝，原8关节反馈/TF没有就绪，未运动；不是CAN或IK失败。用户已同意仅接受0–103mm反馈、模型封顶100mm。原adapter纯函数和针对性测试已修改/部署，原消息不变，>103mm/非有限值仍拒绝；不改开闭命令/六轴检查。当前重新运行pytest两个限定文件：30passed/rc0，2个HGFS pytest缓存只读warning不影响测试。
+- 同一原入口AUTO0重试到7/7；原enable服务和adapter arm后，原tick限幅将J5从73.498°向70°回调。没有发布controller PREPARE轨迹，不声称该首段满足新设计的逐步轨迹速度，也没有OBSERVE_POSE_REACHED事件/AUTO1完整链证明。最后q_mdeg[-8137,54028,-72372,-4176,70019,5127]，六true/100Hz/速度0，max观测误差.006785716rad<原.01；J3/J4有小跟踪差，不说其他五轴实物严格不变。实际夹爪101.6mm，原filtered模型两指±.05m，已验证换算生效。
+- 原3秒/4MiB采集rc0/7帧/1335740B，新RGB1791966770877727094完整方块可见/中心未覆盖；同图戳检测表面点depth optical[-.0133762887,.0386582669,.454]m，119样本/coverage.1375/MAD2mm。前一帧z=.438m，不能以单帧qualified就称高精度中心已稳定。该帧仅保存接收附近反馈、无精确图戳TF或native深度配对，不算完整标定A。图与原日志保持home，Git只存小JSON及路径/hash。原disarm1791966771.652714101/controller STOPPED1791966772.677255117，无SEARCH/靠近/闭爪/抬升/释放/Reset/Disable。
+- 本轮17:27:13提升host最小检查：原driver/visual/cam/viewer进程均无，can0 DOWN/RX0，USB-CAN及相机已枚举，磁盘54%/35GB。sudo -n true rc0后仅原固定CAN配置一次（1Mbps/.75/queue1000/up），未USB重载/bounce。SDK ConnectPort(piper_init=False)被动读取rc0：epoch1791970075.1554582/joint0075.1507306/high100Hz、q_mdeg[-8137,54028,-72372,-4176,69968,5127]、六true/速度0/101.6mm；CAN RX49→47990/errors0/TX0，drop46298原样记录，不从未读Socket期间丢弃计数断言硬件故障。没有发送使能/运动或采新图。
+- 当前任务为记录5–6个同位置“观测侧+人工夹持侧”，不是新控制策略。完整字段/eye-in-hand公式/参照点语义见最新决策。尚未获得对应本次观测的人工侧，不拼旧手动q，也不将FK工具点/检测表面点未经定义等同方块中心。下一只读采完整观测侧、用户人工摆同一不动方块后采夹持侧；当前不自动张爪/搜索/回放/失能或修改TF/TCP。最终抓取未完成。
+- actual adapter SHAa5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8，与规范相同；旧脚本备份/home/johnwick/brain_robot_logs/observation_pose_backup_20261014/piper_jog_adapter.previous.py。入口SHA87039b…/executor70c3381…不变。证据[evidence/piper_observe_70_real_20261014.json](evidence/piper_observe_70_real_20261014.json)。限定两代码/测试、四规则记录及小JSON提交，远端已知分叉保持，本地未同步GitHub，不自动合并/强推。
+
+## 历史：2026-10-14 16:11：新观测目标J5=70°及获准J5上界已同步，无运动
 
 - 用户明确“J5设置70度其他不变”，随后明确同意“仅对齐J5软件与模型上界”。按ROS2/手术式技能，仅原task观测数组、J5正上界与原launch生成模型；其他五轴来自17855cf的实际保存值，未重锁旧A姿态、不重查CAN/固件、不改其他关节/下界/速度/搜索幅度/TF/TCP/最终夹持门。当前无visual/grasp运行进程，本轮不启动ROS/使能/运动/复位/夹爪/失能。
 - 新观测degrees[-8.137,54.028,-72.761,-4.267,70.0,5.127]；原驱动feedback degrees*.017444 → observe_joint_positions[-.141941828,.942464432,-1.269242884,-.074433548,1.22108,.089435388]rad。没有把精确π/180值1.221730476与原接口混用。实际原驱动command factor57324.840764，J5命令round=69998mdeg，未超过固件70°；这是既有换算微差，不擅改驱动。

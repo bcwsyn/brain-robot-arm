@@ -133,12 +133,18 @@ def test_actual_total_opening_maps_to_opposed_fingers(opening):
         'joint7': opening / 2, 'joint8': -opening / 2}
 
 
-@pytest.mark.parametrize('opening', [None, -.001, .101, math.nan, math.inf])
+@pytest.mark.parametrize('opening', [None, -.001, .103001, .104, math.nan, math.inf])
 def test_bad_opening_is_not_zeroed_or_clamped(opening):
     assert MODULE.measured_finger_positions(opening) is None
 
 
-def test_filtered_model_uses_same_message_measured_opening_without_arm_command():
+@pytest.mark.parametrize('opening', [.100001, .1015, .103])
+def test_authorized_small_mechanical_overrun_only_caps_model(opening):
+    assert MODULE.measured_finger_positions(opening) == {'joint7': .05, 'joint8': -.05}
+
+
+@pytest.mark.parametrize('opening', [.0796, .1015])
+def test_filtered_model_uses_same_message_measured_opening_without_arm_command(opening):
     adapter = make_adapter()
     adapter.armed = False
     adapter.targets = {}
@@ -150,8 +156,10 @@ def test_filtered_model_uses_same_message_measured_opening_without_arm_command()
     message = JointState()
     message.header.stamp.sec = 123
     message.name = adapter.joint_names + ['gripper']
-    message.position = [.01] * 6 + [.0796]
+    message.position = [.01] * 6 + [opening]
     adapter._joint_state(message)
     assert len(emitted) == 1
     assert emitted[0].header.stamp.sec == 123
-    assert emitted[0].position == pytest.approx([.01] * 6 + [.0398, -.0398])
+    half = min(opening, .100) / 2
+    assert emitted[0].position == pytest.approx([.01] * 6 + [half, -half])
+    assert message.position == pytest.approx([.01] * 6 + [opening])

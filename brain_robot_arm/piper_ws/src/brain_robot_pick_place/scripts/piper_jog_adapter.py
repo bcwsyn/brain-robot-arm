@@ -20,10 +20,11 @@ from trajectory_msgs.msg import JointTrajectory
 
 
 def measured_finger_positions(opening_m):
-    """Vendor feedback is TOTAL opening; URDF fingers move by +/- half."""
-    if opening_m is None or not math.isfinite(opening_m) or not 0.0 <= opening_m <= 0.100:
+    """Keep raw feedback; model allows <=3mm mechanical overrun at full open."""
+    if opening_m is None or not math.isfinite(opening_m) or not 0.0 <= opening_m <= 0.103:
         return None
-    return {'joint7': opening_m / 2.0, 'joint8': -opening_m / 2.0}
+    model_opening = min(opening_m, 0.100)
+    return {'joint7': model_opening / 2.0, 'joint8': -model_opening / 2.0}
 
 
 class PiperJogAdapter(Node):
