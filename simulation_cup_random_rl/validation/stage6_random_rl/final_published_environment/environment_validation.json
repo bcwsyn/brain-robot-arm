@@ -1,0 +1,95 @@
+{
+  "api_check_passed": true,
+  "zero_action_steps": 200,
+  "wall_s": 0.26667781099968124,
+  "steps_per_wall_second": 749.9686578732232,
+  "sim_seconds_per_wall_second": 29.998746314928926,
+  "controller": "scripted geometric controller, not a learned policy",
+  "episodes": [
+    {
+      "seed": 100,
+      "steps": 1543,
+      "phases": [
+        {
+          "phase": "move",
+          "target": [
+            0.38837983197989184,
+            -0.11371548944079853,
+            0.12
+          ],
+          "step": 0
+        },
+        {
+          "phase": "close",
+          "step": 131
+        },
+        {
+          "phase": "move",
+          "target": [
+            0.38837983197989184,
+            -0.11371548944079853,
+            0.27
+          ],
+          "step": 180
+        },
+        {
+          "phase": "hold",
+          "step": 411
+        },
+        {
+          "phase": "move",
+          "target": [
+            0.4329266060400266,
+            0.14493267532051402,
+            0.27
+          ],
+          "step": 486
+        },
+        {
+          "phase": "move",
+          "target": [
+            0.4329266060400266,
+            0.14493267532051402,
+            0.125
+          ],
+          "step": 930
+        },
+        {
+          "phase": "release",
+          "step": 1516
+        }
+      ],
+      "scripted_success": true,
+      "is_success": true,
+      "placement_error_m": 0.0006660896469838917,
+      "cup_tilt_rad": 1.4523855895731685e-07,
+      "cup_speed_m_s": 3.7174129374761833e-07,
+      "ever_lifted": true,
+      "force_n": [
+        0.0,
+        0.0
+      ],
+      "collision": false,
+      "peak_force_n": [
+        3.0014887708368767,
+        3.358046268641695
+      ],
+      "hard_fault": "",
+      "sim_time_s": 61.82000000002959,
+      "observation_source": "simulation_truth_state_not_wrist_vision",
+      "task": {
+        "start_xy": [
+          0.38837983197989184,
+          -0.11371548944079853
+        ],
+        "goal_xy": [
+          0.4329266060400266,
+          0.14493267532051402
+        ]
+      }
+    }
+  ],
+  "model_sha256": "d9d15d5db931027f06849690f942d70488fd6faed2950e29c2ae828372883a68",
+  "env_sha256": "291c305235064558ef1d64af64a60dcef71b2143451c6ca1a90246a6dc2429ad",
+  "scripted_passed": 1
+}

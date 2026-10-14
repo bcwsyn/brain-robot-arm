@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="piper_cup_rl_current_urdf">
+  <compiler angle="radian" eulerseq="XYZ" balanceinertia="false" />
+  <option timestep=".002" integrator="implicitfast" gravity="0 0 -9.81" iterations="80" cone="elliptic" />
+  <size nconmax="400" njmax="2500" />
+  <default>
+    <geom friction="1.2 .01 .001" solref=".008 1" solimp=".95 .99 .001" />
+    <joint damping="1" armature=".01" />
+  </default>
+  <asset>
+    <mesh name="mesh_0" file="../../install/piper_description/share/piper_description/meshes/base_link.STL" />
+    <mesh name="mesh_1" file="../../install/piper_description/share/piper_description/meshes/link1.STL" />
+    <mesh name="mesh_2" file="../../install/piper_description/share/piper_description/meshes/link2.STL" />
+    <mesh name="mesh_3" file="../../install/piper_description/share/piper_description/meshes/link3.STL" />
+    <mesh name="mesh_4" file="../../install/piper_description/share/piper_description/meshes/link4.STL" />
+    <mesh name="mesh_5" file="../../install/piper_description/share/piper_description/meshes/link5.STL" />
+    <mesh name="mesh_6" file="../../install/piper_description/share/piper_description/meshes/link6.STL" />
+    <mesh name="mesh_7" file="../../install/piper_description/share/piper_description/meshes/gripper_base.STL" />
+    <mesh name="mesh_8" file="../../install/piper_description/share/piper_description/meshes/link7.STL" />
+    <mesh name="mesh_9" file="../../install/piper_description/share/piper_description/meshes/link8.STL" />
+  </asset>
+  <worldbody>
+    <light pos=".3 -.4 1" dir="0 0 -1" diffuse=".8 .8 .8" />
+    <geom name="table" type="plane" size="1 1 .01" rgba=".65 .65 .65 1" />
+    <site name="goal" type="cylinder" size=".04 .0005" pos=".43 .12 .001" rgba="0 .8 .2 .4" />
+    <body name="base_link" gravcomp="1">
+      <inertial pos="-0.00473641164191482 2.56829134630247E-05 0.041451518036016" mass="1.02" fullinertia="0.00267433 0.00282612 0.00089624 -7.3e-07 -0.00017389 4e-07" />
+      <geom name="base_link_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_0" />
+      <geom name="base_link_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_0" />
+      <body name="link1" pos="0 0 0.123" euler="0 0 0" gravcomp="1">
+        <inertial pos="0.00032 -0.00041 -0.00348" mass="0.71" fullinertia="0.00050027 0.00040879 0.00045802 7.8e-07 6.26e-06 4.62e-06" />
+        <joint name="joint1" type="hinge" axis="0 0 1" range="-2.618 2.618" damping="1" />
+        <geom name="link1_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_1" />
+        <geom name="link1_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_1" />
+        <body name="link2" pos="0 0 0" euler="1.5708 -0.1359 -3.1416" gravcomp="1">
+          <inertial pos="0.21852 -0.00861 0.00126" mass="1.16" fullinertia="0.00111915 0.06763251 0.067559 0.00182916 0.00019233 7.67e-06" />
+          <joint name="joint2" type="hinge" axis="0 0 1" range="0 3.14" damping="1" />
+          <geom name="link2_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_2" />
+          <geom name="link2_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_2" />
+          <body name="link3" pos="0.28503 0 0" euler="0 0 -1.7939" gravcomp="1">
+            <inertial pos="-0.01999 -0.14808 -0.00053" mass="0.5" fullinertia="0.01347608 0.00046377 0.01363321 0.00161034 6.6e-07 1.62e-06" />
+            <joint name="joint3" type="hinge" axis="0 0 1" range="-2.967 0" damping="1" />
+            <geom name="link3_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_3" />
+            <geom name="link3_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_3" />
+            <body name="link4" pos="-0.021984 -0.25075 0" euler="1.5708 0 0" gravcomp="1">
+              <inertial pos="0.00013 -0.00076 -0.00394" mass="0.38" fullinertia="0.00017844 0.00018914 0.00014613 6.2e-07 6.7e-07 4.08e-06" />
+              <joint name="joint4" type="hinge" axis="0 0 1" range="-1.745 1.745" damping="1" />
+              <geom name="link4_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_4" />
+              <geom name="link4_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_4" />
+              <body name="link5" pos="0 0 0" euler="-1.5708 0 0" gravcomp="1">
+                <inertial pos="0.00018 -0.06104 -0.00227" mass="0.383" fullinertia="0.00172318 0.00017936 0.00171172 2.59e-06 1e-07 9.9e-06" />
+                <joint name="joint5" type="hinge" axis="0 0 1" range="-1.22 1.22" damping="1" />
+                <geom name="link5_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_5" />
+                <geom name="link5_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_5" />
+                <body name="link6" pos="8.8259E-05 -0.091 0" euler="1.5708 0 0" gravcomp="1">
+                  <inertial pos="-0.00003 0.00006 0.04618" mass="0.007" fullinertia="0.00152112 0.00138626 0.00031152 2.02e-06 2.61e-06 2e-08" />
+                  <joint name="joint6" type="hinge" axis="0 0 1" range="-2.0944 2.0944" damping="1" />
+                  <geom name="link6_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" type="mesh" mesh="mesh_6" />
+                  <geom name="link6_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_6" />
+                  <body name="gripper_base" pos="0 0 0" euler="0 0 0" gravcomp="1">
+                    <inertial pos="-0.000183807162235591 8.05033155577911E-05 0.0321436689908876" mass="0.45" fullinertia="0.00092934 0.00071447 0.00039442 3.4e-07 -7.38e-06 5e-08" />
+                    <geom name="gripper_base_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_7" />
+                    <geom name="gripper_base_collision_0" pos="0 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="mesh" mesh="mesh_7" />
+                    <site name="tcp" pos="0 0 .130" size=".003" rgba="0 0 1 1" />
+                    <body name="link7" pos="0 0 0.1358" euler="1.5708 0 0" gravcomp="1">
+                      <inertial pos="0.00065123185041968 -0.0491929869131989 0.00972258769184025" mass="0.025" fullinertia="7.371e-05 7.81e-06 7.47e-05 -1.13e-06 2.1e-07 -1.372e-05" />
+                      <joint name="joint7" type="slide" axis="0 0 1" range="0 0.05" damping="2" />
+                      <geom name="link7_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_8" />
+                      <geom name="link7_collision_0" pos="0 -0.031 0.004" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="box" size="0.01 0.031 0.004" />
+                    </body>
+                    <body name="link8" pos="0 0 0.1358" euler="1.5708 0 -3.1416" gravcomp="1">
+                      <inertial pos="0.000651231850419722 -0.0491929869131991 0.00972258769184024" mass="0.025" fullinertia="7.371e-05 7.81e-06 7.47e-05 -1.13e-06 2.1e-07 -1.372e-05" />
+                      <joint name="joint8" type="slide" axis="0 0 -1" range="-0.05 0" damping="2" />
+                      <geom name="link8_visual_0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" type="mesh" mesh="mesh_9" />
+                      <geom name="link8_collision_0" pos="0 -0.031 0.004" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="box" size="0.01 0.031 0.004" />
+                    </body>
+                    <body name="wrist_camera_link" pos="-0.055 0 0.0308" euler="0 -1.2249803973515843 0" gravcomp="1">
+                      <inertial pos="-0.015 0 0" mass="0.097" fullinertia="7.0529e-05 1.2327e-05 7.275e-05 0.0 0.0 0.0" />
+                      <geom name="wrist_camera_link_visual_0" pos="-0.015 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.82 0.84 0.86 1" type="box" size="0.015 0.045 0.0125" />
+                      <geom name="wrist_camera_link_visual_1" pos="0.0005 0 0" euler="0 0 0" contype="0" conaffinity="0" group="1" rgba="0.05 0.05 0.05 1" type="box" size="0.0005 0.041 0.0105" />
+                      <geom name="wrist_camera_link_visual_2" pos="0.0012 -0.026 0" euler="0 1.57079632679 0" contype="0" conaffinity="0" group="1" rgba="0.10 0.22 0.30 1" type="cylinder" size="0.004 0.0005" />
+                      <geom name="wrist_camera_link_visual_3" pos="0.0012 0 0" euler="0 1.57079632679 0" contype="0" conaffinity="0" group="1" rgba="0.10 0.22 0.30 1" type="cylinder" size="0.004 0.0005" />
+                      <geom name="wrist_camera_link_visual_4" pos="0.0012 0.026 0" euler="0 1.57079632679 0" contype="0" conaffinity="0" group="1" rgba="0.10 0.22 0.30 1" type="cylinder" size="0.004 0.0005" />
+                      <geom name="wrist_camera_link_collision_0" pos="-0.015 0 0" euler="0 0 0" group="3" rgba=".6 .6 .6 .15" type="box" size="0.015 0.045 0.0125" />
+                      <body name="wrist_camera_optical_frame" pos="0 0 0" euler="-1.57079632679 0 -1.57079632679">
+                        <camera name="wrist_rgb" pos="0 0 0" quat="0 1 0 0" fovy="49.36707915164592" />
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="cup" pos=".4 -.1 .1">
+      <freejoint name="cup_free" />
+      <inertial pos="0 0 0" mass=".080" diaginertia=".00028333 .00028333 .00005625" />
+      <geom name="cup_body_0" type="box" pos="0.0365 0.0 -0.019" euler="0 0 0.0" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_1" type="box" pos="0.035798662734717906 0.007120796753588681 -0.019" euler="0 0 0.19634954084936207" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_2" type="box" pos="0.03372160293666197 0.013967945281325776 -0.019" euler="0 0 0.39269908169872414" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_3" type="box" pos="0.030348640849042898 0.02027831350521548 -0.019" euler="0 0 0.5890486225480862" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_4" type="box" pos="0.025809397513308983 0.02580939751330898 -0.019" euler="0 0 0.7853981633974483" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_5" type="box" pos="0.020278313505215483 0.030348640849042898 -0.019" euler="0 0 0.9817477042468103" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_6" type="box" pos="0.013967945281325778 0.03372160293666197 -0.019" euler="0 0 1.1780972450961724" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_7" type="box" pos="0.007120796753588684 0.035798662734717906 -0.019" euler="0 0 1.3744467859455345" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_8" type="box" pos="2.2349804084439193e-18 0.0365 -0.019" euler="0 0 1.5707963267948966" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_9" type="box" pos="-0.007120796753588679 0.035798662734717906 -0.019" euler="0 0 1.7671458676442586" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_10" type="box" pos="-0.013967945281325774 0.03372160293666197 -0.019" euler="0 0 1.9634954084936207" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_11" type="box" pos="-0.02027831350521547 0.03034864084904291 -0.019" euler="0 0 2.1598449493429825" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_12" type="box" pos="-0.02580939751330898 0.025809397513308983 -0.019" euler="0 0 2.356194490192345" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_13" type="box" pos="-0.0303486408490429 0.02027831350521548 -0.019" euler="0 0 2.552544031041707" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_14" type="box" pos="-0.03372160293666197 0.01396794528132578 -0.019" euler="0 0 2.748893571891069" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_15" type="box" pos="-0.035798662734717906 0.007120796753588694 -0.019" euler="0 0 2.945243112740431" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_16" type="box" pos="-0.0365 4.4699608168878386e-18 -0.019" euler="0 0 3.141592653589793" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_17" type="box" pos="-0.035798662734717906 -0.007120796753588685 -0.019" euler="0 0 3.3379421944391554" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_18" type="box" pos="-0.03372160293666197 -0.013967945281325772 -0.019" euler="0 0 3.5342917352885173" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_19" type="box" pos="-0.03034864084904291 -0.02027831350521547 -0.019" euler="0 0 3.730641276137879" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_20" type="box" pos="-0.02580939751330899 -0.02580939751330898 -0.019" euler="0 0 3.9269908169872414" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_21" type="box" pos="-0.02027831350521548 -0.030348640849042898 -0.019" euler="0 0 4.123340357836604" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_22" type="box" pos="-0.013967945281325797 -0.03372160293666195 -0.019" euler="0 0 4.319689898685965" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_23" type="box" pos="-0.007120796753588696 -0.035798662734717906 -0.019" euler="0 0 4.516039439535327" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_24" type="box" pos="-6.704941225331758e-18 -0.0365 -0.019" euler="0 0 4.71238898038469" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_25" type="box" pos="0.007120796753588682 -0.035798662734717906 -0.019" euler="0 0 4.908738521234052" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_26" type="box" pos="0.013967945281325785 -0.03372160293666196 -0.019" euler="0 0 5.105088062083414" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_27" type="box" pos="0.020278313505215466 -0.03034864084904291 -0.019" euler="0 0 5.301437602932776" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_28" type="box" pos="0.025809397513308976 -0.02580939751330899 -0.019" euler="0 0 5.497787143782138" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_29" type="box" pos="0.030348640849042898 -0.02027831350521548 -0.019" euler="0 0 5.6941366846315" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_30" type="box" pos="0.03372160293666195 -0.013967945281325798 -0.019" euler="0 0 5.890486225480862" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_body_31" type="box" pos="0.035798662734717906 -0.007120796753588698 -0.019" euler="0 0 6.086835766330224" size=".001 0.003693427625893659 0.079" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_0" type="box" pos="0.0305 0.0 0.08" euler="0 0 0.0" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_1" type="box" pos="0.029913951052298528 0.005950254821491911 0.08" euler="0 0 0.19634954084936207" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_2" type="box" pos="0.028178325741594245 0.011671844687135238 0.08" euler="0 0 0.39269908169872414" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_3" type="box" pos="0.025359823175227628 0.016944892107097865 0.08" euler="0 0 0.5890486225480862" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_4" type="box" pos="0.0215667568261897 0.021566756826189696 0.08" euler="0 0 0.7853981633974483" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_5" type="box" pos="0.01694489210709787 0.025359823175227628 0.08" euler="0 0 0.9817477042468103" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_6" type="box" pos="0.01167184468713524 0.028178325741594245 0.08" euler="0 0 1.1780972450961724" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_7" type="box" pos="0.005950254821491914 0.029913951052298528 0.08" euler="0 0 1.3744467859455345" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_8" type="box" pos="1.8675863686997137e-18 0.0305 0.08" euler="0 0 1.5707963267948966" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_9" type="box" pos="-0.0059502548214919095 0.029913951052298528 0.08" euler="0 0 1.7671458676442586" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_10" type="box" pos="-0.011671844687135237 0.028178325741594245 0.08" euler="0 0 1.9634954084936207" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_11" type="box" pos="-0.016944892107097858 0.025359823175227635 0.08" euler="0 0 2.1598449493429825" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_12" type="box" pos="-0.021566756826189696 0.0215667568261897 0.08" euler="0 0 2.356194490192345" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_13" type="box" pos="-0.02535982317522763 0.016944892107097865 0.08" euler="0 0 2.552544031041707" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_14" type="box" pos="-0.028178325741594245 0.011671844687135242 0.08" euler="0 0 2.748893571891069" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_15" type="box" pos="-0.029913951052298528 0.0059502548214919225 0.08" euler="0 0 2.945243112740431" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_16" type="box" pos="-0.0305 3.7351727373994275e-18 0.08" euler="0 0 3.141592653589793" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_17" type="box" pos="-0.029913951052298528 -0.005950254821491915 0.08" euler="0 0 3.3379421944391554" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_18" type="box" pos="-0.02817832574159425 -0.011671844687135235 0.08" euler="0 0 3.5342917352885173" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_19" type="box" pos="-0.025359823175227635 -0.016944892107097858 0.08" euler="0 0 3.730641276137879" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_20" type="box" pos="-0.021566756826189703 -0.021566756826189696 0.08" euler="0 0 3.9269908169872414" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_21" type="box" pos="-0.016944892107097865 -0.025359823175227628 0.08" euler="0 0 4.123340357836604" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_22" type="box" pos="-0.011671844687135256 -0.028178325741594238 0.08" euler="0 0 4.319689898685965" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_23" type="box" pos="-0.005950254821491924 -0.029913951052298524 0.08" euler="0 0 4.516039439535327" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_24" type="box" pos="-5.60275910609914e-18 -0.0305 0.08" euler="0 0 4.71238898038469" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_25" type="box" pos="0.005950254821491913 -0.029913951052298528 0.08" euler="0 0 4.908738521234052" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_26" type="box" pos="0.011671844687135245 -0.02817832574159424 0.08" euler="0 0 5.105088062083414" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_27" type="box" pos="0.016944892107097854 -0.025359823175227635 0.08" euler="0 0 5.301437602932776" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_28" type="box" pos="0.021566756826189692 -0.021566756826189703 0.08" euler="0 0 5.497787143782138" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_29" type="box" pos="0.025359823175227628 -0.016944892107097865 0.08" euler="0 0 5.6941366846315" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_30" type="box" pos="0.028178325741594238 -0.011671844687135257 0.08" euler="0 0 5.890486225480862" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_mouth_31" type="box" pos="0.029913951052298524 -0.005950254821491926 0.08" euler="0 0 6.086835766330224" size=".001 0.003102479205750674 0.02" rgba=".85 .14 .08 1" />
+      <geom name="cup_bottom" type="cylinder" size=".0375 .001" pos="0 0 -.099" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_0" type="box" pos="0.0335 0.0 .059" euler="0 0 0.0" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_1" type="box" pos="0.03285630689350822 0.006535525787540296 .059" euler="0 0 0.19634954084936207" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_2" type="box" pos="0.030949964339128107 0.012819894984230508 .059" euler="0 0 0.39269908169872414" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_3" type="box" pos="0.027854232012135268 0.018611602806156674 .059" euler="0 0 0.5890486225480862" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_4" type="box" pos="0.023688077169749345 0.02368807716974934 .059" euler="0 0 0.7853981633974483" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_5" type="box" pos="0.018611602806156678 0.027854232012135268 .059" euler="0 0 0.9817477042468103" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_6" type="box" pos="0.01281989498423051 0.030949964339128107 .059" euler="0 0 1.1780972450961724" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_7" type="box" pos="0.0065355257875403 0.03285630689350822 .059" euler="0 0 1.3744467859455345" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_8" type="box" pos="2.0512833885718167e-18 0.0335 .059" euler="0 0 1.5707963267948966" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_9" type="box" pos="-0.006535525787540295 0.03285630689350822 .059" euler="0 0 1.7671458676442586" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_10" type="box" pos="-0.012819894984230506 0.030949964339128107 .059" euler="0 0 1.9634954084936207" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_11" type="box" pos="-0.018611602806156667 0.027854232012135275 .059" euler="0 0 2.1598449493429825" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_12" type="box" pos="-0.02368807716974934 0.023688077169749345 .059" euler="0 0 2.356194490192345" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_13" type="box" pos="-0.02785423201213527 0.018611602806156674 .059" euler="0 0 2.552544031041707" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_14" type="box" pos="-0.030949964339128107 0.012819894984230511 .059" euler="0 0 2.748893571891069" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_15" type="box" pos="-0.03285630689350822 0.0065355257875403085 .059" euler="0 0 2.945243112740431" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_16" type="box" pos="-0.0335 4.1025667771436334e-18 .059" euler="0 0 3.141592653589793" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_17" type="box" pos="-0.03285630689350822 -0.006535525787540301 .059" euler="0 0 3.3379421944391554" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_18" type="box" pos="-0.03094996433912811 -0.012819894984230504 .059" euler="0 0 3.5342917352885173" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_19" type="box" pos="-0.027854232012135275 -0.018611602806156667 .059" euler="0 0 3.730641276137879" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_20" type="box" pos="-0.02368807716974935 -0.02368807716974934 .059" euler="0 0 3.9269908169872414" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_21" type="box" pos="-0.018611602806156674 -0.027854232012135268 .059" euler="0 0 4.123340357836604" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_22" type="box" pos="-0.012819894984230527 -0.0309499643391281 .059" euler="0 0 4.319689898685965" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_23" type="box" pos="-0.00653552578754031 -0.03285630689350822 .059" euler="0 0 4.516039439535327" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_24" type="box" pos="-6.15385016571545e-18 -0.0335 .059" euler="0 0 4.71238898038469" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_25" type="box" pos="0.006535525787540299 -0.03285630689350822 .059" euler="0 0 4.908738521234052" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_26" type="box" pos="0.012819894984230517 -0.030949964339128104 .059" euler="0 0 5.105088062083414" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_27" type="box" pos="0.018611602806156664 -0.027854232012135275 .059" euler="0 0 5.301437602932776" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_28" type="box" pos="0.023688077169749338 -0.02368807716974935 .059" euler="0 0 5.497787143782138" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_29" type="box" pos="0.027854232012135268 -0.018611602806156674 .059" euler="0 0 5.6941366846315" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_30" type="box" pos="0.0309499643391281 -0.012819894984230529 .059" euler="0 0 5.890486225480862" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+      <geom name="cup_shoulder_31" type="box" pos="0.03285630689350822 -0.006535525787540313 .059" euler="0 0 6.086835766330224" size=".003 0.003594936222536495 .001" rgba=".85 .14 .08 1" />
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="symmetric_jaws" joint1="joint8" joint2="joint7" polycoef="0 -1 0 0 0" />
+  </equality>
+  <contact>
+    <exclude body1="base_link" body2="link1" />
+    <exclude body1="base_link" body2="link2" />
+    <exclude body1="base_link" body2="link3" />
+    <exclude body1="gripper_base" body2="link3" />
+    <exclude body1="gripper_base" body2="link4" />
+    <exclude body1="gripper_base" body2="link5" />
+    <exclude body1="gripper_base" body2="link6" />
+    <exclude body1="gripper_base" body2="link7" />
+    <exclude body1="gripper_base" body2="link8" />
+    <exclude body1="gripper_base" body2="wrist_camera_link" />
+    <exclude body1="link1" body2="link2" />
+    <exclude body1="link1" body2="link3" />
+    <exclude body1="link2" body2="link3" />
+    <exclude body1="link2" body2="link4" />
+    <exclude body1="link3" body2="link4" />
+    <exclude body1="link3" body2="link5" />
+    <exclude body1="link3" body2="link6" />
+    <exclude body1="link3" body2="link7" />
+    <exclude body1="link3" body2="link8" />
+    <exclude body1="link4" body2="link5" />
+    <exclude body1="link4" body2="link6" />
+    <exclude body1="link4" body2="link7" />
+    <exclude body1="link4" body2="link8" />
+    <exclude body1="link5" body2="link6" />
+    <exclude body1="link5" body2="link7" />
+    <exclude body1="link5" body2="link8" />
+    <exclude body1="link6" body2="link7" />
+    <exclude body1="link6" body2="link8" />
+    <exclude body1="link7" body2="link8" />
+    <exclude body1="wrist_camera_link" body2="wrist_camera_optical_frame" />
+  </contact>
+  <actuator>
+    <position name="joint1" joint="joint1" kp="3000" kv="80" ctrlrange="-2.618 2.618" forcerange="-100.0 100.0" />
+    <position name="joint2" joint="joint2" kp="3000" kv="80" ctrlrange="0 3.14" forcerange="-100.0 100.0" />
+    <position name="joint3" joint="joint3" kp="2000" kv="60" ctrlrange="-2.967 0" forcerange="-100.0 100.0" />
+    <position name="joint4" joint="joint4" kp="200" kv="12" ctrlrange="-1.745 1.745" forcerange="-100.0 100.0" />
+    <position name="joint5" joint="joint5" kp="200" kv="10" ctrlrange="-1.22 1.22" forcerange="-100.0 100.0" />
+    <position name="joint6" joint="joint6" kp="100" kv="8" ctrlrange="-2.0944 2.0944" forcerange="-100.0 100.0" />
+    <position name="joint7" joint="joint7" kp="300" kv="2" ctrlrange="0 0.05" forcerange="-10.0 10.0" />
+    <position name="joint8" joint="joint8" kp="300" kv="2" ctrlrange="-0.05 0" forcerange="-10.0 10.0" />
+  </actuator>
+</mujoco>

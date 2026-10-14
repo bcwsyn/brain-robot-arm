@@ -1,5 +1,11 @@
 # ub Workspace
 
+## Stage 6: random cup tasks and RL environment / 第六步随机抓放与强化学习环境
+
+New independent [simulation_cup_random_rl/](simulation_cup_random_rl/README.md): single-wrist RGB-D physical random-start/random-goal baseline20/20; maximum3D error1.331 mm. A separate physical SAC+HER environment and training/recovery entry are implemented. The5000-step learned policy is **not converged:0/20** on independent evaluation.
+
+新增独立版本，旧五个工作区和标定工作保留。随机取放基准20/20通过；强化学习短训练仅验证管线，模型尚未学会完整取放。[中文复现](docs/random_cup_rl/README.zh-CN.md) / [English guide](docs/random_cup_rl/README.en.md) / [中文阶段报告](docs/第六步_随机起终点抓放基准与强化学习环境验收.md) / [English report](docs/stage6_random_cup_rl_acceptance.en.md)。
+
 2026-10-14 最新倾角更新 / Latest camera-tilt update: `simulation_cup_wrist/` now tilts the wrist camera19.81° towards the gripper centre (70.19° to flange plane). [中文报告](docs/第五步补充_腕部相机倾角修正与验证.md) / [English report](docs/stage5_wrist_camera_tilt_update.en.md). 未倾斜版本由原标签保留；四个更早的工作区完整保留。
 
 ## Latest: single wrist-mounted Gemini 2 / 最新：单腕部相机

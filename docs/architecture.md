@@ -130,3 +130,14 @@ Plan a fixed, collision-checked observation configuration before enabling the gr
 ## 2026-10-14: Wrist optical-axis tilt
 
 Use the supplied atan2(2.45,6.8) as the nominal19.81° tilt towards the gripper centre, equivalent to70.19° to its local flange plane. This is not a fixed world-horizontal angle. Rotate the entire shared camera mount about its existing nominal front/optical reference point; preserve105 mm axial tip spacing. Move the fixed observation joint5 to0.15 rad to retain a complete cup view. Image-time TF incorporates the new rotation; retain one camera and unchanged YOLO weights. Keep the old untilted tag and acceptance separately from the new tilt tests.
+
+
+## 2026-10-15: random cup goals and a separate state-input RL environment
+
+Use one pure seeded task sampler for Gazebo acceptance and RL bounds. Cup starts remain in X .38..42/Y -.12..-.08 m; destinations use the conservative tall-cup region X .42..44/Y .10..16 m. Persist the complete plan before motion and compare measured final object pose with that plan. Preserve failed batches; no automatic motion retries. Initial scene reads use a persistent bounded ROS client, so a dropped discovery/reply cannot leave the worker in an unbounded query.
+
+Deduplicate learned masks only when strong pixel overlap and independently estimated three-dimensional geometry agree. Keep distinct valid cups ambiguous. Store RGB-D evidence by simulator generation because simulation clocks restart.
+
+Retain the single-wrist RGB-D/MoveIt/force-control Gazebo pipeline as the baseline. Train in a separate MuJoCo/Gymnasium module under simulation/rl using a model generated from the current URDF, not old MJCF or real-robot code. Preserve current kinematics, limits, inertia, camera transform and 100 mm stroke; explicitly label contact/PID/cup-shell approximations and ideal robot gravity compensation. Simulation state truth is allowed for this first state-policy phase and must be disclosed. It does not establish a deployable wrist-vision policy.
+
+SAC+HER learns four bounded XYZ/jaw actions with fixed upright-cup tilt and radial yaw priors. Only episode reset initializes poses; physical stepping never follows or attaches the object. Keep state-policy training/evaluation, scripted environment checks and Gazebo visual acceptance separate. Save complete model/replay/source/config/evaluation evidence; short training and checkpoint recovery are implemented, useful policy convergence and vision/real transfer are pending.
