@@ -1,3 +1,12 @@
+## 2026-10-14 21:23 +08:00：结合实际落实0—7计划，仅文档，不提前运动
+
+- 用户给出阶段0—7分工图并要求先规划；“继续完成”继续本项规划。起点f2dc654，首Git顶层/status/log/reflog/show核对，读当前四文档/阶段页/两技能和真实路径，保留其他既有dirty与空index。完整执行计划 `docs/PIper_CALIBRATION_EXECUTION_PLAN_20261014.md`，四规则引用/阶段页验收编号同步；首个有效试采计入六组（new_pair02—06 fit、07 held-out），旧pair01试采排除，不加第七组。
+- 已证实的下一工具缺口：export与部分分析仍绑定pair01旧目录/字段；RGB-D订阅工具需要/joint_states_feedback但该只读真实来源尚未现场验证。阶段1限定补多组导出/输入与真实静止空跑；不会把原AUTO0全控制栈当只读源，也不会因auto_enable=false声称生产driver没有控制接口。实物接触/中心仍要阶段3实际确认，不以fixture/默认SDK值补造。
+- 只读路径核对：原入口/home/johnwick/start_brain_robot_cube_real.sh、piper_ros实际driver、原astra相机组件；本轮之前宿主ps见detector launcher/node及debug image_view残留，未见匹配实体driver/camera/Servo/search/grasp，不据此声称实时图像/关节流有效。本轮普通沙箱ps只见自身不是宿主进程证据。当前q/使能未新读，不声称失能/链路已恢复或仍故障。
+- sha256sum实际入口/task/detector/executor/adapter rc0，分别87039bdb…/7d0e2c0d…/154938b0…/2144f223…/a5074c61…与冻结值相同；根54%/35G和共享73%/139G为本轮之前最新容量实查，不触发删除。没有新SDK/ROS栈/节点管理/运动/夹爪或固件命令，未复跑上一76离线测试来冒称新实机证据。
+- 阶段4报告须拆分X_G_D及工具内中心，六组预先5fit/1validation；阶段5批准后阶段6按真实camera_link内部光学TF组合部署，不混frame/偷偷改TCP。阶段7才另行获批原入口视觉开环基线，不要求冻结后近距深度持续有效，但保留原adapter/反馈/限位/完整轨迹检查，以三次真实离桌至少一次作为基线。
+- 验证按本轮文档范围：指定diff/check与原生产SHA核对，Git只限定六文档；本地提交后记录commit/状态，GitHub未新推送/不重复已证实的认证失败。下一阶段1工具局部改法确认后核验与静止空跑，实体六组需操作者实际摆位/夹紧/释放原位和逐组返回观测授权；不是等待Claude源码或重做底层巡检。
+
 ## 2026-10-14 20:16 +08:00：第0步独立补齐，真实面候选/显式D-C/采集前检查
 
 - 起点3125b05；用户明确无Claude源码并允许自主继续第0步。首Git恢复/最新四文档与阶段页/技能核对，仅已有test_near_depth_wiring和其他全树既有dirty保留。ROS2/手术式技能将改动限定离线工具与任务记录；不重复旧CAN/固件/limits/物理实测，未启动ROS/CAN/SDK或发送运动。
