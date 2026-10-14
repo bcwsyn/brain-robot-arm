@@ -10,6 +10,8 @@ Claude附件仅输出日志：29mm候选面/中心有用但坐标frame及完整c
 
 本轮本地限定提交与GitHub状态见最新进度；全历史分叉不盲pull或整体push，不包含其他dirty/水杯工程。下一先运行本文阶段页的离线检查，不自动一键AUTO1、刷写/MasterSlaveConfig/ResetPiper/失能。
 
+限定提交已本地保存 `3d05fa8`（17路径），51测试/原始哈希/生产冻结验证通过。以远端402f5e1为父链的交付分支有9d2c50a+b1ed470，只这17路径版本与3d05fa8完全一致（diff quiet rc0），没有上传本地主任务积压；稀疏交付目录两根任务文档最初被skip-worktree漏暂存，明确只解除两条索引位后补提交，不丢失其他改动。普通GIT_TERMINAL_PROMPT=0 git push origin piper-pair01-publish-20261014:main因用户名认证失败，独立远端仍402f5e1，**本轮未同步GitHub**；上一pair01数据仍已发布。用户自己的终端可尝试同一普通push，成功后代理独立核b1ed470再给新目录URL；不强推/改凭据/反复自动重试。
+
 ## 历史环境检查（2026-10-14 18:18 +08:00：磁盘充足，无需清理）
 
 本轮 df -hT / /home/johnwick /tmp /mnt/hgfs/ub、df -ih 均 rc0：系统分区总量 78G、可用 35G、使用率 54%，/home/johnwick 与 /tmp 共用；根分区 inode 使用率 19%。共享文件系统总量 501G、可用 139G、使用率 73%，不是仓库本身大小。未触发根分区 85% 清理阈值，没有清理或删除文件；历史 Git 只读问题不由当前容量解释。

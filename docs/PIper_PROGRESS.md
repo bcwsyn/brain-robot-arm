@@ -11,6 +11,8 @@
 - 根盘df54%/35G、共享73%/138G，没清盘/删除。普通apply_patch创建新证据父目录失败，已完成的脚本更改保留；仅require_escalated mkdir指定新证据目录+复制四个有限分析产物，没chmod/改挂载。共472483B报告/衍生图，所有原始数据保持；规范证据docs/evidence/piper_calibration_prepare_20261014，完整阶段页docs/PIper_CALIBRATION_TASK_20261014.md。
 - 生产文件只读hash入口87039bdb…、task7d0e2c…、detector154938b…、executor source2144f2…、adaptera5074c…未变。无实体命令、新SDK反馈/复位/失能/CAN重载；不从发布或离线成功推断反馈已恢复。未完成/阻断：Claude源码/frame缺失、实际夹紧同中心/夹深待核、正式新六组未采、安装拟合未采用/实物抓取未完成。下一先复用中心源码与坐标检查，一组同点实际合格后才扩六组；回观测逐组授权，连续两实机会话无有效证据停实测、记录，不继续补生产算法。
 - 最终source ROS后的三指定pytest文件 **51 passed/0 skipped/rc0**，新增合成SDK序列化空跑验证字段和3s/30样本规则，不当实际接触。fit CLI对本轮缺实体中心的模板按预期rc2/candidate null，拒绝“补猜数”；独立schema拒绝JSON保存home/paired_template_refusal_20261014.json。一次未限定的git diff --check读到用户既有大量CRLF差异（无修改），改为只检查本轮指定路径/索引，不顺手修旧格式。
+- 本轮实现本地提交 **3d05fa8aa4dd19bcfd5b125435e909196a6738ab**：17指定路径，git diff --cached --check和git show --check rc0、该批路径干净，其他约840既有dirty未纳入。有限报告/衍生图472483B，加四规则文档/工具总范围无新巨大文件或令牌命中。以远端402f5e1为基底，干净交付worktree快进后只复制已审查这17路径，9d2c50a先15路径；CODEX_TASK_PROMPT/HANDOFF虽取出但skip-worktree导致add--sparse未收，未谎称17发布完整，用update-index --no-skip-worktree只解除两根文档位后补b1ed470。两发布提交全范围最终与3d05fa8这17路径diff--quiet rc0，无规范主树merge/reset/其它pending历史上传。
+- 普通 **GIT_TERMINAL_PROMPT=0 timeout -k2s20s git push origin piper-pair01-publish-20261014:main** 认证失败（Git fatal/rc128：could not read Username/terminal prompts disabled）；独立timeout-k2s20s git ls-remote origin main rc0仍 **402f5e12481f31a988920b41391626e6238ca5af**。发布目标b1ed47089ca5453e456b65a21183f98b7d80a5be尚未远端，不给新SHA URL冒充可访问、不改凭据/强推/无限重试；本轮只本地实现与交接提交，旧pair01已发布仍有效。用户自己的已认证终端可普通推同一指定分支，成功后再独立核SHA。当前可从规范本地阶段页/证据接手；新增Git认证阻断与真实中心/新鲜反馈缺口分别记录，不归咎硬件或磁盘。
 
 ## 历史2026-10-14 18:18 +08:00：磁盘容量检查通过，最新断点按已提交记录保留
 
