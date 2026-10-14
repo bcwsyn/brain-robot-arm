@@ -1,3 +1,14 @@
+## 2026-10-14 22:22 +08:00：获准只读采集桥/SDK解析复用，119回归通过
+
+- 用户后续已明确批准受限CAN激活和只读采集；sudo -n true无错误，现接口STOPPED/DOWN/gs_usb/3-1.2:1.0。仅固定1Mbps/.75/txqueuelen1000/UP，若现有UP有效则复用，不重载USB/驱动或发送实体控制。先提交本批软件/预检检查点，实际激活和数据结果在下一记录，不继续等待已批准范围。
+
+- 前批限定提交7d143ed/16路径/show--check0/指定干净，用户异步明确同意“补齐只读采集反馈”。本批仅新增calibration_readonly_feedback.py及test、SDK collect安装接收parser、同步规则/有限预检证据；不改生产driver/算法/门/TF/模型/限位或入口。技能仍按actual源码与限定变更执行，原dirty保留。
+- 复用原driver _parse_can_feedback 的接收ID范围/减0xFF，通过copy.copy保留帧flag/payload/戳/通道且不变更原message，仅ParseCANFrame。回调装在CreateCanBus后/ConnectPort(piper_init=False)前；无任何CAN发送/查询/接口配置。独立桥仅/joint_states_feedback六轴q/速度遥测，原q_mdeg/1000*.017444及速度*.001，header为SDK joint接收浮点转换ns（不是硬件/逐电机精确时戳）；旧/重复/非有限值不发布，不计时器造新戳，不猜gripper effort/velocity。现SDK采集原fresh/window标准不改。
+- 只读新现状：can0索引由3变6，DOWN/qlen10/RX0/TX0；没有运行driver/camera/Servo/search等，变化原因未知。本桥预检 --output home/calibration_stage1_20261014.vxGdfP/readonly_feedback_bridge_preflight.json --duration-s8 rc2，samples0/published0/actual=null/error DOWN；在ROS/CAN构造前明确退出，不激活/重载、不重复原6秒无帧采集。有限原结果复制到stage1，SHA d120e55f7a712612dbc73ddf22219efe64ae7e5277f7206a9d4287d4a3eebb27。
+- 新回归ID边界/字段与源不变/遥测单位/源戳重复/陈旧/无控制接口/有界时长/覆盖拒绝/Down不打开设备；与旧paired/static/bundle初94pass。最终六指定pytest **119 passed/0 skipped/rc0/4.47s**。实际安装C_PiperParserV2/PiperMessage仅纯协议CLI把合成0x3A4/5/6解成[1000,-2000,3000,-4000,5000,-6000]毫度，原帧不改/rc0，未构造SDKinterface或ROS/CAN，不冒充当前q。
+- 已补软件接入代码/完整回归，但真实有流ROS发布和完整静止RGB-D包仍未验证；不能用DOWN预检/纯合成解码认阶段1通过。下一接口恢复或另行批准固定参数激活现can0后，只读桥+原静止包核验；不等已批准软件范围，不重刷固件/Reset/MasterSlave、重开全控制栈或直接回观测/抓取。当前实际q/使能未知，软件不自动驱动或失能。
+- 本批Git只三采集源/测试、六规则阶段文件、证据README及新预检原JSON；原阶段1四源SHA/原115/五生产SHA保持。只本地提交/未重复缺认证push；前后两批都保留独立结果，不覆盖前次失败。CAN状态变化与Git认证/空间分别记录，不声称唯一硬件故障。
+
 ## 2026-10-14 22:07 +08:00：阶段1局部工具通过，真实静止空跑缺反馈
 
 - 起点ea247dd。用户“确认进行下一步”授权已列三个工具和静止只读采集；首Git五命令、当前四规则/阶段页与两技能核验，原README/vendor/reference/test_near_depth_wiring及其他dirty保留。surgical-change限定三个工具和新测试；ros2-piper-debug按实际组件/消息与已运行节点环境核查，不改DDS泛用设置/生产控制/原入口。

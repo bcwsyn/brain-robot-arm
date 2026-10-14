@@ -11,6 +11,7 @@ import math
 from pathlib import Path
 import sys
 import time
+from calibration_readonly_feedback import install_receive_parser
 
 
 def snapshot(piper, now, started):
@@ -70,6 +71,7 @@ def collect(output, duration_s, interface_factory=None):
     error = None
     try:
         piper.CreateCanBus('can0', judge_flag=False)
+        install_receive_parser(piper)
         piper.ConnectPort(piper_init=False)
         while time.monotonic() - begin < duration_s:
             samples.append(snapshot(piper, time.time(), started))
@@ -79,6 +81,7 @@ def collect(output, duration_s, interface_factory=None):
     finally:
         piper.DisconnectPort()
     report = {'read_only': True, 'piper_init': False, 'motion_commands_sent': False,
+              'receive_id_mapping': '0x3A0..0x3A7 -> id - 0xFF; original deployed driver',
               'samples': samples, 'quality': summarize(samples), 'error': error}
     with output.open('x', encoding='utf-8') as stream:
         json.dump(report, stream, indent=2, allow_nan=False)
