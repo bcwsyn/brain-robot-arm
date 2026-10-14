@@ -2004,6 +2004,29 @@ private:
     return true;
   }
 
+  bool ReserveReviewedVisualCameraTravel(const std::string & stage, bool automatic_segment,
+    const std::vector<grasp_geometry::Point> & camera_path)
+  {
+    if (!CanRetryVisualTranslation(stage, automatic_segment) || !near_path_allowance_ready_) {
+      return true;  // Preview, coarse approach and final capture keep their original contract.
+    }
+    try {
+      const double arc = near_depth::ReviewedCameraArc(camera_path);
+      const auto budget = near_depth::ReserveReviewedTravel(near_reviewed_camera_travel_m_,
+        near_path_max_travel_m_, arc, near_depth_prediction_max_travel_m_);
+      near_reviewed_camera_travel_m_ = budget.first;
+      near_path_max_travel_m_ = budget.second;
+      RCLCPP_INFO(get_logger(), "%s REVIEWED_CAMERA_TRAVEL segment_arc=%.9f "
+        "reviewed_total=%.9f measured_total=%.9f allowance=%.9f "
+        "ORIGINAL_EPISODE_SLACK_NOT_NEW_DEPTH", stage.c_str(), arc,
+        near_reviewed_camera_travel_m_, near_camera_travel_m_, near_path_max_travel_m_);
+      return true;
+    } catch (const std::invalid_argument & error) {
+      RCLCPP_ERROR(get_logger(), "%s camera review failed: %s", stage.c_str(), error.what());
+      PublishDiagnostic(stage + "_REVIEWED_CAMERA_PATH_INVALID"); return false;
+    }
+  }
+
   bool ExecuteVisualPose(
     const geometry_msgs::msg::PoseStamped & target,
     const std::shared_ptr<moveit::core::RobotState> & state, const std::string & stage,
@@ -2087,6 +2110,11 @@ private:
     if (!planned) {return false;}
     const auto start_pose = state->getGlobalLinkTransform(end_effector_link_);
     const Eigen::Vector3d local_tip(0, 0, gripper_tip_offset_m_);
+    const Eigen::Vector3d camera_offset(near_checked_camera_offset_[0],
+      near_checked_camera_offset_[1], near_checked_camera_offset_[2]);
+    const auto start_camera = start_pose * camera_offset;
+    std::vector<grasp_geometry::Point> reviewed_camera_path{
+      {start_camera.x(), start_camera.y(), start_camera.z()}};
     std::size_t accepted_points = 0;
     for (const auto & point : plan.joint_trajectory.points) {
       moveit::core::RobotState planned(*state);
@@ -2131,6 +2159,8 @@ private:
         }
         PublishDiagnostic(stage + "_POSE_STEP_BOUND_REJECTED"); return false;
       }
+      const auto checked_camera = pose * camera_offset;
+      reviewed_camera_path.push_back({checked_camera.x(), checked_camera.y(), checked_camera.z()});
       ++accepted_points;
     }
     const auto before_output = FreshMeasuredState(stage + "_BEFORE_OUTPUT");
@@ -2143,6 +2173,11 @@ private:
           before_output->getVariablePosition(name));
         PublishDiagnostic(stage + "_START_FEEDBACK_CHANGED"); return false;
       }
+    }
+    // Only after full planning, original limits/step checks, suffix clipping
+    // and fresh start feedback. Nothing reserves a failed or unexecuted suffix.
+    if (!ReserveReviewedVisualCameraTravel(stage, completed != nullptr, reviewed_camera_path)) {
+      return false;
     }
     if (!ExecuteArmTrajectory(plan.joint_trajectory)) {return false;}
     const auto & end = plan.joint_trajectory.points.back();
@@ -2468,6 +2503,9 @@ private:
       Fail("AUTOMATIC_RGB_PATH_BUDGET_INVALID"); return;
     }
     near_path_max_travel_m_ = near_camera_travel_m_ + camera_arc + extra;
+    near_reviewed_camera_travel_m_ = near_camera_travel_m_;
+    near_checked_camera_offset_ = {tool_to_camera.translation().x(),
+      tool_to_camera.translation().y(), tool_to_camera.translation().z()};
     near_path_max_age_s_ = std::max(near_depth_prediction_max_age_s_, age +
       (now().nanoseconds() - near_seed_stamp_ns_) * 1e-9);
     near_path_allowance_ready_ = true;
@@ -2475,12 +2513,15 @@ private:
       "AUTOMATIC_RGB_CHECKED_PATH camera_arc=%.4f tip_arc=%.4f extra=%.4f max_steps=%.0f",
       camera_arc, tip_arc, extra, iterations);
     std::size_t cursor = 0;
+    std::size_t motion_steps = 0;
+    const auto motion_limit = static_cast<std::size_t>(iterations);
+    const auto cycle_limit = near_depth::FiniteRgbCycleLimit(motion_limit, waypoints.size());
     trajectory_msgs::msg::JointTrajectory last_trajectory;
     geometry_msgs::msg::PoseStamped last_goal;
     gg::DirectedPose completed_reachable;
     std::size_t completed_reachable_cursor = waypoints.size();
     for (std::size_t step = 0; rclcpp::ok() && !cancel_requested_ &&
-      step < static_cast<std::size_t>(iterations) && cursor < waypoints.size(); ++step)
+      step < cycle_limit && cursor < waypoints.size(); ++step)
     {
       if (!WaitApproachVisualBox()) {Fail("AUTOMATIC_RGB_FRESH_TARGET_UNAVAILABLE"); return;}
       const auto state = FreshMeasuredState("AUTOMATIC_RGB_APPROACH");
@@ -2539,6 +2580,9 @@ private:
         }
         continue;
       }
+      if (motion_steps >= motion_limit) {
+        Fail("AUTOMATIC_RGB_CHECKED_MOTION_BUDGET_EXHAUSTED_NO_CLOSE"); return;
+      }
       last_goal.header.frame_id = lift_reference_frame_; last_goal.header.stamp = now();
       last_goal.pose.position.x = goal.origin[0]; last_goal.pose.position.y = goal.origin[1];
       last_goal.pose.position.z = goal.origin[2]; last_goal.pose.orientation.x = goal.orientation[0];
@@ -2553,6 +2597,9 @@ private:
         view.box.right, view.box.bottom, gaze ? "true" : "false", recovery ? "true" : "false");
       near_last_command_image_stamp_ns_ = view.valid ? view.stamp_ns : near_last_image_stamp_ns_;
       bool selected_reachable = false;
+      ++motion_steps;
+      RCLCPP_INFO(get_logger(), "AUTOMATIC_RGB_MOTION_BUDGET commands=%zu/%zu cycle=%zu/%zu "
+        "WAYPOINT_CHECKS_NOT_MOTION", motion_steps, motion_limit, step, cycle_limit);
       if (!ExecuteVisualPose(last_goal, state, "AUTOMATIC_RGB_STEP_" + std::to_string(step),
         approach_microstep_m_, angle_limit, &last_trajectory, &last_goal, &selected_reachable)) {
         Fail("AUTOMATIC_RGB_STEP_EXECUTION_FAILED"); return;
@@ -4857,6 +4904,8 @@ private:
   bool near_path_allowance_ready_{false};
   double near_path_max_age_s_{0};
   double near_path_max_travel_m_{0};
+  double near_reviewed_camera_travel_m_{0};
+  grasp_geometry::Point near_checked_camera_offset_{};
   bool near_depth_tracking_active_{false};
   double near_depth_prediction_max_age_s_{30.0};
   double near_depth_prediction_max_travel_m_{.030};

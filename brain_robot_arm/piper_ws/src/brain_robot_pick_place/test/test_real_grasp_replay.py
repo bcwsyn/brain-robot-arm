@@ -44,6 +44,37 @@ def test_static_entry_waits_for_sampled_tf_before_gripper_or_approach():
 DETECTOR = Path(__file__).parents[1] / "src" / "cup_detector_node.cpp"
 
 
+def test_reviewed_camera_allowance_is_only_reserved_after_retained_limits_and_feedback():
+    source = EXECUTOR.read_text()
+    body = source[source.index("bool ExecuteVisualPose("):source.index("void VisualMicrostepPreview()")]
+    reserve = body.index("ReserveReviewedVisualCameraTravel(stage,")
+    assert body.index("RealTrajectoryWithinLimits(") < reserve
+    assert body.index("ClipCheckedJointPrefix(") < reserve
+    assert body.index('FreshMeasuredState(stage + "_BEFORE_OUTPUT")') < reserve
+    assert reserve < body.index("ExecuteArmTrajectory(plan.joint_trajectory)")
+    assert body.index("reviewed_camera_path.push_back") < reserve
+    allowance = source[source.index("bool ReserveReviewedVisualCameraTravel("):
+                       source.index("bool ExecuteVisualPose(")]
+    assert "CanRetryVisualTranslation(stage, automatic_segment)" in allowance
+    assert "near_path_allowance_ready_" in allowance
+    assert "near_depth::ReserveReviewedTravel" in allowance
+    assert "near_seed_stamp_ns_ =" not in allowance
+    assert "locked_target_reference_ =" not in allowance
+
+
+def test_waypoint_checks_have_separate_finite_command_accounting():
+    source = EXECUTOR.read_text()
+    body = source[source.index("void AutomaticRgbApproach("):source.index("bool WaitCoarseDepthView(")]
+    assert "FiniteRgbCycleLimit(motion_limit, waypoints.size())" in body
+    assert "step < cycle_limit" in body
+    reached = body[body.index("if (!view_motion && RgbWaypointReached"):
+                   body.index("last_goal.header.frame_id")]
+    assert "++cursor" in reached and "++motion_steps" not in reached
+    assert "motion_steps >= motion_limit" in reached
+    assert body.count("++motion_steps") == 1
+    assert body.index("++motion_steps") < body.index("if (!ExecuteVisualPose(")
+
+
 def test_visual_preview_is_off_and_strictly_bounded_on_real_default():
     params = yaml.safe_load(CONFIG.read_text())["grasp_lift_executor"]["ros__parameters"]
     assert params["visual_microsteps_enabled"] is False

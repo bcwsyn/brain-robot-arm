@@ -1,4 +1,10 @@
-## 最新接续（2026-10-14：原RGB参考已实体生效，新最早停止为旧累计行程预算）
+## 最新接续（2026-10-14：用户批准已检查纠偏路径预算，候选构建中）
+
+接续52 actual+19 near+21 Python/build0，候选70c3381…/source2144f22…/头567377f…未部署，原actual9ea9fc1保持。下一限定提交/备份单executor与源头→唯一原AUTO1，本预算授权已批准、不等重复同意；未改几何/TF，不重复旧隔离规划/底层。详细piper_reviewed_travel_budget_20261014.md，尚未抓取完成。
+
+最新“好”批准上述具体预算实施与原一键实测，不再等同意。仅原executor：裁切/检查/起点反馈通过后用保留路径FK累计相机弧长，原30mm只一次，原75运动额度与最多36路点推进分开，≤111总循环，不引入无限重试或重复填额度。原目标/深度种子图戳/TF/TCP/MoveIt/8mm1°/.08rad/最终中心夹持保持。构建候选中，尚未部署/新运动，actual f0da36c…/detectorc99e450…/原入口保持，host无旧栈；21Python已通过，下一52actual方法/near数值回归后备份9ea9fc1单executor部署→唯一AUTO1。94%原清理rc0仍94%/5GB，无额外删除。详细piper_reviewed_travel_budget_20261014.md；用户dirty/远端分叉历史审查保持，仅本地。
+
+## 历史接续（原RGB参考实物已生效，新停止为旧累计行程预算）
 
 9ea9fc1原AUTO1已观测/SEARCH/ALIGN/GRASP_READY/12粗段/38末段实际停稳，四段联合姿态位置实际生效，当前RGB框中心(.506,.548)/center_covered1/完整方块可见；FullView恢复标志未出现，不谎称旧出画空循环已全面实体验收。新stop是step52/14-36 PREDICTION_RANGE_EXHAUSTED，原6点Cartesian已通过，名义两段camera_arc+.03未包含持续纠偏实际轨迹；内部software_stop传播EOG_OR_EXTERNAL_EMERGENCY_STOP，不归因用户按急停。未下降/最终闭爪/抬升/释放，中心门没调用，非CAN或75次数耗尽。主rc1，exact/live INT0、host全部退出；新SDK7750.504/high100Hz/六true/速度0/q[-.394025532,1.715588842,-1.168061602,.302762265,.905564082,-.462198093]/99.6mm无错，未Reset/Disable。actual f0da36c…/c99e450…/原入口87039b…保持，旧d051bf5备份完整。下一需具体批准预算核算局部修正（按已检查实际纠偏轨迹计入，不盲增数字/取消模型身份或反馈）；新代码尚未写，不复跑旧失败路或底层。详见piper_rgb_reference_20261014.md与run小快照，Git仅本地/分叉审查和用户dirty保持。
 

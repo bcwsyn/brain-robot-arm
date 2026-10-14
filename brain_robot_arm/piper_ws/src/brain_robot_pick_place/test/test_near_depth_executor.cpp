@@ -84,6 +84,18 @@ struct NearDepthReplayAccess
     n.automatic_rgb_approach_enabled_ = true; n.terminal_target_frozen_ = true;
     n.near_depth_tracking_active_ = true; n.coarse_depth_tracking_ = false;
   }
+  static void InitialReviewedBudget(GraspLiftExecutor & n) {
+    FrozenApproach(n); n.near_path_allowance_ready_ = true;
+    n.near_reviewed_camera_travel_m_ = .01; n.near_path_max_travel_m_ = .21;
+  }
+  static bool ReserveCamera(GraspLiftExecutor & n,
+    const std::vector<grasp_geometry::Point> & path, bool automatic = true) {
+    return n.ReserveReviewedVisualCameraTravel("AUTOMATIC_RGB_STEP_52", automatic, path);
+  }
+  static auto CameraBudget(GraspLiftExecutor & n) {
+    return std::make_pair(n.near_reviewed_camera_travel_m_, n.near_path_max_travel_m_);
+  }
+  static void CoarseStage(GraspLiftExecutor & n) {n.coarse_depth_tracking_ = true;}
   static bool WaypointReached(const grasp_geometry::DirectedPose & current,
     const grasp_geometry::DirectedPose & nominal,
     const grasp_geometry::DirectedPose * completed = nullptr) {
@@ -302,6 +314,39 @@ TEST_F(NearDepthExecutor, ActualGuardCentresRgbBeforeTheObjectReachesImageEdge)
   ASSERT_TRUE(NearDepthReplayAccess::ViewGoal(*node, goal, camera,
     {.4, .6, .6, .8}, {.03, .10, .3}));
   EXPECT_GT(grasp_geometry::QuaternionDistance(goal.orientation, {0, 0, 0, 1}), .01);
+}
+
+TEST_F(NearDepthExecutor, ActualReviewedReservationPreservesLockAndEpisodeSlack)
+{
+  NearDepthReplayAccess::InitialReviewedBudget(*node);
+  const auto lock = NearDepthReplayAccess::Lock(*node);
+  ASSERT_TRUE(NearDepthReplayAccess::ReserveCamera(*node, {{0, 0, 0}, {.25, 0, 0}}));
+  const auto budget = NearDepthReplayAccess::CameraBudget(*node);
+  EXPECT_NEAR(budget.first, .26, 1e-12); EXPECT_NEAR(budget.second, .29, 1e-12);
+  EXPECT_EQ(NearDepthReplayAccess::Lock(*node), lock);
+  ASSERT_TRUE(NearDepthReplayAccess::ReserveCamera(*node, {{0, 0, 0}, {0, 0, 0}}));
+  EXPECT_EQ(NearDepthReplayAccess::CameraBudget(*node), budget);
+}
+
+TEST_F(NearDepthExecutor, ReservationDoesNotChangePreviewOrCoarseEpisode)
+{
+  const std::vector<grasp_geometry::Point> path{{0, 0, 0}, {.25, 0, 0}};
+  NearDepthReplayAccess::InitialReviewedBudget(*node);
+  const auto budget = NearDepthReplayAccess::CameraBudget(*node);
+  EXPECT_TRUE(NearDepthReplayAccess::ReserveCamera(*node, path, false));
+  EXPECT_EQ(NearDepthReplayAccess::CameraBudget(*node), budget);
+  NearDepthReplayAccess::CoarseStage(*node);
+  EXPECT_TRUE(NearDepthReplayAccess::ReserveCamera(*node, path));
+  EXPECT_EQ(NearDepthReplayAccess::CameraBudget(*node), budget);
+}
+
+TEST_F(NearDepthExecutor, InvalidReviewedPathCannotGrantCameraTravel)
+{
+  NearDepthReplayAccess::InitialReviewedBudget(*node);
+  const auto budget = NearDepthReplayAccess::CameraBudget(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::ReserveCamera(*node, {{0, 0, 0}}));
+  EXPECT_FALSE(NearDepthReplayAccess::ReserveCamera(*node, {{0, 0, 0}, {NAN, 0, 0}}));
+  EXPECT_EQ(NearDepthReplayAccess::CameraBudget(*node), budget);
 }
 
 TEST_F(NearDepthExecutor, ActualGuardImpossibleFixedTipDoesNotReturnStationaryRecovery)

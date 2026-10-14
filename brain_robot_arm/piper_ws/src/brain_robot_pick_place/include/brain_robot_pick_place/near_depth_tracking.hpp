@@ -2,10 +2,57 @@
 
 #include <array>
 #include <cmath>
+#include <limits>
+#include <utility>
+#include <vector>
 #include "brain_robot_pick_place/visual_grasp_feedback.hpp"
 
 namespace brain_robot_pick_place::near_depth
 {
+// Retained, completely checked trajectory samples only. Starting camera
+// position is included; a discarded suffix cannot replenish this allowance.
+inline double ReviewedCameraArc(const std::vector<grasp_geometry::Point> & camera_path)
+{
+  if (camera_path.size() < 2) {throw std::invalid_argument("Empty reviewed camera path");}
+  double arc = 0;
+  for (std::size_t i = 0; i < camera_path.size(); ++i) {
+    for (double v : camera_path[i]) {
+      if (!std::isfinite(v)) {throw std::invalid_argument("Nonfinite reviewed camera path");}
+    }
+    if (i > 0) {
+      arc += std::hypot(std::hypot(camera_path[i][0]-camera_path[i-1][0],
+        camera_path[i][1]-camera_path[i-1][1]), camera_path[i][2]-camera_path[i-1][2]);
+    }
+  }
+  if (!std::isfinite(arc)) {throw std::invalid_argument("Overflowed reviewed camera arc");}
+  return arc;
+}
+
+inline std::pair<double, double> ReserveReviewedTravel(
+  double reviewed, double previous_limit, double segment_arc, double extra)
+{
+  for (double v : {reviewed, previous_limit, segment_arc, extra}) {
+    if (!std::isfinite(v) || v < 0) {throw std::invalid_argument("Invalid reviewed travel budget");}
+  }
+  if (previous_limit <= 0 || extra <= 0 || !std::isfinite(reviewed+segment_arc+extra)) {
+    throw std::invalid_argument("Invalid reviewed travel allowance");
+  }
+  const double cumulative = reviewed+segment_arc;
+  // The original episode slack is applied ONCE, not added on each retry.
+  return {cumulative, std::max(previous_limit, cumulative+extra)};
+}
+
+inline std::size_t FiniteRgbCycleLimit(std::size_t motion_limit, std::size_t waypoint_count)
+{
+  if (!motion_limit || !waypoint_count ||
+    motion_limit > std::numeric_limits<std::size_t>::max()-waypoint_count) {
+    throw std::invalid_argument("Invalid finite RGB cycle budget");
+  }
+  // Each loop either advances one waypoint, outputs one bounded motion, or
+  // faults. A no-motion arrival check is not a consumed motion command.
+  return motion_limit+waypoint_count;
+}
+
 // Factory calibration is read from the running detector, not copied into a
 // second YAML. All image coordinates below are normalized ORIGINAL RGB.
 struct Calibration

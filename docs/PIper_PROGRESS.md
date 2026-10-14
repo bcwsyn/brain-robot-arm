@@ -1,4 +1,12 @@
-## 2026-10-14：原RGB参考统一已实测，新阻断为旧累计相机行程预算
+## 2026-10-14：已检查纠偏路径/有限次数预算获准，局部修复构建中
+
+接续build0/52 actual+19 near+21 Python全部通过；候选70c3381…/source2144f22…/near头567377f…，尚未部署。下一限定提交→备份实际9ea9fc1单executor/源/头→原入口AUTO1实測，detectorc99e450…与入口保持。当前无新运动，完整抓取未完成；该项预算授权已经解决，不再重复等待。具体日志/验证level同证据。
+
+最新用户“好”确认上轮具体预算修复和实测；基线6406768/actual9ea9fc1 executorf0da36c…/sourcea57862a…/detectorc99e450…/原入口87039b…，首五Git/四文件最新路线/两技能及host无旧栈核对。仅原执行器/共享near_depth算术和测试：全部检查/裁切/新起点后，保留轨迹FK相机弧长追加累计reviewed值，许可max(原名义许可,累计reviewed+原30mm)，不将extra每次相加、不用未审核漂移/失败候选/裁掉后缀填额度。原有限运动75（旧实测例）与36路点推进分开，总循环≤111，所有运动限位/TF/世界锁点/最终夹持不改。
+
+21Python通过，构建grasp_lift_executor/near_depth_executor_test/near_depth_tracking_test session63072进行中，未部署/新运动；首次apply_patch因无关测试上下文未匹配整体失败、随后限定两正确文件成功，不当编译或硬件失败。94%按原clean_disk_space.sh rc0仍94%/5GB，未额外删除。下一52actual方法与near数值回归→单executor备份/部署→原AUTO1三图/反馈实測，不重复未改几何的旧域78规划或基础CAN限位查询。详细[evidence/piper_reviewed_travel_budget_20261014.md](evidence/piper_reviewed_travel_budget_20261014.md)，Git仅本地未同步，分叉/全历史审查和用户wiring/vendor/reference保持。
+
+## 历史：原RGB参考统一已实测，新停止为旧累计相机行程预算
 
 9ea9fc1/85699a3实际原AUTO1主68129 rc1：PREPARE7472.284/49.1s14点→OBSERVE_POSE_REACHED/SEARCH7521.084→ALIGN7534.458→GRASP_READY7537.215→12粗段→质量冻结225.955mm/原测量戳→39末段尝试/38停稳，四段联合位置朝向实际完成。RGB对齐框中心(.492,.506)、末态(.506,.548)/同帧轮廓覆盖中心true且完整可见，比旧左下(.338,.881)漂移有明确改善，但不等于两指夹持。step52/14-36原Cartesian6点完整通过，执行监测7620.881先PREDICTION_RANGE_EXHAUSTED→内部software_stop→控制FAULT(EOG_OR_EXTERNAL_EMERGENCY_STOP)，非用户急停证据/CAN/中心门/75次数耗尽；没有下降/闭爪/抬升/释放。
 

@@ -6,6 +6,35 @@
 namespace nd = brain_robot_pick_place::near_depth;
 using brain_robot_pick_place::visual_grasp::Box;
 
+TEST(NearDepth, ReviewedCameraArcCountsRetainedPathNotEndpointDistance)
+{
+  EXPECT_NEAR(nd::ReviewedCameraArc({{0, 0, 0}, {.008, 0, 0}, {0, 0, 0}}), .016, 1e-12);
+  EXPECT_DOUBLE_EQ(nd::ReviewedCameraArc({{0, 0, 0}, {0, 0, 0}}), 0);
+  EXPECT_THROW(nd::ReviewedCameraArc({{0, 0, 0}}), std::invalid_argument);
+  EXPECT_THROW(nd::ReviewedCameraArc({{0, 0, 0}, {NAN, 0, 0}}), std::invalid_argument);
+}
+
+TEST(NearDepth, ReviewedBudgetKeepsOriginalSlackOnceNotOnEachStep)
+{
+  auto budget = nd::ReserveReviewedTravel(.01, .21, .10, .03);
+  EXPECT_NEAR(budget.first, .11, 1e-12); EXPECT_NEAR(budget.second, .21, 1e-12);
+  budget = nd::ReserveReviewedTravel(budget.first, budget.second, .15, .03);
+  EXPECT_NEAR(budget.first, .26, 1e-12); EXPECT_NEAR(budget.second, .29, 1e-12);
+  budget = nd::ReserveReviewedTravel(budget.first, budget.second, 0, .03);
+  EXPECT_NEAR(budget.first, .26, 1e-12); EXPECT_NEAR(budget.second, .29, 1e-12);
+  EXPECT_THROW(nd::ReserveReviewedTravel(0, .03, NAN, .03), std::invalid_argument);
+  EXPECT_THROW(nd::ReserveReviewedTravel(0, .03, -.01, .03), std::invalid_argument);
+}
+
+TEST(NearDepth, WaypointChecksDoNotConsumeFiniteMotionCommands)
+{
+  EXPECT_EQ(nd::FiniteRgbCycleLimit(75, 36), 111u);
+  EXPECT_THROW(nd::FiniteRgbCycleLimit(0, 36), std::invalid_argument);
+  EXPECT_THROW(nd::FiniteRgbCycleLimit(75, 0), std::invalid_argument);
+  EXPECT_THROW(nd::FiniteRgbCycleLimit(std::numeric_limits<std::size_t>::max(), 1),
+    std::invalid_argument);
+}
+
 static nd::Calibration Factory()
 {
   return {640, 480, 488.86849976, 488.86849976, 310.73052979, 209.03765869, false,
@@ -42,6 +71,22 @@ TEST(NearDepth, ZeroDepthCanUseLockedModelAndFreshAssociatedRGB)
   Example e;
   EXPECT_EQ(e.reject(), nullptr);
   EXPECT_DOUBLE_EQ(e.evidence.seed_age_s, 3);  // Colour acceptance does not refresh depth age.
+}
+
+TEST(NearDepth, ReviewedTravelFixesRangeAccountingWithoutBypassingFeedbackOrAge)
+{
+  Example e; e.evidence.camera_travel_m = .28;
+  EXPECT_STREQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, .20, e.rgb_residual_m, .04), "PREDICTION_RANGE_EXHAUSTED");
+  const auto budget = nd::ReserveReviewedTravel(.01, .20, .28, .03);
+  EXPECT_EQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, budget.second, e.rgb_residual_m, .04), nullptr);
+  e.evidence.fresh_six_axis_feedback = false;
+  EXPECT_STREQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, budget.second, e.rgb_residual_m, .04), "FEEDBACK_OR_IMAGE_TF_UNAVAILABLE");
+  e.evidence.fresh_six_axis_feedback = true; e.evidence.seed_age_s = 30.1;
+  EXPECT_STREQ(nd::PredictionRejection(e.seed, e.evidence, e.box, e.projection,
+    .6, 30, budget.second, e.rgb_residual_m, .04), "PREDICTION_RANGE_EXHAUSTED");
 }
 
 TEST(NearDepth, NoInitialReliableLockNeverBecomesDepthOnlyGrasp)
