@@ -1,4 +1,8 @@
-## 2026-10-14：d051bf5完成部署/回归，实测观测中CAN接收停止
+## 2026-10-14：用户已恢复，真实RX/高速反馈验证后原AUTO1接续
+
+首五Git/实际路径/无旧栈核对，HEAD153dc64/actual d051bf5 d4c7063…/入口87039b…不变。新can0 ifindex10初DOWN/RX0，sudo0/一次固定1Mbps/.75/queue1000/up rc0后RX51→2391一秒/errors0；未重载USB/gs_usb/xHCI。SDK3653.361/high100Hz有新stamp，q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]/六enablefalse/速度0/99.6mm无错，确实未使能不是旧默认；按原启动使能/当前→观测，不推断恢复细节。根93%/5.9GB原清理0/原启动5987MB，不额外删除或重做构建。原AUTO1主timeout3864221/session71442、exact3864362/live3864457运行中，目录translation_recovered_*，下一同一次日志/三图/新平移候选/真正靠近，不重复启动；完整目标未完成。详见[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)。用户dirty/远端分叉保持，仅本地未同步GitHub。
+
+## 历史：d051bf5部署后上次观测CAN停止
 
 actual d4c7063…/CPP19d4b4e…、46实际方法+10RGB回归通过/旧c0f56da备份，原脚本/检测器/配置不变。原AUTO1主143且host确认退出：7/7→PREPARE3090.014/12点接受，约26s后09:58:30 CAN_RX_STALLED_3S与同刻新xHCI TRB DMA错误；未观测到位/搜索/新平移候选/闭爪，不把软件成功当实体成功。UP配置正确RX124744968持续不增长，USB在/sudo0；新接收SDK3183.929 stamp0/Hz0，默认q0/false不是实体失能/零位。最后真实3106.715 q[-.268061948,1.670297888,-1.260991872,.038498908,.781351648,-.078009568]rad/99.6mm仅旧断点。原cleanup无Disable/Reset/回零，collector精确INT0/无栈；最后RGB完整方块左下/灯光在，根盘清理后仍约5.9GB无ENOSPC。详细[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)。历史guestUSB/gs_usb/xHCI/Hub恢复多次无效，不重复；下一宿主VMware仅USB-CAN断开重连，不要求重启机械臂，RX/新反馈恢复后同原AUTO1验证d051bf5，不重建/泛查旧基线。当前阻断是外部USB数据面，已批准应用许可保持；Git仅本地未同步（原分叉/历史审查）。
 

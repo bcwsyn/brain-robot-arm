@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+2026-10-14最新用户已恢复：新can0 ifindex10 DOWN，仅一次固定1Mbps/.75/queue1000/up后RX51→2391/一秒，SDK1791943653.361/high100Hz有新stamp。真实六轴enablefalse/静止，q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]/99.6mm，不是旧stamp0默认；原使能流程继续。actual d051bf5 d4c7063…/原入口87039b…不改，无旧栈/未重建。原AUTO1 session71442/timeout3864221，证据translation_recovered_onekey/exact3864362/live3864457运行中，下一同一次日志/三图/推进核对，不重复启动或旧底层。详见docs/evidence/piper_translation_prefix_20261014.md最新接续，原异常保持/最终夹持不变，完整目标未完成。
+
 最新结果2026-10-14：d051bf5平移前缀已部署d4c7063…/46+10回归，原AUTO1到7/7/PREPARE接受12点，但运行期09:58:30 CAN_RX_STALLED_3S与同刻新xHCI TRB DMA错误中止，未观测到位/新末段/闭爪。当前接口UP配置正确RX124744968不增长、SDK新接收stamp0（零位/false只是默认，不能当实际失能），所有栈退出；没有Disable/Reset。按历史不重复guest USB/gs_usb/xHCI/Hub重置或bounce，下一宿主VMware仅USB-CAN断开重连，不要求重启机械臂；RX/新反馈恢复后直接同原AUTO1验收新代码。详见docs/evidence/piper_translation_prefix_20261014.md，完整目标未完成，当前阻断不是已解决的具体代码许可。
 
 2026-10-14最新用户已同意“保留原转向、完整不可达时尝试50%/25%平移→停稳→新RGB实际反馈重规划”。原executor局部实施/针对性构建中，应用尚未部署，基线c0f56da/cf5777e…；原目标/TF/限位碰撞/8mm1°/有限预算/最终中心两指夹持不变。平移前缀不冒称朝向替代或无条件推进，实际执行需完整规划/原反馈，预览/粗靠近不作用。下一回归/备份c0f56da部署→唯一原AUTO1实测，不再等待这个同意；详见docs/evidence/piper_translation_prefix_20261014.md，完整目标未完成。

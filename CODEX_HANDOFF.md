@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：d051bf5已部署，实测观测途中USB反馈停止）
+## 最新接续（2026-10-14：用户已恢复，新接口RX验证通过，同原AUTO1接续中）
+
+HEAD153dc64/actual d051bf5 d4c7063…/入口87039b…不变，无旧栈。新can0 index10初DOWN，仅固定1Mbps/.75/queue1000/up一次rc0，RX51→2391/一秒；SDK3653.361/high100Hz有新stamp、q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]rad/静止/六enablefalse/99.6mm无错，真实未使能非默认，原启动使能继续、不Reset。93%/5987MB原清理rc0，不重新构建/USB重载。原AUTO1 timeout3864221/session71442，证据translation_recovered_onekey/exact3864362/live3864457，下一同一次状态/三图/新平移候选实测，不再要求恢复或重复启动。详情piper_translation_prefix_20261014.md，完整目标未完成，Git仅本地/分叉审查保持。
+
+## 历史接续（上次观测USB停滞，已由上述恢复接续覆盖）
 
 actual d4c7063…/source19d4b4e…、46+10回归，原入口87039b…/detector8e763f4…保持，旧c0f56da备份完整。原AUTO1 7/7→PREPARE3090.014/12点约26s后CAN_RX_STALLED_3S，09:58:30新xHCI TRB DMA错误；主143且host真实主已退出（不同于历史wrapper仍活），未SEARCH/末段/闭爪。当前UP/ERROR-ACTIVE但RX124744968不增长，sudo0/USB在；新SDK3183.929 stamp0/Hz0，q0/enablefalse仅默认值，不能判实体失能/零位。最后有效joint stamp3106.715 q[-.268061948,1.670297888,-1.260991872,.038498908,.781351648,-.078009568]/99.6mm是旧记录。原cleanup不Disable/Reset，两个collector INT0，host无栈。按历史不重复guestUSB/gs_usb/xHCI/Hub或bounce，需宿主VMwareUSB-CAN断开重连（无需机械臂重启）；guest无宿主入口。RX/新反馈恢复后直接原AUTO1验证新候选，不重建/不泛查底层。详情piper_translation_prefix_20261014.md，Git仅本地/分叉历史审查保持。
 

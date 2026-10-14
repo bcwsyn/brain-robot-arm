@@ -59,3 +59,15 @@
 下一先在VMware可移动设备中仅断开/重新连接1d50:606f USB-CAN到此VM；不要求重启机械臂，不刷固件/主从/Reset。恢复后首命令ip -statistics link show can0并短差分，仅接口DOWN/配置不对且sudo0时固定1Mbps/.75/queue1000/up；连续RX+新鲜六轴反馈恢复后直接同原AUTO1验证d051bf5新末段，不重复模型/构建/历史CAN基线。当前完整实体目标未完成；新的实测阻断是USB反馈恢复，不是已解决的应用修改许可。
 
 Git仅本地、未同步GitHub（远端分叉/历史审查未完）。下一接力第一命令cd /mnt/hgfs/ub后git status --short，再读取本条，不把旧“进行中”或SDK零默认当当前状态。
+
+## 用户恢复后接续：新接口一次配置，原AUTO1实测中
+
+用户“已恢复”；首五Git/技能/最新四文档/实际路径核对，HEAD153dc64/actual d051bf5 d4c7063…/原入口87039b…不变，host无旧栈，不修改代码或重复构建。新can0 ifindex10初DOWN、qlen10、RX0（已重新枚举，与旧接口9停滞不同）。sudo-n true0后仅固定type can bitrate1000000 sample-point.75/txqueuelen1000/up一次，rc0；ERROR-ACTIVE/RX51→2391（一秒）、errors/drop0。未USB reset/gs_usb/xHCI重建或bounce已正常链路。
+
+接收SDK rc0 epoch1791943653.360637/high3653.355583/100Hz、joint3653.354604；q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]rad，速度0、六enablefalse，gripper99.6mm/enablefalse无错误。这次有真实新stamp，false是当前实际反馈，不是上轮stamp0的默认值；不推断谁使其失能/用户操作细节。原脚本按既有使能流程开始，不发Reset/复位/校准。
+
+动作清单保持原观测目标[0,.98,-.75,0,.30,0]rad，可动六轴；prepare速度/加速度1%，由实际反馈生成持续时间（近零起点预计20s附近，实际轨迹计）；原adapter最大.189rad/s/物理300及500单位.001rad/s、.001rad/s²/任务min[-1.5,-.3,-1.4,-.8,-1.2,-pi] max[1.5,pi,.4,.8,1.2,pi]不变，末段8mm/1°/.08rad和原中心夹持保持。异常停新输出/保持使能、不未回位掉电；原成功释放/安全回位支撑后才失能。回退备份c0f56da保持，不自动回退。
+
+根93%/5.9GB，只原clean_disk_space.sh rc0仍93%，原启动维护5987MB，无ENOSPC/额外删除。此前按该脚本清理的ROS日志/缓存不可依赖恢复，源码/构建/本轮证据保留。
+
+唯一命令BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=.../translation_recovered_onekey timeout -s INT -k8s600s /home/johnwick/start_brain_robot_cube_real.sh，session71442/timeout3864221。只读exact python3864362/session83540、observer python3864457/session33328，目录translation_recovered_exact/live，590sINT/-k3s。下一读同一次日志/原RGB/深度/debug/状态，验证d051bf5实际平移候选和继续靠近，不能将恢复或7/7冒称抓取成功。
