@@ -4,7 +4,17 @@
 
 最新机械臂/标定断点仍以以下第一组记录为准：第一组清单已保存且其单文件发布已独立验证，第二组尚未采，安装外参未拟合、完整抓取未完成。本轮仅磁盘只读检查和三份文档留痕，没有新物理反馈或运动。本轮提交前检查，整体本地 main 与缓存 origin/main 为 10/2 分叉，保留已记录的整体发布范围限制；本轮仅本地提交，未同步 GitHub。下一启动/长采前重查 df -hT /，采集按第二组先观测侧再原位人工夹持侧继续。
 
-## 最新同步接续（2026-10-14：第一组JSON已在GitHub，独立核验通过）
+## 最新数据接续（2026-10-14：用户四项复核，原始配对数据包已补齐，待限定发布）
+
+用户要求解决深度散布/统一参考点/内参外参/共享原始数据，并确认方块原位、授权仅沿原观测返回采集。原入口AUTO0→7/7，stop_after_observe=true回读通过、原13点46.2s prepare接受；CLI30s确认先超时但未重启，实际1791972165.585465511 OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH。原collect_static_rgbd 30组/21.094s/rc0：RGB与native uint16 depth配对、depth_info同帧、每帧实际q、spread全0。原脚本退出rc1有残留，精确清理本轮原driver/visual/相机，adapter先disarm/无Disable/Reset。完整采集记录详见进度。
+
+新只读review_calibration_capture.py复用旧注册审查，7测试通过；30帧双峰，10高支撑median440mm/range440–441，20低支撑median456–462；全帧median456不能当可靠cube中心。统计分层不新增控制门，不删原始坏帧。追加30高支撑目标尚未采够：初次缺ROS关节，另一次反馈驱动依赖路径错误已区分；纠正后新SDK1791973179.395/joint0/Hz0、can RX5262717停滞，零q/false仅默认，实际使能/姿态未知，不声称硬件失能/绝对精度达标。无CAN重载/底层循环。本轮全部进程已退出。
+
+用户approx边长28mm，人工中心低于两指自由端连线中点约5mm不确定，允许稍后多组综合计算；作为先验/敏感性比较而非零偏移或已标定TCP。camera表面点需识别面中心+向外法向后减normal*14mm，不能沿视线盲补。恒定偏移和安装平移可能混淆，需参考约束/多姿态可辨识性核查。统一目标为几何中心，但本组center字段仍null/未拟合部署。
+
+资料包docs/evidence/piper_calibration_20261014/pair01/manifest.json：115资产10114959B（不含manifest），含102张原PNG（30新RGB+30原深度、原观测13、夹持29）、raw SDK30样本、完整K/D/R/T原厂返回/独立完整native CameraInfo、每帧q/FK、约28/5mm先验与相对路径/全SHA；无原日志/生成URDF/权重/包。user明确要求这批原图上GitHub，限定约10MB而非海量日志；旧图片不提交规则仅此指定标定数据例外。export_calibration_bundle.py为离线机械导出，不改生产。第一组根JSON v2指向包，13582cb旧单JSON已发布；本轮资料待只在数据发布分支基于最新remote限定补充，不上传主main积压历史/其他dirty。下一完成限定Git/推送验证，随后反馈恢复补20高支撑并继续第二组。
+
+## 历史同步接续（2026-10-14：第一组JSON已在GitHub，独立核验通过）
 
 用户亲自在终端推送piper-pair01-publish-20261014:main成功；代理独立git ls-remote rc0确认远端main=13582cbd39a7382af66a494420daaf3fb5ec1aed，与准备好的数据单文件提交一致。第一组清单已同步，可访问https://github.com/bcwsyn/brain-robot-arm/blob/13582cbd39a7382af66a494420daaf3fb5ec1aed/docs/evidence/piper_calibration_pair01_20261014.json 。仅JSON，原图/SDK/native depth未上传，不能声称整个本地main/控制配置/其他文档已同步，也不推断代理认证凭据已经可用。
 

@@ -8,7 +8,18 @@
 - 本轮仅更新交接、进度、决策三份文档；保留其他已有 dirty 和未跟踪文件，提交前索引为空。HEAD...origin/main 的缓存计数为 10/2（rc0），现有整体历史发布范围拒绝/分叉仍保留；没有重复整体上传、合并、改写历史或新读取远端。本轮仅本地提交，未同步 GitHub，不影响第一组 JSON 已发布事实。
 - 下一步：启动或长时间采集前再次 df -hT /；当前没有磁盘阻断。主任务仍按最新第一组记录继续第二组新位置的观测侧，再原位人工夹持侧只读采样，不以本次磁盘检查自动续跑控制栈。
 
-## 2026-10-14：第一组JSON已由用户成功推送，远端独立核验通过
+## 2026-10-14：第一组30组RGB-D实采，双峰统计与完整原始数据包已生成
+
+- 用户要求四缺口修复/详细GitHub资料。ROS2及手术式技能：先真实目录/实际detector与相机工厂资料，现有collect_static_rgbd/review_depth_registration复用，不改生产运动/门控/TF。官方参考OpenCV solvePnP https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html 及Orbbec ROS2 https://github.com/orbbec/ros2_astra_camera ，PnP需要同一物理角点对应与K/D，不把2D框角冒充立体点。用户补approx28mm，不用旧“4cm样本”当测量。
+- 用户确认第一组方块原位且允许仅返回观测采集。SDK1791971938.1319/joint1938.1307/100Hz/q_mdeg仍[-5366,106190,-60735,7383,32906,3896]、六true/静止101.5mm；can复用。原一键AUTO0，log home/pair01_observe_remeasure_20261014_onekey到7/7；原stop_after_observe=true set/get通过，只触发一次原1路径。原13点46.2s/maxstep.08 prepare接受，30s start客户端先超时而脚本报启动失败，但实际原轨迹继续；未重试、1791972165.585465511确认STOPPED(OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)，无SEARCH/抓取。不能称CLI端到端成功或为了UI再启动一次。
+- 原collect_static_rgbd --frames30 --duration-s60 rc0/21.094s/30组；RGB/depth/info/反馈stamp范围记录，depth与info同帧，21个非同帧info组合被拒，最终实际q[-.141418508,.943598292,-1.268806784,-.06872936,1.220923004,.088563188]rad/全30帧spread0。资料home/pair01_observe_remeasure_20261014_rgbd，已看0001原RGB完整小方块/两指画内。原记录不含逐帧D/P，补独立native Info stamp1791972285802249264：640x400、K476.528656/325.801758/199.885071、D0/Ridentity/P同K；工厂服务三项rc0/CC1365304DG/同原K、rawD/R/T，home/pair01_camera_metadata_20261014.json。当前彩色D来源差异完整保留，不改生产。
+- 新只读test/review_calibration_capture.py复用旧颜色形状/软件注册/erosion，对每帧所有真实深度样本记录直方图、中位数/MAD/覆盖/相机表面点、实际q及FK；7针对性统计/面法向测试通过。原30全帧median456mm/range440–462/MAD3mm；10高支撑（≥.5唯一RGB投影覆盖/≥10点）median440mm/range440–441/MAD0。低覆盖层约13–17%/116–162点，高层约94%/~1000点；不是简单随机±1mm，直接全帧median不可作为准确中心。保留全部坏帧，无任何新的实体运动停止门或深度补洞。
+- 用户补人工中心“自由端连线中点下方一点，可能约5mm，不确定，多组后综合/误差可接受”。记录约5mm先验/方向未精确确认，不设0偏移、不猜确认TCP。中心定义统一几何中心，但当前camera面中心/法向及gripper中心未验证，值null，不用surface与tip作同点拟合。28mm近似边长对应14mm面法向内移，不能光线盲加。联合偏移估计/平移混淆须多姿态与约束；data notes列0/5/10mm敏感性计划。
+- adapter disarm成功后原脚本Ctrl+C退出rc1，旧driver/visual/相机残留。限定TERM6012/5704/5823，driver5708两次TERM后阻塞，最终仅KILL该已验证PID；无Disable/Reset。追加60高支撑采集：第一次无feedback所以0帧；隔离原驱动启动第二次因PYTHONNOUSERSITE导致用户python-can找不到rc1，采集0；系统numpy/scipy先导入后追加原SDK路径的原driver仍无新反馈。第三次未达到“先确认新反馈再启动”预期，实际检查失败却相机采集已启动，0帧/未混入；此执行次序问题如实记录，不冒称已验证。新被动SDK1791973179.395/jointstamp0/highHz0，ip RX5262717多次不增/error0；默认0/false非实际q/使能，不泛查限位或重载CAN/USB。所有本轮后续采集/相机/反馈会话有界退出，精确清理残留，host当前无控制/相机节点。额外高支撑≥30尚缺20有效帧，不称完成。
+- export_calibration_bundle.py离线机械导出rc0；新资料docs/evidence/piper_calibration_20261014/pair01/，115资产10114959B（另manifest约20KB），102张未改PNG、原SDK30样本、旧配对记录、30新RGB+30native深度/各戳K/q、逐帧原URDF FK矩阵/hash、完整K/D/R/T与配置快照/质量/参考先验、全SHA和相对路径。原始home仍保留；不含rawlog/URDF文件/vendor/权重。用户明确允许本批上Git；第一组root JSON v2关联完整包，而13582cb旧单JSON为历史已发布版本。
+- 本轮限定三离线分析/测试源码、数据目录/rootJSON及四规则记录提交；其他dirty保留。下一只在piper-pair01-publish-20261014基于最新remote提交上述资料/分析工具，不能上传积压生产历史；独立核远端成功后给目录与manifest/统计链接。发布尚未执行，源构建无改动/抓取未完成。随后反馈恢复再补至少20高支撑、第二组观测/人工侧，当前不自动新运动/失能或部署未验证外参。
+
+## 历史：2026-10-14：第一组JSON已由用户成功推送，远端独立核验通过
 
 - 用户终端执行git push origin piper-pair01-publish-20261014:main成功，输出50a5cc2..13582cb。代理随后独立timeout -k2s20s git ls-remote origin refs/heads/main rc0，确认GitHub main完整SHA=13582cbd39a7382af66a494420daaf3fb5ec1aed，与本地单文件发布分支一致；该提交包含第一组清单，发布状态已从认证阻断变为数据已同步。
 - 可访问固定版本网址：https://github.com/bcwsyn/brain-robot-arm/blob/13582cbd39a7382af66a494420daaf3fb5ec1aed/docs/evidence/piper_calibration_pair01_20261014.json 。文件与规范f36ea50中的JSON逐字节一致（发布前已核blob）；仅JSON上传，原RGB/native depth/SDK记录仍home，网页中的本机路径不等于已上传照片。未拟合/部署外参，第二组尚未采。
