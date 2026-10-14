@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="piper">
+  <!-- Reuse the official PiPER Gazebo model and add only the simulated wrist camera. -->
+  <xacro:include filename="$(find piper_description)/urdf/piper_description_gazebo.xacro" />
+  <xacro:include filename="$(find piper_description)/urdf/gemini2_wrist_camera.xacro" />
+  <xacro:arg name="wrist_camera_rate" default="20.0" />
+  <xacro:macro name="jaw_contact" params="link">
+    <gazebo reference="${link}">
+      <mu1>1.2</mu1><mu2>1.2</mu2><kp>100000</kp><kd>10</kd><minDepth>0.0001</minDepth><maxVel>0.05</maxVel>
+      <sensor name="${link}_contact" type="contact">
+        <always_on>true</always_on><update_rate>100</update_rate>
+        <contact><collision>${link}_collision</collision></contact>
+        <plugin name="${link}_bumper" filename="libgazebo_ros_bumper.so">
+          <ros><namespace>/brain_robot_physics</namespace><remapping>bumper_states:=${link}_contacts</remapping></ros>
+          <frame_name>world</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+  <xacro:if value="$(arg physics_grasp)"><xacro:jaw_contact link="link7" /><xacro:jaw_contact link="link8" /></xacro:if>
+
+  <xacro:gemini2_wrist_camera />
+
+  <gazebo reference="gripper_to_wrist_camera">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+
+  <gazebo reference="wrist_camera_link">
+    <!-- Retain existing ideal robot gravity compensation in simulation. -->
+    <gravity>false</gravity>
+    <sensor name="wrist_rgbd_camera" type="depth">
+      <always_on>true</always_on>
+      <update_rate>$(arg wrist_camera_rate)</update_rate>
+      <visualize>true</visualize>
+      <camera>
+        <!-- Registered depth uses the RGB 4:3 view (63 degrees), not native IR FOV. -->
+        <horizontal_fov>1.09955742876</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>10.0</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.001</stddev>
+        </noise>
+      </camera>
+      <plugin name="wrist_rgbd_camera_controller" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>/wrist_camera</namespace>
+        </ros>
+        <camera_name>wrist_camera</camera_name>
+        <frame_name>wrist_camera_optical_frame</frame_name>
+        <!-- RGB can see nearby fingers; valid Gemini 2 depth begins at 150 mm. -->
+        <min_depth>0.15</min_depth>
+        <max_depth>10.0</max_depth>
+      </plugin>
+    </sensor>
+  </gazebo>
+</robot>

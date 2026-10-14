@@ -1,5 +1,7 @@
 # Stage 5: camera sizing and force-feedback cup grasp integration
 
+> This report and its 9/9 positive, 5/5 negative results describe the retained fixed-camera `simulation_cup_grasp/` release. The single-wrist Gemini 2 release is `simulation_cup_wrist/`; see [supplement / 补充报告](stage5_wrist_camera_update.en.md).
+
 Date: 2026-10-14. Local scope: `simulation/`. New GitHub workspace: `simulation_cup_grasp/`, preserving previous versions. This follows [stage 4](stage4_cup_training_report.en.md). Final frozen simulation and GUI acceptance are complete; publication/archive verification has separate receipts.
 
 ## 1. Objective and specimen

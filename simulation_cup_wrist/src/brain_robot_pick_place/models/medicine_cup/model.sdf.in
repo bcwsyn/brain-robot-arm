@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="medicine_cup">
+    <static>false</static>
+    <link name="cup_link">
+      <gravity>{gravity}</gravity>
+      <self_collide>false</self_collide>
+      <velocity_decay><linear>0.2</linear><angular>0.2</angular></velocity_decay>
+      <inertial>
+        <mass>{cup_mass}</mass>
+        <inertia>
+          <ixx>{inertia_xy}</ixx><iyy>{inertia_xy}</iyy><izz>{inertia_z}</izz>
+          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="cup_collision">
+        <geometry>
+          <cylinder><radius>{cup_radius}</radius><length>{cup_height}</length></cylinder>
+        </geometry>
+        <surface>
+          <friction><ode><mu>{friction}</mu><mu2>{friction}</mu2></ode></friction>
+          <contact><collide_without_contact>{no_contact_force}</collide_without_contact>
+            <ode><kp>{contact_kp}</kp><kd>{contact_kd}</kd><max_vel>0.05</max_vel><min_depth>0.0005</min_depth></ode>
+          </contact>
+          <bounce><restitution_coefficient>0.0</restitution_coefficient><threshold>0.1</threshold></bounce>
+        </surface>
+      </collision>
+      <visual name="cup_visual">
+        <geometry>
+          <cylinder><radius>{cup_radius}</radius><length>{cup_height}</length></cylinder>
+        </geometry>
+        <material>
+          <ambient>0.78 0.16 0.12 1</ambient>
+          <diffuse>0.92 0.24 0.18 1</diffuse>
+          <specular>0.25 0.25 0.25 1</specular>
+        </material>
+      </visual>
+    </link>
+    {pose_plugin}
+  </model>
+</sdf>

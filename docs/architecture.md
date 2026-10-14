@@ -118,3 +118,10 @@ Use a read-only environment preflight before launch and an isolated sequential b
 Gazebo时钟100 Hz、关节TF50 Hz；接触轴优先匹配接触时刻的TF，兼容有效的最近TF，原150 ms时效边界保持。ROS域85/本地通信与端口11485隔离本入口。水杯R复位完整重建拥有的仿真栈，避免热删除复杂模型导致的Gazebo堆错误；反馈准备状态和执行器就绪心跳完成后才接受开始。正常模式不启用故障注入，测试注入始终标注合成来源。
 
 MoveIt附着物只服务于碰撞规划，Gazebo物品不增加跟随驱动或吸附约束。夹持后按实际高度/接触保持，释放后验证落稳、无指垫接触与回零。锁定帧RGB/深度/掩膜/标定、力与关节/物品轨迹、配置和源码快照均存档。最终验收与双语复现操作见第五步报告及docs/cup_grasp/。
+
+
+## 2026-10-14: Single Gemini 2 wrist camera
+
+Use one moving wrist RGB-D camera for all cup visual inputs. Remove the cup entry's fixed external sensor and static world calibration. Share the camera housing/collision/mount macro between Gazebo and MoveIt; the nominal front plane at flange z=30.8 mm is 105 mm axially behind the 135.8 mm model tip. Lateral offset and optical centres remain assumptions, not hand-eye calibration.
+
+Plan a fixed, collision-checked observation configuration before enabling the grasp executor. Lock a consistent image-time RGB-D/mask/TF/width/target packet at observable range; the official 150 mm depth minimum exceeds the 105 mm tip spacing. Keep force feedback active during close-range execution. Reject each unsupported segmentation mask geometrically; accept exactly one valid cup and retain multi-valid-instance rejection. Publish this as simulation_cup_wrist/ while retaining all previous workspace trees and their historical acceptance. See the bilingual wrist-camera report and guides.

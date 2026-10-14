@@ -1,6 +1,12 @@
 # ub Workspace
 
-## Latest: Stage 5 cup vision and force-feedback simulation / 最新：水杯视觉与力反馈取放
+## Latest: single wrist-mounted Gemini 2 / 最新：单腕部相机
+
+New independent [simulation_cup_wrist/](simulation_cup_wrist/README.md) uses one moving wrist RGB-D camera for cup detection, sizing and physical force-feedback grasp simulation. The camera mount follows the supplied approximately 30 mm flange / 105 mm tip spacing. [English guide](docs/wrist_camera/README.en.md) · [Report](docs/stage5_wrist_camera_update.en.md).
+
+最新版本使用单台Gemini 2腕部相机，已调整安装位置并统一所有水杯视觉输入。[中文复现](docs/wrist_camera/README.zh-CN.md) · [中文补充报告](docs/第五步补充_单腕部Gemini2相机安装与视觉接入.md)。固定代码75 mm A/B两轮通过、96项核心检查通过；其他尺寸/故障批次尚待腕部重验。此前 `simulation_cup_grasp/`、`simulation_cup/`、`simulation/`、`brain_robot_arm/` 都完整保留。
+
+## Stage 5 fixed-camera release / 第五步固定相机保留版本
 
 New independent [simulation_cup_grasp/](simulation_cup_grasp/README.md) connects learned RGB-D sizing, adaptive preopening and measured-force physical cup pick-and-place. Start with the [English guide](docs/cup_grasp/README.en.md) and [stage report](docs/stage5_cup_grasp_report.en.md).
 

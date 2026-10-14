@@ -1,0 +1,352 @@
+Starting >>> brain_robot_pick_place
+--- output: brain_robot_pick_place
+UpdateCTestConfiguration  from :/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/CTestConfiguration.ini
+Parse Config file:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/CTestConfiguration.ini
+   Site: young1x-Predator-PHN16-72
+   Build name: (empty)
+ Add coverage exclude regular expressions.
+Create new tag: 20261014-1408 - Experimental
+UpdateCTestConfiguration  from :/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/CTestConfiguration.ini
+Parse Config file:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/CTestConfiguration.ini
+Test project /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: physics_target_test
+
+1: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/physics_target_test.xunit.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/physics_target_test.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_physics_target.py" "-o" "cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/physics_target_test/.cache" "--junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/physics_target_test.xunit.xml" "--junit-prefix=brain_robot_pick_place"
+1: Test timeout computed to be: 60
+1: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+1:  - /usr/bin/python3 -u -m pytest /home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_physics_target.py -o cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/physics_target_test/.cache --junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/physics_target_test.xunit.xml --junit-prefix=brain_robot_pick_place
+1: ============================= test session starts ==============================
+1: platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0
+1: cachedir: build/brain_robot_pick_place/ament_cmake_pytest/physics_target_test/.cache
+1: rootdir: /home/young1x/robot_projects/piper_robot/simulation
+1: plugins: ament-pep257-0.12.15, ament-copyright-0.12.15, launch-testing-ros-0.19.13, launch-testing-1.0.14, ament-xmllint-0.12.15, ament-flake8-0.12.15, ament-lint-0.12.15, colcon-core-0.20.1, cov-3.0.0
+1: collected 4 items
+1: 
+1: ../../src/brain_robot_pick_place/test/test_physics_target.py ....        [100%]
+1: 
+1: - generated xml file: /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/physics_target_test.xunit.xml -
+1: ============================== 4 passed in 0.04s ===============================
+1: -- run_test.py: return code 0
+1: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/physics_target_test.xunit.xml'
+ 1/11 Test  #1: physics_target_test ..............   Passed    0.24 sec
+test 2
+      Start  2: adaptive_gripper_policy_test
+
+2: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/adaptive_gripper_policy_test.xunit.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/adaptive_gripper_policy_test.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_adaptive_gripper_policy.py" "-o" "cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/adaptive_gripper_policy_test/.cache" "--junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/adaptive_gripper_policy_test.xunit.xml" "--junit-prefix=brain_robot_pick_place"
+2: Test timeout computed to be: 60
+2: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+2:  - /usr/bin/python3 -u -m pytest /home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_adaptive_gripper_policy.py -o cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/adaptive_gripper_policy_test/.cache --junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/adaptive_gripper_policy_test.xunit.xml --junit-prefix=brain_robot_pick_place
+2: ============================= test session starts ==============================
+2: platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0
+2: cachedir: build/brain_robot_pick_place/ament_cmake_pytest/adaptive_gripper_policy_test/.cache
+2: rootdir: /home/young1x/robot_projects/piper_robot/simulation
+2: plugins: ament-pep257-0.12.15, ament-copyright-0.12.15, launch-testing-ros-0.19.13, launch-testing-1.0.14, ament-xmllint-0.12.15, ament-flake8-0.12.15, ament-lint-0.12.15, colcon-core-0.20.1, cov-3.0.0
+2: collected 9 items
+2: 
+2: ../../src/brain_robot_pick_place/test/test_adaptive_gripper_policy.py .. [ 22%]
+2: .......                                                                  [100%]
+2: 
+2: - generated xml file: /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/adaptive_gripper_policy_test.xunit.xml -
+2: ============================== 9 passed in 0.01s ===============================
+2: -- run_test.py: return code 0
+2: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/adaptive_gripper_policy_test.xunit.xml'
+ 2/11 Test  #2: adaptive_gripper_policy_test .....   Passed    0.21 sec
+test 3
+      Start  3: cup_adaptation_test
+
+3: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_adaptation_test.xunit.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/cup_adaptation_test.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_cup_adaptation.py" "-o" "cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/cup_adaptation_test/.cache" "--junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_adaptation_test.xunit.xml" "--junit-prefix=brain_robot_pick_place"
+3: Test timeout computed to be: 60
+3: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+3:  - /usr/bin/python3 -u -m pytest /home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_cup_adaptation.py -o cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/cup_adaptation_test/.cache --junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_adaptation_test.xunit.xml --junit-prefix=brain_robot_pick_place
+3: ============================= test session starts ==============================
+3: platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0
+3: cachedir: build/brain_robot_pick_place/ament_cmake_pytest/cup_adaptation_test/.cache
+3: rootdir: /home/young1x/robot_projects/piper_robot/simulation
+3: plugins: ament-pep257-0.12.15, ament-copyright-0.12.15, launch-testing-ros-0.19.13, launch-testing-1.0.14, ament-xmllint-0.12.15, ament-flake8-0.12.15, ament-lint-0.12.15, colcon-core-0.20.1, cov-3.0.0
+3: collected 14 items
+3: 
+3: ../../src/brain_robot_pick_place/test/test_cup_adaptation.py ........... [ 78%]
+3: ...                                                                      [100%]
+3: 
+3: - generated xml file: /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_adaptation_test.xunit.xml -
+3: ============================== 14 passed in 0.20s ==============================
+3: -- run_test.py: return code 0
+3: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_adaptation_test.xunit.xml'
+ 3/11 Test  #3: cup_adaptation_test ..............   Passed    0.41 sec
+test 4
+      Start  4: cup_force_bridge_test
+
+4: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_force_bridge_test.xunit.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/cup_force_bridge_test.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_cup_force_bridge.py" "-o" "cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/cup_force_bridge_test/.cache" "--junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_force_bridge_test.xunit.xml" "--junit-prefix=brain_robot_pick_place"
+4: Test timeout computed to be: 60
+4: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+4:  - /usr/bin/python3 -u -m pytest /home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_cup_force_bridge.py -o cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/cup_force_bridge_test/.cache --junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_force_bridge_test.xunit.xml --junit-prefix=brain_robot_pick_place
+4: ============================= test session starts ==============================
+4: platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0
+4: cachedir: build/brain_robot_pick_place/ament_cmake_pytest/cup_force_bridge_test/.cache
+4: rootdir: /home/young1x/robot_projects/piper_robot/simulation
+4: plugins: ament-pep257-0.12.15, ament-copyright-0.12.15, launch-testing-ros-0.19.13, launch-testing-1.0.14, ament-xmllint-0.12.15, ament-flake8-0.12.15, ament-lint-0.12.15, colcon-core-0.20.1, cov-3.0.0
+4: collected 9 items
+4: 
+4: ../../src/brain_robot_pick_place/test/test_cup_force_bridge.py ......... [100%]
+4: 
+4: - generated xml file: /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_force_bridge_test.xunit.xml -
+4: ============================== 9 passed in 0.18s ===============================
+4: -- run_test.py: return code 0
+4: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/cup_force_bridge_test.xunit.xml'
+ 4/11 Test  #4: cup_force_bridge_test ............   Passed    0.39 sec
+test 5
+      Start  5: wrist_cup_selection_test
+
+5: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/wrist_cup_selection_test.xunit.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/wrist_cup_selection_test.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_wrist_cup_selection.py" "-o" "cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/wrist_cup_selection_test/.cache" "--junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/wrist_cup_selection_test.xunit.xml" "--junit-prefix=brain_robot_pick_place"
+5: Test timeout computed to be: 60
+5: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+5:  - /usr/bin/python3 -u -m pytest /home/young1x/robot_projects/piper_robot/simulation/src/brain_robot_pick_place/test/test_wrist_cup_selection.py -o cache_dir=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_pytest/wrist_cup_selection_test/.cache --junit-xml=/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/wrist_cup_selection_test.xunit.xml --junit-prefix=brain_robot_pick_place
+5: ============================= test session starts ==============================
+5: platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0
+5: cachedir: build/brain_robot_pick_place/ament_cmake_pytest/wrist_cup_selection_test/.cache
+5: rootdir: /home/young1x/robot_projects/piper_robot/simulation
+5: plugins: ament-pep257-0.12.15, ament-copyright-0.12.15, launch-testing-ros-0.19.13, launch-testing-1.0.14, ament-xmllint-0.12.15, ament-flake8-0.12.15, ament-lint-0.12.15, colcon-core-0.20.1, cov-3.0.0
+5: collected 4 items
+5: 
+5: ../../src/brain_robot_pick_place/test/test_wrist_cup_selection.py ....   [100%]
+5: 
+5: - generated xml file: /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/wrist_cup_selection_test.xunit.xml -
+5: ============================== 4 passed in 0.18s ===============================
+5: -- run_test.py: return code 0
+5: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/wrist_cup_selection_test.xunit.xml'
+ 5/11 Test  #5: wrist_cup_selection_test .........   Passed    0.38 sec
+test 6
+      Start  6: measured_motion_test
+
+6: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/measured_motion_test.gtest.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_gtest/measured_motion_test.txt" "--command" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/measured_motion_test" "--gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/measured_motion_test.gtest.xml"
+6: Test timeout computed to be: 60
+6: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+6:  - /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/measured_motion_test --gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/measured_motion_test.gtest.xml
+6: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+6: [==========] Running 6 tests from 2 test suites.
+6: [----------] Global test environment set-up.
+6: [----------] 4 tests from MeasuredMotion
+6: [ RUN      ] MeasuredMotion.StationaryPositionsAreSettled
+6: [       OK ] MeasuredMotion.StationaryPositionsAreSettled (0 ms)
+6: [ RUN      ] MeasuredMotion.SmallButFastMovementIsRejected
+6: [       OK ] MeasuredMotion.SmallButFastMovementIsRejected (0 ms)
+6: [ RUN      ] MeasuredMotion.DriftIsRejected
+6: [       OK ] MeasuredMotion.DriftIsRejected (0 ms)
+6: [ RUN      ] MeasuredMotion.MissingNonfiniteAndStaleSamplesAreRejected
+6: [       OK ] MeasuredMotion.MissingNonfiniteAndStaleSamplesAreRejected (0 ms)
+6: [----------] 4 tests from MeasuredMotion (0 ms total)
+6: 
+6: [----------] 2 tests from ApproachMotion
+6: [ RUN      ] ApproachMotion.ShortSmoothApproachIsAccepted
+6: [       OK ] ApproachMotion.ShortSmoothApproachIsAccepted (0 ms)
+6: [ RUN      ] ApproachMotion.MidpathWristFlipIsRejectedEvenWithMatchingEndpoints
+6: [       OK ] ApproachMotion.MidpathWristFlipIsRejectedEvenWithMatchingEndpoints (0 ms)
+6: [----------] 2 tests from ApproachMotion (0 ms total)
+6: 
+6: [----------] Global test environment tear-down
+6: [==========] 6 tests from 2 test suites ran. (0 ms total)
+6: [  PASSED  ] 6 tests.
+6: -- run_test.py: return code 0
+6: -- run_test.py: inject classname prefix into gtest result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/measured_motion_test.gtest.xml'
+6: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/measured_motion_test.gtest.xml'
+ 6/11 Test  #6: measured_motion_test .............   Passed    0.04 sec
+test 7
+      Start  7: rgbd_shape_geometry_test
+
+7: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/rgbd_shape_geometry_test.gtest.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_gtest/rgbd_shape_geometry_test.txt" "--command" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/rgbd_shape_geometry_test" "--gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/rgbd_shape_geometry_test.gtest.xml"
+7: Test timeout computed to be: 60
+7: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+7:  - /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/rgbd_shape_geometry_test --gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/rgbd_shape_geometry_test.gtest.xml
+7: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+7: [==========] Running 6 tests from 1 test suite.
+7: [----------] Global test environment set-up.
+7: [----------] 6 tests from RgbdShape
+7: [ RUN      ] RgbdShape.MissingDepthDoesNotCreateMeasurements
+7: [       OK ] RgbdShape.MissingDepthDoesNotCreateMeasurements (0 ms)
+7: [ RUN      ] RgbdShape.OnlySelectedContourAndInBoundsPixelsAreAssociated
+7: [       OK ] RgbdShape.OnlySelectedContourAndInBoundsPixelsAreAssociated (0 ms)
+7: [ RUN      ] RgbdShape.IdentityUsesFullColorCentreNotDepthFragmentCentre
+7: [       OK ] RgbdShape.IdentityUsesFullColorCentreNotDepthFragmentCentre (0 ms)
+7: [ RUN      ] RgbdShape.FactoryTransformRoundTripsAndPreservesMeasuredDepthZ
+7: [       OK ] RgbdShape.FactoryTransformRoundTripsAndPreservesMeasuredDepthZ (0 ms)
+7: [ RUN      ] RgbdShape.InvalidDepthCannotGenerateThreeDimensionalTarget
+7: [       OK ] RgbdShape.InvalidDepthCannotGenerateThreeDimensionalTarget (0 ms)
+7: [ RUN      ] RgbdShape.InvalidCalibrationIsRejected
+7: [       OK ] RgbdShape.InvalidCalibrationIsRejected (0 ms)
+7: [----------] 6 tests from RgbdShape (0 ms total)
+7: 
+7: [----------] Global test environment tear-down
+7: [==========] 6 tests from 1 test suite ran. (0 ms total)
+7: [  PASSED  ] 6 tests.
+7: -- run_test.py: return code 0
+7: -- run_test.py: inject classname prefix into gtest result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/rgbd_shape_geometry_test.gtest.xml'
+7: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/rgbd_shape_geometry_test.gtest.xml'
+ 7/11 Test  #7: rgbd_shape_geometry_test .........   Passed    0.05 sec
+test 8
+      Start  8: grasp_geometry_test
+
+8: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/grasp_geometry_test.gtest.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_gtest/grasp_geometry_test.txt" "--command" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/grasp_geometry_test" "--gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/grasp_geometry_test.gtest.xml"
+8: Test timeout computed to be: 60
+8: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+8:  - /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/grasp_geometry_test --gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/grasp_geometry_test.gtest.xml
+8: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+8: [==========] Running 13 tests from 1 test suite.
+8: [----------] Global test environment set-up.
+8: [----------] 13 tests from GraspGeometry
+8: [ RUN      ] GraspGeometry.DirectedApproachAimsAtOneTargetWhileAttitudeChanges
+8: [       OK ] GraspGeometry.DirectedApproachAimsAtOneTargetWhileAttitudeChanges (0 ms)
+8: [ RUN      ] GraspGeometry.DirectedAimHasNoPresetYawAndHandlesOppositeDirections
+8: [       OK ] GraspGeometry.DirectedAimHasNoPresetYawAndHandlesOppositeDirections (0 ms)
+8: [ RUN      ] GraspGeometry.DirectedSlantedEntryStillAimsAtTargetWithNoFixedAttitude
+8: [       OK ] GraspGeometry.DirectedSlantedEntryStillAimsAtTargetWithNoFixedAttitude (0 ms)
+8: [ RUN      ] GraspGeometry.DirectedApproachRejectsUndefinedGeometry
+8: [       OK ] GraspGeometry.DirectedApproachRejectsUndefinedGeometry (0 ms)
+8: [ RUN      ] GraspGeometry.PosePitchRotationComposesInReferenceFrameAndZeroRestores
+8: [       OK ] GraspGeometry.PosePitchRotationComposesInReferenceFrameAndZeroRestores (0 ms)
+8: [ RUN      ] GraspGeometry.PosePitchRotationRejectsUndefinedInputs
+8: [       OK ] GraspGeometry.PosePitchRotationRejectsUndefinedInputs (0 ms)
+8: [ RUN      ] GraspGeometry.FreshJawCaptureRejectsRemoteOrOffCentreCube
+8: [       OK ] GraspGeometry.FreshJawCaptureRejectsRemoteOrOffCentreCube (0 ms)
+8: [ RUN      ] GraspGeometry.FreshJawCaptureNeedsOpeningAndFiniteMeasuredFace
+8: [       OK ] GraspGeometry.FreshJawCaptureNeedsOpeningAndFiniteMeasuredFace (0 ms)
+8: [ RUN      ] GraspGeometry.InsertionUsesSmallerFaceAndCapsTravel
+8: [       OK ] GraspGeometry.InsertionUsesSmallerFaceAndCapsTravel (0 ms)
+8: [ RUN      ] GraspGeometry.LegacyPositiveGapLeavesFingertipsOutsideObject
+8: [       OK ] GraspGeometry.LegacyPositiveGapLeavesFingertipsOutsideObject (0 ms)
+8: [ RUN      ] GraspGeometry.CorrectedApproachCrossesSurfaceWithFixedOrientation
+8: [       OK ] GraspGeometry.CorrectedApproachCrossesSurfaceWithFixedOrientation (0 ms)
+8: [ RUN      ] GraspGeometry.FarOrSidewaysLandingIsNotAnAcceptedEndpoint
+8: [       OK ] GraspGeometry.FarOrSidewaysLandingIsNotAnAcceptedEndpoint (0 ms)
+8: [ RUN      ] GraspGeometry.CloseOnlyAfterLandingAndAtMostOneCorrection
+8: [       OK ] GraspGeometry.CloseOnlyAfterLandingAndAtMostOneCorrection (0 ms)
+8: [----------] 13 tests from GraspGeometry (0 ms total)
+8: 
+8: [----------] Global test environment tear-down
+8: [==========] 13 tests from 1 test suite ran. (0 ms total)
+8: [  PASSED  ] 13 tests.
+8: -- run_test.py: return code 0
+8: -- run_test.py: inject classname prefix into gtest result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/grasp_geometry_test.gtest.xml'
+8: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/grasp_geometry_test.gtest.xml'
+ 8/11 Test  #8: grasp_geometry_test ..............   Passed    0.04 sec
+test 9
+      Start  9: visual_grasp_feedback_test
+
+9: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/visual_grasp_feedback_test.gtest.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_gtest/visual_grasp_feedback_test.txt" "--command" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/visual_grasp_feedback_test" "--gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/visual_grasp_feedback_test.gtest.xml"
+9: Test timeout computed to be: 60
+9: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+9:  - /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/visual_grasp_feedback_test --gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/visual_grasp_feedback_test.gtest.xml
+9: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+9: [==========] Running 5 tests from 1 test suite.
+9: [----------] Global test environment set-up.
+9: [----------] 5 tests from VisualGrasp
+9: [ RUN      ] VisualGrasp.CroppedPurpleIsNotFullView
+9: [       OK ] VisualGrasp.CroppedPurpleIsNotFullView (0 ms)
+9: [ RUN      ] VisualGrasp.BackgroundJumpDoesNotAssociate
+9: [       OK ] VisualGrasp.BackgroundJumpDoesNotAssociate (0 ms)
+9: [ RUN      ] VisualGrasp.ImageCentreIsNotJawCapture
+9: [       OK ] VisualGrasp.ImageCentreIsNotJawCapture (0 ms)
+9: [ RUN      ] VisualGrasp.TipAndAttitudeMicrostepsAreBoundedTogether
+9: [       OK ] VisualGrasp.TipAndAttitudeMicrostepsAreBoundedTogether (0 ms)
+9: [ RUN      ] VisualGrasp.NoOvershootAtNearContact
+9: [       OK ] VisualGrasp.NoOvershootAtNearContact (0 ms)
+9: [----------] 5 tests from VisualGrasp (0 ms total)
+9: 
+9: [----------] Global test environment tear-down
+9: [==========] 5 tests from 1 test suite ran. (0 ms total)
+9: [  PASSED  ] 5 tests.
+9: -- run_test.py: return code 0
+9: -- run_test.py: inject classname prefix into gtest result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/visual_grasp_feedback_test.gtest.xml'
+9: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/visual_grasp_feedback_test.gtest.xml'
+ 9/11 Test  #9: visual_grasp_feedback_test .......   Passed    0.04 sec
+test 10
+      Start 10: center_search_test
+
+10: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/center_search_test.gtest.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_gtest/center_search_test.txt" "--command" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/center_search_test" "--gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/center_search_test.gtest.xml"
+10: Test timeout computed to be: 60
+10: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+10:  - /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/center_search_test --gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/center_search_test.gtest.xml
+10: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+10: [==========] Running 10 tests from 2 test suites.
+10: [----------] Global test environment set-up.
+10: [----------] 2 tests from SearchHoldBand
+10: [ RUN      ] SearchHoldBand.IncludesRealStartWithoutMovingFixedAnchor
+10: [       OK ] SearchHoldBand.IncludesRealStartWithoutMovingFixedAnchor (0 ms)
+10: [ RUN      ] SearchHoldBand.CannotExpandBeyondFeedbackEnvelopeOrAcceptLargeDrift
+10: [       OK ] SearchHoldBand.CannotExpandBeyondFeedbackEnvelopeOrAcceptLargeDrift (0 ms)
+10: [----------] 2 tests from SearchHoldBand (0 ms total)
+10: 
+10: [----------] 8 tests from CenterSearch
+10: [ RUN      ] CenterSearch.FirstImageWindowHasNoSweep
+10: [       OK ] CenterSearch.FirstImageWindowHasNoSweep (0 ms)
+10: [ RUN      ] CenterSearch.VisitsBothNearbySidesBeforeReturnAndExpansion
+10: [       OK ] CenterSearch.VisitsBothNearbySidesBeforeReturnAndExpansion (0 ms)
+10: [ RUN      ] CenterSearch.ElapsedTimeNeverPretendsWaypointOrReturnWasReached
+10: [       OK ] CenterSearch.ElapsedTimeNeverPretendsWaypointOrReturnWasReached (0 ms)
+10: [ RUN      ] CenterSearch.CancellationPreventsLaterExpansion
+10: [       OK ] CenterSearch.CancellationPreventsLaterExpansion (0 ms)
+10: [ RUN      ] CenterSearch.NearbyWaypointsStayInsideOriginalSearchBounds
+10: [       OK ] CenterSearch.NearbyWaypointsStayInsideOriginalSearchBounds (0 ms)
+10: [ RUN      ] CenterSearch.FinalPartialStepLandsOnBoundaryRatherThanOvershooting
+10: [       OK ] CenterSearch.FinalPartialStepLandsOnBoundaryRatherThanOvershooting (0 ms)
+10: [ RUN      ] CenterSearch.ActualBoundaryCrossingCanReverseWithoutOscillating
+10: [       OK ] CenterSearch.ActualBoundaryCrossingCanReverseWithoutOscillating (0 ms)
+10: [ RUN      ] CenterSearch.NonFiniteParametersAndFeedbackAreRejected
+10: [       OK ] CenterSearch.NonFiniteParametersAndFeedbackAreRejected (0 ms)
+10: [----------] 8 tests from CenterSearch (0 ms total)
+10: 
+10: [----------] Global test environment tear-down
+10: [==========] 10 tests from 2 test suites ran. (0 ms total)
+10: [  PASSED  ] 10 tests.
+10: -- run_test.py: return code 0
+10: -- run_test.py: inject classname prefix into gtest result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/center_search_test.gtest.xml'
+10: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/center_search_test.gtest.xml'
+10/11 Test #10: center_search_test ...............   Passed    0.04 sec
+test 11
+      Start 11: target_model_wait_test
+
+11: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/target_model_wait_test.gtest.xml" "--package-name" "brain_robot_pick_place" "--output-file" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/ament_cmake_gtest/target_model_wait_test.txt" "--command" "/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/target_model_wait_test" "--gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/target_model_wait_test.gtest.xml"
+11: Test timeout computed to be: 60
+11: -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place':
+11:  - /home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/target_model_wait_test --gtest_output=xml:/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/target_model_wait_test.gtest.xml
+11: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+11: [==========] Running 5 tests from 1 test suite.
+11: [----------] Global test environment set-up.
+11: [----------] 5 tests from TargetModelWait
+11: [ RUN      ] TargetModelWait.RetriesDelayedTransformWithoutFault
+11: [       OK ] TargetModelWait.RetriesDelayedTransformWithoutFault (0 ms)
+11: [ RUN      ] TargetModelWait.WholeWaitCanExceedFrameFreshness
+11: [       OK ] TargetModelWait.WholeWaitCanExceedFrameFreshness (0 ms)
+11: [ RUN      ] TargetModelWait.StaleFrameNeverLocksAndCancellationEndsWait
+11: [       OK ] TargetModelWait.StaleFrameNeverLocksAndCancellationEndsWait (0 ms)
+11: [ RUN      ] TargetModelWait.AlreadyCancelledDoesNotAttempt
+11: [       OK ] TargetModelWait.AlreadyCancelledDoesNotAttempt (0 ms)
+11: [ RUN      ] TargetModelWait.CancelAtLockDoesNotContinueToMotion
+11: [       OK ] TargetModelWait.CancelAtLockDoesNotContinueToMotion (0 ms)
+11: [----------] 5 tests from TargetModelWait (0 ms total)
+11: 
+11: [----------] Global test environment tear-down
+11: [==========] 5 tests from 1 test suite ran. (0 ms total)
+11: [  PASSED  ] 5 tests.
+11: -- run_test.py: return code 0
+11: -- run_test.py: inject classname prefix into gtest result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/target_model_wait_test.gtest.xml'
+11: -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/brain_robot_pick_place/test_results/brain_robot_pick_place/target_model_wait_test.gtest.xml'
+11/11 Test #11: target_model_wait_test ...........   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 11
+
+Label Time Summary:
+gtest     =   0.25 sec*proc (6 tests)
+pytest    =   1.64 sec*proc (5 tests)
+
+Total Test time (real) =   1.89 sec
+---
+Finished <<< brain_robot_pick_place [1.92s]
+
+Summary: 1 package finished [2.47s]
