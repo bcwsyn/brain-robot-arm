@@ -1,0 +1,326 @@
+{
+  "read_only": true,
+  "motion_commands_sent": false,
+  "rgb_stamp_ns": 1791953346105498600,
+  "rgb_frame": "camera_color_optical_frame",
+  "rgb_path": "/home/johnwick/brain_robot_logs/view_guard_20261013/manual_terminal_capture_20261014_complete/1791953346105498603_rgb.png",
+  "rgb_sha256": "79df940848a3e74a5262e822dfdb83d254c8e491815469922c938d3b3f304317",
+  "rgb_size": [
+    320,
+    240
+  ],
+  "feedback_at_rgb_receive": {
+    "epoch": 1791953346.106518,
+    "joint_stamp": 1791953346.1045732,
+    "low_stamp": 1791953346.0956728,
+    "high_hz": 105,
+    "q_mdeg": [
+      -12173,
+      110855,
+      -62094,
+      -1619,
+      32287,
+      6682
+    ],
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_mm": 36.8,
+    "gripper_enabled": true
+  },
+  "feedback_stamp_minus_rgb_s": -0.0009253025054931641,
+  "rgb_received": 14,
+  "sdk_samples": 279,
+  "camera_info": {
+    "depth_info": {
+      "stamp_ns": 1791953346236787700,
+      "frame": "camera_depth_optical_frame",
+      "size": [
+        640,
+        400
+      ],
+      "k": [
+        476.5286560058594,
+        0,
+        325.8017578125,
+        0,
+        476.5286560058594,
+        199.88507080078125,
+        0,
+        0,
+        1
+      ],
+      "d": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "physical_grasp_verified": false,
+  "fresh_sdk_samples": 279,
+  "stationary_spread_deg": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "max_speed_rad_s": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "depth": {
+    "stamp_ns": 1791953346201617000,
+    "rgb_delta_s": 0.096118331,
+    "frame": "camera_depth_optical_frame",
+    "path": "/home/johnwick/brain_robot_logs/view_guard_20261013/manual_terminal_capture_20261014_complete/1791953346201616934_depth_raw.png",
+    "nonzero": 0,
+    "size": [
+      640,
+      400
+    ]
+  },
+  "detector_observation": {
+    "stamp_ns": 1791953346105498600,
+    "frame": "camera_depth_optical_frame",
+    "status": [
+      {
+        "name": "purple_cube_rgbd_observation/v2",
+        "level": "\u0001",
+        "message": "RGBD_NOT_QUALIFIED",
+        "values": {
+          "qualified": "0",
+          "x": "0",
+          "y": "0",
+          "z": "0",
+          "color_center_covered": "0",
+          "size_x": "0",
+          "size_y": "0",
+          "size_z": "0",
+          "samples": "0",
+          "coverage": "0",
+          "span": "0",
+          "mad_m": "0"
+        }
+      }
+    ]
+  },
+  "model": {
+    "source": "Current installed launch/config and generated physical URDF, offline FK; no live dynamic TF claimed",
+    "q_ros_rad": [
+      -0.21234581200000002,
+      1.9337546200000002,
+      -1.083167736,
+      -0.028241836000000003,
+      0.563214428,
+      0.11656080800000002
+    ],
+    "q_exact_pi_rad": [
+      -0.21245892984526973,
+      1.9347847422983138,
+      -1.083744745733359,
+      -0.028256880589788196,
+      0.5635144555914092,
+      0.1166229006182611
+    ],
+    "finger_positions_m": [
+      0.0184,
+      -0.0184
+    ],
+    "urdf_sha256": "a93ac8cba44d02dc09ca52442bb72e8d8c92f97dd732cee08702e1fe9438c581",
+    "gripper_base_transform": [
+      [
+        -0.92458955259221,
+        0.3011632476261406,
+        0.23331278901211575,
+        0.34640478689653986
+      ],
+      [
+        0.294006076078951,
+        0.9535405395892953,
+        -0.06573329893146042,
+        -0.07609161558898227
+      ],
+      [
+        -0.24226965651107477,
+        0.007819056147039424,
+        -0.9701774455711568,
+        0.12750823171677084
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "tip_base_xyz_m": [
+      0.3780886636443852,
+      -0.08501819758387459,
+      -0.004241865391792249
+    ],
+    "tip_depth_xyz_m": [
+      0,
+      0.06999999999999998,
+      0.10500000000000001
+    ],
+    "tip_color_xyz_m": [
+      -0.027584083653986454,
+      0.06991262378962708,
+      0.10532696363748982
+    ],
+    "tip_rgb_pixel": [
+      93.59963357630686,
+      268.8561188377621
+    ],
+    "jaw_projection": {
+      "link7": {
+        "pixel_bounds": [
+          [
+            98.038379207347,
+            245.56451413615883
+          ],
+          [
+            298.70677672409045,
+            806.0534507029402
+          ]
+        ],
+        "in_frame_mask_pixels": 0
+      },
+      "link8": {
+        "pixel_bounds": [
+          [
+            -452.8947260884573,
+            245.8702690091186
+          ],
+          [
+            51.52128695163913,
+            766.5057876218697
+          ]
+        ],
+        "in_frame_mask_pixels": 0
+      }
+    },
+    "installation_rotation_calibrated": false,
+    "task_sha256": "a0111d3f6a412a96b327a7ae72913f864241a6d33642e2a46ca2c9c4478a2fe4"
+  },
+  "analysis": {
+    "raw_color_only": {
+      "box_xywh": [
+        128,
+        157,
+        87,
+        83
+      ],
+      "centroid_px": [
+        170.7598062075755,
+        199.5195087828385
+      ],
+      "image_center_px": [
+        160,
+        120
+      ],
+      "contour_covers_center": false,
+      "bottom_clipped": true,
+      "area_px": 6433,
+      "depth_qualified": false
+    },
+    "original_model_comparison": {
+      "prior_failed_start_tip_base_m": [
+        0.3669563556193897,
+        -0.11047765046440775,
+        0.10835533692671337
+      ],
+      "manual_minus_prior_tip_m": [
+        0.011132308024995485,
+        0.025459452880533154,
+        -0.11259720231850562
+      ],
+      "prior_frozen_target_minus_manual_tip_m": [
+        0.04770142035561481,
+        -0.031088340416125404,
+        0.07151600839179224
+      ],
+      "manual_minus_prior_joint_deg": [
+        13.351887372180311,
+        6.491541917981237,
+        18.1373381348122,
+        -18.16932109730264,
+        -32.35876229970131,
+        34.887415271601625
+      ],
+      "warning": "Different times/reference points. Cube world location continuity and pad contact unverified. Not a calibrated offset, actual table height, or a permitted replay trajectory."
+    },
+    "post_readonly": {
+      "epoch": 1791953435.2095602,
+      "joint_stamp": 1791953435.2043967,
+      "high_hz": 100,
+      "q_mdeg": [
+        -12173,
+        110855,
+        -62094,
+        -1619,
+        32287,
+        6682
+      ],
+      "enabled": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "speed_millirad_s": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "gripper_mm": 36.8,
+      "gripper_enabled": true
+    },
+    "conclusions": [
+      "Raw RGB shows cube between visible finger silhouettes in 2D, but cannot independently prove force/contact/retention.",
+      "Original mount/model projects both finger meshes outside image while real fingers are visible. It does not explain this physical image; mount-vs-mesh error is not uniquely isolated.",
+      "Image centre is background at this manually taught posture. Original final centre prerequisite would reject it; no prerequisite modified.",
+      "Depth stream frame is all zero; do not infer 3D cube coordinates or fabricate valid depth. Selected latest native frame is 96.1ms from RGB, not an exact paired depth observation."
+    ],
+    "production_modified": false,
+    "automatic_run_started": false,
+    "new_motion_authorized": false,
+    "capture_exit_code": 0,
+    "first_capture_exit_code": 1,
+    "first_capture_issue": "Diagnostic JSON contained bytes-valued ROS status level; raw RGB/native depth/SDK rows already saved. Serializer-only fix; five-second repeat complete.",
+    "bounded_camera_exit_codes": {
+      "astra": 124,
+      "rgb": 124,
+      "detector": 124
+    },
+    "cleanup": "All camera/detector/read-only collectors exited after bounded windows. No control/adapter/executor launched; no Disable/Reset sent.",
+    "raw_evidence_directory": "/home/johnwick/brain_robot_logs/view_guard_20261013/manual_terminal_capture_20261014_complete"
+  }
+}
