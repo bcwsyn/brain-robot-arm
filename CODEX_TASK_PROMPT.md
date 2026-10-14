@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+最新9ea9fc1原AUTO1实测已完成观测/SEARCH/原RGB ALIGN/GRASP_READY/12粗段+38末段停稳；当前RGB框中心(.506,.548)/atomic center_covered1/完整可见，联合位置朝向4段实际确认。新最早停止在step52/14-36：PREDICTION_RANGE_EXHAUSTED触发内部software_stop→EOG_OR_EXTERNAL_EMERGENCY_STOP，不是用户急停/CAN/最终中心/Cartesian规划失败，也未耗尽75次数。原名义camera_arc.1698+extra.03预算不包含持续纠偏实际路径；当前新的预算核算策略仍先具体说明获准，不擅放宽/复跑。主rc1、所有控制/相机/采集已退出，无Reset/Disable；post SDK7750.504/high100Hz/六true/速度0/q[-.394025532,1.715588842,-1.168061602,.302762265,.905564082,-.462198093]/99.6mm无错。实际f0da36c…/c99e450…/原入口保持，完整目标未完成。细节与小快照docs/evidence/piper_rgb_reference_20261014.md/piper_rgb_reference_run_20261014.json，以下部署待运行条目均历史。
+
 最新9ea9fc1已49+13+6+7/19回归与指定本机帧回放/归档恢复完整MoveIt通过，actual f0da36c…/c99e450…双binary原路径部署；旧d051bf5备份rgb_reference_previous_d051bf5，原入口87039b…不改。下一唯一原AUTO1/新rgb_reference_onekey_20261014与exact/live采集，当前尚无本次实物结果；原批准有效，不再等同意。运动清单/当前六轴未使能/静止/100Hz与原范围见piper_rgb_reference_20261014.md；尚未抓取完成。
 
 2026-10-14最新用户“确认”已批准官方资料落实/历史成功靠近对照/统一原RGB参考/联合位置朝向视野恢复的局部修改和验证，不再等本授权。当前仅原检测器+原执行器/共享几何与测试候选，尚未部署/运动；实际d051bf5保持。ALIGN保留Servo像素尺度但改原RGB中心，末段沿同一中心、固定tip射线不可解才原30mm补偿内联合姿态/平移，经原8mm/1°和完整MoveIt/adapter/反馈；空恢复不冒称到位消耗循环。原世界身份/入口/TF/TCP/限位/最终原RGB中心与两指夹持不改。先回放/域78隔离规划再原一键实測；详细docs/evidence/piper_rgb_reference_20261014.md。旧日志settled_fix原/tmp已不存在，历史归档/Git仍有效，不冒称原始完整重放或抓取成功。

@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：原RGB统一参考/联合恢复已获准，候选验证中）
+## 最新接续（2026-10-14：原RGB参考已实体生效，新最早停止为旧累计行程预算）
+
+9ea9fc1原AUTO1已观测/SEARCH/ALIGN/GRASP_READY/12粗段/38末段实际停稳，四段联合姿态位置实际生效，当前RGB框中心(.506,.548)/center_covered1/完整方块可见；FullView恢复标志未出现，不谎称旧出画空循环已全面实体验收。新stop是step52/14-36 PREDICTION_RANGE_EXHAUSTED，原6点Cartesian已通过，名义两段camera_arc+.03未包含持续纠偏实际轨迹；内部software_stop传播EOG_OR_EXTERNAL_EMERGENCY_STOP，不归因用户按急停。未下降/最终闭爪/抬升/释放，中心门没调用，非CAN或75次数耗尽。主rc1，exact/live INT0、host全部退出；新SDK7750.504/high100Hz/六true/速度0/q[-.394025532,1.715588842,-1.168061602,.302762265,.905564082,-.462198093]/99.6mm无错，未Reset/Disable。actual f0da36c…/c99e450…/原入口87039b…保持，旧d051bf5备份完整。下一需具体批准预算核算局部修正（按已检查实际纠偏轨迹计入，不盲增数字/取消模型身份或反馈）；新代码尚未写，不复跑旧失败路或底层。详见piper_rgb_reference_20261014.md与run小快照，Git仅本地/分叉审查和用户dirty保持。
+
+## 历史接续（原RGB统一参考/联合恢复候选与部署）
 
 9ea9fc1已提交限定12路径/检查0，actual双binary f0da36c…/c99e450…部署并原install hash核对；d051bf5原双binary/双源/共享头备份rgb_reference_previous_d051bf5。共49+13+6+7/19回归、指定帧回放/归档恢复完整规划通过。下一唯一原AUTO1，新rgb_reference_onekey_20261014/exact/live，本次物理结果尚未产生，原世界目标/TF/入口/限位/最终中心与两指条件保持。新实际未使能/静止状态和运动清单见piper_rgb_reference_20261014.md；不沿用旧使能、不擅Reset。以下候选阶段条目为历史。
 

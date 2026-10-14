@@ -1,0 +1,64 @@
+{
+  "kind": "historical_real_run_not_live_or_calibration",
+  "implementation_commit": "9ea9fc1",
+  "entry": "/home/johnwick/start_brain_robot_cube_real.sh",
+  "entry_sha256": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+  "executor_sha256": "f0da36c4772a8c2f3dfeb23313961b9abdd8d10b7d7a960d01fefcfff90c4ab2",
+  "detector_sha256": "c99e4500bae5225187a3e79523170b006a426702e703e609875db2771aa4ce66",
+  "archived_urdf_sha256": "a93ac8cba44d02dc09ca52442bb72e8d8c92f97dd732cee08702e1fe9438c581",
+  "phase_epochs": {
+    "prepare": 1791947472.283842,
+    "observe_reached_search": 1791947521.083986,
+    "align": 1791947534.458413,
+    "grasp_ready": 1791947537.214600,
+    "terminal_freeze": 1791947564.495337,
+    "prediction_range_rejection": 1791947620.880503
+  },
+  "terminal_frozen_measurement": {
+    "image_stamp_ns": 1791947562229118448,
+    "frame": "base_link",
+    "target_m": [0.423655423, -0.115596190, 0.062807700],
+    "range_m": 0.225955,
+    "size_m": 0.036131,
+    "not_later_depth_relocked": true
+  },
+  "grasp_ready_rgb": {
+    "stamp_ns": 1791947537229035041,
+    "box": [0.4468750059604645, 0.4416666626930237, 0.5375000238418579, 0.5708333253860474],
+    "color_center_covered": true,
+    "nearest_feedback_stamp_ns": 1791947537227154128,
+    "nearest_q_rad_not_exact_image_time": [-0.220474716, 0.971404028, -0.743131844, 0.0, 0.680089228, 0.0]
+  },
+  "last_active_rgb": {
+    "stamp_ns": 1791947620629905171,
+    "native_depth_stamp_ns": 1791947620619565264,
+    "box": [0.42500001192092896, 0.4416666626930237, 0.5874999761581421, 0.6541666388511658],
+    "color_center_covered": true,
+    "nearest_feedback_stamp_ns": 1791947620612045137,
+    "nearest_q_rad_not_exact_image_time": [-0.404770576, 1.724758056, -1.179633056, 0.304223360, 0.917676508, -0.471458988]
+  },
+  "outcome": {
+    "cursor": 14,
+    "waypoints": 36,
+    "coarse_attempts": 12,
+    "terminal_attempts": 39,
+    "coarse_settled": 12,
+    "terminal_settled": 38,
+    "combined_geometry_attempts": 5,
+    "combined_geometry_settled": 4,
+    "fullview_recovery_flag_seen": false,
+    "gripper_close_requested": false,
+    "lift_release_completed": false,
+    "run_returncode": 1
+  },
+  "post_run_feedback": {
+    "read_epoch": 1791947750.503575,
+    "joint_stamp": 1791947750.500600,
+    "high_stamp": 1791947750.501577,
+    "high_hz": 100,
+    "q_rad": [-0.394025532, 1.715588842, -1.168061602, 0.302762265, 0.905564082, -0.462198093],
+    "enabled": [true, true, true, true, true, true],
+    "speed_raw": [0, 0, 0, 0, 0, 0],
+    "gripper_m": 0.0996
+  }
+}

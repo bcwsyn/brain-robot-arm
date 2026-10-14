@@ -1,5 +1,33 @@
 # 2026-10-14 原RGB统一参考与联合视野恢复
 
+## 最新实体结果（覆盖下方候选/待运行状态）
+
+9ea9fc1实际原AUTO1已运行，主session68129 rc1，timeout3871160/原脚本3871161；不是600s到期。只读exact3871241/session14793、live3871324/session42748经核对PID后INT正常rc0。host控制/相机/采集全部退出，未发Reset/Disable/自动回零。原入口不变，未重复启动失败路径。
+
+| 事件 | 时间戳epoch | 事实 |
+| --- | --- | --- |
+| PREPARE | 1791947472.283842 | 原当前→观测49.1s/14点，原adapter接受 |
+| SEARCH | 1791947521.083986 | OBSERVE_POSE_REACHED，原中心扫描连续5+段 |
+| ALIGN | 1791947534.458413 | TARGET_ACQUIRED，原J1/J5 |
+| GRASP_READY | 1791947537.214600 | 原RGB中心对齐，100mm张开反馈99.6mm确认 |
+| 冻结末段 | 1791947564.495337 | 12粗段，最后可靠measurement1791947562229118448/range225.955mm，当前RGB1791947564231663125/age2.266297s，base(.423655423,-.115596190,.062807700)m/size36.131mm，质量切换非新假深度 |
+| 原停止源 | 1791947620.880503 | STEP52/14-36完整6点规划已通过，执行监测NEAR_RGB_REJECTED:PREDICTION_RANGE_EXHAUSTED |
+| 软件停止传播 | 1791947620.886333 | 视觉STATE FAULT(EOG_OR_EXTERNAL_EMERGENCY_STOP)，adapter随后disarm；源码ExecuteArmTrajectory的observation_ok失败发布已有software_stop，不是证据证明用户按急停 |
+
+实际58条adapter接受（含观测/搜索/保持）；12粗段+39末段尝试，12+38条执行器MEASURED_SETTLING_CONFIRMED/50条REAL_ARM_TRAJECTORY_FEEDBACK_CONFIRMED，step52已输出但因预算停止，不能算停稳完成。实物首次实际联合位置/朝向分支出现5次，其中step48..51四段已确认停稳；step52第五段未完成。FullView恢复标志recovery=true为0，未重新复现旧出画空循环，因此不冒称那个实体场景已全面验收。当前停14/36预抓取，未进入原下降段/最终夹持门/闭爪/抬升/释放；最终中心不是本轮停止原因。
+
+原RGB1791947537229035041/GRASP_READY框[.446875,.441667,.537500,.570833]中心(.492188,.506250)，atomic color_center_covered=1/1914samples；末段52同帧1791947620229743873框[.428125,.441667,.584375,.654167]中心(.506250,.547917)，center_covered=1/仅12samples/coverage.005330。最后RGB1791947620629905171框中心(.506250,.547917)/center_covered1，完整方块明显放大仍在画面中，已实际查看。对应native_depth1791947620619565264有164956个非零像素/.192..252m/中位.222m，16位PNG默认近黑不代表全帧为零；方块区域depth仍仅少量点。最近debug1791947619829963712（与step52图差.3998s，不能冒称同帧）显示registered目标区黑洞，原RGB无此遮挡；debug十字/青色投影仍depth grid，数值dx/dy已经原RGB参考，不混淆它与原RGB十字。已看本次0063 RGB/depth/debug及上述末态图，不借旧图当新视野。
+
+### 新阻断：原模型预测行程预算与持续视觉纠偏实际路径不匹配
+
+生产PredictionRejection同一错误同时覆盖seed_age与camera_travel；本轮原max_steps75、反馈timeout45/.6图像新鲜度使模型age预算下界已>3457s，seed仅约59s，故新证据支持**累计相机行程**先超出预算。原AutomaticRgbApproach只用最初完整名义两段camera_arc=.1698m+extra=.0300m（另加进入时已计行程）生成最大累计行程，尚未计后续持续实际RGB转向/平移的完整已检查路径。不是缺RGB、深度空洞终止、完整Cartesian规划失败或CAN停滞。
+
+以同一归档URDF/真实原RGB最近关节反馈重建冻结→停止285唯一帧的近似相机折线.281312m，最大q/图戳差.071846s；不是生产精确TF累计器真值，只用于方向/尺度核对。初始额度增加.1998m与该估计不匹配；没有日志输出精确触发值，不伪造该值或断言每点外参已标定。累计XYZ轨迹范围需从实际已检查的纠偏段计入；单段8mm/1°/.08rad和最终夹持不放宽。原75次数也需离线核对实际纠偏成本，不盲倍增数字或取消冻结身份检查。此**新的预算策略生产修改尚未批准/实施**，下一先具体说明获准，再原owner修正额度核算/原入口验证，不原样重复或回到旧CAN/限位基础排查。
+
+停止后被动SDK1791947750.503575/关节7750.500600/high7750.501577/100Hz，六true/速度全0，q[-.394025532,1.715588842,-1.168061602,.302762265,.905564082,-.462198093]rad，99.6mm/夹爪true/无错误。can0同index10持续RX/错误丢包0，post9618667，can_health无停滞条目；整个诊断命令rc1仅ps -C无栈，无SDK失败。模型tip约(.355531,-.093606,.089917)m为基座模型坐标，不是桌面真实间距。
+
+主输出rgb_reference_onekey_stdout_20261014.txt与node日志rgb_reference_onekey_20261014/、原图/atomic/q在rgb_reference_exact_20261014/frames.jsonl、诊断事件/同步计数在rgb_reference_live_20261014/observer.jsonl，均位于/home/johnwick/brain_robot_logs/view_guard_20261013/。Git小快照piper_rgb_reference_run_20261014.json保留关键原戳/姿态/版本。记录成功层级是观测/搜索/原RGB对齐/50靠近停稳段/四段联合恢复，不是抓取完成。仅本地Git，远端分叉/全历史审查未完成，不强推或合并。
+
 ## 最新部署/实测接续
 
 局部实现已提交9ea9fc1，git show --check0，仅12指定文件，用户wiring注释/vendor/reference保留。形状目标补构建rc0/7项通过；完整共49+13+6+7 C++与19Python通过，真实帧回放/恢复候选规划均0。旧first namespace与静态断言失败保留，不冒称所有首次成功。
