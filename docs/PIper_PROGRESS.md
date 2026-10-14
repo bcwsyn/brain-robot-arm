@@ -6,6 +6,12 @@
 - 原工作树两处dirty（test_near_depth_wiring.py与requirements-piper-driver.txt）、未跟踪手册/reference固件/四个deb均不暂存、不上传、不覆盖。当前Windows普通Python和桌面附带Python不具备完整项目pytest/yaml/cv2依赖，本轮不安装环境或冒称重新通过120项回归；只执行发布所需Git一致性与Python语法检查，具体结果随发布回执补记。
 - 此条为推送前记录，不代表远端已同步。下一完成静态检查、合并提交、普通push并独立读取远端SHA和祖先关系，再补发布回执。当前标定阶段1已通过、下一六组现场采集和生产冻结规则不变，不新增实机运动许可。
 
+## 2026-10-15：GitHub普通推送完成
+
+- 隔离分支 `codex/github-sync-20261015` 已以普通非强制方式推送 `origin/main`，推送返回码0；合并提交 `d05d4918815187e08af13bb5c7569c89caa338cc` 同时保留本地 `38334bd` 与远端 `64f7174` 两侧祖先。
+- 推送后独立 `fetch`/`ls-remote` 读取 `origin/main=d05d4918815187e08af13bb5c7569c89caa338cc`，与本地完全一致，`merge-base --is-ancestor` 返回0，`rev-list --left-right --count HEAD...origin/main=0 0`。未使用强推、历史改写或当前dirty工作树覆盖。
+- 规范工作树 `C:\ub` 的两处原有修改和未跟踪文件仍未暂存；实体ROS/CAN/相机均未启动。本次验证为Git同步成功，不改变标定阶段、生产冻结或实机抓取完成状态。
+
 ## 2026-10-14 22:36 +08:00：受限CAN激活后完整静止空跑通过，阶段1完成
 
 - 软件检查点6034ab3/11限定路径/cached+show check0，旧7d143ed保留。用户明确授权现已枚举CAN固定激活/只读采集。先读ifindex6/DOWN/STOPPED，无有效UP链路可复用，sudo-n固定bitrate1000000/sample-point.75、txqueuelen1000、up仅一次/rc0；无modprobe/USB重载/固件查询/Reset/MasterSlave/Enable/Disable/Motion/Gripper。post ERROR-ACTIVE/RX53，采后568952、收尾1396189、TX始终0/errors/drop0，复用保持UP，不再旧停流试验。
