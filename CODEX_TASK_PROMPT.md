@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+最新9ea9fc1已49+13+6+7/19回归与指定本机帧回放/归档恢复完整MoveIt通过，actual f0da36c…/c99e450…双binary原路径部署；旧d051bf5备份rgb_reference_previous_d051bf5，原入口87039b…不改。下一唯一原AUTO1/新rgb_reference_onekey_20261014与exact/live采集，当前尚无本次实物结果；原批准有效，不再等同意。运动清单/当前六轴未使能/静止/100Hz与原范围见piper_rgb_reference_20261014.md；尚未抓取完成。
+
 2026-10-14最新用户“确认”已批准官方资料落实/历史成功靠近对照/统一原RGB参考/联合位置朝向视野恢复的局部修改和验证，不再等本授权。当前仅原检测器+原执行器/共享几何与测试候选，尚未部署/运动；实际d051bf5保持。ALIGN保留Servo像素尺度但改原RGB中心，末段沿同一中心、固定tip射线不可解才原30mm补偿内联合姿态/平移，经原8mm/1°和完整MoveIt/adapter/反馈；空恢复不冒称到位消耗循环。原世界身份/入口/TF/TCP/限位/最终原RGB中心与两指夹持不改。先回放/域78隔离规划再原一键实測；详细docs/evidence/piper_rgb_reference_20261014.md。旧日志settled_fix原/tmp已不存在，历史归档/Git仍有效，不冒称原始完整重放或抓取成功。
 
 2026-10-14最新用户仅要求搜索官方复用资料。本轮已找到官方Agilex-College手眼ROS2 Humble教程/handeye_calibration_ros、标准夹爪URDF/STL及本地手册56页9.7图、GraspGen/方块检测ROS1例程，并核对提交版本/兼容性；未找到可证实同一自装相机支架CAD或同安装完整成功仓库。官方TCP示例145mm、旧模型135.8mm、图纸140mm须先核对参考面，不自动改TCP/叠加7/10.5。详见docs/evidence/piper_official_reuse_20261014.md。仅研究记录，未改应用/TF/模型/启动机械臂，实际仍d051bf5；下一具体局部修复仍先说明获准，不把搜索授权当新运动许可。

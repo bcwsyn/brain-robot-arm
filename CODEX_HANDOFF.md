@@ -1,5 +1,7 @@
 ## 最新接续（2026-10-14：原RGB统一参考/联合恢复已获准，候选验证中）
 
+9ea9fc1已提交限定12路径/检查0，actual双binary f0da36c…/c99e450…部署并原install hash核对；d051bf5原双binary/双源/共享头备份rgb_reference_previous_d051bf5。共49+13+6+7/19回归、指定帧回放/归档恢复完整规划通过。下一唯一原AUTO1，新rgb_reference_onekey_20261014/exact/live，本次物理结果尚未产生，原世界目标/TF/入口/限位/最终中心与两指条件保持。新实际未使能/静止状态和运动清单见piper_rgb_reference_20261014.md；不沿用旧使能、不擅Reset。以下候选阶段条目为历史。
+
 接续最终build0/49+13+6+19回归、当前同机good/holes指定帧回放0、归档底边恢复8mm/1°完整MoveIt1通过；候选executor f0da36c…/detector c99e450…尚未部署，actual仍d051bf5。新SDK7112.335/high100Hz/六false/速度0/q[-.016702801,-.003647738,0,.083199845,.276337980,.020734512]/99.6mm无错/RX增长，当前姿态已经不同于旧记录，未Disable/Reset/推断原因。下一提交/备份部署后唯一原AUTO1实测；模型预测中心改善不冒称实体到位/抓取。详情piper_rgb_reference_20261014.md。
 
 用户“确认”批准上一具体局部方案及验证。原检测器pixel_error以原RGB轮廓中心为基准、按debug分辨率保留原Servo增益尺度；原executor视野目标改同一RGB中心，固定tip几何不可解才在原补偿范围内联合位置/姿态，并避免恢复current→current伪到位空循环。已有真实候选朝向推进保持、原世界锁点/两段预抓下降/TF/TCP/入口/限位碰撞/adapter/最终中心与两指夹持不变。尚未部署或新运动，actual仍d051bf5。首次测试构建因新增测试namespace缺失失败，已补别名重建，不能写最终构建通过；13共享几何测试0，真实帧/actual方法/隔离规划待。详见docs/evidence/piper_rgb_reference_20261014.md。93%原清理rc0仍93%/5.5GB，无额外删除；用户dirty/远端分叉保持，仅本地Git。
