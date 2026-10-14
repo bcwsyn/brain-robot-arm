@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-10-14T22:07:00+08:00",
+  "canonical_head_at_start": "ea247dd",
+  "user_approved_three_tool_changes_and_stationary_read_only_capture": true,
+  "production_frozen": true,
+  "phase1_complete": false,
+  "new_formal_pair": false,
+  "software_tests": {"passed": 95, "skipped": 0, "exit_code": 0},
+  "can": {
+    "state": "ERROR-ACTIVE", "bitrate": 1000000,
+    "rx_before": 5262717, "rx_after": 5262717,
+    "tx_before": 31359, "tx_after": 31359,
+    "reloaded": false
+  },
+  "sdk": {
+    "read_only": true, "piper_init": false,
+    "samples": 60, "fresh_samples": 0,
+    "actual_pose": null, "actual_enable_state": null,
+    "composite_shell_exit_code": 0,
+    "collector_failure_exit_code_defined_by_source": 2,
+    "warning": "The shell ended with ip link. Its exit code is not SDK quality success. Default values are not physical measurements."
+  },
+  "stationary_rgbd": {
+    "exit_code": 2, "duration_s": 8,
+    "received_rgb": 40, "received_depth": 169, "received_depth_info": 204,
+    "received_joint_feedback": 0, "saved_valid_frames": 0,
+    "synchronization_and_freshness_loosened": false
+  },
+  "camera_only_witness": {
+    "camera_serial_from_live_driver_log": "CC1365304DG",
+    "rgb_size": [320, 240], "depth_size": [640, 400],
+    "rgb_stamp_ns": "1791986484378386541",
+    "depth_stamp_ns": "1791986484352528160",
+    "stamp_difference_ns": "25858381",
+    "rgb_viewed": true,
+    "actual_joints_paired": false,
+    "full_same_frame_camera_info_paired": false,
+    "not_a_formal_calibration_pair": true,
+    "capture_max_seconds": 4, "capture_max_bytes": 4194304,
+    "captured_image_bytes": 4169372
+  },
+  "motion_or_gripper_commands_sent": false,
+  "enable_or_disable_commands_sent": false,
+  "firmware_or_master_slave_or_reset_operations": false,
+  "new_camera_sessions_exited": true,
+  "user_residual_nodes_preserved": true,
+  "home_artifacts": "/home/johnwick/brain_robot_logs/calibration_stage1_20261014.vxGdfP",
+  "assets": [
+    {"path": "stationary_sdk.json", "sha256": "86fb990a29e9392912ab056bbb5c73b75425c070e1262ebead48c26e2578416f"},
+    {"path": "stationary_rgbd_summary.json", "sha256": "01fffc80830777e915ce7f1e0926a640f4b73a3e8d6b90d094fa9687c0cd950f"},
+    {"path": "1791986484378386541_rgb.png", "sha256": "8c6c43bbe089b889634bce9b57e73f3154f26570501b162a44e498602b470b6b"},
+    {"path": "1791986484352528160_depth_raw.png", "sha256": "c2b33941c9e482a503a820a3a881c7e6932054deb678753b3eb19ed2e1d08b24"}
+  ],
+  "publication": "local_only_not_newly_pushed_to_GitHub"
+}

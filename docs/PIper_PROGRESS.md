@@ -1,3 +1,15 @@
+## 2026-10-14 22:07 +08:00：阶段1局部工具通过，真实静止空跑缺反馈
+
+- 起点ea247dd。用户“确认进行下一步”授权已列三个工具和静止只读采集；首Git五命令、当前四规则/阶段页与两技能核验，原README/vendor/reference/test_near_depth_wiring及其他dirty保留。surgical-change限定三个工具和新测试；ros2-piper-debug按实际组件/消息与已运行节点环境核查，不改DDS泛用设置/生产控制/原入口。
+- 实现：export显式sample-id/可选旧数据/选中观测清单/当前SDK和陈旧q-FK空值/真实PNG尺寸/实际task快照；取样与中心由清单/参数选capture，旧单目录自动兼容，多目录不混。全高组合法分析、没有低组时对照null，不新增/取消生产门；数学估计与原D→C保持。新test_calibration_bundle_groups涵盖新/旧schema、原115资产SHA、raw原样/纳秒戳字符串、覆盖拒绝、路径/哈希、全高、空包及无控制接口。初43项5fail→局部兼容修正后43pass；扩展最终五文件pytest **95 passed/0 skipped/rc0/4.89s**，环境PYTHONNOUSERSITE/PYTHONDONTWRITEBYTECODE=1/source Humble，未改系统依赖/生产构建。
+- home新目录mktemp `/home/johnwick/brain_robot_logs/calibration_stage1_20261014.vxGdfP`。review_calibration_capture→export --sample-id offline_pair01_reexport_NOT_NEW_PAIR→review_pair_sampling→estimate --edge-mm29，actual overlays/真实安装描述生成FK，四CLI均rc0；69文件4730045B为task快照追加前输出，只home不重复入Git。原30帧10高20低、表面差24.766897mm、D中心[-.013009035682,.040973508676,.453481896494]m与阶段0一致，不算新正式pair或绝对精度。
+- 一次原collect_calibration_sdk --duration-s6：60样本/0 fresh/span0/error null。shell末尾ip使工具外层rc0，不用它宣称SDK成功，源代码质量失败退出2；原SDK归档保留默认值的fresh=false，不当实际零q/失能。can0 ERROR-ACTIVE/1Mbps，RX5262717及TX31359前后都相同；未发Query/Enable/Disable/Reset/MasterSlave/Gripper/运动或CAN/USB重载。
+- 宿主最初只见旧detector/debug viewer，无driver/camera/Servo等。只启动原astra.launch和原cam2image 320x240@5Hz；精确复用旧detector实际FASTRTPS_DEFAULT_PROFILES_FILE=/home/johnwick/fastdds_udp_only.xml、ROS_LOCALHOST_ONLY=0，不改文件/DDS策略。live Astra log识别CC1365304DG、depth640x400@30/mm。原collect_static_rgbd --duration-s8 --frames1 --settle-s3 rc2：RGB40/depth169/info204/关节0/matched0/saved0/start_q=null。相机已工作但完整采集空跑**未通过**，不放宽同步/新鲜度或造完整pair。
+- 原capture_scale_frames只读4秒/4MiB有界rc0/image_budget/4169372B；选原RGB1791986484378386541及native depth1791986484352528160（差25858381ns），实际查看RGB完整紫块/两侧夹指，关节null/完整Info未配，不是正式组。有限4源文件机械复制+README/receipt至docs/evidence/piper_calibration_stage1_20261014，原四SHA核对同源；不复制11MiB工作目录/重复旧导出图。当前实际q/使能仍未知。
+- 两个本轮相机独立session SIGINT退出，cam2image0/Astra0、宿主已无container/cam2image；Astra关闭undeclare参数错误如实记录但stream stopped/干净退出，不借此新增相机修复。用户旧detector/debug viewer未管理。五生产SHA仍冻结值；df根54%/35G、共享72%/141G，未清理/删除。
+- 额外只读源码证据：现SDKprotocol仅0x2A5/6/7 joint反馈映射；实际生产driver有0x3A0—3A7→减0xFF接收映射。collect SDK未接入该映射且不发布ROS，static工具需要/joint_states_feedback，独立采集源仍缺；当前无RX又独立，不能把0fresh全归parser或宣布硬件坏。拟补只读桥+采集SDK复用原parser，超出本轮三个文件范围，先说明获准；不启动控制driver，不以旧q发起运动或直接开始六组。
+- 本轮只限定三个工具/新测试/六规则阶段文档/六有限证据文件进入Git；diff/check、JSON/四证据hash与原115hash及生产SHA核查通过后提交。本地与GitHub状态分开，不重复无认证push。下一获准只读反馈接入及出现新真实反馈后才有效补采，本次失败已保存，不无限重试。
+
 ## 2026-10-14 21:23 +08:00：结合实际落实0—7计划，仅文档，不提前运动
 
 - 用户给出阶段0—7分工图并要求先规划；“继续完成”继续本项规划。起点f2dc654，首Git顶层/status/log/reflog/show核对，读当前四文档/阶段页/两技能和真实路径，保留其他既有dirty与空index。完整执行计划 `docs/PIper_CALIBRATION_EXECUTION_PLAN_20261014.md`，四规则引用/阶段页验收编号同步；首个有效试采计入六组（new_pair02—06 fit、07 held-out），旧pair01试采排除，不加第七组。

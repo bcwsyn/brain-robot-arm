@@ -14,6 +14,7 @@ import numpy as np
 
 from review_calibration_capture import frame_review
 from review_depth_registration import calibration, color_mask, project_measured, read_config
+from export_calibration_bundle import bundle_asset, observation_capture, verify_bundle
 
 
 def selected_pixels(rgb, depth, info, params, camera):
@@ -69,22 +70,19 @@ def panel(rgb, depth, selected, projected, mask, witness):
     return np.vstack((header, np.hstack(tiles)))
 
 
-def review(bundle, output):
+def review(bundle, output, capture=None):
     if output.exists():
         raise FileExistsError('Refusing to overwrite an existing audit')
     manifest = json.loads((bundle / 'manifest.json').read_text())
-    for item in manifest['files']:
-        asset = bundle / item['path']
-        if hashlib.sha256(asset.read_bytes()).hexdigest() != item['sha256']:
-            raise ValueError('Bundle hash mismatch: ' + item['path'])
-    capture = bundle / 'pair01_observe_remeasure_20261014_rgbd'
+    verify_bundle(bundle, manifest)
+    capture = observation_capture(bundle, manifest, capture)
     params = read_config(bundle / 'detector_config.yaml')
     camera = calibration(params)
     rows = [json.loads(line) for line in (capture / 'observer.jsonl').read_text().splitlines() if line]
     frames, arrays = [], []
     for row in rows:
         for image in row['images'].values():
-            image['path'] = str(capture / image['path'])
+            image['path'] = str(bundle_asset(capture, image['path']))
         result = frame_review(row, params, camera)
         rgb = cv2.imread(row['images']['rgb']['path'])
         depth = cv2.imread(row['images']['depth']['path'], cv2.IMREAD_UNCHANGED)
@@ -95,12 +93,13 @@ def review(bundle, output):
         arrays.append((rgb, depth, selected, projected, mask))
     high_ids = [i for i, frame in enumerate(frames) if frame['group'] == 'high']
     low_ids = [i for i, frame in enumerate(frames) if frame['group'] == 'low']
-    if not high_ids or not low_ids:
-        raise ValueError('Both support populations required for this audit')
+    if not high_ids:
+        raise ValueError('No high-support native footprint; no center or comparison invented')
     ref = high_ids[0]
     high_support = arrays[ref][2]
     x0, y0, x1, y1 = bbox(high_support)
-    witness = [max(0, x0 - 8), max(0, y0 - 8), min(639, x1 + 8), min(399, y1 + 8)]
+    height, width = arrays[ref][1].shape
+    witness = [max(0, x0 - 8), max(0, y0 - 8), min(width - 1, x1 + 8), min(height - 1, y1 + 8)]
     for frame, (_, depth, selected, _, _) in zip(frames, arrays):
         measured = depth[high_support] > 0
         values = depth[high_support][measured]
@@ -114,20 +113,26 @@ def review(bundle, output):
             asset['path'] = str(Path(asset['path']).relative_to(bundle))
     groups = {}
     for name, ids in [('high', high_ids), ('low', low_ids)]:
+        if not ids:
+            groups[name] = {'frames': 0, 'snapshots': [], 'median_surface_xyz_m': None,
+                            'median_same_footprint_zero_fraction': None}
+            continue
         groups[name] = {'frames': len(ids), 'snapshots': [frames[i]['snapshot'] for i in ids],
             'median_surface_xyz_m': np.median([frames[i]['surface_componentwise_median_xyz_m'] for i in ids], axis=0).tolist(),
             'median_same_footprint_zero_fraction': float(np.median([
                 frames[i]['same_high_frame_native_footprint']['zero_fraction'] for i in ids]))}
-    separation = float(np.linalg.norm(np.array(groups['high']['median_surface_xyz_m']) -
+    separation = (float(np.linalg.norm(np.array(groups['high']['median_surface_xyz_m']) -
                                       groups['low']['median_surface_xyz_m']))
+                  if groups['low']['median_surface_xyz_m'] is not None else None)
     output.mkdir(parents=True, exist_ok=False)
     previews = []
-    for index in (ref, low_ids[0]):
+    for index in ([ref, low_ids[0]] if low_ids else [ref]):
         name = f"{frames[index]['group']}_snapshot_{frames[index]['snapshot']:04d}.png"
         if not cv2.imwrite(str(output / name), panel(*arrays[index], witness)):
             raise RuntimeError('Failed diagnostic PNG write')
         previews.append(name)
     report = {'offline_only': True, 'synthetic': False, 'raw_modified': False,
+        'sample_id': manifest.get('sample_id'), 'observation_capture': capture.name,
         'production_configuration_changed': False, 'manifest_sha256': hashlib.sha256((bundle / 'manifest.json').read_bytes()).hexdigest(),
         'registration': 'Unchanged production pinhole D->C; no inverse/distortion candidate chosen by sample count',
         'groups': groups, 'group_surface_separation_m': separation,
@@ -135,10 +140,11 @@ def review(bundle, output):
         'conclusion_limits': ['The same native footprint can directly reveal depth holes independently of robot TF.',
             'Different selected sample locations/surface depths are not independent random repeats of one cube center.',
             'No evidence here uniquely identifies sensor processing, occlusion, frame phase or registration as root cause.',
-            'Neither high coverage nor a surface median establishes geometric cube center. Pair01 remains trial only.'],
+            'Neither high coverage nor a surface median establishes geometric cube center. Historical pair01 remains trial only.'],
         'frames': frames}
     (output / 'report.json').write_text(json.dumps(report, indent=2, allow_nan=False) + '\n')
-    print(json.dumps({'groups': groups, 'separation_mm': separation * 1000., 'output': str(output)}))
+    print(json.dumps({'groups': groups, 'separation_mm': separation * 1000. if separation is not None else None,
+                      'output': str(output)}))
     return report
 
 
@@ -146,8 +152,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--bundle', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--capture-dir', help='Relative hashed observation directory; required if ambiguous')
     args = parser.parse_args()
-    review(args.bundle, args.output)
+    review(args.bundle, args.output, args.capture_dir)
 
 
 if __name__ == '__main__':

@@ -17,6 +17,7 @@ from scipy.optimize import least_squares
 from review_calibration_capture import cube_center_from_face, frame_review
 from review_depth_registration import calibration, color_mask, project_measured, read_config
 from review_pair_sampling import selected_pixels
+from export_calibration_bundle import bundle_asset, observation_capture, verify_bundle
 
 
 def fit_plane(points, threshold_m=.002, seed=17):
@@ -214,24 +215,21 @@ def preview(rgb, row, camera, label):
     return output
 
 
-def review_bundle(bundle, output, edges_mm=(28., 29.)):
+def review_bundle(bundle, output, edges_mm=(28., 29.), capture=None):
     if output.exists():
         raise FileExistsError('Refusing to overwrite prior evidence')
     if not edges_mm or not all(np.isfinite(v) and 10 <= v <= 100 for v in edges_mm):
         raise ValueError('Finite explicit nominal edge lengths required')
     manifest_path = bundle / 'manifest.json'
     manifest = json.loads(manifest_path.read_text())
-    for asset in manifest['files']:
-        path = bundle / asset['path']
-        if hashlib.sha256(path.read_bytes()).hexdigest() != asset['sha256']:
-            raise ValueError('Original bundle SHA mismatch: ' + asset['path'])
-    capture = bundle / 'pair01_observe_remeasure_20261014_rgbd'
+    verify_bundle(bundle, manifest)
+    capture = observation_capture(bundle, manifest, capture)
     params = read_config(bundle / 'detector_config.yaml'); camera = calibration(params)
     rows = [json.loads(line) for line in (capture / 'observer.jsonl').read_text().splitlines() if line]
     frames = []
     for row in rows:
         for image in row['images'].values():
-            image['path'] = str(capture / image['path'])
+            image['path'] = str(bundle_asset(capture, image['path']))
         frames.append(frame_hypotheses(row, params, camera, [edge * .001 for edge in edges_mm]))
     output.mkdir(parents=True, exist_ok=False)
     witnesses = []
@@ -246,6 +244,7 @@ def review_bundle(bundle, output, edges_mm=(28., 29.)):
             witnesses.append(name)
     factory = json.loads((bundle / 'calibration.json').read_text())
     result = {'offline_only': True, 'raw_modified': False, 'motion_commands_sent': False,
+        'sample_id': manifest.get('sample_id'), 'observation_capture': capture.name,
         'robot_mounting_tf_used': False, 'camera_serial': factory['serial'],
         'manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
         'source_script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -256,10 +255,10 @@ def review_bundle(bundle, output, edges_mm=(28., 29.)):
         'nominal_edge_assumptions_mm': list(edges_mm), 'summaries': {f'{e:g}': summary(frames, e, camera) for e in edges_mm},
         'frames': frames, 'previews': witnesses,
         'not_claude_source_reproduction': True, 'not_approved_for_calibration_or_tf_deployment': True,
-        'limitations': ['No physical cube-center ground truth or caliper measurement in pair01.',
+        'limitations': ['A camera-side candidate alone does not establish physical grip contact or caliper-measured dimensions.',
             'Eroded color support and missing face boundary can systematically shift a stable estimate.',
             'No source-image depth hole has been filled. The green marker is inference, not a measured interior point.',
-            'Pair01 gripper was not closed; this camera-side hypothesis does not make it fit-ready.']}
+            'Historical pair01 gripper was not closed; this hypothesis does not change its trial status.']}
     (output / 'report.json').write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
     print(json.dumps({'output': str(output), 'summaries': result['summaries']}))
     return result
@@ -270,8 +269,9 @@ def main():
     parser.add_argument('--bundle', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--edge-mm', nargs='+', type=float, default=[28., 29.])
+    parser.add_argument('--capture-dir', help='Relative hashed observation directory; required if ambiguous')
     args = parser.parse_args()
-    review_bundle(args.bundle, args.output, args.edge_mm)
+    review_bundle(args.bundle, args.output, args.edge_mm, args.capture_dir)
 
 
 if __name__ == '__main__':
