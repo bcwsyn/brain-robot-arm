@@ -142,3 +142,8 @@ Seven packages built from empty build/install in approximately1 min38 s; the fin
 ### Complete archive verification
 
 All18177 stage files are preserved in two parts, each at most45 MiB; combined archive55239926 bytes. Restoration to a new directory verified every file SHA-256. Earlier training/model archives remain preserved. Receipt: `validation/cup_grasp/archive_restore_verification.log`.
+
+
+### GitHub publication verification
+
+Published asYouNg1x: code commit[`c3bd3fd`](https://github.com/bcwsyn/brain-robot-arm/commit/c3bd3fd319ecaa461ff373f093d979897aa3cf44), tag`cup-grasp-force-v1-20261014`. Rebased on concurrent remote027359e; the complete brain_robot_arm/, simulation/ and simulation_cup/ trees match that latest base. Remote main/tag matched the code commit and a fresh model download matched SHA-256. Receipt:`validation/cup_grasp/github_publication.json`. A following small commit preserves publication receipts only.
