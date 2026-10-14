@@ -57,3 +57,7 @@ Wait for observation/recognition ready, then use terminal S/R/Q. Inspect the til
 Measurements, three pre-update source files, model checks, build/core-test logs, physical/GUI sessions and archive/publication receipts are retained under `validation/wrist_camera_tilt_20261014/`. Earlier data are preserved. The untilted release remains accessible at `cup-wrist-gemini2-v1-20261014`; the tilt update receives its own tag.
 
 The tilt archive verifies927 files individually, occupies3400164 bytes, SHA-256 `b45ffb700ec73d6b197a2e0eb6267a01a107299166555ab01e36a026b82bb7bc`. All217 runtime files match the release.
+
+## GitHub publication
+
+Updated `simulation_cup_wrist/`, code commit `fc0af8bdeae703934d4bd5f53cc3bbd12af65135`, tag `cup-wrist-gemini2-tilt-v2-20261014`. Three remote key files were downloaded and verified byte-for-byte. Four earlier workspace trees and the untilted v1 tag remain intact. See `validation/wrist_camera_tilt_20261014/github_publication.json`.
