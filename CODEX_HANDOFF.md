@@ -1,3 +1,9 @@
+## 最新环境检查（2026-10-14 18:18 +08:00：磁盘充足，无需清理）
+
+本轮 df -hT / /home/johnwick /tmp /mnt/hgfs/ub、df -ih 均 rc0：系统分区总量 78G、可用 35G、使用率 54%，/home/johnwick 与 /tmp 共用；根分区 inode 使用率 19%。共享文件系统总量 501G、可用 139G、使用率 73%，不是仓库本身大小。未触发根分区 85% 清理阈值，没有清理或删除文件；历史 Git 只读问题不由当前容量解释。
+
+最新机械臂/标定断点仍以以下第一组记录为准：第一组清单已保存且其单文件发布已独立验证，第二组尚未采，安装外参未拟合、完整抓取未完成。本轮仅磁盘只读检查和三份文档留痕，没有新物理反馈或运动。本轮提交前检查，整体本地 main 与缓存 origin/main 为 10/2 分叉，保留已记录的整体发布范围限制；本轮仅本地提交，未同步 GitHub。下一启动/长采前重查 df -hT /，采集按第二组先观测侧再原位人工夹持侧继续。
+
 ## 最新同步接续（2026-10-14：第一组JSON已在GitHub，独立核验通过）
 
 用户亲自在终端推送piper-pair01-publish-20261014:main成功；代理独立git ls-remote rc0确认远端main=13582cbd39a7382af66a494420daaf3fb5ec1aed，与准备好的数据单文件提交一致。第一组清单已同步，可访问https://github.com/bcwsyn/brain-robot-arm/blob/13582cbd39a7382af66a494420daaf3fb5ec1aed/docs/evidence/piper_calibration_pair01_20261014.json 。仅JSON，原图/SDK/native depth未上传，不能声称整个本地main/控制配置/其他文档已同步，也不推断代理认证凭据已经可用。
