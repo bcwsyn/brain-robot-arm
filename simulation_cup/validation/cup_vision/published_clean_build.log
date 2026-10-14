@@ -1,0 +1,75 @@
+PASS Ubuntu 22.04
+PASS ROS_DISTRO=humble (source Humble first)
+PASS Conda is inactive
+PASS System Python 3.10
+PASS Python user site disabled (use python3 -s)
+PASS Executable: colcon
+PASS Executable: cmake
+PASS Executable: ros2
+PASS Executable: xacro
+PASS Executable: gazebo
+PASS Executable: gzserver
+PASS Executable: gzclient
+PASS Executable: rviz2
+PASS Python module: numpy
+PASS NumPy 1.x for the Ubuntu Humble cv_bridge binary
+PASS Python module: scipy
+PASS Python module: cv2
+PASS Python module: yaml
+PASS Python module: cv_bridge
+PASS Python module: rclpy
+PASS Python module: tf2_ros
+PASS Python module: ament_index_python
+PASS Python module: launch_ros
+PASS ROS package: ament_cmake
+PASS ROS package: ament_cmake_gtest
+PASS ROS package: ament_cmake_pytest
+PASS ROS package: cv_bridge
+PASS ROS package: gazebo_dev
+PASS ROS package: gazebo_ros
+PASS ROS package: gazebo_plugins
+PASS ROS package: gazebo_ros2_control
+PASS ROS package: controller_manager
+PASS ROS package: controller_manager_msgs
+PASS ROS package: joint_state_broadcaster
+PASS ROS package: joint_trajectory_controller
+PASS ROS package: control_msgs
+PASS ROS package: gazebo_msgs
+PASS ROS package: moveit_ros_move_group
+PASS ROS package: moveit_configs_utils
+PASS ROS package: moveit_servo
+PASS ROS package: moveit_kinematics
+PASS ROS package: moveit_planners_ompl
+PASS ROS package: moveit_ros_visualization
+PASS ROS package: robot_state_publisher
+PASS ROS package: rviz2
+PASS ROS package: xacro
+PASS ROS package: tf2_ros
+PASS Plugin: libgazebo_ros_state.so
+PASS Plugin: libgazebo_ros_bumper.so
+PASS Plugin: libgazebo_ros_init.so
+PASS Plugin: libgazebo_ros_factory.so
+PASS Plugin: libgazebo_ros2_control.so
+PASS Resource: validation/grasp_validation.world
+PASS Resource: validation/fastdds_local_udp.xml
+PASS Resource: config/visual_grasp.rviz
+
+Environment checks: PASSED
+No packages were installed and no hardware or motion was started.
+Starting >>> piper_description
+Finished <<< piper_description [0.71s]
+Starting >>> piper_gazebo
+Finished <<< piper_gazebo [0.53s]
+Starting >>> piper_msgs
+Finished <<< piper_msgs [5.04s]
+Starting >>> piper_no_gripper_moveit
+Finished <<< piper_no_gripper_moveit [0.61s]
+Starting >>> piper_with_gripper_moveit
+Finished <<< piper_with_gripper_moveit [0.60s]
+Starting >>> brain_robot_pick_place
+Finished <<< brain_robot_pick_place [1min 32s]
+Starting >>> brain_robot_ball_pick
+Finished <<< brain_robot_ball_pick [0.58s]
+
+Summary: 7 packages finished [1min 41s]
+Build complete. Start scripts/run_ball_physics_sim.sh or run_cylinder_physics_sim.sh.

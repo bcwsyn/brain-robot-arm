@@ -1,0 +1,35 @@
+cup_detector:
+  ros__parameters:
+    # Gazebo defaults. Gemini2 uses the same node with different input topics.
+    rgb_topic: /wrist_camera/wrist_camera/image_raw
+    depth_topic: /wrist_camera/wrist_camera/depth/image_raw
+    camera_info_topic: /wrist_camera/wrist_camera/camera_info
+    camera_optical_frame: wrist_camera_optical_frame
+    debug_topic: /brain_robot_vision/debug_image
+    target_topic: /brain_robot_vision/target_pixel
+    target_point_camera_topic: /brain_robot_vision/target_point_camera
+    error_topic: /brain_robot_vision/pixel_error
+    valid_topic: /brain_robot_vision/target_valid
+    depth_valid_topic: /brain_robot_vision/depth_valid
+    # Gazebo publishes reliable RGB/depth. Change both together for Gemini2 if needed.
+    input_reliability: reliable
+
+    # OpenCV hue range is 0..179; red wraps across both ends.
+    hue_low_1: 0
+    hue_high_1: 12
+    hue_low_2: 168
+    hue_high_2: 179
+    saturation_min: 90
+    value_min: 70
+    min_area_px: 350.0
+    morphology_kernel: 5
+
+    # RGB/depth synchronization and metric depth filtering.
+    sync_queue_size: 10
+    sync_age_penalty: 0.05
+    min_depth_m: 0.05
+    max_depth_m: 3.0
+    min_depth_samples: 20
+    depth_erode_px: 3
+    # /pixel_error.z is the largest axis error normalized by the current image size.
+    # The controller compares it with target_acquire_error_ratio (0.20 by default).

@@ -1,0 +1,62 @@
+scene_manager:
+  ros__parameters:
+    flow_demo: true
+    simulation_only: true
+    world_frame: world
+    floor_name: care_floor
+    floor_size: 4.00
+    floor_thickness: 0.02
+    floor_z: -0.25
+    table_name: care_table
+    table_length: 0.70
+    table_width: 0.50
+    table_thickness: 0.05
+    table_x: 0.35
+    table_y: 0.00
+    table_surface_z: 0.00
+    table_center_z: -0.025
+    planning_table_min_x: 0.10
+    cup_name: medicine_cup
+    cup_radius: 0.035
+    cup_height: 0.10
+    cup_mass: 0.08
+    cup_x: 0.40
+    cup_y: -0.12
+    cup_z: 0.05
+
+cup_follow:
+  ros__parameters:
+    simulation_only: true
+    world_frame: world
+    gripper_frame: gripper_base
+    update_rate_hz: 30.0
+    cup_x: 0.40
+    cup_y: -0.12
+    cup_z: 0.05
+
+pick_place_node:
+  ros__parameters:
+    simulation_only: true
+    execute: false
+    full_sequence: false
+    arm_group: arm
+    gripper_group: gripper
+    end_effector_link: gripper_base
+    cup_name: medicine_cup
+    gripper_tip_offset: 0.1358
+    pregrasp_clearance: 0.12
+    approach_clearance: 0.06
+    grasp_height_offset: 0.0
+    lift_clearance: 0.15
+    grasp_yaw: 0.0
+    place_x: 0.40
+    place_y: 0.12
+    require_zero_state: true
+    zero_state_tolerance: 0.08
+    planning_time: 5.0
+    planning_attempts: 10
+    velocity_scaling: 0.10
+    acceleration_scaling: 0.10
+    position_tolerance: 0.01
+    orientation_tolerance: 0.05
+    object_wait_seconds: 10.0

@@ -1,0 +1,49 @@
+{
+  "miss": {
+    "session": "simulation/log/visual_sim/ball-20261013-231109-080805",
+    "completed": false,
+    "interrupted_in": "FAULT",
+    "nonzero_jogs_while_owned": 0,
+    "failure_reason": "FAULT_GRASP_MISSED / DIRECT_VISUAL_ALIGN_ACQUIRED",
+    "diagnostics": [
+      "PHYSICAL_DESCENT_MEASURED:MEASURED_JOINTS_SETTLED",
+      "PHYSICAL_BILATERAL_CONTACT_MISSING_NO_LIFT"
+    ],
+    "peak_lift_m": 2.3680222779182136e-08,
+    "passed_expected_rejection": true
+  },
+  "drop": {
+    "session": "simulation/log/visual_sim/ball-20261013-231417-530713",
+    "completed": false,
+    "interrupted_in": "FAULT",
+    "nonzero_jogs_while_owned": 0,
+    "failure_reason": "FAULT_PHYSICAL_OBJECT_LOST_OR_FEEDBACK_STALE / DIRECT_VISUAL_ALIGN_ACQUIRED",
+    "diagnostics": [
+      "PHYSICAL_DESCENT_MEASURED:MEASURED_JOINTS_SETTLED",
+      "PHYSICAL_BILATERAL_CONTACT_CONFIRMED"
+    ],
+    "observed_fall_m": 0.02191323216007414,
+    "passed_expected_rejection": true
+  },
+  "stop": {
+    "session": "simulation/log/visual_sim/ball-20261013-231558-791607",
+    "completed": false,
+    "interrupted_in": "STOPPED",
+    "nonzero_jogs_while_owned": 0,
+    "failure_reason": null,
+    "diagnostics": [
+      "PHYSICAL_DESCENT_MEASURED:MEASURED_JOINTS_SETTLED",
+      "PHYSICAL_BILATERAL_CONTACT_CONFIRMED"
+    ],
+    "stop_injected": true,
+    "stop_during_state": "LIFTING_PHYSICAL_OBJECT",
+    "peak_lift_m": 0.026827191047415832,
+    "feedback_samples": 1024,
+    "feedback_span_s": 2.046493621999616,
+    "settled_observation_span_s": 1.546484906999467,
+    "maximum_inferred_joint_speed_rad_s": 2.3620347169755534e-06,
+    "visual_stopped": true,
+    "console_stopped_after_control_release": true,
+    "passed_expected_rejection": true
+  }
+}

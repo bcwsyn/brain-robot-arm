@@ -1,0 +1,105 @@
+PASS Ubuntu 22.04
+PASS ROS_DISTRO=humble (source Humble first)
+PASS Conda is inactive
+PASS System Python 3.10
+PASS Python user site disabled (use python3 -s)
+PASS Executable: colcon
+PASS Executable: cmake
+PASS Executable: ros2
+PASS Executable: xacro
+PASS Executable: gazebo
+PASS Executable: gzserver
+PASS Executable: gzclient
+PASS Executable: rviz2
+PASS Python module: numpy
+PASS NumPy 1.x for the Ubuntu Humble cv_bridge binary
+PASS Python module: scipy
+PASS Python module: cv2
+PASS Python module: yaml
+PASS Python module: cv_bridge
+PASS Python module: rclpy
+PASS Python module: tf2_ros
+PASS Python module: ament_index_python
+PASS Python module: launch_ros
+PASS ROS package: ament_cmake
+PASS ROS package: ament_cmake_gtest
+PASS ROS package: ament_cmake_pytest
+PASS ROS package: cv_bridge
+PASS ROS package: gazebo_dev
+PASS ROS package: gazebo_ros
+PASS ROS package: gazebo_plugins
+PASS ROS package: gazebo_ros2_control
+PASS ROS package: controller_manager
+PASS ROS package: controller_manager_msgs
+PASS ROS package: joint_state_broadcaster
+PASS ROS package: joint_trajectory_controller
+PASS ROS package: control_msgs
+PASS ROS package: gazebo_msgs
+PASS ROS package: moveit_ros_move_group
+PASS ROS package: moveit_configs_utils
+PASS ROS package: moveit_servo
+PASS ROS package: moveit_kinematics
+PASS ROS package: moveit_planners_ompl
+PASS ROS package: moveit_ros_visualization
+PASS ROS package: robot_state_publisher
+PASS ROS package: rviz2
+PASS ROS package: xacro
+PASS ROS package: tf2_ros
+PASS Plugin: libgazebo_ros_state.so
+PASS Plugin: libgazebo_ros_bumper.so
+PASS Plugin: libgazebo_ros_init.so
+PASS Plugin: libgazebo_ros_factory.so
+PASS Plugin: libgazebo_ros2_control.so
+PASS Local overlay: brain_robot_pick_place -> /tmp/piper-stage3-publish/simulation/install/brain_robot_pick_place
+PASS Local overlay: brain_robot_ball_pick -> /tmp/piper-stage3-publish/simulation/install/brain_robot_ball_pick
+PASS Local overlay: piper_description -> /tmp/piper-stage3-publish/simulation/install/piper_description
+PASS Local overlay: piper_msgs -> /tmp/piper-stage3-publish/simulation/install/piper_msgs
+PASS Local overlay: piper_gazebo -> /tmp/piper-stage3-publish/simulation/install/piper_gazebo
+PASS Local overlay: piper_with_gripper_moveit -> /tmp/piper-stage3-publish/simulation/install/piper_with_gripper_moveit
+PASS Local overlay: piper_no_gripper_moveit -> /tmp/piper-stage3-publish/simulation/install/piper_no_gripper_moveit
+PASS Resource: validation/grasp_validation.world
+PASS Resource: validation/fastdds_local_udp.xml
+PASS Resource: config/visual_grasp.rviz
+PASS DISPLAY available (RGB-D rendering needs a display, even --headless)
+PASS X display accessible
+PASS Gazebo session port 11483 available
+
+Environment checks: PASSED
+No packages were installed and no hardware or motion was started.
+[日志] /tmp/piper-stage3-publish/simulation/log/visual_sim/ball-20261014-000055-287188
+[随机种子] 20261013（已保存，可用于重现起点）
+=== 相机取放仿真：小球 ===
+加载完成后按 S 开始，R 复位，X 停止，Q 退出；仅控制虚拟机械臂。
+[1/5] 加载虚拟机械臂和控制器…
+[2/5] 加载 MoveIt…
+[3/5] 创建桌面和小球…
+[4/5] 加载 RGB-D 相机检测…
+[5/5] 加载视觉搜索与抓取任务…
+[放置区] A 区已选中。
+[就绪] 1/2 选择 A/B 放置区 | S 相机抓取 | R 随机复位 | X 停止 | Q 退出
+[放置区] A 区已选中。
+[操作] 开始相机搜索、抓取与放置。
+[拒绝] No fresh joint state; the robot controller is not ready.；确认就绪后再按 S。
+[操作] 开始相机搜索、抓取与放置。
+[视觉] START_AUTHORIZED
+[视觉] OBSERVE_POSE_REACHED
+[视觉] TARGET_ACQUIRED
+[视觉] DIRECT_VISUAL_ALIGN_ACQUIRED
+[抓取] OPENING_GRIPPER
+[抓取] PREPARED
+[抓取] TOP_DOWN_PREGRASP_PLANNING
+[抓取] TOP_DOWN_DESCENT_EXECUTING
+[抓取] CLOSING_GRIPPER
+[抓取] VERIFYING_GRASP_CONTACT
+[抓取] LIFTING_PHYSICAL_OBJECT
+[抓取] HOLDING_PHYSICAL_OBJECT
+[抓取] TRANSFERRING_PHYSICAL_OBJECT
+[抓取] RELEASE_LOWERING_PHYSICAL
+[抓取] RELEASING_PHYSICAL_OBJECT
+[抓取] RELEASE_RETREATING
+[抓取] RETURNING_HOME
+[抓取] COMPLETE
+[视觉] GRASP_CONTROL_RELEASED
+[完成] 第 1 轮取放完成；R 复位后可再按 S，Q 退出。
+[关闭] 正在停止本程序启动的仿真进程…
+[退出完成] 本程序启动的仿真已关闭。

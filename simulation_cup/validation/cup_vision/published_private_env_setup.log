@@ -1,0 +1,81 @@
+Looking in indexes: https://download.pytorch.org/whl/cpu
+Collecting torch==2.6.0+cpu
+  Using cached https://download-r2.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp310-cp310-linux_x86_64.whl (178.6 MB)
+Collecting torchvision==0.21.0+cpu
+  Using cached https://download-r2.pytorch.org/whl/cpu/torchvision-0.21.0%2Bcpu-cp310-cp310-linux_x86_64.whl (1.8 MB)
+Collecting typing-extensions>=4.10.0
+  Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Requirement already satisfied: jinja2 in /usr/lib/python3/dist-packages (from torch==2.6.0+cpu) (3.0.3)
+Collecting fsspec
+  Using cached fsspec-2026.7.0-py3-none-any.whl (206 kB)
+Collecting sympy==1.13.1
+  Using cached sympy-1.13.1-py3-none-any.whl (6.2 MB)
+Collecting filelock
+  Using cached filelock-3.32.3-py3-none-any.whl (98 kB)
+Collecting networkx
+  Using cached networkx-3.4.2-py3-none-any.whl (1.7 MB)
+Requirement already satisfied: numpy in /usr/lib/python3/dist-packages (from torchvision==0.21.0+cpu) (1.21.5)
+Requirement already satisfied: pillow!=8.3.*,>=5.3.0 in /usr/lib/python3/dist-packages (from torchvision==0.21.0+cpu) (9.0.1)
+Collecting mpmath<1.4,>=1.1.0
+  Using cached mpmath-1.3.0-py3-none-any.whl (536 kB)
+Installing collected packages: mpmath, typing-extensions, sympy, networkx, fsspec, filelock, torch, torchvision
+  Attempting uninstall: mpmath
+    Found existing installation: mpmath 0.0.0
+    Not uninstalling mpmath at /usr/lib/python3/dist-packages, outside environment /tmp/piper-cup-stage4-publish-20261014/simulation_cup/.venv-yolo
+    Can't uninstall 'mpmath'. No files were found to uninstall.
+  Attempting uninstall: sympy
+    Found existing installation: sympy 1.9
+    Not uninstalling sympy at /usr/lib/python3/dist-packages, outside environment /tmp/piper-cup-stage4-publish-20261014/simulation_cup/.venv-yolo
+    Can't uninstall 'sympy'. No files were found to uninstall.
+Successfully installed filelock-3.32.3 fsspec-2026.7.0 mpmath-1.3.0 networkx-3.4.2 sympy-1.13.1 torch-2.6.0+cpu torchvision-0.21.0+cpu typing-extensions-4.16.0
+Collecting ultralytics==8.3.203
+  Using cached ultralytics-8.3.203-py3-none-any.whl (1.1 MB)
+Collecting numpy==1.24.4
+  Using cached numpy-1.24.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
+Collecting opencv-python==4.11.0.86
+  Using cached opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (63.0 MB)
+Collecting onnx==1.17.0
+  Using cached onnx-1.17.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.0 MB)
+Collecting onnxruntime==1.20.1
+  Using cached onnxruntime-1.20.1-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (13.3 MB)
+Requirement already satisfied: typing_extensions==4.16.0 in ./.venv-yolo/lib/python3.10/site-packages (from -r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 7)) (4.16.0)
+Requirement already satisfied: requests>=2.23.0 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (2.25.1)
+Collecting polars
+  Using cached polars-2.0.0-py3-none-any.whl (876 kB)
+Requirement already satisfied: torch>=1.8.0 in ./.venv-yolo/lib/python3.10/site-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (2.6.0+cpu)
+Requirement already satisfied: pillow>=7.1.2 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (9.0.1)
+Collecting ultralytics-thop>=2.0.0
+  Using cached ultralytics_thop-2.2.2-py3-none-any.whl (32 kB)
+Requirement already satisfied: matplotlib>=3.3.0 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (3.5.1)
+Requirement already satisfied: pyyaml>=5.3.1 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (5.4.1)
+Requirement already satisfied: torchvision>=0.9.0 in ./.venv-yolo/lib/python3.10/site-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (0.21.0+cpu)
+Requirement already satisfied: psutil in /usr/lib/python3/dist-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (5.9.0)
+Requirement already satisfied: scipy>=1.4.1 in /usr/lib/python3/dist-packages (from ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (1.8.0)
+Collecting protobuf>=3.20.2
+  Using cached protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+Collecting flatbuffers
+  Using cached flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+Requirement already satisfied: sympy in ./.venv-yolo/lib/python3.10/site-packages (from onnxruntime==1.20.1->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 6)) (1.13.1)
+Collecting coloredlogs
+  Using cached coloredlogs-15.0.1-py2.py3-none-any.whl (46 kB)
+Requirement already satisfied: packaging in /usr/lib/python3/dist-packages (from onnxruntime==1.20.1->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 6)) (21.3)
+Requirement already satisfied: networkx in ./.venv-yolo/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (3.4.2)
+Requirement already satisfied: filelock in ./.venv-yolo/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (3.32.3)
+Requirement already satisfied: fsspec in ./.venv-yolo/lib/python3.10/site-packages (from torch>=1.8.0->ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (2026.7.0)
+Requirement already satisfied: jinja2 in /usr/lib/python3/dist-packages (from torch>=1.8.0->ultralytics==8.3.203->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 2)) (3.0.3)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in ./.venv-yolo/lib/python3.10/site-packages (from sympy->onnxruntime==1.20.1->-r /tmp/piper-cup-stage4-publish-20261014/simulation_cup/config/cup_vision_requirements.txt (line 6)) (1.3.0)
+Collecting humanfriendly>=9.1
+  Using cached humanfriendly-10.0-py2.py3-none-any.whl (86 kB)
+Collecting polars-runtime-32==2.0.0
+  Using cached polars_runtime_32-2.0.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (54.5 MB)
+Installing collected packages: flatbuffers, protobuf, polars-runtime-32, numpy, humanfriendly, polars, opencv-python, onnx, coloredlogs, ultralytics-thop, onnxruntime, ultralytics
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 3.12.4
+    Not uninstalling protobuf at /usr/lib/python3/dist-packages, outside environment /tmp/piper-cup-stage4-publish-20261014/simulation_cup/.venv-yolo
+    Can't uninstall 'protobuf'. No files were found to uninstall.
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.21.5
+    Not uninstalling numpy at /usr/lib/python3/dist-packages, outside environment /tmp/piper-cup-stage4-publish-20261014/simulation_cup/.venv-yolo
+    Can't uninstall 'numpy'. No files were found to uninstall.
+Successfully installed coloredlogs-15.0.1 flatbuffers-25.12.19 humanfriendly-10.0 numpy-1.24.4 onnx-1.17.0 onnxruntime-1.20.1 opencv-python-4.11.0.86 polars-2.0.0 polars-runtime-32-2.0.0 protobuf-7.36.2 ultralytics-8.3.203 ultralytics-thop-2.2.2
+Private cup vision environment ready.
