@@ -1,4 +1,10 @@
-## 最新接续（2026-10-14 15:12：新观测/人工夹持配对待USB恢复）
+## 最新接续（2026-10-14 15:48：原观测A已采，新观测记录未完成）
+
+USB已恢复，固定CAN配置一次→原脚本AUTO0/stop_after_observe=true，原49.1s14点实到2655.683 STOPPED/SEARCH前，无抓取。A在/home/johnwick/brain_robot_logs/paired_pose_20261014_A_observe，RGB2706923605790/q_mdeg[-108,55650,-42575,0,17178,0]/六true99.6mm/原.01容差内；同戳三TF查询通过/无latest，但方块下沿裁切、qualified0/无有效3D，最新depth晚113.6ms不冒同帧。用户最新改为“先使能、记录现在角度为新观测”；旧driver3848/visual4157精确TERM退出，无Reset/Disable。Enable两次与只读一次因工具权限自动审查超时未执行，已给用户终端enable-only命令，实际新q/使能未验证，未改YAML/新观测/B未采。无新向下运动。
+
+当前相机问题：用户截图cam2image发布后Ctrl+C退出；host检查曾RGB发布者0、viewer8438存在/新帧0，窗口可见性不能由进程断言。USB/video0/320x240支持正常；本机libimage_tools说明show_camera默认false，给原采集命令加show_camera:=true可单进程显示，需保持运行，暂未验收新GUI。第一组只读同戳companion入Git、不动运动；原3985466/入口/TF保持，54%35GB。下一先实时RGB与手动准备的新姿态，再新鲜反馈仅使能/保存角度，不沿用A。完整抓取未完成，origin50a5cc2分叉保持、本轮本地未同步，细节最新进度。
+
+## 历史接续（2026-10-14 15:12：新观测/人工夹持配对待USB恢复）
 
 限定实现与证据已本地提交f794f2f/check0。独立远端读取+一次fetch发现main新50a5cc2（独立cup回放），1/1分叉；未自动合并/覆盖/推送，本轮仅本地、GitHub未同步，下一协作确认普通合并后重新审查。实体USB仍缺，不能因Git问题去修改运动或重启机械臂。新增9blobs最大859023B/无大包图日志、新增行常见敏感模式0；详见进度。
 

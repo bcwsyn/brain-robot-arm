@@ -1,4 +1,15 @@
-## 2026-10-14 15:12：新配对采集A待USB恢复；补齐实体回放与清盘
+## 2026-10-14 15:48：旧观测A已采；新观测记录待完成，RGB显示参数核实
+
+- 用户恢复USB后host枚举CAN/Astra/RGB。can0初DOWN，仅固定1Mbps/.75/queue1000/up一次rc0，新2A/251反馈恢复；原脚本随后复用链路。新SDK2435.649/100Hz/q_mdeg[-3434,-107,0,-5537,15030,6442]/六false/静止99.6mm，不沿用旧姿态。磁盘54%/35GB，原清盘rc0/图片删0。
+- 唯一原脚本AUTO0监督启动到7/7，原controller stop_after_observe=true读回；原enable_srv/adapter enable_motion/arm与start成功。PREPARE1791962606.95055、原49.1s/14点/.08rad，adapter2606.95876接受；2655.68330 STOPPED/OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH，未SEARCH/抓取/闭爪/Reset/Disable。原限位[-1.5,-.3,-1.4,-.8,-1.2,-pi]..[1.5,pi,.4,.8,1.2,pi]与adapter速度上限.189保持；原固定观测插值最高.02rad/s，不声称此prepare经过MoveIt规划。
+- 原只读快照rc0：/home/johnwick/brain_robot_logs/paired_pose_20261014_A_observe/report.json，RGB1791962706923605790_rgb.png/SHA1a27b69b37d9aac2a98d9c6440ed67ecea9c8c32cac6c271528ba78d78bf2642，333新鲜SDK/15RGB/q_mdeg[-108,55650,-42575,0,17178,0]，ROS q[-.001883952,.9707586,-.7426783,0,.299653032,0]，最大观测误差.0092414rad在原.01内，六true/99.6mm。5s角度spread全0，但高速速度字段峰值[.026,.033,0,0,.174,.021]rad/s，不能把spread0写为所有速度字段0。原生depth200468非零，选latest比RGB晚113.619447ms，不冒称同帧配准深度；本次color_info未收到，工厂参数仍原配置。
+- 实拍已查看：方块仅画面下沿一小部分、被裁切，v2同戳qualified0/中心0/无有效三维目标，不能补猜坐标。新增只读companion review_snapshot_live_tf.py/AST无控制接口，rc0得到同一RGB戳base_link→color/depth/gripper_base三TF，无latest替代；同戳目标point0/qualified box空轮廓，如实缺失。live_tf_and_target.json保留。同戳反馈为nearest非插值，离线模型与实图不符历史仍保持。
+- 用户先要求重新建立观测，随后明确替换为“先使能，记录当前q为新观测”。没有执行新向下调整或写新默认YAML。被中断的一键父进程已退出，但旧driver组3848/visual组4157仍在，核对身份后TERM退出，无失能/复位。两次仅EnableArm+记录命令及一次只读SDK命令均因工具自动权限审查超时而未创建执行进程；不能称实体已使能、新观测已记录或硬件拒绝。已向用户给出仅使能终端命令；其实际执行结果未采，当前真实新q/使能状态未知。新观测配置仍原值，B未采。
+- 相机显示诊断使用仓库ROS2技能：普通沙箱设备/进程隔离，不据其/dev/video缺失误判硬件。host初RGB8320在/video0，随后其退出；独立检查原图topic发布者0/3s新RGB0，查看器8438在运行，相机USB及320x240格式有效。截图进一步显示cam2image发布75..96后Ctrl+C退出。不能断言用户截图桌面必有可见viewer窗口；进程存在不等于窗口已显示。
+- 本机/opt/ros/humble/lib/libimage_tools.so明确show_camera默认false、支持window_name/imshow。此前给的采集命令未显式显示，现提供原cam2image参数加show_camera:=true，一进程采集并显示；需保持运行，不另起机械臂栈、不重启CAN/DDS、不改生产。仅命令/参数核实，不冒称新显示窗已实测成功。之前一个附加分析未设置PYTHONNOUSERSITE导致NumPy ABI错误；使用原系统环境重跑成功，不降级或改依赖。
+- 原入口SHA87039b…/task a0111d3…/executor70c3381…与3985466一致，没有新生产运动/外参/阈值改变。第一组资料和小工具入Git，图像/大日志仍home、不入仓；旧独立remote50a5cc2分叉未解决，本轮仅本地提交，不自动合并/强推。下一先确认实时完整RGB与用户手动准备好的新姿态，再按最新仅使能/新鲜反馈记录观测值，不沿用A或旧示教q。完整抓取未完成。
+
+## 历史：新配对采集A待USB恢复；补齐实体回放与清盘
 
 - 提交/同步接续：限定9路径已提交 `f794f2f`，git show --check通过；审查新增9 blobs最大859023字节、无>10MiB文件，新增行常见凭据/私钥模式匹配0，无图像/包/原日志。独立git ls-remote返回远端main `50a5cc2ddcb4473ca373cd4ef1b7248736e59b0f`，已不是起点2f69a6d；一次timeout -k2s25s git fetch origin main成功，HEAD...origin/main为1/1：本地f794f2f、远端新独立cup回放50a5cc2。未自动合并/强推/改别人历史，本轮仅本地提交、未同步GitHub，需协作确认后普通合并及重新审查推送。最后提升lsusb/ip仍无实体USB/can0，A不能执行，下一仍先恢复VMware设备连接；同步阻断与实体设备阻断分开。
 - 用户最新要求方块桌面原位→原观测静止采集A→等其人工摆入两指再读存B。不自动搜索/闭爪/旧q回放；A/B尚未新采，本轮未发命令。VM 15:01:22重启，host无ROS栈，can0不存在，提升环境lsusb仅虚拟设备、USB-CAN和实际相机均未枚举；sudo0/磁盘54%约35GB。需VMware恢复两个USB透传，无需重启机械臂。下一首条提升环境lsusb/ip，随后新鲜反馈→原观测实到→有界采集，不反复guest重载或用旧q/SDK默认值。
