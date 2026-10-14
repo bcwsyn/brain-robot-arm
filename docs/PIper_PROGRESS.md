@@ -8,7 +8,13 @@
 - 本轮仅更新交接、进度、决策三份文档；保留其他已有 dirty 和未跟踪文件，提交前索引为空。HEAD...origin/main 的缓存计数为 10/2（rc0），现有整体历史发布范围拒绝/分叉仍保留；没有重复整体上传、合并、改写历史或新读取远端。本轮仅本地提交，未同步 GitHub，不影响第一组 JSON 已发布事实。
 - 下一步：启动或长时间采集前再次 df -hT /；当前没有磁盘阻断。主任务仍按最新第一组记录继续第二组新位置的观测侧，再原位人工夹持侧只读采样，不以本次磁盘检查自动续跑控制栈。
 
-## 2026-10-14：完整第一组资料已提交，限定发布待终端认证
+## 2026-10-14：完整第一组数据包已上线GitHub，独立核验通过
+
+- 用户要求网址；代理独立timeout -k2s20s git ls-remote origin refs/heads/main rc0，确认远端main=027359e47535f1af8c76b0ae84465263bdd1392a，与本地piper-pair01-publish-20261014相同。限定120路径完整数据/离线工具已发布，旧认证阻断仅历史；其他本地生产/记录积压未上传。
+- 数据目录：https://github.com/bcwsyn/brain-robot-arm/tree/027359e47535f1af8c76b0ae84465263bdd1392a/docs/evidence/piper_calibration_20261014/pair01 。manifest.json为全115资产校验/相对路径，depth_review.json为30帧/高支撑分层统计，calibration.json为K/D/R/T，dataset_notes.json为四项状态与未完成事项。原PNG/SDK已包含，不再只有home路径摘要。
+- 本轮仅按手术式技能补同步记录，无运动/SDK/ROS/再次推送；30帧中高支撑仅10、约28/5mm几何先验待核验及当前新鲜反馈缺失仍不因发布成功而消失。下一物理反馈恢复后补高支撑及第二组；不冒称安装标定/1cm绝对精度或抓取完成。
+
+## 历史：2026-10-14：完整第一组资料已提交，限定发布待终端认证
 
 - 规范限定提交4a3b17b：三离线分析/测试、四规则记录/rootJSON、116数据包文件（manifest+115资产），共124路径。7测试/全部115个数据hash/相对路径/30组depth-info同戳/实际q与FK字段验证通过，最大资产211185B、总资产10114959B；敏感模式未命中。数据未改动源PNG/控制代码/相机TF，不称全部四项物理精度问题已解决。
 - 数据发布分支在隔离worktree以remote13582cb为唯一父提交，只还原本轮bundle/rootJSON/三只读源码共120路径；审查无任何积压生产历史或其他dirty。新提交027359e（piper-pair01-publish-20261014），git show --check通过。普通git push origin piper-pair01-publish-20261014:main rc128/could not read Username，当前代理非交互会话仍无GitHub凭据；上轮用户终端成功不等于此会话已认证。
