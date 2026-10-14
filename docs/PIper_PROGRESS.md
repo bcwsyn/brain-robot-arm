@@ -1,4 +1,10 @@
-## 2026-10-14：恢复后观测/靠近实测完成，诊断对齐参考与近距恢复空循环
+## 2026-10-14：官方抓取/模型/手眼资料搜索完成，未启动或修改控制
+
+用户请求官方资料研究；首五Git/最新规范/技能/actual SHA/host无栈核对。已实际读取官方手眼ROS2 Humble教程/求解源码（OpenCV/min10/Pose与PoseStamped）、标准夹爪URDF/STL模型（MIT/0.1m/mimic、不同包/法兰参考）、官方GraspGen和色块三维提取（ROS1/RealSense或Petrel、不能直接替换）、官方SDK J6→TCP offset示例145mm。提供手册56页9.7尺寸图已渲染查看/SHA记录，PDF/图片未入Git；旧vendor模型135.8mm/图纸总长140mm与SDK示例需核对参考面，不替换TCP/叠加7/10.5。GitHub API4官方仓commit固定rc0，SDK初路径404/官网旧PDF超时如实记录。未找到可证实同一自装支架CAD或同安装完整抓取官方成品；外部第三方不冒充官方/本机TF。
+
+详情[evidence/piper_official_reuse_20261014.md](evidence/piper_official_reuse_20261014.md)，含本机settled_fix已成功靠近下降但未夹住的优先复用、版本/许可证/不兼容与下一局部方案。仅文档变更，actual d051bf5/入口87039b…保持；没有SDK连接/使能/运动/驱动迁移/安装或改TF限位。完整目标未完成，下一代码/标定运动仍先获准；缓存origin left1/right127/分叉和历史审查未完，仅本地未同步GitHub，用户既有wiring/vendor/reference不动。
+
+## 历史：恢复后实测与对齐参考诊断
 
 原AUTO1主71442 rc1/非600s边界，PREPARE3786.530→SEARCH3835.507/OBSERVE_POSE_REACHED（实48.978s）→ALIGN3853.142→GRASP_READY3855.729；11粗段后228.190mm质量冻结/37路点，29末段尝试。23/24已选可达推进；52/53原完整计划与停稳成功，无REACHABLE_VISUAL_TRANSLATION调用，不称新候选实机通过。25/37未进入下降，末RGB bottom.9917>FullView.98，原固定tip视野求解不可行→nominal=current恢复空循环，原75预算耗尽FAULT_CAPTURE_UNCONFIRMED/未闭爪。更正此前commentary“规划失败”：本轮实际是恢复不收敛，不是CAN/最终中心判定。用户问高度/对齐后像素偏移只诊断，不新增代码/运动。
 

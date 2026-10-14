@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+2026-10-14最新用户仅要求搜索官方复用资料。本轮已找到官方Agilex-College手眼ROS2 Humble教程/handeye_calibration_ros、标准夹爪URDF/STL及本地手册56页9.7图、GraspGen/方块检测ROS1例程，并核对提交版本/兼容性；未找到可证实同一自装相机支架CAD或同安装完整成功仓库。官方TCP示例145mm、旧模型135.8mm、图纸140mm须先核对参考面，不自动改TCP/叠加7/10.5。详见docs/evidence/piper_official_reuse_20261014.md。仅研究记录，未改应用/TF/模型/启动机械臂，实际仍d051bf5；下一具体局部修复仍先说明获准，不把搜索授权当新运动许可。
+
 最新恢复后实测d051bf5：观测→SEARCH→ALIGN→GRASP_READY→质量冻结228.190mm→29末段尝试，23/24路点已选姿态推进，52/53原计划均执行到位，因此新平移候选未触发。最终25/37不推进、FullView底边>.98/固定tip视野恢复RAY_INFEASIBLE而current→current空循环，原75预算耗尽FAULT_CAPTURE_UNCONFIRMED；不是本轮规划失败/CAN/最终中心。无下降/闭爪，host全栈退出，新SDK4111.499/high100Hz/六true/静止99.6mm。用户最新问“为何高度不降/对齐位置丢失”，只诊断不新改/新运动；已证明初始ALIGN深度投影参考与末段仅防出画/模型残差不是持续原RGB夹持参考，下一具体局部方案获准后才能改。详见docs/evidence/piper_translation_prefix_20261014.md末段诊断，原图/模型趋势区分，完整目标未完成。
 
 2026-10-14最新用户已恢复：新can0 ifindex10 DOWN，仅一次固定1Mbps/.75/queue1000/up后RX51→2391/一秒，SDK1791943653.361/high100Hz有新stamp。真实六轴enablefalse/静止，q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]/99.6mm，不是旧stamp0默认；原使能流程继续。actual d051bf5 d4c7063…/原入口87039b…不改，无旧栈/未重建。原AUTO1 session71442/timeout3864221，证据translation_recovered_onekey/exact3864362/live3864457运行中，下一同一次日志/三图/推进核对，不重复启动或旧底层。详见docs/evidence/piper_translation_prefix_20261014.md最新接续，原异常保持/最终夹持不变，完整目标未完成。
