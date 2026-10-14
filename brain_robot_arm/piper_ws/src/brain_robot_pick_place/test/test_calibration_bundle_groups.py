@@ -179,6 +179,17 @@ def test_empty_real_capture_cannot_be_exported_as_a_complete_packet(export_args,
         exporter.export_bundle(export_args)
 
 
+def test_actual_task_symlink_install_snapshots_exact_target_not_raw_links(export_args, monkeypatch):
+    urdf, original_task = exporter.load_installed_model()
+    installed = original_task.parent / 'installed_task.yaml'
+    installed.symlink_to(original_task)
+    monkeypatch.setattr(exporter, 'load_installed_model', lambda: (urdf, installed))
+    manifest = exporter.export_bundle(export_args)
+    exporter.verify_bundle(export_args.output, manifest)
+    snapshot = export_args.output / 'robot_task_config_snapshot.yaml'
+    assert not snapshot.is_symlink() and snapshot.read_bytes() == original_task.read_bytes()
+
+
 @pytest.mark.parametrize('sample_id', ['', '../group', 'a b', '/root', 'a' * 81])
 def test_invalid_group_id_refused_before_export(export_args, sample_id):
     export_args.sample_id = sample_id

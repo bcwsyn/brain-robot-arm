@@ -1,0 +1,65 @@
+{
+  "receive_only": true,
+  "piper_init": false,
+  "motion_commands_sent": false,
+  "command_topics_or_services": false,
+  "topic": "/joint_states_feedback",
+  "duration_limit_s": 90.0,
+  "feedback_id_mapping": "receive-only 0x3A0..0x3A7 -> id - 0xFF; original driver",
+  "samples": 4304,
+  "published": 4271,
+  "suppressed_stale_or_duplicate": 33,
+  "actual_last_sample": {
+    "epoch": 1791988225.4822838,
+    "sdk_receipt_stamps": {
+      "joint": "1791988225.480295",
+      "high": "1791988225.481252",
+      "low": "1791988225.4810445",
+      "gripper": "1791988225.4808939"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8000,
+      -119,
+      -1942,
+      3433,
+      25200,
+      -4330
+    ],
+    "q_driver_rad": [
+      -0.139552,
+      -0.002075836,
+      -0.033876248000000005,
+      0.059885252,
+      0.4395888,
+      -0.07553252
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "gripper_raw_micrometers": 101500,
+    "gripper_mm": 101.5,
+    "gripper_effort_raw": 0,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "error": null,
+  "elapsed_s": 90.01266196200231
+}

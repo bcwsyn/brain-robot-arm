@@ -1,3 +1,14 @@
+## 2026-10-14 22:36 +08:00：受限CAN激活后完整静止空跑通过，阶段1完成
+
+- 软件检查点6034ab3/11限定路径/cached+show check0，旧7d143ed保留。用户明确授权现已枚举CAN固定激活/只读采集。先读ifindex6/DOWN/STOPPED，无有效UP链路可复用，sudo-n固定bitrate1000000/sample-point.75、txqueuelen1000、up仅一次/rc0；无modprobe/USB重载/固件查询/Reset/MasterSlave/Enable/Disable/Motion/Gripper。post ERROR-ACTIVE/RX53，采后568952、收尾1396189、TX始终0/errors/drop0，复用保持UP，不再旧停流试验。
+- mktemp新home/calibration_stage1_activated_20261014.kfNDAQ，原overlays/FastDDS已核环境复用。新只读桥--duration90结束rc0/samples4304/发布4271/suppressed33/error null；SDK6秒rc0/60samples/57fresh/5.743971586s/q spread六0。鲜SDKq_mdeg[-8000,-119,-2161,3433,25200,-4330]、原rad[-.139552,-.002075836,-.037696484,.059885252,.4395888,-.07553252]、速度0/六enabled false/开口101.5mm；代理未失能/使能，不改目标姿态。桥90秒最后J3=-1942，与前段不同，不声称90秒全静止、不跨窗配姿态，变化原因未诊断。
+- 原相机双组件，无控制栈/新运动。collect_static_rgbd --duration15 --frames5 --settle3 rc0/5.642610312s/5saved，feedback271/RGB29/depth117/info145，29matched、12未满3s静止/5异戳Info被原规则拒绝；5q spread0，完整same-frame depthInfo K/D/R/P/ROI/整数ns/rawuint16/RGB/实际joint/syncspan保存，未放宽阈值。
+- 本地临时只读辅助capture_factory_metadata.py仅三原空请求camera GetDeviceInfo/GetCameraInfo/GetCameraParams及内部camera_link←depth_optical TF；rc0/CC1365304DG，完整factory资料/内部平移0、quat[-.5,.5,-.5,.5]保存。内部最新TF注明非图戳robot-mount；未采实体控制接口。辅助源码按数据方法归档，无生产新入口。
+- 原review_calibration_capture当前5帧rc0/全部高支撑/330–331mm表面，仍非几何中心/20帧。export初在已知安装task symlink被原raw guard拒绝rc1，partial目录留home；仅resolve明确task源码后copy快照，原任意raw link拒绝保持，新增针对性测试。final export同一原数据新目录portable_bundle_final rc0/19资产951685B，当前SDK逐fresh FK、真实描述/任务hash、raw metadata、相对路径SHA全部验证。未重启实机/重采或覆盖失败。最终六pytest **120 passed/0 skipped/rc0/5.69s**。
+- 有限成功数据机械归档docs/evidence/piper_calibration_stage1_20261014/activated_stationary/portable（manifest+19），额外bridge原结果/只读camera采集源码/README；所有manifest资产sha通过、原PNG保持，实际已看0001 RGB完整紫块/夹指。manifest d3787a2334a7e083fac639fc4f3f323a910cf0c5f26de7002f7d59ecda84ab78、bridge b7dbd2f5c0edcb62731b62a90ea86b6539d7e22b1414ad7258c3ae8c8257772d，约1MiB不整体传日志。
+- 桥90秒自然结束、两个相机独立SIGINT/rc0退出，Astra旧关闭undeclare错误但stream stopped/干净退出；host已无本轮bridge/cam2image/container等。旧detector/debug viewer保留；五生产入口/task/detector/executor/adapterSHA全部冻结值，root54%/35G/shared72%/141G，未删除。阶段1真实完整字段空跑**完成**；数据明确stage1_stationary_dry_run_20261014/contact center未确认，不算六正式组/安装标定/抓取成功。
+- 下一阶段2操作者布置同一名义29mm方块、六点与可辨识倾角，阶段3真夹紧/采B/原位释放/按组授权原回观测后采A至少20高支撑。没有这项实体许可，不自动使能/开闭/搜索/抓取；停止沿旧缺反馈阻断反复检查。当前有限数据/局部symlink修复和记录限定Git，保留其他dirty；仅本地提交、未冒称新GitHub URL已上线。
+
 ## 2026-10-14 22:22 +08:00：获准只读采集桥/SDK解析复用，119回归通过
 
 - 用户后续已明确批准受限CAN激活和只读采集；sudo -n true无错误，现接口STOPPED/DOWN/gs_usb/3-1.2:1.0。仅固定1Mbps/.75/txqueuelen1000/UP，若现有UP有效则复用，不重载USB/驱动或发送实体控制。先提交本批软件/预检检查点，实际激活和数据结果在下一记录，不继续等待已批准范围。

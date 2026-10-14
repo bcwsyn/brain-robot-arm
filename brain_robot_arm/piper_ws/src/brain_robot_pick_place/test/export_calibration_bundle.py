@@ -202,7 +202,9 @@ def export_bundle(a):
         frame['T_base_tool'] = base_tool_fk(root, frame['actual_q_rad'])
     report['urdf_sha256'] = hashlib.sha256(urdf.encode()).hexdigest()
     report['task_sha256'] = hashlib.sha256(task_path.read_bytes()).hexdigest()
-    copy(task_path, 'robot_task_config_snapshot.yaml')
+    # Colcon symlink-install is expected for this explicitly loaded config;
+    # resolve only this known model input, not arbitrary raw image/SDK assets.
+    copy(task_path.resolve(strict=True), 'robot_task_config_snapshot.yaml')
     report['common_reference'].update({'cube_edge_m': a.cube_edge_mm / 1000,
         'cube_edge_is_approximate_user_measurement': True,
         'camera_cube_center_m': None, 'gripper_base_cube_center_m': None,
