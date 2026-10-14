@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+最新恢复后实测d051bf5：观测→SEARCH→ALIGN→GRASP_READY→质量冻结228.190mm→29末段尝试，23/24路点已选姿态推进，52/53原计划均执行到位，因此新平移候选未触发。最终25/37不推进、FullView底边>.98/固定tip视野恢复RAY_INFEASIBLE而current→current空循环，原75预算耗尽FAULT_CAPTURE_UNCONFIRMED；不是本轮规划失败/CAN/最终中心。无下降/闭爪，host全栈退出，新SDK4111.499/high100Hz/六true/静止99.6mm。用户最新问“为何高度不降/对齐位置丢失”，只诊断不新改/新运动；已证明初始ALIGN深度投影参考与末段仅防出画/模型残差不是持续原RGB夹持参考，下一具体局部方案获准后才能改。详见docs/evidence/piper_translation_prefix_20261014.md末段诊断，原图/模型趋势区分，完整目标未完成。
+
 2026-10-14最新用户已恢复：新can0 ifindex10 DOWN，仅一次固定1Mbps/.75/queue1000/up后RX51→2391/一秒，SDK1791943653.361/high100Hz有新stamp。真实六轴enablefalse/静止，q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]/99.6mm，不是旧stamp0默认；原使能流程继续。actual d051bf5 d4c7063…/原入口87039b…不改，无旧栈/未重建。原AUTO1 session71442/timeout3864221，证据translation_recovered_onekey/exact3864362/live3864457运行中，下一同一次日志/三图/推进核对，不重复启动或旧底层。详见docs/evidence/piper_translation_prefix_20261014.md最新接续，原异常保持/最终夹持不变，完整目标未完成。
 
 最新结果2026-10-14：d051bf5平移前缀已部署d4c7063…/46+10回归，原AUTO1到7/7/PREPARE接受12点，但运行期09:58:30 CAN_RX_STALLED_3S与同刻新xHCI TRB DMA错误中止，未观测到位/新末段/闭爪。当前接口UP配置正确RX124744968不增长、SDK新接收stamp0（零位/false只是默认，不能当实际失能），所有栈退出；没有Disable/Reset。按历史不重复guest USB/gs_usb/xHCI/Hub重置或bounce，下一宿主VMware仅USB-CAN断开重连，不要求重启机械臂；RX/新反馈恢复后直接同原AUTO1验收新代码。详见docs/evidence/piper_translation_prefix_20261014.md，完整目标未完成，当前阻断不是已解决的具体代码许可。

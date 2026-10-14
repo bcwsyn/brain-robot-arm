@@ -1,4 +1,10 @@
-## 2026-10-14：用户已恢复，真实RX/高速反馈验证后原AUTO1接续
+## 2026-10-14：恢复后观测/靠近实测完成，诊断对齐参考与近距恢复空循环
+
+原AUTO1主71442 rc1/非600s边界，PREPARE3786.530→SEARCH3835.507/OBSERVE_POSE_REACHED（实48.978s）→ALIGN3853.142→GRASP_READY3855.729；11粗段后228.190mm质量冻结/37路点，29末段尝试。23/24已选可达推进；52/53原完整计划与停稳成功，无REACHABLE_VISUAL_TRANSLATION调用，不称新候选实机通过。25/37未进入下降，末RGB bottom.9917>FullView.98，原固定tip视野求解不可行→nominal=current恢复空循环，原75预算耗尽FAULT_CAPTURE_UNCONFIRMED/未闭爪。更正此前commentary“规划失败”：本轮实际是恢复不收敛，不是CAN/最终中心判定。用户问高度/对齐后像素偏移只诊断，不新增代码/运动。
+
+原RGB框中心从(.445,.419)→(.364,.725)→(.338,.881)，实际反馈FK模型tipZ .1887→.0963，后约.0976m（基座模型非桌面标定）与用户先下降后停吻合。原ALIGN深度投影误差，与靠近模型残差/防出画不是同一持续实际夹持参考；源码/帧/FK证据和下一统一视觉参考/联合位置姿态恢复建议见[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)末段，修改仍需具体同意。原cleanup无Disable/Reset/回零，collector INT0/host无栈，新SDK4111.499/high100Hz/六true/速度0/99.6mm/q[-.331123866,1.847570640,-1.380293639,.046652651,.856206171,-.100408792]rad。应用d051bf5不变/完整目标未完成，Git仅本地（旧分叉/审查），用户dirty保留。
+
+## 历史：用户恢复后RX验证与原AUTO1启动
 
 首五Git/实际路径/无旧栈核对，HEAD153dc64/actual d051bf5 d4c7063…/入口87039b…不变。新can0 ifindex10初DOWN/RX0，sudo0/一次固定1Mbps/.75/queue1000/up rc0后RX51→2391一秒/errors0；未重载USB/gs_usb/xHCI。SDK3653.361/high100Hz有新stamp，q[.055257124,-.002024582,0,-.156835287,.259844619,-.075886916]/六enablefalse/速度0/99.6mm无错，确实未使能不是旧默认；按原启动使能/当前→观测，不推断恢复细节。根93%/5.9GB原清理0/原启动5987MB，不额外删除或重做构建。原AUTO1主timeout3864221/session71442、exact3864362/live3864457运行中，目录translation_recovered_*，下一同一次日志/三图/新平移候选/真正靠近，不重复启动；完整目标未完成。详见[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)。用户dirty/远端分叉保持，仅本地未同步GitHub。
 

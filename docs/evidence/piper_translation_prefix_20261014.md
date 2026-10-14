@@ -71,3 +71,23 @@ Git仅本地、未同步GitHub（远端分叉/历史审查未完）。下一接�
 根93%/5.9GB，只原clean_disk_space.sh rc0仍93%，原启动维护5987MB，无ENOSPC/额外删除。此前按该脚本清理的ROS日志/缓存不可依赖恢复，源码/构建/本轮证据保留。
 
 唯一命令BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=.../translation_recovered_onekey timeout -s INT -k8s600s /home/johnwick/start_brain_robot_cube_real.sh，session71442/timeout3864221。只读exact python3864362/session83540、observer python3864457/session33328，目录translation_recovered_exact/live，590sINT/-k3s。下一读同一次日志/原RGB/深度/debug/状态，验证d051bf5实际平移候选和继续靠近，不能将恢复或7/7冒称抓取成功。
+
+## 恢复后实测结果与用户“为什么不再下降、原对齐位置丢失”的诊断
+
+**实际事实：**同原AUTO1 script3864222、主session71442 rc1，非600s外界中止。PREPARE3786.530/14点→SEARCH3835.507/OBSERVE_POSE_REACHED（实48.978s）→ALIGN3853.142→GRASP_READY3855.729。11粗段后3872.545质量冻结最后可靠图1791943871209926638/range.228190m/world[.419895003,-.116088673,.068534385]m/size.037405；当前图3872410036938质量0/样本0，成功继续原RGB同步靠近，组合37路点/原75循环预算。
+
+23路点step48选-.75/3911.982推进；24路点step50选-1/3913.108推进。step52、53均原完整规划/实际输出到位停稳，step53原路径5点/相邻最大.013652rad，3915.529收到MEASURED_SETTLING_CONFIRMED。49总adapter accepted（含准备/搜索/对齐/收尾），29末段命令尝试，observer39真实feedback-confirmed事件；不将投递数量等同总轨迹。REACHABLE_VISUAL_TRANSLATION为0：原计划本轮成功，新平移候选没有触发，不能称新策略实体通过或无效。
+
+最终3919.452 FAULT_AUTOMATIC_RGB_CAPTURE_UNCONFIRMED_NO_CLOSE，最后推进仍25/37，未下降段/闭爪/抬升/释放，JAW_CAPTURE/GRIPPER_CLOSE_REQUESTED为0，cursor短路先于最终中心判定。此前commentary将尾部停止称“下一段规划失败”不准确：经全日志/observer核对本次step53已完整执行，现更正为视野恢复不收敛/预算耗尽，不继续套上一轮step49全规划失败结论。
+
+**同帧视觉和模型趋势（非外部TCP标定）：**复用review_jaw_scene.py::poses与已归档实际URDF，输入最近真实feedback（不是精确image-time q），采用当前tip_offset.1358；详细匹配stamp/误差在translation_recovered_pose_pixel_review.txt，rc0。GRASP_READY最近图3855809927399（差+.080s）原RGB框中心(.445313,.418750)，模型tip Z=.188740m；step30图3889410209416（差+.040s）中心(.364063,.725000)、Z=.096312m；停止图3924611050612中心(.337500,.881250)、Z=.097632m。step48 Z=.097985m，after53 Z=.097757m，后段高度停在约96–98mm基座模型坐标，不冒称桌面距高已标定。先实下降后不再下降的用户现象与记录吻合。
+
+末段RGB已看：完整/近底边紫色方块仍在原RGB，最后bbox[.265625,.770833,.409375,.991667]，bottom>.98越过原FullView边距；debug深度无有效样本，不等于真实RGB目标消失。初期200mm图与native配对3882606449314（RGB3882611928468，约5.48ms）和debug均保存/核看；末段深度缺失不覆盖冻结模型、不误当当前CAN故障。
+
+**代码明确事实：**原HandleAlignLocked用检测器pixel_error/normalized ratio<=.05、align_stable_frames=1判断；当前software_registration检测器把RGB形心/深度投影成depth像素与debug中心之差，不是原彩色画面中真实两指夹持参考。原ALIGN通过因此不能冒称实际两指射线已对准，也没有持续原RGB中心保持承诺。
+
+AutomaticRgbApproach接手后按冻结三维模型的同步位置/朝向路点，加原RGB模型投影残差；GuardApproachView只把预测目标推到防出画边距，不锁定原对齐像素(.5,.5)或两指实际夹持位置，并固定模型tip解转向。FullView失败/恢复时nominal=current，若AimCameraAtFixedTip返回RAY_INFEASIBLE则未改变姿态；原Reached(current,current)成立而recovery禁止++cursor，只更新图戳继续。**综合日志/框/代码推断**step54..74不输出新段而耗尽原75预算（25/37未推进），解释为什么画面还有方块却高度停住。不是本轮规划拒绝、最终中心门或CAN中断。
+
+**下一方向（当前只诊断，未授权新的应用修改）：**把ALIGN与靠近的视觉夹持参考统一到实际原RGB；靠近持续追同一物体的该参考误差，而不是等快出画才固定tip转腕。原世界模型锁定不重锁，模型继续只负责可达/碰撞；恢复若固定tip不可解，应规划位置+朝向联合小段而非current→current空循环。需先给具体原owner局部修改方案并获同意，不以用户现象提问当实现/新运动许可，不擅改相机TF/抓取落点或只强加J5。
+
+收尾原保持且未Disable/Reset/回零，准确两个collector INT rc0、host无实体/采集/隔离栈。新SDK接收rc0 epoch1791944111.498502/high4111.494289/100Hz、六true/速度0、q[-.331123866,1.847570640,-1.380293639,.046652651,.856206171,-.100408792]rad/99.6mm无错；当前稳定反馈已验证。完整实体抓取仍未完成，应用仍d051bf5，既有用户dirty/远端分叉保持，仅本地未同步GitHub。
