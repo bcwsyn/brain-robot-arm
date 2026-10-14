@@ -1,4 +1,8 @@
-## 2026-10-14：平移前缀明确批准，原owner局部构建中
+## 2026-10-14：d051bf5完成部署/回归，实测观测中CAN接收停止
+
+actual d4c7063…/CPP19d4b4e…、46实际方法+10RGB回归通过/旧c0f56da备份，原脚本/检测器/配置不变。原AUTO1主143且host确认退出：7/7→PREPARE3090.014/12点接受，约26s后09:58:30 CAN_RX_STALLED_3S与同刻新xHCI TRB DMA错误；未观测到位/搜索/新平移候选/闭爪，不把软件成功当实体成功。UP配置正确RX124744968持续不增长，USB在/sudo0；新接收SDK3183.929 stamp0/Hz0，默认q0/false不是实体失能/零位。最后真实3106.715 q[-.268061948,1.670297888,-1.260991872,.038498908,.781351648,-.078009568]rad/99.6mm仅旧断点。原cleanup无Disable/Reset/回零，collector精确INT0/无栈；最后RGB完整方块左下/灯光在，根盘清理后仍约5.9GB无ENOSPC。详细[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)。历史guestUSB/gs_usb/xHCI/Hub恢复多次无效，不重复；下一宿主VMware仅USB-CAN断开重连，不要求重启机械臂，RX/新反馈恢复后同原AUTO1验证d051bf5，不重建/泛查旧基线。当前阻断是外部USB数据面，已批准应用许可保持；Git仅本地未同步（原分叉/历史审查）。
+
+## 历史：平移前缀明确批准，局部构建部署
 
 最新d051bf5已实际部署d4c7063…/CPP19d4b4e…，old c0f56da备份translation_prefix_previous_c0f56da，原检测器8e763f4…/入口87039b…不变。原AUTO1主3862130/3862131/session46839、只读exact3862224/live3862292运行中，原维护92%/6127MB，CAN复用RX/相机首帧到/5/7反馈TF，下一观察同一次前缀是否实际执行和继续推进，未冒称完成；详情同证据记录。本地提交未同步GitHub（已有分叉/历史审查）。
 

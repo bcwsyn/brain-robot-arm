@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：平移前缀策略已获准，局部构建中）
+## 最新接续（2026-10-14：d051bf5已部署，实测观测途中USB反馈停止）
+
+actual d4c7063…/source19d4b4e…、46+10回归，原入口87039b…/detector8e763f4…保持，旧c0f56da备份完整。原AUTO1 7/7→PREPARE3090.014/12点约26s后CAN_RX_STALLED_3S，09:58:30新xHCI TRB DMA错误；主143且host真实主已退出（不同于历史wrapper仍活），未SEARCH/末段/闭爪。当前UP/ERROR-ACTIVE但RX124744968不增长，sudo0/USB在；新SDK3183.929 stamp0/Hz0，q0/enablefalse仅默认值，不能判实体失能/零位。最后有效joint stamp3106.715 q[-.268061948,1.670297888,-1.260991872,.038498908,.781351648,-.078009568]/99.6mm是旧记录。原cleanup不Disable/Reset，两个collector INT0，host无栈。按历史不重复guestUSB/gs_usb/xHCI/Hub或bounce，需宿主VMwareUSB-CAN断开重连（无需机械臂重启）；guest无宿主入口。RX/新反馈恢复后直接原AUTO1验证新候选，不重建/不泛查底层。详情piper_translation_prefix_20261014.md，Git仅本地/分叉历史审查保持。
+
+## 历史接续（平移前缀授权/构建部署启动）
 
 最新d051bf5/actual d4c7063…/source19d4b4e…已部署、旧c0f56da备份translation_prefix_previous_c0f56da；46+10回归通过，原入口/检测器保持。原AUTO1 timeout3862130/script3862131/session46839运行中，证据translation_prefix_onekey、exact3862224/live3862292；5/7反馈TF核对，RGB/深度首帧到，CAN复用，下一同一次日志/推进/新三图，不另起脚本。详细piper_translation_prefix_20261014.md；仅本地未同步GitHub，完整目标未完成。
 

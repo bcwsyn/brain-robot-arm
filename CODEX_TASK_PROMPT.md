@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+最新结果2026-10-14：d051bf5平移前缀已部署d4c7063…/46+10回归，原AUTO1到7/7/PREPARE接受12点，但运行期09:58:30 CAN_RX_STALLED_3S与同刻新xHCI TRB DMA错误中止，未观测到位/新末段/闭爪。当前接口UP配置正确RX124744968不增长、SDK新接收stamp0（零位/false只是默认，不能当实际失能），所有栈退出；没有Disable/Reset。按历史不重复guest USB/gs_usb/xHCI/Hub重置或bounce，下一宿主VMware仅USB-CAN断开重连，不要求重启机械臂；RX/新反馈恢复后直接同原AUTO1验收新代码。详见docs/evidence/piper_translation_prefix_20261014.md，完整目标未完成，当前阻断不是已解决的具体代码许可。
+
 2026-10-14最新用户已同意“保留原转向、完整不可达时尝试50%/25%平移→停稳→新RGB实际反馈重规划”。原executor局部实施/针对性构建中，应用尚未部署，基线c0f56da/cf5777e…；原目标/TF/限位碰撞/8mm1°/有限预算/最终中心两指夹持不变。平移前缀不冒称朝向替代或无条件推进，实际执行需完整规划/原反馈，预览/粗靠近不作用。下一回归/备份c0f56da部署→唯一原AUTO1实测，不再等待这个同意；详见docs/evidence/piper_translation_prefix_20261014.md，完整目标未完成。
 
 最新实测c0f56da已部署cf5777e…：原AUTO1观测/SEARCH/ALIGN/GRASP_READY→质量冻结228.294mm→23/24路点COMPLETED_REACHABLE实反馈推进，修复已实体生效。新25/37 step49完整所有候选不可达而停止、未下降闭爪；同帧RGB完整/深度191mm恢复，非原CAN/中心门。六轴静止使能/99.6mm，所有栈退出。只读隔离精确step49显示原6.12mm平移不可达，保留原+1°、先走50%/25%平移完整可达/原范围内；新增平移前缀候选尚待同意，不自动实施或原样重跑，详见docs/evidence/piper_reachable_waypoint_20261014.md。完整目标仍未完成。
