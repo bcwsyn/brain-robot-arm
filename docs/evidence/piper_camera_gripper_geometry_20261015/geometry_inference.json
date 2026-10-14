@@ -1,0 +1,57 @@
+{
+  "evidence_image": {
+    "path": "camera_gripper_side_view.png",
+    "sha256": "231AF92715DD5724FBB7AC2D36D614F2F8491F384AA17E2239D3029D93AAC199",
+    "size_bytes": 1130772,
+    "source": "user-provided real installation side-view photograph"
+  },
+  "observed_geometry": {
+    "gripper_centerline_direction": "downward toward the fingertip/contact region",
+    "camera_mount": "side-mounted rigid bracket near the gripper base",
+    "camera_optical_axis_direction": "from the lens toward the scene, downward and toward the gripper front",
+    "side_view_optical_axis_pitch_deg_estimate": 20.0,
+    "angle_status": "two-dimensional photo prior; not an absolute 3-D calibration measurement",
+    "visible_structural_consequences": [
+      "camera optical axis is not parallel to the gripper centerline",
+      "lens center, gripper_base origin, and finger contact center are distinct points",
+      "camera housing/bracket can enter the near-depth self-occlusion region",
+      "the simple simulated camera box does not represent the physical bracket envelope"
+    ]
+  },
+  "repository_model_inputs": {
+    "operator_tip_optical_m": [0.0, 0.070, 0.105],
+    "nominal_gripper_tip_offset_m": 0.1358,
+    "current_mount_translation_m": [-0.070, 0.0, 0.0308],
+    "current_mount_rpy_rad": [0.0, -1.5707963267948966, 0.0],
+    "current_rotation_calibrated": false,
+    "current_horizontal_offset_measured": false,
+    "source_files": [
+      "brain_robot_arm/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml",
+      "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_camera_mount.py",
+      "brain_robot_arm/vendor/piper_ros/src/piper_description/urdf/piper_description.xacro"
+    ]
+  },
+  "offline_candidate_derivation": {
+    "definition": "t_tool = [0, 0, tip_offset] - R_tool_from_optical * tip_optical",
+    "additional_pitch_deg_candidates": [19.8, -19.8],
+    "candidates": [
+      {
+        "additional_pitch_deg": 19.8,
+        "effective_mount_pitch_deg": -70.2,
+        "translation_m": [-0.1014291355, 0.0, 0.0607191737]
+      },
+      {
+        "additional_pitch_deg": -19.8,
+        "effective_mount_pitch_deg": -109.8,
+        "translation_m": [-0.0302941722, 0.0, 0.0132958648]
+      }
+    ],
+    "candidate_status": "offline initial hypotheses only; not deployed to production TF and not evidence of final hand-eye calibration"
+  },
+  "remaining_validation": [
+    "resolve the sign using the actual gripper_base TF axes and the lens optical +Z direction",
+    "collect six physical clamp/observation paired samples with consistent contact center",
+    "fit and hold out one pair for independent validation",
+    "validate gripper contact-center and camera-to-gripper translation before production deployment"
+  ]
+}

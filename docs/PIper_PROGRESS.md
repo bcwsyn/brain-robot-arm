@@ -1,3 +1,11 @@
+## 2026-10-15 00:39 +08:00：保存真实相机—夹爪侧视结构证据
+
+- 用户提供的真实安装侧视照片已原样保存为 `docs/evidence/piper_camera_gripper_geometry_20261015/camera_gripper_side_view.png`，文件大小 1,130,772 bytes，SHA-256 为 `231AF92715DD5724FBB7AC2D36D614F2F8491F384AA17E2239D3029D93AAC199`；复制后重新计算哈希一致。结构观察、光轴方向、现有模型输入、公式和 ±19.8° 两分支另保存为同目录 `geometry_inference.json`。
+- 照片明确显示：相机为夹爪侧面安装，光轴朝夹爪前下方，与夹爪向下中心线存在约 20° 的二维倾角。该角度和支架关系作为手眼外参的离线初始先验，尚未写入生产 TF。
+- 结合现有 `cube_task_real.yaml` 的 `[0, 0.070, 0.105] m` 指尖先验、URDF 的 `0.1358 m` 名义指尖偏移和既有几何函数，已在证据 README 中记录 ±19.8° 两个符号候选及对应平移；候选仅用于离线模型核对，不能冒充最终标定结果。
+- 本轮没有修改生产代码、URDF、TF、相机参数或运动入口，没有启动 ROS/CAN，也没有执行任何真实机械臂命令。现有用户修改、PDF、参考目录和 Debian 包均未触碰。
+- 后续仍需用 `gripper_base` 的实际 TF 轴向确定符号，并用六组真实夹持配对数据验证相机外参和夹爪接触中心；本照片证据不替代正式标定。
+
 ## 2026-10-14 22:36 +08:00：受限CAN激活后完整静止空跑通过，阶段1完成
 
 - 软件检查点6034ab3/11限定路径/cached+show check0，旧7d143ed保留。用户明确授权现已枚举CAN固定激活/只读采集。先读ifindex6/DOWN/STOPPED，无有效UP链路可复用，sudo-n固定bitrate1000000/sample-point.75、txqueuelen1000、up仅一次/rc0；无modprobe/USB重载/固件查询/Reset/MasterSlave/Enable/Disable/Motion/Gripper。post ERROR-ACTIVE/RX53，采后568952、收尾1396189、TX始终0/errors/drop0，复用保持UP，不再旧停流试验。
