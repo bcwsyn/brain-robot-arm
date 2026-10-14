@@ -106,3 +106,8 @@ Press keys **in the launching terminal**, without Enter: `1/2` selects a placeme
 Next: connect synchronized diameter/validity to the executor; introduce one exclusive Gazebo jaw-force command owner; validate stable bilateral force while lifting/transporting; retain actual-object/drop/release/stop checks; test multiple diameters and failures. Then broaden visual evaluation and separately establish real feedback, hand–eye/TCP calibration, torque conversion and cup strength. No further hardware information is needed to continue simulation work.
 
 The publication keeps previous repository code in place and adds `simulation_cup/`. It does not replace the previous workspace or rewrite its history.
+
+
+### Stage 5 force interpretation correction (2026-10-14)
+
+The historic 34.44/25.49 N values aggregate absolute point-normal loads across physics steps buffered in one sensor message. They are retained as historic diagnostic outputs and must not be interpreted as instantaneous net jaw forces. Stage 5 selects the newest physics step and controls the net cup reaction projected onto the jaw closing axis; gross point-normal load is recorded separately.

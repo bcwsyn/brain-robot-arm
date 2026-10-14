@@ -1,0 +1,50 @@
+{
+  "scope": "Gazebo simulation only; full frozen batches start after development debug",
+  "main": {
+    "body_diameter_mm": 75,
+    "seed": 20261015,
+    "trials": 5
+  },
+  "diameter_variants": [
+    {
+      "body_diameter_mm": 55,
+      "seed": 20261016,
+      "trials": 2
+    },
+    {
+      "body_diameter_mm": 85,
+      "seed": 20261017,
+      "trials": 2
+    }
+  ],
+  "negative_cases": [
+    "no_bilateral_capture",
+    "force_feedback_loss",
+    "overforce_injected_feedback",
+    "stop_during_lift",
+    "oversize_before_motion"
+  ],
+  "acceptance": {
+    "minimum_object_lift_m": 0.05,
+    "minimum_hold_sim_s": 3.0,
+    "maximum_placement_error_m": 0.03,
+    "maximum_home_error_rad": 0.02,
+    "requires_measured_bilateral_force": true,
+    "requires_physical_release": true,
+    "no_nonzero_servo_jog": true,
+    "force_unit": "newtons",
+    "force_band_per_pad_n": [
+      2.5,
+      3.5
+    ],
+    "force_definition": "Newest physics step only; net cup reaction projected onto jaw closing axis",
+    "maximum_final_cup_tilt_rad": 0.12,
+    "force_band_requirement": "Every stationary hold sample; no injected feedback; fresh and healthy",
+    "central_force_trim_target_n": 3.0
+  },
+  "retries": "stop at first moving trial failure; retain failed batch and freeze a new revision before rerunning",
+  "revision": "stage5-force-bridge-r2",
+  "pilot_evidence": "Development trial 20 passed strict force/retention/release criteria; not counted in frozen acceptance batches",
+  "reset_policy": "Full owned simulation stack recreation between planned trials; no moving failure retry",
+  "previous_failed_revision": "acceptance_r1: first cup passed, Gazebo heap error during hot scene reset; retained"
+}

@@ -1,6 +1,13 @@
 # ub Workspace
 
-## Latest: Stage 3 physical simulation / 最新：第三阶段物理仿真
+## Latest: Stage 5 cup vision and force-feedback simulation / 最新：水杯视觉与力反馈取放
+
+New independent [simulation_cup_grasp/](simulation_cup_grasp/README.md) connects learned RGB-D sizing, adaptive preopening and measured-force physical cup pick-and-place. Start with the [English guide](docs/cup_grasp/README.en.md) and [stage report](docs/stage5_cup_grasp_report.en.md).
+
+最新版本新增独立 [simulation_cup_grasp/](simulation_cup_grasp/README.md)：相机估计杯身外径、保守预张开、双侧反馈夹持、物理取放与回零。[中文复现操作](docs/cup_grasp/README.zh-CN.md) / [第五步报告](docs/第五步_水杯视觉估径与力反馈抓取开发与验收.md)。原 `brain_robot_arm/`、第三步 `simulation/` 和第四步 `simulation_cup/` 完整保留；只构建所选工作区。
+
+
+## Stage 3 physical simulation / 第三阶段物理仿真（保留版本）
 
 The independent [simulation/](simulation/README.md) workspace contains the latest camera-guided ball/cylinder physical grasp implementation. Start with the [English installation and reproduction guide](docs/simulation/README.en.md) and [English acceptance report](docs/stage3_physical_grasp_report.en.md).
 

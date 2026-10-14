@@ -1,0 +1,663 @@
+build/piper_description/Testing/20261014-0909/Test.xml: 5 tests, 0 errors, 2 failures, 0 skipped
+- copyright
+  <<< failure message
+    -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/src/piper_description':
+     - /opt/ros/humble/bin/ament_copyright --xunit-file /home/young1x/robot_projects/piper_robot/simulation/build/piper_description/test_results/piper_description/copyright.xunit.xml
+    launch/piper_no_gripper/display_no_gripper_urdf.launch.py: could not find copyright notice
+    launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py: could not find copyright notice
+    launch/piper_no_gripper/display_no_gripper_xacro.launch.py: could not find copyright notice
+    launch/piper_with_gripper/display_urdf.launch.py: could not find copyright notice
+    launch/piper_with_gripper/display_urdf_follow.launch.py: could not find copyright notice
+    launch/piper_with_gripper/display_xacro.launch.py: could not find copyright notice
+    launch/piper_with_teach/display_with_teach_urdf.launch.py: could not find copyright notice
+    7 errors, checked 7 files
+    -- run_test.py: return code 1
+    -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/piper_description/test_results/piper_description/copyright.xunit.xml'
+  >>>
+- flake8
+  <<< failure message
+    -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/src/piper_description':
+     - /opt/ros/humble/bin/ament_flake8 --xunit-file /home/young1x/robot_projects/piper_robot/simulation/build/piper_description/test_results/piper_description/flake8.xunit.xml
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    from launch.conditions import IfCondition, UnlessCondition
+    ^
+    from launch.conditions import IfCondition, UnlessCondition
+    ^
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    from launch.conditions import IfCondition, UnlessCondition
+    ^
+    from launch.conditions import IfCondition, UnlessCondition
+    ^
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    def generate_launch_description():
+    ^
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+                                                                                                       ^
+        ])      ^
+    7     E302 expected 2 blank lines, found 1
+    7     E501 line too long (100 > 99 characters)
+    4     F401 'launch.conditions.IfCondition' imported but unused
+    7     W292 no newline at end of file
+    
+    ./launch/piper_with_teach/display_with_teach_urdf.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_with_teach/display_with_teach_urdf.launch.py:20:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_with_teach/display_with_teach_urdf.launch.py:61:7: W292 no newline at end of file
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf.launch.py:20:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf.launch.py:61:7: W292 no newline at end of file
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:5:1: F401 'launch.conditions.IfCondition' imported but unused
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:5:1: F401 'launch.conditions.UnlessCondition' imported but unused
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:18:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:42:7: W292 no newline at end of file
+    
+    ./launch/piper_no_gripper/display_no_gripper_xacro.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_no_gripper/display_no_gripper_xacro.launch.py:20:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_no_gripper/display_no_gripper_xacro.launch.py:61:7: W292 no newline at end of file
+    
+    ./launch/piper_with_gripper/display_urdf_follow.launch.py:5:1: F401 'launch.conditions.IfCondition' imported but unused
+    
+    ./launch/piper_with_gripper/display_urdf_follow.launch.py:5:1: F401 'launch.conditions.UnlessCondition' imported but unused
+    
+    ./launch/piper_with_gripper/display_urdf_follow.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_with_gripper/display_urdf_follow.launch.py:18:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_with_gripper/display_urdf_follow.launch.py:42:7: W292 no newline at end of file
+    
+    ./launch/piper_with_gripper/display_urdf.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_with_gripper/display_urdf.launch.py:20:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_with_gripper/display_urdf.launch.py:62:7: W292 no newline at end of file
+    
+    ./launch/piper_with_gripper/display_xacro.launch.py:11:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_with_gripper/display_xacro.launch.py:20:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_with_gripper/display_xacro.launch.py:62:7: W292 no newline at end of file
+    
+    
+    7 files checked
+    25 errors
+    
+    'E'-type errors: 14
+    'F'-type errors: 4
+    'W'-type errors: 7
+    
+    Checked files:
+    
+    * ./launch/piper_with_teach/display_with_teach_urdf.launch.py
+    * ./launch/piper_no_gripper/display_no_gripper_urdf.launch.py
+    * ./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py
+    * ./launch/piper_no_gripper/display_no_gripper_xacro.launch.py
+    * ./launch/piper_with_gripper/display_urdf_follow.launch.py
+    * ./launch/piper_with_gripper/display_urdf.launch.py
+    * ./launch/piper_with_gripper/display_xacro.launch.py
+    -- run_test.py: return code 1
+    -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/piper_description/test_results/piper_description/flake8.xunit.xml'
+  >>>
+build/piper_description/test_results/piper_description/copyright.xunit.xml: 7 tests, 0 errors, 7 failures, 0 skipped
+- piper_description.copyright launch/piper_no_gripper/display_no_gripper_urdf.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_description.copyright launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_description.copyright launch/piper_no_gripper/display_no_gripper_xacro.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_description.copyright launch/piper_with_gripper/display_urdf.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_description.copyright launch/piper_with_gripper/display_urdf_follow.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_description.copyright launch/piper_with_gripper/display_xacro.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_description.copyright launch/piper_with_teach/display_with_teach_urdf.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+build/piper_description/test_results/piper_description/flake8.xunit.xml: 25 tests, 0 errors, 25 failures, 0 skipped
+- piper_description.flake8 E302 (./launch/piper_with_teach/display_with_teach_urdf.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_with_teach/display_with_teach_urdf.launch.py:20:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_with_teach/display_with_teach_urdf.launch.py:61:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+- piper_description.flake8 E302 (./launch/piper_no_gripper/display_no_gripper_urdf.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_no_gripper/display_no_gripper_urdf.launch.py:20:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_no_gripper/display_no_gripper_urdf.launch.py:61:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+- piper_description.flake8 F401 (./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:5:1)
+  <<< failure message
+    'launch.conditions.IfCondition' imported but unused:
+    from launch.conditions import IfCondition, UnlessCondition
+  >>>
+- piper_description.flake8 F401 (./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:5:1)
+  <<< failure message
+    'launch.conditions.UnlessCondition' imported but unused:
+    from launch.conditions import IfCondition, UnlessCondition
+  >>>
+- piper_description.flake8 E302 (./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:18:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py:42:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+- piper_description.flake8 E302 (./launch/piper_no_gripper/display_no_gripper_xacro.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_no_gripper/display_no_gripper_xacro.launch.py:20:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_no_gripper/display_no_gripper_xacro.launch.py:61:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+- piper_description.flake8 F401 (./launch/piper_with_gripper/display_urdf_follow.launch.py:5:1)
+  <<< failure message
+    'launch.conditions.IfCondition' imported but unused:
+    from launch.conditions import IfCondition, UnlessCondition
+  >>>
+- piper_description.flake8 F401 (./launch/piper_with_gripper/display_urdf_follow.launch.py:5:1)
+  <<< failure message
+    'launch.conditions.UnlessCondition' imported but unused:
+    from launch.conditions import IfCondition, UnlessCondition
+  >>>
+- piper_description.flake8 E302 (./launch/piper_with_gripper/display_urdf_follow.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_with_gripper/display_urdf_follow.launch.py:18:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_with_gripper/display_urdf_follow.launch.py:42:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+- piper_description.flake8 E302 (./launch/piper_with_gripper/display_urdf.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_with_gripper/display_urdf.launch.py:20:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_with_gripper/display_urdf.launch.py:62:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+- piper_description.flake8 E302 (./launch/piper_with_gripper/display_xacro.launch.py:11:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_description.flake8 E501 (./launch/piper_with_gripper/display_xacro.launch.py:20:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+        rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
+  >>>
+- piper_description.flake8 W292 (./launch/piper_with_gripper/display_xacro.launch.py:62:7)
+  <<< failure message
+    no newline at end of file:
+        ])
+  >>>
+build/piper_gazebo/Testing/20261014-0909/Test.xml: 5 tests, 0 errors, 2 failures, 0 skipped
+- copyright
+  <<< failure message
+    -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/src/piper_gazebo':
+     - /opt/ros/humble/bin/ament_copyright --xunit-file /home/young1x/robot_projects/piper_robot/simulation/build/piper_gazebo/test_results/piper_gazebo/copyright.xunit.xml
+    launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py: could not find copyright notice
+    launch/piper_with_gripper/piper_gazebo.launch.py: could not find copyright notice
+    scripts/joint8_ctrl.py: could not find copyright notice
+    3 errors, checked 3 files
+    -- run_test.py: return code 1
+    -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/piper_gazebo/test_results/piper_gazebo/copyright.xunit.xml'
+  >>>
+- flake8
+  <<< failure message
+    -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/src/piper_gazebo':
+     - /opt/ros/humble/bin/ament_flake8 --xunit-file /home/young1x/robot_projects/piper_robot/simulation/build/piper_gazebo/test_results/piper_gazebo/flake8.xunit.xml
+    def remove_comments(text):
+    ^
+    def generate_launch_description():
+    ^
+        pkg_share = FindPackageShare(package=package_name).find(package_name) 
+                                                                             ^
+        start_gazebo_cmd =  ExecuteProcess(
+                          ^
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+                                      ^
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+                                                                                                       ^
+        # 因为 urdf文件中有一句 $(find mybot) 需要用xacro进行编译一下才行
+        ^
+            parameters=[{'use_sim_time': True}, params, {"publish_frequency":15.0}],
+                                                                            ^
+            package='gazebo_ros', 
+                                 ^
+            arguments=['-entity', robot_name_in_model,  '-topic', 'robot_description'], output='screen')
+                                                                                                       ^
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+                                                                               ^
+        close_evt1 =  RegisterEventHandler( 
+                    ^
+        close_evt1 =  RegisterEventHandler( 
+                                           ^
+    def remove_comments(text):
+    ^
+    def generate_launch_description():
+    ^
+        pkg_share = FindPackageShare(package=package_name).find(package_name) 
+                                                                             ^
+        start_gazebo_cmd =  ExecuteProcess(
+                          ^
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+                                      ^
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+                                                                                                       ^
+        # 因为 urdf文件中有一句 $(find mybot) 需要用xacro进行编译一下才行
+        ^
+            parameters=[{'use_sim_time': True}, params, {"publish_frequency":15.0}],
+                                                                            ^
+            package='gazebo_ros', 
+                                 ^
+            arguments=['-entity', robot_name_in_model,  '-topic', 'robot_description'], output='screen')
+                                                                                                       ^
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+                                                                               ^
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+                                                                               ^
+        
+    ^
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+                                                                               ^
+        close_evt1 =  RegisterEventHandler( 
+                    ^
+        close_evt1 =  RegisterEventHandler( 
+                                           ^
+                    on_exit=[load_joint_trajectory_controller, 
+                                                              ^
+    class GripperMirrorController(Node):
+    ^
+    def main(args=None):
+    ^
+    if __name__ == "__main__":
+    ^
+    4     E222 multiple spaces after operator
+    4     E231 missing whitespace after ','
+    6     E302 expected 2 blank lines, found 0
+    2     E303 too many blank lines (2)
+    1     E305 expected 2 blank lines after class or function definition, found 1
+    4     E501 line too long (100 > 99 characters)
+    11    W291 trailing whitespace
+    1     W293 blank line contains whitespace
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:12:1: E302 expected 2 blank lines, found 0
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:16:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:21:74: W291 trailing whitespace
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:25:23: E222 multiple spaces after operator
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:26:35: E231 missing whitespace after ','
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:26:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:30:5: E303 too many blank lines (2)
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:43:73: E231 missing whitespace after ':'
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:49:30: W291 trailing whitespace
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:51:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:64:76: W291 trailing whitespace
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:71:17: E222 multiple spaces after operator
+    
+    ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:71:40: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:12:1: E302 expected 2 blank lines, found 0
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:16:1: E302 expected 2 blank lines, found 1
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:21:74: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:25:23: E222 multiple spaces after operator
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:26:35: E231 missing whitespace after ','
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:26:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:30:5: E303 too many blank lines (2)
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:40:73: E231 missing whitespace after ':'
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:46:30: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:48:100: E501 line too long (100 > 99 characters)
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:58:76: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:64:76: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:68:1: W293 blank line contains whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:70:76: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:75:17: E222 multiple spaces after operator
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:75:40: W291 trailing whitespace
+    
+    ./launch/piper_with_gripper/piper_gazebo.launch.py:85:59: W291 trailing whitespace
+    
+    ./scripts/joint8_ctrl.py:7:1: E302 expected 2 blank lines, found 1
+    
+    ./scripts/joint8_ctrl.py:58:1: E302 expected 2 blank lines, found 1
+    
+    ./scripts/joint8_ctrl.py:69:1: E305 expected 2 blank lines after class or function definition, found 1
+    
+    
+    3 files checked
+    33 errors
+    
+    'E'-type errors: 21
+    'W'-type errors: 12
+    
+    Checked files:
+    
+    * ./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py
+    * ./launch/piper_with_gripper/piper_gazebo.launch.py
+    * ./scripts/joint8_ctrl.py
+    -- run_test.py: return code 1
+    -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/piper_gazebo/test_results/piper_gazebo/flake8.xunit.xml'
+  >>>
+build/piper_gazebo/test_results/piper_gazebo/copyright.xunit.xml: 3 tests, 0 errors, 3 failures, 0 skipped
+- piper_gazebo.copyright launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_gazebo.copyright launch/piper_with_gripper/piper_gazebo.launch.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+- piper_gazebo.copyright scripts/joint8_ctrl.py
+  <<< failure message
+    could not find copyright notice
+  >>>
+build/piper_gazebo/test_results/piper_gazebo/flake8.xunit.xml: 33 tests, 0 errors, 33 failures, 0 skipped
+- piper_gazebo.flake8 E302 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:12:1)
+  <<< failure message
+    expected 2 blank lines, found 0:
+    def remove_comments(text):
+  >>>
+- piper_gazebo.flake8 E302 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:16:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:21:74)
+  <<< failure message
+    trailing whitespace:
+        pkg_share = FindPackageShare(package=package_name).find(package_name) 
+  >>>
+- piper_gazebo.flake8 E222 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:25:23)
+  <<< failure message
+    multiple spaces after operator:
+        start_gazebo_cmd =  ExecuteProcess(
+  >>>
+- piper_gazebo.flake8 E231 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:26:35)
+  <<< failure message
+    missing whitespace after ',':
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+  >>>
+- piper_gazebo.flake8 E501 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:26:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+  >>>
+- piper_gazebo.flake8 E303 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:30:5)
+  <<< failure message
+    too many blank lines (2):
+        # 因为 urdf文件中有一句 $(find mybot) 需要用xacro进行编译一下才行
+  >>>
+- piper_gazebo.flake8 E231 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:43:73)
+  <<< failure message
+    missing whitespace after ':':
+            parameters=[{'use_sim_time': True}, params, {"publish_frequency":15.0}],
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:49:30)
+  <<< failure message
+    trailing whitespace:
+            package='gazebo_ros', 
+  >>>
+- piper_gazebo.flake8 E501 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:51:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+            arguments=['-entity', robot_name_in_model,  '-topic', 'robot_description'], output='screen')
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:64:76)
+  <<< failure message
+    trailing whitespace:
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+  >>>
+- piper_gazebo.flake8 E222 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:71:17)
+  <<< failure message
+    multiple spaces after operator:
+        close_evt1 =  RegisterEventHandler( 
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_no_gripper/piper_no_gripper_gazebo.launch.py:71:40)
+  <<< failure message
+    trailing whitespace:
+        close_evt1 =  RegisterEventHandler( 
+  >>>
+- piper_gazebo.flake8 E302 (./launch/piper_with_gripper/piper_gazebo.launch.py:12:1)
+  <<< failure message
+    expected 2 blank lines, found 0:
+    def remove_comments(text):
+  >>>
+- piper_gazebo.flake8 E302 (./launch/piper_with_gripper/piper_gazebo.launch.py:16:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def generate_launch_description():
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:21:74)
+  <<< failure message
+    trailing whitespace:
+        pkg_share = FindPackageShare(package=package_name).find(package_name) 
+  >>>
+- piper_gazebo.flake8 E222 (./launch/piper_with_gripper/piper_gazebo.launch.py:25:23)
+  <<< failure message
+    multiple spaces after operator:
+        start_gazebo_cmd =  ExecuteProcess(
+  >>>
+- piper_gazebo.flake8 E231 (./launch/piper_with_gripper/piper_gazebo.launch.py:26:35)
+  <<< failure message
+    missing whitespace after ',':
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+  >>>
+- piper_gazebo.flake8 E501 (./launch/piper_with_gripper/piper_gazebo.launch.py:26:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+            cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+  >>>
+- piper_gazebo.flake8 E303 (./launch/piper_with_gripper/piper_gazebo.launch.py:30:5)
+  <<< failure message
+    too many blank lines (2):
+        # 因为 urdf文件中有一句 $(find mybot) 需要用xacro进行编译一下才行
+  >>>
+- piper_gazebo.flake8 E231 (./launch/piper_with_gripper/piper_gazebo.launch.py:40:73)
+  <<< failure message
+    missing whitespace after ':':
+            parameters=[{'use_sim_time': True}, params, {"publish_frequency":15.0}],
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:46:30)
+  <<< failure message
+    trailing whitespace:
+            package='gazebo_ros', 
+  >>>
+- piper_gazebo.flake8 E501 (./launch/piper_with_gripper/piper_gazebo.launch.py:48:100)
+  <<< failure message
+    line too long (100 > 99 characters):
+            arguments=['-entity', robot_name_in_model,  '-topic', 'robot_description'], output='screen')
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:58:76)
+  <<< failure message
+    trailing whitespace:
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:64:76)
+  <<< failure message
+    trailing whitespace:
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+  >>>
+- piper_gazebo.flake8 W293 (./launch/piper_with_gripper/piper_gazebo.launch.py:68:1)
+  <<< failure message
+    blank line contains whitespace:
+        
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:70:76)
+  <<< failure message
+    trailing whitespace:
+            cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 
+  >>>
+- piper_gazebo.flake8 E222 (./launch/piper_with_gripper/piper_gazebo.launch.py:75:17)
+  <<< failure message
+    multiple spaces after operator:
+        close_evt1 =  RegisterEventHandler( 
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:75:40)
+  <<< failure message
+    trailing whitespace:
+        close_evt1 =  RegisterEventHandler( 
+  >>>
+- piper_gazebo.flake8 W291 (./launch/piper_with_gripper/piper_gazebo.launch.py:85:59)
+  <<< failure message
+    trailing whitespace:
+                    on_exit=[load_joint_trajectory_controller, 
+  >>>
+- piper_gazebo.flake8 E302 (./scripts/joint8_ctrl.py:7:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    class GripperMirrorController(Node):
+  >>>
+- piper_gazebo.flake8 E302 (./scripts/joint8_ctrl.py:58:1)
+  <<< failure message
+    expected 2 blank lines, found 1:
+    def main(args=None):
+  >>>
+- piper_gazebo.flake8 E305 (./scripts/joint8_ctrl.py:69:1)
+  <<< failure message
+    expected 2 blank lines after class or function definition, found 1:
+    if __name__ == "__main__":
+  >>>
+build/piper_msgs/Testing/20261014-0909/Test.xml: 2 tests, 0 errors, 1 failure, 0 skipped
+- lint_cmake
+  <<< failure message
+    -- run_test.py: invoking following command in '/home/young1x/robot_projects/piper_robot/simulation/src/piper_msgs':
+     - /opt/ros/humble/bin/ament_lint_cmake --xunit-file /home/young1x/robot_projects/piper_robot/simulation/build/piper_msgs/test_results/piper_msgs/lint_cmake.xunit.xml
+    CMakeLists.txt:14: Line ends in whitespace [whitespace/eol]
+    
+    
+    1 errors
+    -- run_test.py: return code 1
+    -- run_test.py: verify result file '/home/young1x/robot_projects/piper_robot/simulation/build/piper_msgs/test_results/piper_msgs/lint_cmake.xunit.xml'
+  >>>
+build/piper_msgs/test_results/piper_msgs/lint_cmake.xunit.xml: 1 test, 0 errors, 1 failure, 0 skipped
+- piper_msgs.lint_cmake whitespace/eol (CMakeLists.txt:14)
+  <<< failure message
+    Line ends in whitespace
+  >>>
+
+Summary: 187 tests, 0 errors, 74 failures, 0 skipped

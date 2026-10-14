@@ -1,0 +1,73 @@
+Panels:
+- Class: rviz_common/Displays
+  Name: Displays
+Visualization Manager:
+  Displays:
+  - Class: rviz_default_plugins/Grid
+    Name: Grid
+    Value: true
+  - Class: moveit_rviz_plugin/PlanningScene
+    Name: Planning Scene
+    Robot Description: robot_description
+    Scene Geometry:
+      Scene Alpha: 1
+    Scene Robot:
+      Robot Alpha: 1.0
+    Value: true
+    Planning Scene Topic: /monitored_planning_scene
+  - Class: rviz_default_plugins/MarkerArray
+    Name: Placement Regions
+    Enabled: true
+    Value: true
+    Topic:
+      Value: /brain_robot_sim/place_zones
+      Reliability Policy: Reliable
+      Durability Policy: Transient Local
+      History Policy: Keep Last
+      Depth: 10
+  - Class: rviz_default_plugins/Image
+    Name: Wrist Camera
+    Enabled: true
+    Value: true
+    Topic:
+      Value: /wrist_camera/wrist_camera/image_raw
+      Reliability Policy: Best Effort
+      Durability Policy: Volatile
+      History Policy: Keep Last
+      Depth: 5
+    Transport Hint: raw
+  - Class: rviz_default_plugins/Image
+    Name: Target Detection
+    Enabled: true
+    Value: true
+    Topic:
+      Value: /brain_robot_vision/debug_image
+      Reliability Policy: Best Effort
+      Durability Policy: Volatile
+      History Policy: Keep Last
+      Depth: 5
+    Transport Hint: raw
+  Global Options:
+    Fixed Frame: world
+    Frame Rate: 20
+  Tools:
+  - Class: rviz_default_plugins/Interact
+  - Class: rviz_default_plugins/MoveCamera
+  - Class: rviz_default_plugins/Select
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 1.25
+      Focal Point:
+        X: 0.35
+        Y: 0.0
+        Z: 0.1
+      Name: Current View
+      Pitch: 0.65
+      Target Frame: world
+      Yaw: -0.6
+Window Geometry:
+  Width: 1450
+  Height: 900
+  QMainWindow State: 000000ff00000000fd0000000200000000000000f000000384fc0200000001fb000000100044006900730070006c006100790073010000000000000384000000df00ffffff000000010000017c00000384fc0200000002fb0000001800570072006900730074002000430061006d0065007200610100000000000001bf000000df00fffffffb0000002000540061007200670065007400200044006500740065006300740069006f006e01000001c5000001bf000000df00ffffff000003320000038400000004000000040000000800000008fc00000000

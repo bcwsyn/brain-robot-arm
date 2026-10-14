@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "passed": true,
+      "expected_fault": "CONTROLLED_STOP",
+      "observed_states": [
+        "WAITING_FOR_GRASP_REQUEST",
+        "OPENING_GRIPPER",
+        "PREPARED",
+        "TOP_DOWN_PREGRASP_PLANNING",
+        "TOP_DOWN_DESCENT_EXECUTING",
+        "CLOSING_GRIPPER",
+        "VERIFYING_GRASP_CONTACT",
+        "LIFTING_PHYSICAL_OBJECT",
+        "CONTROLLED_STOP",
+        "FAULT_PHYSICAL_LIFT_FAILED",
+        "CONTROLLED_STOP"
+      ],
+      "injection_seen": true,
+      "final_half_second_joint_drift_rad": 6.7528751559464695e-06,
+      "case": "stop",
+      "exit_code": 1,
+      "session": "log/visual_sim/cup-20261014-181504-698503",
+      "command": [
+        "bash",
+        "/home/young1x/robot_projects/piper_robot/simulation/scripts/run_cup_grasp_sim.sh",
+        "--headless",
+        "--seed",
+        "20261018",
+        "--batch-trials",
+        "1",
+        "--physics-negative",
+        "stop"
+      ],
+      "frozen_sources_unchanged": true
+    }
+  ],
+  "complete": true
+}

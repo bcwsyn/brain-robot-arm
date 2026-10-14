@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="care_table">
+    <static>true</static>
+    <link name="table_link">
+      <collision name="top_collision">
+        <pose>0 0 {table_center_z} 0 0 0</pose>
+        <geometry>
+          <box><size>{table_length} {table_width} {table_thickness}</size></box>
+        </geometry>
+      </collision>
+      <visual name="top_visual">
+        <pose>0 0 {table_center_z} 0 0 0</pose>
+        <geometry>
+          <box><size>{table_length} {table_width} {table_thickness}</size></box>
+        </geometry>
+        <material>
+          <ambient>0.18 0.42 0.62 1</ambient>
+          <diffuse>0.22 0.52 0.76 1</diffuse>
+        </material>
+      </visual>
+      <visual name="leg_front_left">
+        <pose>{leg_x} {leg_y} {leg_center_z} 0 0 0</pose>
+        <geometry><box><size>0.04 0.04 {leg_height}</size></box></geometry>
+        <material><ambient>0.12 0.15 0.18 1</ambient><diffuse>0.20 0.24 0.28 1</diffuse></material>
+      </visual>
+      <visual name="leg_front_right">
+        <pose>{leg_x} {negative_leg_y} {leg_center_z} 0 0 0</pose>
+        <geometry><box><size>0.04 0.04 {leg_height}</size></box></geometry>
+        <material><ambient>0.12 0.15 0.18 1</ambient><diffuse>0.20 0.24 0.28 1</diffuse></material>
+      </visual>
+      <visual name="leg_back_left">
+        <pose>{negative_leg_x} {leg_y} {leg_center_z} 0 0 0</pose>
+        <geometry><box><size>0.04 0.04 {leg_height}</size></box></geometry>
+        <material><ambient>0.12 0.15 0.18 1</ambient><diffuse>0.20 0.24 0.28 1</diffuse></material>
+      </visual>
+      <visual name="leg_back_right">
+        <pose>{negative_leg_x} {negative_leg_y} {leg_center_z} 0 0 0</pose>
+        <geometry><box><size>0.04 0.04 {leg_height}</size></box></geometry>
+        <material><ambient>0.12 0.15 0.18 1</ambient><diffuse>0.20 0.24 0.28 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>
