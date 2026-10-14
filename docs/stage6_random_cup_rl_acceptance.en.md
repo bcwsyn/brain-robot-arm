@@ -97,3 +97,7 @@ Preserve every development failure, frozen batch, training prototype, checkpoint
 No real images or hardware are used. The RL policy uses ideal state and starts at pregrasp; wrist perception, occlusion/depth-loss state updates and real feedback integration remain pending. Duplicate-mask handling does not establish cluttered real-camera robustness.
 
 Next:use scripted demonstrations and staged tasks to improve sparse-reward exploration; obtain learning curves across multiple seeds and frozen held-out tasks, comparing success, placement error, duration and failures with the traditional baseline. Then replace truth inputs with wrist RGB-D estimates, randomize observation error/delay and expand the validated workspace.
+
+## 6. GitHub publication receipt
+
+Published the independent `simulation_cup_random_rl/` workspace to the original repository. Code commit:`5c0260f8dceb9dc8639b43d9ba3774da7ed77fb6`; tag:`cup-random-rl-env-v1-20261015`; author:YouNg1x. All five older workspace Git trees and parallel calibration history are preserved. Remote control-entry, environment and English-guide bytes match their local hashes. The frozen policy remains0/20; publication does not imply convergence.
