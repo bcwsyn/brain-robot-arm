@@ -1,4 +1,10 @@
-## 最新同步接续（2026-10-14：第一组仅JSON发布准备好，缺GitHub认证）
+## 最新同步接续（2026-10-14：第一组JSON已在GitHub，独立核验通过）
+
+用户亲自在终端推送piper-pair01-publish-20261014:main成功；代理独立git ls-remote rc0确认远端main=13582cbd39a7382af66a494420daaf3fb5ec1aed，与准备好的数据单文件提交一致。第一组清单已同步，可访问https://github.com/bcwsyn/brain-robot-arm/blob/13582cbd39a7382af66a494420daaf3fb5ec1aed/docs/evidence/piper_calibration_pair01_20261014.json 。仅JSON，原图/SDK/native depth未上传，不能声称整个本地main/控制配置/其他文档已同步，也不推断代理认证凭据已经可用。
+
+本轮仅限定同步记录，未操作机械臂/ROS、未改凭据/重复推送/合并或丢弃dirty。第一组质量/同点语义仍如清单，未拟合外参；第二组尚未采，下一用户观测侧准备好后先只读采集、再同一原位人工摆入两指采夹持侧。旧认证阻断以下均历史，第一组发布已完成，其他积压历史保持本地。
+
+## 历史同步接续（2026-10-14：第一组仅JSON发布准备好，缺GitHub认证）
 
 用户明确要求发布第一组并给URL。整体积压历史上传调用被权限审查拒绝，未执行；安全缩小为以已存在origin/main50a5cc2为基底只新增7055B第一组JSON，临时/tmp/piper_github_publish.RpEWNJ、不替代规范仓库。新单文件发布提交13582cb已保留规范本地分支piper-pair01-publish-20261014；byte-identical f36ea50数据文件，未上传其他本地代码历史/图片/SDK。
 

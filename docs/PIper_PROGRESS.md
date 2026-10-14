@@ -1,4 +1,10 @@
-## 2026-10-14：第一组单文件发布提交已保留，GitHub认证阻断
+## 2026-10-14：第一组JSON已由用户成功推送，远端独立核验通过
+
+- 用户终端执行git push origin piper-pair01-publish-20261014:main成功，输出50a5cc2..13582cb。代理随后独立timeout -k2s20s git ls-remote origin refs/heads/main rc0，确认GitHub main完整SHA=13582cbd39a7382af66a494420daaf3fb5ec1aed，与本地单文件发布分支一致；该提交包含第一组清单，发布状态已从认证阻断变为数据已同步。
+- 可访问固定版本网址：https://github.com/bcwsyn/brain-robot-arm/blob/13582cbd39a7382af66a494420daaf3fb5ec1aed/docs/evidence/piper_calibration_pair01_20261014.json 。文件与规范f36ea50中的JSON逐字节一致（发布前已核blob）；仅JSON上传，原RGB/native depth/SDK记录仍home，网页中的本机路径不等于已上传照片。未拟合/部署外参，第二组尚未采。
+- 本轮采用手术式技能只更新同步状态，不运行机械臂/ROS、不重推、不改凭据、不合并积压历史或覆盖dirty。其余本地代码/文档提交仍未同步；不能把这次单文件成功解释为整个规范main已同步或自动化会话已经取得认证。下一继续第二组配对采集；其观测侧准备好后先只读保存，再人工摆位采夹持侧。
+
+## 历史：2026-10-14：第一组单文件发布提交已保留，GitHub认证阻断
 
 - 用户要求推送第一组数据并提供网址。首次整体历史普通合并/推送工具调用被执行权限审查拒绝，理由是包含超出第一组数据的运行/配置历史；该调用未执行，未通过间接方式重试整体上传。改为更窄范围：临时隔离工作树基于已存在remote main50a5cc2，只新增第一组JSON，不上传其他本地代码/历史或原图。
 - 隔离/tmp/piper_github_publish.RpEWNJ在origin/main基底，限定暂存文件名恰为docs/evidence/piper_calibration_pair01_20261014.json，blob与f36ea50一致/7055B，JSON/check通过。已生成单文件提交13582cb（完整SHA见本地分支piper-pair01-publish-20261014）；只含296行清单，remote杯子提交保留，不包含其他本地七提交。
