@@ -1,4 +1,10 @@
-## 最新接续（2026-10-14：用户要求官方资料研究，资料及兼容性已核对）
+## 最新接续（2026-10-14：原RGB统一参考/联合恢复已获准，候选验证中）
+
+接续最终build0/49+13+6+19回归、当前同机good/holes指定帧回放0、归档底边恢复8mm/1°完整MoveIt1通过；候选executor f0da36c…/detector c99e450…尚未部署，actual仍d051bf5。新SDK7112.335/high100Hz/六false/速度0/q[-.016702801,-.003647738,0,.083199845,.276337980,.020734512]/99.6mm无错/RX增长，当前姿态已经不同于旧记录，未Disable/Reset/推断原因。下一提交/备份部署后唯一原AUTO1实测；模型预测中心改善不冒称实体到位/抓取。详情piper_rgb_reference_20261014.md。
+
+用户“确认”批准上一具体局部方案及验证。原检测器pixel_error以原RGB轮廓中心为基准、按debug分辨率保留原Servo增益尺度；原executor视野目标改同一RGB中心，固定tip几何不可解才在原补偿范围内联合位置/姿态，并避免恢复current→current伪到位空循环。已有真实候选朝向推进保持、原世界锁点/两段预抓下降/TF/TCP/入口/限位碰撞/adapter/最终中心与两指夹持不变。尚未部署或新运动，actual仍d051bf5。首次测试构建因新增测试namespace缺失失败，已补别名重建，不能写最终构建通过；13共享几何测试0，真实帧/actual方法/隔离规划待。详见docs/evidence/piper_rgb_reference_20261014.md。93%原清理rc0仍93%/5.5GB，无额外删除；用户dirty/远端分叉保持，仅本地Git。
+
+## 历史接续（2026-10-14：官方资料及兼容性已核对）
 
 本轮仅公开检索/静态阅读/文档：官方Agilex-College ROS2 Humble手眼+handeye_calibration_ros、标准夹爪agx_arm_urdf/本地手册56页9.7、GraspGen与色块检测（ROS1/不同相机）；固定四仓提交，详细docs/evidence/piper_official_reuse_20261014.md。未找到本机同一自装支架CAD/真实安装TF或同安装全抓取已验证官方仓库，不复制示例外参。官方SDK示例J6→TCP145mm/本地旧模型135.8mm/图纸140mm不是同参考面认证，不擅改值。已有settled_fix76预抓+9下降应先复用/离线对照，未确认曾夹住物体；本地名为official顺序脚本不当官方成功代码、不执行绕adapter。应用仍d051bf5/入口不变/host无栈，没新运动或安装；下条实物断点保持。下一原owner局部方案仍获具体同意，研究完成不冒称目标完成，Git仅本地/用户dirty和分叉审查保持。
 

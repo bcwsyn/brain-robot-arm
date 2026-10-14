@@ -28,6 +28,7 @@
 
 #include "brain_robot_pick_place/rgbd_shape_geometry.hpp"
 #include "brain_robot_pick_place/rgbd_observation.hpp"
+#include "brain_robot_pick_place/visual_grasp_feedback.hpp"
 
 class CupDetectorNode final : public rclcpp::Node
 {
@@ -848,11 +849,15 @@ private:
           (target_center.y - camera_cy_) * depth.meters / camera_fy_, depth.meters);
       }
     }
-    const int dx = target_center.x - image_center.x;
-    const int dy = target_center.y - image_center.y;
-    const double normalized_error = std::max(
-      std::abs(static_cast<double>(dx)) / debug_image.cols,
-      std::abs(static_cast<double>(dy)) / debug_image.rows);
+    // Keep depth-frame points/debug projection intact. ALIGN must instead use
+    // the same original colour centre as the terminal RGB controller.
+    const auto shape_grid = software_registration_enabled_ ? bridge_image->image.size() :
+      processing_image.size();
+    const auto rgb_error = brain_robot_pick_place::visual_grasp::RgbAlignmentError(
+      shape_center.x, shape_center.y, shape_grid.width, shape_grid.height,
+      debug_image.cols, debug_image.rows);
+    const double dx = rgb_error[0], dy = rgb_error[1];
+    const double normalized_error = rgb_error[2];
     update_depth_temporal_quality(depth);
     const bool depth_grasp_allowed = depth.valid && depth.dispersion_valid &&
       depth.frame_delta_valid && depth.stable_frame_count >= required_depth_stable_frames_ &&

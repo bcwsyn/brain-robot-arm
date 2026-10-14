@@ -69,7 +69,10 @@ def test_visual_preview_is_off_and_strictly_bounded_on_real_default():
     assert "RealTrajectoryWithinLimits(" in settle
     assert "ExecuteArmTrajectory(" in settle
     assert "raw_full_frames_ = 0" in settle
-    assert "<= .002" in settle
+    # Preview remains 0.002rad; automatic segments have already used the
+    # original trajectory tolerance since the approved feedback fix.
+    assert "const double endpoint_tolerance = completed ? trajectory_feedback_tolerance_rad_ : .002;" in settle
+    assert "<= endpoint_tolerance" in settle
     association = source[source.index("bool VisualFaceInReference("):
                          source.index("bool ExecuteVisualPose(")]
     assert "raw_box_stamp_ns_ != stamp" in association

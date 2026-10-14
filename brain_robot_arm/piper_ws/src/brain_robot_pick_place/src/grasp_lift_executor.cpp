@@ -2368,21 +2368,21 @@ private:
     if (c.mirror) {u = c.width - 1 - u;}
     const double x = u/(c.width-1)*(view.width-1)/view.width;
     const double y = v/(c.height-1)*(view.height-1)/view.height;
-    // Begin recovery one half-box BEFORE the original 2% full-view margin.
-    // This is a geometry-derived look-ahead, not a new acceptance threshold.
-    const double inset_x = .02 + view.box.right - view.box.left;
-    const double inset_y = .02 + view.box.bottom - view.box.top;
-    const double desired_x = inset_x < .5 ? std::clamp(x, inset_x, 1-inset_x) : .5;
-    const double desired_y = inset_y < .5 ? std::clamp(y, inset_y, 1-inset_y) : .5;
-    if (std::hypot(desired_x-x, desired_y-y) < 1e-8) {return false;}
+    // Same raw RGB reference as ALIGN, not merely the nearest image edge.
+    // Reuse ALIGN's original tolerance; this is not a new close condition.
+    const double desired_x = .5, desired_y = .5;
+    if (std::max(std::abs(x-.5), std::abs(y-.5)) <= grasp_alignment_error_ratio_ &&
+      !view.recovering && visual_grasp::FullView(view.box)) {return false;}
     double ray_u = desired_x*view.width*(c.width-1)/(view.width-1);
     const double ray_v = desired_y*view.height*(c.height-1)/(view.height-1);
     if (c.mirror) {ray_u = c.width - 1 - ray_u;}
-    const bool aimed = visual_grasp::AimCameraAtFixedTip(nominal, camera_pose,
+    bool translated = false;
+    const bool aimed = visual_grasp::AimCameraWithTranslation(nominal, camera_pose,
       {view.target_reference.x(), view.target_reference.y(), view.target_reference.z()},
-      {(ray_u-c.cx)/c.fx, (ray_v-c.cy)/c.fy, 1}, gripper_tip_offset_m_);
-    PublishDiagnostic(aimed ? "RGB_VIEW_GUARD_TIP_PRESERVED" :
-      "RGB_VIEW_GUARD_RAY_INFEASIBLE_TIP_NOT_DISPLACED");
+      {(ray_u-c.cx)/c.fx, (ray_v-c.cy)/c.fy, 1}, gripper_tip_offset_m_,
+      .01745329252, near_depth_prediction_max_travel_m_, translated);
+    PublishDiagnostic(aimed ? (translated ? "RGB_CENTER_JOINT_POSITION_ATTITUDE_RECOVERY" :
+      "RGB_CENTER_TIP_PATH_PRESERVED") : "RGB_CENTER_RECOVERY_NO_FEASIBLE_GEOMETRY");
     return aimed;
   }
 
@@ -2520,7 +2520,11 @@ private:
         Fail("AUTOMATIC_RGB_CORRECTION_INVALID"); return;
       }
       const auto * selected = completed_reachable_cursor == cursor ? &completed_reachable : nullptr;
-      if (RgbWaypointReached(current, nominal, gripper_tip_offset_m_,
+      // A view correction is an active pose command, not a path waypoint that
+      // may be skipped under the original 10mm/0.12rad landing tolerance.
+      const bool view_motion = recovery && gaze && !RgbWaypointReached(current, goal,
+        gripper_tip_offset_m_, 1e-6, 1e-6);
+      if (!view_motion && RgbWaypointReached(current, nominal, gripper_tip_offset_m_,
         grasp_landing_tolerance_m_, grasp_landing_orientation_tolerance_rad_, selected)) {
         if (!recovery) {
           RCLCPP_INFO(get_logger(), "AUTOMATIC_RGB_WAYPOINT_REACHED waypoint=%zu/%zu "
@@ -2528,7 +2532,11 @@ private:
             selected ? "COMPLETED_REACHABLE" : "NOMINAL");
           ++cursor; completed_reachable_cursor = waypoints.size();
         }
-        else {near_last_command_image_stamp_ns_ = view.stamp_ns;}
+        else {
+          // Report a genuinely unavailable recovery once, rather than pretend
+          // current->current restored the view and burn the whole path budget.
+          Fail("AUTOMATIC_RGB_VIEW_RECOVERY_NO_POSE_STEP"); return;
+        }
         continue;
       }
       last_goal.header.frame_id = lift_reference_frame_; last_goal.header.stamp = now();

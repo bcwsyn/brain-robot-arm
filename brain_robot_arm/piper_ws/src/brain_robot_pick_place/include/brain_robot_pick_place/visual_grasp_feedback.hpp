@@ -7,6 +7,21 @@ namespace brain_robot_pick_place::visual_grasp
 // Normalized coordinates in ORIGINAL colour image, never registered depth pixels.
 struct Box {double left, top, right, bottom;};
 
+// Keep the existing Servo gain's pixel scale while using the ORIGINAL RGB
+// centre. Depth registration is for range association, not ALIGN's reference.
+inline grasp_geometry::Point RgbAlignmentError(double x, double y,
+  double rgb_width, double rgb_height, double command_width, double command_height)
+{
+  for (double value : {x, y, rgb_width, rgb_height, command_width, command_height}) {
+    if (!std::isfinite(value)) {throw std::invalid_argument("Invalid RGB alignment grid");}
+  }
+  if (rgb_width <= 1 || rgb_height <= 1 || command_width <= 1 || command_height <= 1) {
+    throw std::invalid_argument("Invalid RGB alignment dimensions");
+  }
+  const double dx = x / rgb_width - .5, dy = y / rgb_height - .5;
+  return {dx * command_width, dy * command_height, std::max(std::abs(dx), std::abs(dy))};
+}
+
 // FK solver roundoff is not physical overtravel. Preview remains unchanged.
 inline bool DistanceStepWithin(double distance, double limit, bool automatic)
 {
@@ -156,5 +171,58 @@ inline bool AimCameraAtFixedTip(
   const auto axis = gg::Rotate(goal.orientation, {0, 0, 1});
   for (int i = 0; i < 3; ++i) {goal.origin[i] = tip[i] - tip_offset*axis[i];}
   return true;
+}
+
+// If the camera lever arm makes a fixed-tip ray impossible, recover with a
+// bounded attitude change AND lateral translation. This is a pose estimate,
+// not a replacement target or a joint command. CorrectedPoseStep and MoveIt
+// still bound/check the actually requested motion.
+inline bool AimCameraWithTranslation(
+  grasp_geometry::DirectedPose & goal,
+  const grasp_geometry::DirectedPose & tool_from_camera,
+  const grasp_geometry::Point & target, const grasp_geometry::Point & camera_ray,
+  double tip_offset, double maximum_angle, double maximum_translation,
+  bool & translated)
+{
+  namespace gg = grasp_geometry;
+  translated = false;
+  if (!std::isfinite(maximum_angle) || maximum_angle <= 0 ||
+    !std::isfinite(maximum_translation) || maximum_translation <= 0) {
+    throw std::invalid_argument("Invalid camera recovery bounds");
+  }
+  if (AimCameraAtFixedTip(goal, tool_from_camera, target, camera_ray, tip_offset)) {return true;}
+  const auto original = goal;
+  const auto tip = gg::Tip(goal.origin, gg::Rotate(goal.orientation, {0, 0, 1}), tip_offset);
+  const auto camera_offset = gg::Rotate(goal.orientation, tool_from_camera.origin);
+  const gg::Point wanted{target[0]-goal.origin[0]-camera_offset[0],
+    target[1]-goal.origin[1]-camera_offset[1], target[2]-goal.origin[2]-camera_offset[2]};
+  const auto bearing = gg::Rotate(tool_from_camera.orientation, gg::Unit(camera_ray));
+  const auto from = gg::Rotate(goal.orientation, bearing), to = gg::Unit(wanted);
+  const double angle = std::acos(std::clamp(gg::Dot(from, to), -1., 1.));
+  if (angle > 1e-8) {
+    auto axis = gg::Cross(from, to);
+    if (gg::Dot(axis, axis) < 1e-12) {axis = gg::Rotate(goal.orientation, {1, 0, 0});}
+    goal.orientation = gg::UnitQuaternion(gg::RotateOrientationAboutAxis(
+      goal.orientation, gg::Unit(axis), std::min(angle, maximum_angle)));
+  }
+  const auto tool_axis = gg::Rotate(goal.orientation, {0, 0, 1});
+  for (int i = 0; i < 3; ++i) {goal.origin[i] = tip[i]-tip_offset*tool_axis[i];}
+  const auto offset = gg::Rotate(goal.orientation, tool_from_camera.origin);
+  const gg::Point world_ray{target[0]-goal.origin[0]-offset[0],
+    target[1]-goal.origin[1]-offset[1], target[2]-goal.origin[2]-offset[2]};
+  const auto q = goal.orientation, cq = tool_from_camera.orientation;
+  const auto tool_ray = gg::Rotate({-q[0], -q[1], -q[2], q[3]}, world_ray);
+  const auto color = gg::Rotate({-cq[0], -cq[1], -cq[2], cq[3]}, tool_ray);
+  if (!std::isfinite(color[2]) || color[2] <= .001 || camera_ray[2] <= .001) {
+    goal = original; return false;
+  }
+  const gg::Point lateral{color[0]-color[2]*camera_ray[0]/camera_ray[2],
+    color[1]-color[2]*camera_ray[1]/camera_ray[2], 0};
+  const auto shift = gg::Rotate(q, gg::Rotate(cq, lateral));
+  const double distance = std::sqrt(gg::Dot(shift, shift));
+  const double scale = distance > maximum_translation ? maximum_translation/distance : 1.;
+  for (int i = 0; i < 3; ++i) {goal.origin[i] += shift[i]*scale;}
+  translated = distance > 1e-8;
+  return translated || gg::QuaternionDistance(original.orientation, goal.orientation) > 1e-8;
 }
 }  // namespace brain_robot_pick_place::visual_grasp

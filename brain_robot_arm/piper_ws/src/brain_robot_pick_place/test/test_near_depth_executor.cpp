@@ -89,6 +89,41 @@ struct NearDepthReplayAccess
     const grasp_geometry::DirectedPose * completed = nullptr) {
     return GraspLiftExecutor::RgbWaypointReached(current, nominal, .1358, .01, .12, completed);
   }
+  static bool FineReached(const grasp_geometry::DirectedPose & current,
+    const grasp_geometry::DirectedPose & goal) {
+    return GraspLiftExecutor::RgbWaypointReached(current, goal, .1358, 1e-6, 1e-6);
+  }
+  static bool ViewGoal(GraspLiftExecutor & n, grasp_geometry::DirectedPose & nominal,
+    const Eigen::Isometry3d & camera, visual_grasp::Box box, Eigen::Vector3d target,
+    bool recovering = false) {
+    GraspLiftExecutor::LockedRgbView view;
+    view.valid = true; view.recovering = recovering; view.box = box;
+    view.width = view.height = 200;
+    view.calibration = {201, 201, 100, 100, 100, 100, false,
+      {1, 0, 0, 0, 1, 0, 0, 0, 1}, {0, 0, 0}};
+    view.target_reference = target;
+    return n.GuardApproachView(nominal, camera, view);
+  }
+  static bool RecordedViewGoal(GraspLiftExecutor & n, grasp_geometry::DirectedPose & nominal) {
+    auto camera = Eigen::Isometry3d::Identity();
+    camera.linear() << 0, 1, 0, -1, 0, 0, 0, 0, 1;
+    camera.translation() = Eigen::Vector3d(-.07, 0, .0308);
+    GraspLiftExecutor::LockedRgbView view;
+    view.valid = view.recovering = true;
+    view.box = {.265625, .7708333134651184, .40937501192092896, .9916666746139526};
+    view.width = 320; view.height = 240;
+    view.calibration = {640, 480, 488.80865478515625, 488.80865478515625,
+      315.5068054199219, 214.38182067871094, false,
+      {.9998412728309631, .011080970056355, .01395333744585514,
+      -.011040600016713142, .9999346137046814, -.0029670665971934795,
+      -.013985303230583668, .0028125427197664976, .9998982548713684},
+      {-.029824851989746094, .0002287428230047226, .0001407688856124878}};
+    // Archived 1791943924611050612 RGB bearing at frozen-model range;
+    // nearest measured q, NOT exact image-time feedback or new physical depth.
+    view.target_reference = Eigen::Vector3d(.4294887122528823, -.13695494730138663,
+      .07313856784158082);
+    return n.GuardApproachView(nominal, camera, view);
+  }
   static bool ClipJointPrefix(GraspLiftExecutor & n,
     trajectory_msgs::msg::JointTrajectory & trajectory, std::size_t accepted,
     bool automatic_segment = true) {
@@ -218,6 +253,8 @@ struct NearDepthReplayAccess
 
 using brain_robot_pick_place::GraspLiftExecutor;
 using brain_robot_pick_place::NearDepthReplayAccess;
+namespace grasp_geometry = brain_robot_pick_place::grasp_geometry;
+namespace visual_grasp = brain_robot_pick_place::visual_grasp;
 
 class NearDepthExecutor : public ::testing::Test
 {
@@ -256,6 +293,56 @@ TEST_F(NearDepthExecutor, RealMethodsSwitchToRGBPredictionWithoutRefreshingDepth
   EXPECT_EQ(p.header.stamp, locked.header.stamp);
   EXPECT_EQ(NearDepthReplayAccess::Lock(*node).header.stamp, locked.header.stamp);
   EXPECT_DOUBLE_EQ(p.point.z, locked.point.z);
+}
+
+TEST_F(NearDepthExecutor, ActualGuardCentresRgbBeforeTheObjectReachesImageEdge)
+{
+  grasp_geometry::DirectedPose goal{{0, 0, 0}, {0, 0, 0, 1}};
+  auto camera = Eigen::Isometry3d::Identity(); camera.translation().x() = .03;
+  ASSERT_TRUE(NearDepthReplayAccess::ViewGoal(*node, goal, camera,
+    {.4, .6, .6, .8}, {.03, .10, .3}));
+  EXPECT_GT(grasp_geometry::QuaternionDistance(goal.orientation, {0, 0, 0, 1}), .01);
+}
+
+TEST_F(NearDepthExecutor, ActualGuardImpossibleFixedTipDoesNotReturnStationaryRecovery)
+{
+  const grasp_geometry::DirectedPose current{{0, 0, 0}, {0, 0, 0, 1}};
+  auto goal = current;
+  auto camera = Eigen::Isometry3d::Identity();
+  camera.translation() = Eigen::Vector3d(.07, 0, .03);
+  ASSERT_TRUE(NearDepthReplayAccess::ViewGoal(*node, goal, camera,
+    {.3, .77, .5, .99}, {0, .03, .1358}, true));
+  const auto step = visual_grasp::CorrectedPoseStep(current, goal, {0, 0, 0},
+    .1358, .008, .01745329252, .03);
+  EXPECT_FALSE(NearDepthReplayAccess::FineReached(current, step));
+}
+
+TEST_F(NearDepthExecutor, ArchivedLowerEdgeGetsARealBoundedPoseRequest)
+{
+  const grasp_geometry::DirectedPose current{{.36511897763540807, -.12206212563558047,
+    .22576990363770105}, {.1254544229538081, .9777775573317267,
+    -.016248697342347317, .1671771993257627}};
+  auto goal = current;
+  ASSERT_TRUE(NearDepthReplayAccess::RecordedViewGoal(*node, goal));
+  const auto next = visual_grasp::CorrectedPoseStep(current, goal, {0, 0, 0},
+    .1358, .008, .01745329252, .03);
+  EXPECT_FALSE(NearDepthReplayAccess::FineReached(current, next));
+  const auto a = grasp_geometry::Tip(current.origin,
+    grasp_geometry::Rotate(current.orientation, {0, 0, 1}), .1358);
+  const auto b = grasp_geometry::Tip(next.origin,
+    grasp_geometry::Rotate(next.orientation, {0, 0, 1}), .1358);
+  EXPECT_LE(grasp_geometry::CompareTips(a, b, {0, 0, 1}).distance_m, .008+1e-12);
+  EXPECT_LE(grasp_geometry::QuaternionDistance(current.orientation, next.orientation),
+    .01745329252+1e-12);
+  std::cout << std::setprecision(12) << "AUTOMATIC_RGB_STEP_900 POSE_REQUEST frame=base_link xyz=("
+    << next.origin[0] << "," << next.origin[1] << "," << next.origin[2] << ") q=("
+    << next.orientation[0] << "," << next.orientation[1] << ","
+    << next.orientation[2] << "," << next.orientation[3] << ")\n";
+  const std::array<double, 6> q{-.330947568, 1.846586952, -1.379558740,
+    .046627812, .855750308, -.100355332};
+  for (int i = 0; i < 6; ++i) {
+    std::cout << "AUTOMATIC_RGB_STEP_900 PLAN_START joint" << i+1 << "=" << q[i] << "\n";
+  }
 }
 
 TEST_F(NearDepthExecutor, NoInitialDepthCannotBootstrapPrediction)

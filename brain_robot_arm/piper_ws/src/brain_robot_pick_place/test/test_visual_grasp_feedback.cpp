@@ -4,6 +4,16 @@
 namespace vg = brain_robot_pick_place::visual_grasp;
 namespace gg = brain_robot_pick_place::grasp_geometry;
 
+TEST(VisualGrasp, AlignmentUsesRgbCentreWithOriginalServoPixelScale)
+{
+  const auto e = vg::RgbAlignmentError(142.5, 100.5, 320, 240, 640, 400);
+  EXPECT_NEAR(e[0], -35, 1e-12);
+  EXPECT_NEAR(e[1], -32.5, 1e-12);
+  EXPECT_NEAR(e[2], .08125, 1e-12);
+  EXPECT_EQ(vg::RgbAlignmentError(160, 120, 320, 240, 640, 400), (gg::Point{0, 0, 0}));
+  EXPECT_THROW(vg::RgbAlignmentError(0, 0, 0, 240, 640, 400), std::invalid_argument);
+}
+
 TEST(VisualGrasp, CroppedPurpleIsNotFullView)
 {
   EXPECT_FALSE(vg::FullView({101.0 / 320, 212.0 / 240, 151.0 / 320, 1}));
@@ -130,4 +140,35 @@ TEST(VisualGrasp, ImpossibleFixedTipCameraRayDoesNotDisplaceTipToChaseImageCentr
     {0, 0, .1358}, {0, 0, 1}, .1358));
   EXPECT_EQ(goal.origin, before.origin);
   EXPECT_EQ(goal.orientation, before.orientation);
+}
+
+TEST(VisualGrasp, ImpossibleFixedTipRayGetsBoundedCombinedRecoveryNotCurrentToCurrent)
+{
+  const gg::DirectedPose current{{0, 0, 0}, {0, 0, 0, 1}};
+  const gg::DirectedPose camera{{.07, 0, .03}, {0, 0, 0, 1}};
+  const gg::Point target{0, .03, .1358};
+  auto goal = current;
+  bool translated = false;
+  ASSERT_TRUE(vg::AimCameraWithTranslation(goal, camera, target, {0, 0, 1},
+    .1358, .01745329252, .03, translated));
+  EXPECT_TRUE(translated);
+  const auto next = vg::CorrectedPoseStep(current, goal, {0, 0, 0},
+    .1358, .008, .01745329252, .03);
+  const auto before_tip = gg::Tip(current.origin, {0, 0, 1}, .1358);
+  const auto after_tip = gg::Tip(next.origin, gg::Rotate(next.orientation, {0, 0, 1}), .1358);
+  EXPECT_GT(gg::CompareTips(after_tip, before_tip, {0, 0, 1}).distance_m, 1e-4);
+  EXPECT_LE(gg::CompareTips(after_tip, before_tip, {0, 0, 1}).distance_m, .008+1e-12);
+  EXPECT_LE(gg::QuaternionDistance(current.orientation, next.orientation), .01745329252+1e-12);
+}
+
+TEST(VisualGrasp, FixedTipFeasibleRecoveryStillPreservesOriginalCaptureTip)
+{
+  auto goal = gg::DirectedPose{{0, 0, 0}, {0, 0, 0, 1}};
+  const auto tip = gg::Tip(goal.origin, {0, 0, 1}, .1358);
+  bool translated = true;
+  ASSERT_TRUE(vg::AimCameraWithTranslation(goal, {{.03, 0, .03}, {0, 0, 0, 1}},
+    {.03, .10, .25}, {0, 0, 1}, .1358, .01745329252, .03, translated));
+  EXPECT_FALSE(translated);
+  EXPECT_LT(gg::CompareTips(gg::Tip(goal.origin, gg::Rotate(goal.orientation, {0, 0, 1}),
+    .1358), tip, {0, 0, 1}).distance_m, 1e-12);
 }
