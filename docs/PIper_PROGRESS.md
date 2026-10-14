@@ -8,7 +8,15 @@
 - 本轮仅更新交接、进度、决策三份文档；保留其他已有 dirty 和未跟踪文件，提交前索引为空。HEAD...origin/main 的缓存计数为 10/2（rc0），现有整体历史发布范围拒绝/分叉仍保留；没有重复整体上传、合并、改写历史或新读取远端。本轮仅本地提交，未同步 GitHub，不影响第一组 JSON 已发布事实。
 - 下一步：启动或长时间采集前再次 df -hT /；当前没有磁盘阻断。主任务仍按最新第一组记录继续第二组新位置的观测侧，再原位人工夹持侧只读采样，不以本次磁盘检查自动续跑控制栈。
 
-## 2026-10-14：第一组30组RGB-D实采，双峰统计与完整原始数据包已生成
+## 2026-10-14：完整第一组资料已提交，限定发布待终端认证
+
+- 规范限定提交4a3b17b：三离线分析/测试、四规则记录/rootJSON、116数据包文件（manifest+115资产），共124路径。7测试/全部115个数据hash/相对路径/30组depth-info同戳/实际q与FK字段验证通过，最大资产211185B、总资产10114959B；敏感模式未命中。数据未改动源PNG/控制代码/相机TF，不称全部四项物理精度问题已解决。
+- 数据发布分支在隔离worktree以remote13582cb为唯一父提交，只还原本轮bundle/rootJSON/三只读源码共120路径；审查无任何积压生产历史或其他dirty。新提交027359e（piper-pair01-publish-20261014），git show --check通过。普通git push origin piper-pair01-publish-20261014:main rc128/could not read Username，当前代理非交互会话仍无GitHub凭据；上轮用户终端成功不等于此会话已认证。
+- 本轮完整raw数据尚未上线GitHub，独立ls-remote仍13582cbd39a7382af66a494420daaf3fb5ec1aed。用户终端可执行同一git push命令发布该120路径，成功后代理独立验证再给tree/<发布SHA>/docs/evidence/piper_calibration_20261014/pair01及manifest/depth_review/calibration直达链接；不能现在给未发布027359e链接当可访问。
+- 已完成：30原始配对帧、完整K/D及镜头R/T、实际FK、可共享文件/复算工具与质量分层。未完成：补足30高支撑（目前10）、camera面中心/法向与gripper约5mm先验的实物验证、5–6位置安装拟合/独立1cm精度验收。新鲜物理反馈缺失阻止追加采集，Git认证阻止共享，二者独立；没有发送Disable/Reset/CAN重载，全部本轮节点已退出，SDK零戳默认值不当真实姿态/失能。
+- 本地记录提交后停止本轮；下一先用户终端单次推送/远端核验，随后恢复物理新反馈再继续有效数据补采和第二组，不能用旧q发起新动作或擅部署约5mm偏移。
+
+## 历史：2026-10-14：第一组30组RGB-D实采，双峰统计与完整原始数据包已生成
 
 - 用户要求四缺口修复/详细GitHub资料。ROS2及手术式技能：先真实目录/实际detector与相机工厂资料，现有collect_static_rgbd/review_depth_registration复用，不改生产运动/门控/TF。官方参考OpenCV solvePnP https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html 及Orbbec ROS2 https://github.com/orbbec/ros2_astra_camera ，PnP需要同一物理角点对应与K/D，不把2D框角冒充立体点。用户补approx28mm，不用旧“4cm样本”当测量。
 - 用户确认第一组方块原位且允许仅返回观测采集。SDK1791971938.1319/joint1938.1307/100Hz/q_mdeg仍[-5366,106190,-60735,7383,32906,3896]、六true/静止101.5mm；can复用。原一键AUTO0，log home/pair01_observe_remeasure_20261014_onekey到7/7；原stop_after_observe=true set/get通过，只触发一次原1路径。原13点46.2s/maxstep.08 prepare接受，30s start客户端先超时而脚本报启动失败，但实际原轨迹继续；未重试、1791972165.585465511确认STOPPED(OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)，无SEARCH/抓取。不能称CLI端到端成功或为了UI再启动一次。
