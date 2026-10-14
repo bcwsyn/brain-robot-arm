@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+最新2026-10-14用户完成手动摆位并明确要求仅重新使能：host无控制/视觉/采集栈，原CAN正常；ConnectPort(piper_init=False)后仅EnableArm(7)一次，rc0。post1791952986.664/high100Hz/六true/速度0/q_mdeg[-12173,110855,-62094,-1619,32323,6682]，60样本/3秒角度变化0，夹爪36.8mm、使能从false到true，未发GripperCtrl/JointCtrl/MotionCtrl/Reset/Disable，未自动观测搜索。手动终点仅候选参考，尚未同步采RGB/TF或证实物体接触，不冒称成功抓取/标定完成；初读与使能前姿态不同，使用紧前/紧后数据。详见docs/evidence/piper_manual_terminal_enable_20261014.json及进度。原3985466部署保持，组合候选/Servo timeout修复仍待具体批准，勿用仅使能授权续跑。
+
 最新3985466预算修复实机已更新33段reviewed计数/运动与路点分开；原AUTO1观测→SEARCH→ALIGN→GRASP_READY→10粗段/33末段停稳，尚未达到旧超额点或新额度扩充，不冒称跨过旧预算停止。新step48/cursor15-38完整朝向/短平移各自候选全fraction0，未reserve/输出该段，FAULT_STEP_EXECUTION_FAILED，未下降/闭爪；图像完整/中心covered1，CAN无错。域78精确原ROS起点 validtrue，短平移×反向朝向组合6完整解/原范围内（如2.643mm/-0.75°），新组合策略尚未授权/编码；下一先具体说明获准，不直接发隔离q/扩大限位。启动原timeout5s stop_servo曾挂99s，仅结束本轮客户端续跑，永久-k2s修复也尚未授权。host全部栈退出，post SDK1791951067.102/high100Hz/六true/速度0/99.6mm无错；SDKπ与原ROS .017444换算数值差单列，不当硬件故障。actual70c3381…/detectorc99e450…/入口不改，详见piper_reviewed_travel_budget_20261014.md/step48小快照，完整目标未完成。
 
 3985466预算修复52+19+21/build0，actual单executor70c3381…/source2144f22…/near头567377f…已原路径部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，detectorc99e450…/入口87039b…保持。新SDK1791950493.657/high100Hz/六true/速度0/姿态保持上轮/RX增长，下一唯一原AUTO1与reviewed_budget_onekey_20261014/exact/live新采集，本次实体结果尚未产生。完整运动清单/原范围见piper_reviewed_travel_budget_20261014.md；本授权无需重复等，未抓取完成。

@@ -1,0 +1,125 @@
+{
+  "scope": "User requested re-enable after manual grasp positioning; no automatic run or grasp verification",
+  "read_only_initial": {
+    "epoch": 1791952954.0494723,
+    "q_mdeg": [
+      -10142,
+      108141,
+      -60188,
+      -4526,
+      31174,
+      9293
+    ],
+    "enabled": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "gripper_mm": 36.8
+  },
+  "command": "EnableArm(7) only; no JointCtrl/MotionCtrl/GripperCtrl/Reset/Disable",
+  "enable_calls": 1,
+  "pre": {
+    "epoch": 1791952983.4849029,
+    "joint_stamp": 1791952983.4794858,
+    "high_stamp": 1791952983.4752576,
+    "low_stamp": 1791952983.4748926,
+    "high_hz": 100,
+    "q_mdeg": [
+      -12173,
+      110855,
+      -62094,
+      -1619,
+      32323,
+      6682
+    ],
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "faults": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "gripper_mm": 36.8,
+    "gripper_enabled": false
+  },
+  "post": {
+    "epoch": 1791952986.6639013,
+    "joint_stamp": 1791952986.6592996,
+    "high_stamp": 1791952986.6552951,
+    "low_stamp": 1791952986.6550565,
+    "high_hz": 100,
+    "q_mdeg": [
+      -12173,
+      110855,
+      -62094,
+      -1619,
+      32323,
+      6682
+    ],
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "faults": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "gripper_mm": 36.8,
+    "gripper_enabled": true
+  },
+  "monitor_samples": 60,
+  "max_joint_change_deg": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "max_observed_speed_rad_s": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "interpretation": "Initial read and immediate pre-enable differed; do not treat earlier pose as final reference. Post-enable confirmed stationary at immediate pre-enable pose. Images/TF/actual cube contact not collected; this is a candidate manually taught terminal posture, not verified grasp or calibrated extrinsic."
+}

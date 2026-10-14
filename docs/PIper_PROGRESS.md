@@ -1,4 +1,12 @@
-## 2026-10-14：预算核算实测生效，新停止为完整规划候选组合缺失
+## 2026-10-14：手动终点摆位后仅使能，确认姿态保持
+
+- 本轮用户“现在我已完成操作，你重新给机械臂使能”明确授权仅使能；没有批准自动续跑或新组合生产修改。使用仓库ROS2证据技能，先核实际host进程/原CAN与SDK接口；无控制/视觉/采集栈，can0 index10 UP/ERROR-ACTIVE、1Mbps/.75/queue1000、RX22115220、错误丢帧0，复用链路不重载。
+- 只读ConnectPort(piper_init=False)初采epoch1791952954.049，六false/速度0/100Hz/无故障，夹爪36.8mm/false。该时刻q_mdeg[-10142,108141,-60188,-4526,31174,9293]与紧前使能q不同，仅记录不推断变化原因，不能混作同一静止姿态。
+- 有界命令timeout -k 2s 20s /usr/bin/python3 -u（系统Python使用已安装SDK、无PYTHONNOUSERSITE）；新鲜静止无故障前检查后，仅p.EnableArm(7)一次。未调用JointCtrl/MotionCtrl/GripperCtrl/ResetPiper/DisableArm，未启动ROS栈或发送轨迹。主返回0，SDK已断开。
+- 紧前epoch1791952983.485与紧后1791952986.664 q_mdeg均[-12173,110855,-62094,-1619,32323,6682]，六使能false→true，夹爪使能false→true/开口仍36.8mm。3秒60样本最大关节变化全0°、最高观测速度全0rad/s，最后高速100Hz/joint_stamp2986.659/low_stamp2986.655、无故障；仅证明反馈采样中的使能和姿态保持，不证明物体已被夹住。
+- [原始小快照](evidence/piper_manual_terminal_enable_20261014.json)已归档。当前是用户手动摆出的末段候选姿态，尚未采同戳RGB/深度/TF/真实接触，不伪造成功抓取或相机安装标定。下一在不运动的条件下采画面与姿态核对，再提出具体代码方案；原3985466部署/入口不变，组合候选及Servo timeout修复仍未批准/实施，本轮仅文档、不改生产代码、不自动续跑。Git本地，既有dirty/远端分叉保持。
+
+## 历史：预算核算实测生效，新停止为完整规划候选组合缺失
 
 3985466/3747832实际原AUTO1 session50059 rc1。启动原timeout5s stop_servo挂99s，仅结束已核对客户端3877764让原||true继续，不改脚本/重启控制；永久-k2s尚未获准。PREPARE0752.966/36.7s11点→SEARCH0789.404/OBSERVE_POSE_REACHED→ALIGN0801.328→GRASP_READY0803.636→10粗段停稳→冻结236.959mm/原测量stamp0822117190061→34末段尝试/33停稳。reviewed计数真实33次，末measured.152006/reviewed.163751/allowance.219042，原额度还未需扩充；cycle48只34/78运动，不耗路点检查。不能写实测已跨旧超额或次数卡点。
 
