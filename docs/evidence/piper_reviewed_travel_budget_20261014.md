@@ -1,5 +1,15 @@
 # 2026-10-14 已检查纠偏行程与有限运动次数核算
 
+## 最新部署与待实测
+
+3985466已限定10路径提交/检查0；actual单executor70c3381…与source2144f22…/near头567377f…同步，旧9ea9fc1单binaryf0da36c…/源/near头备份/home/johnwick/brain_robot_logs/view_guard_20261013/reviewed_budget_previous_9ea9fc1/。detectorc99e450…与唯一原脚本87039b…不变；不整库回退或覆盖用户wiring/vendor/reference。
+
+新被动SDK1791950493.657183/关节493.651086/high493.647062/100Hz、六true/速度全0，q[-.394025532,1.715588842,-1.168061602,.302762265,.905564082,-.462198093]rad，夹爪99.6mm/true/无错误，姿态与上轮保持一致。can0 index10/ERROR-ACTIVE/1Mbps/.75/queue1000原链复用，RX16249753→16259869/错误丢帧0，不重载。host无旧控制/采集栈（ps末尾仅本轮检查shell匹配，不当真实控制器）。
+
+运动清单：原当前→观测[0,.98,-.75,0,.30,0]rad，主要J2/J3/J5与其余实际误差联合；原taskmin[-1.5,-.3,-1.4,-.8,-1.2,-pi]/max[1.5,pi,.4,.8,1.2,pi]，adapter .189rad/s、MoveIt acceleration1rad/s²，观测缩放.01/预计20–60s/精确日志为准，原观测最大300s；搜索.05、ALIGN .135rad/s，末段仍8mm/1°/.08rad前缀，100mm张开/最终中心两指保持。停止条件原新鲜反馈/身份/限位/完整规划异常，异常停新位移保持，不自动回零/Disable/Reset；成功仍原安全返回后失能。
+
+下一原AUTO1同一入口，新reviewed_budget_onekey_20261014与exact/live采集，当前本次实体结果尚未产生。预算已经获准，不再等许可；构建/测试通过不是抓取成功。Git仅本地/远端分叉审查保持。
+
 ## 批准/现状/范围
 
 用户“好”明确同意上轮具体提案：按完整检查的实际纠偏路径核算行程与有限次数预算，保留8mm/1°、原范围/反馈/闭爪条件；继续原AUTO1。基线6406768；host无旧栈，实际executor f0da36c4772a8c2f3dfeb23313961b9abdd8d10b7d7a960d01fefcfff90c4ab2/sourcea57862a73fbbcaf56432d15ac8358257eca6ff64214b2373d28e10da1de900c6，detectorc99e450…，唯一原入口87039b…。当前候选构建中，未部署/未新运动。旧post7750.504六true/静止是最近已核对记录，不冒称新当前反馈。

@@ -1,5 +1,7 @@
 ## 最新接续（2026-10-14：用户批准已检查纠偏路径预算，候选构建中）
 
+3985466已52+19+21/build0并限定提交，actual70c3381…/source2144f22…/near头567377f…部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，detector/入口保持。新SDK0493.657/high100Hz/六true/静止/99.6mm、原q保持、RX增长；下一唯一原AUTO1/new reviewed_budget_onekey_20261014/exact/live，当前未产生本次实物结果。运动清单同证据，以下候选未部署记录已由此覆盖。
+
 接续52 actual+19 near+21 Python/build0，候选70c3381…/source2144f22…/头567377f…未部署，原actual9ea9fc1保持。下一限定提交/备份单executor与源头→唯一原AUTO1，本预算授权已批准、不等重复同意；未改几何/TF，不重复旧隔离规划/底层。详细piper_reviewed_travel_budget_20261014.md，尚未抓取完成。
 
 最新“好”批准上述具体预算实施与原一键实测，不再等同意。仅原executor：裁切/检查/起点反馈通过后用保留路径FK累计相机弧长，原30mm只一次，原75运动额度与最多36路点推进分开，≤111总循环，不引入无限重试或重复填额度。原目标/深度种子图戳/TF/TCP/MoveIt/8mm1°/.08rad/最终中心夹持保持。构建候选中，尚未部署/新运动，actual f0da36c…/detectorc99e450…/原入口保持，host无旧栈；21Python已通过，下一52actual方法/near数值回归后备份9ea9fc1单executor部署→唯一AUTO1。94%原清理rc0仍94%/5GB，无额外删除。详细piper_reviewed_travel_budget_20261014.md；用户dirty/远端分叉历史审查保持，仅本地。

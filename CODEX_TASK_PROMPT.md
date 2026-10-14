@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+3985466预算修复52+19+21/build0，actual单executor70c3381…/source2144f22…/near头567377f…已原路径部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，detectorc99e450…/入口87039b…保持。新SDK1791950493.657/high100Hz/六true/速度0/姿态保持上轮/RX增长，下一唯一原AUTO1与reviewed_budget_onekey_20261014/exact/live新采集，本次实体结果尚未产生。完整运动清单/原范围见piper_reviewed_travel_budget_20261014.md；本授权无需重复等，未抓取完成。
+
 2026-10-14最新用户“好”已批准上一具体预算核算修复及原入口实測：仅原executor与near_depth共享算术/针对性测试，完整规划/限位步长/裁切/实际起点检查全部通过后，按保留轨迹FK的相机行程累计许可；原episode30mm余量只计一次，不用未审查实测漂移刷新许可/种子/世界身份。原公式75（本旧例）作为有限运动命令额度，零运动路点推进另最多36次检查，总循环≤111，不盲倍增运动次数。TF/TCP/几何/入口/8mm1°/.08rad/真实反馈与最终中心两指闭爪不改。候选构建中未部署/新运动，actual仍9ea9fc1 f0da36c…；详见docs/evidence/piper_reviewed_travel_budget_20261014.md，不再等这项批准，旧待同意为历史。
 
 最新9ea9fc1原AUTO1实测已完成观测/SEARCH/原RGB ALIGN/GRASP_READY/12粗段+38末段停稳；当前RGB框中心(.506,.548)/atomic center_covered1/完整可见，联合位置朝向4段实际确认。新最早停止在step52/14-36：PREDICTION_RANGE_EXHAUSTED触发内部software_stop→EOG_OR_EXTERNAL_EMERGENCY_STOP，不是用户急停/CAN/最终中心/Cartesian规划失败，也未耗尽75次数。原名义camera_arc.1698+extra.03预算不包含持续纠偏实际路径；当前新的预算核算策略仍先具体说明获准，不擅放宽/复跑。主rc1、所有控制/相机/采集已退出，无Reset/Disable；post SDK7750.504/high100Hz/六true/速度0/q[-.394025532,1.715588842,-1.168061602,.302762265,.905564082,-.462198093]/99.6mm无错。实际f0da36c…/c99e450…/原入口保持，完整目标未完成。细节与小快照docs/evidence/piper_rgb_reference_20261014.md/piper_rgb_reference_run_20261014.json，以下部署待运行条目均历史。

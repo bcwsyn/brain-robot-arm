@@ -1,5 +1,7 @@
 ## 2026-10-14：已检查纠偏路径/有限次数预算获准，局部修复构建中
 
+3985466限定提交10路径/检查0，单actual70c3381…/source2144f22…/near头567377f…部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，原detectorc99e450…/入口87039b…不变。新SDK1791950493.657/high100Hz/六true/速度0/99.6mm无错/姿态保持；RX16249753→16259869错误0、无旧栈。下一唯一原AUTO1与new reviewed_budget_onekey_20261014/exact/live采集，完整运动清单同证据，尚未有本次实体结果。
+
 接续build0/52 actual+19 near+21 Python全部通过；候选70c3381…/source2144f22…/near头567377f…，尚未部署。下一限定提交→备份实际9ea9fc1单executor/源/头→原入口AUTO1实測，detectorc99e450…与入口保持。当前无新运动，完整抓取未完成；该项预算授权已经解决，不再重复等待。具体日志/验证level同证据。
 
 最新用户“好”确认上轮具体预算修复和实测；基线6406768/actual9ea9fc1 executorf0da36c…/sourcea57862a…/detectorc99e450…/原入口87039b…，首五Git/四文件最新路线/两技能及host无旧栈核对。仅原执行器/共享near_depth算术和测试：全部检查/裁切/新起点后，保留轨迹FK相机弧长追加累计reviewed值，许可max(原名义许可,累计reviewed+原30mm)，不将extra每次相加、不用未审核漂移/失败候选/裁掉后缀填额度。原有限运动75（旧实测例）与36路点推进分开，总循环≤111，所有运动限位/TF/世界锁点/最终夹持不改。
