@@ -1,0 +1,45 @@
+{
+  "passed": false,
+  "cases": [
+    {
+      "passed": false,
+      "completed": 1,
+      "metrics": [
+        {
+          "passed": true,
+          "peak_lift_m": 0.14481320757372484,
+          "hold_span_sim_s": 3.1999999999999957,
+          "placement_error_m": 0.0011240263719549202,
+          "home_error_rad": 8.034791664535135e-05,
+          "final_tilt_rad": 0.001086397430944865,
+          "hold_force_range_n": [
+            [
+              2.7139724780418244,
+              3.138164827459572
+            ],
+            [
+              2.8407943613915414,
+              3.104713400420141
+            ]
+          ]
+        }
+      ],
+      "case": "55",
+      "exit_code": 1,
+      "session": "log/visual_sim/cup-20261014-172007-500735",
+      "command": [
+        "bash",
+        "/home/young1x/robot_projects/piper_robot/simulation/scripts/run_cup_grasp_sim.sh",
+        "--headless",
+        "--diameter-mm",
+        "55",
+        "--seed",
+        "20261016",
+        "--batch-trials",
+        "2"
+      ],
+      "frozen_sources_unchanged": true
+    }
+  ],
+  "complete": false
+}

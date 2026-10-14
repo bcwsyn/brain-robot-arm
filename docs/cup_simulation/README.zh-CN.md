@@ -19,7 +19,7 @@ cd brain-robot-arm/simulation_cup
 
 ```bash
 sudo apt update
-sudo apt install python3-pip python3-venv
+sudo apt install python3-pip python3-venv python3-tk
 ```
 
 不要使用 Conda 终端，也不要同时 source `real_robot/install/setup.bash`。此版本不包含可自动操作实机的驱动入口。
@@ -62,7 +62,41 @@ export YOLO_CONFIG_DIR="$PWD/artifacts/yolo/config"
 
 YOLO 工具按名称查询 cup 编号。不要把单类模型误用成 COCO 的编号 41。
 
-## 4. 最短检查：模型分割与深度估径
+## 4. 可视化回放与模型检查
+
+### 4.1 一个终端打开水杯视觉窗口
+
+完成第 3 节的私有环境配置后，在 Ubuntu 桌面终端运行：
+
+```bash
+bash scripts/run_cup_visual_replay.sh
+```
+
+不需要先构建 ROS 工作区。脚本使用随仓库提供的五视角 RGB-D 和 v2 权重，**重新运行 YOLO 分割与深度估径**后打开交互窗口，而不是仅展示历史预测图片。启动一般需要数秒，终端会打印本次记录目录。
+
+窗口从左到右显示原始 RGB、YOLO 掩膜叠加图、配准深度伪彩色图。黄色十字是建议的杯身抓取点。下方显示估计外径、建议预张开、可见杯高、抓取高度和不确定度参数。五个视角应各识别一个杯子，估计外径约 74.86–74.88 mm，建议开口约 82.86–82.88 mm，可见杯高约 200 mm。
+
+| 操作（先点击回放窗口） | 效果 |
+| --- | --- |
+| `1`–`5` 或对应按钮 | 切换五个相机视角 |
+| `←` / `→` | 前后切换 |
+| 空格或播放/暂停按钮 | 每 2 秒自动切换，或暂停 |
+| 保存图 / Save | 保存当前三联图和数值 |
+| `Q` / `Esc` / 退出按钮 / 关闭窗口 | 退出并保存会话记录 |
+
+每次新建 `log/cup_visual_replay.XXXXXX/`，其中 `inference/` 保存叠加图、掩膜和 `results.json`，`evaluation.log` 保存推理日志，`screenshots/` 保存点击“保存图”得到的图片，`viewer_session.json` 保存浏览视角与退出记录。再次运行不会覆盖上一轮。
+
+可选择启动后自动播放：
+
+```bash
+bash scripts/run_cup_visual_replay.sh --autoplay
+```
+
+**这是保存画面的视觉组件回放，不是实时相机，也没有执行夹爪预张开、机械臂动作或反馈力控。** 完整水杯取放仍待下一轮集成。要观看已实现的机械臂运动，请使用第 9 节的球/圆柱入口。
+
+![水杯视觉回放窗口](cup_visual_replay.png)
+
+### 4.2 不打开窗口的检查
 
 这一步读取仓库已保存的五视角 RGB-D，不启动 Gazebo、机械臂或任何运动。**所有 `--output` 必须指向尚不存在的目录；重复检查请换名字。**
 
@@ -162,7 +196,19 @@ PYTHONNOUSERSITE=1 OMP_NUM_THREADS=6 .venv-yolo/bin/python -s scripts/train_cup_
 
 ## 9. 原物理仿真与力策略
 
-在本工作区使用 `bash scripts/run_ball_physics_sim.sh` 或 `bash scripts/run_cylinder_physics_sim.sh`，仍可观看原球/圆柱物理取放。夹爪默认总行程现为 100 mm，但两种旧样品仍使用已知直径的位置预压，不是水杯闭环力控演示。
+完成第 2 节构建后，在本工作区运行下列一个入口，会打开 Gazebo 和 RViz 并等待开始：
+
+```bash
+bash scripts/run_ball_physics_sim.sh
+```
+
+或者退出小球演示后运行圆柱：
+
+```bash
+bash scripts/run_cylinder_physics_sim.sh
+```
+
+**在启动终端按键，无需回车**：`1/2` 选择放置区，`S` 开始取放，`R` 在结束后随机复位，`X` 停止，`Q` 统一退出。夹爪默认总行程现为 100 mm，但两种旧样品仍使用已知直径的位置预压，不是水杯闭环力控演示；圆柱也不是用户指定的中空台阶杯。
 
 策略用法在 `src/brain_robot_pick_place/scripts/adaptive_gripper_policy.py`：预张开由测量直径、不确定度和余量计算；闭合命令根据两侧法向力改变。默认每侧 1.2–2.5 N、过力 5 N 是仿真调试参数，尚未验证它在实际 Gazebo 杯子抓取中收敛，更不是实机参数。SDK effort 单位是扭矩 N·m，不能直接传给要求 N 的策略。
 
@@ -174,6 +220,7 @@ PYTHONNOUSERSITE=1 OMP_NUM_THREADS=6 .venv-yolo/bin/python -s scripts/train_cup_
 | NumPy 2 / cv_bridge 错误 | 关闭 Conda，设置 `PYTHONNOUSERSITE=1` 并使用命令中的 `-s` |
 | 找不到模型 | 使用已提供的 `models/cup_yolov8n_seg_v2.pt`，不是只存在于开发机的 artifacts 路径 |
 | 输出目录已存在 | 换一个新目录；工具有意拒绝覆盖原始结果 |
+| 回放窗口无法打开 | 从本机桌面终端启动；确认 `DISPLAY` 可用且有 `python3-tk`，纯 SSH 无显示时用第 4.2 节的无窗口检查 |
 | ROS 回放节点提前退出 | 查看输出目录 `node.log`；确认 `.venv-yolo` 依赖及 ROS overlay 都已加载 |
 | Gazebo 端口占用 | 退出对应自己的仿真；脚本不会终止别人的进程 |
 | 合成识别高分，真实杯子失败 | 当前只验收合成视觉组件；采集真实相机独立测试数据后再评估/适配 |

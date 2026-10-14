@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "passed": true,
+      "expected_fault": "OVERFORCE",
+      "observed_states": [
+        "WAITING_FOR_GRASP_REQUEST",
+        "OPENING_GRIPPER",
+        "PREPARED",
+        "TOP_DOWN_PREGRASP_PLANNING",
+        "TOP_DOWN_DESCENT_EXECUTING",
+        "CLOSING_GRIPPER",
+        "VERIFYING_GRASP_CONTACT",
+        "LIFTING_PHYSICAL_OBJECT",
+        "FAULT_PHYSICAL_OBJECT_LOST_OR_FEEDBACK_STALE",
+        "CONTROLLED_STOP",
+        "FAULT_PHYSICAL_LIFT_FAILED",
+        "CONTROLLED_STOP"
+      ],
+      "injection_seen": true,
+      "final_half_second_joint_drift_rad": 6.7318098873059284e-06,
+      "case": "overforce",
+      "exit_code": 1,
+      "session": "log/visual_sim/cup-20261014-181309-757826",
+      "command": [
+        "bash",
+        "/home/young1x/robot_projects/piper_robot/simulation/scripts/run_cup_grasp_sim.sh",
+        "--headless",
+        "--seed",
+        "20261018",
+        "--batch-trials",
+        "1",
+        "--fault",
+        "overforce"
+      ],
+      "frozen_sources_unchanged": true
+    }
+  ],
+  "complete": true
+}

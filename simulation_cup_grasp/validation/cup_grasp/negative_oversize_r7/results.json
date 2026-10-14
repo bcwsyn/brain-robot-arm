@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "passed": true,
+      "evidence": {
+        "expected_rejection": true,
+        "reason": "width estimate is outside the stroke or too uncertain",
+        "no_task_executor_launched": true,
+        "home_error_rad": 0.0002593337665297568
+      },
+      "case": "oversize",
+      "exit_code": 0,
+      "session": "log/visual_sim/cup-20261014-181649-227876",
+      "command": [
+        "bash",
+        "/home/young1x/robot_projects/piper_robot/simulation/scripts/run_cup_grasp_sim.sh",
+        "--headless",
+        "--diameter-mm",
+        "105",
+        "--seed",
+        "20261018",
+        "--batch-trials",
+        "1",
+        "--fault",
+        "oversize"
+      ],
+      "frozen_sources_unchanged": true
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,33 @@
+# User specimen specification; this file is not a motion profile.
+sample:
+  id: opaque_plastic_cup_75x200
+  material: opaque_plastic
+  has_handle: false
+  filled: false
+  maximum_outer_diameter_m: 0.075
+  height_m: 0.200
+  body_outer_diameter_m: 0.075
+  body_height_m: 0.160
+  mouth_outer_diameter_m: 0.063
+  mouth_height_m: 0.040
+  body_to_mouth_transition: approximate_step
+  estimated_empty_mass_kg: 0.080
+  mass_is_measured: false
+  lower_body_diameter_m: 0.075
+  wall_thickness_m: 0.002
+  wall_thickness_is_measured: false
+
+vision:
+  baseline_model: yolov8n-seg.pt
+  target_class: cup
+  coco_class_id: 41
+  trained_model_class_id: 0
+  model_artifact: models/cup_yolov8n_seg_v2.pt
+  independent_project_test_status: synthetic_components_passed_real_camera_pending
+
+grasp_qualification:
+  current_simulation_total_jaw_opening_m: 0.100
+  body_grasp_qualified: false
+  reason: Geometry fits the user-confirmed official 100 mm variant; visual size and force-controlled grasp still need validation.
+  stroke_basis: User-confirmed hardware and official SDK large-gripper parameter feedback
+  sample_dimensions_are_test_truth_not_control_inputs: true

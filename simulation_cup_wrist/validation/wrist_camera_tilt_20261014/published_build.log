@@ -1,0 +1,307 @@
+[0.213s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'piper_description' is in: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description
+	'brain_robot_pick_place' is in: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place
+	'piper_with_gripper_moveit' is in: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding brain_robot_pick_place piper_description piper_with_gripper_moveit
+
+This may be promoted to an error in a future release of colcon-override-check.
+Starting >>> piper_description
+--- output: piper_description
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Added test 'copyright' to check source files copyright and LICENSE
+-- Added test 'flake8' to check Python code syntax and style conventions
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/build/piper_description
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_no_gripper/display_no_gripper_urdf.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_no_gripper/display_no_gripper_xacro.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_with_gripper/display_urdf.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_with_gripper/display_urdf_follow.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_with_gripper/display_xacro.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/launch/piper_with_teach/display_with_teach_urdf.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/base_link.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/gripper_base.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link1.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link2.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link3.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link4.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link5.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link6.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link7.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/link8.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/teach_base.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/teach_link7.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/meshes/teach_link8.STL
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/rviz/piper_ctrl.rviz
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/rviz/piper_no_gripper.rviz
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/gemini2_wrist_camera.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_description.urdf
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_description.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_description_gazebo.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_description_old.urdf
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_description_with_teach.urdf
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_no_gripper_description.urdf
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_no_gripper_description.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_no_gripper_description_gazebo.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/urdf/piper_no_gripper_description_old.urdf
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/mujoco_model/piper_description.xml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/mujoco_model/piper_no_gripper_description.xml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/ament_index/resource_index/package_run_dependencies/piper_description
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/ament_index/resource_index/parent_prefix_path/piper_description
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/environment/path.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/environment/path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/local_setup.bash
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/local_setup.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/local_setup.zsh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/local_setup.dsv
+-- Symlinking: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/package.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/ament_index/resource_index/packages/piper_description
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/cmake/piper_descriptionConfig.cmake
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/cmake/piper_descriptionConfig-version.cmake
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_description/share/piper_description/package.xml
+---
+Finished <<< piper_description [0.20s]
+Starting >>> piper_with_gripper_moveit
+--- output: piper_with_gripper_moveit
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/build/piper_with_gripper_moveit
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/ament_index/resource_index/package_run_dependencies/piper_with_gripper_moveit
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/ament_index/resource_index/parent_prefix_path/piper_with_gripper_moveit
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/path.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.bash
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.zsh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.dsv
+-- Symlinking: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/package.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/ament_index/resource_index/packages/piper_with_gripper_moveit
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/cmake/piper_with_gripper_moveitConfig.cmake
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/cmake/piper_with_gripper_moveitConfig-version.cmake
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/package.xml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/demo.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/move_group.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/moveit_rviz.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/piper_moveit.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/rsp.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/setup_assistant.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/spawn_controllers.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/static_virtual_joint_tfs.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/warehouse_db.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/initial_positions.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/joint_limits.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/kinematics.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/moveit.rviz
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/moveit_controllers.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/pilz_cartesian_limits.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/piper.ros2_control.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/piper.srdf
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/piper.urdf.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/ros2_controllers.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/sensors_3d.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/.setup_assistant
+---
+Finished <<< piper_with_gripper_moveit [0.18s]
+Starting >>> brain_robot_pick_place
+--- output: brain_robot_pick_place
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found control_msgs: 4.8.0 (/opt/ros/humble/share/control_msgs/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)
+-- Found gazebo_dev: 3.9.0 (/opt/ros/humble/share/gazebo_dev/cmake)
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Gazebo version: 11.10
+-- Found gazebo_ros: 3.9.0 (/opt/ros/humble/share/gazebo_ros/cmake)
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found gazebo_msgs: 3.9.0 (/opt/ros/humble/share/gazebo_msgs/cmake)
+-- Found message_filters: 4.3.15 (/opt/ros/humble/share/message_filters/cmake)
+-- Found moveit_core: 2.5.10 (/opt/ros/humble/share/moveit_core/cmake)
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: chrono date_time filesystem iostreams program_options regex serialization system thread 
+-- Found parameter_traits: 0.7.1 (/opt/ros/humble/share/parameter_traits/cmake)
+-- Found rclcpp_lifecycle: 16.0.19 (/opt/ros/humble/share/rclcpp_lifecycle/cmake)
+-- library: /usr/lib/x86_64-linux-gnu/libcurl.so
+-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+-- Found moveit_ros_planning_interface: 2.5.10 (/opt/ros/humble/share/moveit_ros_planning_interface/cmake)
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: date_time filesystem program_options system thread 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time program_options thread chrono 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: thread system filesystem regex date_time program_options 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time program_options thread 
+-- Found ament_cmake_gtest: 1.3.14 (/opt/ros/humble/share/ament_cmake_gtest/cmake)
+-- Found ament_cmake_pytest: 1.3.14 (/opt/ros/humble/share/ament_cmake_pytest/cmake)
+-- Found gtest sources under '/opt/ros/humble/src/gtest_vendor': C++ tests using 'Google Test' will be built
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/build/brain_robot_pick_place
+Consolidate compiler generated dependencies of target gtest_main
+Consolidate compiler generated dependencies of target gtest
+Consolidate compiler generated dependencies of target active_scan_supervisor
+Consolidate compiler generated dependencies of target pick_place_node
+Consolidate compiler generated dependencies of target visual_search_controller
+Consolidate compiler generated dependencies of target review_target_directed_geometry
+Consolidate compiler generated dependencies of target pointcloud_tf_gate
+Consolidate compiler generated dependencies of target cup_detector_node
+[ 12%] Built target gtest
+[ 12%] Built target gtest_main
+Consolidate compiler generated dependencies of target grasp_lift_executor
+Consolidate compiler generated dependencies of target cup_pose_plugin
+[ 18%] Built target active_scan_supervisor
+[ 25%] Built target review_target_directed_geometry
+[ 31%] Built target pointcloud_tf_gate
+[ 37%] Built target pick_place_node
+Consolidate compiler generated dependencies of target rgbd_shape_geometry_test
+[ 43%] Built target visual_search_controller
+Consolidate compiler generated dependencies of target target_model_wait_test
+Consolidate compiler generated dependencies of target measured_motion_test
+Consolidate compiler generated dependencies of target center_search_test
+Consolidate compiler generated dependencies of target visual_grasp_feedback_test
+Consolidate compiler generated dependencies of target grasp_geometry_test
+[ 50%] Built target cup_detector_node
+[ 56%] Built target rgbd_shape_geometry_test
+[ 65%] Built target target_model_wait_test
+[ 68%] Built target measured_motion_test
+[ 75%] Built target center_search_test
+[ 81%] Built target grasp_lift_executor
+[ 90%] Built target grasp_geometry_test
+[ 93%] Built target visual_grasp_feedback_test
+[100%] Built target cup_pose_plugin
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/libcup_pose_plugin.so
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/pick_place_node
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_detector_node
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/visual_search_controller
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/grasp_lift_executor
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/active_scan_supervisor
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/pointcloud_tf_gate
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_force_gripper_node.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/yolo_cup_target_node.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/physics_target_node.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/sim_controller_bootstrap.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/scene_manager_node.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_follow_node.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/wrist_camera_viewer.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/runtime_monitor.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/adaptive_gripper_policy.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_geometry.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_width_estimation.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/contact_force_feedback.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_perception.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/cup_detector.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/gazebo_clock_cup.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/gazebo_clock_default.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/known_task_sim.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/piper_servo_sim.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/scene.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/config/visual_search_sim.yaml
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/cup_detector.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/cup_task.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/pick_place.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/pregrasp.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/scene.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/visual_search.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/wrist_camera_gazebo.launch.py
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_floor/model.config
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_floor/model.sdf.in
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_table/model.config
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_table/model.sdf.in
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/models/medicine_cup/model.config
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/models/medicine_cup/model.sdf.in
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/urdf/piper_with_wrist_camera_gazebo.xacro
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/gazebo_plugin_path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/ament_index/resource_index/package_run_dependencies/brain_robot_pick_place
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/ament_index/resource_index/parent_prefix_path/brain_robot_pick_place
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/path.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/path.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.bash
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.sh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.zsh
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.dsv
+-- Symlinking: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/package.dsv
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/ament_index/resource_index/packages/brain_robot_pick_place
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/cmake/brain_robot_pick_placeConfig.cmake
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/cmake/brain_robot_pick_placeConfig-version.cmake
+-- Up-to-date symlink: /tmp/piper-stage5-publish-20261014/simulation_cup_wrist/install/brain_robot_pick_place/share/brain_robot_pick_place/package.xml
+---
+Finished <<< brain_robot_pick_place [1.96s]
+
+Summary: 3 packages finished [2.52s]

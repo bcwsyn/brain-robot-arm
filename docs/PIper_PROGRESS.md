@@ -1,3 +1,11 @@
+## 2026-10-15：用户要求同步 GitHub，保留双方历史的发布检查点
+
+- 本轮仅执行 Git 同步，不启动 ROS、SDK、相机或实体控制。规范工作树起点 main=38334bd8d1c0b465c3adb8826b3d24e47257c96e，fetch/独立 ls-remote 均确认 origin/main=64f7174600788ea0d9b5b086e43659b47568c39c；本地独有22提交、远端独有9提交，目标仍为 https://github.com/bcwsyn/brain-robot-arm.git 的 main。
+- 审查覆盖全部22提交的272个待上传 blob 版本：154文本、118 PNG，最大文件918713B、最大PNG474250B；未发现超过10MiB文件、安装包/固件/权重/抓包、私钥、常见GitHub/OpenAI/AWS令牌、带密码URL或字面凭据赋值。此为静态模式与文件类型检查，不宣称通用秘密检测完备。
+- 按最小变更规范在临时隔离 worktree 的 codex/github-sync-20261015 分支普通合并，保留双方父提交，不强推、不改写历史。唯一add/add冲突为 export_calibration_bundle.py：远端027359e与本地4a3b17b的原始blob均为143b7a0c6545b37ffe73678958695565503d21a9，本地后续已升级至c3e3597eca055e40f316cb7d27daa35e0c82a8cf；合并保留本地升级版并逐字节核对，远端新增仿真独立保留。
+- 原工作树两处dirty（test_near_depth_wiring.py与requirements-piper-driver.txt）、未跟踪手册/reference固件/四个deb均不暂存、不上传、不覆盖。当前Windows普通Python和桌面附带Python不具备完整项目pytest/yaml/cv2依赖，本轮不安装环境或冒称重新通过120项回归；只执行发布所需Git一致性与Python语法检查，具体结果随发布回执补记。
+- 此条为推送前记录，不代表远端已同步。下一完成静态检查、合并提交、普通push并独立读取远端SHA和祖先关系，再补发布回执。当前标定阶段1已通过、下一六组现场采集和生产冻结规则不变，不新增实机运动许可。
+
 ## 2026-10-14 22:36 +08:00：受限CAN激活后完整静止空跑通过，阶段1完成
 
 - 软件检查点6034ab3/11限定路径/cached+show check0，旧7d143ed保留。用户明确授权现已枚举CAN固定激活/只读采集。先读ifindex6/DOWN/STOPPED，无有效UP链路可复用，sudo-n固定bitrate1000000/sample-point.75、txqueuelen1000、up仅一次/rc0；无modprobe/USB重载/固件查询/Reset/MasterSlave/Enable/Disable/Motion/Gripper。post ERROR-ACTIVE/RX53，采后568952、收尾1396189、TX始终0/errors/drop0，复用保持UP，不再旧停流试验。

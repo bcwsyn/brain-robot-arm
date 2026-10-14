@@ -17,7 +17,7 @@ Use the [Stage 3 environment guide](../simulation/README.en.md) for ROS/MoveIt/G
 
 ```bash
 sudo apt update
-sudo apt install python3-pip python3-venv
+sudo apt install python3-pip python3-venv python3-tk
 ```
 
 No system packages were installed during this development. Leave Conda inactive and do not source the real-robot workspace into this terminal.
@@ -60,7 +60,41 @@ Initial package installation needs internet access. Model files are already incl
 
 Tools look up the class by name. Do not pass COCO ID 41 to the single-class model.
 
-## 4. Quick model and geometry check
+## 4. Visual replay and model checks
+
+### 4.1 Open the interactive cup viewer
+
+After creating the private environment in section 3, run from an Ubuntu desktop terminal:
+
+```bash
+bash scripts/run_cup_visual_replay.sh
+```
+
+A ROS build is unnecessary for this entry. It **reruns YOLO segmentation and RGB-D sizing** on the five included captures using the included v2 model, then opens a window. It does not simply show old prediction images. Startup normally takes a few seconds; the terminal prints the new session directory.
+
+Left to right: recorded RGB, segmentation overlay, registered depth with a per-view display range. The yellow cross marks the suggested body grasp point. Numerical results show estimated diameter, suggested opening, observed height, grasp height and uncertainty parameter. Expect one cup in each view, diameter approximately 74.86–74.88 mm, suggested opening 82.86–82.88 mm and observed height approximately 200 mm.
+
+| Control (focus the viewer window) | Action |
+| --- | --- |
+| `1`–`5` or view buttons | Select a camera view |
+| Left / Right arrows | Previous / next view |
+| Space or Play/Pause | Cycle every two seconds or pause |
+| Save | Save the current three-panel image and numbers |
+| `Q`, Escape, Quit, or window close | Exit and save the viewing receipt |
+
+Each run creates a new `log/cup_visual_replay.XXXXXX/`. `inference/` contains overlays, masks and `results.json`; `evaluation.log` contains inference output; `screenshots/` contains images saved with the button; `viewer_session.json` records visited views and exit. Previous sessions are preserved.
+
+To start in autoplay mode:
+
+```bash
+bash scripts/run_cup_visual_replay.sh --autoplay
+```
+
+**This is a visual replay of recorded frames. It does not open a live camera, execute the suggested jaw opening, move an arm or display measured force feedback.** Integrated cup pick-and-place remains pending. Section 9 provides the existing ball/cylinder motion demonstrations.
+
+![Interactive cup replay window](cup_visual_replay.png)
+
+### 4.2 Headless model and geometry check
 
 This reads five saved RGB-D views. It starts no Gazebo server, robot or motion. **Every output directory must be new; use a different name for repeated runs.**
 
@@ -160,7 +194,19 @@ Original v2 started from v1's best checkpoint. To train from COCO instead, use `
 
 ## 9. Legacy motion and contact-force policies
 
-`bash scripts/run_ball_physics_sim.sh` and `bash scripts/run_cylinder_physics_sim.sh` still provide the legacy physical demonstrations. The default stroke is now 100 mm; those specimens still use known-diameter position preload, not adaptive cup force control.
+After the build in section 2, run one entry to open Gazebo and RViz and wait for a start command:
+
+```bash
+bash scripts/run_ball_physics_sim.sh
+```
+
+Alternatively, exit the ball session first, then run:
+
+```bash
+bash scripts/run_cylinder_physics_sim.sh
+```
+
+**Press keys in the launching terminal; no Enter is needed.** `1/2` selects the placement zone, `S` starts, `R` randomizes/reset after completion, `X` stops, and `Q` exits the whole session. The default stroke is now 100 mm; those specimens still use known-diameter position preload, not adaptive cup force control. The cylinder is not the user's hollow stepped cup.
 
 `adaptive_gripper_policy.py` derives opening from measured diameter, uncertainty and clearance, then adjusts commanded opening from bilateral normal force. Its current 1.2–2.5 N band and 5 N hard threshold are configurable simulation settings. Gazebo convergence for the complete cup task and real force calibration remain pending. SDK effort is torque in N·m and cannot be supplied directly as contact force in N.
 
@@ -172,6 +218,7 @@ Original v2 started from v1's best checkpoint. To train from COCO instead, use `
 | NumPy 2 / cv_bridge errors | Leave Conda, set `PYTHONNOUSERSITE=1`, retain `-s` |
 | Model missing | Use the included `models/cup_yolov8n_seg_v2.pt` |
 | Output already exists | Choose a new output directory to preserve prior evidence |
+| Viewer cannot open | Use a local desktop terminal with a valid `DISPLAY` and `python3-tk`; section 4.2 works without a display |
 | ROS node exits | Inspect `node.log`, private Python dependencies and ROS overlay |
 | Gazebo port occupied | Exit the owning simulation; scripts do not kill foreign processes |
 | Real cup fails despite synthetic scores | Collect separate real-camera evaluation data; current acceptance is synthetic only |

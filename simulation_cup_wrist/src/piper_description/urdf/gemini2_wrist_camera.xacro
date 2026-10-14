@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Shared by Gazebo and MoveIt. Reference - Orbbec Gemini 2 datasheet v1.1.
+       link6/gripper_base is the flange frame; model finger tips are at z=0.1358.
+       The front optical reference plane is z=0.0308; tip minus front = 0.105 m.
+       Tilt towards the gripper centre by atan2(2.45, 6.8), approximately 19.81 degrees
+       from gripper +Z, or 70.19 degrees to its perpendicular flange plane.
+       Side offset, angle and lens optical centres remain approximate hand measurements. -->
+  <xacro:macro name="gemini2_wrist_camera" params="parent:=gripper_base axial_m:=0.0308 side_m:=-0.055 tilt_rad:=${atan2(2.45,6.8)}">
+    <link name="wrist_camera_link">
+      <!-- Camera axes are +X forward, +Y along the 90 mm body, +Z along its 25 mm height. -->
+      <visual>
+        <origin xyz="-0.015 0 0" />
+        <geometry><box size="0.030 0.090 0.025" /></geometry>
+        <material name="gemini2_housing"><color rgba="0.82 0.84 0.86 1" /></material>
+      </visual>
+      <visual>
+        <origin xyz="0.0005 0 0" />
+        <geometry><box size="0.001 0.082 0.021" /></geometry>
+        <material name="gemini2_front"><color rgba="0.05 0.05 0.05 1" /></material>
+      </visual>
+      <xacro:macro name="gemini2_lens" params="offset">
+        <visual>
+          <origin xyz="0.0012 ${offset} 0" rpy="0 1.57079632679 0" />
+          <geometry><cylinder radius="0.004" length="0.001" /></geometry>
+          <material name="gemini2_glass"><color rgba="0.10 0.22 0.30 1" /></material>
+        </visual>
+      </xacro:macro>
+      <xacro:gemini2_lens offset="-0.026" />
+      <xacro:gemini2_lens offset="0" />
+      <xacro:gemini2_lens offset="0.026" />
+      <collision>
+        <origin xyz="-0.015 0 0" />
+        <geometry><box size="0.030 0.090 0.025" /></geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.015 0 0" />
+        <mass value="0.097" />
+        <inertia ixx="0.000070529" ixy="0" ixz="0" iyy="0.000012327" iyz="0" izz="0.000072750" />
+      </inertial>
+    </link>
+    <joint name="gripper_to_wrist_camera" type="fixed">
+      <parent link="${parent}" /><child link="wrist_camera_link" />
+      <origin xyz="${side_m} 0 ${axial_m}" rpy="0 ${-pi/2 + float(tilt_rad)} 0" />
+    </joint>
+    <link name="wrist_camera_optical_frame" />
+    <joint name="wrist_camera_optical_joint" type="fixed">
+      <parent link="wrist_camera_link" /><child link="wrist_camera_optical_frame" />
+      <origin xyz="0 0 0" rpy="-1.57079632679 0 -1.57079632679" />
+    </joint>
+  </xacro:macro>
+</robot>
