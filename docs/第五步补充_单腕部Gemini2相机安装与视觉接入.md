@@ -90,3 +90,10 @@ GitHub 用户进入 `brain-robot-arm/simulation_cup_wrist`，先运行 `build_si
 ## 7. 后续边界
 
 下一步可以针对单腕部方案重跑全部尺寸和故障验收，并用真实 Gemini 2 数据做内参/手眼标定和视角泛化验证。本次没有连接 USB/CAN 或控制真实机械臂，没有证明近距离有效深度、真实塑料材料力学或实机反馈已具备。照片和近似尺寸先解决模型安装与视觉来源的一致性。
+
+
+## 8. GitHub 发布回执
+
+代码已发布到 [bcwsyn/brain-robot-arm 的 simulation_cup_wrist/](https://github.com/bcwsyn/brain-robot-arm/tree/cup-wrist-gemini2-v1-20261014/simulation_cup_wrist)。代码提交 `fc7107c310324443129c2ea4d8c1721df932932a`，版本标签 `cup-wrist-gemini2-v1-20261014`。旧 `brain_robot_arm/`、`simulation/`、`simulation_cup/`、`simulation_cup_grasp/` 四个目录的Git树哈希与发布前一致。
+
+独立工作区217个运行文件与开发目录一致；远端相机宏、启动控制台和英文指南三个文件已重新下载逐字节核对。构建、核心测试、物理批次、图形复位、归档和发布检查回执保存在 `validation/wrist_camera_mount_20261014/`。

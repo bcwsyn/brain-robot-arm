@@ -59,3 +59,8 @@ All development failures, pilot/frozen/GUI and release sessions are retained wit
 The archive verifies 1,659 files individually and occupies 5,814,304 bytes, SHA-256 `391a905c215e4dbd1bfcc22666a7cf756dc5d26124c2583a713b8b08c7c6d856`. All 217 runtime source/config/model files match the independent release byte-for-byte. Archived absolute paths remain historical evidence; the launcher regenerates runtime paths on another machine.
 
 Physical intrinsics/hand-eye calibration, real-image generalization, all-size/fault revalidation, material deformation and hardware feedback remain future work. No physical USB/CAN connection or real-arm command was made.
+
+
+## Publication receipt
+
+Published [simulation_cup_wrist/](https://github.com/bcwsyn/brain-robot-arm/tree/cup-wrist-gemini2-v1-20261014/simulation_cup_wrist), code commit `fc7107c310324443129c2ea4d8c1721df932932a`, tag `cup-wrist-gemini2-v1-20261014`. The Git trees of all four previous workspace folders remain identical to their pre-publication state. All 217 runtime files match local development; the remote camera macro, console and English guide were downloaded again and verified byte-for-byte. Receipts are in `validation/wrist_camera_mount_20261014/`.
