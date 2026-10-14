@@ -1,0 +1,113 @@
+{
+  "sample_id": "pair01_20261014",
+  "language": "zh-CN",
+  "scope": "第一组标定原始数据补齐；不是成功抓取或已验证1cm绝对精度。",
+  "contents": {
+    "manifest": "manifest.json",
+    "depth_statistics": "depth_review.json",
+    "camera_K_D_R_T": "calibration.json",
+    "factory_service_raw": "camera_factory_current.json",
+    "native_depth_info_sample": "native_depth_info_sample.json",
+    "manual_sdk_samples": "manual_grasp/sdk_samples.json",
+    "legacy_observe": "original_observe/",
+    "manual_photos": "manual_grasp/",
+    "paired_30_frames": "pair01_observe_remeasure_20261014_rgbd/evidence/"
+  },
+  "issue_1": {
+    "raw_paired_frames": 30,
+    "actual_joint_spread_rad": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "all_frame_surface_z_median_m": 0.456,
+    "all_frame_range_m": [
+      0.44,
+      0.462
+    ],
+    "high_support_frames": 10,
+    "high_support_surface_z_median_m": 0.44,
+    "high_support_range_m": [
+      0.44,
+      0.441
+    ],
+    "high_support_definition": "原始RGB掩膜内由真实深度投影覆盖至少50%，至少10个真实点；仅分析分层，不改运动控制。",
+    "resolved": "已复核30帧，确认低支撑/高支撑两类；不把低支撑帧多数主导的456mm直接作为标定落点。",
+    "pending": "仍需至少20帧高支撑静止补采；追加采集未收到新鲜关节反馈，失败目录0帧，未混入有效数据。"
+  },
+  "issue_2": {
+    "common_point_definition": "方块几何中心",
+    "cube_edge_mm_approximate": 28,
+    "operator_manual_center_report": "方块中心在两指自由末端连线中点的下方一点点，可能约5mm，不确定；用户允许随后多组综合计算。",
+    "manual_center_offset_mm_prior": 5,
+    "prior_is_measured_calibration": false,
+    "offset_direction_explicitly_confirmed": false,
+    "offset_not_forced_to_zero": true,
+    "camera_center_equation": "p_center = p_face_center - outward_face_normal * edge/2",
+    "camera_face_center_or_normal_identified": false,
+    "gripper_center_coordinates_verified": false,
+    "point_fit_ready": false,
+    "next_method": "先保存表面/指尖原始值。识别面中心和朝向后推算几何中心；人工侧以约5mm作带不确定性的先验并做0/5/10mm敏感性比较，多姿态数据用于估计/检查可辨识性，不硬编码为已确认TCP。",
+    "identifiability_warning": "多组数据不能自动消除固定系统偏差；恒定世界偏移可能与相机平移混淆，须有参考约束或不同夹持朝向。"
+  },
+  "issue_3": {
+    "depth_K_per_paired_frame": true,
+    "depth_raw_images_16bit": true,
+    "native_depth_D_R_P_sample": "补存真实CameraInfo独立样本，K与采集行一致；该独立样本不是30帧各自同戳原始完整消息。",
+    "color_factory_resolution": [
+      640,
+      480
+    ],
+    "rgb_capture_resolution": [
+      320,
+      240
+    ],
+    "depth_resolution": [
+      640,
+      400
+    ],
+    "depth_units": "uint16毫米，0为缺失。",
+    "D_to_C_equation": "p_color = R * p_depth + t",
+    "D_to_C_translation_units": "原始毫米和转换米同时保存。",
+    "color_distortion_note": "原get_camera_info的D=0与get_camera_params的非零原厂D都保留；原驱动系数重排[0,1,3,4,2]单列，现有检测器/本次统计不改畸变处理。"
+  },
+  "issue_4": {
+    "raw_assets_authorized_for_GitHub": true,
+    "raw_png_unchanged": true,
+    "local_paths_in_original_metadata": "原始历史清单保留home路径作溯源；实际下载用manifest中的仓库相对路径。",
+    "images_not_lfs": true,
+    "generated_URDF_not_uploaded": true
+  },
+  "sources": {
+    "OpenCV_PnP": "https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html",
+    "Orbbec_ROS2": "https://github.com/orbbec/ros2_astra_camera",
+    "factory_raw_old_reference": "docs/evidence/piper_camera_factory_20261013.json"
+  },
+  "current_operation": {
+    "observation_reached_event": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH",
+    "event_epoch": "1791972165.585465511",
+    "original_prepare_seconds": 46.2,
+    "original_prepare_points": 13,
+    "script_service_ack_timeout": true,
+    "repeated_start_sent": false,
+    "search_close_lift_disable_reset_sent": false,
+    "all_owned_control_camera_capture_processes_stopped": true,
+    "post_capture_feedback": {
+      "epoch": "1791973179.3952067",
+      "joint_stamp": "0",
+      "high_hz": 0,
+      "can_rx_stalled_packets": 5262717,
+      "default_zero_values_not_actual_pose": true,
+      "current_enabled_status_unknown": true
+    },
+    "CAN_reloaded": false
+  },
+  "next_steps": [
+    "反馈恢复后，原观测静止补足30个高支撑帧。",
+    "下一组先观测拍摄、再保持方块不动人工摆位；同时记录约5mm的参考偏移假设。",
+    "至少5–6个位置且足够姿态分布后，检查可辨识性、逐点残差与独立验证；不在一组上拟合完整安装变换。"
+  ]
+}

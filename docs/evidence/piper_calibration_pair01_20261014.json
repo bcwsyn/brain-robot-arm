@@ -1,5 +1,22 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "detailed_data_bundle": "piper_calibration_20261014/pair01/manifest.json",
+  "data_bundle_notes": "piper_calibration_20261014/pair01/dataset_notes.json",
+  "cube_edge_mm_approximate_user_measurement": 28,
+  "manual_center_offset_mm_approximate_user_prior": 5,
+  "manual_center_offset_is_verified": false,
+  "reference_update": "用户说明方块中心在两指自由端连线中点下方约5mm、不确定；不默认零偏移，多组后综合核验。几何中心未解，原surface/tip字段仅保留历史原始值。",
+  "observe_remeasurement": {
+    "report": "piper_calibration_20261014/pair01/depth_review.json",
+    "paired_frames": 30,
+    "joint_spread_rad": [0, 0, 0, 0, 0, 0],
+    "all_frames_surface_z_median_m": 0.456,
+    "high_support_frames": 10,
+    "high_support_surface_z_median_m": 0.440,
+    "high_support_z_range_m": [0.440, 0.441],
+    "cube_center_not_yet_identified": true,
+    "absolute_accuracy_below_10mm_verified": false
+  },
   "sample_id": "pair01_20261014",
   "acquisition_status": "both_sides_recorded_reference_and_timing_quality_pending",
   "user_confirmation": {
