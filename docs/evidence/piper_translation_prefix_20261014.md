@@ -32,3 +32,11 @@
 - clean_disk_space.sh rc0，93%/5.9GB→92%/6.1GB；只清理脚本规定ROS日志/缓存/受限系统轮转，删除的日志不可依赖恢复，未额外删除；本轮/上轮证据目录保留。无ENOSPC。
 - 新接收SDK rc0 epoch1791942898.113170/high2898.105217/100Hz、joint2898.109516，六使能true/速度全0，q[-.337808477,1.849734848,-1.392912369,.049933870,.909822686,-.101857415]rad，夹爪99.6mm使能无错误。原SDK实际用户安装路径、ConnectPort(piper_init=false)，未发初始化/运动。
 - 实测清单复用原task：[0,.98,-.75,0,.30,0]rad观测目标，当前保持→观测可涉及六轴；prepare速度/加速度1%、预计约43s（由原反馈生成实际轨迹计），适配器最大.189rad/s；原任务min[-1.5,-.3,-1.4,-.8,-1.2,-pi]/max[1.5,pi,.4,.8,1.2,pi]，原物理速度/加速度300/500单位.001rad/s及.001rad/s²不变；末段8mm/1°/.08rad前缀保持。原异常停止新输出/保持使能，成功释放且安全回位支撑后才失能，禁止Reset/未回位Disable。回退点为即将备份c0f56da，不自动回滚或重复启动。
+
+## 已部署，原AUTO1正在执行
+
+修复d051bf5。actual source19d4b4e…/binary d4c7063…与构建一致，install链接build；原入口87039b…/detector8e763f4…未改。旧actual c0f56da/cf5777e…及source0043c923…机械备份translation_prefix_previous_c0f56da，未覆盖用户其他文件。
+
+命令BRAIN_ROBOT_AUTO_START=1 BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED=0 BRAIN_ROBOT_DEPTH_ONLY_TARGET=0 BRAIN_ROBOT_LOG_DIR=.../translation_prefix_onekey timeout -s INT -k8s600s /home/johnwick/start_brain_robot_cube_real.sh，session46839/host timeout3862130/script3862131。只读capture_scale_frames.py→translation_prefix_exact python3862224/session1463，observer→translation_prefix_live python3862292/session41193，590sINT/-k3s。启动维护92%/6127MB，原CAN复用RX增长/不重载，RGB/深度首帧已到，当前5/7反馈/TF核对；未冒称观测/新前缀已执行。下一读同一次进程/日志/三图，不重复启动。
+
+本地提交d051bf5，未同步GitHub：既有远端分叉/全历史推送审查未完保持。用户原wiring/vendor/reference不纳入。完整目标未完成。

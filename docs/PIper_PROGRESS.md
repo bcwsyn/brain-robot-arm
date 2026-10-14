@@ -1,5 +1,7 @@
 ## 2026-10-14：平移前缀明确批准，原owner局部构建中
 
+最新d051bf5已实际部署d4c7063…/CPP19d4b4e…，old c0f56da备份translation_prefix_previous_c0f56da，原检测器8e763f4…/入口87039b…不变。原AUTO1主3862130/3862131/session46839、只读exact3862224/live3862292运行中，原维护92%/6127MB，CAN复用RX/相机首帧到/5/7反馈TF，下一观察同一次前缀是否实际执行和继续推进，未冒称完成；详情同证据记录。本地提交未同步GitHub（已有分叉/历史审查）。
+
 接续：build0/46实际方法+10RGB回归rc0，候选d4c7063…/CPP19d4b4e…；新SDK1791942898.113/high100Hz、六true/速度0/q保持上次姿态、99.6mm/无错误。清理rc0由93%/5.9GB到92%/6.1GB，只原脚本、不额外删除。下一限定提交/备份actual c0f56da单executor部署→同原AUTO1；不将回归代替实机。详细同证据记录。
 
 用户同意上一50%/25%平移保留原转向提案；首五Git/实际cf5777e…/原入口87039b…/host无栈通过。仅原executor和3新方法测试，完整原请求/朝向候选均失败后试完整较短tip平移、仍1°朝向/8mm/.08rad/反馈/原范围，下一新RGB实际反馈重规划；冻结自动末段才允许、非预览/粗靠近，不改最终目标/TF/预算/中心夹持，不借平移前缀无条件跳点。构建session73381、未部署新运动；下一46+10回归→限定提交/备份c0f56da单executor部署→唯一AUTO1，详见[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)。根93%/5.9GB只运行指定清理脚本，既有用户dirty/远端分叉保持，仅本地未同步GitHub。

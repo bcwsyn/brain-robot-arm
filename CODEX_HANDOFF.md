@@ -1,5 +1,7 @@
 ## 最新接续（2026-10-14：平移前缀策略已获准，局部构建中）
 
+最新d051bf5/actual d4c7063…/source19d4b4e…已部署、旧c0f56da备份translation_prefix_previous_c0f56da；46+10回归通过，原入口/检测器保持。原AUTO1 timeout3862130/script3862131/session46839运行中，证据translation_prefix_onekey、exact3862224/live3862292；5/7反馈TF核对，RGB/深度首帧到，CAN复用，下一同一次日志/推进/新三图，不另起脚本。详细piper_translation_prefix_20261014.md；仅本地未同步GitHub，完整目标未完成。
+
 接续构建rc0/46实际方法+10RGB回归通过，候选d4c7063…/source19d4b4e…；新SDK1791942898.113/high100Hz/六true/速度0/q保持上次[-.337808477,1.849734848,-1.392912369,.049933870,.909822686,-.101857415]rad/99.6mm无错。清理rc0→92%/6.1GB。下一限定提交→备份actual c0f56da并部署单executor→同原AUTO1实测，不重做已通过构建/基线。完整记录piper_translation_prefix_20261014.md，原脚本/检测器/配置不变。
 
 用户最新“同意”明确批准上一具体50%/25%平移保留原转向策略及实测。仅原executor在原完整请求/朝向候选均失败后试完整平移前缀、停稳后原RGB/真实反馈重规划；不设置朝向替代标志/无条件跳点，不改原nominal目标/TF/限位碰撞/步长/预算/最终中心夹持。3新方法测试、构建进行中，尚未部署或新运动。actual仍c0f56da/cf5777e…，入口87039b…未改，无控制栈；下一46+10回归、限定提交/备份部署→同原AUTO1。详情docs/evidence/piper_translation_prefix_20261014.md；用户dirty/远端分叉保持，不再等本同意。
