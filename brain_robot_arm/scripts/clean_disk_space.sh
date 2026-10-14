@@ -20,6 +20,18 @@ find "$APP_LOG_DIR" -type f -name '*.log' -mtime +3 -delete 2>/dev/null || true
 find "$APP_LOG_DIR" -type f \( -name '*.log' -o -name '*.log.*' \) \
   -size +"${APP_LOG_LIMIT_MB}M" -exec truncate -s 0 {} \; 2>/dev/null || true
 
+# User-authorized runtime image retention. Text-log rotation does not cover PNGs.
+# This helper is restricted to brain_robot_logs and preserves documented frames,
+# all images younger than 24h, and first/last/sparse samples. No source/model deletion.
+CAPTURE_IMAGE_PRUNER="/home/johnwick/prune_capture_images.py"
+if [[ -f "$CAPTURE_IMAGE_PRUNER" ]]; then
+  /usr/bin/python3 "$CAPTURE_IMAGE_PRUNER" \
+    --limit-mb "${DISK_CAPTURE_IMAGE_LIMIT_MB:-8192}" --apply || \
+    echo "[图片] 保留策略检查失败，未改用递归删除或扩大范围。"
+else
+  echo "[图片] 未安装受限图片保留助手；仅完成原文本日志清理。"
+fi
+
 echo "[2/4] 清理超大的轮转系统日志..."
 MAINTENANCE_HELPER="/usr/local/sbin/brain-robot-log-maintenance"
 if [[ -x "$MAINTENANCE_HELPER" ]]; then

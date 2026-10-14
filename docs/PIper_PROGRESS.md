@@ -1,4 +1,11 @@
-## 2026-10-14：真实手动终点三条隔离规划完整，不猜三维目标
+## 2026-10-14 15:12：新配对采集A待USB恢复；补齐实体回放与清盘
+
+- 用户最新要求方块桌面原位→原观测静止采集A→等其人工摆入两指再读存B。不自动搜索/闭爪/旧q回放；A/B尚未新采，本轮未发命令。VM 15:01:22重启，host无ROS栈，can0不存在，提升环境lsusb仅虚拟设备、USB-CAN和实际相机均未枚举；sudo0/磁盘54%约35GB。需VMware恢复两个USB透传，无需重启机械臂。下一首条提升环境lsusb/ip，随后新鲜反馈→原观测实到→有界采集，不反复guest重载或用旧q/SDK默认值。
+- 上轮原AUTO0监督链已100mm张爪/原观测/原MoveIt与adapter回放示教终点。原日志353/349点接受/轨迹hash重验一致，实际maxerr0.001412964rad/六true/静止99.6mm，J6延迟最终到位。未闭爪/抬升/释放，RGB底边裁切/中心背景，原中心契约未修；360s包装rc137与清理遗留分开，不称无人干预整链成功。
+- 用户授权旧图片删除后精确停5个旧image_saver，限定旧evidence删391661张PNG/29.078GiB、408张/文档引用/采样保留，95→55%/35GB。未归档迁移，删图不可恢复；最新示教/日志JSON/源码保留。已部署原采集300s/256MiB写前预算与原清盘旧PNG8GiB保护策略，不跟链接、保留<24h/引用/头尾样本，保护优先可能超预算。只停止采集不停止机械臂，无新timer。三hash重验一致、9测试/bash/限定diff rc0，原清盘rc0删0/孤立采集0.2s退出。
+- 详见[evidence/piper_manual_replay_and_disk_recovery_20261014.md](evidence/piper_manual_replay_and_disk_recovery_20261014.md)：实际q/戳/原资料/备份/命令/限制。原生产3985466/入口/TF/中心条件未改，完整目标未完成。Git起点2f69a6d/origin main、外部simulation合并已完成，旧分叉条目属历史；限定5实施文件与小文档提交，其他dirty保留；本轮远端同步待独立审查/验证，不以origin缓存证明。
+
+## 历史：真实手动终点三条隔离规划完整，不猜三维目标
 
 - 用户同意继续实际数据离线对照，两技能完整读取；无实体栈，仅域78原review_terminal_depth_plan.launch.py、原physical URDF/原task与执行禁用。输入终点源于上一轮真实SDK q_mdeg/原ROS .017444换算，未用无效深度或旧世界目标猜末点；无SDK连接/控制/新运动。新只读test/review_manual_endpoint_plan.py仅参数/状态valid/原PTP规划/scene读取。
 - 原观测→手动36.8mm、观测→同终点100mm模型、手动→观测36.8mm均rc0/error1/349点/全原范围，规划时长34.791820666秒、末误差≤1.11e-16rad。world/attached为空、octomap0，不能当真实桌面/方块碰撞已检查、实体执行或抓住证据；100mm未实际打开，也未验证真实ALIGN后任意起点。
