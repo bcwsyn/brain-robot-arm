@@ -24,7 +24,13 @@
 
 此工作区没有 Piper CAN 驱动、真机 jog 适配器或实体相机驱动。控制器与抓取执行器副本会拒绝选择真实硬件后端；`physics_grasp` 仍使用 Gazebo 虚拟控制器。依然应与真实机器人使用独立终端/ROS 会话，不能连接或加载真实驱动。
 
-## 推荐操作：一个终端观看相机取放
+## 水杯视觉回放：一个终端观看识别与估径
+
+已有 `.venv-yolo/` 时运行 `bash scripts/run_cup_visual_replay.sh`。首次配置先执行 `bash scripts/setup_cup_vision_env.sh`，桌面需有 `python3-tk`。此入口无需构建 ROS：重新计算五视角 YOLO 掩膜和 RGB-D 外径，窗口显示原图、掩膜、深度、抓取点及建议开口。`1–5` 或方向键切换视角，空格播放/暂停，保存按钮导出图，`Q/Esc` 退出。每次结果保存于新的 `log/cup_visual_replay.XXXXXX/`。
+
+该入口回放保存的相机数据，尚未执行水杯夹持或显示闭环接触力。完整命令及窗口截图见[中文指南第 4 节](../docs/cup_simulation/README.zh-CN.md#4-可视化回放与模型检查)和[English guide](../docs/cup_simulation/README.en.md#4-visual-replay-and-model-checks)。
+
+## 球/圆柱物理演示：一个终端观看相机取放
 
 在本目录直接运行 `./scripts/run_ball_physics_sim.sh`（小球）或 `./scripts/run_cylinder_physics_sim.sh`（圆柱体）。程序自动加载环境、Gazebo、MoveIt、RViz 相机画面、接触传感器、几何中心估计和视觉任务，等待按键开始；不需要另外开终端或安装依赖。原 `run_ball_visual_sim.sh`、`run_cylinder_visual_sim.sh` 继续提供关闭物品重力的跟随式流程演示。
 
@@ -56,4 +62,4 @@ colcon build --symlink-install
 
 包内原 README 与 `UPSTREAM_SIM_README.md` 保留上游说明，旧路径和命令仅供参考，以本工作区说明为准。`flow_demo` 与 `physics_grasp` 必须恰好开启一个；物理场景禁止启动跟随。本轮物理样品为直径 35 mm/15 g 小球及直径 50 mm、高 100 mm/80 g 实心圆柱；流程圆柱体仍为 70 mm。位置 PID 参数仅用于当前仿真模型。
 
-完整来源、适配记录与规划差距见 [导入审查](../docs/imports/brain_robot_arm/导入审查.md)。
+源码来源与适配说明见[源码归属记录](UPSTREAM_PROVENANCE.md)，后续任务见[仿真规划](../docs/小球与圆柱体仿真验证及下一步规划.md)。

@@ -60,7 +60,46 @@ All 334 imported real-workspace files retain original hashes. No real-workspace 
 
 The publication directory built all seven packages from zero in approximately 1 min 41 s and created a fresh private Python environment. Model sizing, the 78-test aggregate and the corrected seven-case ROS replay passed there; an additional ball/cylinder physical trial passed for each legacy specimen. Archive restoration compared 7,076 original dataset/training files byte-for-byte with no mismatch. Additional publication sessions are archived separately.
 
-## 5. Saved material and next increment
+## 5. Visual reproduction
+
+### 5.1 Cup segmentation and RGB-D sizing
+
+From the local Ubuntu desktop terminal:
+
+```bash
+cd /home/young1x/robot_projects/piper_robot/simulation
+bash scripts/run_cup_visual_replay.sh
+```
+
+For a GitHub checkout, enter `brain-robot-arm/simulation_cup` instead. Run `bash scripts/setup_cup_vision_env.sh` once if the private environment is absent; the desktop needs `python3-tk`. Full prerequisites are in the [English guide](cup_simulation/README.en.md). No ROS build is required for this viewer.
+
+The wrapper reruns v2 inference and local diameter fitting on the five saved RGB-D views. The window shows RGB, YOLO overlay, depth, a suggested grasp point and numerical estimates. Expect approximately 74.86–74.88 mm diameter, 82.86–82.88 mm suggested opening and 200 mm observed height. Specimen diameter is not an estimator input.
+
+Focus the viewer: `1`–`5` selects views, arrows move between views, Space toggles two-second autoplay, Save exports the current image, and `Q`/Escape/window close exits. Add `--autoplay` to the command to cycle immediately. Each run saves inference images/masks/JSON, logs and a viewing receipt under a new `log/cup_visual_replay.XXXXXX/`; saved visuals are under `screenshots/`.
+
+Actual desktop verification on 2026-10-14 passed sizing for all five views, autoplay across all views, number/arrow keys, play/pause, image saving and Q exit. Evidence is under `validation/cup_vision/visual_reproduction/`. No additional physical grasp trials were performed for this viewer change.
+
+**This reproduces perception from recorded frames. Jaw opening is a suggestion, not an executed command. Cup force control and transport are still pending.** The guide also provides a headless model check.
+
+![Cup visual replay](cup_simulation/cup_visual_replay.png)
+
+### 5.2 Existing Gazebo + RViz ball/cylinder motion
+
+Build with `bash scripts/build_simulation.sh` first in a fresh checkout, then launch one entry:
+
+```bash
+bash scripts/run_ball_physics_sim.sh
+```
+
+Alternatively, exit that session and run:
+
+```bash
+bash scripts/run_cylinder_physics_sim.sh
+```
+
+Press keys **in the launching terminal**, without Enter: `1/2` selects a placement zone, `S` starts, `R` resets/randomizes after completion, `X` stops, `Q` exits. Gazebo/RViz show approach, grasp, lift, hold, transport, release and home. These are existing ball/solid-cylinder tasks, not the user's hollow stepped cup or an accepted cup force-control task.
+
+## 6. Saved material and next increment
 
 `validation/cup_vision/` holds results, failures, checksums and multipart archives. `models/` provides recommended and original weights plus provenance/license references. The guide covers clean build, private dependencies, offline evaluation, ROS replay, fresh Gazebo capture, archive restoration and retraining.
 
