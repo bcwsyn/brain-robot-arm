@@ -1,0 +1,197 @@
+[0.547s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'piper_with_gripper_moveit' is in: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit
+	'brain_robot_pick_place' is in: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place
+	'piper_description' is in: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding brain_robot_pick_place piper_description piper_with_gripper_moveit
+
+This may be promoted to an error in a future release of colcon-override-check.
+Starting >>> piper_description
+--- output: piper_description
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_no_gripper/display_no_gripper_urdf.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_no_gripper/display_no_gripper_urdf_follow.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_no_gripper/display_no_gripper_xacro.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_with_gripper/display_urdf.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_with_gripper/display_urdf_follow.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_with_gripper/display_xacro.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/launch/piper_with_teach/display_with_teach_urdf.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/base_link.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/gripper_base.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link1.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link2.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link3.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link4.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link5.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link6.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link7.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/link8.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/teach_base.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/teach_link7.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/meshes/teach_link8.STL
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/rviz/piper_ctrl.rviz
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/rviz/piper_no_gripper.rviz
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/gemini2_wrist_camera.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_description.urdf
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_description.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_description_gazebo.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_description_old.urdf
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_description_with_teach.urdf
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_no_gripper_description.urdf
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_no_gripper_description.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_no_gripper_description_gazebo.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/urdf/piper_no_gripper_description_old.urdf
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/mujoco_model/piper_description.xml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/mujoco_model/piper_no_gripper_description.xml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/ament_index/resource_index/package_run_dependencies/piper_description
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/ament_index/resource_index/parent_prefix_path/piper_description
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/environment/path.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/environment/path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/local_setup.bash
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/local_setup.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/local_setup.zsh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/local_setup.dsv
+-- Symlinking: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/package.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/ament_index/resource_index/packages/piper_description
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/cmake/piper_descriptionConfig.cmake
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/cmake/piper_descriptionConfig-version.cmake
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_description/share/piper_description/package.xml
+---
+Finished <<< piper_description [0.07s]
+Starting >>> piper_with_gripper_moveit
+--- output: piper_with_gripper_moveit
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/ament_index/resource_index/package_run_dependencies/piper_with_gripper_moveit
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/ament_index/resource_index/parent_prefix_path/piper_with_gripper_moveit
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/path.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/environment/path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.bash
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.zsh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/local_setup.dsv
+-- Symlinking: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/package.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/ament_index/resource_index/packages/piper_with_gripper_moveit
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/cmake/piper_with_gripper_moveitConfig.cmake
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/cmake/piper_with_gripper_moveitConfig-version.cmake
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/package.xml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/__pycache__/piper_moveit.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/demo.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/move_group.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/moveit_rviz.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/piper_moveit.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/rsp.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/setup_assistant.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/spawn_controllers.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/static_virtual_joint_tfs.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/launch/warehouse_db.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/initial_positions.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/joint_limits.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/kinematics.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/moveit.rviz
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/moveit_controllers.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/pilz_cartesian_limits.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/piper.ros2_control.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/piper.srdf
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/piper.urdf.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/ros2_controllers.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/config/sensors_3d.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/piper_with_gripper_moveit/share/piper_with_gripper_moveit/.setup_assistant
+---
+Finished <<< piper_with_gripper_moveit [0.06s]
+Starting >>> brain_robot_pick_place
+--- output: brain_robot_pick_place
+[  6%] Built target review_target_directed_geometry
+[ 12%] Built target gtest
+[ 18%] Built target pointcloud_tf_gate
+[ 25%] Built target active_scan_supervisor
+[ 31%] Built target gtest_main
+[ 37%] Built target grasp_lift_executor
+[ 43%] Built target cup_detector_node
+[ 50%] Built target pick_place_node
+[ 56%] Built target visual_search_controller
+[ 62%] Built target measured_motion_test
+[ 68%] Built target visual_grasp_feedback_test
+[ 78%] Built target rgbd_shape_geometry_test
+[ 81%] Built target grasp_geometry_test
+[ 87%] Built target cup_pose_plugin
+[ 93%] Built target center_search_test
+[100%] Built target target_model_wait_test
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/libcup_pose_plugin.so
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/pick_place_node
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_detector_node
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/visual_search_controller
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/grasp_lift_executor
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/active_scan_supervisor
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/pointcloud_tf_gate
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_force_gripper_node.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/yolo_cup_target_node.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/physics_target_node.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/sim_controller_bootstrap.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/scene_manager_node.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_follow_node.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/wrist_camera_viewer.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/runtime_monitor.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/adaptive_gripper_policy.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_geometry.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_width_estimation.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/contact_force_feedback.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_perception.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/cup_detector.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/gazebo_clock_cup.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/gazebo_clock_default.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/known_task_sim.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/piper_servo_sim.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/scene.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/config/visual_search_sim.yaml
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/cup_detector.launch.cpython-310.pyc
+-- Symlinking: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/cup_task.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/pick_place.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/pregrasp.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/scene.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/visual_search.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/__pycache__/wrist_camera_gazebo.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/cup_detector.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/cup_task.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/pick_place.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/pregrasp.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/scene.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/visual_search.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/launch/wrist_camera_gazebo.launch.py
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_floor/model.config
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_floor/model.sdf.in
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_table/model.config
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/models/care_table/model.sdf.in
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/models/medicine_cup/model.config
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/models/medicine_cup/model.sdf.in
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/urdf/piper_with_wrist_camera_gazebo.xacro
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/gazebo_plugin_path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/ament_index/resource_index/package_run_dependencies/brain_robot_pick_place
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/ament_index/resource_index/parent_prefix_path/brain_robot_pick_place
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/path.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/environment/path.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.bash
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.sh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.zsh
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/local_setup.dsv
+-- Symlinking: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/package.dsv
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/ament_index/resource_index/packages/brain_robot_pick_place
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/cmake/brain_robot_pick_placeConfig.cmake
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/cmake/brain_robot_pick_placeConfig-version.cmake
+-- Up-to-date symlink: /home/young1x/robot_projects/piper_robot/simulation/install/brain_robot_pick_place/share/brain_robot_pick_place/package.xml
+---
+Finished <<< brain_robot_pick_place [0.12s]
+
+Summary: 3 packages finished [0.75s]

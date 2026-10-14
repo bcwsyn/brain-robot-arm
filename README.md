@@ -1,5 +1,7 @@
 # ub Workspace
 
+2026-10-14 最新倾角更新 / Latest camera-tilt update: `simulation_cup_wrist/` now tilts the wrist camera19.81° towards the gripper centre (70.19° to flange plane). [中文报告](docs/第五步补充_腕部相机倾角修正与验证.md) / [English report](docs/stage5_wrist_camera_tilt_update.en.md). 未倾斜版本由原标签保留；四个更早的工作区完整保留。
+
 ## Latest: single wrist-mounted Gemini 2 / 最新：单腕部相机
 
 New independent [simulation_cup_wrist/](simulation_cup_wrist/README.md) uses one moving wrist RGB-D camera for cup detection, sizing and physical force-feedback grasp simulation. The camera mount follows the supplied approximately 30 mm flange / 105 mm tip spacing. [English guide](docs/wrist_camera/README.en.md) · [Report](docs/stage5_wrist_camera_update.en.md).

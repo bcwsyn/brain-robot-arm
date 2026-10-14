@@ -1,5 +1,7 @@
 # Stage 5 supplement: single wrist-mounted Gemini 2
 
+> This report records the first untilted release; see [tilt update / 倾角修正](stage5_wrist_camera_tilt_update.en.md).
+
 Date: 2026-10-14. Development scope: `simulation/`. New independent GitHub workspace: `simulation_cup_wrist/`. The previous [fixed-camera stage 5 report](stage5_cup_grasp_report.en.md) and release remain available.
 
 ## Implementation

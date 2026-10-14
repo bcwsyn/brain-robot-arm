@@ -3,8 +3,10 @@
   <!-- Shared by Gazebo and MoveIt. Reference - Orbbec Gemini 2 datasheet v1.1.
        link6/gripper_base is the flange frame; model finger tips are at z=0.1358.
        The front optical reference plane is z=0.0308; tip minus front = 0.105 m.
-       Side offset and lens optical centres are approximations pending hand-eye calibration. -->
-  <xacro:macro name="gemini2_wrist_camera" params="parent:=gripper_base axial_m:=0.0308 side_m:=-0.055">
+       Tilt towards the gripper centre by atan2(2.45, 6.8), approximately 19.81 degrees
+       from gripper +Z, or 70.19 degrees to its perpendicular flange plane.
+       Side offset, angle and lens optical centres remain approximate hand measurements. -->
+  <xacro:macro name="gemini2_wrist_camera" params="parent:=gripper_base axial_m:=0.0308 side_m:=-0.055 tilt_rad:=${atan2(2.45,6.8)}">
     <link name="wrist_camera_link">
       <!-- Camera axes are +X forward, +Y along the 90 mm body, +Z along its 25 mm height. -->
       <visual>
@@ -39,7 +41,7 @@
     </link>
     <joint name="gripper_to_wrist_camera" type="fixed">
       <parent link="${parent}" /><child link="wrist_camera_link" />
-      <origin xyz="${side_m} 0 ${axial_m}" rpy="0 -1.57079632679 0" />
+      <origin xyz="${side_m} 0 ${axial_m}" rpy="0 ${-pi/2 + float(tilt_rad)} 0" />
     </joint>
     <link name="wrist_camera_optical_frame" />
     <joint name="wrist_camera_optical_joint" type="fixed">

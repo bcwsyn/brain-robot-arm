@@ -44,7 +44,7 @@ class CupSession(VisualSession):
         self.observation_action = ActionClient(self.node, ExecuteTrajectory, '/execute_trajectory')
         # A workspace observation pose, independent of the cup's actual position.
         # No second camera or Gazebo-derived target coordinates are used.
-        self.observation_joints = [-.27, 0., 0., 0., .44, 0.]
+        self.observation_joints = [-.27, 0., 0., 0., .15, 0.]
         self.vision, self.vision_time, self.force_data = None, 0., None
         self.last_valid_vision = None
         self.executor_ready = False
@@ -93,6 +93,9 @@ class CupSession(VisualSession):
             camera_optical_frame='wrist_camera_optical_frame',
             camera_front_axial_m=.0308, camera_front_to_tip_m=.105,
             camera_side_offset_m=-.055, camera_side_offset_is_measured=False,
+            camera_tilt_to_gripper_forward_deg=math.degrees(math.atan2(2.45, 6.8)),
+            camera_angle_to_flange_plane_deg=90-math.degrees(math.atan2(2.45, 6.8)),
+            camera_tilt_is_hand_eye_calibrated=False,
             camera_body_whd_m=[.090, .025, .030], minimum_depth_m=.15,
             observation_joints_rad=self.observation_joints,
             target='YOLO learned mask and depth; no Gazebo pose for grasp target',

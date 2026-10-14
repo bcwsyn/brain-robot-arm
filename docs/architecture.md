@@ -125,3 +125,8 @@ MoveIt附着物只服务于碰撞规划，Gazebo物品不增加跟随驱动或�
 Use one moving wrist RGB-D camera for all cup visual inputs. Remove the cup entry's fixed external sensor and static world calibration. Share the camera housing/collision/mount macro between Gazebo and MoveIt; the nominal front plane at flange z=30.8 mm is 105 mm axially behind the 135.8 mm model tip. Lateral offset and optical centres remain assumptions, not hand-eye calibration.
 
 Plan a fixed, collision-checked observation configuration before enabling the grasp executor. Lock a consistent image-time RGB-D/mask/TF/width/target packet at observable range; the official 150 mm depth minimum exceeds the 105 mm tip spacing. Keep force feedback active during close-range execution. Reject each unsupported segmentation mask geometrically; accept exactly one valid cup and retain multi-valid-instance rejection. Publish this as simulation_cup_wrist/ while retaining all previous workspace trees and their historical acceptance. See the bilingual wrist-camera report and guides.
+
+
+## 2026-10-14: Wrist optical-axis tilt
+
+Use the supplied atan2(2.45,6.8) as the nominal19.81° tilt towards the gripper centre, equivalent to70.19° to its local flange plane. This is not a fixed world-horizontal angle. Rotate the entire shared camera mount about its existing nominal front/optical reference point; preserve105 mm axial tip spacing. Move the fixed observation joint5 to0.15 rad to retain a complete cup view. Image-time TF incorporates the new rotation; retain one camera and unchanged YOLO weights. Keep the old untilted tag and acceptance separately from the new tilt tests.

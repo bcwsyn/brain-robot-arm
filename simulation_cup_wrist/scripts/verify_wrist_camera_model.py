@@ -49,12 +49,16 @@ def main():
         tip = float(root.find("joint[@name='joint7']/origin").get('xyz').split()[2])
         dims = [float(v) for v in camera.find('collision/geometry/box').get('size').split()]
         assert abs(tip-xyz[2]-.105) < 1e-9, 'Camera front must be 105 mm behind the model tip'
-        assert np.allclose(orientation @ [0, 0, 1], [0, 0, 1], atol=1e-9), 'Optical +Z must point towards the fingers'
+        tilt = math.atan2(2.45, 6.8)
+        expected_forward = [math.sin(tilt), 0., math.cos(tilt)]
+        assert np.allclose(orientation @ [0, 0, 1], expected_forward, atol=1e-9), 'Optical +Z must tilt towards the gripper centre by the measured angle'
         assert np.isclose(np.linalg.det(orientation), 1), 'Optical transform must preserve handedness'
         assert dims == [.03, .09, .025], 'Camera collision envelope must match Gemini 2 dimensions'
         models[kind] = dict(parent=joint.find('parent').get('link'), front_xyz_m=xyz,
                             tip_axial_m=tip, front_to_tip_m=tip-xyz[2], body_depth_width_height_m=dims,
-                            optical_forward_gripper=(orientation @ [0, 0, 1]).tolist())
+                            optical_forward_gripper=(orientation @ [0, 0, 1]).tolist(),
+                            tilt_to_gripper_forward_deg=math.degrees(tilt),
+                            angle_to_flange_plane_deg=90-math.degrees(tilt))
         if kind == 'gazebo':
             sensor = root.find("gazebo[@reference='wrist_camera_link']/sensor")
             minimum = float(sensor.find('plugin/min_depth').text)
@@ -62,7 +66,8 @@ def main():
             assert sensor.find('plugin/frame_name').text == 'wrist_camera_optical_frame'
     assert models['gazebo'] == models['moveit'], 'Planning and simulation must use the same camera mounting'
     report = dict(passed=True, models=models, minimum_depth_m=minimum,
-                  side_offset_is_assumed=True, extrinsics_are_not_hand_eye_calibrated=True)
+                  side_offset_is_assumed=True, tilt_is_approximate_hand_measurement=True,
+                  extrinsics_are_not_hand_eye_calibrated=True)
     (output/'model_verification.json').write_text(json.dumps(report, indent=2)+'\n')
     print('Wrist-camera model verification passed:', output)
 
