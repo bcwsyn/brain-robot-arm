@@ -21,7 +21,7 @@ def generate_launch_description():
     model = MoveItConfigsBuilder('piper', package_name='piper_with_gripper_moveit').sensors_3d(
         os.path.join(share, 'config', 'sensors_3d_real.yaml')).to_moveit_configs()
     model.robot_description['robot_description'] = original._physical_gripper_description(
-        model.robot_description['robot_description'])
+        model.robot_description['robot_description'], joint5_upper=task['real_trajectory_joint_max'][4])
     config = model.to_dict()
     for i in range(6):
         config['robot_description_planning']['joint_limits'][f'joint{i+1}'].update(

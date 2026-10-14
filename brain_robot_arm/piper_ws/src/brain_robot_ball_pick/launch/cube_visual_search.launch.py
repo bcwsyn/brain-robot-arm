@@ -27,8 +27,8 @@ def _camera_mount_arguments(task_profile):
         'gripper_base', 'camera_link']
 
 
-def _physical_gripper_description(description):
-    """Match the read-back 100mm physical range, without editing vendor URDF."""
+def _physical_gripper_description(description, joint5_upper=None):
+    """Match physical finger range and optional task J5 upper; preserve geometry."""
     root = ET.fromstring(description)
     for name, lower, upper in [('joint7', 0.0, .050), ('joint8', -.050, 0.0)]:
         joint = root.find(f"joint[@name='{name}']")
@@ -37,6 +37,11 @@ def _physical_gripper_description(description):
         limit = joint.find('limit')
         limit.set('lower', str(lower))
         limit.set('upper', str(upper))
+    if joint5_upper is not None:
+        joint = root.find("joint[@name='joint5']")
+        if joint is None or joint.get('type') != 'revolute' or joint.find('limit') is None:
+            raise RuntimeError('Expected PiPER revolute joint5')
+        joint.find('limit').set('upper', str(float(joint5_upper)))
     return ET.tostring(root, encoding='unicode')
 
 
@@ -61,9 +66,10 @@ def generate_launch_description():
             os.path.join(cube_share, 'config', 'sensors_3d_real.yaml')).to_moveit_configs()
     # Official current PiPER mapping is total opening = 2 * joint7; this
     # archived vendor model still has +/-35mm. All consumers use one corrected
-    # description; meshes, origins, camera/TCP and six arm joints stay unchanged.
+    # description; meshes, origins and camera/TCP stay unchanged. Only J5's
+    # positive position bound follows the explicitly reviewed task setting.
     moveit.robot_description['robot_description'] = _physical_gripper_description(
-        moveit.robot_description['robot_description'])
+        moveit.robot_description['robot_description'], joint5_upper=real_joint_maxs[4])
     moveit_parameters = moveit.to_dict()
     for joint_name, min_position, max_position in zip(
             ("joint1", "joint2", "joint3", "joint4", "joint5", "joint6"),

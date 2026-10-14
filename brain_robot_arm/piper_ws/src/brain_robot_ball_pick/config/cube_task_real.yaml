@@ -17,8 +17,9 @@ visual_search_controller:
     backend: piper
     real_motion_enabled: true
     observe_pose_calibrated: true
-    # Reuse the observation pose and prepare/search sequence proven by the
-    # red-ball simulation.  These rates are three times the previous
+    # Reuse the prepare/search sequence proven by the red-ball simulation.
+    # The observation target below is the operator's measured real pose.
+    # These rates are three times the previous
     # configuration (0.135/0.108 rad/s; alignment limit 0.135 rad/s).
     execute_prepare: true
     skip_prepare: false
@@ -38,7 +39,9 @@ visual_search_controller:
     level_align_enabled: false
     use_sim_time: false
     joint_names: [joint1, joint2, joint3, joint4, joint5, joint6]
-    observe_joint_positions: [0.0, 0.98, -0.75, 0.0, 0.30, 0.0]
+    # 2026-10-14: keep measured J1/J2/J3/J4/J6; operator selected J5=70 deg.
+    # Use the deployed driver's degrees*0.017444 feedback convention.
+    observe_joint_positions: [-0.141941828, 0.942464432, -1.269242884, -0.074433548, 1.22108, 0.089435388]
     reset_joint_positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     horizontal_joint: joint1
     vertical_joint: joint5
@@ -325,7 +328,9 @@ grasp_lift_executor:
     # publication; an invalid tilt/yaw is skipped instead of disarming the
     # sole output path.
     real_trajectory_joint_min: [-1.50, -0.30, -1.40, -0.80, -1.20, -3.14159265359]
-    real_trajectory_joint_max: [1.50, 3.14159265359, 0.40, 0.80, 1.20, 3.14159265359]
+    # J5 positive bound matches the single verified firmware reply +70 deg
+    # and the deployed driver convention. Other joint bounds stay unchanged.
+    real_trajectory_joint_max: [1.50, 3.14159265359, 0.40, 0.80, 1.22108, 3.14159265359]
     # Ask MoveIt to search inside the unchanged adapter envelope rather than
     # planning through a wider URDF branch and rejecting it only afterwards.
     real_trajectory_limit_margin_rad: 0.005

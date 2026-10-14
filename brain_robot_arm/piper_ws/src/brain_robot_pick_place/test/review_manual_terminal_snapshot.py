@@ -65,7 +65,7 @@ try:
  task=yaml.safe_load(task_path.read_text()); det=yaml.safe_load(detector_path.read_text())['cube_detector']['ros__parameters']
  spec=importlib.util.spec_from_file_location('actual_visual_launch',share/'launch/cube_visual_search.launch.py'); mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
  model=MoveItConfigsBuilder('piper',package_name='piper_with_gripper_moveit').to_moveit_configs()
- urdf=mod._physical_gripper_description(model.robot_description['robot_description']); root=ET.fromstring(urdf)
+ urdf=mod._physical_gripper_description(model.robot_description['robot_description'],joint5_upper=task['grasp_lift_executor']['ros__parameters']['real_trajectory_joint_max'][4]); root=ET.fromstring(urdf)
  (out/'actual_runtime_model.urdf').write_text(urdf)
  positions={f'joint{i+1}':v/1000*.017444 for i,v in enumerate(q['q_mdeg'])}
  positions.update(joint7=q['gripper_mm']/2000,joint8=-q['gripper_mm']/2000)

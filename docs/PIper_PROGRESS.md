@@ -1,4 +1,14 @@
-## 2026-10-14 15:59：新观测候选已实读保存，J5固件上限不允许直接部署
+## 2026-10-14 16:11：新观测目标J5=70°及获准J5上界已同步，无运动
+
+- 用户明确“J5设置70度其他不变”，随后明确同意“仅对齐J5软件与模型上界”。按ROS2/手术式技能，仅原task观测数组、J5正上界与原launch生成模型；其他五轴来自17855cf的实际保存值，未重锁旧A姿态、不重查CAN/固件、不改其他关节/下界/速度/搜索幅度/TF/TCP/最终夹持门。当前无visual/grasp运行进程，本轮不启动ROS/使能/运动/复位/夹爪/失能。
+- 新观测degrees[-8.137,54.028,-72.761,-4.267,70.0,5.127]；原驱动feedback degrees*.017444 → observe_joint_positions[-.141941828,.942464432,-1.269242884,-.074433548,1.22108,.089435388]rad。没有把精确π/180值1.221730476与原接口混用。实际原驱动command factor57324.840764，J5命令round=69998mdeg，未超过固件70°；这是既有换算微差，不擅改驱动。
+- 原task real_trajectory_joint_max仅index4 1.20→1.22108；launch原adapter的joint_max与MoveIt planning limits均直接取此数组，无另一个适配器配置副本。原模型helper增加可选joint5_upper，仅生成描述的J5 upper跟随同task，其他arm/夹指几何、mesh/origin/effort/velocity不改，vendor源URDF未改。原两只读model消费者传同上界避免分析/实际模型不一致；默认不传仍旧纯指爪helper行为。原real_trajectory_limit_margin_rad=.005/prepare容差等保持。
+- pytest test_physical_gripper_model.py 5passed/rc0；语法3文件/限定diff通过。逐字段对照HEAD YAML仅观测数组和J5正上界改变。使用实际installed package share构造原模型（未启动任何节点），与旧物理描述逐字段核对只J5 upper不同；新生成模型SHA0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82。静态执行原adapter拒绝函数，70°goal通过，旧73.498°起点仍point0 exceeds joint5，未放行超界。
+- 实际源/安装symlink同步确认：taskSHA7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a、launchSHA2df0e7ed5db5fbcaec8806f16bc918646226b856761c7f08f613ab202d8d156d，规范与actual逐字节相同，无需重编C++。原入口/executor未动。旧task a0111d3…/launch cdc2225…备份/home/johnwick/brain_robot_logs/observation_pose_backup_20261014/cube_task_real.previous.yaml及cube_visual_search.previous.launch.py；Git17855cf可恢复旧规范，回退后须同时同步这两实际文件，不能只回一半。
+- 本次是目标/配置更新，不是已实际到70°或完整抓取。上次真实J5=73.498°仍超固件/新软件上界，本轮未再采其当前值，不能从该旧起点自动发布prepare并声称合法；下一真实测试前只取新鲜反馈，若J5仍超界先明确回到允许范围的方案，不能扩固件或删除原检查。新目标完整视野/轨迹避碰/观测反馈/SEARCH/抓取尚未实测。原搜索J5[-.60,.95]及下游margin保持，不额外扩张搜索范围或伪称70°末段规划已验证。
+- 本轮限定5代码/配置测试路径和三动态记录提交；原dirty保持，已知origin50a5cc2分叉未解决，本轮仅本地未同步，不自动合并/强推。下一先新鲜反馈/真实图核对新目标，不重跑已完成J5查询或单元测试代替实体结果。
+
+## 历史：新观测候选已实读保存，J5固件上限不允许直接部署
 
 - 用户要求将“此刻位置”更新为观测目标，已说明仅原task观测数组/实际同步、保留旧值、不运动；两技能读取、真实launch/install路径与规范配置同SHA a0111d3…，当前无原驱动/visual进程，CAN ERROR-ACTIVE/RX4651317/错误0，未重载。只读SDK40样本新鲜/静止检查通过后，原范围检查因J5超界rc1，尚未保存该40样本；不把检查失败写成配置已成功。
 - 最小补读rc0，epoch1791964525.8745341/joint4525.869704/high100Hz/六true/q_mdeg[-8137,54028,-72761,-4267,73498,5127]，角度[-8.137,54.028,-72.761,-4.267,73.498,5.127]°，原ROS .017444换算[-.141941828,.942464432,-1.269242884,-.074433548,1.282099112,.089435388]rad。夹爪实反馈101.5mm，如实存，不发开闭/校准或以此阻断只读关节记录。raw在/home/johnwick/brain_robot_logs/new_observation_pose_20261014_1553.json，canonical小JSON evidence/piper_new_observation_pose_20261014.json，未发使能/运动/模式/Reset/Disable。
