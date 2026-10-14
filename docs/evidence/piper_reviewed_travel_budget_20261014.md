@@ -1,5 +1,31 @@
 # 2026-10-14 已检查纠偏行程与有限运动次数核算
 
+## 最新实物结果：预算计数生效，新最早阻断为未组合的候选几何
+
+3985466/actual70c3381…原AUTO1主session50059 rc1，timeout3876660/脚本3876661。启动曾卡在原timeout5s /servo_node/stop_servo客户端：3877764超过99s仍活，实体静止/STOPPED；只KILL该已超时检查客户端，让原已有||true流程继续，不重启driver/Servo/栈、不改入口脚本。此是本轮运行期协助，**不称原入口已永久修好这个timeout**；后续仅给stop检查补-k2s需另说明获准。旧相机探测-k2s不自动覆盖这处停止检查。
+
+实际PREPARE1791950752.966056/36.7s11点→SEARCH0789.404471/OBSERVE_POSE_REACHED→ALIGN0801.327642→GRASP_READY0803.635888。10粗段全部反馈停稳，质量交接0824.614055冻结最后可靠measurement1791950822117190061/range236.959mm、base(.425790084,-.116106538,.067274143)m/size35.948mm；currentRGB1791950824516849803/age2.496917s，不是假新深度。原完整双段计划camera_arc.1799/tip_arc.1508/extra.03、38路点、78运动/116总循环。
+
+本次34末段尝试、33 MEASURED_SETTLING_CONFIRMED，旧预算逻辑的新日志真实出现33段reviewed reservation；51条adapter接受含prepare/search/保持，不将不同层计数硬凑一致。step46/cursor14最后成功段reviewed_total=.163751200m、measured_total=.152006459m、allowance=.219042127m；这个额度仍原名义值，因为累计reviewed+.03尚未超过它。到位检查与运动计数已实测分离（cycle48、commands34/78），**没有达到旧超额点/额度扩充或次数耗尽，不能称已经实体验证跨过旧预算停止**。
+
+step48/cursor15-38从ROS q[-.445380208,1.820455840,-1.399724004,.288872640,1.127981372,-.492339456]rad请求xyz(.343920814003,-.137827598230,.237539123800)m、q(.030285666762,.989658269525,.097817278696,.100454307710)，tip5.285319mm/工具1°。原完整方向/缩角/反向8候选及仅原转向的50%/25%平移全fraction0/error1（不是发布成功）；此段尚未reserve/输出，停止FAULT_AUTOMATIC_RGB_STEP_EXECUTION_FAILED，不是CAN/图像/中心门/预算/用户急停。无原下降/最终夹持/闭爪/抬升/释放，未达到总目标，不擅放宽J3或发半段路径。
+
+### 精确新step48隔离核对（只规划）
+
+复用域78 review_terminal_depth_plan.launch.py，原模型/原任务范围、allow_trajectory_execution=false，无driver/adapter；review_reachable_visual_step.py --steps48 --tip-fractions1 .5 .25，rc0，报告/home/johnwick/brain_robot_logs/view_guard_20261013/reviewed_budget_step48_isolated.json。起点validtrue/无模型contact，full-tip现候选与positive1°短平移全部失败；**组合已有短平移与反向朝向有6个完整解**，原范围内。例如50%tip平移(2.642659mm)+-75%工具转角(-.75°) fraction1/error1/4点，endpoint[-.444817991,1.820026276,-1.394906471,.291192154,1.110633875,-.494137660]；50%/-1°亦完整，25%/-25/-50/-75/-100亦完整。零角只是工具反事实，不自动加入实体。静态六组合解保存小JSON随Git；不当现场碰撞全排除/精确手眼标定或执行证据。
+
+说明现策略“全平移先试反向”与“短平移仅保留正原转向”分别试，漏掉了它们的组合。下一拟仅原ExecuteVisualPose在现候选均失败后补组合，仍原目标/nominal/8mm1°/.08rad/完整路径与真实反馈/最终夹持，不改变TF或限位。**这个新的组合策略尚未批准/实现/部署**；不能把刚批准的预算改动扩展成新运动策略。本轮没有再实机重跑。模型launch140s自然超时124，MoveIt已知SIGINT析构-11与此前规划结果rc0分开，所有隔离节点已退出，不当实体通信故障。
+
+### 本次图像/反馈与停止后保持
+
+已看同次0093三图以及GRASP_READY RGB1791950803716299920（框中心.478125/.485417）、失败RGB1791950874118085955（框[.409375,.458333,.559375,.654167]中心.484375/.556250，完整方块仍在两黑指视野中）；原子center_covered=1，但本帧depth qualifiedfalse/samples3/coverage.001908，冻模/RGB可工作，不重锁。对应native_depth1791950874085695985有146596非零点/中位.246m，16位默认预览近黑非全帧无数据。debug1791950873318670130较失败RGB早.799416s（仅近邻叠图不冒称同戳）显示目标支撑黑洞、samples35；原RGB无此黑洞。
+
+主原cleanup无Disable/Reset/回零；exact3876743/session10042与live3876772/session3671 INT正常0，host全部控制/相机/采集退出。新被动SDK1791951067.101839/关节1067.101092/high1067.092247/100Hz，六true/速度0、q[-.445617465,1.821425607,-1.400469645,.289026524,1.128582254,-.492601728]rad，99.6mm/true/无故障，can0RX17642528/错误丢帧0、守护无停滞。
+
+隔离起点用精确失败日志的原ROS反馈，不将稍后SDK换算值直接当同一q：实际entry metadata确认piper_single_ctrl→piper.piper_ctrl_single_node:main，publish角度按raw_deg*.017444，而被动SDK打印按math.pi/180，因此当前J3存在约.000746rad数值差；只记录接口约定，未修改驱动/限位/命令，不把它说成新硬件故障或大几何误差。下一从新鲜原反馈规划，不把小JSON/隔离endpoint直接发给实体。
+
+全部大日志/图片在/home/johnwick/brain_robot_logs/view_guard_20261013/下reviewed_budget_onekey_20261014、reviewed_budget_exact_20261014/frames.jsonl、reviewed_budget_live_20261014/observer.jsonl，主输出reviewed_budget_onekey_stdout_20261014.txt；原图/原戳/姿态保留，不重复旧失败底层。actual70c3381…/detectorc99e450…/唯一入口87039b…保持，旧9ea9fc1回退点完整。Git仅本地，远端分叉/历史审查和用户dirty保持。
+
 ## 最新部署与待实测
 
 3985466已限定10路径提交/检查0；actual单executor70c3381…与source2144f22…/near头567377f…同步，旧9ea9fc1单binaryf0da36c…/源/near头备份/home/johnwick/brain_robot_logs/view_guard_20261013/reviewed_budget_previous_9ea9fc1/。detectorc99e450…与唯一原脚本87039b…不变；不整库回退或覆盖用户wiring/vendor/reference。

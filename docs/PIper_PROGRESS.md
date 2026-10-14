@@ -1,4 +1,14 @@
-## 2026-10-14：已检查纠偏路径/有限次数预算获准，局部修复构建中
+## 2026-10-14：预算核算实测生效，新停止为完整规划候选组合缺失
+
+3985466/3747832实际原AUTO1 session50059 rc1。启动原timeout5s stop_servo挂99s，仅结束已核对客户端3877764让原||true继续，不改脚本/重启控制；永久-k2s尚未获准。PREPARE0752.966/36.7s11点→SEARCH0789.404/OBSERVE_POSE_REACHED→ALIGN0801.328→GRASP_READY0803.636→10粗段停稳→冻结236.959mm/原测量stamp0822117190061→34末段尝试/33停稳。reviewed计数真实33次，末measured.152006/reviewed.163751/allowance.219042，原额度还未需扩充；cycle48只34/78运动，不耗路点检查。不能写实测已跨旧超额或次数卡点。
+
+新最早stop为step48/cursor15-38、原5.285mm/1°完整规划及全缩角/反向/正turn短平移各自fraction0/error1，未reserve/输出失败段，FAULT_AUTOMATIC_RGB_STEP_EXECUTION_FAILED，未下降/最终夹持/闭爪/抬升释放。RGB失败同戳0874118085955框中心(.484375,.556250)/center_covered1/完整可见，depth资格false仅3点；native非零146596点/.246m中位，debug早.799s不当同戳，三图已看。非CAN或预算，末原J3=-1.399724近原界但不武断全局不可达。
+
+域78原模型无执行、原起点validtrue无模型contact，精确step48组合反事实rc0：50%tip/-75%角为2.643mm/-.75°，完整4点/原范围；50%/-1°及25%四反角另5完整解。现生产策略分别试，未组合；**新组合应用修改未批准/编码**，不能借预算许可扩权或直发隔离q。所有隔离退出，launch自然124/已知SIGINT MoveIt -11与规划0分开。不重复旧基础CAN/限位/空洞实验。
+
+原cleanup无Reset/Disable/回零，exact3876743/live3876772 INT0；post SDK1067.102/100Hz/六true/速度0/q[-.445617465,1.821425607,-1.400469645,.289026524,1.128582254,-.492601728]/99.6mm无错，RX17642528错误0/host无栈。metadata actual piper_single_ctrl→piper_ctrl_single_node:main pub .017444与SDKπ换算有小差，不混用q或擅改驱动，不当硬件故障。actual70c3381…/detectorc99e450…/原入口保持、9ea9fc1备份完整。详细[evidence/piper_reviewed_travel_budget_20261014.md](evidence/piper_reviewed_travel_budget_20261014.md)和新step48 JSON已保留；下一获准组合/timeout局部方案再同入口。Git仅本地未同步，远端分叉/历史审查与用户dirty保持。
+
+## 历史：已检查纠偏路径/有限次数预算获准，局部构建与部署
 
 3985466限定提交10路径/检查0，单actual70c3381…/source2144f22…/near头567377f…部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，原detectorc99e450…/入口87039b…不变。新SDK1791950493.657/high100Hz/六true/速度0/99.6mm无错/姿态保持；RX16249753→16259869错误0、无旧栈。下一唯一原AUTO1与new reviewed_budget_onekey_20261014/exact/live采集，完整运动清单同证据，尚未有本次实体结果。
 

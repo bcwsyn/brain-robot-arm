@@ -1,5 +1,7 @@
 # PiPER 一键视觉抓取接力任务固定提示词
 
+最新3985466预算修复实机已更新33段reviewed计数/运动与路点分开；原AUTO1观测→SEARCH→ALIGN→GRASP_READY→10粗段/33末段停稳，尚未达到旧超额点或新额度扩充，不冒称跨过旧预算停止。新step48/cursor15-38完整朝向/短平移各自候选全fraction0，未reserve/输出该段，FAULT_STEP_EXECUTION_FAILED，未下降/闭爪；图像完整/中心covered1，CAN无错。域78精确原ROS起点 validtrue，短平移×反向朝向组合6完整解/原范围内（如2.643mm/-0.75°），新组合策略尚未授权/编码；下一先具体说明获准，不直接发隔离q/扩大限位。启动原timeout5s stop_servo曾挂99s，仅结束本轮客户端续跑，永久-k2s修复也尚未授权。host全部栈退出，post SDK1791951067.102/high100Hz/六true/速度0/99.6mm无错；SDKπ与原ROS .017444换算数值差单列，不当硬件故障。actual70c3381…/detectorc99e450…/入口不改，详见piper_reviewed_travel_budget_20261014.md/step48小快照，完整目标未完成。
+
 3985466预算修复52+19+21/build0，actual单executor70c3381…/source2144f22…/near头567377f…已原路径部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，detectorc99e450…/入口87039b…保持。新SDK1791950493.657/high100Hz/六true/速度0/姿态保持上轮/RX增长，下一唯一原AUTO1与reviewed_budget_onekey_20261014/exact/live新采集，本次实体结果尚未产生。完整运动清单/原范围见piper_reviewed_travel_budget_20261014.md；本授权无需重复等，未抓取完成。
 
 2026-10-14最新用户“好”已批准上一具体预算核算修复及原入口实測：仅原executor与near_depth共享算术/针对性测试，完整规划/限位步长/裁切/实际起点检查全部通过后，按保留轨迹FK的相机行程累计许可；原episode30mm余量只计一次，不用未审查实测漂移刷新许可/种子/世界身份。原公式75（本旧例）作为有限运动命令额度，零运动路点推进另最多36次检查，总循环≤111，不盲倍增运动次数。TF/TCP/几何/入口/8mm1°/.08rad/真实反馈与最终中心两指闭爪不改。候选构建中未部署/新运动，actual仍9ea9fc1 f0da36c…；详见docs/evidence/piper_reviewed_travel_budget_20261014.md，不再等这项批准，旧待同意为历史。

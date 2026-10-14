@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：用户批准已检查纠偏路径预算，候选构建中）
+## 最新接续（2026-10-14：预算计数实际生效，新候选组合待具体批准）
+
+3985466原AUTO1已观测/SEARCH/ALIGN/GRASP_READY/10粗段与33末段反馈停稳，34末段尝试，33 reviewed计数生效；末次measured.152006/reviewed.163751/allowance.219042，尚未扩充或超原限，不称跨旧预算卡点。新step48/cursor15-38原完整全朝向与正转短平移各自全0，未发失败段/未下降闭爪；RGB完整/中心covered1，非CAN/中心/预算。域78精确原ROS起点有效、短平移×反向有6完整解/原范围内（50%tip/-75%转角2.643mm/-.75°），但新组合尚未许可/实施，不扩大J3/直接发隔离q。原stop_servo检查挂99s，本轮仅结束其CLI续跑，不称一键永久修好；局部-k2s也须先说明。全部实体/相机/采集/隔离退出，post SDK1067.102/100Hz/六true/静止99.6mm，ROS .017444与SDKπ数值约定小差别另记无驱动改动。actual70c3381…/detectorc99e450…/原入口/9ea9fc1备份保持，细节piper_reviewed_travel_budget_20261014.md/step48 JSON；下一具体组合与timeout方案获准后再原owner续测，完整目标未完成/本地Git，用户dirty与远端分叉保持。
+
+## 历史接续（预算候选/部署）
 
 3985466已52+19+21/build0并限定提交，actual70c3381…/source2144f22…/near头567377f…部署，旧9ea9fc1备份reviewed_budget_previous_9ea9fc1，detector/入口保持。新SDK0493.657/high100Hz/六true/静止/99.6mm、原q保持、RX增长；下一唯一原AUTO1/new reviewed_budget_onekey_20261014/exact/live，当前未产生本次实物结果。运动清单同证据，以下候选未部署记录已由此覆盖。
 
