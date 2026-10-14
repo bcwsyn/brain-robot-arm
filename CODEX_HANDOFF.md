@@ -8,6 +8,8 @@
 
 最终4指定pytest文件76 passed/0 skipped/rc0；原115数据SHA与5个生产文件SHA不变。原发布分支仍因会话GitHub认证缺失未上线，本轮只限定准备新的离线文件/文档版本，不重复旧失败push或整体main合并。
 
+实现本地commit **c80a87d**（16路径），git show --check通过、本轮路径干净。交付分支已追加 **c015bb1**，这16路径与c80a87d相同（diff quiet rc0）；以remote402f5e1为父链待发布9d2c50a/b1ed470/c015bb1共24不同路径，均为两轮标定离线/任务资料，不含其他本地主任务积压。远端独立仍402f5e1、本轮没有重复缺凭据push，**仅本地/交付准备，未同步GitHub**。用户自己的认证终端可 `git push origin piper-pair01-publish-20261014:main`，成功后核c015bb1再给新证据目录URL；旧pair01仍已上线。下一正式第一组试采逐组授权，不需要Claude源码。
+
 ## 历史接力（2026-10-14 19:48 +08:00：先标定，冻结生产抓取）
 
 用户授权接手Claude离线/代理采集准备，当前里程碑切为标定；长期原一键真实抓取保持。阶段规则见 `docs/PIper_CALIBRATION_TASK_20261014.md` 和task prompt首节，覆盖下方历史自动续跑/算法修补许可。四文档同步；生产executor/搜索/检测门/TF/TCP/URDF/限位/入口冻结，当前**无新实体运动许可**，逐组释放原位/回观测须具体授权。
