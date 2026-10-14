@@ -191,16 +191,42 @@ def solve(document):
     return report
 
 
+def check_collection(document):
+    """Per-acquisition excitation check, including fewer than three pairs.
+
+    This evaluates rank at a labeled nominal linearization, never fits or
+    adopts a transform and never trains on held-out validation pairs.
+    """
+    pairs, excluded, fixed = check_pairs(document)
+    training = [pair for pair in pairs if pair['role'] == 'fit']
+    initial = np.zeros(9 if fixed is None else 6)
+    previous = document.get('previous_X_tool_from_depth_camera')
+    if previous is not None:
+        previous = transform(previous)
+        initial[:3] = Rotation.from_matrix(previous[:3, :3]).as_rotvec()
+        initial[3:6] = previous[:3, 3]
+    return {'offline_only': True, 'check_only': True, 'candidate': None,
+        'production_tf_modified': False, 'synthetic': bool(document.get('synthetic', False)),
+        'excluded': excluded, 'training_pairs': len(training),
+        'validation_pairs': sum(p['role'] == 'validation' for p in pairs),
+        'linearization': 'Explicit previous mount if supplied, otherwise identity; rank is not a fit or adoption approval',
+        'per_acquired_training_prefix': [dict(excitation(initial, training[:i], fixed),
+            pair_ids=[p['pair_id'] for p in training[:i]]) for i in range(1, len(training) + 1)],
+        'need_more_pairs': len(training) < 5,
+        'warning': 'Rank alone does not establish physical reference correctness, noise accuracy or a reachable sampling trajectory.'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pairs', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--check-only', action='store_true', help='Check current sample excitation without fitting, even with one or two pairs')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Output already exists; preserve prior reports')
     document = json.loads(args.pairs.read_text())
     try:
-        report = solve(document)
+        report = check_collection(document) if args.check_only else solve(document)
     except (ValueError, KeyError, TypeError) as error:
         report = {'offline_only': True, 'candidate': None, 'input_rejected': str(error),
                   'production_tf_modified': False}
@@ -210,7 +236,7 @@ def main():
     ok = report.get('candidate') is not None
     print(json.dumps({'output': str(args.output), 'candidate_available_not_approved': ok,
                       'input_rejected': report.get('input_rejected'), 'synthetic': report.get('synthetic')}))
-    return 0 if ok else 2
+    return 0 if ok or (args.check_only and 'input_rejected' not in report) else 2
 
 
 if __name__ == '__main__':

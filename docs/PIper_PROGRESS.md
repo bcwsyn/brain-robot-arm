@@ -1,4 +1,17 @@
-## 2026-10-14 19:48 +08:00：标定阶段切换、两类深度足迹审查与点对可辨识性准备
+## 2026-10-14 20:16 +08:00：第0步独立补齐，真实面候选/显式D-C/采集前检查
+
+- 起点3125b05；用户明确无Claude源码并允许自主继续第0步。首Git恢复/最新四文档与阶段页/技能核对，仅已有test_near_depth_wiring和其他全树既有dirty保留。ROS2/手术式技能将改动限定离线工具与任务记录；不重复旧CAN/固件/limits/物理实测，未启动ROS/CAN/SDK或发送运动。
+- 参考官方PCL主平面RANSAC/优化与OpenCV minAreaRect/投影文档（stage0 README链接/事实与项目假设分列），新增estimate_calibration_cube_center复用原frame_review/selected_pixels/D-C factory，无生产TF参与。原115资产hash通过；native uint16零值保持，主面SVD/名义square边界拟合取face-normal半边长中心，D/C坐标/法向/角点/测得尺寸/每帧质量/拒绝原因均可复算。覆盖≥.5/真实点≥100/主面≥.6/名义边80–120%/2mm plane与2.5mm boundary，仅离线规则，不增任何实体保护门。
+- 30原始帧/10高支撑有候选、20低帧均拒绝；29mm名义D center median[-.013009035682,.040973508676,.453481896494]m，经同一工厂R/T变换C[-.036050210634,.039997688965,.453873700858]；各D std[.409030,.281076,.167836]mm，测得side median28.063189/29.617853mm、planeRMS median.631089mm。28→29尺寸假设中位点变.612231mm。与Claude日志若按C比较三维差.685962mm支持旧frame线索，但不确认其源码坐标/方法、绝对<1cm或实物接触；原28mm估计未改成卡尺29mm。
+- 新报告汇总用D分量中位后R/T映射得到同一C点，独立C分量统计另列（旋转与分量中位不交换）；每帧C→D真矩阵solve往返误差记录，不把镜头基线忽略。candidate/rejected两张衍生RGB实际查看：黄名义面框匹配紫块，绿仅推断内部点，拒绝帧不画假中心；不是原图修改/新运动或实际两指抓住证明。原pair01中心确认字段null/无接触/101.5mm仍trial，正式安装未拟合。
+- 新simulate --face-pipeline串联6合成面点→中心→5fit/1held-out：各轴.3mm噪声、1mmZ量化、随机缺30%、50点20mm异常，10种子最大cameraCenter误差.303463mm、held-out p95=.340495mm、mount平移最大.328369mm/角.055487°，只理想数学点云非像素分割/硬件/实体可行性；不替代上轮3mm点对噪声held-out13.611mm。新增partial半面、missing/NaN/共线、异常点、倾斜法向/光线错法、C/D/名义edge和串联回归，后补90/-90/大安装旋转及共面非共线+多倾角验证。原双轴完整手眼/隔离MoveIt不重做。
+- fit --check-only支持仅1–2组完整verified点时累积rank/零空间核查，未优化/未给candidate、留出不训练；原yaw unknown-center8/9不伪称充分，已知工具点与其他模型区分。此步骤不需要六组先采完；输入缺物理中心仍拒绝，不把fixture或旧pose冒充新真实点。
+- 实际CLI PYTHONNOUSERSITE=1/PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 estimate_calibration_cube_center --bundle docs/evidence/piper_calibration_20261014/pair01 --output home/cube_center_stage0_20261014 rc0；补同点C中位和factory来源hash后新final/archived路径分别rc0，初次结果不覆盖，只最终archived入Git。simulate_paired_calibration --face-pipeline --output home/cube_center_stage0_face_pipeline_20261014.json rc0。初中心17测试/rc0，加其他3组回归先71、含串联后72均rc0；大旋转/共面补测最终数量见提交前核验。4有限报告/衍生图1052936B（99278+5882+474250+473526），require_escalated只mkdir指定stage0_center和机械cp，原数据/目录/权限不改。
+- source /opt/ros/humble仅为测试导入消息包，不运行节点；生产入口87039bdb…/task7d0e2c…/detector154938b…/executor2144f2…/adaptera5074c…全SHA未变。df根54%/35G，共享73%/138G，未清盘/删除。只读remote ls-remote rc0仍402f5e12481f31a988920b41391626e6238ca5af，旧发布b1ed470仍未上线；当前会话上轮明确缺Git认证，不重复同一已失败自动push。阶段源码/结果本地限定提交及交付分支准备，不整体上传/覆盖杯工程/积压历史。
+- 第0步定义范围已完成：取样叠图、可辨识性/拟合、逐组核查、相机侧面中心方法/坐标声明、噪声/退化/缺样/大旋转/共面/串联合成、采集清单与taskpage完整。**不再要求用户提供Claude源**。仍未完成的独立下一阶段：一组实际夹紧/释放原位/按组授权回观测的同点试采，再六组/拟合报告审核/TF采用/原入口视觉开环实体夹起。没有新实体许可或反馈恢复证据；本轮不能因phase0成功自动AUTO1/闭爪/失能。
+- 最终source Humble后四指定pytest文件 **76 passed/0 skipped/rc0/3.37s**，新大旋转/共面检查通过，所有raw哈希与生产5文件hash复核未变。仅这批离线源/回归/16指定文档和证据路径准备提交，未修改CMake/生产应用/原pair01；待发布仍不等于GitHub已同步。
+
+## 历史2026-10-14 19:48 +08:00：标定阶段切换、两类深度足迹审查与点对可辨识性准备
 
 - 起点a57cf38；首五Git检查执行/读四文档最新内容与既有完整历史，使用ros2-piper-debug/surgical-change。用户批准代理接手Claude离线分析与Codex采集准备，后续历史归因提问/叠图/附件一并核查。当前阶段设为标定，四任务文档首节优先，冻结生产靠近/检测门/TF/TCP/模型/入口，不因用户过去自动许可发新运动。长期最终抓取目标保留。
 - 新独立工具review_pair_sampling：原115资产SHA校验通过，未变配准复算30帧，10高/20低，surface组差24.766897mm；同snapshot2原生真实深度足迹零值比例高层中位0.003586、低0.877049，证明本组低帧对应区域真空洞，而非只有机器人安装TF造成少采。两张衍生预览实际查看：RGB小方块原位，低帧深度黑空洞/剩余边缘点；0不填，不改任何原始PNG。不单凭高覆盖判定几何中心/根因，pair01排除正式拟合。

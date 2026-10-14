@@ -102,19 +102,75 @@ def run_simulation():
         'conclusion': 'Diverse positions plus yaw alone do not identify mount and unknown grip depth; known-tool-point model or additional tilt constraints are necessary.'}
 
 
+def run_face_pipeline_simulation():
+    """Synthetic measured-face clouds -> centers -> 5 fit/1 held-out point.
+
+    Gaussian point noise, depth quantization, sparse missing samples and large
+    outliers are synthetic; no sensor/ROS/Gazebo or arm-motion claim is made.
+    """
+    from estimate_calibration_cube_center import square_hypothesis
+    records = []
+    for seed in range(10):
+        dataset, mount, tool = make_dataset()
+        rng = np.random.default_rng(seed)
+        errors = []
+        for i, pair in enumerate(dataset['pairs']):
+            center = np.array(pair['camera_center_m'])
+            rotation = Rotation.from_euler('xyz', [12. + i * 2., -5. + i, 15. * i], degrees=True).as_matrix()
+            normal = -rotation[:, 2]
+            face = center + .029 / 2. * normal
+            coordinates = np.linspace(-.029 / 2., .029 / 2., 31)
+            xx, yy = np.meshgrid(coordinates, coordinates)
+            cloud = face + np.c_[xx.ravel(), yy.ravel(), np.zeros(xx.size)] @ rotation.T
+            cloud += rng.normal(0., .0003, cloud.shape)
+            cloud[:, 2] = np.round(cloud[:, 2] * 1000.) / 1000.
+            cloud = cloud[rng.random(len(cloud)) < .7]
+            outliers = cloud[:50].copy(); outliers[:, 2] += .02
+            hypothesis = square_hypothesis(np.vstack((cloud, outliers)), .029)
+            measured = np.array(hypothesis['cube_center_depth_m'])
+            errors.append(float(np.linalg.norm(measured - center)))
+            pair['camera_center_m'] = measured.tolist()
+            pair['camera_center_source'] = 'Synthetic known-face point cloud; not physical evidence'
+        fitted = solve(dataset)
+        candidate = fitted['candidate']
+        if candidate is None:
+            raise AssertionError('Synthetic diverse pose dataset unexpectedly degenerate')
+        matrix = np.asarray(candidate['X_tool_from_depth_camera'])
+        records.append({'seed': seed, 'camera_center_errors_m': errors,
+            'mount_translation_error_m': float(np.linalg.norm(matrix[:3, 3] - mount[:3, 3])),
+            'mount_rotation_error_deg': float(np.degrees(Rotation.from_matrix(mount[:3, :3].T @ matrix[:3, :3]).magnitude())),
+            'tool_point_error_m': float(np.linalg.norm(np.array(candidate['cube_center_in_tool_m']) - tool)),
+            'training_rms_m': fitted['training']['rms_m'],
+            'held_out_error_m': fitted['held_out_validation']['maximum_m'],
+            'rank': fitted['excitation']['rank']})
+    return {'synthetic_only': True, 'hardware_or_production_touched': False,
+        'mode': 'Point cloud simulation, not raster RGB-D hardware or physical trajectory simulation',
+        'nominal_edge_m': .029, 'point_noise_per_axis_m': .0003,
+        'z_quantization_m': .001, 'random_missing_fraction': .3, 'outlier_z_shift_m': .02,
+        'trials': records, 'held_out_error_p95_m': float(np.quantile([r['held_out_error_m'] for r in records], .95)),
+        'maximum_camera_center_error_m': max(max(r['camera_center_errors_m']) for r in records),
+        'not_a_real_calibration_precision_claim': True}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--face-pipeline', action='store_true', help='Run synthetic noisy-face -> center -> mount fit pipeline')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Refusing to overwrite a previous simulation')
-    result = run_simulation()
+    result = run_face_pipeline_simulation() if args.face_pipeline else run_simulation()
     with args.output.open('x', encoding='utf-8') as stream:
         json.dump(result, stream, indent=2, allow_nan=False)
-    print(json.dumps({'output': str(args.output), 'synthetic_only': True,
-        'exact': result['cases']['diverse_exact_joint']['synthetic_truth_error'],
-        'yaw_joint_rank': result['cases']['yaw_only_unknown_center']['excitation']['rank'],
-        'noise_validation_p95_m': result['twenty_noise_trials']['p95_m']}))
+    if args.face_pipeline:
+        print(json.dumps({'output': str(args.output), 'synthetic_only': True,
+            'held_out_error_p95_m': result['held_out_error_p95_m'],
+            'maximum_camera_center_error_m': result['maximum_camera_center_error_m']}))
+    else:
+        print(json.dumps({'output': str(args.output), 'synthetic_only': True,
+            'exact': result['cases']['diverse_exact_joint']['synthetic_truth_error'],
+            'yaw_joint_rank': result['cases']['yaw_only_unknown_center']['excitation']['rank'],
+            'noise_validation_p95_m': result['twenty_noise_trials']['p95_m']}))
 
 
 if __name__ == '__main__':

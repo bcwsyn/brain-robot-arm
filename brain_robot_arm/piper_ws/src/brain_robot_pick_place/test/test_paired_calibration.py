@@ -7,6 +7,7 @@ from types import SimpleNamespace as NS
 
 import numpy as np
 import pytest
+from scipy.spatial.transform import Rotation
 
 sys.path.insert(0, str(Path(__file__).parent))
 import collect_calibration_sdk as sdk
@@ -28,6 +29,53 @@ def test_exact_full_parameter_recovery_and_prefix_excitation():
     assert result['five_plus_one_collection_complete']
     assert result['per_acquired_training_prefix'][0]['rank'] <= 3
     assert result['held_out_validation']['maximum_m'] < 1e-8
+
+
+@pytest.mark.parametrize('count', [1, 2])
+def test_collection_excitation_can_be_checked_before_enough_samples_to_fit(count):
+    data, _, _ = simulation.make_dataset()
+    data['pairs'] = data['pairs'][:count]
+    result = fit.check_collection(data)
+    assert result['candidate'] is None and result['check_only']
+    assert len(result['per_acquired_training_prefix']) == count
+    assert result['training_pairs'] == count
+    assert result['need_more_pairs']
+
+
+def test_collection_rank_check_does_not_fit_the_held_out_validation():
+    data, _, _ = simulation.make_dataset('yaw_only')
+    result = fit.check_collection(data)
+    assert result['per_acquired_training_prefix'][-1]['rank'] == 8
+    assert result['training_pairs'] == 5 and result['validation_pairs'] == 1
+    assert all('synthetic_06' not in r['pair_ids'] for r in result['per_acquired_training_prefix'])
+
+
+@pytest.mark.parametrize('angles', [[0., 0., 90.], [0., -90., 0.], [170., -40., 120.]])
+def test_large_mount_rotation_not_limited_to_the_small_angle_fixture(angles):
+    data, truth, tool = simulation.make_dataset()
+    truth[:3, :3] = Rotation.from_euler('xyz', angles, degrees=True).as_matrix()
+    for pair in data['pairs']:
+        obs = np.array(pair['T_base_tool_observe'])
+        grip = np.array(pair['T_base_tool_grip'])
+        base_point = (obs @ truth @ np.r_[pair['camera_center_m'], 1.])[:3]
+        grip[:3, 3] = base_point - grip[:3, :3] @ tool
+        pair['T_base_tool_grip'] = grip.tolist()
+    result = fit.solve(data)
+    assert np.array(result['candidate']['X_tool_from_depth_camera']) == pytest.approx(truth, abs=1e-7)
+
+
+def test_coplanar_positions_can_work_with_diverse_tilts_not_only_height_changes():
+    data, truth, tool = simulation.make_dataset()
+    for pair in data['pairs']:
+        pair['camera_center_m'][2] = .45
+        obs = np.array(pair['T_base_tool_observe'])
+        grip = np.array(pair['T_base_tool_grip'])
+        base_point = (obs @ truth @ np.r_[pair['camera_center_m'], 1.])[:3]
+        grip[:3, 3] = base_point - grip[:3, :3] @ tool
+        pair['T_base_tool_grip'] = grip.tolist()
+    result = fit.solve(data)
+    assert result['excitation']['rank'] == 9
+    assert np.array(result['candidate']['X_tool_from_depth_camera']) == pytest.approx(truth, abs=1e-7)
 
 
 def test_yaw_only_joint_point_gauge_is_not_hidden_by_small_residual():
