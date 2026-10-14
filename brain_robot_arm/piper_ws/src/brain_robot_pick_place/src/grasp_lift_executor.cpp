@@ -1966,6 +1966,34 @@ private:
            stage.rfind("AUTOMATIC_RGB_STEP_", 0) == 0;
   }
 
+  static geometry_msgs::msg::PoseStamped VisualTranslationPrefix(
+    const geometry_msgs::msg::PoseStamped & target, const Eigen::Isometry3d & current,
+    double tip_offset, double fraction)
+  {
+    const Eigen::Quaterniond desired(target.pose.orientation.w, target.pose.orientation.x,
+      target.pose.orientation.y, target.pose.orientation.z);
+    const Eigen::Vector3d origin(target.pose.position.x, target.pose.position.y, target.pose.position.z);
+    if (!std::isfinite(fraction) || fraction <= 0 || fraction >= 1 ||
+      !std::isfinite(tip_offset) || tip_offset <= 0 || !origin.allFinite() ||
+      !desired.coeffs().allFinite() || desired.norm() < 1e-12 || !current.matrix().allFinite())
+    {throw std::invalid_argument("Invalid visual translation prefix");}
+    const Eigen::Vector3d local_tip(0, 0, tip_offset);
+    const Eigen::Vector3d start_tip = current * local_tip;
+    const Eigen::Vector3d wanted_tip = origin + desired.normalized() * local_tip;
+    const Eigen::Vector3d prefix_origin = start_tip + fraction * (wanted_tip - start_tip) -
+      desired.normalized() * local_tip;
+    auto result = target;  // Keep the original bounded turn, frame and stamp.
+    result.pose.position.x = prefix_origin.x(); result.pose.position.y = prefix_origin.y();
+    result.pose.position.z = prefix_origin.z();
+    return result;
+  }
+
+  bool CanRetryVisualTranslation(const std::string & stage, bool automatic_segment) const
+  {
+    return CanRetryVisualOrientation(stage, automatic_segment) && terminal_target_frozen_ &&
+      near_depth_tracking_active_ && !coarse_depth_tracking_;
+  }
+
   bool ClipCheckedJointPrefix(trajectory_msgs::msg::JointTrajectory & trajectory,
     std::size_t accepted_points, const std::string & stage, bool automatic_segment)
   {
@@ -2027,6 +2055,32 @@ private:
         used_reachable_attitude = true;
         RCLCPP_INFO(get_logger(), "%s REACHABLE_VISUAL_ATTITUDE fraction=%.2f "
           "SAME_TIP_FULL_PATH_ORIGINAL_LIMITS", stage.c_str(), fraction);
+        break;
+      }
+    }
+    if (!planned && CanRetryVisualTranslation(stage, completed != nullptr)) {
+      const Eigen::Isometry3d current = state->getGlobalLinkTransform(target.header.frame_id).inverse() *
+        state->getGlobalLinkTransform(end_effector_link_);
+      for (const double fraction : {.50, .25}) {
+        const auto candidate = VisualTranslationPrefix(target, current, gripper_tip_offset_m_, fraction);
+        const auto candidate_stage = stage + "_TRANSLATION_" +
+          std::to_string(static_cast<int>(fraction * 100));
+        target_pose_publisher_->publish(candidate);
+        RCLCPP_INFO(get_logger(), "%s POSE_REQUEST frame=%s xyz=(%.12f,%.12f,%.12f) "
+          "q=(%.12f,%.12f,%.12f,%.12f) ORIGINAL_TURN_FULL_PREFIX_PLAN",
+          candidate_stage.c_str(), candidate.header.frame_id.c_str(), candidate.pose.position.x,
+          candidate.pose.position.y, candidate.pose.position.z, candidate.pose.orientation.x,
+          candidate.pose.orientation.y, candidate.pose.orientation.z, candidate.pose.orientation.w);
+        moveit_msgs::msg::RobotTrajectory candidate_plan;
+        if (!PlanArmCartesianFromState(candidate, candidate_stage, state, candidate_plan)) {continue;}
+        if (!RealTrajectoryWithinLimits(candidate_plan.joint_trajectory, rejection)) {
+          PublishDiagnostic(candidate_stage + ":" + rejection); continue;
+        }
+        plan = std::move(candidate_plan); planned_goal = candidate; planned = true;
+        // No attitude substitution: continue toward the original nominal pose
+        // from fresh RGB/feedback after this completely checked shorter move.
+        RCLCPP_INFO(get_logger(), "%s REACHABLE_VISUAL_TRANSLATION fraction=%.2f "
+          "ORIGINAL_TURN_FULL_PATH_ORIGINAL_LIMITS", stage.c_str(), fraction);
         break;
       }
     }

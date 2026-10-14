@@ -1,4 +1,10 @@
-## 2026-10-14：c0f56da推进修复实机通过，新增25/37完整路径不可达
+## 2026-10-14：平移前缀明确批准，原owner局部构建中
+
+接续：build0/46实际方法+10RGB回归rc0，候选d4c7063…/CPP19d4b4e…；新SDK1791942898.113/high100Hz、六true/速度0/q保持上次姿态、99.6mm/无错误。清理rc0由93%/5.9GB到92%/6.1GB，只原脚本、不额外删除。下一限定提交/备份actual c0f56da单executor部署→同原AUTO1；不将回归代替实机。详细同证据记录。
+
+用户同意上一50%/25%平移保留原转向提案；首五Git/实际cf5777e…/原入口87039b…/host无栈通过。仅原executor和3新方法测试，完整原请求/朝向候选均失败后试完整较短tip平移、仍1°朝向/8mm/.08rad/反馈/原范围，下一新RGB实际反馈重规划；冻结自动末段才允许、非预览/粗靠近，不改最终目标/TF/预算/中心夹持，不借平移前缀无条件跳点。构建session73381、未部署新运动；下一46+10回归→限定提交/备份c0f56da单executor部署→唯一AUTO1，详见[evidence/piper_translation_prefix_20261014.md](evidence/piper_translation_prefix_20261014.md)。根93%/5.9GB只运行指定清理脚本，既有用户dirty/远端分叉保持，仅本地未同步GitHub。
+
+## 历史：c0f56da推进修复实机通过，新25/37规划不可达
 
 原AUTO1主rc1正常退出：观测→SEARCH4831.293→ALIGN4842.877→GRASP_READY4845.281；11粗段后228.294mm质量冻结，同步37路点。23/24路点COMPLETED_REACHABLE真实到位推进，原卡点已解决；25路点step49全部规划fraction0停止，43总adapter accepted（11粗+24末段+8其他），没有最终下降/闭爪，中心检查未调用。同精确失败RGB4897614911235完整左下/center0/depth191mm恢复；三图核对不把native近黑当无深度。新SDK4994.290/high103.333Hz/六true/速度0/99.6mm/q[-.337808477,1.849734848,-1.392912369,.049933870,.909822686,-.101857415]rad，collector INT0/无残留栈，未Disable/Reset。精确隔离49原6.12mm及更大反向全失败，但+1°配50%/25%平移完整通过/原范围内；新增候选只提案待同意、应用仍c0f56da，不原样复跑。详细[evidence/piper_reachable_waypoint_20261014.md](evidence/piper_reachable_waypoint_20261014.md)。仅本地未同步GitHub（原分叉/历史审查），用户dirty保持。
 

@@ -73,6 +73,17 @@ struct NearDepthReplayAccess
   static bool RetryAttitude(GraspLiftExecutor & n, const std::string & stage, bool segment) {
     return n.CanRetryVisualOrientation(stage, segment);
   }
+  static auto TranslationPrefix(const geometry_msgs::msg::PoseStamped & p,
+    const Eigen::Isometry3d & current, double fraction) {
+    return GraspLiftExecutor::VisualTranslationPrefix(p, current, .1358, fraction);
+  }
+  static bool RetryTranslation(GraspLiftExecutor & n, const std::string & stage, bool segment) {
+    return n.CanRetryVisualTranslation(stage, segment);
+  }
+  static void FrozenApproach(GraspLiftExecutor & n) {
+    n.automatic_rgb_approach_enabled_ = true; n.terminal_target_frozen_ = true;
+    n.near_depth_tracking_active_ = true; n.coarse_depth_tracking_ = false;
+  }
   static bool WaypointReached(const grasp_geometry::DirectedPose & current,
     const grasp_geometry::DirectedPose & nominal,
     const grasp_geometry::DirectedPose * completed = nullptr) {
@@ -511,6 +522,53 @@ TEST_F(NearDepthExecutor, WithoutCompletedCandidateOriginalOrientationRuleRemain
   EXPECT_TRUE(NearDepthReplayAccess::WaypointReached(nominal, nominal));
   auto measured = nominal; measured.origin[0] += .011;
   EXPECT_FALSE(NearDepthReplayAccess::WaypointReached(measured, nominal));
+}
+
+TEST_F(NearDepthExecutor, TranslationPrefixesKeepTurnAndReduceTipNotWristTravel)
+{
+  Eigen::Isometry3d current = Eigen::Isometry3d::Identity();
+  current.translation() = Eigen::Vector3d(.3, -.1, .2);
+  const Eigen::Vector3d local_tip(0, 0, .1358);
+  const Eigen::Vector3d full_delta(.003, -.002, -.004952405934);
+  const Eigen::Quaterniond q(Eigen::AngleAxisd(.01745329252, Eigen::Vector3d::UnitY()));
+  const Eigen::Vector3d origin = current * local_tip + full_delta - q * local_tip;
+  geometry_msgs::msg::PoseStamped target;
+  target.header.frame_id = "base_link"; target.header.stamp.sec = 123;
+  target.pose.position.x = origin.x(); target.pose.position.y = origin.y(); target.pose.position.z = origin.z();
+  target.pose.orientation.x = q.x(); target.pose.orientation.y = q.y();
+  target.pose.orientation.z = q.z(); target.pose.orientation.w = q.w();
+  for (const double fraction : {.5, .25}) {
+    const auto p = NearDepthReplayAccess::TranslationPrefix(target, current, fraction);
+    const Eigen::Vector3d prefix_tip = Eigen::Vector3d(p.pose.position.x, p.pose.position.y,
+      p.pose.position.z) + q * local_tip;
+    EXPECT_LT((prefix_tip - current * local_tip - fraction * full_delta).norm(), 1e-12);
+    EXPECT_EQ(p.pose.orientation, target.pose.orientation);
+    EXPECT_EQ(p.header, target.header);
+  }
+}
+
+TEST_F(NearDepthExecutor, TranslationPrefixRejectsZeroOrExpandedMovementAndInvalidPose)
+{
+  geometry_msgs::msg::PoseStamped target; target.pose.orientation.w = 1;
+  const Eigen::Isometry3d current = Eigen::Isometry3d::Identity();
+  for (const double fraction : {0., -1., 1., 2., std::numeric_limits<double>::quiet_NaN()}) {
+    EXPECT_THROW(NearDepthReplayAccess::TranslationPrefix(target, current, fraction), std::invalid_argument);
+  }
+  target.pose.orientation.w = 0;
+  EXPECT_THROW(NearDepthReplayAccess::TranslationPrefix(target, current, .5), std::invalid_argument);
+}
+
+TEST_F(NearDepthExecutor, TranslationRetryOnlyUsesFrozenAutomaticTerminalSegments)
+{
+  NearDepthReplayAccess::Automatic(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::RetryTranslation(*node, "AUTOMATIC_RGB_STEP_49", true));
+  NearDepthReplayAccess::FrozenApproach(*node);
+  EXPECT_TRUE(NearDepthReplayAccess::RetryTranslation(*node, "AUTOMATIC_RGB_STEP_49", true));
+  EXPECT_FALSE(NearDepthReplayAccess::RetryTranslation(*node, "AUTOMATIC_RGB_STEP_49", false));
+  EXPECT_FALSE(NearDepthReplayAccess::RetryTranslation(*node, "VISUAL_PREVIEW", true));
+  EXPECT_FALSE(NearDepthReplayAccess::RetryTranslation(*node, "TARGET_DIRECTED_DESCENT", true));
+  NearDepthReplayAccess::Coarse(*node);
+  EXPECT_FALSE(NearDepthReplayAccess::RetryTranslation(*node, "AUTOMATIC_RGB_STEP_COARSE_0", true));
 }
 
 TEST_F(NearDepthExecutor, JointTravelReplansAfterOnlyTheAlreadyCheckedMovingPrefix)
