@@ -30,7 +30,7 @@ def snap():
 def stamp(m):return m.header.stamp.sec*10**9+m.header.stamp.nanosec
 rclpy.init(); node=rclpy.create_node('read_only_manual_terminal_capture')
 def receive_rgb(m):
- q=snap(); rgb_rows.append({'stamp_ns':stamp(m),'receive_epoch':time.time(),'feedback':q})
+ q=snap(); rgb_rows.append({'stamp_ns':str(stamp(m)),'receive_epoch':time.time(),'feedback':q})
  latest['rgb']=m; latest['rgb_feedback']=q
 subs=[]
 for topic,kind,label in [('/camera/depth/image_raw',Image,'depth'),('/camera/depth/camera_info',CameraInfo,'depth_info'),('/camera/color/camera_info',CameraInfo,'color_info'),('/brain_robot_vision/rgbd_observation',DiagnosticArray,'observation')]:
@@ -43,7 +43,7 @@ try:
  if 'rgb' not in latest: raise RuntimeError('No fresh RGB received in bounded window')
  rgb=latest['rgb']; q=latest['rgb_feedback']; image=bridge.imgmsg_to_cv2(rgb,'bgr8')
  rgb_path=out/(str(stamp(rgb))+'_rgb.png'); cv2.imwrite(str(rgb_path),image)
- report={'read_only':True,'motion_commands_sent':False,'rgb_stamp_ns':stamp(rgb),'rgb_frame':rgb.header.frame_id,
+ report={'read_only':True,'motion_commands_sent':False,'rgb_stamp_ns':str(stamp(rgb)),'rgb_frame':rgb.header.frame_id,
  'rgb_path':str(rgb_path),'rgb_sha256':hashlib.sha256(rgb_path.read_bytes()).hexdigest(),
  'rgb_size':[rgb.width,rgb.height],'feedback_at_rgb_receive':q,'feedback_stamp_minus_rgb_s':q['joint_stamp']-stamp(rgb)/1e9,
  'rgb_received':len(rgb_rows),'sdk_samples':len(joint_rows),'camera_info':{},'physical_grasp_verified':False}
@@ -54,12 +54,12 @@ try:
  report['max_speed_rad_s']=[max(abs(s['speed_millirad_s'][i]) for s in fresh)/1000 for i in range(6)]
  if 'depth' in latest:
   d=latest['depth']; arr=bridge.imgmsg_to_cv2(d,'passthrough'); dp=out/(str(stamp(d))+'_depth_raw.png'); cv2.imwrite(str(dp),arr)
-  report['depth']={'stamp_ns':stamp(d),'rgb_delta_s':(stamp(d)-stamp(rgb))/1e9,'frame':d.header.frame_id,'path':str(dp),'nonzero':int(np.count_nonzero(arr)),'size':[d.width,d.height]}
+  report['depth']={'stamp_ns':str(stamp(d)),'rgb_delta_s':(stamp(d)-stamp(rgb))/1e9,'frame':d.header.frame_id,'path':str(dp),'nonzero':int(np.count_nonzero(arr)),'size':[d.width,d.height]}
  for label in ['depth_info','color_info']:
   if label in latest:
-   m=latest[label]; report['camera_info'][label]={'stamp_ns':stamp(m),'frame':m.header.frame_id,'size':[m.width,m.height],'k':list(m.k),'d':list(m.d)}
+   m=latest[label]; report['camera_info'][label]={'stamp_ns':str(stamp(m)),'frame':m.header.frame_id,'size':[m.width,m.height],'k':list(m.k),'d':list(m.d)}
  if 'observation' in latest:
-  m=latest['observation']; report['detector_observation']={'stamp_ns':stamp(m),'frame':m.header.frame_id,'status':[{'name':s.name,'level':s.level,'message':s.message,'values':{v.key:v.value for v in s.values}} for s in m.status]}
+  m=latest['observation']; report['detector_observation']={'stamp_ns':str(stamp(m)),'frame':m.header.frame_id,'status':[{'name':s.name,'level':s.level,'message':s.message,'values':{v.key:v.value for v in s.values}} for s in m.status]}
  share=Path(get_package_share_directory('brain_robot_ball_pick'))
  task_path=share/'config/cube_task_real.yaml'; detector_path=share/'config/cube_detector.yaml'
  task=yaml.safe_load(task_path.read_text()); det=yaml.safe_load(detector_path.read_text())['cube_detector']['ros__parameters']

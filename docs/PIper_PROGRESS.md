@@ -1,4 +1,12 @@
-## 2026-10-14：静止原图证实实际夹持参考与原模型/中心不对应
+## 2026-10-14：真实手动终点三条隔离规划完整，不猜三维目标
+
+- 用户同意继续实际数据离线对照，两技能完整读取；无实体栈，仅域78原review_terminal_depth_plan.launch.py、原physical URDF/原task与执行禁用。输入终点源于上一轮真实SDK q_mdeg/原ROS .017444换算，未用无效深度或旧世界目标猜末点；无SDK连接/控制/新运动。新只读test/review_manual_endpoint_plan.py仅参数/状态valid/原PTP规划/scene读取。
+- 原观测→手动36.8mm、观测→同终点100mm模型、手动→观测36.8mm均rc0/error1/349点/全原范围，规划时长34.791820666秒、末误差≤1.11e-16rad。world/attached为空、octomap0，不能当真实桌面/方块碰撞已检查、实体执行或抓住证据；100mm未实际打开，也未验证真实ALIGN后任意起点。
+- 三张实际原RGB/原HSV+ellipse3对照：ALIGN[139,102,28,29]与stop[131,110,48,47]中心覆盖/未裁切，手动[127,157,88,83]中心未覆盖/下边裁切。原生产qualified_color_bbox拒裁切、最终FreshColorCenterCovered拒中心外，不能仅补候选就认为已修好；手动可见质心(170.727,199.534)也不是完整目标中心/夹持TCP，不硬编码为100mm张爪目标。上一矩形核1px差已说明，生产不改。
+- 原小JSON纳秒整数经JS归档桥舍入数ns，按原Python report/文件名四项恢复字符串；只读采集源改字符串归档，4项原戳比对及两个工具语法/no-control AST通过/rc0，不改控制代码/TF查询规则。此次静态规划不使用图戳TF，metadata纠正不改变规划输入/结果，未为了戳重跑实验。
+- 模型75s自然124/已知MoveIt SIGINT析构-11，与查询成功0分开；全部隔离退出/实体无新命令，旧最后3435.210六true/静止36.8mm仅历史记录。下一建议固定现场示教终点对照，需确认方块位置及具体授权/从新状态规划/原adapter/先不闭爪，或统一实际夹持参考方案；不能自动张爪回观测/重放隔离q或修改原中心/完整轮廓。实际3985466/原入口不变，完整目标未完成。详见[evidence/piper_manual_endpoint_plan_20261014.md](evidence/piper_manual_endpoint_plan_20261014.md)+JSON；本地Git/原dirty保留。
+
+## 历史：静止原图证实实际夹持参考与原模型/中心不对应
 
 - 用户“好的”同意紧前静止采集与离线对照方案；两技能读取，原实际路径核对，未改生产/启动运动。仅原Astra深度、独立320x240 RGB和cube_detector，新只读工具不建publisher/控制客户端、SDK piper_init=False/no writes；源归档test/review_manual_terminal_snapshot.py。首次JSON bytes字段rc1，原图/反馈已保存；仅分析序列化修复后5秒补采rc0/279新鲜SDK样本/14RGB，不能写首次即通过。
 - 已看新原RGB及叠图：RGB3346105498603方块框[128,157,87,83]/质心[170.760,199.520]、下边裁切；两指在实图可见、画面中心是背景，同戳原v2 color_center_covered=0/qualified0。仅二维投影不能证明接触/承载；当前depth640x400全部0，选取latest与RGB差96.1ms，不伪称同帧有效深度或计算新三维点。depth_info存在，无本次color_info；用已核工厂色内参离线投影。

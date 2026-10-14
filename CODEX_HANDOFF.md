@@ -1,4 +1,8 @@
-## 最新接续（2026-10-14：手动终点静止图像与模型不对应）
+## 最新接续（2026-10-14：实测终点隔离可达，原末段参考仍须修正）
+
+域78原模型/原范围/allow_execution=false，手动终点直接用前轮真实q/原接口换算。原观测→手动36.8/100mm开口、手动→观测36.8均原PTP完整349点/rc0；空world/attached，不当实体避碰或抓取证明，也非任意ALIGN后起点验证。三张原RGBellipse3阈值对照：原ALIGN/stop覆盖中心，手动候选中心不覆盖且底部裁切，所以原中心与qualified完整轮廓契约均不匹配该候选；可见裁切质心不是真实完整中心，不硬编码pixel或通用q。下一可提固定现场示教终点对照（仍原MoveIt/adapter、先只到位不闭爪），须用户确认方块位置/具体授权/新反馈规划，不自动张爪回观测或直发隔离轨迹。原生产/TF/条件未改，实际3985466保持，实体无新命令；隔离全部退出。见docs/evidence/piper_manual_endpoint_plan_20261014.md/JSON与test/review_manual_endpoint_plan.py；4项归档纳秒戳桥接舍入按原report字符串纠正/测试0，不改变控制时间闸门。本地Git/用户dirty保持，完整目标未完成。
+
+## 历史接续（2026-10-14：手动终点静止图像与模型不对应）
 
 用户批准静止采证据，本轮仅原Astra/RGB/cube_detector和只读SDK，未开驱动/adapter/Servo/执行器、未发运动。新RGB3346105498603方块二维处于可见两指之间、框[128,157,87,83]下边裁切/不覆盖画面中心，深度帧全0，不能证明接触/抓住；原模型两指均投影出画面、tip像素[93.60,268.86]，配置不解释实物，但尚未唯一归因安装TF/自装网格/参考点。原最终中心条件会拒绝此手动候选，未改该条件或外参，下一先离线实际夹持参考对照后具体方案获准；不直接回放手动q/加历史offset或盲J5。补采rc0/279稳定新鲜SDK样本，初轮JSON bytes序列化rc1已单独保留。所有图像节点退出，post3435.210/100Hz/六true/速度0/q_mdeg[-12173,110855,-62094,-1619,32287,6682]/36.8mm，与使能记录J5差36mdeg单列。actual3985466不变、完整目标未完成；docs/evidence/piper_manual_terminal_snapshot_20261014.md/JSON及只读工具test/review_manual_terminal_snapshot.py已归档。组合/Servo timeout仍待同意，Git仅本地/原dirty保持。
 

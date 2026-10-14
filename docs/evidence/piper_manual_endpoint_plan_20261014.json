@@ -1,0 +1,173 @@
+{
+  "read_only": true,
+  "motion_sent": false,
+  "domain": 78,
+  "source_rgb_stamp_ns": "1791953346105498603",
+  "source_joint_stamp": 1791953346.1045732,
+  "source_task_sha256": "a0111d3f6a412a96b327a7ae72913f864241a6d33642e2a46ca2c9c4478a2fe4",
+  "manual_q_ros_rad": [
+    -0.21234581200000002,
+    1.9337546200000002,
+    -1.083167736,
+    -0.028241836000000003,
+    0.563214428,
+    0.11656080800000002
+  ],
+  "observe_q_ros_rad": [
+    0,
+    0.98,
+    -0.75,
+    0,
+    0.3,
+    0
+  ],
+  "queries": [
+    {
+      "label": "observe_to_manual_measured_opening",
+      "opening_m": 0.0368,
+      "start_validity": {
+        "valid": true,
+        "contacts": []
+      },
+      "goal_validity": {
+        "valid": true,
+        "contacts": []
+      },
+      "error_code": 1,
+      "point_count": 349,
+      "joint_names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "planning_time_s": 0.051520114,
+      "within_original_task_limits": true,
+      "endpoint_error_rad": 3.469446951953614e-18,
+      "complete_to_measured_goal": true,
+      "planning_duration_s": 34.791820666
+    },
+    {
+      "label": "observe_to_manual_original_full_opening",
+      "opening_m": 0.1,
+      "start_validity": {
+        "valid": true,
+        "contacts": []
+      },
+      "goal_validity": {
+        "valid": true,
+        "contacts": []
+      },
+      "error_code": 1,
+      "point_count": 349,
+      "joint_names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "planning_time_s": 0.000767924,
+      "within_original_task_limits": true,
+      "endpoint_error_rad": 3.469446951953614e-18,
+      "complete_to_measured_goal": true,
+      "planning_duration_s": 34.791820666
+    },
+    {
+      "label": "manual_to_observe_measured_opening",
+      "opening_m": 0.0368,
+      "start_validity": {
+        "valid": true,
+        "contacts": []
+      },
+      "goal_validity": {
+        "valid": true,
+        "contacts": []
+      },
+      "error_code": 1,
+      "point_count": 349,
+      "joint_names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "planning_time_s": 0.118655848,
+      "within_original_task_limits": true,
+      "endpoint_error_rad": 1.1102230246251565e-16,
+      "complete_to_measured_goal": true,
+      "planning_duration_s": 34.791820666
+    }
+  ],
+  "warning": "PTP model feasibility only; neither physical clearance, cube contact, nor a full approach/grasp test. 100mm opening is the existing task target, not a new measurement.",
+  "allow_trajectory_execution": false,
+  "loaded_urdf_sha256": "a93ac8cba44d02dc09ca52442bb72e8d8c92f97dd732cee08702e1fe9438c581",
+  "scene": {
+    "world_object_ids": [],
+    "attached_object_ids": [],
+    "octomap_bytes": 0
+  },
+  "metadata_correction": "Nanosecond source stamp represented as exact string from original Python capture report; previous archival numeric bridge rounded a few ns. No image-time TF or hardware timing is used by these static joint-goal queries.",
+  "raw_color_reference_comparison": [
+    {
+      "label": "aligned",
+      "stamp_ns": "1791950803716299920",
+      "opening_mm": 99.6,
+      "box_xywh": [
+        139,
+        102,
+        28,
+        29
+      ],
+      "visible_contour_centroid_px": [
+        152.28194993412384,
+        115.50197628458498
+      ],
+      "center_covered": true,
+      "bottom_clipped": false
+    },
+    {
+      "label": "approach_stop",
+      "stamp_ns": "1791950874118085955",
+      "opening_mm": 99.6,
+      "box_xywh": [
+        131,
+        110,
+        48,
+        47
+      ],
+      "visible_contour_centroid_px": [
+        154.77049362174154,
+        132.21830282861896
+      ],
+      "center_covered": true,
+      "bottom_clipped": false
+    },
+    {
+      "label": "manual_reference",
+      "stamp_ns": "1791953346105498603",
+      "opening_mm": 36.8,
+      "box_xywh": [
+        127,
+        157,
+        88,
+        83
+      ],
+      "visible_contour_centroid_px": [
+        170.7268655170628,
+        199.5342550877738
+      ],
+      "center_covered": false,
+      "bottom_clipped": true
+    }
+  ],
+  "visual_comparison_method": "Original configured HSV thresholds and ellipse3 opening/closing; only visible contour, not shape-qualified RGB-D, hidden cube centre, depth or contact. Differs by one pixel from earlier rectangle-kernel diagnostic.",
+  "production_modified": false,
+  "hardware_executed": false,
+  "motion_authorized": false
+}
