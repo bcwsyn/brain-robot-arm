@@ -1,4 +1,11 @@
-## 2026-10-14 17:37：第一组人工侧实测入库，与原位观测记录关联
+## 2026-10-14：用户授权发布第一组数据，历史审查通过，隔离保留双方提交
+
+- 用户明确要求推送GitHub并提供第一组数据网址；本轮仅Git发布，不运行ROS/SDK或机械臂。使用手术式技能保护原dirty，origin核对为https://github.com/bcwsyn/brain-robot-arm.git，目标main。
+- 独立timeout -k2s25s git ls-remote读取remote main=50a5cc2ddcb4473ca373cd4ef1b7248736e59b0f；一次fetch rc0同值，本地f36ea50相对7/1。remote仅独立cup仿真文档/回放15路径，与本地七提交的21路径不重叠。当前多处cup/vendor未提交内容不能覆盖或混入，采用临时隔离Git worktree仅发布，规范/实际控制路径仍/mnt/hgfs/ub，不切换实体代码或丢弃dirty。
+- 全部七个未推送提交及其39个唯一新增/修改blob版本已扫描，最大PIper_PROGRESS.md 876535B；无二进制/超过10MiB文件/私钥、常见token、AWS key、GitHub带密码URL及用户给出的密码字面模式命中。图片/原SDK/升级包/未跟踪文件不上传，清单保留本机路径/hash。
+- 下一在隔离索引普通merge保留双方祖先，审查限定历史及合并结果后普通push main，独立远端读取验证包含f36ea50，再补成功记录。此条为发布前审查，不冒称push已成功；禁止强推/历史改写/更新当前dirty工作树。稳定数据网址将使用f36ea50完整SHA/blob/docs/evidence/piper_calibration_pair01_20261014.json。
+
+## 历史：2026-10-14 17:37：第一组人工侧实测入库，与原位观测记录关联
 
 - 用户“第一组已完成/现在记录/准备第二组”，随后明确确认“方块未移动，现在在两指之间”。按ROS2/手术式技能只读采样，不改应用/配置/外参，不使能/失能/自动运动。host无原控制/相机栈，can0 ERROR-ACTIVE/1Mbps/.75/queue1000/RX增长，直接复用，没有再次恢复或普通底层检查。
 - SDK piper_init=False、30个新样本/约1.5秒/rc0，first epoch1791970513.6777513/joint0513.6736093，last0515.1360152/joint0515.1336539。q_mdeg[-5366,106190,-60735,7383,32906,3896]、degrees[-5.366,106.190,-60.735,7.383,32.906,3.896]、原ROS q[-.093604504,1.85237836,-1.05946134,.128789052,.574012264,.067961824]；六true/100Hz/速度全0、各轴spread0，夹爪实际101.5mm。raw30行保存home/pair01_grasp_20261014_1735_sdk.json/SHAba3cc9f…，不是重用旧手动q。
