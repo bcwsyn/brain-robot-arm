@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "synthetic": false,
+  "status": "TEMPLATE_NOT_MEASURED_NOT_FIT_READY",
+  "frames": {
+    "base": "base_link",
+    "tool": "gripper_base",
+    "camera": "camera_depth_optical_frame"
+  },
+  "known_tool_point": null,
+  "cube_edge": {
+    "historical_estimate_m": 0.028,
+    "new_proposed_nominal_m": 0.029,
+    "caliper_measured_m": null
+  },
+  "pairs": [
+    {
+      "pair_id": "pair01_20261014_trial",
+      "role": "trial",
+      "source": "../piper_calibration_20261014/pair01/manifest.json",
+      "reason": "101.5mm opening, no contact, common physical center not verified"
+    },
+    {
+      "pair_id": "new_pair02",
+      "role": "fit",
+      "reference": "cube_geometric_center",
+      "camera_center_verified": false,
+      "physical_grip_verified": false,
+      "released_without_object_motion_verified": false,
+      "camera_center_m": null,
+      "camera_center_source": null,
+      "T_base_tool_observe": null,
+      "T_base_tool_grip": null,
+      "cube_grip_depth_reference": null,
+      "raw_manifest_source": null,
+      "urdf_sha256": null,
+      "actual_q_units": "q_mdeg and original driver q_mdeg/1000*0.017444",
+      "sdk_capture_source": null,
+      "rgbd_capture_source": null
+    }
+  ],
+  "planned_roles": {
+    "new_pair02": "fit",
+    "new_pair03": "fit",
+    "new_pair04": "fit",
+    "new_pair05": "fit",
+    "new_pair06": "fit",
+    "new_pair07": "validation"
+  },
+  "warning": "Do not set verification fields true from an estimate. Replace null only with raw-evidence-derived values; candidate and raw-data copies remain separate."
+}

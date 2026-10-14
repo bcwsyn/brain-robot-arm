@@ -1,0 +1,3531 @@
+{
+  "offline_only": true,
+  "synthetic": false,
+  "raw_modified": false,
+  "production_configuration_changed": false,
+  "manifest_sha256": "4c6021b1d408968bd6b15e278f99ccd0de56ae2d226e6ef82461aaf03ed9f26f",
+  "registration": "Unchanged production pinhole D->C; no inverse/distortion candidate chosen by sample count",
+  "groups": {
+    "high": {
+      "frames": 10,
+      "snapshots": [
+        2,
+        3,
+        7,
+        9,
+        11,
+        14,
+        15,
+        19,
+        24,
+        25
+      ],
+      "median_surface_xyz_m": [
+        -0.010847553146544538,
+        0.03870982102917017,
+        0.44
+      ],
+      "median_same_footprint_zero_fraction": 0.003586065573770447
+    },
+    "low": {
+      "frames": 20,
+      "snapshots": [
+        1,
+        4,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        23,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "median_surface_xyz_m": [
+        -0.0036379796695346772,
+        0.055215009345886565,
+        0.457
+      ],
+      "median_same_footprint_zero_fraction": 0.8770491803278688
+    }
+  },
+  "group_surface_separation_m": 0.024766897082409735,
+  "shared_native_preview_roi_xyxy": [
+    291,
+    214,
+    337,
+    268
+  ],
+  "previews": [
+    "high_snapshot_0002.png",
+    "low_snapshot_0001.png"
+  ],
+  "conclusion_limits": [
+    "The same native footprint can directly reveal depth holes independently of robot TF.",
+    "Different selected sample locations/surface depths are not independent random repeats of one cube center.",
+    "No evidence here uniquely identifies sensor processing, occlusion, frame phase or registration as root cause.",
+    "Neither high coverage nor a surface median establishes geometric cube center. Pair01 remains trial only."
+  ],
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1791972213358258345",
+        "depth": "1791972213334938325",
+        "depth_info": "1791972213334938325",
+        "feedback": "1791972213356954194"
+      },
+      "stamp_span_s": 0.02332002,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        118,
+        21,
+        21
+      ],
+      "native_depth_samples": 124,
+      "eroded_color_pixels": 278,
+      "color_pixel_coverage": 0.14388489208633093,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.456,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.0045747470155251165,
+        0.05500158854775227,
+        0.456
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "448": 3,
+        "451": 8,
+        "452": 1,
+        "453": 8,
+        "454": 19,
+        "455": 7,
+        "456": 18,
+        "457": 13,
+        "458": 2,
+        "459": 4,
+        "460": 1,
+        "461": 12,
+        "465": 3,
+        "466": 4,
+        "467": 7,
+        "468": 6,
+        "469": 3,
+        "470": 4,
+        "471": 1
+      },
+      "depth_info": {
+        "stamp": 1791972213.3349383,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0001_rgb.png",
+          "stamp": 1791972213.3582585,
+          "frame": "camera_color_optical_frame",
+          "sha256": "bb82ede8d395e1a83e58034606f181be960077f06f6f99d210e4e3c209393443"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0001_depth.png",
+          "stamp": 1791972213.3349383,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "7e77be3bb78cce7ec5e34243c6c3aa600f6f9b5c3245c613b0020efec92f6b57"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        236,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 124,
+        "zero_fraction": 0.8729508196721312,
+        "nonzero_median_mm": 457.0,
+        "selected_intersection_pixels": 104,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1791972213958244874",
+        "depth": "1791972213905182972",
+        "depth_info": "1791972213905182972",
+        "feedback": "1791972213956831756"
+      },
+      "stamp_span_s": 0.053061902,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        130,
+        117,
+        19,
+        22
+      ],
+      "native_depth_samples": 976,
+      "eroded_color_pixels": 278,
+      "color_pixel_coverage": 0.9460431654676259,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.010257086008477422,
+        0.03870982102917017,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "436": 172,
+        "437": 115,
+        "438": 111,
+        "439": 45,
+        "440": 100,
+        "441": 52,
+        "442": 97,
+        "443": 53,
+        "444": 106,
+        "447": 1,
+        "448": 1,
+        "451": 9,
+        "452": 12,
+        "453": 9,
+        "454": 12,
+        "455": 5,
+        "456": 7,
+        "457": 6,
+        "458": 1,
+        "459": 2,
+        "460": 6,
+        "461": 3,
+        "462": 2,
+        "463": 1,
+        "464": 4,
+        "465": 1,
+        "466": 6,
+        "467": 9,
+        "468": 4,
+        "469": 3,
+        "470": 1,
+        "471": 6,
+        "472": 1,
+        "473": 4,
+        "480": 1,
+        "481": 8
+      },
+      "depth_info": {
+        "stamp": 1791972213.905183,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0002_rgb.png",
+          "stamp": 1791972213.9582448,
+          "frame": "camera_color_optical_frame",
+          "sha256": "7c2ee79f7833fbd35ca7f8eefa5509d2f8f57e3b5e2d9b4796e390355c550448"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0002_depth.png",
+          "stamp": 1791972213.905183,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "d0e04b17dbab1a0b4209540d503e883e71b8a99c756cf3dc54694916a576304d"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        299,
+        222,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 976,
+        "zero_fraction": 0.0,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 976,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1791972214558254218",
+        "depth": "1791972214534132213",
+        "depth_info": "1791972214534132213",
+        "feedback": "1791972214557070525"
+      },
+      "stamp_span_s": 0.024122005,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        130,
+        117,
+        20,
+        22
+      ],
+      "native_depth_samples": 991,
+      "eroded_color_pixels": 285,
+      "color_pixel_coverage": 0.9333333333333333,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.009928405904338364,
+        0.03879819961599476,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 16,
+        "436": 157,
+        "437": 115,
+        "438": 115,
+        "439": 40,
+        "440": 95,
+        "441": 42,
+        "442": 101,
+        "443": 57,
+        "444": 112,
+        "446": 1,
+        "448": 2,
+        "452": 20,
+        "453": 8,
+        "454": 16,
+        "455": 3,
+        "456": 16,
+        "457": 6,
+        "459": 2,
+        "460": 3,
+        "461": 6,
+        "462": 1,
+        "463": 1,
+        "465": 4,
+        "466": 3,
+        "467": 12,
+        "468": 9,
+        "469": 8,
+        "470": 1,
+        "471": 5,
+        "472": 4,
+        "473": 2,
+        "474": 7,
+        "475": 1
+      },
+      "depth_info": {
+        "stamp": 1791972214.5341322,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0003_rgb.png",
+          "stamp": 1791972214.5582542,
+          "frame": "camera_color_optical_frame",
+          "sha256": "3e238ad93493639b70413d10835e217f5606e5523debf87f3bf68dd19fe8ea04"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0003_depth.png",
+          "stamp": 1791972214.5341322,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "4ea867ea85774d9052e3e9594b77442ed955bd1c723d3fdd7cef73cc88e69974"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        299,
+        222,
+        331,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 973,
+        "zero_fraction": 0.0030737704918032405,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 951,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1791972215158267776",
+        "depth": "1791972215139715939",
+        "depth_info": "1791972215139715939",
+        "feedback": "1791972215151890965"
+      },
+      "stamp_span_s": 0.018551837,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        130,
+        118,
+        19,
+        21
+      ],
+      "native_depth_samples": 134,
+      "eroded_color_pixels": 282,
+      "color_pixel_coverage": 0.1524822695035461,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.459,
+      "surface_mad_m": 0.007000000000000006,
+      "surface_componentwise_median_xyz_m": [
+        -0.0018167734888447189,
+        0.05426986009700613,
+        0.459
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "445": 4,
+        "452": 10,
+        "454": 30,
+        "455": 11,
+        "456": 8,
+        "457": 3,
+        "459": 5,
+        "462": 1,
+        "465": 5,
+        "466": 7,
+        "467": 5,
+        "468": 2,
+        "469": 3,
+        "470": 2,
+        "471": 4,
+        "472": 2,
+        "473": 2,
+        "474": 5,
+        "475": 6,
+        "476": 1,
+        "477": 5,
+        "478": 4,
+        "479": 1,
+        "480": 5,
+        "481": 3
+      },
+      "depth_info": {
+        "stamp": 1791972215.139716,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0004_rgb.png",
+          "stamp": 1791972215.158268,
+          "frame": "camera_color_optical_frame",
+          "sha256": "4befcc3ebc68ee936f389e34a40c780f97045160b2e0db2db077bb705bc1c6e5"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0004_depth.png",
+          "stamp": 1791972215.139716,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "da2ff60279eed843a9c298394f8c4315b4d6c08aa2db1da024967b2bab3cb4f9"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 128,
+        "zero_fraction": 0.8688524590163934,
+        "nonzero_median_mm": 465.0,
+        "selected_intersection_pixels": 106,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1791972215758218657",
+        "depth": "1791972215738984819",
+        "depth_info": "1791972215738984819",
+        "feedback": "1791972215756983470"
+      },
+      "stamp_span_s": 0.019233838,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        118,
+        19,
+        21
+      ],
+      "native_depth_samples": 129,
+      "eroded_color_pixels": 278,
+      "color_pixel_coverage": 0.1474820143884892,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.457,
+      "surface_mad_m": 0.0040000000000000036,
+      "surface_componentwise_median_xyz_m": [
+        -0.003645957695125762,
+        0.05524549803133432,
+        0.457
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "452": 6,
+        "453": 4,
+        "454": 36,
+        "455": 6,
+        "456": 10,
+        "457": 4,
+        "458": 4,
+        "460": 3,
+        "461": 2,
+        "465": 4,
+        "466": 4,
+        "467": 5,
+        "468": 2,
+        "469": 2,
+        "470": 4,
+        "471": 4,
+        "472": 2,
+        "473": 3,
+        "474": 6,
+        "475": 3,
+        "476": 3,
+        "477": 5,
+        "478": 4,
+        "480": 1,
+        "481": 2
+      },
+      "depth_info": {
+        "stamp": 1791972215.7389846,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0005_rgb.png",
+          "stamp": 1791972215.7582188,
+          "frame": "camera_color_optical_frame",
+          "sha256": "091e210dd8c7f2d1d00f564dbb6675740bbc300fb04adaf717231ee0f283c831"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0005_depth.png",
+          "stamp": 1791972215.7389846,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "ca2d802732c8142f378ee43891eb19b402e4b7860f17d19c5ee1f05de0d63488"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 124,
+        "zero_fraction": 0.8729508196721312,
+        "nonzero_median_mm": 465.0,
+        "selected_intersection_pixels": 101,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 6,
+      "stamps_ns": {
+        "rgb": "1791972216358282240",
+        "depth": "1791972216338398950",
+        "depth_info": "1791972216338398950",
+        "feedback": "1791972216357068713"
+      },
+      "stamp_span_s": 0.01988329,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        118,
+        20,
+        21
+      ],
+      "native_depth_samples": 119,
+      "eroded_color_pixels": 283,
+      "color_pixel_coverage": 0.13780918727915195,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.456,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.0036379796695346772,
+        0.05524549803133432,
+        0.456
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "448": 3,
+        "452": 9,
+        "453": 2,
+        "454": 27,
+        "455": 6,
+        "456": 14,
+        "457": 7,
+        "458": 3,
+        "459": 4,
+        "460": 1,
+        "461": 5,
+        "465": 8,
+        "466": 3,
+        "467": 5,
+        "468": 3,
+        "469": 3,
+        "470": 1,
+        "471": 7,
+        "472": 3,
+        "473": 2,
+        "474": 1,
+        "481": 1,
+        "482": 1
+      },
+      "depth_info": {
+        "stamp": 1791972216.338399,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0006_rgb.png",
+          "stamp": 1791972216.3582823,
+          "frame": "camera_color_optical_frame",
+          "sha256": "3cfbe056899184a6279c07d1cb742b4f3b8f91a539bedf60fddc0f0e4f9a5765"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0006_depth.png",
+          "stamp": 1791972216.338399,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "d93477ac34b7ab5eb5b5ba34daeda5d29f4d4e8304193c2198345cda4faf7a33"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 117,
+        "zero_fraction": 0.8801229508196722,
+        "nonzero_median_mm": 461.0,
+        "selected_intersection_pixels": 93,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 7,
+      "stamps_ns": {
+        "rgb": "1791972216958546623",
+        "depth": "1791972216941184713",
+        "depth_info": "1791972216941184713",
+        "feedback": "1791972216956942054"
+      },
+      "stamp_span_s": 0.01736191,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        118,
+        21,
+        21
+      ],
+      "native_depth_samples": 1029,
+      "eroded_color_pixels": 290,
+      "color_pixel_coverage": 0.9482758620689655,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.010847553146544538,
+        0.03879819961599476,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 33,
+        "436": 52,
+        "437": 194,
+        "438": 110,
+        "439": 42,
+        "440": 92,
+        "441": 46,
+        "442": 119,
+        "443": 56,
+        "444": 136,
+        "446": 2,
+        "452": 7,
+        "453": 7,
+        "454": 22,
+        "455": 13,
+        "456": 17,
+        "457": 8,
+        "458": 4,
+        "459": 3,
+        "460": 2,
+        "461": 13,
+        "462": 1,
+        "463": 1,
+        "464": 1,
+        "465": 1,
+        "466": 4,
+        "467": 9,
+        "468": 3,
+        "469": 3,
+        "470": 3,
+        "471": 6,
+        "472": 1,
+        "473": 1,
+        "474": 6,
+        "475": 2,
+        "476": 1,
+        "477": 5,
+        "478": 1,
+        "481": 2
+      },
+      "depth_info": {
+        "stamp": 1791972216.9411848,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0007_rgb.png",
+          "stamp": 1791972216.9585466,
+          "frame": "camera_color_optical_frame",
+          "sha256": "eab8957df8d264b666129cf0585cbbe75b04a78ea8911f1e0ec9a12c44b6f027"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0007_depth.png",
+          "stamp": 1791972216.9411848,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "53dd2215194ee5dd577ba1b888a0045912bc425cc5a421cbcab354a3db46f324"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        224,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 974,
+        "zero_fraction": 0.002049180327868827,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 951,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 8,
+      "stamps_ns": {
+        "rgb": "1791972217758505619",
+        "depth": "1791972217699564009",
+        "depth_info": "1791972217699564009",
+        "feedback": "1791972217756987952"
+      },
+      "stamp_span_s": 0.05894161,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        130,
+        118,
+        19,
+        21
+      ],
+      "native_depth_samples": 116,
+      "eroded_color_pixels": 281,
+      "color_pixel_coverage": 0.13523131672597866,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.456,
+      "surface_mad_m": 0.0040000000000000036,
+      "surface_componentwise_median_xyz_m": [
+        -0.0069330466668003,
+        0.054767037823062616,
+        0.456
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "448": 2,
+        "450": 1,
+        "451": 2,
+        "452": 11,
+        "453": 6,
+        "454": 15,
+        "455": 12,
+        "456": 11,
+        "457": 1,
+        "458": 2,
+        "460": 1,
+        "461": 3,
+        "466": 3,
+        "467": 9,
+        "468": 4,
+        "469": 3,
+        "470": 2,
+        "471": 4,
+        "472": 6,
+        "473": 1,
+        "477": 3,
+        "478": 1,
+        "479": 3,
+        "481": 10
+      },
+      "depth_info": {
+        "stamp": 1791972217.699564,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0008_rgb.png",
+          "stamp": 1791972217.7585058,
+          "frame": "camera_color_optical_frame",
+          "sha256": "22435569ce070a3c69bcf890f632252b63c62b15b6e707f3cd2c78efce6b132f"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0008_depth.png",
+          "stamp": 1791972217.699564,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "9fcf486d4943480a2808032d1d402679ee1c4eae72361e872dba774153bae6f5"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        298,
+        224,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 116,
+        "zero_fraction": 0.8811475409836066,
+        "nonzero_median_mm": 458.0,
+        "selected_intersection_pixels": 97,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 9,
+      "stamps_ns": {
+        "rgb": "1791972218358331168",
+        "depth": "1791972218334114471",
+        "depth_info": "1791972218334114471",
+        "feedback": "1791972218356823250"
+      },
+      "stamp_span_s": 0.024216697,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        118,
+        20,
+        21
+      ],
+      "native_depth_samples": 981,
+      "eroded_color_pixels": 279,
+      "color_pixel_coverage": 0.942652329749104,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.010822787043470236,
+        0.03870982102917017,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 4,
+        "436": 150,
+        "437": 121,
+        "438": 124,
+        "439": 47,
+        "440": 96,
+        "441": 44,
+        "442": 112,
+        "443": 63,
+        "444": 110,
+        "445": 1,
+        "446": 1,
+        "451": 3,
+        "452": 12,
+        "453": 8,
+        "454": 20,
+        "455": 3,
+        "456": 12,
+        "457": 1,
+        "459": 3,
+        "460": 3,
+        "461": 3,
+        "466": 4,
+        "467": 13,
+        "468": 3,
+        "469": 4,
+        "471": 5,
+        "472": 2,
+        "473": 4,
+        "474": 1,
+        "477": 3,
+        "478": 1
+      },
+      "depth_info": {
+        "stamp": 1791972218.3341146,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0009_rgb.png",
+          "stamp": 1791972218.3583312,
+          "frame": "camera_color_optical_frame",
+          "sha256": "d3958011ddc2352fa2e2c46b93f374050b2e76060bcf2ba2a2de36d06f0a8b92"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0009_depth.png",
+          "stamp": 1791972218.3341146,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "463e9904cdf2da3e383f62f8470167dea092ac40c8c212d2b94aa7538d744306"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        297,
+        224,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 970,
+        "zero_fraction": 0.006147540983606592,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 947,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 10,
+      "stamps_ns": {
+        "rgb": "1791972218958347155",
+        "depth": "1791972218899030153",
+        "depth_info": "1791972218899030153",
+        "feedback": "1791972218956979420"
+      },
+      "stamp_span_s": 0.059317002,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        118,
+        22,
+        21
+      ],
+      "native_depth_samples": 132,
+      "eroded_color_pixels": 281,
+      "color_pixel_coverage": 0.15302491103202848,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.459,
+      "surface_mad_m": 0.006000000000000005,
+      "surface_componentwise_median_xyz_m": [
+        -0.001820554495064999,
+        0.05518452066043881,
+        0.459
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "452": 1,
+        "453": 9,
+        "454": 29,
+        "455": 8,
+        "456": 12,
+        "457": 4,
+        "458": 2,
+        "459": 4,
+        "461": 2,
+        "462": 1,
+        "464": 3,
+        "465": 6,
+        "466": 7,
+        "467": 5,
+        "468": 3,
+        "469": 4,
+        "470": 2,
+        "471": 7,
+        "472": 5,
+        "473": 2,
+        "474": 9,
+        "476": 2,
+        "479": 3,
+        "481": 1,
+        "482": 1
+      },
+      "depth_info": {
+        "stamp": 1791972218.8990302,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0010_rgb.png",
+          "stamp": 1791972218.9583473,
+          "frame": "camera_color_optical_frame",
+          "sha256": "3f14c2529f99d86d77d1e76a543f6201f493ecd93bea034e7dc5a382c3572567"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0010_depth.png",
+          "stamp": 1791972218.8990302,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "75aa3c1d1efad1f4e032f7bdc2f2d1ee9f5953b346bcb3f0a5eada0372d94dcf"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        293,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 124,
+        "zero_fraction": 0.8729508196721312,
+        "nonzero_median_mm": 464.5,
+        "selected_intersection_pixels": 108,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 11,
+      "stamps_ns": {
+        "rgb": "1791972219558421260",
+        "depth": "1791972219533645945",
+        "depth_info": "1791972219533645945",
+        "feedback": "1791972219556852298"
+      },
+      "stamp_span_s": 0.024775315,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        117,
+        22,
+        22
+      ],
+      "native_depth_samples": 1024,
+      "eroded_color_pixels": 289,
+      "color_pixel_coverage": 0.9446366782006921,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.01094661755884175,
+        0.03870982102917017,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 48,
+        "436": 40,
+        "437": 181,
+        "438": 127,
+        "439": 49,
+        "440": 76,
+        "441": 47,
+        "442": 118,
+        "443": 58,
+        "444": 129,
+        "445": 2,
+        "446": 2,
+        "448": 3,
+        "451": 3,
+        "452": 2,
+        "453": 1,
+        "454": 38,
+        "455": 5,
+        "456": 8,
+        "457": 5,
+        "458": 1,
+        "459": 4,
+        "461": 2,
+        "462": 2,
+        "463": 2,
+        "465": 1,
+        "466": 8,
+        "467": 5,
+        "468": 2,
+        "469": 4,
+        "470": 4,
+        "471": 8,
+        "472": 2,
+        "473": 3,
+        "474": 5,
+        "475": 3,
+        "476": 2,
+        "477": 3,
+        "480": 2,
+        "481": 12,
+        "482": 6,
+        "483": 1
+      },
+      "depth_info": {
+        "stamp": 1791972219.5336459,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0011_rgb.png",
+          "stamp": 1791972219.5584211,
+          "frame": "camera_color_optical_frame",
+          "sha256": "10baa102adec660a6d046613814ebe1661ba0f3144ef816ece58bdc8ccd7c723"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0011_depth.png",
+          "stamp": 1791972219.5336459,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "353befeac5e0fab8f03966ef06d5a2033a458d08ff40d68c38e7d920308ea093"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        222,
+        331,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 968,
+        "zero_fraction": 0.008196721311475419,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 932,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 12,
+      "stamps_ns": {
+        "rgb": "1791972220158352237",
+        "depth": "1791972220068739306",
+        "depth_info": "1791972220068739306",
+        "feedback": "1791972220156830059"
+      },
+      "stamp_span_s": 0.089612931,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        127,
+        119,
+        23,
+        20
+      ],
+      "native_depth_samples": 143,
+      "eroded_color_pixels": 286,
+      "color_pixel_coverage": 0.15384615384615385,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.459,
+      "surface_mad_m": 0.0050000000000000044,
+      "surface_componentwise_median_xyz_m": [
+        -0.004594900086078091,
+        0.055367452773125346,
+        0.459
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "451": 4,
+        "454": 23,
+        "455": 14,
+        "456": 18,
+        "457": 4,
+        "458": 3,
+        "459": 6,
+        "460": 1,
+        "463": 3,
+        "464": 2,
+        "465": 17,
+        "466": 4,
+        "467": 5,
+        "468": 2,
+        "469": 5,
+        "470": 4,
+        "471": 6,
+        "472": 1,
+        "473": 2,
+        "474": 5,
+        "475": 1,
+        "476": 3,
+        "477": 7,
+        "479": 2,
+        "481": 1
+      },
+      "depth_info": {
+        "stamp": 1791972220.0687394,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0012_rgb.png",
+          "stamp": 1791972220.1583521,
+          "frame": "camera_color_optical_frame",
+          "sha256": "89b7a416fd9fd40f40cc7d4f29f03bbe23ff4a802b5b80640e45f12d8ae09067"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0012_depth.png",
+          "stamp": 1791972220.0687394,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "cc113991570703e91abc254438aaa761ea13d591b911fdabf9b4249c77cc8e64"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        290,
+        226,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 120,
+        "zero_fraction": 0.8770491803278688,
+        "nonzero_median_mm": 465.0,
+        "selected_intersection_pixels": 106,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 13,
+      "stamps_ns": {
+        "rgb": "1791972220758373426",
+        "depth": "1791972220731630086",
+        "depth_info": "1791972220731630086",
+        "feedback": "1791972220757157598"
+      },
+      "stamp_span_s": 0.02674334,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        118,
+        21,
+        21
+      ],
+      "native_depth_samples": 123,
+      "eroded_color_pixels": 275,
+      "color_pixel_coverage": 0.14545454545454545,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.457,
+      "surface_mad_m": 0.0040000000000000036,
+      "surface_componentwise_median_xyz_m": [
+        -0.0036379796695346772,
+        0.055133866768586476,
+        0.457
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "452": 6,
+        "453": 3,
+        "454": 24,
+        "455": 14,
+        "456": 13,
+        "457": 3,
+        "458": 2,
+        "460": 4,
+        "461": 2,
+        "463": 1,
+        "464": 1,
+        "465": 12,
+        "466": 4,
+        "467": 4,
+        "468": 6,
+        "469": 11,
+        "470": 3,
+        "471": 4,
+        "476": 2,
+        "477": 2,
+        "481": 2
+      },
+      "depth_info": {
+        "stamp": 1791972220.73163,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0013_rgb.png",
+          "stamp": 1791972220.7583733,
+          "frame": "camera_color_optical_frame",
+          "sha256": "5f7569c4fe1dc39ead511f2b5fca8b7e0da8d0351beb1faaf54562520e0f7af0"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0013_depth.png",
+          "stamp": 1791972220.73163,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "dfe9036e48f4557df22810ec986a647c862a08bc2d2959a270f0160d9ed7ec96"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 116,
+        "zero_fraction": 0.8811475409836066,
+        "nonzero_median_mm": 461.0,
+        "selected_intersection_pixels": 97,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 14,
+      "stamps_ns": {
+        "rgb": "1791972221558433910",
+        "depth": "1791972221534825309",
+        "depth_info": "1791972221534825309",
+        "feedback": "1791972221556889607"
+      },
+      "stamp_span_s": 0.023608601,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        118,
+        21,
+        21
+      ],
+      "native_depth_samples": 1067,
+      "eroded_color_pixels": 298,
+      "color_pixel_coverage": 0.9530201342281879,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.01094661755884175,
+        0.03787695386410318,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 38,
+        "436": 129,
+        "437": 143,
+        "438": 95,
+        "439": 46,
+        "440": 84,
+        "441": 39,
+        "442": 153,
+        "443": 64,
+        "444": 127,
+        "448": 2,
+        "449": 1,
+        "452": 7,
+        "454": 32,
+        "455": 17,
+        "456": 20,
+        "457": 5,
+        "458": 6,
+        "460": 3,
+        "461": 1,
+        "464": 4,
+        "466": 4,
+        "467": 4,
+        "468": 3,
+        "469": 5,
+        "470": 3,
+        "471": 4,
+        "472": 1,
+        "473": 3,
+        "474": 9,
+        "475": 2,
+        "476": 4,
+        "477": 7,
+        "479": 2
+      },
+      "depth_info": {
+        "stamp": 1791972221.5348253,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0014_rgb.png",
+          "stamp": 1791972221.5584338,
+          "frame": "camera_color_optical_frame",
+          "sha256": "f4c4a67862ebe945d1c9810d53e410fbdda607d6039c5d4a3d3eeb79e227d48e"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0014_depth.png",
+          "stamp": 1791972221.5348253,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "d385cc7592c7422ced4c1a87182e00416f4d56502e12b72483e39c2229d807ed"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        224,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 976,
+        "zero_fraction": 0.0,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 955,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 15,
+      "stamps_ns": {
+        "rgb": "1791972222158382557",
+        "depth": "1791972222099439804",
+        "depth_info": "1791972222099439804",
+        "feedback": "1791972222156950756"
+      },
+      "stamp_span_s": 0.058942753,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        118,
+        20,
+        21
+      ],
+      "native_depth_samples": 989,
+      "eroded_color_pixels": 284,
+      "color_pixel_coverage": 0.9366197183098591,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.010897085352693143,
+        0.03870982102917017,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 46,
+        "436": 140,
+        "437": 103,
+        "438": 115,
+        "439": 32,
+        "440": 110,
+        "441": 52,
+        "442": 103,
+        "443": 61,
+        "444": 117,
+        "446": 1,
+        "448": 1,
+        "451": 5,
+        "452": 7,
+        "453": 8,
+        "454": 24,
+        "455": 8,
+        "456": 7,
+        "457": 5,
+        "458": 1,
+        "459": 1,
+        "461": 9,
+        "465": 1,
+        "467": 7,
+        "468": 10,
+        "469": 5,
+        "470": 2,
+        "471": 4,
+        "477": 3,
+        "478": 1
+      },
+      "depth_info": {
+        "stamp": 1791972222.0994399,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0015_rgb.png",
+          "stamp": 1791972222.1583827,
+          "frame": "camera_color_optical_frame",
+          "sha256": "d5ce1b3038a308f799eb2a2e85171da3bed5e86d7c2e6f8f97d491b4c86b691f"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0015_depth.png",
+          "stamp": 1791972222.0994399,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "cad08b88609855d2992bc075e85d57ddc092e0dd9b8ea376c9783a910607c807"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        297,
+        224,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 962,
+        "zero_fraction": 0.014344262295082011,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 945,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 16,
+      "stamps_ns": {
+        "rgb": "1791972222758401500",
+        "depth": "1791972222733804759",
+        "depth_info": "1791972222733804759",
+        "feedback": "1791972222756859174"
+      },
+      "stamp_span_s": 0.024596741,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        117,
+        21,
+        22
+      ],
+      "native_depth_samples": 142,
+      "eroded_color_pixels": 285,
+      "color_pixel_coverage": 0.15789473684210525,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.457,
+      "surface_mad_m": 0.0040000000000000036,
+      "surface_componentwise_median_xyz_m": [
+        -0.0017203578302275695,
+        0.054534585608058364,
+        0.457
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "450": 2,
+        "451": 8,
+        "452": 4,
+        "453": 1,
+        "454": 27,
+        "455": 12,
+        "456": 16,
+        "457": 5,
+        "458": 2,
+        "459": 1,
+        "460": 3,
+        "461": 6,
+        "462": 2,
+        "463": 3,
+        "466": 11,
+        "467": 13,
+        "468": 1,
+        "469": 7,
+        "470": 4,
+        "471": 3,
+        "476": 2,
+        "477": 4,
+        "478": 2,
+        "480": 3
+      },
+      "depth_info": {
+        "stamp": 1791972222.7338047,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0016_rgb.png",
+          "stamp": 1791972222.7584016,
+          "frame": "camera_color_optical_frame",
+          "sha256": "e476c7b51e225ea020a85f2b077f2451130e4d62f3cd5c9373f1b2ca26016dad"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0016_depth.png",
+          "stamp": 1791972222.7338047,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "540233acf3661e4a33dc3a4350f649610a643278c18f766d659834e96d16b0e0"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 126,
+        "zero_fraction": 0.8709016393442623,
+        "nonzero_median_mm": 456.0,
+        "selected_intersection_pixels": 110,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 17,
+      "stamps_ns": {
+        "rgb": "1791972223358413979",
+        "depth": "1791972223333567967",
+        "depth_info": "1791972223333567967",
+        "feedback": "1791972223353434568"
+      },
+      "stamp_span_s": 0.024846012,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        117,
+        21,
+        22
+      ],
+      "native_depth_samples": 142,
+      "eroded_color_pixels": 281,
+      "color_pixel_coverage": 0.1601423487544484,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.458,
+      "surface_mad_m": 0.0050000000000000044,
+      "surface_componentwise_median_xyz_m": [
+        -0.0026898785268497875,
+        0.05524549803133432,
+        0.458
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "444": 1,
+        "451": 5,
+        "452": 5,
+        "453": 5,
+        "454": 28,
+        "455": 10,
+        "456": 11,
+        "457": 3,
+        "458": 7,
+        "459": 2,
+        "461": 4,
+        "462": 5,
+        "463": 1,
+        "465": 2,
+        "466": 9,
+        "467": 7,
+        "468": 1,
+        "469": 5,
+        "470": 3,
+        "471": 4,
+        "472": 3,
+        "473": 2,
+        "474": 5,
+        "475": 1,
+        "476": 2,
+        "477": 2,
+        "479": 2,
+        "480": 1,
+        "481": 2,
+        "482": 3,
+        "483": 1
+      },
+      "depth_info": {
+        "stamp": 1791972223.333568,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0017_rgb.png",
+          "stamp": 1791972223.3584142,
+          "frame": "camera_color_optical_frame",
+          "sha256": "0388b843bbbf27b55569f2a6fe38241bc0ce0b83c8fc01323b66871e182d281f"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0017_depth.png",
+          "stamp": 1791972223.333568,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "e46e32136e527535f834394c5c7acf0614cf8b20e6e7df4c149511ac0a20b7fe"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        293,
+        222,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 120,
+        "zero_fraction": 0.8770491803278688,
+        "nonzero_median_mm": 462.0,
+        "selected_intersection_pixels": 106,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 18,
+      "stamps_ns": {
+        "rgb": "1791972223958402232",
+        "depth": "1791972223932379933",
+        "depth_info": "1791972223932379933",
+        "feedback": "1791972223956859411"
+      },
+      "stamp_span_s": 0.026022299,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        118,
+        19,
+        21
+      ],
+      "native_depth_samples": 132,
+      "eroded_color_pixels": 281,
+      "color_pixel_coverage": 0.14590747330960854,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.457,
+      "surface_mad_m": 0.006000000000000005,
+      "surface_componentwise_median_xyz_m": [
+        -0.003645957695125762,
+        0.05500158854775227,
+        0.457
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "446": 1,
+        "451": 5,
+        "452": 1,
+        "453": 5,
+        "454": 21,
+        "455": 16,
+        "456": 16,
+        "457": 2,
+        "458": 1,
+        "460": 1,
+        "461": 2,
+        "464": 2,
+        "466": 8,
+        "467": 5,
+        "468": 3,
+        "469": 7,
+        "470": 4,
+        "471": 5,
+        "472": 2,
+        "473": 2,
+        "474": 6,
+        "475": 1,
+        "476": 1,
+        "477": 4,
+        "479": 5,
+        "480": 2,
+        "481": 3,
+        "482": 1
+      },
+      "depth_info": {
+        "stamp": 1791972223.93238,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0018_rgb.png",
+          "stamp": 1791972223.9584024,
+          "frame": "camera_color_optical_frame",
+          "sha256": "87cd31b171114053a2f3e1e77bbf6dfb9c2f67aab3a6e80d2761802ff505dc91"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0018_depth.png",
+          "stamp": 1791972223.93238,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "ec7696f8e562cb494081e037cd34c80802030c245e40ce10a1f6bbc871e96aff"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 120,
+        "zero_fraction": 0.8770491803278688,
+        "nonzero_median_mm": 466.0,
+        "selected_intersection_pixels": 108,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 19,
+      "stamps_ns": {
+        "rgb": "1791972224558456487",
+        "depth": "1791972224532297540",
+        "depth_info": "1791972224532297540",
+        "feedback": "1791972224556937382"
+      },
+      "stamp_span_s": 0.026158947,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        117,
+        21,
+        22
+      ],
+      "native_depth_samples": 1059,
+      "eroded_color_pixels": 297,
+      "color_pixel_coverage": 0.9461279461279462,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.441,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.011739835775991006,
+        0.03787695386410318,
+        0.441
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 31,
+        "436": 53,
+        "437": 197,
+        "438": 116,
+        "439": 40,
+        "440": 83,
+        "441": 53,
+        "442": 114,
+        "443": 64,
+        "444": 146,
+        "446": 1,
+        "452": 1,
+        "453": 4,
+        "454": 24,
+        "455": 11,
+        "456": 21,
+        "457": 3,
+        "458": 1,
+        "459": 4,
+        "461": 4,
+        "462": 4,
+        "463": 3,
+        "465": 1,
+        "466": 10,
+        "467": 8,
+        "468": 3,
+        "469": 4,
+        "471": 5,
+        "472": 3,
+        "474": 1,
+        "477": 7,
+        "478": 7,
+        "479": 1,
+        "480": 1,
+        "481": 13,
+        "482": 15,
+        "483": 2
+      },
+      "depth_info": {
+        "stamp": 1791972224.5322974,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0019_rgb.png",
+          "stamp": 1791972224.5584567,
+          "frame": "camera_color_optical_frame",
+          "sha256": "206d01a4d71317733b3843907a940ea7b57e18e50e3a599da844c166a3530478"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0019_depth.png",
+          "stamp": 1791972224.5322974,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "b972fcd3426044f79612799eb460c8b997420200fed74499f56653c8819bdfe9"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        222,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 972,
+        "zero_fraction": 0.004098360655737654,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 937,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 20,
+      "stamps_ns": {
+        "rgb": "1791972225358693010",
+        "depth": "1791972225434700414",
+        "depth_info": "1791972225434700414",
+        "feedback": "1791972225431898120"
+      },
+      "stamp_span_s": 0.076007404,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        118,
+        22,
+        21
+      ],
+      "native_depth_samples": 148,
+      "eroded_color_pixels": 287,
+      "color_pixel_coverage": 0.16376306620209058,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.459,
+      "surface_mad_m": 0.0050000000000000044,
+      "surface_componentwise_median_xyz_m": [
+        -0.0017770729235317747,
+        0.05524961051601321,
+        0.459
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "452": 15,
+        "453": 2,
+        "454": 20,
+        "455": 11,
+        "456": 12,
+        "457": 6,
+        "458": 4,
+        "459": 5,
+        "460": 1,
+        "461": 15,
+        "462": 2,
+        "463": 1,
+        "464": 1,
+        "465": 6,
+        "466": 4,
+        "467": 8,
+        "468": 3,
+        "469": 5,
+        "470": 1,
+        "471": 6,
+        "472": 1,
+        "474": 8,
+        "475": 1,
+        "476": 3,
+        "477": 5,
+        "481": 2
+      },
+      "depth_info": {
+        "stamp": 1791972225.4347003,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0020_rgb.png",
+          "stamp": 1791972225.3586931,
+          "frame": "camera_color_optical_frame",
+          "sha256": "717f2ed8180c33a8baa445b70c570a7c77afbac357cd716b6606a7effaf959be"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0020_depth.png",
+          "stamp": 1791972225.4347003,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "377bbac17c61b634543de48e01f4098fd090624f4b789b5858e82c18afc7cc36"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 124,
+        "zero_fraction": 0.8729508196721312,
+        "nonzero_median_mm": 461.0,
+        "selected_intersection_pixels": 104,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 21,
+      "stamps_ns": {
+        "rgb": "1791972225958455627",
+        "depth": "1791972225868740659",
+        "depth_info": "1791972225868740659",
+        "feedback": "1791972225956934832"
+      },
+      "stamp_span_s": 0.089714968,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        119,
+        21,
+        20
+      ],
+      "native_depth_samples": 117,
+      "eroded_color_pixels": 276,
+      "color_pixel_coverage": 0.13768115942028986,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.456,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.006508740919164918,
+        0.055367452773125346,
+        0.456
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "451": 5,
+        "452": 8,
+        "453": 3,
+        "454": 25,
+        "455": 12,
+        "456": 12,
+        "457": 2,
+        "458": 3,
+        "459": 2,
+        "460": 5,
+        "461": 2,
+        "462": 1,
+        "463": 1,
+        "466": 3,
+        "467": 6,
+        "468": 5,
+        "469": 3,
+        "470": 3,
+        "471": 6,
+        "472": 2,
+        "475": 1,
+        "476": 3,
+        "477": 4
+      },
+      "depth_info": {
+        "stamp": 1791972225.8687406,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0021_rgb.png",
+          "stamp": 1791972225.9584556,
+          "frame": "camera_color_optical_frame",
+          "sha256": "ecc60f3f9867c527144e7fb6bc25a6f47b17612b05dace9b489986d56a5a7032"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0021_depth.png",
+          "stamp": 1791972225.8687406,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "20cee7e3d556471bcdf7783731951b910fcf8ab707b9b2f81002a7488b0e92e2"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        228,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 110,
+        "zero_fraction": 0.8872950819672131,
+        "nonzero_median_mm": 460.0,
+        "selected_intersection_pixels": 91,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 22,
+      "stamps_ns": {
+        "rgb": "1791972226558527938",
+        "depth": "1791972226499111307",
+        "depth_info": "1791972226499111307",
+        "feedback": "1791972226556850296"
+      },
+      "stamp_span_s": 0.059416631,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        118,
+        21,
+        21
+      ],
+      "native_depth_samples": 162,
+      "eroded_color_pixels": 290,
+      "color_pixel_coverage": 0.1724137931034483,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.462,
+      "surface_mad_m": 0.008000000000000007,
+      "surface_componentwise_median_xyz_m": [
+        -0.0017751824204216347,
+        0.05524549803133432,
+        0.462
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "453": 15,
+        "454": 30,
+        "455": 5,
+        "456": 15,
+        "457": 2,
+        "458": 3,
+        "459": 6,
+        "461": 3,
+        "462": 4,
+        "463": 2,
+        "465": 8,
+        "466": 7,
+        "467": 5,
+        "468": 4,
+        "469": 7,
+        "470": 5,
+        "471": 4,
+        "472": 3,
+        "473": 2,
+        "474": 3,
+        "475": 3,
+        "476": 1,
+        "477": 6,
+        "478": 2,
+        "479": 1,
+        "480": 3,
+        "481": 10,
+        "482": 3
+      },
+      "depth_info": {
+        "stamp": 1791972226.4991114,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0022_rgb.png",
+          "stamp": 1791972226.558528,
+          "frame": "camera_color_optical_frame",
+          "sha256": "ac0d7189288e9699b0373906aaec7bb8a75218a940a7c4121f991e9c2928b659"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0022_depth.png",
+          "stamp": 1791972226.4991114,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "c0819ee61707570f8eaaf6529dd2c92413334ff9ef3b03b1f87957e52f8f4750"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 124,
+        "zero_fraction": 0.8729508196721312,
+        "nonzero_median_mm": 465.5,
+        "selected_intersection_pixels": 115,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 23,
+      "stamps_ns": {
+        "rgb": "1791972227158498500",
+        "depth": "1791972227134369307",
+        "depth_info": "1791972227134369307",
+        "feedback": "1791972227156883136"
+      },
+      "stamp_span_s": 0.024129193,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        117,
+        21,
+        22
+      ],
+      "native_depth_samples": 140,
+      "eroded_color_pixels": 288,
+      "color_pixel_coverage": 0.15625,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.461,
+      "surface_mad_m": 0.006000000000000005,
+      "surface_componentwise_median_xyz_m": [
+        -0.0017770729235317747,
+        0.05524549803133432,
+        0.461
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "452": 3,
+        "453": 3,
+        "454": 25,
+        "455": 9,
+        "456": 17,
+        "457": 3,
+        "458": 3,
+        "459": 3,
+        "461": 9,
+        "462": 5,
+        "463": 2,
+        "464": 2,
+        "465": 3,
+        "466": 10,
+        "467": 6,
+        "468": 5,
+        "469": 3,
+        "470": 3,
+        "471": 4,
+        "472": 2,
+        "473": 3,
+        "474": 3,
+        "476": 2,
+        "477": 2,
+        "481": 6,
+        "482": 4
+      },
+      "depth_info": {
+        "stamp": 1791972227.1343694,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0023_rgb.png",
+          "stamp": 1791972227.1584985,
+          "frame": "camera_color_optical_frame",
+          "sha256": "56dabf05bd6b3eeb667fd42c494d16c8aa33b0300cb199da934bfc4507388e32"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0023_depth.png",
+          "stamp": 1791972227.1343694,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "70c4df72f8926844070413d19c719e2008952d4d1f399844364ca7d4c10aaaae"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        300,
+        222,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 117,
+        "zero_fraction": 0.8801229508196722,
+        "nonzero_median_mm": 461.0,
+        "selected_intersection_pixels": 106,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 24,
+      "stamps_ns": {
+        "rgb": "1791972227758472038",
+        "depth": "1791972227732812007",
+        "depth_info": "1791972227732812007",
+        "feedback": "1791972227757012864"
+      },
+      "stamp_span_s": 0.025660031,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        117,
+        21,
+        22
+      ],
+      "native_depth_samples": 1006,
+      "eroded_color_pixels": 286,
+      "color_pixel_coverage": 0.9370629370629371,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.010847553146544538,
+        0.03870982102917017,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 29,
+        "436": 132,
+        "437": 132,
+        "438": 113,
+        "439": 40,
+        "440": 86,
+        "441": 30,
+        "442": 110,
+        "443": 57,
+        "444": 140,
+        "448": 4,
+        "450": 1,
+        "452": 9,
+        "453": 22,
+        "454": 16,
+        "455": 11,
+        "456": 10,
+        "457": 7,
+        "459": 3,
+        "460": 1,
+        "464": 5,
+        "465": 3,
+        "466": 3,
+        "467": 4,
+        "468": 2,
+        "469": 2,
+        "470": 1,
+        "471": 6,
+        "472": 2,
+        "474": 1,
+        "476": 4,
+        "477": 3,
+        "478": 2,
+        "479": 2,
+        "480": 3,
+        "481": 8,
+        "482": 2
+      },
+      "depth_info": {
+        "stamp": 1791972227.732812,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0024_rgb.png",
+          "stamp": 1791972227.758472,
+          "frame": "camera_color_optical_frame",
+          "sha256": "84ba688c1d1e3dfa25ef1d98cf2ef64342e5471842ca4e78ee5dc8f7bef3a274"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0024_depth.png",
+          "stamp": 1791972227.732812,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "8f94fa8ded0159f69a39a31fe214ec734061f7b00f0c2a835559c3ffc99cf5d1"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        222,
+        329,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 974,
+        "zero_fraction": 0.002049180327868827,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 932,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 25,
+      "stamps_ns": {
+        "rgb": "1791972228358504556",
+        "depth": "1791972228297230515",
+        "depth_info": "1791972228297230515",
+        "feedback": "1791972228356891436"
+      },
+      "stamp_span_s": 0.061274041,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        117,
+        19,
+        22
+      ],
+      "native_depth_samples": 957,
+      "eroded_color_pixels": 274,
+      "color_pixel_coverage": 0.9379562043795621,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.44,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.010064411464671767,
+        0.03879819961599476,
+        0.44
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "435": 19,
+        "436": 160,
+        "437": 109,
+        "438": 105,
+        "439": 42,
+        "440": 102,
+        "441": 49,
+        "442": 94,
+        "443": 49,
+        "444": 116,
+        "448": 1,
+        "451": 4,
+        "452": 12,
+        "453": 7,
+        "454": 20,
+        "455": 11,
+        "456": 11,
+        "457": 5,
+        "459": 1,
+        "460": 2,
+        "461": 2,
+        "467": 14,
+        "468": 6,
+        "469": 6,
+        "470": 1,
+        "471": 5,
+        "472": 3,
+        "473": 1
+      },
+      "depth_info": {
+        "stamp": 1791972228.2972305,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0025_rgb.png",
+          "stamp": 1791972228.3585045,
+          "frame": "camera_color_optical_frame",
+          "sha256": "800a4ad30337330bc3be5701b7df0160c014bac5b8fa3937cd849f4cb0860e81"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0025_depth.png",
+          "stamp": 1791972228.2972305,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "382fb7c51fcec1213ecbc0b991bc9ff66154f2ed05efffdbed041af7a05a29d9"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        222,
+        331,
+        260
+      ],
+      "group": "high",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 966,
+        "zero_fraction": 0.010245901639344246,
+        "nonzero_median_mm": 440.0,
+        "selected_intersection_pixels": 933,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 26,
+      "stamps_ns": {
+        "rgb": "1791972229358508127",
+        "depth": "1791972229299202718",
+        "depth_info": "1791972229299202718",
+        "feedback": "1791972229356915254"
+      },
+      "stamp_span_s": 0.059305409,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        129,
+        118,
+        20,
+        21
+      ],
+      "native_depth_samples": 130,
+      "eroded_color_pixels": 276,
+      "color_pixel_coverage": 0.14855072463768115,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.456,
+      "surface_mad_m": 0.0040000000000000036,
+      "surface_componentwise_median_xyz_m": [
+        -0.0036300016439435923,
+        0.05500158854775227,
+        0.456
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "442": 1,
+        "451": 4,
+        "452": 14,
+        "453": 6,
+        "454": 25,
+        "455": 3,
+        "456": 16,
+        "457": 7,
+        "458": 4,
+        "459": 3,
+        "460": 4,
+        "461": 2,
+        "462": 1,
+        "464": 1,
+        "465": 3,
+        "466": 3,
+        "467": 7,
+        "468": 2,
+        "469": 4,
+        "470": 1,
+        "471": 5,
+        "472": 3,
+        "474": 4,
+        "475": 5,
+        "476": 1,
+        "477": 1
+      },
+      "depth_info": {
+        "stamp": 1791972229.299203,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0026_rgb.png",
+          "stamp": 1791972229.358508,
+          "frame": "camera_color_optical_frame",
+          "sha256": "7331d39a3ee2d920538dc60021389d4db2942e5cbf4eb466177503d5186dab9e"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0026_depth.png",
+          "stamp": 1791972229.299203,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "32a61a4e1e11af081e6ceda53003e8f41725c7b64f24111694b9aa4178e7caee"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        302,
+        228,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 122,
+        "zero_fraction": 0.875,
+        "nonzero_median_mm": 456.0,
+        "selected_intersection_pixels": 106,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 27,
+      "stamps_ns": {
+        "rgb": "1791972229958518212",
+        "depth": "1791972229898116411",
+        "depth_info": "1791972229898116411",
+        "feedback": "1791972229956824900"
+      },
+      "stamp_span_s": 0.060401801,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        128,
+        118,
+        21,
+        21
+      ],
+      "native_depth_samples": 118,
+      "eroded_color_pixels": 290,
+      "color_pixel_coverage": 0.13448275862068965,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.457,
+      "surface_mad_m": 0.004500000000000004,
+      "surface_componentwise_median_xyz_m": [
+        -0.005071261784664395,
+        0.055123543289543296,
+        0.457
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "452": 7,
+        "453": 11,
+        "454": 22,
+        "455": 6,
+        "456": 11,
+        "457": 3,
+        "458": 2,
+        "459": 4,
+        "463": 1,
+        "466": 11,
+        "467": 8,
+        "468": 3,
+        "469": 4,
+        "470": 3,
+        "471": 5,
+        "472": 2,
+        "473": 2,
+        "474": 3,
+        "475": 1,
+        "476": 3,
+        "477": 4,
+        "481": 2
+      },
+      "depth_info": {
+        "stamp": 1791972229.8981164,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0027_rgb.png",
+          "stamp": 1791972229.9585183,
+          "frame": "camera_color_optical_frame",
+          "sha256": "958dbea0844a061d58ad19734fbf501a308a5dd46855f8ef26b7300a41eab97a"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0027_depth.png",
+          "stamp": 1791972229.8981164,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "f5a5ee5679c0f161840212370c804be1b4a5d3055c661de4a0b7b7cee36e28a6"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        292,
+        224,
+        329,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 113,
+        "zero_fraction": 0.8842213114754098,
+        "nonzero_median_mm": 463.0,
+        "selected_intersection_pixels": 96,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 28,
+      "stamps_ns": {
+        "rgb": "1791972230558519478",
+        "depth": "1791972230497183673",
+        "depth_info": "1791972230497183673",
+        "feedback": "1791972230557239791"
+      },
+      "stamp_span_s": 0.061335805,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        130,
+        116,
+        20,
+        23
+      ],
+      "native_depth_samples": 141,
+      "eroded_color_pixels": 291,
+      "color_pixel_coverage": 0.15120274914089346,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.459,
+      "surface_mad_m": 0.006000000000000005,
+      "surface_componentwise_median_xyz_m": [
+        -0.005551820502621504,
+        0.05500158854775227,
+        0.459
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "446": 1,
+        "451": 3,
+        "452": 8,
+        "453": 4,
+        "454": 27,
+        "455": 10,
+        "456": 13,
+        "457": 4,
+        "459": 2,
+        "461": 11,
+        "465": 4,
+        "466": 7,
+        "467": 5,
+        "468": 8,
+        "469": 7,
+        "470": 1,
+        "471": 4,
+        "476": 3,
+        "477": 1,
+        "480": 2,
+        "481": 16
+      },
+      "depth_info": {
+        "stamp": 1791972230.4971838,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0028_rgb.png",
+          "stamp": 1791972230.5585196,
+          "frame": "camera_color_optical_frame",
+          "sha256": "8d9ef445871d9f63be5d0a26f44a0c3db3cf622b8f6b4aa9d185a1a19b84cda4"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0028_depth.png",
+          "stamp": 1791972230.4971838,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "311cfdf928007bde2bc27bd21b547b09698b0f59aea051ce51860d16d5348133"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        220,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 120,
+        "zero_fraction": 0.8770491803278688,
+        "nonzero_median_mm": 460.0,
+        "selected_intersection_pixels": 97,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 29,
+      "stamps_ns": {
+        "rgb": "1791972231358571942",
+        "depth": "1791972231329697050",
+        "depth_info": "1791972231329697050",
+        "feedback": "1791972231357111502"
+      },
+      "stamp_span_s": 0.028874892,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        118,
+        19,
+        21
+      ],
+      "native_depth_samples": 112,
+      "eroded_color_pixels": 271,
+      "color_pixel_coverage": 0.13653136531365315,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.457,
+      "surface_mad_m": 0.0040000000000000036,
+      "surface_componentwise_median_xyz_m": [
+        -0.00553355793517867,
+        0.05531058788690872,
+        0.457
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "447": 1,
+        "450": 1,
+        "451": 5,
+        "453": 4,
+        "454": 23,
+        "455": 11,
+        "456": 10,
+        "457": 3,
+        "458": 2,
+        "459": 4,
+        "460": 1,
+        "461": 6,
+        "462": 1,
+        "463": 3,
+        "464": 1,
+        "465": 5,
+        "466": 4,
+        "467": 8,
+        "468": 2,
+        "469": 5,
+        "470": 3,
+        "471": 4,
+        "472": 1,
+        "473": 1,
+        "479": 2,
+        "481": 1
+      },
+      "depth_info": {
+        "stamp": 1791972231.3296971,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0029_rgb.png",
+          "stamp": 1791972231.358572,
+          "frame": "camera_color_optical_frame",
+          "sha256": "d23c13aeb423af70a04b02cdfc2493658593d46c855644a64cd61fe7c785e5c8"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0029_depth.png",
+          "stamp": 1791972231.3296971,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "341cc5d700407ad6e9698fa110d0c9370abb67cd9797fe36fb2f68102869add0"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 114,
+        "zero_fraction": 0.8831967213114754,
+        "nonzero_median_mm": 460.5,
+        "selected_intersection_pixels": 100,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    },
+    {
+      "snapshot": 30,
+      "stamps_ns": {
+        "rgb": "1791972231958556389",
+        "depth": "1791972231929828870",
+        "depth_info": "1791972231929828870",
+        "feedback": "1791972231957102368"
+      },
+      "stamp_span_s": 0.028727519,
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "rgb_bbox_xywh": [
+        130,
+        118,
+        20,
+        21
+      ],
+      "native_depth_samples": 139,
+      "eroded_color_pixels": 282,
+      "color_pixel_coverage": 0.15602836879432624,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.456,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        -0.0036379796695346772,
+        0.05524549803133432,
+        0.456
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "451": 3,
+        "452": 1,
+        "453": 12,
+        "454": 26,
+        "455": 13,
+        "456": 16,
+        "457": 4,
+        "458": 2,
+        "459": 7,
+        "460": 7,
+        "461": 6,
+        "464": 2,
+        "466": 4,
+        "467": 8,
+        "468": 2,
+        "469": 5,
+        "470": 2,
+        "471": 7,
+        "472": 2,
+        "473": 2,
+        "478": 2,
+        "479": 3,
+        "480": 3
+      },
+      "depth_info": {
+        "stamp": 1791972231.929829,
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "images": {
+        "rgb": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0030_rgb.png",
+          "stamp": 1791972231.9585564,
+          "frame": "camera_color_optical_frame",
+          "sha256": "46ad017e4c4f59d22db76c1fd306c078e8785ca3bd632fc787622735c76e7c11"
+        },
+        "depth": {
+          "path": "pair01_observe_remeasure_20261014_rgbd/evidence/0030_depth.png",
+          "stamp": 1791972231.929829,
+          "frame": "camera_depth_optical_frame",
+          "sha256": "b709b4e4dfb3a26dfea797236f5be95ad0550cad5702f0c3f7dde8f7d58994fd"
+        }
+      },
+      "selected_native_bbox_xyxy": [
+        301,
+        224,
+        331,
+        260
+      ],
+      "group": "low",
+      "same_high_frame_native_footprint": {
+        "reference_snapshot": 2,
+        "pixel_count": 976,
+        "nonzero_count": 126,
+        "zero_fraction": 0.8709016393442623,
+        "nonzero_median_mm": 456.0,
+        "selected_intersection_pixels": 117,
+        "comparison_roi_not_new_measurement_or_filled_depth": true
+      }
+    }
+  ]
+}

@@ -1,4 +1,18 @@
-## 2026-10-14 18:18 +08:00：磁盘容量检查通过，最新断点按已提交记录保留
+## 2026-10-14 19:48 +08:00：标定阶段切换、两类深度足迹审查与点对可辨识性准备
+
+- 起点a57cf38；首五Git检查执行/读四文档最新内容与既有完整历史，使用ros2-piper-debug/surgical-change。用户批准代理接手Claude离线分析与Codex采集准备，后续历史归因提问/叠图/附件一并核查。当前阶段设为标定，四任务文档首节优先，冻结生产靠近/检测门/TF/TCP/模型/入口，不因用户过去自动许可发新运动。长期最终抓取目标保留。
+- 新独立工具review_pair_sampling：原115资产SHA校验通过，未变配准复算30帧，10高/20低，surface组差24.766897mm；同snapshot2原生真实深度足迹零值比例高层中位0.003586、低0.877049，证明本组低帧对应区域真空洞，而非只有机器人安装TF造成少采。两张衍生预览实际查看：RGB小方块原位，低帧深度黑空洞/剩余边缘点；0不填，不改任何原始PNG。不单凭高覆盖判定几何中心/根因，pair01排除正式拟合。
+- 新fit_paired_calibration/simulate_paired_calibration复用SciPy现有库，米/列向量 `T_B_G_obs X_G_D p_D=T_B_G_grip c_G`；已知工具点6未知/联合未知点9未知，输出累计秩/零空间、训练与预先留出组xyz残差/原外参对比，不自动写TF。完整多倾角/分散点合成恢复平移3.723e-16m/角4.404e-14°；仅偏航秩8/9、共线已知点也退化，均不给候选。20种子3mm各轴噪声留出p95=13.611mm，仅合成；25mm统一训练偏差对照小训练残差但留出>20mm，缺中心拒绝，不猜null。不是实机/MoveIt可达验证，也不重做旧双轴标准手眼实验。
+- 现collect_static_rgbd仅补实际同帧完整depth K/D/R/P/ROI、源编码/分辨率、原关节数组/速度等，可选settle-s3；默认.25s/120ms/.5s/60帧120s不变，非新增运动门。新collect_calibration_sdk仅CreateCanBus/ConnectPort(piper_init=False)/Get反馈/Disconnect，raw mdeg及原driver*.017444、六enable/速度/聚合时间戳/Hz/夹爪实际开口保存，默认6秒上限10秒；SDK聚合stamp不能当每轴硬件时间，接触由现场确认不猜。代码只在规范test目录，未同步安装/启动采集。
+- 实际命令：PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 review_pair_sampling.py --bundle docs/evidence/piper_calibration_20261014/pair01 --output /home/johnwick/brain_robot_logs/pair_sampling_audit_20261014 rc0；simulate_paired_calibration.py --output /home/johnwick/brain_robot_logs/paired_calibration_simulation_20261014.json rc0。pytest三指定文件初48pass/2skip（ROS未source），source /opt/ros/humble后50pass/rc0，后新增合成SDK序列化空跑测试最终回归另记录。默认用户NumPy2/OpenCV ABI import rc1，采用原既有PYTHONNOUSERSITE避免，不修改系统依赖。没有把一次语法/环境问题说成机械臂故障。
+- 历史归因数字核对：decisions带日期标题10/10=32、11=42、12=25、13=50，共149，但非代码改动次数。9/22真实路线图粗抓优先确有被后来复杂闭环超前；完整实物夹起仍无验收证据。当前腕部Octomap已断开，不当持续卡住原因；历史手摆姿态有中心契约冲突但无夹紧承载证明，不能当成功真值。相机/实际夹持未标定是明确缺口，不断言全部故障唯一根因，独立的TF时序/预算/USB等事实不抹去；不能归因用户不在或将批准全部归为无用安全新增门。
+- Claude新附件只含calib_lib/cube_center_check输出：29mm/10帧/面边28.623、30.611mm，center[-.0355760684,.0404914246,.4539179508]，frame未声明/源码缺；只待复现候选。若是C坐标转回D约[-.0125410392,.0414725878,.4535313016]与表面delta[-1.693,2.763,13.531]mm，比直接当D的[-24.729,1.782,13.918]更像面法向半边内移，但不是已确定坐标归属。保留29mm名义与原28mm估计，未假称卡尺测量/绝对中心。独立vendor FK/manual+30观测矩阵误差均0/rc0；初内联语法rc1已更正，不为它重复实体。详细采用边界README。
+- 网络只读timeout-k2s20s git ls-remote得到402f5e12481f31a988920b41391626e6238ca5af/rc0，git fetch --no-tags origin main rc0；新增c3bd3fd/402f5e1均水杯仿真，不含Claude源码，未merge/覆盖dirty/运行杯工程。原本地main与远端仍分叉，不全历史push；新阶段限定发布另处理。旧pair01数据仍已在远端，不能宣称当前阶段本地改动已发布。
+- 根盘df54%/35G、共享73%/138G，没清盘/删除。普通apply_patch创建新证据父目录失败，已完成的脚本更改保留；仅require_escalated mkdir指定新证据目录+复制四个有限分析产物，没chmod/改挂载。共472483B报告/衍生图，所有原始数据保持；规范证据docs/evidence/piper_calibration_prepare_20261014，完整阶段页docs/PIper_CALIBRATION_TASK_20261014.md。
+- 生产文件只读hash入口87039bdb…、task7d0e2c…、detector154938b…、executor source2144f2…、adaptera5074c…未变。无实体命令、新SDK反馈/复位/失能/CAN重载；不从发布或离线成功推断反馈已恢复。未完成/阻断：Claude源码/frame缺失、实际夹紧同中心/夹深待核、正式新六组未采、安装拟合未采用/实物抓取未完成。下一先复用中心源码与坐标检查，一组同点实际合格后才扩六组；回观测逐组授权，连续两实机会话无有效证据停实测、记录，不继续补生产算法。
+- 最终source ROS后的三指定pytest文件 **51 passed/0 skipped/rc0**，新增合成SDK序列化空跑验证字段和3s/30样本规则，不当实际接触。fit CLI对本轮缺实体中心的模板按预期rc2/candidate null，拒绝“补猜数”；独立schema拒绝JSON保存home/paired_template_refusal_20261014.json。一次未限定的git diff --check读到用户既有大量CRLF差异（无修改），改为只检查本轮指定路径/索引，不顺手修旧格式。
+
+## 历史2026-10-14 18:18 +08:00：磁盘容量检查通过，最新断点按已提交记录保留
 
 - 起点 commit：7113f1e0888e92b41e786aa4d1f52490c72b7dd5。用户要求把最新情况记录到 Git，随后要求检查磁盘。本轮先检查规范仓库顶层、status、log、reflog、HEAD stat 和最新交接/进度/决策；已有最新提交已记录第一组清单发布，不沿用 10 月 12 日夹爪检查作为当前状态。
 - 实际命令：df -hT、df -ih、df -hT / /home/johnwick /tmp /mnt/hgfs/ub，均 rc0。系统 /dev/sda3（ext4）总量 78G、已用 40G、可用 35G、使用率 54%；/home/johnwick 和 /tmp 共用该分区。根分区 inode 共 5.0M、已用 934K、可用 4.1M、使用率 19%。

@@ -1,0 +1,3020 @@
+{
+  "synthetic_only": true,
+  "hardware_or_production_touched": false,
+  "cases": {
+    "diverse_exact_joint": {
+      "offline_only": true,
+      "synthetic": true,
+      "production_tf_modified": false,
+      "candidate": {
+        "X_tool_from_depth_camera": [
+          [
+            0.9181605650302174,
+            -0.2014754414072617,
+            -0.3411580620960627,
+            -0.03999999999999973
+          ],
+          [
+            0.12903905220016593,
+            0.9661704959144235,
+            -0.2233013565381094,
+            0.012000000000000243
+          ],
+          [
+            0.3746065934159125,
+            0.16100378670772325,
+            0.9130978484451155,
+            0.03100000000000008
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "cube_center_in_tool_m": [
+          0.001999999999999997,
+          -0.0029999999999999892,
+          0.13500000000000004
+        ],
+        "not_approved_for_deployment": true
+      },
+      "excluded": [],
+      "equation": "T_B_G_observe * X_G_D * p_D_center = T_B_G_grip * c_G_center",
+      "model": "joint_unknown_tool_point",
+      "optimizer_success": true,
+      "optimizer_message": "`gtol` termination condition is satisfied.",
+      "training": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_01",
+            "base_xyz_error_m": [
+              5.551115123125783e-17,
+              0.0,
+              0.0
+            ],
+            "norm_m": 5.551115123125783e-17
+          },
+          {
+            "pair_id": "synthetic_02",
+            "base_xyz_error_m": [
+              4.85722573273506e-17,
+              -5.551115123125783e-17,
+              1.1102230246251565e-16
+            ],
+            "norm_m": 1.3329179921125024e-16
+          },
+          {
+            "pair_id": "synthetic_03",
+            "base_xyz_error_m": [
+              -5.551115123125783e-17,
+              -2.7755575615628914e-17,
+              0.0
+            ],
+            "norm_m": 6.206335383118183e-17
+          },
+          {
+            "pair_id": "synthetic_04",
+            "base_xyz_error_m": [
+              5.551115123125783e-17,
+              0.0,
+              1.1102230246251565e-16
+            ],
+            "norm_m": 1.2412670766236366e-16
+          },
+          {
+            "pair_id": "synthetic_05",
+            "base_xyz_error_m": [
+              0.0,
+              -2.7755575615628914e-17,
+              0.0
+            ],
+            "norm_m": 2.7755575615628914e-17
+          }
+        ],
+        "rms_m": 9.041887310691179e-17,
+        "maximum_m": 1.3329179921125024e-16
+      },
+      "held_out_validation": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_06",
+            "base_xyz_error_m": [
+              2.7755575615628914e-17,
+              -4.163336342344337e-17,
+              1.1102230246251565e-16
+            ],
+            "norm_m": 1.2177709378935645e-16
+          }
+        ],
+        "rms_m": 1.2177709378935645e-16,
+        "maximum_m": 1.2177709378935645e-16
+      },
+      "excitation": {
+        "rank": 9,
+        "unknowns": 9,
+        "fully_identifiable": true,
+        "scaled_singular_values": [
+          11.07645396187818,
+          10.901669728521522,
+          3.0399667223356563,
+          2.68199636979897,
+          1.928590965096798,
+          1.6067742977436719,
+          0.6093282768829619,
+          0.4291674601645354,
+          0.34909547834612886
+        ],
+        "column_scale": [
+          10.0,
+          10.0,
+          10.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rank_relative_tolerance": 1e-06,
+        "condition_number": 31.72901011022507,
+        "camera_position_span_singular_values_m": [
+          0.19237604045719792,
+          0.1480882313455479,
+          0.1150709989309124
+        ],
+        "grip_rotation_from_first_deg": [
+          0.0,
+          51.35462679118837,
+          90.11978022351619,
+          138.7023471297682,
+          172.71206810486228
+        ],
+        "null_directions_parameter_units": [],
+        "parameter_order": [
+          "rotation_vector_x",
+          "rotation_vector_y",
+          "rotation_vector_z",
+          "mount_tx_m",
+          "mount_ty_m",
+          "mount_tz_m",
+          "tool_center_x_m",
+          "tool_center_y_m",
+          "tool_center_z_m"
+        ]
+      },
+      "per_acquired_training_prefix": [
+        {
+          "rank": 3,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            4.682686808158442,
+            4.651796971251057,
+            1.4142135623564147,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -1.7944065423954536,
+              -2.6907808391307797,
+              2.748980145460659,
+              0.845645984022472,
+              -0.10365788607551711,
+              0.17233239789240554,
+              0.15435401598181217,
+              0.10365788607407858,
+              -0.17233239789718874
+            ],
+            [
+              0.8276719076910971,
+              -0.8154614765075254,
+              3.107463502860879,
+              -0.08753309194174992,
+              0.9055586993353046,
+              0.1510905723979639,
+              0.08753309194417946,
+              0.09444130066338477,
+              -0.1510905724021575
+            ],
+            [
+              2.684703641574291,
+              0.20774020536406285,
+              -4.786176559792754,
+              0.20652786995347444,
+              0.12795154179920157,
+              0.7004576349073739,
+              -0.2065278699592068,
+              -0.1279515417974259,
+              0.2995423651009401
+            ],
+            [
+              1.7944065424452582,
+              2.6907808392054644,
+              -2.748980145536959,
+              0.15435401598181217,
+              0.10365788607839421,
+              -0.17233239789718877,
+              0.8456459840139036,
+              -0.1036578860769557,
+              0.17233239790197197
+            ],
+            [
+              -0.8276719076796111,
+              0.8154614764962089,
+              -3.1074635028177546,
+              0.08753309194053517,
+              0.09444130066338477,
+              -0.15109057239586712,
+              -0.08753309194296473,
+              0.9055586993379258,
+              0.15109057240006074
+            ],
+            [
+              -2.6847036416488064,
+              -0.2077402053698288,
+              4.7861765599255985,
+              -0.20652786995920674,
+              -0.12795154180275295,
+              0.2995423651009401,
+              0.2065278699649391,
+              0.1279515418009773,
+              0.7004576348907459
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            6.830561476613267,
+            6.666271891373743,
+            1.9950461929662586,
+            1.4135482329697762,
+            0.6810289283107853,
+            0.178655161112669,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.1374772708486752,
+            3.680415262357684e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837
+          ],
+          "null_directions_parameter_units": [
+            [
+              -0.20445890926551713,
+              -0.5370447712692747,
+              2.759581946229705,
+              0.5392364990214883,
+              0.2908809966867464,
+              0.17510179577002935,
+              0.7068413152284256,
+              -0.0731231215149475,
+              0.09759528008524707
+            ],
+            [
+              1.930924093494561,
+              0.21931242498972242,
+              0.8491954159079519,
+              -0.38355360504733754,
+              0.8739483961688777,
+              0.05724589477534895,
+              -0.07990772880117483,
+              0.0162970310965663,
+              -0.18492137676797973
+            ],
+            [
+              0.7927302704711279,
+              0.432700036160625,
+              -1.5516675283711288,
+              -0.11646156773154835,
+              0.0300265078138755,
+              0.6997321452793914,
+              -0.12501703039285192,
+              -0.01876457150106745,
+              0.6691004727876735
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02"
+          ]
+        },
+        {
+          "rank": 9,
+          "unknowns": 9,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            8.575949846508674,
+            8.492046220730037,
+            2.4489781111363422,
+            2.0479586061028505,
+            1.0322286334587323,
+            0.7939462942108204,
+            0.2858678072186986,
+            0.1771104773347462,
+            0.08725562447692657
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 98.28535292617674,
+          "camera_position_span_singular_values_m": [
+            0.15990961490290892,
+            0.11617048561605496,
+            3.3979290447458574e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03"
+          ]
+        },
+        {
+          "rank": 9,
+          "unknowns": 9,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            9.573995058350912,
+            9.427529307079526,
+            2.8252648902672584,
+            2.5842913275469406,
+            1.4878764883789204,
+            1.0574536649768809,
+            0.473684537403806,
+            0.350602567938888,
+            0.28547501547289655
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 33.537068182626584,
+          "camera_position_span_singular_values_m": [
+            0.19189435784564207,
+            0.1469718835689772,
+            0.07433586528181176
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04"
+          ]
+        },
+        {
+          "rank": 9,
+          "unknowns": 9,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            11.07645396187818,
+            10.901669728521522,
+            3.0399667223356563,
+            2.68199636979897,
+            1.928590965096798,
+            1.6067742977436719,
+            0.6093282768829619,
+            0.4291674601645354,
+            0.34909547834612886
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 31.72901011022507,
+          "camera_position_span_singular_values_m": [
+            0.19237604045719792,
+            0.1480882313455479,
+            0.1150709989309124
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682,
+            172.71206810486228
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04",
+            "synthetic_05"
+          ]
+        }
+      ],
+      "five_plus_one_collection_complete": true,
+      "physical_grasp_verified": false,
+      "warnings": [
+        "Rank/low residual does not establish ground-truth point definitions or absolute accuracy.",
+        "Unmeasured object grip-depth changes violate the constant-tool-point model.",
+        "Held-out labels never enter training or initialisation; no automatic outlier deletion.",
+        "Synthetic results are never deployable. Physical adoption requires user review."
+      ],
+      "noise_std_per_axis_m": 0.0,
+      "synthetic_truth_error": {
+        "translation_m": 3.7226696947327204e-16,
+        "rotation_deg": 4.403697339228009e-14,
+        "tool_center_m": 2.995225014164328e-17
+      }
+    },
+    "yaw_only_unknown_center": {
+      "offline_only": true,
+      "synthetic": true,
+      "production_tf_modified": false,
+      "candidate": null,
+      "excluded": [],
+      "equation": "T_B_G_observe * X_G_D * p_D_center = T_B_G_grip * c_G_center",
+      "model": "joint_unknown_tool_point",
+      "optimizer_success": true,
+      "optimizer_message": "`gtol` termination condition is satisfied.",
+      "training": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_01",
+            "base_xyz_error_m": [
+              -2.7755575615628914e-17,
+              2.7755575615628914e-17,
+              0.0
+            ],
+            "norm_m": 3.925231146709438e-17
+          },
+          {
+            "pair_id": "synthetic_02",
+            "base_xyz_error_m": [
+              5.551115123125783e-17,
+              0.0,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.2412670766236366e-16
+          },
+          {
+            "pair_id": "synthetic_03",
+            "base_xyz_error_m": [
+              0.0,
+              1.3877787807814457e-17,
+              0.0
+            ],
+            "norm_m": 1.3877787807814457e-17
+          },
+          {
+            "pair_id": "synthetic_04",
+            "base_xyz_error_m": [
+              -1.3877787807814457e-17,
+              2.7321894746634712e-17,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.1517391445576217e-16
+          },
+          {
+            "pair_id": "synthetic_05",
+            "base_xyz_error_m": [
+              2.7755575615628914e-17,
+              0.0,
+              0.0
+            ],
+            "norm_m": 2.7755575615628914e-17
+          }
+        ],
+        "rms_m": 7.896350936206485e-17,
+        "maximum_m": 1.2412670766236366e-16
+      },
+      "held_out_validation": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_06",
+            "base_xyz_error_m": [
+              0.0,
+              1.3877787807814457e-17,
+              0.0
+            ],
+            "norm_m": 1.3877787807814457e-17
+          }
+        ],
+        "rms_m": 1.3877787807814457e-17,
+        "maximum_m": 1.3877787807814457e-17
+      },
+      "excitation": {
+        "rank": 8,
+        "unknowns": 9,
+        "fully_identifiable": false,
+        "scaled_singular_values": [
+          11.095918939688644,
+          10.932279734954012,
+          3.104429198957471,
+          2.5971269410992797,
+          1.8063823785263047,
+          1.53227621580188,
+          0.4409297875939797,
+          0.3538988404213384,
+          7.113477050021904e-11
+        ],
+        "column_scale": [
+          10.0,
+          10.0,
+          10.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rank_relative_tolerance": 1e-06,
+        "condition_number": null,
+        "camera_position_span_singular_values_m": [
+          0.19237604045719792,
+          0.1480882313455479,
+          0.1150709989309124
+        ],
+        "grip_rotation_from_first_deg": [
+          0.0,
+          40.0,
+          80.0,
+          119.99999999999999,
+          160.0
+        ],
+        "null_directions_parameter_units": [
+          [
+            9.508575828246362e-11,
+            2.2690965021664787e-10,
+            -5.485693156156552e-11,
+            -1.0250275046579513e-10,
+            2.6175958853376314e-11,
+            -0.7071067812051255,
+            -1.0973554845965135e-11,
+            2.464915056135685e-13,
+            -0.7071067811679694
+          ]
+        ],
+        "parameter_order": [
+          "rotation_vector_x",
+          "rotation_vector_y",
+          "rotation_vector_z",
+          "mount_tx_m",
+          "mount_ty_m",
+          "mount_tz_m",
+          "tool_center_x_m",
+          "tool_center_y_m",
+          "tool_center_z_m"
+        ]
+      },
+      "per_acquired_training_prefix": [
+        {
+          "rank": 3,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            4.682686807827261,
+            4.651796970918289,
+            1.4142135623745093,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -1.7944065424968443,
+              -2.690780839232451,
+              2.7489801459797887,
+              0.8456459839706697,
+              -0.10365788607697958,
+              0.17233239793989924,
+              0.15435401602933038,
+              0.10365788607697958,
+              -0.17233239794946564
+            ],
+            [
+              0.8276719082412908,
+              -0.8154614761977708,
+              3.107463502314882,
+              -0.08753309193278745,
+              0.9055586993622451,
+              0.15109057237847615,
+              0.08753309193278745,
+              0.09444130063775491,
+              -0.15109057238686338
+            ],
+            [
+              2.684703641410877,
+              0.20774020503193352,
+              -4.786176559923914,
+              0.2065278699997435,
+              0.12795154177461535,
+              0.7004576348685774,
+              -0.2065278699997435,
+              -0.12795154177461535,
+              0.2995423651480507
+            ],
+            [
+              1.7944065424968445,
+              2.690780839232451,
+              -2.7489801459797887,
+              0.1543540160293304,
+              0.10365788607697958,
+              -0.17233239793989924,
+              0.8456459839706696,
+              -0.10365788607697958,
+              0.17233239794946564
+            ],
+            [
+              -0.8276719082412909,
+              0.8154614761977709,
+              -3.107463502314882,
+              0.08753309193278745,
+              0.09444130063775491,
+              -0.15109057237847615,
+              -0.08753309193278745,
+              0.9055586993622451,
+              0.15109057238686338
+            ],
+            [
+              -2.6847036415599095,
+              -0.20774020504346624,
+              4.786176560189601,
+              -0.20652787001120818,
+              -0.12795154178171808,
+              0.29954236514805066,
+              0.20652787001120818,
+              0.12795154178171808,
+              0.7004576348353213
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            6.833709710994758,
+            6.676793994406085,
+            1.99706252974996,
+            1.4079149902115615,
+            0.5131612201256703,
+            0.23835420977007188,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.1374772708486752,
+            3.680415262357684e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -0.25253415451480826,
+              0.23134562386526009,
+              3.1580689227851897,
+              0.3409063000052697,
+              0.23689279439062685,
+              -0.03284215694894762,
+              0.8322961032634052,
+              -0.16126578993532484,
+              0.08340081905561492
+            ],
+            [
+              2.08002251278809,
+              0.2129544857782234,
+              0.5209616305472409,
+              -0.3583606957947057,
+              0.8801944658737156,
+              0.08294850196675549,
+              -0.0923916299614759,
+              0.01790181301538437,
+              -0.1861873489469839
+            ],
+            [
+              0.16140578766911926,
+              0.00729932852173161,
+              -0.07512005795374857,
+              -0.0384754952820307,
+              0.05597118596948208,
+              0.7167078617893916,
+              -0.03662074824149951,
+              0.007095640447980357,
+              0.6928259484330438
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02"
+          ]
+        },
+        {
+          "rank": 8,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            8.59400324408554,
+            8.506223458597809,
+            2.432013886130349,
+            2.0012826776583887,
+            0.9637413818208588,
+            0.6958792938402383,
+            0.3255762814885616,
+            0.13543709019509295,
+            1.8696942613196022e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.15990961490290892,
+            0.11617048561605496,
+            3.3979290447458574e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0,
+            80.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -5.66557591631472e-10,
+              -3.641627166141593e-11,
+              -4.0018169055754666e-11,
+              8.630768868175082e-11,
+              -2.584513451021362e-10,
+              0.7071067811660148,
+              2.914000201979717e-11,
+              -3.47643278307971e-11,
+              0.7071067812070803
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03"
+          ]
+        },
+        {
+          "rank": 8,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            9.602548235978443,
+            9.444675718630107,
+            2.818393865338634,
+            2.546431504135251,
+            1.359423827840337,
+            0.9833269283092966,
+            0.4380893052437014,
+            0.34025986307006534,
+            4.383587845663866e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.19189435784564207,
+            0.1469718835689772,
+            0.07433586528181176
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0,
+            80.0,
+            119.99999999999999
+          ],
+          "null_directions_parameter_units": [
+            [
+              1.843564567344894e-10,
+              2.304728534221844e-10,
+              -5.453430666705151e-11,
+              -1.0380018714605043e-10,
+              6.207946688506438e-11,
+              -0.7071067812078008,
+              -9.694599467137177e-12,
+              -4.077309627995296e-12,
+              -0.7071067811652942
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04"
+          ]
+        },
+        {
+          "rank": 8,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            11.095918939688644,
+            10.932279734954012,
+            3.104429198957471,
+            2.5971269410992797,
+            1.8063823785263047,
+            1.53227621580188,
+            0.4409297875939797,
+            0.3538988404213384,
+            7.113477050021904e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.19237604045719792,
+            0.1480882313455479,
+            0.1150709989309124
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0,
+            80.0,
+            119.99999999999999,
+            160.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              9.508575828246362e-11,
+              2.2690965021664787e-10,
+              -5.485693156156552e-11,
+              -1.0250275046579513e-10,
+              2.6175958853376314e-11,
+              -0.7071067812051255,
+              -1.0973554845965135e-11,
+              2.464915056135685e-13,
+              -0.7071067811679694
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04",
+            "synthetic_05"
+          ]
+        }
+      ],
+      "five_plus_one_collection_complete": true,
+      "physical_grasp_verified": false,
+      "warnings": [
+        "Rank/low residual does not establish ground-truth point definitions or absolute accuracy.",
+        "Unmeasured object grip-depth changes violate the constant-tool-point model.",
+        "Held-out labels never enter training or initialisation; no automatic outlier deletion.",
+        "Synthetic results are never deployable. Physical adoption requires user review."
+      ],
+      "noise_std_per_axis_m": 0.0
+    },
+    "yaw_only_known_center": {
+      "offline_only": true,
+      "synthetic": true,
+      "production_tf_modified": false,
+      "candidate": {
+        "X_tool_from_depth_camera": [
+          [
+            0.9181605650302174,
+            -0.20147544140726167,
+            -0.34115806209606253,
+            -0.03999999999999984
+          ],
+          [
+            0.12903905220016607,
+            0.9661704959144235,
+            -0.22330135653810898,
+            0.01200000000000008
+          ],
+          [
+            0.37460659341591224,
+            0.1610037867077229,
+            0.9130978484451157,
+            0.031000000000000194
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "cube_center_in_tool_m": [
+          0.002,
+          -0.003,
+          0.135
+        ],
+        "not_approved_for_deployment": true
+      },
+      "excluded": [],
+      "equation": "T_B_G_observe * X_G_D * p_D_center = T_B_G_grip * c_G_center",
+      "model": "verified_known_tool_point",
+      "optimizer_success": true,
+      "optimizer_message": "`gtol` termination condition is satisfied.",
+      "training": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_01",
+            "base_xyz_error_m": [
+              0.0,
+              0.0,
+              2.220446049250313e-16
+            ],
+            "norm_m": 2.220446049250313e-16
+          },
+          {
+            "pair_id": "synthetic_02",
+            "base_xyz_error_m": [
+              6.938893903907228e-18,
+              0.0,
+              2.220446049250313e-16
+            ],
+            "norm_m": 2.2215299868541707e-16
+          },
+          {
+            "pair_id": "synthetic_03",
+            "base_xyz_error_m": [
+              -5.551115123125783e-17,
+              -6.938893903907228e-18,
+              2.220446049250313e-16
+            ],
+            "norm_m": 2.2898349882893854e-16
+          },
+          {
+            "pair_id": "synthetic_04",
+            "base_xyz_error_m": [
+              -6.938893903907228e-18,
+              1.0408340855860843e-17,
+              2.220446049250313e-16
+            ],
+            "norm_m": 2.223966914868445e-16
+          },
+          {
+            "pair_id": "synthetic_05",
+            "base_xyz_error_m": [
+              0.0,
+              0.0,
+              1.1102230246251565e-16
+            ],
+            "norm_m": 1.1102230246251565e-16
+          }
+        ],
+        "rms_m": 2.0633731808160716e-16,
+        "maximum_m": 2.2898349882893854e-16
+      },
+      "held_out_validation": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_06",
+            "base_xyz_error_m": [
+              -2.7755575615628914e-17,
+              2.7755575615628914e-17,
+              2.220446049250313e-16
+            ],
+            "norm_m": 2.254873622441467e-16
+          }
+        ],
+        "rms_m": 2.254873622441467e-16,
+        "maximum_m": 2.254873622441467e-16
+      },
+      "excitation": {
+        "rank": 6,
+        "unknowns": 6,
+        "fully_identifiable": true,
+        "scaled_singular_values": [
+          10.996939983250755,
+          10.860930945219717,
+          2.3870802910224636,
+          2.2360679774490926,
+          0.4552128638862241,
+          0.3864924568566752
+        ],
+        "column_scale": [
+          10.0,
+          10.0,
+          10.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rank_relative_tolerance": 1e-06,
+        "condition_number": 28.45318139631584,
+        "camera_position_span_singular_values_m": [
+          0.19237604045719792,
+          0.1480882313455479,
+          0.1150709989309124
+        ],
+        "grip_rotation_from_first_deg": [
+          0.0,
+          40.0,
+          80.0,
+          119.99999999999999,
+          160.0
+        ],
+        "null_directions_parameter_units": [],
+        "parameter_order": [
+          "rotation_vector_x",
+          "rotation_vector_y",
+          "rotation_vector_z",
+          "mount_tx_m",
+          "mount_ty_m",
+          "mount_tz_m"
+        ]
+      },
+      "per_acquired_training_prefix": [
+        {
+          "rank": 3,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            4.57466454961378,
+            4.5430402882245176,
+            0.9999999999824057,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -2.363276994580665,
+              -3.167369003505769,
+              4.116257900064188,
+              0.7101229141684126,
+              -0.20019637586766556,
+              0.3606078497331578
+            ],
+            [
+              0.43506755518900786,
+              -1.0916314942440026,
+              4.139819954543947,
+              -0.19272370704066427,
+              0.8292656268694746,
+              0.29997594788389903
+            ],
+            [
+              3.564688967296033,
+              0.7963176784343298,
+              -6.723278152027357,
+              0.4128825303199018,
+              0.27486556855746186,
+              0.4105373935434429
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01"
+          ]
+        },
+        {
+          "rank": 5,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            6.700614677024764,
+            6.5411409681123835,
+            1.4142135623418008,
+            1.342143420252857,
+            0.2892850167794749,
+            2.6303225465940373e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.1374772708486752,
+            3.680415262357684e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              2.0117688350079588,
+              0.23395831361871067,
+              0.8544503225242212,
+              -0.31423497689645674,
+              0.8887236624715371,
+              0.25120962191213303
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 6,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            8.460479820697419,
+            8.386952560553132,
+            1.8917921450389026,
+            1.732050807532159,
+            0.33554108340257854,
+            0.24038377806791578
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 35.19571864914726,
+          "camera_position_span_singular_values_m": [
+            0.15990961490290892,
+            0.11617048561605496,
+            3.3979290447458574e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0,
+            80.0
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 6,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            9.477252560883171,
+            9.338301296550714,
+            2.371763314787739,
+            1.9999999999546076,
+            0.4351067939549345,
+            0.35268554497997834
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 26.871678456289402,
+          "camera_position_span_singular_values_m": [
+            0.19189435784564207,
+            0.1469718835689772,
+            0.07433586528181176
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0,
+            80.0,
+            119.99999999999999
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 6,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            10.996939983250755,
+            10.860930945219717,
+            2.3870802910224636,
+            2.2360679774490926,
+            0.4552128638862241,
+            0.3864924568566752
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 28.45318139631584,
+          "camera_position_span_singular_values_m": [
+            0.19237604045719792,
+            0.1480882313455479,
+            0.1150709989309124
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            40.0,
+            80.0,
+            119.99999999999999,
+            160.0
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04",
+            "synthetic_05"
+          ]
+        }
+      ],
+      "five_plus_one_collection_complete": true,
+      "physical_grasp_verified": false,
+      "warnings": [
+        "Rank/low residual does not establish ground-truth point definitions or absolute accuracy.",
+        "Unmeasured object grip-depth changes violate the constant-tool-point model.",
+        "Held-out labels never enter training or initialisation; no automatic outlier deletion.",
+        "Synthetic results are never deployable. Physical adoption requires user review."
+      ],
+      "noise_std_per_axis_m": 0.0,
+      "synthetic_truth_error": {
+        "translation_m": 2.637920702051927e-16,
+        "rotation_deg": 1.8149377624672005e-14,
+        "tool_center_m": 0.0
+      }
+    },
+    "collinear_known_center": {
+      "offline_only": true,
+      "synthetic": true,
+      "production_tf_modified": false,
+      "candidate": null,
+      "excluded": [],
+      "equation": "T_B_G_observe * X_G_D * p_D_center = T_B_G_grip * c_G_center",
+      "model": "verified_known_tool_point",
+      "optimizer_success": true,
+      "optimizer_message": "`gtol` termination condition is satisfied.",
+      "training": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_01",
+            "base_xyz_error_m": [
+              -1.1102230246251565e-16,
+              4.163336342344337e-17,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.6243534171511178e-16
+          },
+          {
+            "pair_id": "synthetic_02",
+            "base_xyz_error_m": [
+              -5.551115123125783e-17,
+              6.938893903907228e-17,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.4220500840710912e-16
+          },
+          {
+            "pair_id": "synthetic_03",
+            "base_xyz_error_m": [
+              -8.326672684688674e-17,
+              4.163336342344337e-17,
+              0.0
+            ],
+            "norm_m": 9.309503074677274e-17
+          },
+          {
+            "pair_id": "synthetic_04",
+            "base_xyz_error_m": [
+              -5.551115123125783e-17,
+              6.938893903907228e-17,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.4220500840710912e-16
+          },
+          {
+            "pair_id": "synthetic_05",
+            "base_xyz_error_m": [
+              -6.938893903907228e-17,
+              1.3877787807814457e-17,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.316562550716263e-16
+          }
+        ],
+        "rms_m": 1.362569802391531e-16,
+        "maximum_m": 1.6243534171511178e-16
+      },
+      "held_out_validation": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_06",
+            "base_xyz_error_m": [
+              -6.245004513516506e-17,
+              4.163336342344337e-17,
+              -1.1102230246251565e-16
+            ],
+            "norm_m": 1.340123006720315e-16
+          }
+        ],
+        "rms_m": 1.340123006720315e-16,
+        "maximum_m": 1.340123006720315e-16
+      },
+      "excitation": {
+        "rank": 5,
+        "unknowns": 6,
+        "fully_identifiable": false,
+        "scaled_singular_values": [
+          10.286420520004409,
+          9.709748247614591,
+          2.2360679774400656,
+          1.1813744753017976,
+          0.2712887614721344,
+          6.500728286302547e-11
+        ],
+        "column_scale": [
+          10.0,
+          10.0,
+          10.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rank_relative_tolerance": 1e-06,
+        "condition_number": null,
+        "camera_position_span_singular_values_m": [
+          0.12649110640673517,
+          0.0,
+          0.0
+        ],
+        "grip_rotation_from_first_deg": [
+          0.0,
+          51.35462679118837,
+          90.11978022351619,
+          138.7023471297682,
+          172.71206810486228
+        ],
+        "null_directions_parameter_units": [
+          [
+            2.1333479524566803,
+            0.32612773102297377,
+            0.35372783097438576,
+            -0.38661777887878135,
+            0.2917924437879139,
+            0.8470875404508811
+          ]
+        ],
+        "parameter_order": [
+          "rotation_vector_x",
+          "rotation_vector_y",
+          "rotation_vector_z",
+          "mount_tx_m",
+          "mount_ty_m",
+          "mount_tz_m"
+        ]
+      },
+      "per_acquired_training_prefix": [
+        {
+          "rank": 3,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            4.71584499194284,
+            4.408817580368798,
+            0.9999999999743457,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -1.046906936485979,
+              -2.9292620800275677,
+              0.2360208144262368,
+              0.9309506655150191,
+              -0.18707653157944004,
+              0.031784694263541025
+            ],
+            [
+              -2.005237333945246,
+              -5.415671707112018,
+              7.450988869869924,
+              -0.19953279461966436,
+              0.10318885563886282,
+              0.24670144812574454
+            ],
+            [
+              2.619102701640514,
+              0.7273271087614525,
+              -1.9111522199841233,
+              0.0688249149438374,
+              0.2135752283343787,
+              0.9160986235098215
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01"
+          ]
+        },
+        {
+          "rank": 5,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            6.612567801732137,
+            6.189826260450655,
+            1.4142135623362697,
+            0.2598213635658756,
+            0.060200232919485896,
+            2.0486938957701605e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.028284271247461905,
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837
+          ],
+          "null_directions_parameter_units": [
+            [
+              -2.1333479520800362,
+              -0.32612773115018756,
+              -0.3537278321096926,
+              0.38661777920810103,
+              -0.29179244380245767,
+              -0.8470875402998221
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02"
+          ]
+        },
+        {
+          "rank": 5,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            8.042050275454221,
+            7.543193341080471,
+            1.7320508075232426,
+            0.5233340437181933,
+            0.1209962376750856,
+            5.644830509465824e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.05656854249492381,
+            0.0,
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619
+          ],
+          "null_directions_parameter_units": [
+            [
+              2.133347952495827,
+              0.32612773115994753,
+              0.3537278308364783,
+              -0.38661777889077026,
+              0.2917924437853911,
+              0.8470875404453413
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03"
+          ]
+        },
+        {
+          "rank": 5,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            9.235678006435942,
+            8.687072597330287,
+            1.9999999999468552,
+            0.8320622501033654,
+            0.1918021932007614,
+            5.942836153596324e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0894427190999916,
+            0.0,
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682
+          ],
+          "null_directions_parameter_units": [
+            [
+              2.1333479524161114,
+              0.32612773116096005,
+              0.35372783109867134,
+              -0.3866177789543641,
+              0.29179244378727237,
+              0.8470875404165769
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04"
+          ]
+        },
+        {
+          "rank": 5,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            10.286420520004409,
+            9.709748247614591,
+            2.2360679774400656,
+            1.1813744753017976,
+            0.2712887614721344,
+            6.500728286302547e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.12649110640673517,
+            0.0,
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682,
+            172.71206810486228
+          ],
+          "null_directions_parameter_units": [
+            [
+              2.1333479524566803,
+              0.32612773102297377,
+              0.35372783097438576,
+              -0.38661777887878135,
+              0.2917924437879139,
+              0.8470875404508811
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04",
+            "synthetic_05"
+          ]
+        }
+      ],
+      "five_plus_one_collection_complete": true,
+      "physical_grasp_verified": false,
+      "warnings": [
+        "Rank/low residual does not establish ground-truth point definitions or absolute accuracy.",
+        "Unmeasured object grip-depth changes violate the constant-tool-point model.",
+        "Held-out labels never enter training or initialisation; no automatic outlier deletion.",
+        "Synthetic results are never deployable. Physical adoption requires user review."
+      ],
+      "noise_std_per_axis_m": 0.0
+    },
+    "diverse_3mm_noise": {
+      "offline_only": true,
+      "synthetic": true,
+      "production_tf_modified": false,
+      "candidate": {
+        "X_tool_from_depth_camera": [
+          [
+            0.9226421542785346,
+            -0.21762881924594255,
+            -0.3183852260735125,
+            -0.048775838228551686
+          ],
+          [
+            0.14869573328922062,
+            0.9624787131108045,
+            -0.22698965991901632,
+            0.0157953620594611
+          ],
+          [
+            0.35583849433394044,
+            0.16208770416717794,
+            0.9203839101744269,
+            0.023277262454020915
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "cube_center_in_tool_m": [
+          0.002441210182619155,
+          -0.003857119833852032,
+          0.12976613018293728
+        ],
+        "not_approved_for_deployment": true
+      },
+      "excluded": [],
+      "equation": "T_B_G_observe * X_G_D * p_D_center = T_B_G_grip * c_G_center",
+      "model": "joint_unknown_tool_point",
+      "optimizer_success": true,
+      "optimizer_message": "`ftol` termination condition is satisfied.",
+      "training": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_01",
+            "base_xyz_error_m": [
+              0.004600861751462071,
+              0.0031954297617832195,
+              0.002294312582863167
+            ],
+            "norm_m": 0.006053310701297337
+          },
+          {
+            "pair_id": "synthetic_02",
+            "base_xyz_error_m": [
+              0.0005221787220607635,
+              -0.0036361363992000184,
+              -0.0032313263898960942
+            ],
+            "norm_m": 0.004892405213123624
+          },
+          {
+            "pair_id": "synthetic_03",
+            "base_xyz_error_m": [
+              -0.002800079012749701,
+              -0.0017678851369858362,
+              0.0002734640296077062
+            ],
+            "norm_m": 0.0033227462904510258
+          },
+          {
+            "pair_id": "synthetic_04",
+            "base_xyz_error_m": [
+              -0.0012593504293196209,
+              -0.002069694614448739,
+              -0.0001183376074888054
+            ],
+            "norm_m": 0.002425613961505788
+          },
+          {
+            "pair_id": "synthetic_05",
+            "base_xyz_error_m": [
+              -0.0010636110313758385,
+              0.004278286388851443,
+              0.0007818873847275087
+            ],
+            "norm_m": 0.004477315125551464
+          }
+        ],
+        "rms_m": 0.004416985305619431,
+        "maximum_m": 0.006053310701297337
+      },
+      "held_out_validation": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_06",
+            "base_xyz_error_m": [
+              -0.00043194340990848623,
+              0.00668218278160114,
+              0.0017370706991995943
+            ],
+            "norm_m": 0.006917771060833676
+          }
+        ],
+        "rms_m": 0.006917771060833676,
+        "maximum_m": 0.006917771060833676
+      },
+      "excitation": {
+        "rank": 9,
+        "unknowns": 9,
+        "fully_identifiable": true,
+        "scaled_singular_values": [
+          11.073091188559008,
+          10.91348703406412,
+          3.044030119423246,
+          2.659448725819827,
+          1.929721514068908,
+          1.5819248034707951,
+          0.6066938732478946,
+          0.4242683924236928,
+          0.346305456737898
+        ],
+        "column_scale": [
+          10.0,
+          10.0,
+          10.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rank_relative_tolerance": 1e-06,
+        "condition_number": 31.974925526338733,
+        "camera_position_span_singular_values_m": [
+          0.18844121330710562,
+          0.14637282914785862,
+          0.1144989826884535
+        ],
+        "grip_rotation_from_first_deg": [
+          0.0,
+          51.35462679118837,
+          90.11978022351619,
+          138.7023471297682,
+          172.71206810486228
+        ],
+        "null_directions_parameter_units": [],
+        "parameter_order": [
+          "rotation_vector_x",
+          "rotation_vector_y",
+          "rotation_vector_z",
+          "mount_tx_m",
+          "mount_ty_m",
+          "mount_tz_m",
+          "tool_center_x_m",
+          "tool_center_y_m",
+          "tool_center_z_m"
+        ]
+      },
+      "per_acquired_training_prefix": [
+        {
+          "rank": 3,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            4.6584382112028075,
+            4.630158090370566,
+            1.4142135623602323,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -1.6732744482783481,
+              -2.685973964566124,
+              2.5869437659334586,
+              0.859092636819971,
+              -0.10067100896977335,
+              0.16548389137844344,
+              0.14090736317807362,
+              0.10067100896977335,
+              -0.16548389138303654
+            ],
+            [
+              0.8728970755361933,
+              -0.8574091765431023,
+              3.1307480501352494,
+              -0.08318222564275812,
+              0.9029970248061114,
+              0.15550144553777112,
+              0.08318222564160373,
+              0.09700297519388854,
+              -0.15550144554208717
+            ],
+            [
+              2.645828793714282,
+              0.2910708478909449,
+              -4.917541130792368,
+              0.20002108723758102,
+              0.13377464024855928,
+              0.6891010185024551,
+              -0.2000210872348052,
+              -0.13377464024855928,
+              0.31089898150617407
+            ],
+            [
+              1.6732744482551274,
+              2.685973964528849,
+              -2.5869437658975576,
+              0.14090736317807362,
+              0.10067100896837623,
+              -0.16548389137614686,
+              0.8590926368238818,
+              -0.10067100896837623,
+              0.16548389138073996
+            ],
+            [
+              -0.8728970755361933,
+              0.8574091765431023,
+              -3.1307480501352494,
+              0.08318222564275812,
+              0.09700297519388854,
+              -0.15550144553777112,
+              -0.08318222564160373,
+              0.9029970248061114,
+              0.15550144554208717
+            ],
+            [
+              -2.6458287937877185,
+              -0.291070847899024,
+              4.917541130928859,
+              -0.20002108724313272,
+              -0.1337746402522723,
+              0.31089898150617407,
+              0.20002108724035692,
+              0.1337746402522723,
+              0.6891010184851967
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 9,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            6.812725671927497,
+            6.66450571641111,
+            1.9924404296399048,
+            1.371519890331147,
+            0.6718771029592374,
+            0.17089619158677888,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.13267600711449065,
+            3.679904200040098e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837
+          ],
+          "null_directions_parameter_units": [
+            [
+              -0.23754474283982235,
+              -0.4936191455885422,
+              3.007362803909344,
+              0.5158239519750648,
+              0.26288173033086754,
+              0.14474457259314155,
+              0.7297864619494083,
+              -0.09969728376300031,
+              0.08886418117976322
+            ],
+            [
+              1.9393695766528598,
+              0.1571983565066165,
+              0.9073543978358056,
+              -0.36878054960877293,
+              0.8775829055904517,
+              0.06788411173339054,
+              -0.07323756737431744,
+              0.015426253938522962,
+              -0.19377205686137192
+            ],
+            [
+              0.7771466617958783,
+              0.3602065422670214,
+              -1.5903046937986027,
+              -0.07672631938311761,
+              0.04802378154767049,
+              0.7121533605600018,
+              -0.11503546628188406,
+              -0.004121437937440554,
+              0.6623945105056442
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02"
+          ]
+        },
+        {
+          "rank": 9,
+          "unknowns": 9,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            8.559046951164348,
+            8.484465914193828,
+            2.4474472799468776,
+            2.022886256863871,
+            1.0358139768443007,
+            0.7841006972284111,
+            0.28539561565351523,
+            0.1694401317937769,
+            0.09548111680941278
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 89.64125302648925,
+          "camera_position_span_singular_values_m": [
+            0.15983651621884873,
+            0.11135170269876815,
+            5.665817106116513e-18
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03"
+          ]
+        },
+        {
+          "rank": 9,
+          "unknowns": 9,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            9.561799273080888,
+            9.432466528457867,
+            2.8180453906976988,
+            2.552886899849243,
+            1.4879063343509813,
+            1.0646720345478435,
+            0.46734039945407857,
+            0.34974600685524787,
+            0.2800449356531188
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 34.14380356774147,
+          "camera_position_span_singular_values_m": [
+            0.18779341269867308,
+            0.14624546342200495,
+            0.07270079186467057
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04"
+          ]
+        },
+        {
+          "rank": 9,
+          "unknowns": 9,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            11.073091188559008,
+            10.91348703406412,
+            3.044030119423246,
+            2.659448725819827,
+            1.929721514068908,
+            1.5819248034707951,
+            0.6066938732478946,
+            0.4242683924236928,
+            0.346305456737898
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 31.974925526338733,
+          "camera_position_span_singular_values_m": [
+            0.18844121330710562,
+            0.14637282914785862,
+            0.1144989826884535
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682,
+            172.71206810486228
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m",
+            "tool_center_x_m",
+            "tool_center_y_m",
+            "tool_center_z_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04",
+            "synthetic_05"
+          ]
+        }
+      ],
+      "five_plus_one_collection_complete": true,
+      "physical_grasp_verified": false,
+      "warnings": [
+        "Rank/low residual does not establish ground-truth point definitions or absolute accuracy.",
+        "Unmeasured object grip-depth changes violate the constant-tool-point model.",
+        "Held-out labels never enter training or initialisation; no automatic outlier deletion.",
+        "Synthetic results are never deployable. Physical adoption requires user review."
+      ],
+      "noise_std_per_axis_m": 0.003,
+      "synthetic_truth_error": {
+        "translation_m": 0.01229067878435447,
+        "rotation_deg": 1.630590329453478,
+        "tool_center_m": 0.005321908877159545
+      }
+    },
+    "missing_depth_center": {
+      "input_rejected": "Expected finite 3-vector; no missing values may be guessed",
+      "candidate": null
+    },
+    "training_only_25mm_bias": {
+      "offline_only": true,
+      "synthetic": true,
+      "production_tf_modified": false,
+      "candidate": {
+        "X_tool_from_depth_camera": [
+          [
+            0.9181605650302176,
+            -0.20147544140726167,
+            -0.3411580620960624,
+            -0.031471048447598404
+          ],
+          [
+            0.12903905220016618,
+            0.9661704959144237,
+            -0.22330135653810876,
+            0.017582533913452644
+          ],
+          [
+            0.3746065934159121,
+            0.16100378670772267,
+            0.9130978484451159,
+            0.008172553788872883
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "cube_center_in_tool_m": [
+          0.002,
+          -0.003,
+          0.135
+        ],
+        "not_approved_for_deployment": true
+      },
+      "excluded": [],
+      "equation": "T_B_G_observe * X_G_D * p_D_center = T_B_G_grip * c_G_center",
+      "model": "verified_known_tool_point",
+      "optimizer_success": true,
+      "optimizer_message": "`gtol` termination condition is satisfied.",
+      "training": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_01",
+            "base_xyz_error_m": [
+              -1.1102230246251565e-16,
+              -5.551115123125783e-17,
+              8.881784197001252e-16
+            ],
+            "norm_m": 8.968100940422724e-16
+          },
+          {
+            "pair_id": "synthetic_02",
+            "base_xyz_error_m": [
+              -5.551115123125783e-17,
+              -5.551115123125783e-17,
+              8.881784197001252e-16
+            ],
+            "norm_m": 8.916411167297361e-16
+          },
+          {
+            "pair_id": "synthetic_03",
+            "base_xyz_error_m": [
+              -1.1102230246251565e-16,
+              -1.3877787807814457e-17,
+              8.881784197001252e-16
+            ],
+            "norm_m": 8.951979947807797e-16
+          },
+          {
+            "pair_id": "synthetic_04",
+            "base_xyz_error_m": [
+              -6.938893903907228e-17,
+              -1.734723475976807e-17,
+              7.771561172376096e-16
+            ],
+            "norm_m": 7.804405050832611e-16
+          },
+          {
+            "pair_id": "synthetic_05",
+            "base_xyz_error_m": [
+              -5.551115123125783e-17,
+              -5.551115123125783e-17,
+              9.992007221626409e-16
+            ],
+            "norm_m": 1.0022799304547519e-15
+          }
+        ],
+        "rms_m": 8.960272447471324e-16,
+        "maximum_m": 1.0022799304547519e-15
+      },
+      "held_out_validation": {
+        "pairs": [
+          {
+            "pair_id": "synthetic_06",
+            "base_xyz_error_m": [
+              0.008528951552401492,
+              0.005582533913452689,
+              -0.022827446211126978
+            ],
+            "norm_m": 0.024999999999999134
+          }
+        ],
+        "rms_m": 0.024999999999999134,
+        "maximum_m": 0.024999999999999134
+      },
+      "excitation": {
+        "rank": 6,
+        "unknowns": 6,
+        "fully_identifiable": true,
+        "scaled_singular_values": [
+          11.534022950186557,
+          11.396550020967727,
+          2.3869521287330295,
+          2.236067977448293,
+          0.4340176939222145,
+          0.3683461428670158
+        ],
+        "column_scale": [
+          10.0,
+          10.0,
+          10.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rank_relative_tolerance": 1e-06,
+        "condition_number": 31.31300048484746,
+        "camera_position_span_singular_values_m": [
+          0.19237604045719792,
+          0.14808823134554788,
+          0.11507099893091237
+        ],
+        "grip_rotation_from_first_deg": [
+          0.0,
+          51.35462679118837,
+          90.11978022351619,
+          138.7023471297682,
+          172.71206810486228
+        ],
+        "null_directions_parameter_units": [],
+        "parameter_order": [
+          "rotation_vector_x",
+          "rotation_vector_y",
+          "rotation_vector_z",
+          "mount_tx_m",
+          "mount_ty_m",
+          "mount_tz_m"
+        ]
+      },
+      "per_acquired_training_prefix": [
+        {
+          "rank": 3,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            4.809809667394066,
+            4.776398014076318,
+            0.9999999999841804,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.0
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0
+          ],
+          "null_directions_parameter_units": [
+            [
+              -2.2570331022849484,
+              -3.0351971486685843,
+              4.119335113853646,
+              0.7204854152636757,
+              -0.19328610667589813,
+              0.3616432330283071
+            ],
+            [
+              0.42111326059267773,
+              -1.0401175796713316,
+              4.044503164579093,
+              -0.18651511817485378,
+              0.8370638001446092,
+              0.2972615634738197
+            ],
+            [
+              3.4810621484171755,
+              0.8416612572833437,
+              -6.85470300532765,
+              0.4106922254489922,
+              0.27459009269732865,
+              0.39724145114048914
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01"
+          ]
+        },
+        {
+          "rank": 5,
+          "unknowns": 6,
+          "fully_identifiable": false,
+          "scaled_singular_values": [
+            7.0363123427974505,
+            6.8804419989848435,
+            1.4142135623441885,
+            1.3417771334571775,
+            0.2755016293152641,
+            4.6387254106636175e-11
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": null,
+          "camera_position_span_singular_values_m": [
+            0.1374772708486752,
+            3.680415262357684e-17
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837
+          ],
+          "null_directions_parameter_units": [
+            [
+              -1.9129564819153058,
+              -0.22246694764614827,
+              -0.8124821574128305,
+              0.31147115807985154,
+              -0.8937343555268367,
+              -0.2460374085973857
+            ]
+          ],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 6,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            8.875725447942392,
+            8.803045627866727,
+            1.8912882199639607,
+            1.7320508075307128,
+            0.3200304074434314,
+            0.22894843684845945
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 38.767355523886884,
+          "camera_position_span_singular_values_m": [
+            0.15990961490290892,
+            0.11617048561605499,
+            1.1326430149152858e-16
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 6,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            9.955529947346687,
+            9.81625785354227,
+            2.3717693003202633,
+            1.999999999953588,
+            0.41418474881237594,
+            0.3355276547236652
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 29.671264967848597,
+          "camera_position_span_singular_values_m": [
+            0.19189435784564207,
+            0.14697188356897722,
+            0.07433586528181176
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04"
+          ]
+        },
+        {
+          "rank": 6,
+          "unknowns": 6,
+          "fully_identifiable": true,
+          "scaled_singular_values": [
+            11.534022950186557,
+            11.396550020967727,
+            2.3869521287330295,
+            2.236067977448293,
+            0.4340176939222145,
+            0.3683461428670158
+          ],
+          "column_scale": [
+            10.0,
+            10.0,
+            10.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rank_relative_tolerance": 1e-06,
+          "condition_number": 31.31300048484746,
+          "camera_position_span_singular_values_m": [
+            0.19237604045719792,
+            0.14808823134554788,
+            0.11507099893091237
+          ],
+          "grip_rotation_from_first_deg": [
+            0.0,
+            51.35462679118837,
+            90.11978022351619,
+            138.7023471297682,
+            172.71206810486228
+          ],
+          "null_directions_parameter_units": [],
+          "parameter_order": [
+            "rotation_vector_x",
+            "rotation_vector_y",
+            "rotation_vector_z",
+            "mount_tx_m",
+            "mount_ty_m",
+            "mount_tz_m"
+          ],
+          "pair_ids": [
+            "synthetic_01",
+            "synthetic_02",
+            "synthetic_03",
+            "synthetic_04",
+            "synthetic_05"
+          ]
+        }
+      ],
+      "five_plus_one_collection_complete": true,
+      "physical_grasp_verified": false,
+      "warnings": [
+        "Rank/low residual does not establish ground-truth point definitions or absolute accuracy.",
+        "Unmeasured object grip-depth changes violate the constant-tool-point model.",
+        "Held-out labels never enter training or initialisation; no automatic outlier deletion.",
+        "Synthetic results are never deployable. Physical adoption requires user review."
+      ]
+    }
+  },
+  "twenty_noise_trials": {
+    "per_axis_camera_noise_m": 0.003,
+    "held_out_error_m": [
+      0.003012212046481446,
+      0.0015162400313232733,
+      0.002404337491869624,
+      0.0039629757025027084,
+      0.01416471984401601,
+      0.0034067787436478417,
+      0.007647731155818428,
+      0.0055805956651208246,
+      0.013581978819754805,
+      0.004069772422577226,
+      0.005944401622499579,
+      0.0032541288930086495,
+      0.007038776696052146,
+      0.007766495901506094,
+      0.011643390876545503,
+      0.010631823508524494,
+      0.002419131190628253,
+      0.006917771060833676,
+      0.0035547404221307074,
+      0.005951511054259609
+    ],
+    "median_m": 0.005762498643810202,
+    "p95_m": 0.013611115870967866
+  },
+  "not_a_reachable_pose_proposal": true,
+  "conclusion": "Diverse positions plus yaw alone do not identify mount and unknown grip depth; known-tool-point model or additional tilt constraints are necessary."
+}

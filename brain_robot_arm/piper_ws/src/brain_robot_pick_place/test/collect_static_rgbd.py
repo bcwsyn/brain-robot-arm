@@ -62,12 +62,23 @@ def checked_packet(rgb, depth, info, feedback, now_ns):
             'q_rad': joint_positions(feedback)}
 
 
-def settled_feedback(history, q, reference_ns):
+def settled_feedback(history, q, reference_ns, window_s=.25):
     """Require an observed 250ms static window, not one zero-velocity message."""
+    duration_ns = int(window_s * 1e9)
     window = [(stamp, values) for stamp, values in history
-              if reference_ns - 300_000_000 <= stamp <= reference_ns]
-    return (len(window) >= 3 and window[-1][0] - window[0][0] >= 250_000_000
+              if reference_ns - duration_ns - 50_000_000 <= stamp <= reference_ns]
+    return (len(window) >= 3 and window[-1][0] - window[0][0] >= duration_ns
             and all(abs(a - b) <= 0.001 for _, values in window for a, b in zip(values, q)))
+
+
+def full_camera_info(info):
+    """Retain the actual same-depth-frame message, not a factory replacement."""
+    return {'stamp_ns': str(stamp_ns(info)), 'frame': info.header.frame_id,
+            'size': [info.width, info.height], 'distortion_model': info.distortion_model,
+            'k': list(info.k), 'd': list(info.d), 'r': list(info.r), 'p': list(info.p),
+            'binning_x': info.binning_x, 'binning_y': info.binning_y,
+            'roi': {name: getattr(info.roi, name) for name in
+                    ('x_offset', 'y_offset', 'height', 'width', 'do_rectify')}}
 
 
 def synchronizer(filters):
@@ -76,7 +87,7 @@ def synchronizer(filters):
                                       allow_headerless=False)
 
 
-def collect(output, duration_s, frames):
+def collect(output, duration_s, frames, settle_s=.25):
     import cv2
     from cv_bridge import CvBridge
     import message_filters
@@ -92,8 +103,9 @@ def collect(output, duration_s, frames):
                'message_filters_file': message_filters.__file__,
                'slop_s': SLOP_NS / 1e9, 'max_age_s': MAX_AGE_NS / 1e9,
                'requested_frames': frames, 'saved_frames': 0,
+               'static_window_s': settle_s, 'full_same_frame_depth_info': True,
                'received': {}, 'rejected': {}, 'matched_packets': 0}
-    received, rejected, history = Counter(), Counter(), deque(maxlen=200)
+    received, rejected, history = Counter(), Counter(), deque(maxlen=1000)
     start_q, latest_saved_ns = None, 0
     bridge = CvBridge()
     rclpy.init()
@@ -113,8 +125,8 @@ def collect(output, duration_s, frames):
         summary['matched_packets'] += 1
         try:
             packet = checked_packet(rgb, depth, info, feedback, node.get_clock().now().nanoseconds)
-            if not settled_feedback(history, packet['q_rad'], packet['stamps_ns']['feedback']):
-                raise ValueError('feedback not settled for 250ms')
+            if not settled_feedback(history, packet['q_rad'], packet['stamps_ns']['feedback'], settle_s):
+                raise ValueError(f'feedback not settled for {settle_s:g}s')
             if start_q is not None and any(abs(a - b) > 0.001 for a, b in zip(start_q, packet['q_rad'])):
                 raise ValueError('static pose changed')
             if packet['stamps_ns']['rgb'] - latest_saved_ns < 500_000_000:
@@ -122,10 +134,14 @@ def collect(output, duration_s, frames):
             row = {'epoch': time.time(), 'snapshot': summary['saved_frames'] + 1,
                    'timestamp_paired_not_hardware_sync': True, **packet,
                    'latest': {TOPICS[3]: {'stamp': packet['stamps_ns']['feedback'] / 1e9,
-                                         'positions': dict(zip(NAMES, packet['q_rad']))},
-                              TOPICS[2]: {'stamp': packet['stamps_ns']['depth_info'] / 1e9,
-                                         'frame': info.header.frame_id,
-                                         'size': [info.width, info.height], 'k': list(info.k)}},
+                                         'positions': dict(zip(NAMES, packet['q_rad'])),
+                                         'raw_names': list(feedback.name),
+                                         'raw_positions': list(feedback.position),
+                                         'raw_velocity': list(feedback.velocity),
+                                         'raw_effort': list(feedback.effort),
+                                         'frame': feedback.header.frame_id},
+                              TOPICS[2]: dict(full_camera_info(info),
+                                  stamp=packet['stamps_ns']['depth_info'] / 1e9)},
                    'images': {}}
             for label, message, encoding in (('rgb', rgb, 'bgr8'), ('depth', depth, 'passthrough')):
                 path = evidence / f"{row['snapshot']:04d}_{label}.png"
@@ -133,6 +149,8 @@ def collect(output, duration_s, frames):
                     raise RuntimeError('image write failed or would overwrite evidence')
                 row['images'][label] = {'path': str(path), 'stamp': packet['stamps_ns'][label] / 1e9,
                                         'frame': message.header.frame_id,
+                                        'source_encoding': message.encoding,
+                                        'size': [message.width, message.height],
                                         'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
             stream.write(json.dumps(row, allow_nan=False) + '\n')
             stream.flush()
@@ -175,10 +193,14 @@ def main():
     parser.add_argument('--output', type=Path, required=True, help='new, nonexistent evidence directory')
     parser.add_argument('--duration-s', type=float, default=30)
     parser.add_argument('--frames', type=int, default=15)
+    parser.add_argument('--settle-s', type=float, default=.25,
+                        help='static evidence window; use 3 for new calibration datasets')
     args = parser.parse_args()
     if not math.isfinite(args.duration_s) or not 1 <= args.duration_s <= 120 or not 1 <= args.frames <= 60:
         parser.error('finite duration must be 1..120s and frames 1..60')
-    return collect(args.output.resolve(), args.duration_s, args.frames)
+    if not math.isfinite(args.settle_s) or not .25 <= args.settle_s <= 5:
+        parser.error('static evidence window must be .25..5s')
+    return collect(args.output.resolve(), args.duration_s, args.frames, args.settle_s)
 
 
 if __name__ == '__main__':

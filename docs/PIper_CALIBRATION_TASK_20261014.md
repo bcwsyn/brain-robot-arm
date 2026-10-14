@@ -1,0 +1,65 @@
+# 当前任务：先完成真实标定，再做固定位置粗抓取
+
+用户已授权代理接手 Claude 的离线分析和 Codex 的采集准备。规范仓库 `/mnt/hgfs/ub`；本页由四份任务/交接/进度/决策文档引用。长期抓取目标不删除；当前阶段取代历史自动实测许可。
+
+## 当前范围
+
+允许：现有 pair01 原始数据只读分析、取样叠图、点对拟合/可辨识性/噪声仿真、采集/导出工具补字段、文档和限定 Git 提交。
+
+冻结：`grasp_lift_executor.cpp`、`visual_search_controller.cpp`、`piper_jog_adapter.py`、`cube_task_real.yaml`、`cube_detector.yaml`、实际 launch/URDF、生产 TF/TCP 和 `/home/johnwick/start_brain_robot_cube_real.sh`。只读工具不得包含运动发布器、执行 action 或开闭/使能/失能/复位接口。不得以“标定更准”为理由删原检查。
+
+本轮不启动实机；后续逐组确认摆位/释放原位，并授权仅沿现有轨迹回观测。所有实验以实际反馈为起点，采集结束不自动失能。连续两次同阶段实机会话无新增有效证据时，停止实测并报告，不盲重试。
+
+## 顺序与每组清单
+
+1. **先完成离线分析及合成验证。** 原始数据保持；pair01 的 101.5mm 开口没有接触，不是标定中心点，排除正式拟合。合成数据必须明确标记，不能替代实机。
+2. **先跑通一组真实合格点对。** 六组使用同一个方块，预先固定五组拟合/一组验证；记录摆放位置、光照、支架和镜头基准。历史边长约28mm，新建议29mm尚不是卡尺测量事实；保留估计来源，不改历史原文件。
+3. **夹持 B**：操作者摆到位并夹紧，确认接触/物理中心和夹深；只读采集至少3秒、30个新鲜 SDK 样本，原始 q_mdeg、沿原驱动 `.017444` 换算的q_rad、各反馈戳/Hz、六轴使能、速度、原始夹爪开口及状态；5–10原RGB、实际FK完整4×4及模型哈希。开口约29mm只是横向交叉检查，斜夹或软垫可能不同，不能据此确定轴向夹深。
+4. **释放**：方块放回桌面，张爪释放后确认没有移动/翻转，记录操作者确认及证据。若移动，此对作废或重新采，不能用“原位”字段掩盖。
+5. **观测 A**：按组授权回原观测姿态，在SEARCH前停止；记录实际q，不用旧命令值。原RGB/整幅原生 uint16 深度60组目标、至少20高支撑帧；保存全部低质量帧并标记。逐帧完整深度 CameraInfo K/D/R/P、编码/分辨率/光学frame/整数纳秒戳、真实关节与静止统计；彩色Info和原厂D→C资料另记录来源。近似同步不冒充硬同步。
+6. **统一同一物理点**：相机侧必须得到有依据的几何中心，不是表面中位数；若用面，则明确面中心/法向，`center=face_center-outward_normal*edge/2`。夹持侧记录已测工具内偏移，或在**足够可辨识的多姿态**下联合估计常量偏移。未知字段仍null，不能拿两指大开口的范围或约5mm目测当精确中心。
+7. 每组核对当前累计位置/姿态秩、条件数和缺项，不单看偏航度数是否超过30°。建议位置左右/距离/高度分散；完整联合标定需要不同倾斜，或者事先给实际夹深约束。所有建议只供操作者选择，不生成实机轨迹。
+
+## 解算合同（米，列向量）
+
+`T_B_G_obs · X_G_D · [p_D_center;1] = T_B_G_grip · [c_G_center;1]`。
+
+`B=base_link`，`G=gripper_base`，`D=camera_depth_optical_frame`。固定观测姿态并不把安装矩阵变成基座矩阵。`X_G_D` 为待解安装外参，`c_G_center` 为夹紧后实际方块中心在工具内的点；各组须保持同一夹深定义。已有标准手眼工具可验证坐标约定，但只有点、没有目标姿态时不能虚造旋转喂给完整姿态API。
+
+拟合脚本支持实际已知工具点（6未知量）或联合未知工具点（9未知量），报告每组累积秩与零空间；退化时不给可采用的外参。仅偏航可保留一个平移/TCP混淆方向，不能称完整安装已辨识。纯合成仿真与真实数据分别标注。
+
+## 验收/下一阶段
+
+- 阶段0：两类取样叠图可复现；合成已知参数恢复；偏航/共线退化被识别；噪声/缺深度不隐匿；采集补字段的离线测试通过。不是实物标定。
+- 阶段1/2：一组真正同中心合格后再六组。结构空跑只能证明字段序列化，不证明接触/中心正确。
+- 阶段3：五组拟合、一组预先留出；报告基座xyz残差、独立验证、朝向/位置退化、假设和与生产外参差异。5–15mm只是讨论中的粗抓容忍范围，不自动改现有精度要求。
+- 阶段4：用户审核、明确批准TF和部署；回退到本轮生产hash/旧commit。未批准不改。
+- 阶段5：原入口增加经批准的**视觉开环**粗抓模式，仍按实际关节反馈执行经检查完整轨迹。固定位置三次至少一次真正离桌夹起作为概念验证，保留失败与全部分母，再考虑闭环增强。
+
+## 当前证据与未完成项
+
+pair01 已在GitHub `027359e`，30原始配对帧/10高支撑。两个覆盖层表面点相距约24.77mm；不是已解释的随机噪声，也不是已确定相机外参导致。两边几何中心仍null，未正式拟合。
+
+最后物理反馈缺失是旧记录，本轮不读硬件、不声称已恢复或失能。环境Python必须 `PYTHONNOUSERSITE=1`，否则用户NumPy2与系统OpenCV4.5.4存在ABI冲突；不为分析工具改系统依赖。
+
+官方参考：[OpenCV标定坐标约定](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)、[SciPy最小二乘](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)。联合点对模型及秩判据是本项目方法，不冒充供应商提供的标定实现。
+
+## 工具入口（不自动启动实机）
+
+离线工具/叠图/仿真见 `docs/evidence/piper_calibration_prepare_20261014/README.md`，拟合数据模板为同目录 `pairs_template.json`；模板故意不满足拟合，禁止把null补猜数再运行。
+
+新一组现场采集就绪后，只读命令使用**新路径**：
+
+```bash
+# 仅在现场/ROS实际反馈就绪时执行，不启动控制栈或自动返回观测
+PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 python3 \
+  brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py \
+  --output /home/johnwick/brain_robot_logs/NEW_PAIR_grip_sdk.json --duration-s 6
+# 已按组授权返回观测、相机/真实ROS反馈可用后，仅订阅采集
+PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 python3 \
+  brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_static_rgbd.py \
+  --output /home/johnwick/brain_robot_logs/NEW_PAIR_observe_rgbd \
+  --duration-s 120 --frames 60 --settle-s 3
+```
+
+工具只保存消息/原始PNG，SDK实物接触条件须另记；同一旧反馈/戳不得作第二组，首次模板测试不是实机成功。
