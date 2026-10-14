@@ -1,4 +1,12 @@
-## 2026-10-14：用户授权发布第一组数据，历史审查通过，隔离保留双方提交
+## 2026-10-14：第一组单文件发布提交已保留，GitHub认证阻断
+
+- 用户要求推送第一组数据并提供网址。首次整体历史普通合并/推送工具调用被执行权限审查拒绝，理由是包含超出第一组数据的运行/配置历史；该调用未执行，未通过间接方式重试整体上传。改为更窄范围：临时隔离工作树基于已存在remote main50a5cc2，只新增第一组JSON，不上传其他本地代码/历史或原图。
+- 隔离/tmp/piper_github_publish.RpEWNJ在origin/main基底，限定暂存文件名恰为docs/evidence/piper_calibration_pair01_20261014.json，blob与f36ea50一致/7055B，JSON/check通过。已生成单文件提交13582cb（完整SHA见本地分支piper-pair01-publish-20261014）；只含296行清单，remote杯子提交保留，不包含其他本地七提交。
+- timeout -k2s30s git push origin HEAD:refs/heads/main 返回128：could not read Username for https://github.com（非交互会话无认证）。未成功推送。credential.helper未配置、ssh-agent不可连接；gh未安装（检查rc127），未读取/输出令牌或密码。再只读远端main验证仍50a5cc2，不能给13582cb或f36ea50的GitHub blob链接冒充已经可访问。
+- 发布分支已保留在规范仓库：piper-pair01-publish-20261014→13582cb，可在完成GitHub认证后执行git push origin piper-pair01-publish-20261014:main；先只读重查remote是否前进，若前进只在该单文件发布分支普通合并/处理并审查，不强推/上传主任务积压历史。成功后读取remote验证该提交可达，再提供blob/<完整发布SHA>/docs/evidence/piper_calibration_pair01_20261014.json。
+- 本轮仅本地记录，未同步GitHub；当前实际机械臂/相机没有操作，当前工作树无关dirty保持，没有安装gh/改凭据或Git历史。下一用户需在自己的终端完成GitHub认证（令牌不发聊天/不写仓库），之后续推单文件，或自行GitHub网页Upload上传该JSON。原始图和SDK仍home，不在发布范围。
+
+## 历史：2026-10-14：用户授权发布第一组数据，历史审查通过，隔离保留双方提交
 
 - 用户明确要求推送GitHub并提供第一组数据网址；本轮仅Git发布，不运行ROS/SDK或机械臂。使用手术式技能保护原dirty，origin核对为https://github.com/bcwsyn/brain-robot-arm.git，目标main。
 - 独立timeout -k2s25s git ls-remote读取remote main=50a5cc2ddcb4473ca373cd4ef1b7248736e59b0f；一次fetch rc0同值，本地f36ea50相对7/1。remote仅独立cup仿真文档/回放15路径，与本地七提交的21路径不重叠。当前多处cup/vendor未提交内容不能覆盖或混入，采用临时隔离Git worktree仅发布，规范/实际控制路径仍/mnt/hgfs/ub，不切换实体代码或丢弃dirty。
