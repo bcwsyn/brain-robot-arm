@@ -53,3 +53,14 @@ def test_existing_native_output_rejected_before_ros(tmp_path):
     native=tmp_path/'existing';native.mkdir()
     with pytest.raises(FileExistsError):
         controls.collect(tmp_path/'new.json',20,native)
+
+
+def test_native_mode_never_queries_merely_discovered_services():
+    native=SimpleNamespace(summary={'first_received_pair':None})
+    assert not controls.camera_gets_ready(native)
+    native.summary['first_received_pair']={'epoch':4.,'stamps_ns':{'depth':'4','depth_info':'4'}}
+    assert controls.camera_gets_ready(native)
+
+
+def test_original_GET_only_mode_unchanged():
+    assert controls.camera_gets_ready(None)

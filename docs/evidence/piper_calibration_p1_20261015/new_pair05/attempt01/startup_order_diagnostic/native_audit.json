@@ -1,0 +1,2894 @@
+{
+  "schema": "piper_native_GET_timing_audit_v1",
+  "offline_only": true,
+  "raw_modified": false,
+  "preflight_only_attempt_camera_started": false,
+  "preflight_only_attempt_error": "AssertionError('No original contiguous static window')",
+  "SDK_full_window_not_rewritten": true,
+  "temporary_wrapper_static_launch_gate_removed_only": true,
+  "original_frame_quality_rules_unchanged": true,
+  "one_actual_camera_session_s": 25.617775110993534,
+  "native_frames": 36,
+  "paired_RGBD_diagnostic_frames": 3,
+  "paired_good_top_frames": 0,
+  "first_real_pair_epoch": 1792052805.8326852,
+  "first_GET_epoch": 1792052806.5011148,
+  "factory_start_epoch": 1792052805.8457472,
+  "all_GET_after_real_pair_verified": true,
+  "GET_requests": 44,
+  "GET_replies": 44,
+  "GET_raw_value_counts": {
+    "/camera/get_depth_exposure": {
+      "6000": 22
+    },
+    "/camera/get_depth_gain": {
+      "1556": 22
+    }
+  },
+  "hardware_property_values_or_units_verified": false,
+  "native_q_spread_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "actual_q_delta_from_original_reference_observe_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0006279840000000814,
+    0.0
+  ],
+  "fixed_native_reference_pixels": 3354,
+  "eroded_core_pixels": 2124,
+  "zero_fraction_min_median_max": [
+    0.9985092426952892,
+    0.9997018485390579,
+    1.0
+  ],
+  "core_zero_fraction_min_median_max": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "mask_sha256": "4c7c038825cc334beed79555b8d997816d51f04c2b3113838ded52bc6f8140ec",
+  "reference_is_a_fixed_diagnostic_mask_not_a_new_center": true,
+  "remaining_samples_not_cube_surface_estimate": true,
+  "all_native_same_stamp_Info": true,
+  "original_exporter_urdf_sha256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "original_exporter_task_sha256": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+  "CAN_before": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 8654822,
+    "tx": 3070
+  },
+  "CAN_after": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 8714890,
+    "tx": 3070
+  },
+  "new_CAN_TX": 0,
+  "last_fresh_feedback": {
+    "epoch": 1792052828.345153,
+    "sdk_receipt_stamps": {
+      "joint": "1792052828.3423843",
+      "high": "1792052828.3383627",
+      "low": "1792052828.3386164",
+      "gripper": "1792052828.3426375"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -7973,
+      54505,
+      -72477,
+      -4187,
+      69804,
+      5433
+    ],
+    "q_driver_rad": [
+      -0.139081012,
+      0.9507852200000001,
+      -1.2642887880000002,
+      -0.073038028,
+      1.2176609760000001,
+      0.094773252
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 84,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "all_sources_exited": true,
+  "production_five_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "actual": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+      "expected": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8"
+    }
+  },
+  "source_before_after_SHA_equal": true,
+  "formal_complete_pairs_unchanged": 1,
+  "formal_A60_not_overwritten": true,
+  "fitted_camera_or_gripper_center": null,
+  "causality_limit": "This session succeeds with query deferral but not a repeated controlled A/B. Do not claim query timing was the unique cause of prior startup stalls.",
+  "next_blocker": "Data flow and native persistence work; actual target depth remains almost entirely zero. No IR intensity/confidence is available to determine material/exposure/range cause.",
+  "frames": [
+    {
+      "snapshot": 1,
+      "epoch": 1792052807.5055344,
+      "stamps_ns": {
+        "depth": "1792052807501537618",
+        "depth_info": "1792052807501537618",
+        "feedback": "1792052807482450944"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7599056603773585,
+      "all_native_nonzero_pixels": 191480,
+      "native_depth_image_sha256": "abb7229d50b375a1432ebb77ddeee35446bb1f894bee14d579d10c41fe9d26c3",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052807.8068671,
+          "delta_s": 0.3013327121734619,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052807.806927,
+          "delta_s": 0.3013925552368164,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 2,
+      "epoch": 1792052808.007857,
+      "stamps_ns": {
+        "depth": "1792052808002854130",
+        "depth_info": "1792052808002854130",
+        "feedback": "1792052808002191104"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7496462264150944,
+      "all_native_nonzero_pixels": 190844,
+      "native_depth_image_sha256": "4bc7c585d4995ce9f3ff24f3dc62a3d9694be7d32a61b63efd685a80c11abfaf",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052807.8068671,
+          "delta_s": -0.2009899616241455,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052807.806927,
+          "delta_s": -0.20093011856079102,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 3,
+      "epoch": 1792052809.0363448,
+      "stamps_ns": {
+        "depth": "1792052809034031178",
+        "depth_info": "1792052809034031178",
+        "feedback": "1792052809012585728"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7523584905660378,
+      "all_native_nonzero_pixels": 190696,
+      "native_depth_image_sha256": "545777a9a81883b36fbe8aecd42038bd1228756bafa4af9fcafe31d53808db12",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052808.656553,
+          "delta_s": -0.3797917366027832,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052808.6589491,
+          "delta_s": -0.3773956298828125,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 4,
+      "epoch": 1792052809.809042,
+      "stamps_ns": {
+        "depth": "1792052809799579917",
+        "depth_info": "1792052809799579917",
+        "feedback": "1792052809787201280"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7594339622641509,
+      "all_native_nonzero_pixels": 191556,
+      "native_depth_image_sha256": "2ef0a3214f9dc020458ac08f2bdd5c093be9213752fa60ee6cc1aa666d7f2aaa",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052809.5348244,
+          "delta_s": -0.2742176055908203,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052809.536258,
+          "delta_s": -0.2727839946746826,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 5,
+      "epoch": 1792052810.3022459,
+      "stamps_ns": {
+        "depth": "1792052810299976271",
+        "depth_info": "1792052810299976271",
+        "feedback": "1792052810287958784"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9994036970781157,
+      "remaining_nonzero_pixels": 2,
+      "remaining_nonzero_median_mm": 245.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7724056603773585,
+      "all_native_nonzero_pixels": 191296,
+      "native_depth_image_sha256": "d5e5c9bb39bd3036a92d3cdc3a42ccf51ce3f738b549375d0c3241d0cedb3f00",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052810.5367842,
+          "delta_s": 0.23453831672668457,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052810.538494,
+          "delta_s": 0.23624825477600098,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 6,
+      "epoch": 1792052810.8042083,
+      "stamps_ns": {
+        "depth": "1792052810800419904",
+        "depth_info": "1792052810800419904",
+        "feedback": "1792052810787751936"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9991055456171736,
+      "remaining_nonzero_pixels": 3,
+      "remaining_nonzero_median_mm": 245.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7716981132075472,
+      "all_native_nonzero_pixels": 191392,
+      "native_depth_image_sha256": "e582a6fdea7d5050f391958e49a2530bb84dbfa8ee34276d283f04fe8758568f",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052810.5367842,
+          "delta_s": -0.2674241065979004,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052810.538494,
+          "delta_s": -0.265714168548584,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 7,
+      "epoch": 1792052811.3023846,
+      "stamps_ns": {
+        "depth": "1792052811300573920",
+        "depth_info": "1792052811300573920",
+        "feedback": "1792052811287202560"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9985092426952892,
+      "remaining_nonzero_pixels": 5,
+      "remaining_nonzero_median_mm": 246.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7672169811320755,
+      "all_native_nonzero_pixels": 191236,
+      "native_depth_image_sha256": "152b80062579943acfd6c80e98f9df69835ca42aa2c3fb181ad89cbfbc13dcf6",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052811.5383492,
+          "delta_s": 0.23596453666687012,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052811.539515,
+          "delta_s": 0.23713040351867676,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 8,
+      "epoch": 1792052811.966379,
+      "stamps_ns": {
+        "depth": "1792052811964260938",
+        "depth_info": "1792052811964260938",
+        "feedback": "1792052811947237376"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7606132075471698,
+      "all_native_nonzero_pixels": 191440,
+      "native_depth_image_sha256": "0d4220b9bede59fa383d7ee561d750572bc881e72c27ebca0b55cb19dda13d2e",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052811.5383492,
+          "delta_s": -0.42802977561950684,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052811.539515,
+          "delta_s": -0.4268639087677002,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 9,
+      "epoch": 1792052812.5999405,
+      "stamps_ns": {
+        "depth": "1792052812598514293",
+        "depth_info": "1792052812598514293",
+        "feedback": "1792052812592200448"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7509433962264151,
+      "all_native_nonzero_pixels": 191584,
+      "native_depth_image_sha256": "4c604f0aeb3af9fb355ee541a2a5e98e44533c0931b9c1b1e3bb3935d5c5d5f2",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052812.5384738,
+          "delta_s": -0.06146669387817383,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052812.5397217,
+          "delta_s": -0.06021881103515625,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 10,
+      "epoch": 1792052813.1645136,
+      "stamps_ns": {
+        "depth": "1792052813163144183",
+        "depth_info": "1792052813163144183",
+        "feedback": "1792052813152213760"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7056603773584905,
+      "all_native_nonzero_pixels": 190412,
+      "native_depth_image_sha256": "4ac4750f1b6fbcfa03d09d153ff707ea3a6f547ccb1aa5e0cb4da83d4e090dc3",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052813.5491788,
+          "delta_s": 0.38466525077819824,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052813.5505745,
+          "delta_s": 0.3860609531402588,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 11,
+      "epoch": 1792052813.664876,
+      "stamps_ns": {
+        "depth": "1792052813663387321",
+        "depth_info": "1792052813663387321",
+        "feedback": "1792052813647217152"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 247.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.746816037735849,
+      "all_native_nonzero_pixels": 190736,
+      "native_depth_image_sha256": "7ae33dd9a1c75f5905e11f0e37b270626612de18929e3ec849ecbd3947bf0e72",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052813.5491788,
+          "delta_s": -0.11569714546203613,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052813.5505745,
+          "delta_s": -0.11430144309997559,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 12,
+      "epoch": 1792052814.1652014,
+      "stamps_ns": {
+        "depth": "1792052814163937582",
+        "depth_info": "1792052814163937582",
+        "feedback": "1792052814162256128"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7525943396226416,
+      "all_native_nonzero_pixels": 190808,
+      "native_depth_image_sha256": "beacff4a39420c174f735a1519ec3088d840b42de0a53bed0b417af459cff3f4",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052814.5615447,
+          "delta_s": 0.3963432312011719,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052814.5630152,
+          "delta_s": 0.3978137969970703,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 13,
+      "epoch": 1792052814.6663122,
+      "stamps_ns": {
+        "depth": "1792052814664451422",
+        "depth_info": "1792052814664451422",
+        "feedback": "1792052814657235200"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 247.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7455188679245283,
+      "all_native_nonzero_pixels": 190744,
+      "native_depth_image_sha256": "b1a503723909d93d24bfe2ad5c97b94d43438dcc8de7d90473fdabf14273dd11",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052814.5615447,
+          "delta_s": -0.1047675609588623,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052814.5630152,
+          "delta_s": -0.10329699516296387,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 14,
+      "epoch": 1792052815.1658423,
+      "stamps_ns": {
+        "depth": "1792052815164782545",
+        "depth_info": "1792052815164782545",
+        "feedback": "1792052815157231616"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7570754716981132,
+      "all_native_nonzero_pixels": 190836,
+      "native_depth_image_sha256": "1d5bad93915095083db8cf17d900e1637662c10274644cbfba80d48852943a46",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052815.569875,
+          "delta_s": 0.40403270721435547,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052815.5712364,
+          "delta_s": 0.4053940773010254,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 15,
+      "epoch": 1792052815.8298812,
+      "stamps_ns": {
+        "depth": "1792052815828433698",
+        "depth_info": "1792052815828433698",
+        "feedback": "1792052815817272064"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7423349056603774,
+      "all_native_nonzero_pixels": 190484,
+      "native_depth_image_sha256": "858786a55ad3b62826f8459a343012dd0fdac7f66e8d1b8ec0539da99a9918f9",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052815.569875,
+          "delta_s": -0.2600061893463135,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052815.5712364,
+          "delta_s": -0.25864481925964355,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 16,
+      "epoch": 1792052816.3335068,
+      "stamps_ns": {
+        "depth": "1792052816330635233",
+        "depth_info": "1792052816330635233",
+        "feedback": "1792052816327702016"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.75,
+      "all_native_nonzero_pixels": 190864,
+      "native_depth_image_sha256": "4900a6b80b807db79d59067b15cf27badfe4d45c5fd9a50b87c23a5a64217117",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052816.583048,
+          "delta_s": 0.2495412826538086,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052816.5847692,
+          "delta_s": 0.2512624263763428,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 17,
+      "epoch": 1792052816.902315,
+      "stamps_ns": {
+        "depth": "1792052816899914977",
+        "depth_info": "1792052816899914977",
+        "feedback": "1792052816887719936"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.752122641509434,
+      "all_native_nonzero_pixels": 190792,
+      "native_depth_image_sha256": "5886d220adb8e48d39bfb714fadef9524226d6b052dab64d8a6f75ec6118cef4",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052816.583048,
+          "delta_s": -0.31926679611206055,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052816.5847692,
+          "delta_s": -0.31754565238952637,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 18,
+      "epoch": 1792052817.4011753,
+      "stamps_ns": {
+        "depth": "1792052817400036849",
+        "depth_info": "1792052817400036849",
+        "feedback": "1792052817387314432"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7044811320754717,
+      "all_native_nonzero_pixels": 189820,
+      "native_depth_image_sha256": "dc7323770b4e463c374b1b69c576b72e02275bbb7a62344efdb748b6bcbe37b8",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052817.6038618,
+          "delta_s": 0.20268654823303223,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052817.6052601,
+          "delta_s": 0.2040848731994629,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 19,
+      "epoch": 1792052817.9324942,
+      "stamps_ns": {
+        "depth": "1792052817929960232",
+        "depth_info": "1792052817929960232",
+        "feedback": "1792052817927296768"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.75,
+      "all_native_nonzero_pixels": 190640,
+      "native_depth_image_sha256": "d37bd8b2358b7035fa47df6eea5dcf72dc866b2977752313e2c1a4a7c209306a",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052817.6038618,
+          "delta_s": -0.3286323547363281,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052817.6052601,
+          "delta_s": -0.32723402976989746,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 20,
+      "epoch": 1792052818.4660249,
+      "stamps_ns": {
+        "depth": "1792052818464595471",
+        "depth_info": "1792052818464595471",
+        "feedback": "1792052818447320576"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7495283018867924,
+      "all_native_nonzero_pixels": 190616,
+      "native_depth_image_sha256": "90a80fe8bdb4620367a57d977f914bdca4b5bb14d22bf3b28dd30ec16885ae27",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052818.6028595,
+          "delta_s": 0.13683462142944336,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052818.6041307,
+          "delta_s": 0.1381058692932129,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 21,
+      "epoch": 1792052819.6307778,
+      "stamps_ns": {
+        "depth": "1792052819629647463",
+        "depth_info": "1792052819629647463",
+        "feedback": "1792052819612295424"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 247.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7483490566037736,
+      "all_native_nonzero_pixels": 190760,
+      "native_depth_image_sha256": "f72bacea2b5a1f6863bfa6ed45e6a11b4bbc29b81aed996d5c0e4be778a8121a",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052819.6187165,
+          "delta_s": -0.012061357498168945,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052819.6198928,
+          "delta_s": -0.010885000228881836,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 22,
+      "epoch": 1792052820.166157,
+      "stamps_ns": {
+        "depth": "1792052820164431982",
+        "depth_info": "1792052820164431982",
+        "feedback": "1792052820147292160"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.754245283018868,
+      "all_native_nonzero_pixels": 190788,
+      "native_depth_image_sha256": "182b735600607a605848c4ad8162f84d69d0eda2354876c2a6b51641af3bfd00",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052820.6369739,
+          "delta_s": 0.47081685066223145,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052820.6399603,
+          "delta_s": 0.4738032817840576,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 23,
+      "epoch": 1792052820.6671736,
+      "stamps_ns": {
+        "depth": "1792052820665425461",
+        "depth_info": "1792052820665425461",
+        "feedback": "1792052820648893184"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7540094339622642,
+      "all_native_nonzero_pixels": 190824,
+      "native_depth_image_sha256": "4767727f6c1e858770593436779d86d3468f94220a39a26250f7aa8da2b12da2",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052820.6369739,
+          "delta_s": -0.030199766159057617,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052820.6399603,
+          "delta_s": -0.027213335037231445,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 24,
+      "epoch": 1792052821.2330582,
+      "stamps_ns": {
+        "depth": "1792052821231061191",
+        "depth_info": "1792052821231061191",
+        "feedback": "1792052821227429632"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7497641509433962,
+      "all_native_nonzero_pixels": 190824,
+      "native_depth_image_sha256": "1447aa1d7a0ba187b68bf497e7753550c89b00702033acbf8a27926046215682",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052821.6354933,
+          "delta_s": 0.4024350643157959,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052821.6366355,
+          "delta_s": 0.4035773277282715,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 25,
+      "epoch": 1792052821.7664883,
+      "stamps_ns": {
+        "depth": "1792052821765399117",
+        "depth_info": "1792052821765399117",
+        "feedback": "1792052821747349760"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7504716981132076,
+      "all_native_nonzero_pixels": 190892,
+      "native_depth_image_sha256": "4299671c7e54dddff1937e94f388b08feadfeecb188a634df4763a922264802c",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052821.6354933,
+          "delta_s": -0.1309950351715088,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052821.6366355,
+          "delta_s": -0.1298527717590332,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 26,
+      "epoch": 1792052822.3649135,
+      "stamps_ns": {
+        "depth": "1792052822363877422",
+        "depth_info": "1792052822363877422",
+        "feedback": "1792052822357340928"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7648584905660377,
+      "all_native_nonzero_pixels": 190944,
+      "native_depth_image_sha256": "eb8263cec6ef18fde1a9cb7c99e8fe50f9fc53916b8596ce6ef9eed6c1a1b35f",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052822.654094,
+          "delta_s": 0.2891805171966553,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052822.6556277,
+          "delta_s": 0.2907142639160156,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 27,
+      "epoch": 1792052822.8966377,
+      "stamps_ns": {
+        "depth": "1792052822893729843",
+        "depth_info": "1792052822893729843",
+        "feedback": "1792052822877477632"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7721698113207547,
+      "all_native_nonzero_pixels": 190864,
+      "native_depth_image_sha256": "dbed7f2ed3e3fcc69ffe2a814ab2bd93f898ef2fc2deeaf60659c36d0fdc56b8",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052822.654094,
+          "delta_s": -0.24254369735717773,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052822.6556277,
+          "delta_s": -0.24100995063781738,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 28,
+      "epoch": 1792052823.4317567,
+      "stamps_ns": {
+        "depth": "1792052823430477565",
+        "depth_info": "1792052823430477565",
+        "feedback": "1792052823412519680"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9988073941562313,
+      "remaining_nonzero_pixels": 4,
+      "remaining_nonzero_median_mm": 246.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7695754716981132,
+      "all_native_nonzero_pixels": 190960,
+      "native_depth_image_sha256": "80ef366a43025c72731a91e2327db03259aa8f6b5eb5024e09f5c71b8b480f5a",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052823.669605,
+          "delta_s": 0.23784828186035156,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052823.6708884,
+          "delta_s": 0.23913168907165527,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 29,
+      "epoch": 1792052823.960439,
+      "stamps_ns": {
+        "depth": "1792052823959062469",
+        "depth_info": "1792052823959062469",
+        "feedback": "1792052823952311808"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9991055456171736,
+      "remaining_nonzero_pixels": 3,
+      "remaining_nonzero_median_mm": 246.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.775,
+      "all_native_nonzero_pixels": 191208,
+      "native_depth_image_sha256": "eee487580afbe85a8a714946a790968393d3c21cad35ef47dbbdbaf6d830800f",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052823.669605,
+          "delta_s": -0.2908339500427246,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052823.6708884,
+          "delta_s": -0.2895505428314209,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 30,
+      "epoch": 1792052824.4603462,
+      "stamps_ns": {
+        "depth": "1792052824459183332",
+        "depth_info": "1792052824459183332",
+        "feedback": "1792052824457306624"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7667452830188679,
+      "all_native_nonzero_pixels": 190984,
+      "native_depth_image_sha256": "e86a500b5275cca3161d35043959e911433254c87be2d3f3b904d910dd5465e1",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052824.6703246,
+          "delta_s": 0.20997834205627441,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052824.6716282,
+          "delta_s": 0.21128201484680176,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 31,
+      "epoch": 1792052824.9619038,
+      "stamps_ns": {
+        "depth": "1792052824959516475",
+        "depth_info": "1792052824959516475",
+        "feedback": "1792052824952374528"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7634433962264151,
+      "all_native_nonzero_pixels": 191116,
+      "native_depth_image_sha256": "22c79aab34a30eee611067012989beaca0f0af243272384c91edd8695da8d1b8",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052824.6703246,
+          "delta_s": -0.2915792465209961,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052824.6716282,
+          "delta_s": -0.29027557373046875,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 32,
+      "epoch": 1792052825.461615,
+      "stamps_ns": {
+        "depth": "1792052825460303304",
+        "depth_info": "1792052825460303304",
+        "feedback": "1792052825452484608"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7615566037735849,
+      "all_native_nonzero_pixels": 191368,
+      "native_depth_image_sha256": "ec9170d4dd2ee224f02e78bd0c6eceac4d3844806eb15eb90f0a91abb1dd3ed0",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052825.6698012,
+          "delta_s": 0.20818614959716797,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052825.6712132,
+          "delta_s": 0.20959806442260742,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 33,
+      "epoch": 1792052825.9622655,
+      "stamps_ns": {
+        "depth": "1792052825960885618",
+        "depth_info": "1792052825960885618",
+        "feedback": "1792052825952454144"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7549528301886792,
+      "all_native_nonzero_pixels": 191316,
+      "native_depth_image_sha256": "77ee861996931a02182564f1d921c686207e519ea1bf1f7764b850aced7365df",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052825.6698012,
+          "delta_s": -0.2924642562866211,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052825.6712132,
+          "delta_s": -0.29105234146118164,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 34,
+      "epoch": 1792052826.4922745,
+      "stamps_ns": {
+        "depth": "1792052826490791179",
+        "depth_info": "1792052826490791179",
+        "feedback": "1792052826472543232"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 1.0,
+      "remaining_nonzero_pixels": 0,
+      "remaining_nonzero_median_mm": null,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7504716981132076,
+      "all_native_nonzero_pixels": 191216,
+      "native_depth_image_sha256": "536e0ba93448af107c83041b026ef44adc9957a1c4b758dc9e785a3c4ab723cd",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052826.685363,
+          "delta_s": 0.19308853149414062,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052826.6866531,
+          "delta_s": 0.19437861442565918,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 35,
+      "epoch": 1792052826.9922779,
+      "stamps_ns": {
+        "depth": "1792052826990874882",
+        "depth_info": "1792052826990874882",
+        "feedback": "1792052826972333312"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.752122641509434,
+      "all_native_nonzero_pixels": 190732,
+      "native_depth_image_sha256": "5af32dc94ca451c2c450b857109fdd5a3a8909c5f68ba56a4044838397c8ec96",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052826.685363,
+          "delta_s": -0.3069148063659668,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052826.6866531,
+          "delta_s": -0.30562472343444824,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    },
+    {
+      "snapshot": 36,
+      "epoch": 1792052827.5947025,
+      "stamps_ns": {
+        "depth": "1792052827590967373",
+        "depth_info": "1792052827590967373",
+        "feedback": "1792052827577389568"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "fixed_3354_pixels_zero_fraction": 0.9997018485390579,
+      "remaining_nonzero_pixels": 1,
+      "remaining_nonzero_median_mm": 248.0,
+      "eroded_core_zero_fraction": 1.0,
+      "control_ring_nonzero_fraction": 0.7507075471698114,
+      "all_native_nonzero_pixels": 191008,
+      "native_depth_image_sha256": "6df762c34f6066ae41b470718bbd78982f0ffb78578d0f99ab2b694e44bf87eb",
+      "nearest_GET_replies": {
+        "/camera/get_depth_exposure": {
+          "response_epoch": 1792052827.6863992,
+          "delta_s": 0.09169673919677734,
+          "raw_response": {
+            "data": 6000,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        },
+        "/camera/get_depth_gain": {
+          "response_epoch": 1792052827.6878507,
+          "delta_s": 0.09314823150634766,
+          "raw_response": {
+            "data": 1556,
+            "success": true,
+            "message": ""
+          },
+          "not_image_synchronized": true,
+          "hardware_property_status_verified": false
+        }
+      },
+      "T_base_gripper_from_original_exporter_same_actual_q": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "FK_provenance": "Reused original exporter FK only when q matches exactly; no model or TF change",
+      "camera_cube_center_m": null
+    }
+  ]
+}

@@ -70,7 +70,8 @@ class NativeDepthRecorder:
                       'interval_s':.5,'max_image_bytes':32<<20,'cache_per_topic_limit':64,
                       'static_window_s':3.,'same_stamp_depth_Info':True,
                       'hardware_synchronized':False,'saved_frames':0,'image_bytes':0,
-                      'received':Counter(),'rejected':Counter(),'stop_reason':None}
+                      'received':Counter(),'rejected':Counter(),'stop_reason':None,
+                      'first_received_pair':None}
 
     def receive(self, kind, message, now_ns, epoch):
         self.summary['received'][kind]+=1
@@ -94,6 +95,13 @@ class NativeDepthRecorder:
             if self.summary['stop_reason'] or self.summary['saved_frames']>=60 or stamp-self.last_saved_ns<500_000_000:
                 return
             packet=checked_native_packet(depth,info,self.feedback,now_ns)
+            if self.summary['first_received_pair'] is None:
+                first={'epoch':epoch,'stamps_ns':packet['stamps_ns'],
+                       'depth_frame':depth.header.frame_id,'depth_size':[depth.width,depth.height],
+                       'scope':'Actual depth+same-stamp Info+fresh feedback received; not top quality or calibration acceptance'}
+                with (self.output/'ready.json').open('x') as stream:
+                    json.dump(first,stream,indent=2,allow_nan=False)
+                self.summary['first_received_pair']=first
             if not settled_feedback(self.history,packet['q_rad'],stamp_ns(self.feedback),3.):
                 raise ValueError('feedback_not_settled_for_original_3s')
             if self.start_q is not None and any(abs(a-b)>.001 for a,b in zip(packet['q_rad'],self.start_q)):

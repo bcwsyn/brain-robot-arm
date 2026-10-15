@@ -46,6 +46,8 @@ def test_saves_without_any_rgb_and_preserves_raw_zeros(tmp_path,order):
     row=json.loads((tmp_path/'native/observer.jsonl').read_text())
     assert row['diagnostic_only'] and row['stamps_ns']['depth']==row['stamps_ns']['depth_info']
     assert row['depth_info']['k']==info.k and row['feedback']['raw_positions']==[0.]*6
+    ready=json.loads((tmp_path/'native/ready.json').read_text())
+    assert ready['stamps_ns']['depth']==ready['stamps_ns']['depth_info']
 
 
 def test_mismatched_info_is_never_substituted(tmp_path):
@@ -53,6 +55,7 @@ def test_mismatched_info_is_never_substituted(tmp_path):
     rec.receive('depth',messages(4.)[0],4*10**9,4.)
     rec.receive('info',messages(4.01)[1],4_010_000_000,4.01)
     assert rec.finish()['saved_frames']==0
+    assert not (tmp_path/'native/ready.json').exists()
 
 
 @pytest.mark.parametrize('mutation,reason',[

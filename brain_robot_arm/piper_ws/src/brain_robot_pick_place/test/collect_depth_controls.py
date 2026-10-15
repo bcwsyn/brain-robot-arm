@@ -13,6 +13,11 @@ import time
 SERVICES = ('/camera/get_depth_exposure', '/camera/get_depth_gain')
 
 
+def camera_gets_ready(native):
+    """In native diagnostic mode, discovery never substitutes for actual flow."""
+    return native is None or native.summary['first_received_pair'] is not None
+
+
 def validate(output, duration_s):
     if output.exists():
         raise FileExistsError('Refusing to overwrite before ROS initialization')
@@ -46,6 +51,9 @@ def collect(output, duration_s, native_output=None):
               'per_request_timeout_s': .8, 'records': [], 'error': None,
               'start_epoch': time.time(), 'hardware_property_status_verified': False,
               'not_image_synchronized': True}
+    report['GET_policy']='after_first_real_depth_Info_pair' if native_output is not None else 'original_GET_only_mode'
+    report['GET_rounds_deferred_for_native_flow']=0
+    report['first_GET_epoch']=None
     rclpy.init()
     node = None
     began = time.monotonic()
@@ -87,13 +95,18 @@ def collect(output, duration_s, native_output=None):
                     del pending[name]
             if now >= next_round and sent < 60:
                 next_round = now + 1.
-                for name, client in clients.items():
+                ready=camera_gets_ready(native)
+                if not ready:
+                    report['GET_rounds_deferred_for_native_flow']+=1
+                for name, client in (clients.items() if ready else ()):
                     if name in pending:
                         continue
                     if not client.service_is_ready():
                         report['records'].append(response_record(name, None, None, time.time(), 'service_not_ready'))
                         continue
                     epoch = time.time()
+                    if report['first_GET_epoch'] is None:
+                        report['first_GET_epoch']=epoch
                     pending[name] = (client.call_async(GetInt32.Request()), epoch, time.monotonic())
                     sent += 1
             rclpy.spin_once(node, timeout_sec=max(0., min(.03, deadline-time.monotonic())))
