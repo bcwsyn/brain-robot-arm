@@ -1,0 +1,191 @@
+{
+  "pair_id": "new_pair07",
+  "attempt": "01",
+  "role": "held_out",
+  "grip_B_capture_complete": true,
+  "formal_A_frames": 0,
+  "complete_pair": false,
+  "formal_complete_pairs_unchanged": 1,
+  "source_wrapper_called_preview_not_observation_proof": true,
+  "actual_role_from_RGB_and_q_and_operator_confirmation": "grip_B",
+  "operator_contact_confirmed": true,
+  "physical_contact_verified_by_sdk": false,
+  "q_mdeg": [
+    8784,
+    56029,
+    -53775,
+    -13166,
+    59021,
+    24402
+  ],
+  "actual_q_driver_rad": [
+    0.15322809600000004,
+    0.9773698760000001,
+    -0.9380511,
+    -0.22966770400000003,
+    1.029562324,
+    0.42566848800000007
+  ],
+  "gripper_mm": 36.9,
+  "gripper_mm_is_feedback_not_caliper_verified_cube_size": true,
+  "SDK_quality": {
+    "samples": 60,
+    "fresh_samples": 59,
+    "span_s": 5.829949855804443,
+    "static_three_seconds_and_thirty_samples": true,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "last_fresh_feedback": {
+    "epoch": 1792064326.4754546,
+    "sdk_receipt_stamps": {
+      "joint": "1792064326.4732268",
+      "high": "1792064326.4742174",
+      "low": "1792064326.4740448",
+      "gripper": "1792064326.4733639"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      8784,
+      56029,
+      -53775,
+      -13166,
+      59021,
+      24402
+    ],
+    "q_driver_rad": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 36900,
+    "gripper_mm": 36.9,
+    "gripper_effort_raw": -84,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "RGB_frames": 5,
+  "RGBD_frames_saved": 5,
+  "B_requires_target_depth": false,
+  "camera_target_surface_valid_frames": 0,
+  "camera_cube_center_m": null,
+  "gripper_base_cube_center_m": null,
+  "T_base_gripper_base": [
+    [
+      -0.7895643047700986,
+      0.2066302732686252,
+      0.5778340062698316,
+      0.17456867044119467
+    ],
+    [
+      0.17683141409137937,
+      0.978275739114133,
+      -0.10819995032872899,
+      0.00898319212930923
+    ],
+    [
+      -0.587638374872977,
+      0.01674838588131919,
+      -0.8089503272432839,
+      0.3390130090738778
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "model_sha256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "actual_q_in_original_task_bounds": true,
+  "task_lower_rad": [
+    -1.5,
+    -0.3,
+    -1.4,
+    -0.8,
+    -1.2,
+    -3.14159265359
+  ],
+  "task_upper_rad": [
+    1.5,
+    3.14159265359,
+    0.4,
+    0.8,
+    1.22108,
+    3.14159265359
+  ],
+  "limits_were_not_changed": true,
+  "movement_or_retakeover_authorized_by_this_offline_check": false,
+  "reference_q_changed_since_previous_observation": true,
+  "who_or_when_changed_q_not_inferred": true,
+  "original_observation_q_rad": [
+    -0.14004043200000002,
+    0.9360275960000001,
+    -1.259683572,
+    -0.07875966,
+    1.2153409240000002,
+    0.094494148
+  ],
+  "camera_elapsed_s": 15.59165100500104,
+  "all_owned_sources_exited": true,
+  "no_motion_enable_arm_gripper_reset_disable_CAN_recovery": true,
+  "read_only_CAN_TX_delta": 0,
+  "production_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18",
+      "actual": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18"
+    }
+  },
+  "deployed_adapter_sha256": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+  "candidate_adapter_deployed": false,
+  "portable_assets_SHA_verified": 19,
+  "tests_passed": 216,
+  "next": "Save immutable B checkpoint; obtain per-group release/observe permission and fresh q before original path. No SEARCH/ALIGN/grasp/TF deployment.",
+  "GitHub_pushed": false
+}
