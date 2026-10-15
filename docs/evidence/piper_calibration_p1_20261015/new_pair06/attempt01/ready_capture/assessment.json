@@ -1,0 +1,225 @@
+{
+  "pair_id": "new_pair06",
+  "B_checkpoint": "1a2e633",
+  "user_approved_acquisition_change_and_one_static_session": true,
+  "production_control_TF_limits_changed": false,
+  "production_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18",
+      "actual": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18"
+    }
+  },
+  "deployed_adapter_sha256": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+  "candidate_adapter_fix_deployed": false,
+  "motion_enable_disable_reset_gripper_commands_sent": false,
+  "CAN_recovery": false,
+  "all_owned_sources_exited": true,
+  "original_acceptance_AST_verified": {
+    "collect_static_rgbd.py": [
+      "checked_packet",
+      "feedback_lost",
+      "settled_feedback",
+      "matched",
+      "full_camera_info",
+      "stamp_ns",
+      "joint_positions",
+      "synchronizer"
+    ],
+    "calibration_readonly_feedback.py": [
+      "feedback_values",
+      "install_receive_parser"
+    ]
+  },
+  "pre_SDK_whole_quality": {
+    "samples": 60,
+    "fresh_samples": 59,
+    "span_s": 5.8236658573150635,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "readiness_passed_real_four_source_packet": true,
+  "readiness_does_not_prove_continuous_RGB": true,
+  "readiness_received": {
+    "/joint_states_feedback": 238,
+    "/camera/depth/image_raw": 63,
+    "/camera/depth/camera_info": 70,
+    "/camera/color/image_raw": 1
+  },
+  "readiness_packet": {
+    "stamps_ns": {
+      "rgb": 1792060392047097264,
+      "depth": 1792060392132682905,
+      "depth_info": 1792060392132682905,
+      "feedback": 1792060392120235520
+    },
+    "stamp_span_s": 0.085585641,
+    "oldest_age_s": 0.088352794,
+    "q_rad": [
+      -0.14004043200000002,
+      0.9360275960000001,
+      -1.259683572,
+      -0.07875966,
+      1.2153409240000002,
+      0.094494148
+    ]
+  },
+  "camera_elapsed_s": 63.8065358390013,
+  "startup_camera_elapsed_s": 6.447507086995756,
+  "RGB_start_to_first_packet_s": 4.083561897277832,
+  "formal_collector_started_after_readiness_s": 0.1969459056854248,
+  "formal_collector_elapsed_s": 55.001721915003145,
+  "formal_collector_received": {
+    "/joint_states_feedback": 2650,
+    "/camera/depth/camera_info": 1338,
+    "/camera/depth/image_raw": 1135
+  },
+  "formal_collector_rejected": {},
+  "formal_collector_matched_packets": 0,
+  "formal_collector_feedback_lost": false,
+  "formal_collector_stop_reason": null,
+  "formal_collector_returncode": 2,
+  "cam2image_actual_Publishing_log_count": 1,
+  "formal_A_saved_RGBD_frames": 0,
+  "selected_qualified_samples": 0,
+  "raw_images_saved": 0,
+  "readiness_RGB_pixels_not_saved": true,
+  "latest_collector_receipt_timing": {
+    "/joint_states_feedback": {
+      "topic": "/joint_states_feedback",
+      "receipt_ros_ns": "1792060447854177321",
+      "receipt_wall_ns": "1792060447854189340",
+      "receipt_monotonic_ns": "91122768523717",
+      "source_stamp_ns": "1792060447850256384",
+      "source_age_at_receipt_ns": 3920937,
+      "local_interarrival_ns": 20552788
+    },
+    "/camera/depth/camera_info": {
+      "topic": "/camera/depth/camera_info",
+      "receipt_ros_ns": "1792060447847500460",
+      "receipt_wall_ns": "1792060447847507163",
+      "receipt_monotonic_ns": "91122761840981",
+      "source_stamp_ns": "1792060447845839318",
+      "source_age_at_receipt_ns": 1661142,
+      "local_interarrival_ns": 40510610
+    },
+    "/camera/depth/image_raw": {
+      "topic": "/camera/depth/image_raw",
+      "receipt_ros_ns": "1792060447847205689",
+      "receipt_wall_ns": "1792060447847226221",
+      "receipt_monotonic_ns": "91122761561278",
+      "source_stamp_ns": "1792060447845839318",
+      "source_age_at_receipt_ns": 1366371,
+      "local_interarrival_ns": 75724371
+    }
+  },
+  "latest_feedback": {
+    "epoch": 1792060448.059032,
+    "sdk_receipt_stamps": {
+      "joint": "1792060448.0553284",
+      "high": "1792060448.051625",
+      "low": "1792060448.0516267",
+      "gripper": "1792060448.0553713"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8028,
+      53659,
+      -72213,
+      -4515,
+      69671,
+      5417
+    ],
+    "q_driver_rad": [
+      -0.14004043200000002,
+      0.9360275960000001,
+      -1.259683572,
+      -0.07875966,
+      1.2153409240000002,
+      0.094494148
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 37000,
+    "gripper_mm": 37.0,
+    "gripper_effort_raw": 1,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "actual_q_matches_previous_observe": true,
+  "current_continuous_monitoring": false,
+  "factory_GET_started": false,
+  "CAN_before": {
+    "before": {
+      "up": true,
+      "state": "ERROR-ACTIVE",
+      "rx": 26639417,
+      "tx": 12553
+    },
+    "after": {
+      "up": true,
+      "state": "ERROR-ACTIVE",
+      "rx": 26639924,
+      "tx": 12553
+    },
+    "healthy": true
+  },
+  "CAN_after": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 26794141,
+    "tx": 12553
+  },
+  "read_only_CAN_TX_delta": 0,
+  "production_and_session_source_SHA_unchanged_during_real_run": true,
+  "tests_passed": 216,
+  "formal_complete_pairs_unchanged": 1,
+  "formal_pair_complete": false,
+  "new_proven_failure_layer": "RGB source published once during readiness; no subsequent RGB reached formal subscriber. Not a feedback timeout, depth-quality gate, target geometry, TF or joint-limit failure.",
+  "unproven_internal_cause": "Cannot yet distinguish VideoCapture read/empty-frame path, timer/executor or publish blockage. One log before publish does not prove all later statements returned.",
+  "source_reference": "https://github.com/ros2/demos/blob/humble/image_tools/src/cam2image.cpp",
+  "reference_scope": "Upstream humble branch, not asserted binary-identical to installed 0.20.9 package; version0.20.9 exact source URL fetch failed. No speculative QoS/DDS or backend change.",
+  "next_step": "Review RGB-only capture/publish stall with explicit scoped evidence/approval. Do not repeat movement, auto-reopen, old startup budget test or lower data rules.",
+  "GitHub_pushed": false
+}

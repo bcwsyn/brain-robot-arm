@@ -16,14 +16,38 @@
     "new_pair06"
   ],
   "next_pair_id": null,
-  "next_placement_preparation": "Do not change cube/support or repeat B/observation return. Offline acquisition startup/budget audit complete; A0. Await user approval for acquisition-only bounded readiness/55s capture and timestamp diagnostics before any change or one static camera session. No motion, threshold or production changes. Top identity pending.",
+  "next_placement_preparation": "Do not change cube/support, repeat B, enable or return. Approved acquisition fix and one static session completed: real readiness passed, full55s no feedback timeout, RGB only first frame so A0. Next scoped RGB capture/publish stall review; no automatic camera reopen or backend/QoS/production changes. Top identity pending.",
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair06",
-  "current_step": "new_pair06_offline_acquisition_audit_complete_A0_wait_scoped_acquisition_change_approval",
+  "current_step": "new_pair06_acquisition_fix_implemented_one_real_run_ready_passed_RGB_one_frame_stall_A0",
   "current_attempt_id": "attempt01",
-  "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_after_manual_reset.NBs3LK",
+  "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_ready_capture.tFfezE",
   "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "User requested original observation after manual reset and confirmed reset complete. Original enable/observe executed before SEARCH. User explicitly confirmed cube/support unchanged. No gripper/reset/disable, candidate deployment, SEARCH/ALIGN/grasp or production changes. Two A failures now stop further real camera attempts; offline review only, do not repeat motion.",
+  "current_authority_scope": "User explicitly approved acquisition-only readiness/budget/timestamp modification and one stationary session. Implemented/tested and that session completed; no extra live camera session inferred. No motion/enable/arm/gripper/disable/reset, production change, adapter deployment or CAN recovery. Next RGB-only scoped review requires concrete plan/approval before further changes or source reopen.",
+  "latest_ready_capture": {
+    "record": "new_pair06/attempt01/ready_capture/README.md",
+    "assessment": "new_pair06/attempt01/ready_capture/assessment.json",
+    "user_authorization_quote": "我同意修改，继续执行任务",
+    "changes_implemented": true,
+    "tests_passed": 216,
+    "original_acceptance_AST_checks": 10,
+    "one_static_real_session_completed": true,
+    "ready": true,
+    "ready_camera_elapsed_s": 6.447507086995756,
+    "camera_total_elapsed_s": 63.8065358390013,
+    "formal_collector_elapsed_s": 55.001721915003145,
+    "formal_received": {"feedback": 2650, "depth": 1135, "Info": 1338, "RGB": 0},
+    "formal_feedback_timeout": false,
+    "RGB_source_log_publish_count": 1,
+    "formal_A_saved": 0,
+    "selected_qualified_samples": 0,
+    "all_owned_sources_exited": true,
+    "raw_archive_files_SHA_verified": 17,
+    "executed_sources_SHA_verified": 4,
+    "actual_q_matches_original_observation": true,
+    "new_blocker": "RGB source first-frame then no continuous output; not startup budget or feedback timeout",
+    "next_step": "Scoped RGB capture/timer/publish stall evidence review. No auto-reopen or movement."
+  },
   "latest_offline_acquisition_audit": {
     "record": "new_pair06/attempt01/offline_acquisition_audit/README.md",
     "report": "new_pair06/attempt01/offline_acquisition_audit/report.json",
@@ -37,8 +61,9 @@
     "synthetic_ideal_5Hz_60_saved_span_s": 35.4,
     "actual_feedback_failure_category_identified": false,
     "proposed_readiness_capture_camera_bridge_budgets_s": [20,55,80,90],
-    "proposal_implemented_or_authorized": false,
-    "next_step": "Ask user approval for acquisition-only readiness/budget and timestamp diagnostics; no fresh real attempt before approval."
+    "proposal_implemented_or_authorized": true,
+    "implementation_record": "new_pair06/attempt01/ready_capture/README.md",
+    "next_step": "This proposal now implemented and tested in one authorized real session. Latest result is RGB-only first-frame stall, not repeat timing-budget diagnosis."
   },
   "manual_reset_observe": {
     "record": "new_pair06/attempt01/manual_reset_observe/assessment.json",
@@ -436,7 +461,7 @@
     {
       "pair_id": "new_pair06",
       "role": "fit",
-      "state": "B_complete_1a2e633_manual_reset_original_observe_complete_A0_acquisition_review_pending",
+      "state": "B_complete_1a2e633_observe_complete_ready_capture_done_RGB_first_frame_stall_A0",
       "grip_manifest": "new_pair06/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": null,
       "physical_grip_verified": true,
@@ -481,6 +506,8 @@
       "current_actual_J3_below_task_soft_min": false,
       "historic_grip_B_J3_below_task_soft_min": true,
       "manual_reset_observation_record": "new_pair06/attempt01/manual_reset_observe/assessment.json",
+      "latest_ready_capture_record": "new_pair06/attempt01/ready_capture/assessment.json",
+      "selected_qualified_samples": 0,
       "takeover_audit": "new_pair06/attempt01/grip_capture/takeover_audit.json"
     },
     {
@@ -515,7 +542,7 @@
     true
   ],
   "current_last_fresh_gripper_mm": 37.0,
-  "current_last_fresh_SDK_epoch": 1792058727.3055558,
+  "current_last_fresh_SDK_epoch": 1792060448.059032,
   "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_feedback_fresh": false,
   "current_live_enabled_after_RX_loss": null,
@@ -540,18 +567,18 @@
       0.037
     ]
   },
-  "current_feedback_fresh_scope": "Last bridge SDK fresh at1792058727.3055558 after original observe and failed A; all sources exited, no continuous monitoring. Collector source-age failure is not proof of persistent physical CAN loss.",
-  "current_readonly_A_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_after_manual_reset.NBs3LK/A_invocation_retry.qBjuiK",
+  "current_feedback_fresh_scope": "Last bridge SDK fresh at1792060448.059032 after full55s stationary capture; no feedback timeout, but RGB only first frame. All sources exited, no continuous monitoring.",
+  "current_readonly_A_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_ready_capture.tFfezE/session",
   "receive_recovery_A_record": "new_pair04/attempt01/observe_after_reconnect/execution.json",
   "latest_CAN_readonly_A": {
     "ifindex": 14,
-    "rx": 22631584,
+    "rx": 26794141,
     "tx": 12553,
     "state": "ERROR-ACTIVE",
     "rx_errors": null,
     "tx_errors": null,
     "error_count_scope": "A helper did not capture error counts; not inherited from prior group",
-    "source": "new_pair06/attempt01/manual_reset_observe/assessment.json"
+    "source": "new_pair06/attempt01/ready_capture/assessment.json"
   },
   "placements_with_raw_B_and_some_A": 5,
   "latest_B_CAN": {
@@ -589,12 +616,12 @@
     "independent_SDK_fresh": 0,
     "record": "new_pair05/attempt01/release_observe/execution.json"
   },
-  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_after_manual_reset.NBs3LK",
+  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_ready_capture.tFfezE",
   "latest_metadata_diagnostic_record": "new_pair05/attempt01/continuous_metadata_diagnostic/assessment.json",
   "latest_CAN_diagnostic": {
     "up": true,
     "state": "ERROR-ACTIVE",
-    "rx": 22631584,
+    "rx": 26794141,
     "tx": 12553
   },
   "latest_native_depth_diagnostic_record": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json",

@@ -94,6 +94,53 @@ def feedback_lost(history, now_ns, elapsed_s):
     return not history or now_ns - history[-1][0] > MAX_AGE_NS or history[-1][0] > now_ns
 
 
+class ReceiptDiagnostics:
+    """Bounded source/receipt evidence, never a replacement for source stamps."""
+    def __init__(self):
+        self.latest = {}
+        self.recent = deque(maxlen=128)
+
+    def observe(self, topic, message, ros_ns, wall_ns, monotonic_ns):
+        row = {'topic': topic, 'receipt_ros_ns': str(ros_ns),
+               'receipt_wall_ns': str(wall_ns), 'receipt_monotonic_ns': str(monotonic_ns)}
+        try:
+            source_ns = stamp_ns(message)
+            row.update(source_stamp_ns=str(source_ns), source_age_at_receipt_ns=ros_ns-source_ns)
+        except ValueError as exc:
+            row.update(source_stamp_ns=None, timestamp_error=str(exc))
+        previous = self.latest.get(topic)
+        if previous:
+            row['local_interarrival_ns'] = monotonic_ns-int(previous['receipt_monotonic_ns'])
+        self.latest[topic] = row
+        self.recent.append(row)
+
+    def snapshot(self):
+        return {'timestamp_scope': 'Original message header and local receipt clocks; not hardware synchronization',
+                'latest_by_topic': dict(self.latest), 'recent_receipts': list(self.recent),
+                'recent_limit': self.recent.maxlen}
+
+
+def feedback_stop_diagnostic(history, now_ns, elapsed_s, wall_ns, monotonic_ns, diagnostics):
+    """Explain the unchanged predicate using exactly its decision-time inputs."""
+    if elapsed_s < 3.:
+        category = 'initialization_grace'
+    elif not history:
+        category = 'missing_feedback_history'
+    elif history[-1][0] > now_ns:
+        category = 'future_feedback_source_stamp'
+    elif now_ns-history[-1][0] > MAX_AGE_NS:
+        category = 'stale_feedback_source_stamp'
+    else:
+        category = 'fresh'
+    return {'category': category, 'original_feedback_lost': feedback_lost(history, now_ns, elapsed_s),
+            'decision_ros_ns': str(now_ns), 'decision_wall_ns': str(wall_ns),
+            'decision_monotonic_ns': str(monotonic_ns), 'collector_elapsed_s': elapsed_s,
+            'last_history_source_stamp_ns': str(history[-1][0]) if history else None,
+            'last_history_age_ns': now_ns-history[-1][0] if history else None,
+            'feedback_history_samples': len(history), 'max_source_age_ns': MAX_AGE_NS,
+            **diagnostics.snapshot()}
+
+
 def collect(output, duration_s, frames, settle_s=.25, stop_on_feedback_loss=False,
             max_bytes=None):
     import cv2
@@ -116,6 +163,7 @@ def collect(output, duration_s, frames, settle_s=.25, stop_on_feedback_loss=Fals
                'stop_on_feedback_loss': stop_on_feedback_loss,
                'image_byte_limit': max_bytes, 'image_bytes': 0, 'stop_reason': None}
     received, rejected, history = Counter(), Counter(), deque(maxlen=1000)
+    diagnostics = ReceiptDiagnostics()
     start_q, latest_saved_ns = None, 0
     bridge = CvBridge()
     rclpy.init()
@@ -124,6 +172,8 @@ def collect(output, duration_s, frames, settle_s=.25, stop_on_feedback_loss=Fals
 
     def receive(message, topic):
         received[topic] += 1
+        diagnostics.observe(topic, message, node.get_clock().now().nanoseconds,
+                            time.time_ns(), time.monotonic_ns())
         if topic == TOPICS[3]:
             try:
                 history.append((stamp_ns(message), joint_positions(message)))
@@ -190,9 +240,12 @@ def collect(output, duration_s, frames, settle_s=.25, stop_on_feedback_loss=Fals
     try:
         while rclpy.ok() and time.monotonic() - started < duration_s and summary['saved_frames'] < frames:
             rclpy.spin_once(node, timeout_sec=0.05)
-            if stop_on_feedback_loss and feedback_lost(history, node.get_clock().now().nanoseconds,
-                                                       time.monotonic() - started):
-                summary['stop_reason'] = 'feedback_lost'
+            if stop_on_feedback_loss:
+                now_ns, elapsed_s = node.get_clock().now().nanoseconds, time.monotonic()-started
+                if feedback_lost(history, now_ns, elapsed_s):
+                    summary['stop_reason'] = 'feedback_lost'
+                    summary['stop_diagnostic'] = feedback_stop_diagnostic(
+                        history, now_ns, elapsed_s, time.time_ns(), time.monotonic_ns(), diagnostics)
             if summary['stop_reason'] is not None:
                 break
     except KeyboardInterrupt:
@@ -202,7 +255,8 @@ def collect(output, duration_s, frames, settle_s=.25, stop_on_feedback_loss=Fals
         raise
     finally:
         summary.update({'received': dict(received), 'rejected': dict(rejected),
-                        'elapsed_s': time.monotonic() - started, 'start_q_rad': start_q})
+                        'elapsed_s': time.monotonic() - started, 'start_q_rad': start_q,
+                        'receipt_diagnostics': diagnostics.snapshot()})
         stream.close()
         node.destroy_node()
         if rclpy.ok():

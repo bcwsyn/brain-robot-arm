@@ -1,5 +1,7 @@
 # 当前断点（2026-10-15）：第5位置已回观测，B1a2e633保留；只读A仍0帧
 
+**2026-10-15 18:36最高断点：采集侧局部修改已批准/实现，216测试，单次实体结果已归档；下一聚焦RGB只首帧。** 四源真实就绪6.448s通过、原采集器55.002s未触发反馈超时，2650反馈/1135depth/1338Info但RGB0、A0。源只开一次/63.807s总窗，原cam2image#1后无第二帧，需区分取帧/timer/发布内部卡点，不套DDS/重启CAN。原10接受/parser/保存函数AST不变，test采集工具新增就绪调度与有界时戳诊断，生产/TF/限位/门不改，home仍旧adapter。无运动/使能/开闭/失能/链路恢复；全部源退出，末鲜六true/37mm非持续，预SDK速度脉冲不改通过。17原文件/4执行源SHA，B1a2e633/完整1/6/选中合格0保持。下一先列RGB只读复核及改动范围获准，不再次自动开流或移动。见 `docs/evidence/piper_calibration_p1_20261015/new_pair06/attempt01/ready_capture/README.md`；下方采集方案待批准为历史，未推送。
+
 **2026-10-15最新离线审计已完成，下一等待采集侧局部修改/一次静止采集批准，不是继续等复位。** 历史RGB首帧需3.814/4.104s，本次3.169s被清理，开流报错在SIGINT后；具体feedback_lost类别缺触发时戳不能唯一判定。另原500ms保存间隔使60组理想5Hz需35.4s，合启动预算约40.63—40.92s>39s。建议仅调度分开20s就绪→原规则60帧/55s、相机总80s/桥90s，并补实际时戳诊断，尚未实施/实测。175原文件SHA/6组合成/152回归通过，无设备/代码更改、生产冻结；B1a2e633/A0/完整1/6不变。报告 `docs/evidence/piper_calibration_p1_20261015/new_pair06/attempt01/offline_acquisition_audit/README.md`，用户批准前不第三次开相机或重回位，未推送。
 
 **2026-10-15 18:07 +08:00最高断点：人工复位后原观测返回已成功，不再因旧B起点越界阻断。** 新起点范围内，原enable true后实测六true/q不变；旧运行adapter首命令吻合，新候选未部署。原17点63.462s计划/63.069s到位，OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH及2点原持位/软件disarm，无代理开闭/Reset/硬件失能。用户确认方块/支撑物始终未移动，B1a2e633有效保留。A首临时模块路径错误0帧已修；第二原位采集收到302反馈/39depth/43Info但RGB0、原500ms时限feedback_lost，A0，非已证明持续CAN停流。两次后停止实体相机尝试，全部源退出；末有效六true/37mm非持续状态，到位后SDK原rc2及收尾MoveIt−11/driver−9未隐瞒。152测试/42原文件SHA通过，正式完整仍1/6。下一只离线核采集启动/时戳，勿再回位/使能/重采B/扩大限位；原质量门/TF/算法冻结。见 `docs/evidence/piper_calibration_p1_20261015/new_pair06/attempt01/manual_reset_observe/README.md`；下方待返回/当前J3越界是历史，Git未推送。

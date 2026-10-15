@@ -7,6 +7,7 @@ queries, services, command topics, interface activation or automatic recovery.
 """
 import argparse
 import copy
+from collections import deque
 import json
 import math
 from pathlib import Path
@@ -79,6 +80,7 @@ def run_bridge(output, duration_s, interface_factory=None, link_reader=can_link_
         interface_factory = C_PiperInterface_V2
     piper = None
     node = None
+    recent_samples = deque(maxlen=128)
     started, began, previous = time.time(), time.monotonic(), 0
     rclpy.init()
     try:
@@ -91,6 +93,12 @@ def run_bridge(output, duration_s, interface_factory=None, link_reader=can_link_
         while rclpy.ok() and time.monotonic() - began < duration_s:
             sample = snapshot(piper, time.time(), started)
             values = feedback_values(sample, previous)
+            recent_samples.append({'local_wall_ns': str(time.time_ns()),
+                'local_monotonic_ns': str(time.monotonic_ns()),
+                'sdk_receipt_stamps': sample['sdk_receipt_stamps'],
+                'fresh_after_passive_connection': sample['fresh_after_passive_connection'],
+                'forwarded_stamp_ns': str(values['stamp_ns']) if values else None,
+                'suppression_scope': None if values else 'original stale/duplicate/nonfinite filter; no stamp replacement'})
             report['samples'] += 1
             if values is None:
                 report['suppressed_stale_or_duplicate'] += 1
@@ -117,6 +125,8 @@ def run_bridge(output, duration_s, interface_factory=None, link_reader=can_link_
         if rclpy.ok():
             rclpy.shutdown()
         report['elapsed_s'] = time.monotonic() - began
+        report['recent_source_samples'] = list(recent_samples)
+        report['recent_source_sample_limit'] = recent_samples.maxlen
         with output.open('x', encoding='utf-8') as stream:
             json.dump(report, stream, indent=2, allow_nan=False)
         print(json.dumps(report, allow_nan=False))
