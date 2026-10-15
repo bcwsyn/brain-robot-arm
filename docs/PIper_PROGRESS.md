@@ -1,3 +1,12 @@
+## 2026-10-15 12:50 +08:00：整理数据，封存第二组旧尝试，空白准备新第二位置
+
+- 用户已叫停所有工作，本次仅要求清理数据、准备手动摆到第二个位置并夹紧。按手术式整理技能只改登记/文档与有限归档，不删原始数据、改算法或新接设备。实际根55%/34GB、共享73%/137GB，P1 runtime124MB/仓库证据39MB；未达到清理阈值，不以腾空间为由删除标定样本，也不宣称本次释放了空间。只读进程检查无driver/adapter/controller/相机/采集源，本轮未取CAN/q/使能，不把旧true当此刻硬件状态。
+- 第一组new_pair02 attempt02（d80c80c）B27+A137共164项资产SHA独立重验通过，配对记录不改，P1仍1/6；不是拟合/10mm精度验收。第二组旧7650461 B与de49df6异常在原路径保留，登记明确fit_eligible=false/退出当前候选，禁止新位置A配旧B。预定五fit/一validation角色不变。
+- 补存此前用户全停前的grounded_recheck原runtime，37文件/10对原图/三SDK/工厂/服务日志/完整ROS bag，无损tar.gz共2266422B，SHA41845bd79a95f091c6f640f09146b5ef88aed6c95d0995b46e0cce01a966caf8。规范`P1/new_pair03/closed_attempts`含压缩包和37文件SHA清单；全部回读逐项对原文件通过、SQLite integrity ok/33254消息。原runtime未删、原坏帧/零深度/失败旗标保留，不纳入正式标定。
+- 对本次retry修正因果措辞：bag首次反馈1792039370.5230856已是与先前SDK不同的姿态，早于arm1792039413.246419836约43秒；1154条command首条与最新先前feedback六轴差0，JointJog/arm_trajectory/gripper_command该窗均0。不能将本次相隔时段的大q差全部归为arm导致，也不能断言谁动实体或唯一根因；前一次de49df6时序不回写。retry没有发开爪/观测请求，A0；用户全停后visual/bag/RGB/depth均exit0，driver精确停止exit137，无Reset/Disable。
+- 登记重置new_pair03 attempt02待新位置/实际夹紧/静止确认，当前B/A/接触均null、完成false，旧许可仅放历史，不在用户叫停/新物理摆位后自动续跑。新空白runtime `/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_attempt02.v22Alq/`，没有先造采集子目录/JSON/图像；规范attempt02只有准备README，不冒称数据已采。
+- 下一操作者手动摆好实际夹紧、方块平稳贴桌、不提起并确认后，代理只读SDK桥+原相机采B，**不提前启动生产driver/adapter/controller或使能/arm**。先B静止、原图、实际q/FK/工厂/哈希齐全并提交，再确认本次原位释放/原回观测许可。当前仅准备，无运动/开闭/复位/失能/TF/门/入口变更；生产五文件冻结，其他dirty不纳入，Git仅本批整理和封存，未远端推送。
+
 ## 2026-10-15 12:23 +08:00：第二组释放/返回已获准，arm后实际姿态偏移，张爪与返回尚未执行
 
 - 用户明确“允许”本组原位张爪/方块不动/原返回观测/SEARCH前止住/采A。按ROS2/PiPER技能查真实入口和反馈，复用健康ifindex10/1Mbps/.75/queue1000/RX增长，未CAN重载/固件操作。新runtime `.../piper_calibration_p1_20261015/new_pair03_release_observe.OJZgxu`，SDK预检60/59fresh/5.828672s/原静止rc0、q仍B[1987,99516,-49937,-15090,26474,24769]毫度/六true/36.9mm。

@@ -1,5 +1,7 @@
 # 当前断点（2026-10-15 12:10 +08:00）：第二组夹持B保存，等待本组释放/回观测授权
 
+**最新2026-10-15 12:50 +08:00：用户要求整理并准备新的第二位置，只准备、不采集或运动。** 第一组new_pair02 attempt02的164资产SHA重新验证通过，完成仍1/6；第二组旧B/异常/已叫停retry均封存并明确退出拟合候选，原路径/字节不改。37个retry原文件（含33254消息ROS bag）无损压缩归档2.27MB/逐项SHA通过。登记重置为new_pair03 attempt02、B/A均null，等操作者新位置实际夹紧且静止确认；空白runtime .../new_pair03_attempt02.v22Alq。夹持B只用原receive-only桥/相机，不启动生产driver/adapter/controller，不提前使能/arm。旧动作许可不跨用户停止/新位置自动续用。根55%/34GB、共享73%/137GB，没有删数据或新取实体反馈、所有相关源仍退出，生产全冻结。见P1/new_pair03/attempt02与closed_attempts。
+
 **最新2026-10-15 12:23 +08:00：new_pair03本组已获张爪/原回观测许可，但arm后、张爪前实际姿态变化，当前停止，尚未A。** 原SDK预检仍匹配B；原AUTO_START=0、stop_after_observe=true回读/enable_motion/arm成功后0.220s，J3+11.286°/J5−12.334°。没有发开爪或controller/start；不伪称已返回观测/方块未动。原disarm成功、入口退出143/driver精确退出137，无Reset/Disable，末SDK仍六true/36.9mm；CAN有流/磁盘充足，根因尚未确定。完整原CAN可逆压缩、三对异常原图/实际q/FK/前后SDK已归档P1/new_pair03/release_observe；原B7650461不覆盖，完整仍1/6。当前等操作者确认方块是否仍贴桌/被带动；授权已具备，不重复要同一许可，不盲重arm。生产全冻结，无代码/TF/门修改。
 
 P1完整配对1/6，new_pair03 role fit的B已采：SDK60/60fresh/5.920s/原静止通过、六true/36.9mm；五原RGB-D/实际q/FK/完整相机工厂/19资产SHA见`docs/evidence/piper_calibration_p1_20261015/new_pair03/grip_capture/`。用户“我已按照要求完成”对应第二组新位置/倾斜/实际夹紧，已看首末图，不重复问是否夹紧。与第一组B实际工具原点差66.58mm、旋转30.36°、z轴变9.90°；未知c_G不填0，开口与名义29mm差7.9mm保留。未执行开爪/轨迹，尚无本组动作授权，不能沿用第一组；下一获准原位开爪→确认方块不动→原轨迹回观测/SEARCH前止住→采A60/≥20好帧。控制源未启动，生产冻结，无新拟合/TF/抓取。以下“等待第二组就位”是上一断点。
