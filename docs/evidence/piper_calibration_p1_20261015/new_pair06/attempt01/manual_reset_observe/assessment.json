@@ -1,0 +1,176 @@
+{
+  "pair_id": "new_pair06",
+  "grip_checkpoint_commit": "1a2e633",
+  "operator_manual_reset_confirmed": true,
+  "same_point_operator_confirmed": true,
+  "independent_same_point_or_contact_measurement": false,
+  "original_observation_return_succeeded": true,
+  "stopped_before_SEARCH": true,
+  "motion_duration_START_to_REACHED_s": 63.0686821937561,
+  "original_prepare_points": 17,
+  "original_stop_hold_points": 2,
+  "first_command_matches_real_feedback": true,
+  "gripper_commands_sent": false,
+  "reset_or_disable_sent_by_agent": false,
+  "candidate_adapter_fix_deployed": false,
+  "deployed_adapter_sha256": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+  "production_modified_this_turn": false,
+  "production_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected_this_turn": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected_this_turn": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected_this_turn": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected_this_turn": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected_this_turn": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18",
+      "actual": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18"
+    }
+  },
+  "initial_after_manual_reset_q_rad": [
+    -0.061054000000000004,
+    0.0,
+    0.0,
+    -0.487961012,
+    0.32437118,
+    0.7176287160000001
+  ],
+  "last_fresh_feedback": {
+    "epoch": 1792058727.3055558,
+    "sdk_receipt_stamps": {
+      "joint": "1792058727.3032327",
+      "high": "1792058727.2992933",
+      "low": "1792058727.2993128",
+      "gripper": "1792058727.3033254"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 140.0,
+    "joint_hz": 280.0,
+    "q_mdeg": [
+      -8028,
+      53659,
+      -72213,
+      -4515,
+      69671,
+      5417
+    ],
+    "q_driver_rad": [
+      -0.14004043200000002,
+      0.9360275960000001,
+      -1.259683572,
+      -0.07875966,
+      1.2153409240000002,
+      0.094494148
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 37000,
+    "gripper_mm": 37.0,
+    "gripper_effort_raw": -3,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "current_continuous_feedback": false,
+  "T_base_link_gripper_base_at_last_feedback": [
+    [
+      -0.6983987156167096,
+      0.23723066190992645,
+      0.6752487297838538,
+      0.14528902200739155
+    ],
+    [
+      0.16591312244306933,
+      0.9714317686798335,
+      -0.1696854578352584,
+      -0.027261248913028745
+    ],
+    [
+      -0.6962126613514871,
+      -0.006475480626822211,
+      -0.7178063794119762,
+      0.42821365006403517
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "FK_tool_origin_not_measured_cube_center": true,
+  "camera_cube_center_m": null,
+  "gripper_base_cube_center_m": null,
+  "URDF_sha256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "SDK_after_enable_original_static_passed": true,
+  "SDK_at_observation_original_whole_window_static_passed": false,
+  "SDK_at_observation_original_contiguous_static_window": null,
+  "actual_A_RGBD_frames_saved": 0,
+  "actual_A_good_top_frames": 0,
+  "A_failures": [
+    {
+      "camera_elapsed_s": 2.1682546329975594,
+      "raw_images_saved": 0,
+      "cause": "Temporary child command omitted module search path; ModuleNotFoundError. Corrected only temporary invocation."
+    },
+    {
+      "camera_elapsed_s": 6.062149022007361,
+      "raw_images_saved": 0,
+      "original_stop_reason": "feedback_lost",
+      "received": {
+        "/joint_states_feedback": 302,
+        "/camera/depth/camera_info": 43,
+        "/camera/depth/image_raw": 39
+      },
+      "cause": "Original 500ms source-age rule fired. RGB published0; open failure reported at SIGINT cleanup, causal ordering unresolved."
+    }
+  ],
+  "camera_factory_GET_started": false,
+  "no_old_factory_data_relabelled_as_new": true,
+  "no_raw_depth_filled_or_images_fabricated": true,
+  "CAN_motion_before_RX": 22241614,
+  "CAN_motion_after_RX": 22447778,
+  "CAN_motion_before_TX": 3071,
+  "CAN_motion_after_TX": 12553,
+  "A_last_CAN": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 22631584,
+    "tx": 12553
+  },
+  "CAN_reception_did_not_stop_in_recorded_windows": true,
+  "original_full_SDK_failure_and_shutdown_failures_preserved": true,
+  "shutdown_move_group_exit_minus11": true,
+  "driver_shutdown_needed_SIGKILL": true,
+  "all_owned_sources_exited": true,
+  "formal_pair_completed": false,
+  "formal_complete_pairs_unchanged": 1,
+  "placements_with_raw_data": 5,
+  "next_step": "Offline acquisition callback/startup review only; stop additional real camera sessions after two failures. No repeat movement, CAN recovery, limit changes or silent quality waiver.",
+  "GitHub_pushed": false
+}

@@ -1,0 +1,255 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "source_bag": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_after_manual_reset.NBs3LK/motion_witness_bag/motion_witness_bag_0.db3",
+  "topic_counts": {
+    "/joint_states_feedback": 16021,
+    "/brain_robot_visual_control/reason": 3,
+    "/brain_robot_visual_control/state": 3,
+    "/brain_robot_control/adapter_armed": 2,
+    "/joint_commands": 3155,
+    "/brain_robot_grasp/arm_trajectory": 2,
+    "/brain_robot_grasp/gripper_command": 0
+  },
+  "controller_events": [
+    {
+      "topic": "/brain_robot_visual_control/reason",
+      "data": "WAITING_FOR_START",
+      "bag_stamp_ns": "1792058567619716114"
+    },
+    {
+      "topic": "/brain_robot_visual_control/state",
+      "data": "IDLE",
+      "bag_stamp_ns": "1792058567632265239"
+    },
+    {
+      "topic": "/brain_robot_visual_control/state",
+      "data": "PREPARE",
+      "bag_stamp_ns": "1792058578857500283"
+    },
+    {
+      "topic": "/brain_robot_visual_control/reason",
+      "data": "START_AUTHORIZED",
+      "bag_stamp_ns": "1792058578857525452"
+    },
+    {
+      "topic": "/brain_robot_visual_control/reason",
+      "data": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH",
+      "bag_stamp_ns": "1792058641925867633"
+    },
+    {
+      "topic": "/brain_robot_visual_control/state",
+      "data": "STOPPED",
+      "bag_stamp_ns": "1792058641925879674"
+    }
+  ],
+  "no_search_or_align_in_bag": true,
+  "original_trajectories": [
+    {
+      "bag_stamp_ns": "1792058578860330634",
+      "points": 17,
+      "names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "first_q_rad": [
+        -0.061054000000000004,
+        0.0,
+        0.0,
+        -0.487961012,
+        0.32437118,
+        0.7176287160000001
+      ],
+      "last_q_rad": [
+        -0.141941828,
+        0.942464432,
+        -1.269242884,
+        -0.07443354800000002,
+        1.22108,
+        0.08943538800000006
+      ],
+      "planned_duration_s": 63.4621442
+    },
+    {
+      "bag_stamp_ns": "1792058641924993639",
+      "points": 2,
+      "names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "first_q_rad": [
+        -0.14004043200000002,
+        0.936236924,
+        -1.259683572,
+        -0.07875966,
+        1.2153409240000002,
+        0.094494148
+      ],
+      "last_q_rad": [
+        -0.14004043200000002,
+        0.936236924,
+        -1.259683572,
+        -0.07875966,
+        1.2153409240000002,
+        0.094494148
+      ],
+      "planned_duration_s": 0.1,
+      "identity": "Original StopLocked -> PublishHoldTrajectoryLocked, not new movement"
+    }
+  ],
+  "first_command": {
+    "bag_stamp_ns": "1792058578852734494",
+    "q_rad": [
+      -0.061054000000000004,
+      0.0,
+      0.0,
+      -0.487961012,
+      0.32437118,
+      0.7176287160000001
+    ],
+    "gripper_m": null
+  },
+  "last_command": {
+    "bag_stamp_ns": "1792058641933945788",
+    "q_rad": [
+      -0.14004043200000002,
+      0.936236924,
+      -1.259683572,
+      -0.07875966,
+      1.2153409240000002,
+      0.094494148
+    ],
+    "gripper_m": null
+  },
+  "last_feedback": {
+    "bag_stamp_ns": "1792058648203185928",
+    "q_rad": [
+      -0.14004043200000002,
+      0.9360275960000001,
+      -1.259683572,
+      -0.07875966,
+      1.2153409240000002,
+      0.094494148
+    ],
+    "gripper_m": 0.037
+  },
+  "first_arm_command_matches_real_feedback": true,
+  "maximum_adjacent_command_step_rad": [
+    0.0013770151349283832,
+    0.002115968402999507,
+    0.007293673212817826,
+    0.0016452897469512034,
+    0.0031977082502595566,
+    0.000986298556618831
+  ],
+  "SDK": {
+    "sdk_after_manual_reset.json": {
+      "whole_original_quality": {
+        "samples": 60,
+        "fresh_samples": 59,
+        "span_s": 5.833955526351929,
+        "static_three_seconds_and_thirty_samples": true,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_original_contiguous_static_window": {
+        "slice": [
+          1,
+          60
+        ],
+        "quality": {
+          "samples": 59,
+          "fresh_samples": 59,
+          "span_s": 5.833955526351929,
+          "static_three_seconds_and_thirty_samples": true,
+          "freshness_not_per_motor_verified": true,
+          "q_spread_mdeg": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "sdk_after_enable.json": {
+      "whole_original_quality": {
+        "samples": 60,
+        "fresh_samples": 59,
+        "span_s": 5.821094751358032,
+        "static_three_seconds_and_thirty_samples": true,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_original_contiguous_static_window": {
+        "slice": [
+          1,
+          60
+        ],
+        "quality": {
+          "samples": 59,
+          "fresh_samples": 59,
+          "span_s": 5.821094751358032,
+          "static_three_seconds_and_thirty_samples": true,
+          "freshness_not_per_motor_verified": true,
+          "q_spread_mdeg": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "sdk_at_observation.json": {
+      "whole_original_quality": {
+        "samples": 60,
+        "fresh_samples": 59,
+        "span_s": 5.818809986114502,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_original_contiguous_static_window": null
+    }
+  },
+  "shutdown_move_group_exit_minus11_in_original_log": true,
+  "driver_final_exit_minus9": true,
+  "shutdown_failures_not_hidden_by_wrapper_rc0": true,
+  "physical_disable_or_reset_sent": false,
+  "gripper_commands_sent": false
+}
