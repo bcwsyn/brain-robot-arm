@@ -1,0 +1,257 @@
+{
+  "schema": "piper_P1_grip_checkpoint_v1",
+  "recorded_local": "2026-10-15T15:04:03+08:00",
+  "pair_id": "new_pair05",
+  "placement_index": 4,
+  "attempt_id": "attempt01",
+  "role": "fit",
+  "runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_preview.Bu8bar",
+  "user_confirmation": {
+    "answer": "已经实际夹紧，方块仍贴桌",
+    "physical_contact_user_confirmed": true,
+    "new_position_preparation_confirmed": true,
+    "independently_verified_by_SDK": false
+  },
+  "actual_capture_role": "grip_B_not_observation_A",
+  "why_role_changed": "Fresh q and 36.3mm gap differed from previous observation; user explicitly confirmed already gripping. No return trajectory was requested or sent.",
+  "motion_commands_sent": false,
+  "hardware_enable_disable_reset_jaw_commands_sent": false,
+  "production_stack_started": false,
+  "production_modified": false,
+  "SDK_before": {
+    "samples": 60,
+    "fresh": 59,
+    "span_s": 5.8199334144592285,
+    "original_static_passed": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "SDK_grip": {
+    "samples": 60,
+    "fresh": 59,
+    "full_window_returncode": 2,
+    "full_window_original_static_passed": false,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "speed_spikes": [
+      {
+        "index": 41,
+        "speed_millirad_s": [
+          0,
+          -18,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "index": 42,
+        "speed_millirad_s": [
+          0,
+          21,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "accepted_original_contiguous_slice_start_inclusive": 1,
+    "accepted_original_contiguous_slice_end_exclusive": 41,
+    "accepted_original_slice": {
+      "samples": 40,
+      "fresh_samples": 40,
+      "span_s": 3.914638042449951,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "full_failed_window_retained": true,
+    "last_fresh_sample": {
+      "epoch": 1792047593.1681097,
+      "sdk_receipt_stamps": {
+        "joint": "1792047593.167229",
+        "high": "1792047593.167951",
+        "low": "1792047593.1676888",
+        "gripper": "1792047593.1673179"
+      },
+      "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+      "high_hz": 100,
+      "joint_hz": 200,
+      "q_mdeg": [
+        -2769,
+        68874,
+        -64707,
+        -2786,
+        61860,
+        15357
+      ],
+      "q_driver_rad": [
+        -0.048302436000000004,
+        1.201438056,
+        -1.128748908,
+        -0.048598984000000005,
+        1.07908584,
+        0.267887508
+      ],
+      "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+      "speed_millirad_s": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enabled": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "gripper_raw_micrometers": 36300,
+      "gripper_mm": 36.3,
+      "gripper_effort_raw": -808,
+      "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+      "fresh_after_passive_connection": true,
+      "physical_contact_verified_by_sdk": false
+    }
+  },
+  "images": {
+    "raw_RGB_D_pairs": 5,
+    "returncode": 0,
+    "elapsed_s": 6.0496609219990205,
+    "each_frame_actual_q_and_FK": true,
+    "each_frame_same_stamp_depth_Info": true,
+    "source_frames": "original camera optical frames; native uint16 depth zeros preserved",
+    "first_and_last_RGB_viewed": true,
+    "visual_observation": "Cube visible between fingers; physical contact relies on operator confirmation, not photo alone",
+    "observation_A_quality_or_800_rule_applied": false
+  },
+  "common_reference": {
+    "nominal_cube_edge_mm": 29,
+    "caliper_confirmed": false,
+    "gripper_feedback_mm": 36.3,
+    "gap_minus_nominal_edge_mm": 7.3,
+    "camera_cube_center_m": null,
+    "gripper_base_cube_center_m": null,
+    "tool_center_offset_c_G": null,
+    "warning": "Do not infer cube center/contact force from raw gap, fingers/TCP, tool-origin FK or raw effort."
+  },
+  "actual_T_base_gripper_base": [
+    [
+      -0.8305248408803012,
+      0.278716377769992,
+      0.48222989273117955,
+      0.22805529769099414
+    ],
+    [
+      0.28269870983871226,
+      0.9569219287319986,
+      -0.06619563253991158,
+      -0.014928555152441556
+    ],
+    [
+      -0.4799061659702626,
+      0.08134865133858413,
+      -0.8735401930015098,
+      0.34638390774564154
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "pose_diversity": [
+    {
+      "relative_to": "first",
+      "tool_origin_distance_m": 0.24251459683341353,
+      "tool_rotation_deg": 38.96342840140324,
+      "tool_z_axis_angle_deg": 15.420878541970795,
+      "not_cube_center_distance_or_identifiability_proof": true
+    },
+    {
+      "relative_to": "second",
+      "tool_origin_distance_m": 0.22111395037061782,
+      "tool_rotation_deg": 19.54238508383491,
+      "tool_z_axis_angle_deg": 17.57927424443093,
+      "not_cube_center_distance_or_identifiability_proof": true
+    },
+    {
+      "relative_to": "third",
+      "tool_origin_distance_m": 0.31568703168257395,
+      "tool_rotation_deg": 24.844293236842567,
+      "tool_z_axis_angle_deg": 16.76431581738351,
+      "not_cube_center_distance_or_identifiability_proof": true
+    }
+  ],
+  "CAN": {
+    "ifindex": 12,
+    "state": "UP / ERROR-ACTIVE",
+    "rx_before": 3929008,
+    "rx_after": 4811326,
+    "tx_before": 1,
+    "tx_after": 1,
+    "new_tx_packets": 0,
+    "reloaded": false
+  },
+  "source_startup": {
+    "initial_camera_preview_saved_frames": 0,
+    "received": {
+      "feedback": 862,
+      "depth": 348,
+      "depth_info": 416,
+      "rgb": 0
+    },
+    "initial_color_log": "Publishing image #1 only",
+    "initial_depth_timeout_rc": 124,
+    "initial_color_timeout_rc": 137,
+    "initial_bridge_rc": 0,
+    "initial_factory_rc": 0,
+    "no_robot_action": true,
+    "reopened_original_sources_once": true,
+    "controlled_reopen_color_published_images": 46,
+    "controlled_reopen_required_second_color_restart": false,
+    "controlled_reopen_start_epoch": 1792047587.083804,
+    "controlled_reopen_end_epoch": 1792047607.373856,
+    "all_controlled_sources_exit_rc": 0,
+    "SDK_grip_rc_exception": 2,
+    "bridge_reopen_published": 546,
+    "bridge_reopen_elapsed_s": 12.549262874003034,
+    "factory_serial": "CC1365304DG",
+    "factory_read_current": true
+  },
+  "source_scope": "Original bounded Astra depth and cam2image same 320x240/5Hz parameters, receive-only SDK bridge. No generic DDS, camera setting, firmware or production changes.",
+  "all_sources_exited": true,
+  "B_checkpoint_accepted": true,
+  "A_frames": 0,
+  "complete_pair": false,
+  "fit_eligible": false,
+  "qualified_complete_pairs": 1,
+  "next": "After Git checkpoint, ask current-group permission for in-place open and original return to fixed observation with stop_after_observe before SEARCH. Do not carry old-group motion authority or pair old B with new placement.",
+  "GitHub_pushed": false
+}

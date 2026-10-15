@@ -6,18 +6,23 @@
   "user_direction": "Proceed with six groups first; retain normal uncertainty for subsequent data analysis",
   "live_capture_started": true,
   "completed_formal_pairs": 1,
-  "placements_with_raw_acquisition": 3,
-  "placement_acquisition_progress": "3/6 positions sampled; not 3 quality-qualified pairs",
-  "sampled_placement_ids": ["new_pair02", "new_pair03", "new_pair04"],
-  "next_pair_id": "new_pair05",
-  "next_placement_preparation": "User will place cube closer to camera and away from mat edge; awaiting placed confirmation before receive-only preview. No new physical actions authorized.",
+  "placements_with_raw_acquisition": 4,
+  "placement_acquisition_progress": "4/6 positions have raw acquisition; new_pair05 only B. First three have some A+B raw data; only 1 quality-qualified complete pair.",
+  "sampled_placement_ids": [
+    "new_pair02",
+    "new_pair03",
+    "new_pair04",
+    "new_pair05"
+  ],
+  "next_pair_id": null,
+  "next_placement_preparation": "Current fourth placement actually gripped; user confirmed contact and cube still on table. B saved; no A yet.",
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
-  "current_pair_id": "new_pair04",
-  "current_step": "three_positions_sampled_await_new_pair05_placement_then_readonly_quality_preview",
+  "current_pair_id": "new_pair05",
+  "current_step": "new_pair05_grip_B_saved_A_pending_current_group_release_observe_authority",
   "current_attempt_id": "attempt01",
-  "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_attempt01.mYeDDO/",
-  "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "Reconnect complete; fixed activation and read-only A done. No repeat enable, arm, jaw, observe trajectory, SEARCH or same-condition recollection. Propose specific bounded acquisition correction before any scene/pose/parameter change.",
+  "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_preview.Bu8bar",
+  "current_retake_observation_return_authorized": false,
+  "current_authority_scope": "Current group user confirmed already physically gripping and cube on table. Receive-only B completed; no current-group open/observe motion permission yet. Do not inherit old group authority or start automatic grasp.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -312,13 +317,30 @@
     {
       "pair_id": "new_pair05",
       "role": "fit",
-      "state": "preparation_only_await_user_placement_for_readonly_preview",
+      "state": "grip_B_checkpoint_saved_observation_A_pending_authority",
       "preparation_record": "new_pair05/README.md",
-      "grip_manifest": null,
+      "grip_manifest": "new_pair05/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": null,
-      "physical_grip_verified": null,
+      "physical_grip_verified": true,
       "released_without_object_motion_verified": null,
-      "observation_return_authorized": null
+      "observation_return_authorized": null,
+      "attempt_id": "attempt01",
+      "grip_assessment": "new_pair05/attempt01/grip_capture/assessment.json",
+      "physical_grip_verification_scope": "operator confirmation; SDK does not independently prove contact",
+      "observation_return_completed": false,
+      "in_place_open_authorized": null,
+      "in_place_open_completed": false,
+      "grip_RGBD_frames": 5,
+      "grip_static_accepted_original_contiguous_slice": [
+        1,
+        41
+      ],
+      "grip_fresh_static_samples": 40,
+      "gripper_mm": 36.3,
+      "all_task_sources_exited": true,
+      "collection_complete": false,
+      "fit_eligible": false,
+      "formal_A_frames": 0
     },
     {
       "pair_id": "new_pair06",
@@ -343,7 +365,7 @@
   ],
   "not_a_fitting_input": true,
   "no_joint_center_or_contact_values_fabricated": true,
-  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_reenable_observe.uiefZv/",
+  "current_return_runtime_root": null,
   "current_alignment_runtime_root": null,
   "observation_A_policy": "B -> in-place open under current-placement authority -> existing observation trajectory -> stop_after_observe=true, stop before SEARCH -> static A; no SEARCH or ALIGN for acquisition. Actual per-frame q/FK and all original quality checks retained.",
   "deferred_group_runtime_history": {
@@ -361,8 +383,8 @@
     true,
     true
   ],
-  "current_last_fresh_gripper_mm": 64.5,
-  "current_last_fresh_SDK_epoch": 1792046041.9900477,
+  "current_last_fresh_gripper_mm": 36.3,
+  "current_last_fresh_SDK_epoch": 1792047593.1681097,
   "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_feedback_fresh": false,
   "current_live_enabled_after_RX_loss": [
@@ -394,8 +416,8 @@
       0.0645
     ]
   },
-  "current_feedback_fresh_scope": "All sources exited; last fresh SDK epoch recorded, not live monitoring. Receive flow recovered during this session.",
-  "current_readonly_A_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_A_after_reconnect.ve4Jo4",
+  "current_feedback_fresh_scope": "All owned camera/receive-only sources exited; new_pair05 last fresh grip SDK epoch recorded, not live monitoring.",
+  "current_readonly_A_runtime_root": null,
   "receive_recovery_A_record": "new_pair04/attempt01/observe_after_reconnect/execution.json",
   "latest_CAN_readonly_A": {
     "ifindex": 12,
@@ -404,5 +426,16 @@
     "state": "ERROR-ACTIVE",
     "errors": 0,
     "source": "observe_after_reconnect/runtime_closed.tar.gz:can_after.json"
+  },
+  "placements_with_raw_B_and_some_A": 3,
+  "latest_B_CAN": {
+    "pair_id": "new_pair05",
+    "ifindex": 12,
+    "rx_before": 3929008,
+    "rx_after": 4811326,
+    "tx_before": 1,
+    "tx_after": 1,
+    "new_TX": 0,
+    "state": "ERROR-ACTIVE"
   }
 }
