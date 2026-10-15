@@ -1,0 +1,183 @@
+{
+  "schema": "piper_p1_arm_handover_incident_v1",
+  "pair_id": "new_pair04",
+  "attempt_id": "attempt01",
+  "B_checkpoint": "84d8552",
+  "authorization": {
+    "user_reply": "允许",
+    "scope": "Current placement in-place jaw opening -> original observation -> stop before SEARCH -> A",
+    "does_not_authorize_unrequested_arm_hold_jump": true
+  },
+  "precheck": {
+    "actual_q_mdeg": [
+      -13303,
+      128046,
+      -96859,
+      -9004,
+      49061,
+      29678
+    ],
+    "gripper_mm": 36.2,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "fresh_SDK_samples": 58,
+    "static_s": 5.719947338104248,
+    "original_static_returncode": 0,
+    "matches_B": true
+  },
+  "runtime": {
+    "original_launch": "cube_visual_search.launch.py",
+    "grasp_executor_omitted_this_run": true,
+    "stop_after_observe_set_and_readback": true,
+    "enable_srv_true_response": true,
+    "adapter_enable_motion_response": true,
+    "adapter_arm_response": true,
+    "arm_accepted_epoch": "1792044192.518788868",
+    "controller_start_called": false,
+    "jaw_command_called": false,
+    "observe_trajectory_requested": false,
+    "production_changed": false
+  },
+  "confirmed_bug": {
+    "original_B_J3_driver_rad": -1.6896083960000001,
+    "task_J3_lower_rad": -1.4,
+    "first_joint_command_epoch": 1792044192.536338,
+    "first_joint_command_J3": -1.4,
+    "initial_command_jump_rad": 0.2896083960000002,
+    "delay_after_arm_s": 0.017549132,
+    "bug_owner": "piper_jog_adapter.py _tick -> _limit_visual_target",
+    "zero_velocity_hold_clamps_measured_pose_to_limit_without_velocity_bound": true,
+    "isolated_original_AST_replay": "isolated_arm_hold_replay.json",
+    "not_a_MoveIt_observation_plan": true,
+    "not_caused_by_depth_gate": true
+  },
+  "armed_SDK": {
+    "q_mdeg": [
+      -13303,
+      125162,
+      -80328,
+      -9633,
+      41346,
+      29678
+    ],
+    "delta_from_B_deg": [
+      0,
+      -2.884,
+      16.531,
+      -0.629,
+      -7.715,
+      0
+    ],
+    "gripper_mm": 36.1,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "full_window_returncode": 2,
+    "original_flag_preserved": true
+  },
+  "stop": {
+    "original_stop_success": true,
+    "controller_STOPPED_epoch": "1792044232.728791439",
+    "original_disarm_success": true,
+    "disarm_epoch": "1792044233.811421519",
+    "stop_generated_one_static_hold_trajectory": true,
+    "no_reset_disable_gripper_or_start_commands_by_agent": true
+  },
+  "later_actual_feedback": {
+    "SDK_last_epoch": 1792044279.0394819,
+    "fresh_samples": 58,
+    "span_s": 5.721864461898804,
+    "static_returncode": 0,
+    "q_mdeg": [
+      -10826,
+      -44,
+      -77,
+      -1198,
+      18468,
+      -1837
+    ],
+    "enabled": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "gripper_mm": 64.5,
+    "gripper_enabled": false,
+    "fresh_real_feedback_not_SDK_default_zero": true,
+    "disable_cause": "Unresolved; agent terminal actions did not invoke DisableArm, false enable or reset. ROS bag alone is not a complete low-level CAN TX trace and does not exclude external operations or hardware behavior.",
+    "cube_original_location_preserved": null,
+    "scene_image_contains_a_hand": true,
+    "hand_does_not_establish_cause": true
+  },
+  "transient_link": {
+    "lost_epoch": "1792044233.970873324",
+    "recovered_epoch": "1792044237.289429281",
+    "gap_s": 3.49,
+    "automatic_driver_recovery_no_CAN_reload": true,
+    "final_ifindex": 11,
+    "final_state": "ERROR-ACTIVE",
+    "final_RX": 7544785,
+    "final_TX": 25130,
+    "baseline_TX": 18922,
+    "final_bus_errors": 0,
+    "final_bus_off": 0,
+    "final_error_warn": 5,
+    "final_error_pass": 6971,
+    "baseline_error_warn_and_pass": 0,
+    "do_not_claim_no_link_anomaly": true,
+    "not_a_cause_for_first_prior_J3_command_clip": true
+  },
+  "images": {
+    "before_open_frames": 3,
+    "first_post_arm_static_attempt_frames": 0,
+    "first_post_arm_rejected": "Feedback not settled for3s; original12s report retained",
+    "stopped_hold_frames": 3,
+    "raw_RBGD_originals": 6,
+    "not_observation_A": true,
+    "physical_cube_same_point_confirmed": false,
+    "original_before_and_after_visually_viewed": true
+  },
+  "evidence": {
+    "portable_assets": 23,
+    "portable_bytes": 915377,
+    "portable_manifest_sha256": "621e976266030b0f59e878d9d9f9879700ddb3c895d2b5303aea2949f6625dfa",
+    "bag_messages": 23214,
+    "bag_commands": 2065,
+    "explicit_gripper_command_frames": 0,
+    "all_recorded_arm_trajectories_static_hold": true,
+    "full_runtime_files": 60
+  },
+  "ending": {
+    "all_task_sources_exited": true,
+    "driver_returncode": 124,
+    "visual_wrapper_returncode": 0,
+    "visual_wrapper_zero_does_not_mean_all_children_clean": true,
+    "SIGINT_shutdown_child_exit_codes": {"piper_jog_adapter": 1, "depth_cube_probe": 1, "move_group": -11},
+    "bag_returncode": 0,
+    "camera_returncodes": [
+      0,
+      0
+    ],
+    "hardware_enable_after_exit_not_requeried": true
+  },
+  "original_B_not_overwritten": true,
+  "formal_A_frames": 0,
+  "complete_pair": false,
+  "fit_eligible": false,
+  "qualified_complete_pairs": 1,
+  "next": "No automatic enable/arm/motion/CAN recovery. Operator confirm support and whether cube moved or any physical/terminal disable occurred. Propose narrowly scoped arm handover fix; obtain consent before frozen production changes. Reject/describe out-of-range starting pose instead of silently clamping it; do not expand limits as a workaround."
+}

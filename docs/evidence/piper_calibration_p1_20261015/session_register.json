@@ -8,11 +8,11 @@
   "completed_formal_pairs": 1,
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair04",
-  "current_step": "new_pair04_attempt01_readonly_grip_B_saved_await_current_placement_open_and_observe_return_authorization",
+  "current_step": "new_pair04_attempt01_arm_handover_clip_before_open_scene_verification_required",
   "current_attempt_id": "attempt01",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_attempt01.mYeDDO/",
-  "current_retake_observation_return_authorized": false,
-  "current_authority_scope": "User confirmed actual grip/stillness for third placement. B acquired receive-only. No current-placement in-place opening/observe-return authorization yet; preserve cube location and B.",
+  "current_retake_observation_return_authorized": true,
+  "current_authority_scope": "User authorized current-group in-place open/original observe return. Before either, arm emitted unexpected J3 clip; original stop/disarm completed. Later fresh six-enabled=false. No automatic re-enable/rearm; scene check and scoped fix approval required.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -241,17 +241,17 @@
     {
       "pair_id": "new_pair04",
       "role": "fit",
-      "state": "attempt01_receive_only_grip_B_saved_await_open_and_original_observe_return_authorization",
+      "state": "attempt01_arm_handover_clip_before_open_scene_verification_required",
       "grip_manifest": "new_pair04/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": null,
       "physical_grip_verified": true,
       "released_without_object_motion_verified": null,
-      "observation_return_authorized": false,
+      "observation_return_authorized": true,
       "attempt_id": "attempt01",
       "preparation_record": "new_pair04/README.md",
       "collection_complete": false,
       "calibration_accepted": false,
-      "in_place_open_authorized": false,
+      "in_place_open_authorized": true,
       "grip_assessment": "new_pair04/attempt01/grip_capture/assessment.json",
       "physical_grip_verification_scope": "operator confirmation only; SDK does not prove contact",
       "grip_static_accepted_original_contiguous_slice": [
@@ -262,7 +262,20 @@
       "grip_RGBD_frames": 5,
       "gripper_mm": 36.2,
       "all_task_sources_exited": true,
-      "fit_eligible": false
+      "fit_eligible": false,
+      "in_place_open_completed": false,
+      "observation_return_completed": false,
+      "controller_start_requested": false,
+      "release_record": "new_pair04/attempt01/release_observe/execution.json",
+      "current_cube_position_unchanged_verified": null,
+      "last_fresh_enabled": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
     },
     {
       "pair_id": "new_pair05",
@@ -297,7 +310,7 @@
   ],
   "not_a_fitting_input": true,
   "no_joint_center_or_contact_values_fabricated": true,
-  "current_return_runtime_root": null,
+  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_alignment_runtime_root": null,
   "observation_A_policy": "B -> in-place open under current-placement authority -> existing observation trajectory -> stop_after_observe=true, stop before SEARCH -> static A; no SEARCH or ALIGN for acquisition. Actual per-frame q/FK and all original quality checks retained.",
   "deferred_group_runtime_history": {
@@ -306,5 +319,15 @@
     "grip": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_attempt02.v22Alq/",
     "observe": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_observe_continue.QUVyXE/",
     "align": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_align_A.EeZaUn"
-  }
+  },
+  "current_last_fresh_enabled": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "current_last_fresh_gripper_mm": 64.5,
+  "current_last_fresh_SDK_epoch": 1792044279.0394819
 }

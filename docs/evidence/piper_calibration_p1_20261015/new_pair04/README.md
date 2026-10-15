@@ -1,5 +1,7 @@
 # 第三位置 new_pair04：夹持B已保存，观测A未采
 
+**最新2026-10-15：第三组已获张爪/原回观测许可，但在张爪前发现原arm隐式J3裁剪，已停止；A0帧，完整仍1/6。** 预SDK匹配B84d8552/58fresh/静止rc0；原stop_after_observe=true回读。1792044192.519 arm后首条命令将实际J3−1.689608396直接改为下界−1.4rad，跳.289608396rad，bag和原_limit_visual_target AST离线复现一致；此时controller仍IDLE，没有张爪/start/观测规划。代理未在arm前识别越界起点，这是控制接管问题，不归咎操作者。原stop/disarm成功；之后新SDK58fresh/静止rc0显示六false、64.5mm/q明显变化，失能根因尚未证实，画面有人手也不据此推断原因或原位。driver3.49s缺流自行恢复，末CAN ERROR-ACTIVE但warning5/passive6971不忽略，无重载。全部源退出，无本代理Disable/Reset/enable false/开闭指令，不自动重新使能或arm。23资产/60原文件压缩/23214消息bag保留，B原件不覆盖，物体同点关系待核对；五生产SHA未变。下一核对支撑/物体原位，并提仅修arm越界接管不发隐式跳变的方案，需批准后改生产；不扩大限位、不重复实机错误。见P1/new_pair04/attempt01/release_observe/README.md；未推送GitHub。
+
 **最新2026-10-15 13:59 +08:00：第三位置new_pair04 attempt01夹持B已纯只读采成，A未采，完整仍1/6。** 用户“已完成第三组抓取”对应本组手摆真夹紧/静止确认，不称自主抓取成功。SDK60/59fresh/q波动0，索引53 J1速度−2mrad/s导致原全窗rc2保持；原连续[1:53]52fresh/5.118834s按原静止规则通过。q_mdeg[-13303,128046,-96859,-9004,49061,29678]、六true/36.2mm；5原RGB-D/同帧Info/实际q/FK/本轮工厂新读/19资产SHA齐全，图已看，c_G及相机几何中心null。只读桥60s/2829发布，本轮源已退出，CAN TX18922始终不变/无恢复或控制命令，五生产SHA不变。相对第一组工具原点211.82mm/z轴12.60°只作真实多样性、不宣称可辨识。第二组仍暂缓，不能混用旧位置B。下一本组原位张爪/原回观测待明确许可，SEARCH前停采A，不进入搜索/ALIGN或抓取。见P1/new_pair04/attempt01/grip_capture/README.md，未推送GitHub。
 
 角色fit，attempt01；这是第三次位置编号，不是第三个已完成标定点对。当前合格完整仍1/6。
