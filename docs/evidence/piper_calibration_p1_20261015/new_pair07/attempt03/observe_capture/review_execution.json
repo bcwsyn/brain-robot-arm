@@ -1,0 +1,68 @@
+[
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+      "--output",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/sdk_post_capture.json",
+      "--duration-s",
+      "6"
+    ],
+    "returncode": 2,
+    "start_epoch": 1792071506.276434,
+    "end_epoch": 1792071512.5199888
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_calibration_capture.py",
+      "--capture",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/session/capture",
+      "--config",
+      "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml",
+      "--output",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/depth_review.json"
+    ],
+    "returncode": 0,
+    "start_epoch": 1792071512.5209615,
+    "end_epoch": 1792071515.6505017
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/export_calibration_bundle.py",
+      "--output",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/portable_all60",
+      "--capture",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/session/capture",
+      "--sample-id",
+      "new_pair07_attempt03_observe",
+      "--sdk",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/sdk_post_capture.json",
+      "--camera-metadata",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/session/factory.json",
+      "--review",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/depth_review.json",
+      "--detector-config",
+      "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml",
+      "--cube-edge-mm",
+      "29"
+    ],
+    "returncode": 0,
+    "start_epoch": 1792071515.6510057,
+    "end_epoch": 1792071516.8196566
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/calibration_p0_quality.py",
+      "--bundle",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/portable_all60",
+      "--output",
+      "/home/johnwick/brain_robot_logs/new_pair07_attempt03_A.9r_fp1bb/quality"
+    ],
+    "returncode": 0,
+    "start_epoch": 1792071516.8203485,
+    "end_epoch": 1792071547.9583008
+  }
+]

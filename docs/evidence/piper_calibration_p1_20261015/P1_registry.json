@@ -1,11 +1,14 @@
 {
   "offline_only": true,
+  "registry_update_scope": "Offline summary; referenced A/B captures accessed ROS and receive-only CAN as recorded in each execution report",
   "ROS_initialized": false,
   "CAN_accessed": false,
   "fit_performed": false,
   "raw_placements_with_A_and_B": 6,
   "primary_A_raw_frames_total": 388,
-  "placements_meeting_original_top_image_quality": 1,
+  "placements_meeting_original_top_image_quality": 2,
+  "quality_count_scope": "Unique pair IDs across original primary A and supplemental A; new_pair07 attempt03 has A only, not an approved point pair",
+  "primary_A_placements_meeting_original_top_image_quality": 1,
   "formal_calibration_pair_approvals": 0,
   "held_out_id_fixed": "new_pair07",
   "rows": [
@@ -86,6 +89,22 @@
   "supplemental_A_candidates": [
     {
       "pair_id": "new_pair07",
+      "attempt": 3,
+      "role": "held_out",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair07/attempt03/observe_capture/quality_all60/report.json",
+      "source_sha256": "11440888014f3ecbd47551f390822f0377f17e3152819cee1dc82e5f3a0fb3db",
+      "raw_A_frames": 60,
+      "complete_square_top_candidates": 60,
+      "original_good_top_frames": 60,
+      "selected_good_frames": 20,
+      "twenty_good_frames_met": true,
+      "new_B_captured": false,
+      "same_point_pair_approved": false,
+      "old_B_reuse_for_new_placement_allowed": false,
+      "not_in_primary_A_total": true
+    },
+    {
+      "pair_id": "new_pair07",
       "attempt": 2,
       "role": "held_out",
       "source": "docs/evidence/piper_calibration_p1_20261015/new_pair07/attempt02/observe_capture/quality_all60/report.json",
@@ -100,5 +119,5 @@
       "not_in_primary_A_total": true
     }
   ],
-  "conclusion": "Six placements have raw records, not six qualified calibration pairs. Only one meets original top-image threshold, and that report still requires witness/reference review. Do not fit missing centers, deploy TF or silently lower800/20."
+  "conclusion": "Six original placements have raw records, not six qualified calibration pairs. One primary-A pair ID and supplemental new_pair07 attempt03 meet original top-image quality, totaling two IDs with qualified A. The latter has no new B yet. Formal point-pair approvals remain zero; do not pair old B across positions, fit missing centers, deploy TF or silently lower800/20."
 }
