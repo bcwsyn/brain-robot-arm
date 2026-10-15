@@ -1,0 +1,6155 @@
+{
+  "schema": "piper_pair05_offline_native_depth_audit_v1",
+  "offline_only": true,
+  "device_access": false,
+  "raw_modified": false,
+  "production_or_quality_modified": false,
+  "archive_sha256": "a7665f67e28277b29a77dfd0265dc6977c5264742e601f82223942f55e27182f",
+  "archived_original_files_verified": 196,
+  "reference": {
+    "group": "preview_high",
+    "snapshot": 1,
+    "native_bbox_xyxy": [
+      294,
+      243,
+      360,
+      307
+    ],
+    "native_pixels": 3354,
+    "control_ring_pixels": 8480,
+    "definition": "Fixed native support from first frame under unchanged production D->C selection; all later zero tests use RAW native depth directly, no projection, threshold or fill."
+  },
+  "groups": {
+    "preview_high": {
+      "frames": 3,
+      "source_root": "new_pair05_serialized_return.eaPC4t",
+      "rows_sha256": "6519dae5fa9f165d15229f84d6e6f2f840df9a0a7fb8f88abc22a452ac991d36",
+      "factory_sha256": "87d201f234c9ba415125346b49eac39ebb01230543529b5e438cafd2507f725d",
+      "factory_numbers": {
+        "serial": "CC1365304DG",
+        "params": {
+          "l_intr_p": [
+            476.5286560058594,
+            476.5286560058594,
+            325.8017578125,
+            199.88507080078125
+          ],
+          "r_intr_p": [
+            488.80865478515625,
+            488.80865478515625,
+            315.5068054199219,
+            214.38182067871094
+          ],
+          "r2l_r": [
+            0.9998412728309631,
+            0.011080970056355,
+            0.01395333744585514,
+            -0.011040600016713142,
+            0.9999346137046814,
+            -0.0029670665971934795,
+            -0.013985303230583668,
+            0.0028125427197664976,
+            0.9998982548713684
+          ],
+          "r2l_t": [
+            -29.824851989746094,
+            0.2287428230047226,
+            0.1407688856124878
+          ],
+          "l_k": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r_k": [
+            0.0744049921631813,
+            -0.09923768788576126,
+            0.00045431629405356944,
+            -5.459555904963054e-05,
+            0.0
+          ],
+          "success": true,
+          "message": ""
+        },
+        "color_info": {
+          "header": {
+            "stamp": {
+              "sec": 0,
+              "nanosec": 0
+            },
+            "frame_id": ""
+          },
+          "height": 480,
+          "width": 640,
+          "distortion_model": "plumb_bob",
+          "d": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "k": [
+            488.80865478515625,
+            0.0,
+            315.5068054199219,
+            0.0,
+            488.80865478515625,
+            214.38182067871094,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "r": [
+            0.9998412728309631,
+            0.011080970056355,
+            0.01395333744585514,
+            -0.011040600016713142,
+            0.9999346137046814,
+            -0.0029670665971934795,
+            -0.013985303230583668,
+            0.0028125427197664976,
+            0.9998982548713684
+          ],
+          "p": [
+            488.80865478515625,
+            0.0,
+            315.5068054199219,
+            -29.824851989746094,
+            0.0,
+            488.80865478515625,
+            214.38182067871094,
+            0.2287428230047226,
+            0.0,
+            0.0,
+            1.0,
+            0.1407688856124878
+          ],
+          "binning_x": 0,
+          "binning_y": 0,
+          "roi": {
+            "x_offset": 0,
+            "y_offset": 0,
+            "height": 0,
+            "width": 0,
+            "do_rectify": false
+          }
+        },
+        "internal_camera_link_from_depth_optical_transform": {
+          "translation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": -0.5,
+            "y": 0.4999999999999999,
+            "z": -0.5,
+            "w": 0.5000000000000001
+          }
+        }
+      },
+      "depth_started_epoch": 1792049662.951149,
+      "depth_modes_from_log": [
+        "640x400@30Hz",
+        "640x400@30Hz"
+      ],
+      "exposure_limit": "No per-frame native depth exposure/emitter state recorded; RGB controls do not establish those values.",
+      "selected_points": {
+        "count": 3,
+        "min": 3247.0,
+        "median": 3297.0,
+        "max": 3354.0
+      },
+      "fixed_native_footprint_zero_fraction": {
+        "count": 3,
+        "min": 0.0,
+        "median": 0.025044722719141325,
+        "max": 0.037268932617769826
+      },
+      "color_mask_iou_to_reference": {
+        "count": 3,
+        "min": 0.9755877034358047,
+        "median": 0.9791855203619909,
+        "max": 1.0
+      },
+      "color_mask_bbox_unique": [
+        [
+          111,
+          129,
+          146,
+          164
+        ],
+        [
+          112,
+          129,
+          146,
+          164
+        ]
+      ],
+      "control_ring_native_nonzero_fraction": {
+        "count": 3,
+        "min": 0.7028301886792453,
+        "median": 0.7221698113207546,
+        "max": 0.7294811320754717
+      },
+      "control_ring_common_abs_difference_median_mm": {
+        "count": 3,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "same_footprint_nonzero_median_mm": {
+        "count": 3,
+        "min": 217.0,
+        "median": 217.0,
+        "max": 217.0
+      }
+    },
+    "preview_low": {
+      "frames": 3,
+      "source_root": "new_pair05_A_formal.gupm4v",
+      "rows_sha256": "159f00c01e7be5dec829b12d5fc54b45ee2797b44b6292010cbfc2bfff8b2d81",
+      "factory_sha256": "f5ea7d2baff595bfcefda7c6cfa0f5a58a6ed466463812ff92ae724eecc34ec8",
+      "factory_numbers": {
+        "serial": "CC1365304DG",
+        "params": {
+          "l_intr_p": [
+            476.5286560058594,
+            476.5286560058594,
+            325.8017578125,
+            199.88507080078125
+          ],
+          "r_intr_p": [
+            488.80865478515625,
+            488.80865478515625,
+            315.5068054199219,
+            214.38182067871094
+          ],
+          "r2l_r": [
+            0.9998412728309631,
+            0.011080970056355,
+            0.01395333744585514,
+            -0.011040600016713142,
+            0.9999346137046814,
+            -0.0029670665971934795,
+            -0.013985303230583668,
+            0.0028125427197664976,
+            0.9998982548713684
+          ],
+          "r2l_t": [
+            -29.824851989746094,
+            0.2287428230047226,
+            0.1407688856124878
+          ],
+          "l_k": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r_k": [
+            0.0744049921631813,
+            -0.09923768788576126,
+            0.00045431629405356944,
+            -5.459555904963054e-05,
+            0.0
+          ],
+          "success": true,
+          "message": ""
+        },
+        "color_info": {
+          "header": {
+            "stamp": {
+              "sec": 0,
+              "nanosec": 0
+            },
+            "frame_id": ""
+          },
+          "height": 480,
+          "width": 640,
+          "distortion_model": "plumb_bob",
+          "d": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "k": [
+            488.80865478515625,
+            0.0,
+            315.5068054199219,
+            0.0,
+            488.80865478515625,
+            214.38182067871094,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "r": [
+            0.9998412728309631,
+            0.011080970056355,
+            0.01395333744585514,
+            -0.011040600016713142,
+            0.9999346137046814,
+            -0.0029670665971934795,
+            -0.013985303230583668,
+            0.0028125427197664976,
+            0.9998982548713684
+          ],
+          "p": [
+            488.80865478515625,
+            0.0,
+            315.5068054199219,
+            -29.824851989746094,
+            0.0,
+            488.80865478515625,
+            214.38182067871094,
+            0.2287428230047226,
+            0.0,
+            0.0,
+            1.0,
+            0.1407688856124878
+          ],
+          "binning_x": 0,
+          "binning_y": 0,
+          "roi": {
+            "x_offset": 0,
+            "y_offset": 0,
+            "height": 0,
+            "width": 0,
+            "do_rectify": false
+          }
+        },
+        "internal_camera_link_from_depth_optical_transform": {
+          "translation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": -0.5,
+            "y": 0.4999999999999999,
+            "z": -0.5,
+            "w": 0.5000000000000001
+          }
+        }
+      },
+      "depth_started_epoch": 1792049790.3558009,
+      "depth_modes_from_log": [
+        "640x400@30Hz",
+        "640x400@30Hz"
+      ],
+      "exposure_limit": "No per-frame native depth exposure/emitter state recorded; RGB controls do not establish those values.",
+      "selected_points": {
+        "count": 3,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "fixed_native_footprint_zero_fraction": {
+        "count": 3,
+        "min": 1.0,
+        "median": 1.0,
+        "max": 1.0
+      },
+      "color_mask_iou_to_reference": {
+        "count": 3,
+        "min": 0.9675383228133454,
+        "median": 0.9693140794223827,
+        "max": 0.9773139745916516
+      },
+      "color_mask_bbox_unique": [
+        [
+          111,
+          129,
+          146,
+          164
+        ]
+      ],
+      "control_ring_native_nonzero_fraction": {
+        "count": 3,
+        "min": 0.7205188679245282,
+        "median": 0.7268867924528302,
+        "max": 0.728066037735849
+      },
+      "control_ring_common_abs_difference_median_mm": {
+        "count": 3,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "same_footprint_nonzero_median_mm": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "max": null
+      }
+    },
+    "formal_60": {
+      "frames": 60,
+      "source_root": "new_pair05_A_batch60.3MFdVm",
+      "rows_sha256": "177d5f031a584629715a123f18f35caaec73738b27b7928f835917c19a9778bc",
+      "factory_sha256": "dd285af41b72ca95b5ca1368ae6cd46129c1e6bedb8144303591ea7941df96d5",
+      "factory_numbers": {
+        "serial": "CC1365304DG",
+        "params": {
+          "l_intr_p": [
+            476.5286560058594,
+            476.5286560058594,
+            325.8017578125,
+            199.88507080078125
+          ],
+          "r_intr_p": [
+            488.80865478515625,
+            488.80865478515625,
+            315.5068054199219,
+            214.38182067871094
+          ],
+          "r2l_r": [
+            0.9998412728309631,
+            0.011080970056355,
+            0.01395333744585514,
+            -0.011040600016713142,
+            0.9999346137046814,
+            -0.0029670665971934795,
+            -0.013985303230583668,
+            0.0028125427197664976,
+            0.9998982548713684
+          ],
+          "r2l_t": [
+            -29.824851989746094,
+            0.2287428230047226,
+            0.1407688856124878
+          ],
+          "l_k": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r_k": [
+            0.0744049921631813,
+            -0.09923768788576126,
+            0.00045431629405356944,
+            -5.459555904963054e-05,
+            0.0
+          ],
+          "success": true,
+          "message": ""
+        },
+        "color_info": {
+          "header": {
+            "stamp": {
+              "sec": 0,
+              "nanosec": 0
+            },
+            "frame_id": ""
+          },
+          "height": 480,
+          "width": 640,
+          "distortion_model": "plumb_bob",
+          "d": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "k": [
+            488.80865478515625,
+            0.0,
+            315.5068054199219,
+            0.0,
+            488.80865478515625,
+            214.38182067871094,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "r": [
+            0.9998412728309631,
+            0.011080970056355,
+            0.01395333744585514,
+            -0.011040600016713142,
+            0.9999346137046814,
+            -0.0029670665971934795,
+            -0.013985303230583668,
+            0.0028125427197664976,
+            0.9998982548713684
+          ],
+          "p": [
+            488.80865478515625,
+            0.0,
+            315.5068054199219,
+            -29.824851989746094,
+            0.0,
+            488.80865478515625,
+            214.38182067871094,
+            0.2287428230047226,
+            0.0,
+            0.0,
+            1.0,
+            0.1407688856124878
+          ],
+          "binning_x": 0,
+          "binning_y": 0,
+          "roi": {
+            "x_offset": 0,
+            "y_offset": 0,
+            "height": 0,
+            "width": 0,
+            "do_rectify": false
+          }
+        },
+        "internal_camera_link_from_depth_optical_transform": {
+          "translation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": -0.5,
+            "y": 0.4999999999999999,
+            "z": -0.5,
+            "w": 0.5000000000000001
+          }
+        }
+      },
+      "depth_started_epoch": 1792050160.7241974,
+      "depth_modes_from_log": [
+        "640x400@30Hz",
+        "640x400@30Hz"
+      ],
+      "exposure_limit": "No per-frame native depth exposure/emitter state recorded; RGB controls do not establish those values.",
+      "selected_points": {
+        "count": 60,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "fixed_native_footprint_zero_fraction": {
+        "count": 60,
+        "min": 1.0,
+        "median": 1.0,
+        "max": 1.0
+      },
+      "color_mask_iou_to_reference": {
+        "count": 60,
+        "min": 0.9473214285714285,
+        "median": 0.9675382964191628,
+        "max": 0.9772933696639419
+      },
+      "color_mask_bbox_unique": [
+        [
+          110,
+          129,
+          146,
+          164
+        ],
+        [
+          111,
+          129,
+          145,
+          164
+        ],
+        [
+          111,
+          129,
+          146,
+          164
+        ],
+        [
+          111,
+          129,
+          146,
+          165
+        ]
+      ],
+      "control_ring_native_nonzero_fraction": {
+        "count": 60,
+        "min": 0.6926886792452831,
+        "median": 0.7088443396226416,
+        "max": 0.7318396226415094
+      },
+      "control_ring_common_abs_difference_median_mm": {
+        "count": 60,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0
+      },
+      "same_footprint_nonzero_median_mm": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "max": null
+      }
+    }
+  },
+  "frames": [
+    {
+      "group": "preview_high",
+      "snapshot": 1,
+      "epoch": 1792049674.8855655,
+      "time_since_depth_start_s": 11.93441653251648,
+      "stamps_ns": {
+        "rgb": "1792049674883643590",
+        "depth": "1792049674854902520",
+        "depth_info": "1792049674854902520",
+        "feedback": "1792049674863079168"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_serialized_return.eaPC4t/A_preview/evidence/0001_rgb.png",
+          "sha256": "5eec414588575b84da4280f7b063d5c82babc42455c4ac97bc424b8906f78a0e"
+        },
+        "depth": {
+          "archive_path": "new_pair05_serialized_return.eaPC4t/A_preview/evidence/0001_depth.png",
+          "sha256": "617c93da937b5ea420e7afff0a658c6b0c718313bc682ab64f3881c46f9b0897"
+        }
+      },
+      "original_selected_points": 3354,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 0,
+        "zero_fraction": 0.0,
+        "nonzero_mm": {
+          "count": 3354,
+          "min": 212.0,
+          "median": 217.0,
+          "max": 224.0
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2520,
+        "zero_fraction": 0.2971698113207547,
+        "nonzero_mm": {
+          "count": 5960,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5960,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "color_mask_pixels": 1087,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.94940202391905,
+        146.40938362465502
+      ],
+      "color_mask_iou_to_reference": 1.0,
+      "all_native_nonzero_pixels": 195436,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "preview_high",
+      "snapshot": 2,
+      "epoch": 1792049675.4865284,
+      "time_since_depth_start_s": 12.535379409790039,
+      "stamps_ns": {
+        "rgb": "1792049675483770710",
+        "depth": "1792049675460084042",
+        "depth_info": "1792049675460084042",
+        "feedback": "1792049675463249408"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_serialized_return.eaPC4t/A_preview/evidence/0002_rgb.png",
+          "sha256": "48472c2408a8acffe5ee81f94586864ad91321c9211915bd2b6c12155f89b0b3"
+        },
+        "depth": {
+          "archive_path": "new_pair05_serialized_return.eaPC4t/A_preview/evidence/0002_depth.png",
+          "sha256": "a8f34d2816c6d6200d8d4ff99a6f19ac5446215358cb4a8b0df668c3f9c286d2"
+        }
+      },
+      "original_selected_points": 3297,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 84,
+        "zero_fraction": 0.025044722719141325,
+        "nonzero_mm": {
+          "count": 3270,
+          "min": 212.0,
+          "median": 217.0,
+          "max": 224.0
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2294,
+        "zero_fraction": 0.2705188679245283,
+        "nonzero_mm": {
+          "count": 6186,
+          "min": 235.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5920,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        129.04545454545453,
+        146.59
+      ],
+      "color_mask_iou_to_reference": 0.9791855203619909,
+      "all_native_nonzero_pixels": 195668,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "preview_high",
+      "snapshot": 3,
+      "epoch": 1792049676.0862584,
+      "time_since_depth_start_s": 13.135109424591064,
+      "stamps_ns": {
+        "rgb": "1792049676083748426",
+        "depth": "1792049676059884621",
+        "depth_info": "1792049676059884621",
+        "feedback": "1792049676068316416"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_serialized_return.eaPC4t/A_preview/evidence/0003_rgb.png",
+          "sha256": "eff755b1ea28ddef8e7649744ebe54485a973b496bd179a0e876426f843a8b2d"
+        },
+        "depth": {
+          "archive_path": "new_pair05_serialized_return.eaPC4t/A_preview/evidence/0003_depth.png",
+          "sha256": "05dd55d495521cc22589a4d6c875d932190097c0f01d1c27dc9ebbc6a43911e5"
+        }
+      },
+      "original_selected_points": 3247,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 125,
+        "zero_fraction": 0.037268932617769826,
+        "nonzero_mm": {
+          "count": 3229,
+          "min": 212.0,
+          "median": 217.0,
+          "max": 224.0
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2356,
+        "zero_fraction": 0.2778301886792453,
+        "nonzero_mm": {
+          "count": 6124,
+          "min": 235.0,
+          "median": 460.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5904,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 185.0
+      },
+      "color_mask_pixels": 1098,
+      "color_mask_bbox": [
+        112,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        129.08196721311475,
+        146.6457194899818
+      ],
+      "color_mask_iou_to_reference": 0.9755877034358047,
+      "all_native_nonzero_pixels": 195616,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "preview_low",
+      "snapshot": 1,
+      "epoch": 1792049799.2330127,
+      "time_since_depth_start_s": 8.877211809158325,
+      "stamps_ns": {
+        "rgb": "1792049799138123494",
+        "depth": "1792049799230283634",
+        "depth_info": "1792049799230283634",
+        "feedback": "1792049799219536640"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_formal.gupm4v/A_preview/evidence/0001_rgb.png",
+          "sha256": "74b9dabcb6555bf101d4d974fe8685ea9c0d2a2879efd907c9ad90f8c7c34b15"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_formal.gupm4v/A_preview/evidence/0001_depth.png",
+          "sha256": "fb3fe3279cb103c10c0d022c39640e60aece7f7177bd27b19fa0606620d1633d"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2306,
+        "zero_fraction": 0.27193396226415095,
+        "nonzero_mm": {
+          "count": 6174,
+          "min": 235.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5892,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1095,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.80730593607305,
+        146.6063926940639
+      ],
+      "color_mask_iou_to_reference": 0.9693140794223827,
+      "all_native_nonzero_pixels": 191704,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "preview_low",
+      "snapshot": 2,
+      "epoch": 1792049799.739748,
+      "time_since_depth_start_s": 9.383947134017944,
+      "stamps_ns": {
+        "rgb": "1792049799738207954",
+        "depth": "1792049799730734623",
+        "depth_info": "1792049799730734623",
+        "feedback": "1792049799719743488"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_formal.gupm4v/A_preview/evidence/0002_rgb.png",
+          "sha256": "b763286b73a823c919b0c18923f282fcab402fc79321a4758743d3ea6bf76a6b"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_formal.gupm4v/A_preview/evidence/0002_depth.png",
+          "sha256": "6349e6aea75faff6dd586651de025cf57d1f2d3781a731f1fc59c93d762aa1a8"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2370,
+        "zero_fraction": 0.2794811320754717,
+        "nonzero_mm": {
+          "count": 6110,
+          "min": 235.0,
+          "median": 460.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5888,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 185.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.96703296703296,
+        146.5540293040293
+      ],
+      "color_mask_iou_to_reference": 0.9773139745916516,
+      "all_native_nonzero_pixels": 191964,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "preview_low",
+      "snapshot": 3,
+      "epoch": 1792049800.7398417,
+      "time_since_depth_start_s": 10.384040832519531,
+      "stamps_ns": {
+        "rgb": "1792049800738186097",
+        "depth": "1792049800730538939",
+        "depth_info": "1792049800730538939",
+        "feedback": "1792049800719281920"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_formal.gupm4v/A_preview/evidence/0003_rgb.png",
+          "sha256": "7b411f513a8c76eec6596fa913c1fe8d6469a0965bd7a12ff880cd278bd9bffd"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_formal.gupm4v/A_preview/evidence/0003_depth.png",
+          "sha256": "fe592453e8d805c7bb30e192708febc6ea7769d3043a1f76de67c02c7701e881"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2316,
+        "zero_fraction": 0.27311320754716983,
+        "nonzero_mm": {
+          "count": 6164,
+          "min": 235.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5908,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 185.0
+      },
+      "color_mask_pixels": 1095,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.92146118721462,
+        146.4283105022831
+      ],
+      "color_mask_iou_to_reference": 0.9675383228133454,
+      "all_native_nonzero_pixels": 191832,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 1,
+      "epoch": 1792050170.251161,
+      "time_since_depth_start_s": 9.526963710784912,
+      "stamps_ns": {
+        "rgb": "1792050170249853275",
+        "depth": "1792050170229623911",
+        "depth_info": "1792050170229623911",
+        "feedback": "1792050170233142528"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0001_rgb.png",
+          "sha256": "bf6a690cc4d174e820dbb0fe4e5d8fcf688dae5e855f8a73f1c11757c7585118"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0001_depth.png",
+          "sha256": "2d5e0fde377b10802e0d90d3973555ebe334394fc6a5663a844c1fd073aa0386"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2274,
+        "zero_fraction": 0.2681603773584906,
+        "nonzero_mm": {
+          "count": 6206,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5844,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1098,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.827868852459,
+        146.49817850637524
+      ],
+      "color_mask_iou_to_reference": 0.973803071364047,
+      "all_native_nonzero_pixels": 191936,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 2,
+      "epoch": 1792050171.0516286,
+      "time_since_depth_start_s": 10.327431201934814,
+      "stamps_ns": {
+        "rgb": "1792050171050110270",
+        "depth": "1792050170963273143",
+        "depth_info": "1792050170963273143",
+        "feedback": "1792050171043131136"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0002_rgb.png",
+          "sha256": "7842ebd1fb2a969ad4507284a0d1b65bab6f8b3a9d02da19a0b00fad6ac8235b"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0002_depth.png",
+          "sha256": "2295122ce473b1130a61ad08e345f378ea5e6523e15a3fd618c51da4553484d1"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2520,
+        "zero_fraction": 0.2971698113207547,
+        "nonzero_mm": {
+          "count": 5960,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5774,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 4.0
+      },
+      "color_mask_pixels": 1088,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7702205882353,
+        146.59283088235293
+      ],
+      "color_mask_iou_to_reference": 0.9683257918552036,
+      "all_native_nonzero_pixels": 191604,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 3,
+      "epoch": 1792050171.8515131,
+      "time_since_depth_start_s": 11.127315759658813,
+      "stamps_ns": {
+        "rgb": "1792050171849865949",
+        "depth": "1792050171830044724",
+        "depth_info": "1792050171830044724",
+        "feedback": "1792050171828248576"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0003_rgb.png",
+          "sha256": "44a43058212ab9cbbdf96e5df247b4d0d9ade8fbf3e5f00e8f543772caf171e7"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0003_depth.png",
+          "sha256": "99a97d4e031ce775232fb2300cf1b967b02021e344cfea2f23c4b0302dcc94bd"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2496,
+        "zero_fraction": 0.2943396226415094,
+        "nonzero_mm": {
+          "count": 5984,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5786,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1098,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.85610200364297,
+        146.78233151183971
+      ],
+      "color_mask_iou_to_reference": 0.9649280575539568,
+      "all_native_nonzero_pixels": 191452,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 4,
+      "epoch": 1792050172.4515703,
+      "time_since_depth_start_s": 11.727372884750366,
+      "stamps_ns": {
+        "rgb": "1792050172450018361",
+        "depth": "1792050172429617567",
+        "depth_info": "1792050172429617567",
+        "feedback": "1792050172428279040"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0004_rgb.png",
+          "sha256": "86417ac5a271d608aedf31df33fbdc0f62aa3355f6cd12fab1ecb3a04377a14a"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0004_depth.png",
+          "sha256": "f278577bc90a3df66bac354236cdb11282437cba9354753819a1d936fcd6b78a"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2442,
+        "zero_fraction": 0.28797169811320755,
+        "nonzero_mm": {
+          "count": 6038,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5820,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1088,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.82720588235293,
+        146.53676470588235
+      ],
+      "color_mask_iou_to_reference": 0.971894832275612,
+      "all_native_nonzero_pixels": 191608,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 5,
+      "epoch": 1792050173.0514133,
+      "time_since_depth_start_s": 12.327215909957886,
+      "stamps_ns": {
+        "rgb": "1792050173049825382",
+        "depth": "1792050173029370762",
+        "depth_info": "1792050173029370762",
+        "feedback": "1792050173043142400"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0005_rgb.png",
+          "sha256": "18fc494febf3d80668475d5d9dd297e9f23fe517863ae9f2e67ffee70d6b35fd"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0005_depth.png",
+          "sha256": "52cbc43c6bf02f5def5703f028042dec594f47ff462f7dc11fbabac17686191e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2384,
+        "zero_fraction": 0.2811320754716981,
+        "nonzero_mm": {
+          "count": 6096,
+          "min": 235.0,
+          "median": 460.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5840,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1093,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7612076852699,
+        146.45562671546202
+      ],
+      "color_mask_iou_to_reference": 0.9710669077757685,
+      "all_native_nonzero_pixels": 191824,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 6,
+      "epoch": 1792050173.6525779,
+      "time_since_depth_start_s": 12.928380489349365,
+      "stamps_ns": {
+        "rgb": "1792050173649917560",
+        "depth": "1792050173629914186",
+        "depth_info": "1792050173629914186",
+        "feedback": "1792050173643326720"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0006_rgb.png",
+          "sha256": "14f3b96282ce6848becf504aec780e88ff305260dc8061d0ee275e584c26e56a"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0006_depth.png",
+          "sha256": "86317444e1dfa0f99fe1c5672ec3d9d8af838262deda6c8bf88370434a4832d5"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2512,
+        "zero_fraction": 0.2962264150943396,
+        "nonzero_mm": {
+          "count": 5968,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5776,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 185.0
+      },
+      "color_mask_pixels": 1105,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.73393665158372,
+        146.54570135746607
+      ],
+      "color_mask_iou_to_reference": 0.9659192825112107,
+      "all_native_nonzero_pixels": 191564,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 7,
+      "epoch": 1792050174.6528034,
+      "time_since_depth_start_s": 13.928606033325195,
+      "stamps_ns": {
+        "rgb": "1792050174649992248",
+        "depth": "1792050174630177985",
+        "depth_info": "1792050174630177985",
+        "feedback": "1792050174633131008"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0007_rgb.png",
+          "sha256": "b9e7d1001f03bf5303807c9dcc2db7e8b8b6f00b9634bcdcb15af51f202dd865"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0007_depth.png",
+          "sha256": "8ebc42b5b7e8584f9d1cb7110e4d99ba68c1f93b4f695d5c8ca72fec90e30430"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2302,
+        "zero_fraction": 0.2714622641509434,
+        "nonzero_mm": {
+          "count": 6178,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5834,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1094,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.82815356489945,
+        146.1800731261426
+      ],
+      "color_mask_iou_to_reference": 0.9473214285714285,
+      "all_native_nonzero_pixels": 191772,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 8,
+      "epoch": 1792050175.2517312,
+      "time_since_depth_start_s": 14.527533769607544,
+      "stamps_ns": {
+        "rgb": "1792050175249857192",
+        "depth": "1792050175228852321",
+        "depth_info": "1792050175228852321",
+        "feedback": "1792050175238162688"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0008_rgb.png",
+          "sha256": "b00e7fe6d0e6f365932b3a569e7a92ed3660baaa7d442a6f7ab05bcbcf5d5d55"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0008_depth.png",
+          "sha256": "d67094b20c31ae90ec7f7d98193bcfee0c4d461c4a4fc9599b31a6436471737f"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2348,
+        "zero_fraction": 0.2768867924528302,
+        "nonzero_mm": {
+          "count": 6132,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5800,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1088,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7454044117647,
+        146.22242647058823
+      ],
+      "color_mask_iou_to_reference": 0.9629963898916968,
+      "all_native_nonzero_pixels": 191832,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 9,
+      "epoch": 1792050176.0518188,
+      "time_since_depth_start_s": 15.327621459960938,
+      "stamps_ns": {
+        "rgb": "1792050176049968911",
+        "depth": "1792050175997334703",
+        "depth_info": "1792050175997334703",
+        "feedback": "1792050176033174528"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0009_rgb.png",
+          "sha256": "a18fafe8db0426b19834c4f127a2c3b4ae18497c9968e9afc51e3dbe5d011724"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0009_depth.png",
+          "sha256": "71b1d4f5c3095c875fc5a4181518827ca480809c3a58fe1a9ec61c2212911820"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2466,
+        "zero_fraction": 0.29080188679245284,
+        "nonzero_mm": {
+          "count": 6014,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5796,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1079,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.89249304911957,
+        146.31696014828546
+      ],
+      "color_mask_iou_to_reference": 0.9673024523160763,
+      "all_native_nonzero_pixels": 191584,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 10,
+      "epoch": 1792050177.2522554,
+      "time_since_depth_start_s": 16.52805805206299,
+      "stamps_ns": {
+        "rgb": "1792050177250009223",
+        "depth": "1792050177196374945",
+        "depth_info": "1792050177196374945",
+        "feedback": "1792050177238222336"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0010_rgb.png",
+          "sha256": "d57448132e1690ba636b8c3a2c7af73bba39494bc1909adaef990feefbe63e56"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0010_depth.png",
+          "sha256": "000759f0ee3246750bffbe6ba82b51a6213b18c99c6dd8fed54c485157ab3798"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2546,
+        "zero_fraction": 0.3002358490566038,
+        "nonzero_mm": {
+          "count": 5934,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5764,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1090,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.82385321100918,
+        146.58256880733944
+      ],
+      "color_mask_iou_to_reference": 0.9719202898550725,
+      "all_native_nonzero_pixels": 191556,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 11,
+      "epoch": 1792050177.8521605,
+      "time_since_depth_start_s": 17.127963066101074,
+      "stamps_ns": {
+        "rgb": "1792050177849971118",
+        "depth": "1792050177830231186",
+        "depth_info": "1792050177830231186",
+        "feedback": "1792050177843192320"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0011_rgb.png",
+          "sha256": "60b2523c96766c72e2719288e2e8b2fbe43003237d35b42b931d0be630ec13a9"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0011_depth.png",
+          "sha256": "17cd0f0fbdea69d3e19a1f924e62209e8af5e97bbaa6afeaf1dd894ecf35917b"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2468,
+        "zero_fraction": 0.2910377358490566,
+        "nonzero_mm": {
+          "count": 6012,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5778,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1088,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.72518382352942,
+        146.55330882352942
+      ],
+      "color_mask_iou_to_reference": 0.9612263300270514,
+      "all_native_nonzero_pixels": 191512,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 12,
+      "epoch": 1792050178.452683,
+      "time_since_depth_start_s": 17.728485584259033,
+      "stamps_ns": {
+        "rgb": "1792050178450102297",
+        "depth": "1792050178394786443",
+        "depth_info": "1792050178394786443",
+        "feedback": "1792050178428430848"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0012_rgb.png",
+          "sha256": "8912d180d1690d22b764528936a4265fdcc993073c4509c35e564de926f8675e"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0012_depth.png",
+          "sha256": "53566c65ef70e464aece9bd2f1e31b4fecc21309accaf0968680d797870595b6"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2458,
+        "zero_fraction": 0.28985849056603774,
+        "nonzero_mm": {
+          "count": 6022,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5792,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1097,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.73290793072016,
+        146.5943482224248
+      ],
+      "color_mask_iou_to_reference": 0.9675675675675676,
+      "all_native_nonzero_pixels": 191720,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 13,
+      "epoch": 1792050179.0524647,
+      "time_since_depth_start_s": 18.328267335891724,
+      "stamps_ns": {
+        "rgb": "1792050179050022342",
+        "depth": "1792050179031612958",
+        "depth_info": "1792050179031612958",
+        "feedback": "1792050179033168384"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0013_rgb.png",
+          "sha256": "c51eff3fb234173f2525052fb322e09838b643bd4087dd2678fe531afdec9e88"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0013_depth.png",
+          "sha256": "20fd4f9896447154ff976b65f9d2d819ae01efa626ea6f3fa5f12c1ecf9a20b7"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2482,
+        "zero_fraction": 0.292688679245283,
+        "nonzero_mm": {
+          "count": 5998,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5780,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1088,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.88511029411765,
+        146.5110294117647
+      ],
+      "color_mask_iou_to_reference": 0.9683257918552036,
+      "all_native_nonzero_pixels": 191588,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 14,
+      "epoch": 1792050179.6527514,
+      "time_since_depth_start_s": 18.92855405807495,
+      "stamps_ns": {
+        "rgb": "1792050179650017057",
+        "depth": "1792050179628717411",
+        "depth_info": "1792050179628717411",
+        "feedback": "1792050179633189632"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0014_rgb.png",
+          "sha256": "e23447264dd20d41cbde3c4d828b2f296b9061641d2052cad9602065416631bb"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0014_depth.png",
+          "sha256": "83f48dd50d855383e7d1e121761176e719df91ac32910ba051649ef52fce430c"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2514,
+        "zero_fraction": 0.2964622641509434,
+        "nonzero_mm": {
+          "count": 5966,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5776,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1106,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.73598553345388,
+        146.6356238698011
+      ],
+      "color_mask_iou_to_reference": 0.9650537634408602,
+      "all_native_nonzero_pixels": 191480,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 15,
+      "epoch": 1792050180.2537658,
+      "time_since_depth_start_s": 19.529568433761597,
+      "stamps_ns": {
+        "rgb": "1792050180250064787",
+        "depth": "1792050180159112892",
+        "depth_info": "1792050180159112892",
+        "feedback": "1792050180233365248"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0015_rgb.png",
+          "sha256": "d180bfc9c95163d68bb78d2ab851e213d53f054dabeffe43078ca2ec390e352c"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0015_depth.png",
+          "sha256": "69c2fba2a06c1864cdaeb40fa4fc94d29bcf4ec434cc4226b34f0d1a092ae132"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2422,
+        "zero_fraction": 0.2856132075471698,
+        "nonzero_mm": {
+          "count": 6058,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5824,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1097,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.82862351868732,
+        146.4320875113947
+      ],
+      "color_mask_iou_to_reference": 0.9711191335740073,
+      "all_native_nonzero_pixels": 191560,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 16,
+      "epoch": 1792050180.852127,
+      "time_since_depth_start_s": 20.1279296875,
+      "stamps_ns": {
+        "rgb": "1792050180850150498",
+        "depth": "1792050180792469841",
+        "depth_info": "1792050180792469841",
+        "feedback": "1792050180838215424"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0016_rgb.png",
+          "sha256": "f1914e2de24370083f9a88d02e47aa09dfe31f4c5a9506866b15b347b0b36ac6"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0016_depth.png",
+          "sha256": "87efa50d9b75217e4118bb766de7b9d38aa83a54d2c992e17046fc2f4e83ffc2"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2480,
+        "zero_fraction": 0.29245283018867924,
+        "nonzero_mm": {
+          "count": 6000,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5760,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1097,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.8778486782133,
+        146.47766636280767
+      ],
+      "color_mask_iou_to_reference": 0.9746835443037974,
+      "all_native_nonzero_pixels": 191472,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 17,
+      "epoch": 1792050181.8517766,
+      "time_since_depth_start_s": 21.12757921218872,
+      "stamps_ns": {
+        "rgb": "1792050181850019867",
+        "depth": "1792050181828885318",
+        "depth_info": "1792050181828885318",
+        "feedback": "1792050181833195776"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0017_rgb.png",
+          "sha256": "84ec3bfaf0649de9a8b0748233a24569a05eae31a2a035895563d91b3b705223"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0017_depth.png",
+          "sha256": "a5e55f5652ab5540d8683969c4b9a764cfec885e86abf601f0c4941a8391855d"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2342,
+        "zero_fraction": 0.27617924528301885,
+        "nonzero_mm": {
+          "count": 6138,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5802,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.76459854014598,
+        146.37408759124088
+      ],
+      "color_mask_iou_to_reference": 0.970216606498195,
+      "all_native_nonzero_pixels": 191776,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 18,
+      "epoch": 1792050182.4520512,
+      "time_since_depth_start_s": 21.727853775024414,
+      "stamps_ns": {
+        "rgb": "1792050182450104134",
+        "depth": "1792050182428898779",
+        "depth_info": "1792050182428898779",
+        "feedback": "1792050182438249216"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0018_rgb.png",
+          "sha256": "649b44d541ca125edc27627739ae54f2cb8a9a0d135e23cb0e010a0daea8af3f"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0018_depth.png",
+          "sha256": "58b4bce3e3e1ffc39621ddee4257eb7c2fffb020481e28267232609e6b9047ab"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2320,
+        "zero_fraction": 0.27358490566037735,
+        "nonzero_mm": {
+          "count": 6160,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5840,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 4.0
+      },
+      "color_mask_pixels": 1098,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7440801457195,
+        146.34517304189436
+      ],
+      "color_mask_iou_to_reference": 0.963162623539982,
+      "all_native_nonzero_pixels": 191988,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 19,
+      "epoch": 1792050183.0517182,
+      "time_since_depth_start_s": 22.327520847320557,
+      "stamps_ns": {
+        "rgb": "1792050183050047848",
+        "depth": "1792050183027121565",
+        "depth_info": "1792050183027121565",
+        "feedback": "1792050183038231808"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0019_rgb.png",
+          "sha256": "674b445a096c63686353c3f8fd9b0559fab2cf82cb62c103c798246fd28a3dba"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0019_depth.png",
+          "sha256": "38cdf49a721f411877dbfd836f72c0d7032e57ef7d8b13313bb00457ccf4a182"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2364,
+        "zero_fraction": 0.2787735849056604,
+        "nonzero_mm": {
+          "count": 6116,
+          "min": 234.0,
+          "median": 460.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5816,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 185.0
+      },
+      "color_mask_pixels": 1098,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.71948998178507,
+        146.38979963570128
+      ],
+      "color_mask_iou_to_reference": 0.9720216606498195,
+      "all_native_nonzero_pixels": 191756,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 20,
+      "epoch": 1792050183.8543427,
+      "time_since_depth_start_s": 23.13014531135559,
+      "stamps_ns": {
+        "rgb": "1792050183850094982",
+        "depth": "1792050183824521961",
+        "depth_info": "1792050183824521961",
+        "feedback": "1792050183828451328"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0020_rgb.png",
+          "sha256": "9e2387d6fdb091bd2f288f63ce8891ec8fd0414911ef8913568a8692eec7895b"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0020_depth.png",
+          "sha256": "85fa058353968ba64b5fa96571969e451b9e25f53316b0f9efe35da630d71855"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2478,
+        "zero_fraction": 0.29221698113207545,
+        "nonzero_mm": {
+          "count": 6002,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5772,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.86313868613138,
+        146.61131386861314
+      ],
+      "color_mask_iou_to_reference": 0.9684400360685302,
+      "all_native_nonzero_pixels": 191520,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 21,
+      "epoch": 1792050184.4549835,
+      "time_since_depth_start_s": 23.730786085128784,
+      "stamps_ns": {
+        "rgb": "1792050184451052041",
+        "depth": "1792050184425710637",
+        "depth_info": "1792050184425710637",
+        "feedback": "1792050184428850432"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0021_rgb.png",
+          "sha256": "548fab114d427f56cf5d60733273b2b7b4e3ff0025e036ec401559fde54c24e2"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0021_depth.png",
+          "sha256": "dc245c568997894bcfcc0bd06ec84ef79970149c90e76376f00efeeee7db874e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2580,
+        "zero_fraction": 0.30424528301886794,
+        "nonzero_mm": {
+          "count": 5900,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5730,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.8131868131868,
+        146.68223443223442
+      ],
+      "color_mask_iou_to_reference": 0.9701627486437613,
+      "all_native_nonzero_pixels": 191260,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 22,
+      "epoch": 1792050185.45246,
+      "time_since_depth_start_s": 24.728262662887573,
+      "stamps_ns": {
+        "rgb": "1792050185450104305",
+        "depth": "1792050185425358455",
+        "depth_info": "1792050185425358455",
+        "feedback": "1792050185433334016"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0022_rgb.png",
+          "sha256": "f6f0afa1fa3612b57f5fdeabb69fcce969718e7a0014d4a13d6bff8c59bfa2d6"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0022_depth.png",
+          "sha256": "4824a2f03f8de4359924e6cb1a159e4a42188168e85d067a1f29e69878e240c6"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2520,
+        "zero_fraction": 0.2971698113207547,
+        "nonzero_mm": {
+          "count": 5960,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5758,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1101,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.77838328792006,
+        146.71934604904632
+      ],
+      "color_mask_iou_to_reference": 0.9658580413297394,
+      "all_native_nonzero_pixels": 191616,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 23,
+      "epoch": 1792050186.0660176,
+      "time_since_depth_start_s": 25.341820240020752,
+      "stamps_ns": {
+        "rgb": "1792050186050216264",
+        "depth": "1792050186061488381",
+        "depth_info": "1792050186061488381",
+        "feedback": "1792050186053246464"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0023_rgb.png",
+          "sha256": "3d770f583ebee84cf18f1f681fcd4d7914c1eb1d1a169afe4ac8342c23751995"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0023_depth.png",
+          "sha256": "fc2e601e79433165ab2439d239af739b03c290f4b1d06891bb77734683719021"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2470,
+        "zero_fraction": 0.29127358490566035,
+        "nonzero_mm": {
+          "count": 6010,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5792,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.8113553113553,
+        146.36721611721612
+      ],
+      "color_mask_iou_to_reference": 0.9630630630630631,
+      "all_native_nonzero_pixels": 191684,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 24,
+      "epoch": 1792050187.0525756,
+      "time_since_depth_start_s": 26.328378200531006,
+      "stamps_ns": {
+        "rgb": "1792050187050184487",
+        "depth": "1792050187025515621",
+        "depth_info": "1792050187025515621",
+        "feedback": "1792050187028380928"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0024_rgb.png",
+          "sha256": "ee5d83cfb3d9793e387d3c9cd4f2bad33db292131df4e71841faf39f453b2b78"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0024_depth.png",
+          "sha256": "3d0a7fbb88f3669e8902635df0d8819ad1c86ec40650cc28d8189336330d710e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2356,
+        "zero_fraction": 0.2778301886792453,
+        "nonzero_mm": {
+          "count": 6124,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5816,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.74272727272728,
+        146.29363636363635
+      ],
+      "color_mask_iou_to_reference": 0.9702702702702702,
+      "all_native_nonzero_pixels": 191676,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 25,
+      "epoch": 1792050187.6524093,
+      "time_since_depth_start_s": 26.92821192741394,
+      "stamps_ns": {
+        "rgb": "1792050187650143970",
+        "depth": "1792050187625133391",
+        "depth_info": "1792050187625133391",
+        "feedback": "1792050187633131776"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0025_rgb.png",
+          "sha256": "730c016c0f941f981dc89fc84d0bb853a92d98c6b7e52f20a75d210d370e6102"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0025_depth.png",
+          "sha256": "e54cfffdf7d7b135f396bde0c29a0fed12b2686c9add9efd08f77afb117f0492"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2318,
+        "zero_fraction": 0.27334905660377357,
+        "nonzero_mm": {
+          "count": 6162,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5814,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1101,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.819255222525,
+        146.38782924613986
+      ],
+      "color_mask_iou_to_reference": 0.9623318385650225,
+      "all_native_nonzero_pixels": 191744,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 26,
+      "epoch": 1792050188.4594562,
+      "time_since_depth_start_s": 27.73525881767273,
+      "stamps_ns": {
+        "rgb": "1792050188450158968",
+        "depth": "1792050188457081084",
+        "depth_info": "1792050188457081084",
+        "feedback": "1792050188438273792"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0026_rgb.png",
+          "sha256": "cd863778ef75808a6f41c3ae8701f482ab5a07a1ece6c600d0905a0d5c4040ac"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0026_depth.png",
+          "sha256": "56806a20294e4299912c102238f471054c2f06eeca7ca5ca17181742bbd031ae"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2456,
+        "zero_fraction": 0.28962264150943395,
+        "nonzero_mm": {
+          "count": 6024,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5788,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7718181818182,
+        146.56272727272727
+      ],
+      "color_mask_iou_to_reference": 0.975609756097561,
+      "all_native_nonzero_pixels": 191596,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 27,
+      "epoch": 1792050189.0518155,
+      "time_since_depth_start_s": 28.32761812210083,
+      "stamps_ns": {
+        "rgb": "1792050189050139502",
+        "depth": "1792050189021548301",
+        "depth_info": "1792050189021548301",
+        "feedback": "1792050189038414848"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0027_rgb.png",
+          "sha256": "98bc5a8e47d0d779d9a3659248c5aba09071615fe9086235d60a8c8cad7e8e98"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0027_depth.png",
+          "sha256": "a251fd21a7a8efbc9f2f3e3d0b8b93e5bd1cceca9904e715f398c201c650770d"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2494,
+        "zero_fraction": 0.29410377358490564,
+        "nonzero_mm": {
+          "count": 5986,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5776,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1090,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.78990825688072,
+        146.3577981651376
+      ],
+      "color_mask_iou_to_reference": 0.9559748427672956,
+      "all_native_nonzero_pixels": 191664,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 28,
+      "epoch": 1792050189.652571,
+      "time_since_depth_start_s": 28.92837357521057,
+      "stamps_ns": {
+        "rgb": "1792050189650151114",
+        "depth": "1792050189621174524",
+        "depth_info": "1792050189621174524",
+        "feedback": "1792050189638388992"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0028_rgb.png",
+          "sha256": "e4762603b5d9f075d6d3ad7dba95fb249c8618834eb37674c11dfd92a45fa654"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0028_depth.png",
+          "sha256": "f60ae73963bc2188f919c0b858c29726f334280435ea256bc29423549cebde1c"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2500,
+        "zero_fraction": 0.294811320754717,
+        "nonzero_mm": {
+          "count": 5980,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5758,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1093,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.76212259835316,
+        146.56816102470265
+      ],
+      "color_mask_iou_to_reference": 0.969286359530262,
+      "all_native_nonzero_pixels": 191456,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 29,
+      "epoch": 1792050190.3287048,
+      "time_since_depth_start_s": 29.604507446289062,
+      "stamps_ns": {
+        "rgb": "1792050190250379852",
+        "depth": "1792050190326109523",
+        "depth_info": "1792050190326109523",
+        "feedback": "1792050190323177728"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0029_rgb.png",
+          "sha256": "0ba10094e8d64852e99b6666556b45ecf669c2bf1a560318a65d0e9b05a24593"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0029_depth.png",
+          "sha256": "7ac2782a5fc17cef62af12e7990448313fa03dd5974ac152c2d0664ec9505d4d"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2506,
+        "zero_fraction": 0.2955188679245283,
+        "nonzero_mm": {
+          "count": 5974,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5768,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1101,
+      "color_mask_bbox": [
+        111,
+        129,
+        145,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.6521344232516,
+        146.65122615803816
+      ],
+      "color_mask_iou_to_reference": 0.9623318385650225,
+      "all_native_nonzero_pixels": 191556,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 30,
+      "epoch": 1792050191.052168,
+      "time_since_depth_start_s": 30.327970504760742,
+      "stamps_ns": {
+        "rgb": "1792050191050228900",
+        "depth": "1792050191024438346",
+        "depth_info": "1792050191024438346",
+        "feedback": "1792050191028548352"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0030_rgb.png",
+          "sha256": "7a41159b866a49bb73da031020ce1d01bd6989bf0590aebec64e8f57561b2769"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0030_depth.png",
+          "sha256": "0853abdfffed4ef5f99a98d83e96888edb25f040e1147440f7eed6844522cf34"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2498,
+        "zero_fraction": 0.2945754716981132,
+        "nonzero_mm": {
+          "count": 5982,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5768,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.69069343065692,
+        146.51642335766422
+      ],
+      "color_mask_iou_to_reference": 0.970216606498195,
+      "all_native_nonzero_pixels": 191728,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 31,
+      "epoch": 1792050192.2548838,
+      "time_since_depth_start_s": 31.530686378479004,
+      "stamps_ns": {
+        "rgb": "1792050192250267202",
+        "depth": "1792050192187768174",
+        "depth_info": "1792050192187768174",
+        "feedback": "1792050192233281024"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0031_rgb.png",
+          "sha256": "402189f4fea1581afad0e9af183b5e35753cc10fb37ff324c3457a1b42eee06f"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0031_depth.png",
+          "sha256": "76bdc1baec2534526132c7ee156e7f723732b0be56dcc8ea331ea445e5d87391"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2440,
+        "zero_fraction": 0.28773584905660377,
+        "nonzero_mm": {
+          "count": 6040,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5784,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1105,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.76289592760182,
+        146.58733031674208
+      ],
+      "color_mask_iou_to_reference": 0.96415770609319,
+      "all_native_nonzero_pixels": 191516,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 32,
+      "epoch": 1792050192.8521192,
+      "time_since_depth_start_s": 32.12792181968689,
+      "stamps_ns": {
+        "rgb": "1792050192850237904",
+        "depth": "1792050192821942015",
+        "depth_info": "1792050192821942015",
+        "feedback": "1792050192833285632"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0032_rgb.png",
+          "sha256": "0e850925acf0c9665fa7fdf0b3fec63dd60349748275667e38b5d19c68ea2978"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0032_depth.png",
+          "sha256": "69468adf37d6582e2f8cb2f6cde7536e7e8b71b2a291d6d2a6a09c8219bf37a4"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2432,
+        "zero_fraction": 0.28679245283018867,
+        "nonzero_mm": {
+          "count": 6048,
+          "min": 234.0,
+          "median": 460.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5772,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1099,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.83621474067334,
+        146.48225659690627
+      ],
+      "color_mask_iou_to_reference": 0.9675967596759676,
+      "all_native_nonzero_pixels": 191568,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 33,
+      "epoch": 1792050193.4525716,
+      "time_since_depth_start_s": 32.72837424278259,
+      "stamps_ns": {
+        "rgb": "1792050193450263690",
+        "depth": "1792050193421593062",
+        "depth_info": "1792050193421593062",
+        "feedback": "1792050193433319680"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0033_rgb.png",
+          "sha256": "3c208e9f924615bd83f4ebc490e7eb7bd349a85f1ce05205c0f35d35efb8ce78"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0033_depth.png",
+          "sha256": "0f06c33618dcea146e4cd2547485ff359b825ee8d90be31689451b7ee3b5e1f1"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2368,
+        "zero_fraction": 0.2792452830188679,
+        "nonzero_mm": {
+          "count": 6112,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5796,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1098,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.81238615664844,
+        146.4408014571949
+      ],
+      "color_mask_iou_to_reference": 0.9720216606498195,
+      "all_native_nonzero_pixels": 191680,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 34,
+      "epoch": 1792050194.0528212,
+      "time_since_depth_start_s": 33.32862377166748,
+      "stamps_ns": {
+        "rgb": "1792050194050363071",
+        "depth": "1792050194020938957",
+        "depth_info": "1792050194020938957",
+        "feedback": "1792050194033351424"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0034_rgb.png",
+          "sha256": "4ae7310802496a5ddfa436df10ea4c7da95248493b63b5570e72b1c41ad6a0cb"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0034_depth.png",
+          "sha256": "8819a75c3dab596abdf41fac8894ac889f0c3c8240b48f243aed2e9f8b8da191"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2416,
+        "zero_fraction": 0.2849056603773585,
+        "nonzero_mm": {
+          "count": 6064,
+          "min": 234.0,
+          "median": 460.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5796,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7701465201465,
+        146.29395604395606
+      ],
+      "color_mask_iou_to_reference": 0.9701627486437613,
+      "all_native_nonzero_pixels": 191728,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 35,
+      "epoch": 1792050194.8531702,
+      "time_since_depth_start_s": 34.12897276878357,
+      "stamps_ns": {
+        "rgb": "1792050194850245112",
+        "depth": "1792050194754177672",
+        "depth_info": "1792050194754177672",
+        "feedback": "1792050194838345728"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0035_rgb.png",
+          "sha256": "159a4dcedd97b4bded94d38214928f4e83899b3a39fafe1af47d3e6186184667"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0035_depth.png",
+          "sha256": "53abcf6cc967afd784d3eeca339d12164742f6402f4148e960d3ac0ac1f5cdc5"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2454,
+        "zero_fraction": 0.28938679245283017,
+        "nonzero_mm": {
+          "count": 6026,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5760,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.83636363636364,
+        146.66363636363636
+      ],
+      "color_mask_iou_to_reference": 0.9684968496849685,
+      "all_native_nonzero_pixels": 191520,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 36,
+      "epoch": 1792050195.4521763,
+      "time_since_depth_start_s": 34.72797894477844,
+      "stamps_ns": {
+        "rgb": "1792050195450264563",
+        "depth": "1792050195419792286",
+        "depth_info": "1792050195419792286",
+        "feedback": "1792050195438461184"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0036_rgb.png",
+          "sha256": "95d9fed91ecfbe28f245b05972a9d9ace24a25c49039f2f6884946e97744704f"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0036_depth.png",
+          "sha256": "efe553903488cd21b6aa1f7d6e29bf828750498e6ef91698639775c0b1cef25e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2488,
+        "zero_fraction": 0.29339622641509433,
+        "nonzero_mm": {
+          "count": 5992,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5770,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1090,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.86330275229358,
+        146.60733944954129
+      ],
+      "color_mask_iou_to_reference": 0.9772933696639419,
+      "all_native_nonzero_pixels": 191320,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 37,
+      "epoch": 1792050196.052111,
+      "time_since_depth_start_s": 35.32791352272034,
+      "stamps_ns": {
+        "rgb": "1792050196050301670",
+        "depth": "1792050196016220631",
+        "depth_info": "1792050196016220631",
+        "feedback": "1792050196038362624"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0037_rgb.png",
+          "sha256": "3e5647418ceb54b230b7dd536102024f4172f29ca84fc314fda723d3ebc62ecc"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0037_depth.png",
+          "sha256": "61fe5d3fbda815e62a2281cd26b96627e87642fb65942e722073bfeec859fafa"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2542,
+        "zero_fraction": 0.2997641509433962,
+        "nonzero_mm": {
+          "count": 5938,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5784,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1101,
+      "color_mask_bbox": [
+        110,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.69754768392372,
+        146.72842870118075
+      ],
+      "color_mask_iou_to_reference": 0.9640933572710951,
+      "all_native_nonzero_pixels": 191400,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 38,
+      "epoch": 1792050196.6538193,
+      "time_since_depth_start_s": 35.92962193489075,
+      "stamps_ns": {
+        "rgb": "1792050196650362535",
+        "depth": "1792050196587130781",
+        "depth_info": "1792050196587130781",
+        "feedback": "1792050196638450176"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0038_rgb.png",
+          "sha256": "3ccdf5fd80067ca0b0ae7bcefd97d9c942a2f4759265ec184f7d979964cde6b9"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0038_depth.png",
+          "sha256": "900cfa3eddfff7d92bcc178875f4b97341d9a7d30dc9e2c79254ee4e0cedd634"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2540,
+        "zero_fraction": 0.29952830188679247,
+        "nonzero_mm": {
+          "count": 5940,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5762,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        165
+      ],
+      "color_mask_center_xy": [
+        128.7764598540146,
+        146.66058394160584
+      ],
+      "color_mask_iou_to_reference": 0.9631294964028777,
+      "all_native_nonzero_pixels": 191228,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 39,
+      "epoch": 1792050197.2523413,
+      "time_since_depth_start_s": 36.528143882751465,
+      "stamps_ns": {
+        "rgb": "1792050197250304479",
+        "depth": "1792050197221747171",
+        "depth_info": "1792050197221747171",
+        "feedback": "1792050197243442944"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0039_rgb.png",
+          "sha256": "97b18b7a905cf0431d5d097bc53ad9767096a42bdad220d5cb4aafa3b9662271"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0039_depth.png",
+          "sha256": "57d89c11f593e7b6e509382e823d920b4a807ea0e4a7ae03bcce5f7433585397"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2514,
+        "zero_fraction": 0.2964622641509434,
+        "nonzero_mm": {
+          "count": 5966,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5756,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1102,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.82667876588022,
+        146.64609800362976
+      ],
+      "color_mask_iou_to_reference": 0.9667565139263252,
+      "all_native_nonzero_pixels": 191420,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 40,
+      "epoch": 1792050197.8526492,
+      "time_since_depth_start_s": 37.12845182418823,
+      "stamps_ns": {
+        "rgb": "1792050197850363579",
+        "depth": "1792050197821173046",
+        "depth_info": "1792050197821173046",
+        "feedback": "1792050197843260672"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0040_rgb.png",
+          "sha256": "4c5759dba1a05cd76346810bc31496dcc3d8459ae19c39b3859d34c69762c84e"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0040_depth.png",
+          "sha256": "2bcc4a81c3dbcc4af9bbd4f78a2d03fd0f700924d27a29247dd08423a8e9db41"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2446,
+        "zero_fraction": 0.28844339622641507,
+        "nonzero_mm": {
+          "count": 6034,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5796,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1084,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.90959409594095,
+        146.4169741697417
+      ],
+      "color_mask_iou_to_reference": 0.9629294755877035,
+      "all_native_nonzero_pixels": 191632,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 41,
+      "epoch": 1792050198.6523764,
+      "time_since_depth_start_s": 37.928179025650024,
+      "stamps_ns": {
+        "rgb": "1792050198650391847",
+        "depth": "1792050198618701182",
+        "depth_info": "1792050198618701182",
+        "feedback": "1792050198628682240"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0041_rgb.png",
+          "sha256": "1e051fb94863a289b4133003eacceb30300601cc312a1c7bdd156dfedace2e11"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0041_depth.png",
+          "sha256": "3491c97f3eab95a33f8336d1eb5d94d2866cceee9818115c333f9976de296f66"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2368,
+        "zero_fraction": 0.2792452830188679,
+        "nonzero_mm": {
+          "count": 6112,
+          "min": 234.0,
+          "median": 460.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5800,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 185.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.7590909090909,
+        146.38727272727272
+      ],
+      "color_mask_iou_to_reference": 0.9631956912028725,
+      "all_native_nonzero_pixels": 191616,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 42,
+      "epoch": 1792050199.2529204,
+      "time_since_depth_start_s": 38.5287230014801,
+      "stamps_ns": {
+        "rgb": "1792050199250358958",
+        "depth": "1792050199183909732",
+        "depth_info": "1792050199183909732",
+        "feedback": "1792050199228942080"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0042_rgb.png",
+          "sha256": "42f0d92a83da74755521d2b62cab5251390c038d7519ef4a4939f1cda180ba57"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0042_depth.png",
+          "sha256": "271828bae62992d7382a172033d6b8cffe4361de0564143434c1640c35097f0e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2360,
+        "zero_fraction": 0.2783018867924528,
+        "nonzero_mm": {
+          "count": 6120,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5796,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 9.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.79014598540147,
+        146.3521897810219
+      ],
+      "color_mask_iou_to_reference": 0.970216606498195,
+      "all_native_nonzero_pixels": 191656,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 43,
+      "epoch": 1792050200.0545065,
+      "time_since_depth_start_s": 39.33030915260315,
+      "stamps_ns": {
+        "rgb": "1792050200050463265",
+        "depth": "1792050200014259544",
+        "depth_info": "1792050200014259544",
+        "feedback": "1792050200038858240"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0043_rgb.png",
+          "sha256": "eba5baeda041cb2f115177d319b86c6f05fbf5ffd43ef6d725b7da8b3f43b1c5"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0043_depth.png",
+          "sha256": "c3e14302138a43d7eb5f8907fae69dd88c5b0be325dd4349241c2691e3fd9b3a"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2460,
+        "zero_fraction": 0.29009433962264153,
+        "nonzero_mm": {
+          "count": 6020,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5784,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.65510948905109,
+        146.3941605839416
+      ],
+      "color_mask_iou_to_reference": 0.970216606498195,
+      "all_native_nonzero_pixels": 191636,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 44,
+      "epoch": 1792050200.6540143,
+      "time_since_depth_start_s": 39.92981696128845,
+      "stamps_ns": {
+        "rgb": "1792050200650424172",
+        "depth": "1792050200620487276",
+        "depth_info": "1792050200620487276",
+        "feedback": "1792050200638396160"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0044_rgb.png",
+          "sha256": "25c84eb35ded7979ace236de1d96c67ce30d05190dae1634ee54d83842199fb9"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0044_depth.png",
+          "sha256": "41497a423084a8a74dee2b0534c73758e93b4fc3b1e94399bb59d1299824832b"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2506,
+        "zero_fraction": 0.2955188679245283,
+        "nonzero_mm": {
+          "count": 5974,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5748,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.75824175824175,
+        146.62179487179486
+      ],
+      "color_mask_iou_to_reference": 0.9701627486437613,
+      "all_native_nonzero_pixels": 191460,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 45,
+      "epoch": 1792050201.2860534,
+      "time_since_depth_start_s": 40.56185603141785,
+      "stamps_ns": {
+        "rgb": "1792050201250365324",
+        "depth": "1792050201283736876",
+        "depth_info": "1792050201283736876",
+        "feedback": "1792050201263470336"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0045_rgb.png",
+          "sha256": "7718d0c2743e61c5f7203157f0e808e96dec50e88cdc0eba3987b2dbb3041c18"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0045_depth.png",
+          "sha256": "e41ab3526d330fe6256fe349b5b81427369ddef49953bd5f6415b419a901efbd"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2584,
+        "zero_fraction": 0.30471698113207546,
+        "nonzero_mm": {
+          "count": 5896,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5766,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1093,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.804208600183,
+        146.61939615736506
+      ],
+      "color_mask_iou_to_reference": 0.9675090252707581,
+      "all_native_nonzero_pixels": 191480,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 46,
+      "epoch": 1792050201.8522887,
+      "time_since_depth_start_s": 41.12809133529663,
+      "stamps_ns": {
+        "rgb": "1792050201850382017",
+        "depth": "1792050201819398615",
+        "depth_info": "1792050201819398615",
+        "feedback": "1792050201843387648"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0046_rgb.png",
+          "sha256": "9106afbaa95c0b52faa1de115da3bf760d399e961e578f1c95787ee8d1b468b2"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0046_depth.png",
+          "sha256": "79af533515bafff59fefffd473249a1596d1ef0c5343988ca07cffd68cdac48e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2562,
+        "zero_fraction": 0.30212264150943396,
+        "nonzero_mm": {
+          "count": 5918,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5752,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1094,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.81535648994515,
+        146.55575868372944
+      ],
+      "color_mask_iou_to_reference": 0.9666366095581606,
+      "all_native_nonzero_pixels": 191444,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 47,
+      "epoch": 1792050202.4542801,
+      "time_since_depth_start_s": 41.730082750320435,
+      "stamps_ns": {
+        "rgb": "1792050202450543740",
+        "depth": "1792050202418945963",
+        "depth_info": "1792050202418945963",
+        "feedback": "1792050202443416064"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0047_rgb.png",
+          "sha256": "5ed07093135551e14ae3be0bee832896413d36a1117d38fef1d0ae0e4a7efb35"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0047_depth.png",
+          "sha256": "de3f66875cbcf403c4ef9bbcaa051191285c45babc719ea9c2527412081311c1"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2462,
+        "zero_fraction": 0.29033018867924526,
+        "nonzero_mm": {
+          "count": 6018,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5784,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.80818181818182,
+        146.6390909090909
+      ],
+      "color_mask_iou_to_reference": 0.966726618705036,
+      "all_native_nonzero_pixels": 191232,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 48,
+      "epoch": 1792050203.4530246,
+      "time_since_depth_start_s": 42.728827238082886,
+      "stamps_ns": {
+        "rgb": "1792050203450412749",
+        "depth": "1792050203449128706",
+        "depth_info": "1792050203449128706",
+        "feedback": "1792050203438413056"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0048_rgb.png",
+          "sha256": "8b6530022f573cec9d224fe138d744b068a8eddced95de56fd39775523f4ca47"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0048_depth.png",
+          "sha256": "dbb9c360d470f97dfe2aaf2d9e662546862456f40309cd6d82be2d96637b2004"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2420,
+        "zero_fraction": 0.28537735849056606,
+        "nonzero_mm": {
+          "count": 6060,
+          "min": 234.0,
+          "median": 460.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5760,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1102,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.6715063520871,
+        146.3656987295826
+      ],
+      "color_mask_iou_to_reference": 0.9614695340501792,
+      "all_native_nonzero_pixels": 191596,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 49,
+      "epoch": 1792050204.0528471,
+      "time_since_depth_start_s": 43.3286497592926,
+      "stamps_ns": {
+        "rgb": "1792050204050605219",
+        "depth": "1792050204012499736",
+        "depth_info": "1792050204012499736",
+        "feedback": "1792050204043406336"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0049_rgb.png",
+          "sha256": "dbf33a967cfe11777d287baa337c466134ab5f93b4b82fcbcaba8738d6b07b29"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0049_depth.png",
+          "sha256": "bb5cb266254cfcd71b2e2ee975c4f0c688fe2ee85b1be43a45a68a112d160372"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2432,
+        "zero_fraction": 0.28679245283018867,
+        "nonzero_mm": {
+          "count": 6048,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5752,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.82664233576642,
+        146.43704379562044
+      ],
+      "color_mask_iou_to_reference": 0.9648964896489649,
+      "all_native_nonzero_pixels": 191720,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 50,
+      "epoch": 1792050204.8539102,
+      "time_since_depth_start_s": 44.1297128200531,
+      "stamps_ns": {
+        "rgb": "1792050204850518911",
+        "depth": "1792050204816418499",
+        "depth_info": "1792050204816418499",
+        "feedback": "1792050204828785152"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0050_rgb.png",
+          "sha256": "6e012a4d1a70824f2619008ac334245c516dc19f2765c8b4ac2ae25de1391f89"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0050_depth.png",
+          "sha256": "1a08f2d5bcfc136c37b17d116a2c7117cddceccd9e82db4767497f4c14181a08"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2470,
+        "zero_fraction": 0.29127358490566035,
+        "nonzero_mm": {
+          "count": 6010,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5764,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.86996336996336,
+        146.5283882783883
+      ],
+      "color_mask_iou_to_reference": 0.9737318840579711,
+      "all_native_nonzero_pixels": 191664,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 51,
+      "epoch": 1792050205.852261,
+      "time_since_depth_start_s": 45.128063678741455,
+      "stamps_ns": {
+        "rgb": "1792050205850476825",
+        "depth": "1792050205847271631",
+        "depth_info": "1792050205847271631",
+        "feedback": "1792050205843631360"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0051_rgb.png",
+          "sha256": "10a48a6b5bfee580851d31e1c4427fe7fc4f384b6db4cb4590d0b0f2fe829d7b"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0051_depth.png",
+          "sha256": "44a57b5e3a3d07f97f375c94f37e8d3da6ae03936fe91a2124c2bbd70a64ba06"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2514,
+        "zero_fraction": 0.2964622641509434,
+        "nonzero_mm": {
+          "count": 5966,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5760,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 6.0
+      },
+      "color_mask_pixels": 1091,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.83684692942253,
+        146.6526122823098
+      ],
+      "color_mask_iou_to_reference": 0.9621621621621622,
+      "all_native_nonzero_pixels": 191352,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 52,
+      "epoch": 1792050206.4525225,
+      "time_since_depth_start_s": 45.7283251285553,
+      "stamps_ns": {
+        "rgb": "1792050206450488704",
+        "depth": "1792050206447027098",
+        "depth_info": "1792050206447027098",
+        "feedback": "1792050206443612160"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0052_rgb.png",
+          "sha256": "b2846bb7205ed41d5a5fa42ba4d765912a85dfe0a5eb8dfc84148d341e31e36f"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0052_depth.png",
+          "sha256": "ca83588afa733d30d141c16db4c07bd6d48e36004dc6e2febc8387c88e38101e"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2606,
+        "zero_fraction": 0.30731132075471695,
+        "nonzero_mm": {
+          "count": 5874,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5728,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1088,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.72794117647058,
+        146.64613970588235
+      ],
+      "color_mask_iou_to_reference": 0.970108695652174,
+      "all_native_nonzero_pixels": 191436,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 53,
+      "epoch": 1792050207.0535007,
+      "time_since_depth_start_s": 46.32930326461792,
+      "stamps_ns": {
+        "rgb": "1792050207050484288",
+        "depth": "1792050207046937924",
+        "depth_info": "1792050207046937924",
+        "feedback": "1792050207043563520"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0053_rgb.png",
+          "sha256": "0f508ad7b62e169b3f4aacebab45554e77d4ee0c4c70ae3d82abc126d123fbe4"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0053_depth.png",
+          "sha256": "d7bc93919168fa385f606987269e5ff3911a525dc48d877bf16c27666f01d3a5"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2544,
+        "zero_fraction": 0.3,
+        "nonzero_mm": {
+          "count": 5936,
+          "min": 235.0,
+          "median": 461.0,
+          "max": 483.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5758,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1092,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.87362637362637,
+        146.5952380952381
+      ],
+      "color_mask_iou_to_reference": 0.971945701357466,
+      "all_native_nonzero_pixels": 191588,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 54,
+      "epoch": 1792050207.6534715,
+      "time_since_depth_start_s": 46.92927408218384,
+      "stamps_ns": {
+        "rgb": "1792050207650502004",
+        "depth": "1792050207616035122",
+        "depth_info": "1792050207616035122",
+        "feedback": "1792050207643447296"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0054_rgb.png",
+          "sha256": "196273da9cf92d53df4c8b89d7531d48d3f4df345ed11d83e0b1e285a8e5485d"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0054_depth.png",
+          "sha256": "7ab1c13ce5e34ce957c2282adbaa7c36f0b555673676d66b0ca8a622eceb23d4"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2510,
+        "zero_fraction": 0.2959905660377358,
+        "nonzero_mm": {
+          "count": 5970,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5768,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1093,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.79048490393413,
+        146.51418115279048
+      ],
+      "color_mask_iou_to_reference": 0.963963963963964,
+      "all_native_nonzero_pixels": 191496,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 55,
+      "epoch": 1792050208.2528012,
+      "time_since_depth_start_s": 47.52860379219055,
+      "stamps_ns": {
+        "rgb": "1792050208250597746",
+        "depth": "1792050208215607821",
+        "depth_info": "1792050208215607821",
+        "feedback": "1792050208243488512"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0055_rgb.png",
+          "sha256": "2898a0ac2c2582966c07d78a03e25292637ece211a7a905210ece52ff6836273"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0055_depth.png",
+          "sha256": "2f468277e921a1d84815563fc3e8a31f34da415ed55976804bbf5a4fd560f4d3"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2380,
+        "zero_fraction": 0.2806603773584906,
+        "nonzero_mm": {
+          "count": 6100,
+          "min": 234.0,
+          "median": 459.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5788,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1096,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.74908759124088,
+        146.4397810218978
+      ],
+      "color_mask_iou_to_reference": 0.9684400360685302,
+      "all_native_nonzero_pixels": 191688,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 56,
+      "epoch": 1792050209.2527483,
+      "time_since_depth_start_s": 48.52855086326599,
+      "stamps_ns": {
+        "rgb": "1792050209250536470",
+        "depth": "1792050209246244124",
+        "depth_info": "1792050209246244124",
+        "feedback": "1792050209238703104"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0056_rgb.png",
+          "sha256": "7a3dda33a61304961faf5f1b14990ce5863728e6a363bc980911110d2b374f96"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0056_depth.png",
+          "sha256": "cf3b533ecd8da5d352ff844963b63512141219332787962737fe6b0f5985ff8a"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2428,
+        "zero_fraction": 0.28632075471698115,
+        "nonzero_mm": {
+          "count": 6052,
+          "min": 234.0,
+          "median": 460.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5772,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.77454545454546,
+        146.4190909090909
+      ],
+      "color_mask_iou_to_reference": 0.9649595687331537,
+      "all_native_nonzero_pixels": 191824,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 57,
+      "epoch": 1792050209.8525336,
+      "time_since_depth_start_s": 49.12833619117737,
+      "stamps_ns": {
+        "rgb": "1792050209850547664",
+        "depth": "1792050209845060112",
+        "depth_info": "1792050209845060112",
+        "feedback": "1792050209843531008"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0057_rgb.png",
+          "sha256": "ae2de827dd92d948e75f80264797a20b4be4c76102f908c8ae4cae5e8bf05ea5"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0057_depth.png",
+          "sha256": "a5e5eea304ecbfd3e8d06d40b1d7a7bcd1d41d07d5f05b98133769a6baa0084c"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2460,
+        "zero_fraction": 0.29009433962264153,
+        "nonzero_mm": {
+          "count": 6020,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5760,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1089,
+      "color_mask_bbox": [
+        111,
+        129,
+        145,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.86593204775022,
+        146.4077134986226
+      ],
+      "color_mask_iou_to_reference": 0.9621280432822362,
+      "all_native_nonzero_pixels": 191428,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 58,
+      "epoch": 1792050210.454414,
+      "time_since_depth_start_s": 49.73021650314331,
+      "stamps_ns": {
+        "rgb": "1792050210450502275",
+        "depth": "1792050210446511459",
+        "depth_info": "1792050210446511459",
+        "feedback": "1792050210433450496"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0058_rgb.png",
+          "sha256": "6719484226af0a34855f6823777f7bc4ae61de5b7e6ad4d0cfabe375a3980894"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0058_depth.png",
+          "sha256": "9ea9f10ded72c8144c4ae675c2cb9b4ba88ccadbc39afb98087a6dda5725a686"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2472,
+        "zero_fraction": 0.29150943396226414,
+        "nonzero_mm": {
+          "count": 6008,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 481.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5740,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1103,
+      "color_mask_bbox": [
+        110,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.78331822302812,
+        146.45693563009974
+      ],
+      "color_mask_iou_to_reference": 0.9658886894075404,
+      "all_native_nonzero_pixels": 191724,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 59,
+      "epoch": 1792050211.0523717,
+      "time_since_depth_start_s": 50.328174352645874,
+      "stamps_ns": {
+        "rgb": "1792050211050523546",
+        "depth": "1792050211043729881",
+        "depth_info": "1792050211043729881",
+        "feedback": "1792050211033440512"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0059_rgb.png",
+          "sha256": "3d48d88a52a9f94f65fdbfb3b5ab6af0a804be79251eac016eadaf8a8dbd7f04"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0059_depth.png",
+          "sha256": "a33cb08378ee7120afa1b78278eaba28829d3237f6f64bf53d96d97b9cf6d80a"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2488,
+        "zero_fraction": 0.29339622641509433,
+        "nonzero_mm": {
+          "count": 5992,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5784,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 7.0
+      },
+      "color_mask_pixels": 1083,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.83564173591876,
+        146.27608494921515
+      ],
+      "color_mask_iou_to_reference": 0.9673617407071623,
+      "all_native_nonzero_pixels": 191552,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    },
+    {
+      "group": "formal_60",
+      "snapshot": 60,
+      "epoch": 1792050211.652497,
+      "time_since_depth_start_s": 50.92829966545105,
+      "stamps_ns": {
+        "rgb": "1792050211650855804",
+        "depth": "1792050211649187879",
+        "depth_info": "1792050211649187879",
+        "feedback": "1792050211638502144"
+      },
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.217032992,
+        0.094773252
+      ],
+      "rgb_size": [
+        320,
+        240
+      ],
+      "depth_size": [
+        640,
+        400
+      ],
+      "raw_depth_dtype": "uint16",
+      "source_images": {
+        "rgb": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0060_rgb.png",
+          "sha256": "8eb8031423a658c23fbb70d0742a6ae3ab29a13a32b86ae4395e058297ba6074"
+        },
+        "depth": {
+          "archive_path": "new_pair05_A_batch60.3MFdVm/observation/batch_01/evidence/0060_depth.png",
+          "sha256": "6696d956341e46bbd2fdfd1dc53d6351aa7221c79701966185d88f5a8b43b145"
+        }
+      },
+      "original_selected_points": 0,
+      "native_reference_footprint": {
+        "pixels": 3354,
+        "zero_pixels": 3354,
+        "zero_fraction": 1.0,
+        "nonzero_mm": {
+          "count": 0,
+          "min": null,
+          "median": null,
+          "max": null
+        }
+      },
+      "native_control_ring": {
+        "pixels": 8480,
+        "zero_pixels": 2502,
+        "zero_fraction": 0.29504716981132073,
+        "nonzero_mm": {
+          "count": 5978,
+          "min": 234.0,
+          "median": 461.0,
+          "max": 482.0
+        }
+      },
+      "control_ring_common_pixels_abs_difference_mm": {
+        "count": 5756,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 5.0
+      },
+      "color_mask_pixels": 1100,
+      "color_mask_bbox": [
+        111,
+        129,
+        146,
+        164
+      ],
+      "color_mask_center_xy": [
+        128.92909090909092,
+        146.60272727272726
+      ],
+      "color_mask_iou_to_reference": 0.9684968496849685,
+      "all_native_nonzero_pixels": 191504,
+      "depth_info_numeric_equal_to_reference": true,
+      "factory_numeric_equal_to_reference": true,
+      "same_stamp_depth_Info": true
+    }
+  ],
+  "checks": {
+    "all_60_original_selected_counts_replayed_exactly": true,
+    "all_q_equal": true,
+    "all_depth_Info_equal_except_stamps": true,
+    "all_factory_numeric_equal": true,
+    "all_depth_Info_same_stamp": true,
+    "source_archive_SHA_unchanged_after": true
+  },
+  "limits": [
+    "Native zeros locate the failure before robot TF/IK and projection selection, but do not identify its optical, device-processing or driver cause.",
+    "Reopening the depth stream coincides with the change; this is observational, not a controlled restart/laser-state experiment.",
+    "Color stability and joint stability do not independently prove the entire physical scene was unchanged.",
+    "No IR intensity, per-frame native depth exposure, emitter state or confidence map is present; do not infer laser off from ir image disabled log.",
+    "The three supported preview faces still fail the original table/top condition; they are not qualified calibration points."
+  ]
+}

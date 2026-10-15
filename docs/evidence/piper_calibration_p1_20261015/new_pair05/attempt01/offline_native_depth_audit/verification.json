@@ -1,0 +1,118 @@
+{
+  "schema": "piper_pair05_offline_native_depth_verification_v1",
+  "offline_only": true,
+  "device_access": false,
+  "raw_or_production_changed": false,
+  "archive_files_SHA_verified": 196,
+  "portable_assets_SHA_verified": 129,
+  "input_archive_sha256": "a7665f67e28277b29a77dfd0265dc6977c5264742e601f82223942f55e27182f",
+  "input_manifest_sha256": "1d9ce971c4b7fea07eb194abea61629eea16882b5a08a3793ccfda6b6d5a227b",
+  "report_checks": {
+    "all_60_original_selected_counts_replayed_exactly": true,
+    "all_q_equal": true,
+    "all_depth_Info_equal_except_stamps": true,
+    "all_factory_numeric_equal": true,
+    "all_depth_Info_same_stamp": true,
+    "source_archive_SHA_unchanged_after": true
+  },
+  "source_reference": "9d13de5",
+  "native_footprint_pixels": 3354,
+  "all_later_63_fixed_footprints_100_percent_zero": true,
+  "original_A_good_frames_unchanged": 0,
+  "qualified_complete_pairs_unchanged": 1,
+  "diagnostic_masks_are_not_measurements": true,
+  "synthetic_helper_tests": {
+    "count": 4,
+    "passed": true,
+    "real_camera_evidence": false
+  },
+  "original_sampling_and_quality_tests": {
+    "count": 38,
+    "passed": true
+  },
+  "existing_output_refused": {
+    "exit_code": 1,
+    "expected": true,
+    "no_overwrite": true
+  },
+  "production_five_SHA_unchanged": true,
+  "source_checks": {
+    "frame_callback": {
+      "deployed_worktree_path": "/home/johnwick/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/ob_camera_node.cpp",
+      "current_sha256": "b9b5eaa380f8eb8ef714378a5e465092af81646aa255d35902aab0c235c620b1",
+      "relevant_line": 446,
+      "not_binary_build_provenance": true,
+      "canonical_path": "brain_robot_arm/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/ob_camera_node.cpp",
+      "canonical_sha256": "b9b5eaa380f8eb8ef714378a5e465092af81646aa255d35902aab0c235c620b1",
+      "current_worktree_and_canonical_bytes_equal": true
+    },
+    "depth_property_getters": {
+      "deployed_worktree_path": "/home/johnwick/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/ros_service.cpp",
+      "current_sha256": "3681f0fad7a2903b783d3a1a237d8275a5961806cd0ddaf3a65c8cce95d4b834",
+      "relevant_line": 341,
+      "not_binary_build_provenance": true,
+      "canonical_path": "brain_robot_arm/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/ros_service.cpp",
+      "canonical_sha256": "3681f0fad7a2903b783d3a1a237d8275a5961806cd0ddaf3a65c8cce95d4b834",
+      "current_worktree_and_canonical_bytes_equal": true
+    },
+    "installed_depth_config": {
+      "deployed_worktree_path": "/home/johnwick/ros2_ws/install/astra_camera/share/astra_camera/params/astra_params.yaml",
+      "current_sha256": "4bb171f17a29efc92109039b004308f17641ad7a28f7eaee4836f6eedcd71234",
+      "relevant_line": 1,
+      "not_binary_build_provenance": true
+    },
+    "installed_launch": {
+      "deployed_worktree_path": "/home/johnwick/ros2_ws/install/astra_camera/share/astra_camera/launch/astra.launch.py",
+      "current_sha256": "51acb9e0e7792768b9e1b738133021b82654d3605e6c152aff5a62d8fb2f7fc9",
+      "relevant_line": 1,
+      "not_binary_build_provenance": true
+    },
+    "collect_static_rgbd.py": {
+      "canonical_path": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_static_rgbd.py",
+      "sha256": "b41bb7811e7095955e39ca1024f33f45081dcfcfae3494f89466011a91915745"
+    },
+    "review_pair_sampling.py": {
+      "canonical_path": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_pair_sampling.py",
+      "sha256": "8a0f477020a91ef42c1209ee5fadc2ea4bb13df1bc1e36696bfd81b431d04b64"
+    },
+    "review_depth_registration.py": {
+      "canonical_path": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_depth_registration.py",
+      "sha256": "d2c95d8bcf54fad8866d63477d134f1fb0fb66904220af1cac25979244045ec5"
+    }
+  },
+  "library_binary_build_matches_source_verified": false,
+  "assets": [
+    {
+      "path": "README.md",
+      "bytes": 6549,
+      "sha256": "e13625cb8889fededff897957a9101cb5f7da89842805424791b78184824cf4c"
+    },
+    {
+      "path": "audit_pair05_depth.py",
+      "bytes": 13526,
+      "sha256": "a8e16405a8c37d4cbb1d2aa8476353f97d931186e3728d7687a56ff0d4b5c21f"
+    },
+    {
+      "path": "fixed_native_regions.npz",
+      "bytes": 1641,
+      "sha256": "4c7c038825cc334beed79555b8d997816d51f04c2b3113838ded52bc6f8140ec"
+    },
+    {
+      "path": "native_hole_comparison.png",
+      "bytes": 509164,
+      "sha256": "4a1cfcf5e5a859caf62aec4a4aad3853ca924e49fb8c5b9e49c2cfb41665bcc6"
+    },
+    {
+      "path": "report.json",
+      "bytes": 167969,
+      "sha256": "a70834df37942bd391657464076c3b21783badb1a3ab42e9098cd7bb4067dd7b"
+    },
+    {
+      "path": "test_audit_native_depth.py",
+      "bytes": 1914,
+      "sha256": "350c90e5afbfacd5a12705df2999fdc5fb125dd0b65b3498c679865c78847887"
+    }
+  ],
+  "GitHub_pushed": false,
+  "next_capture_not_executed": true
+}
