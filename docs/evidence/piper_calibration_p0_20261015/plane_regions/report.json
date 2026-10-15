@@ -1,0 +1,2324 @@
+{
+  "schema": "piper_p0_plane_regions_v1",
+  "offline_only": true,
+  "raw_modified": false,
+  "motion_commands_sent": false,
+  "production_parameters_modified": false,
+  "source_manifest_sha256": "7dd448fcec630d3e3e731a5b07f3960e25cb3c90c422365253ad6f6ef7de5f2e",
+  "dependency_sha256": {
+    "audit_calibration_plane_regions.py": "ccc2d1236b2c4e6a99a0d57354f6aa36bfbaae6b1c09aad25a4d72678090d7d7",
+    "calibration_p0_quality.py": "982d0c0eb2957f28f764581a6f498b52343a721ca73ecdbcfc32044e8baae382",
+    "estimate_calibration_cube_center.py": "1571fc692a3f6bd1754188feed729c7d27d9a5759c15086c87f52468bead92a4"
+  },
+  "frame_selection": "six equally spaced recorded indices, not selected for favorable residual",
+  "source_frame_indices_zero_based": [
+    0,
+    12,
+    24,
+    35,
+    47,
+    59
+  ],
+  "top_point_set_fixed_during_table_comparisons": true,
+  "region_geometry": "relative to RGB bbox x,y,w,h; same original valid native-depth annulus",
+  "witness_legend": "left blue/right orange/above cyan/below magenta; raw RGB separately preserved",
+  "no_changes_to_quality_thresholds_or_good_frame_count": true,
+  "frames": [
+    {
+      "snapshot": 1,
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "stamps_ns": {
+        "rgb": "1792028827457411142",
+        "depth": "1792028827452823703",
+        "depth_info": "1792028827452823703",
+        "feedback": "1792028827441477120"
+      },
+      "raw_sha256": {
+        "rgb": "a71b9b3bb1c0cfe4fb634903c5307de2322a2c62a347ce013b3ec93ae0e76051",
+        "depth": "a7b650bc77e3b88aa626bb42f8e189e8da5dafa1be6db1f5c2e44f20efcdaced"
+      },
+      "rgb_box_xywh": [
+        134,
+        91,
+        28,
+        30
+      ],
+      "original_top_fit": {
+        "native_points": 1295,
+        "A_inliers": 1191,
+        "normal_A": [
+          -0.0031162564388979735,
+          -0.7074484206850036,
+          -0.7067581064381936
+        ],
+        "normal_B": [
+          -0.000626555014079703,
+          -0.6863559532922796,
+          -0.7272655036567185
+        ],
+        "origin_A_m": [
+          0.010436465845832183,
+          -0.0097775908813954,
+          0.3282569269521454
+        ],
+        "normal_B_on_A_support": [
+          -0.003266806552390771,
+          -0.707021356218051,
+          -0.7071846504460749
+        ],
+        "A_vs_B_deg": 1.691640260358506,
+        "A_vs_B_same_support_deg": 0.03564281973950534,
+        "rms_A_m": 0.0007192513006899614,
+        "rms_B_m": 0.0010309296930559077,
+        "B_same_support_is_not_an_independent_support_test": true
+      },
+      "table_regions": {
+        "original_ring": {
+          "native_points": 63640,
+          "A_inliers": 43761,
+          "normal_A": [
+            0.007008835468967094,
+            -0.772901683967085,
+            -0.63448708666624
+          ],
+          "normal_B": [
+            0.004543139537799693,
+            -0.7942947933799409,
+            -0.6075155480254452
+          ],
+          "origin_A_m": [
+            0.012335616544894432,
+            0.021258981727377186,
+            0.33425841924398614
+          ],
+          "normal_B_on_A_support": [
+            0.007218095567145663,
+            -0.7728508836649264,
+            -0.634546618235986
+          ],
+          "A_vs_B_deg": 1.9775984621953908,
+          "A_vs_B_same_support_deg": 0.01280076286476889,
+          "rms_A_m": 0.0008578652110305697,
+          "rms_B_m": 0.003475390852543383,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.618917651857342,
+          "top_vs_region_B_deg": 9.251836209116137,
+          "top_face_height_over_region_A_m": 0.027818784639460765
+        },
+        "local_left": {
+          "native_points": 4820,
+          "A_inliers": 4759,
+          "normal_A": [
+            0.030703188077573797,
+            -0.78409253287915,
+            -0.6198840328037428
+          ],
+          "normal_B": [
+            0.0314019587570449,
+            -0.7840006082892973,
+            -0.6199652919222436
+          ],
+          "origin_A_m": [
+            -0.0526694933369578,
+            -0.002342920730078122,
+            0.36334650136583374
+          ],
+          "normal_B_on_A_support": [
+            0.03348525157845297,
+            -0.7840172593613873,
+            -0.6198351998315252
+          ],
+          "A_vs_B_deg": 0.04064907045675841,
+          "A_vs_B_same_support_deg": 0.1594834284077309,
+          "rms_A_m": 0.0006626710406712283,
+          "rms_B_m": 0.0007108825951678221,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.919018157239734,
+          "top_vs_region_B_deg": 8.52039746448026,
+          "top_face_height_over_region_A_m": 0.029569305034208147
+        },
+        "local_right": {
+          "native_points": 4769,
+          "A_inliers": 4487,
+          "normal_A": [
+            -0.030009095509798234,
+            -0.7852559183316318,
+            -0.6184436893621195
+          ],
+          "normal_B": [
+            -0.03190317070784208,
+            -0.7861555451743018,
+            -0.6172047038790962
+          ],
+          "origin_A_m": [
+            0.07266983820278114,
+            -0.00017591786859949785,
+            0.3634442959001785
+          ],
+          "normal_B_on_A_support": [
+            -0.028149012407547802,
+            -0.7843557956841942,
+            -0.6196721866253917
+          ],
+          "A_vs_B_deg": 0.1395471294640435,
+          "A_vs_B_same_support_deg": 0.1377405106045803,
+          "rms_A_m": 0.0007720404044212274,
+          "rms_B_m": 0.0009676546495188028,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.921749636537209,
+          "top_vs_region_B_deg": 8.707447311287854,
+          "top_face_height_over_region_A_m": 0.031197703874654283
+        },
+        "local_above": {
+          "native_points": 6265,
+          "A_inliers": 3050,
+          "normal_A": [
+            0.005648607013026106,
+            -0.7661407403671321,
+            -0.6426480056675774
+          ],
+          "normal_B": [
+            -0.005652282867100597,
+            -0.8458702809197975,
+            -0.5333587156455335
+          ],
+          "origin_A_m": [
+            -0.0009009199281436058,
+            -0.1136421478200436,
+            0.5197956036745427
+          ],
+          "normal_B_on_A_support": [
+            0.005289774522751666,
+            -0.7652045981416759,
+            -0.6437654396349145
+          ],
+          "A_vs_B_deg": 7.784012737324204,
+          "A_vs_B_same_support_deg": 0.08601587205434433,
+          "rms_A_m": 0.0007996575256314908,
+          "rms_B_m": 0.003535447026969706,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.006934808127528,
+          "top_vs_region_B_deg": 14.427188984009991,
+          "top_face_height_over_region_A_m": 0.04361312924097817
+        },
+        "local_below": {
+          "native_points": 6396,
+          "A_inliers": 6366,
+          "normal_A": [
+            -0.0017958160405275817,
+            -0.787299414840942,
+            -0.6165682496170711
+          ],
+          "normal_B": [
+            -0.0022911341626678373,
+            -0.7857676954820976,
+            -0.618517485153817
+          ],
+          "origin_A_m": [
+            0.012764212695694001,
+            0.053256248925277395,
+            0.2954426641533091
+          ],
+          "normal_B_on_A_support": [
+            -0.0025320206490819556,
+            -0.785414698898284,
+            -0.6189647321341909
+          ],
+          "A_vs_B_deg": 0.1448464822513993,
+          "A_vs_B_same_support_deg": 0.17970506748866907,
+          "rms_A_m": 0.0005439079723783652,
+          "rms_B_m": 0.0005691667781015131,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.906392316435965,
+          "top_vs_region_B_deg": 8.450106530213487,
+          "top_face_height_over_region_A_m": 0.02943877028615328
+        }
+      },
+      "top_edge_sensitivity": [
+        {
+          "removed_native_boundary_radius_px": 0,
+          "native_points": 1295,
+          "A_inliers": 1191,
+          "normal_A": [
+            -0.0031162564388979735,
+            -0.7074484206850036,
+            -0.7067581064381936
+          ],
+          "normal_B": [
+            -0.000626555014079703,
+            -0.6863559532922796,
+            -0.7272655036567185
+          ],
+          "origin_A_m": [
+            0.010436465845832183,
+            -0.0097775908813954,
+            0.3282569269521454
+          ],
+          "normal_B_on_A_support": [
+            -0.003266806552390771,
+            -0.707021356218051,
+            -0.7071846504460749
+          ],
+          "A_vs_B_deg": 1.691640260358506,
+          "A_vs_B_same_support_deg": 0.03564281973950534,
+          "rms_A_m": 0.0007192513006899614,
+          "rms_B_m": 0.0010309296930559077,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.0,
+          "B_change_from_original_deg": 0.0,
+          "normal_only_center_shift_A_m": 0.0,
+          "top_vs_local_below_A_deg": 6.906392316435965
+        },
+        {
+          "removed_native_boundary_radius_px": 1,
+          "native_points": 1127,
+          "A_inliers": 1073,
+          "normal_A": [
+            0.00013161501804523118,
+            -0.7100716390783982,
+            -0.7041294270615338
+          ],
+          "normal_B": [
+            0.0018018109121509128,
+            -0.6994104264655928,
+            -0.7147179925177862
+          ],
+          "origin_A_m": [
+            0.010455733743198694,
+            -0.009441614907939091,
+            0.32792451071762
+          ],
+          "normal_B_on_A_support": [
+            -1.7241544211805323e-05,
+            -0.7112232869077653,
+            -0.7029661697854626
+          ],
+          "A_vs_B_deg": 0.8662338953172991,
+          "A_vs_B_same_support_deg": 0.09417479667174117,
+          "rms_A_m": 0.0007087085443982392,
+          "rms_B_m": 0.0008897615604061097,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.2826717833184986,
+          "B_change_from_original_deg": 1.046751005028416,
+          "normal_only_center_shift_A_m": 7.153645061027425e-05,
+          "top_vs_local_below_A_deg": 6.694129708687617
+        },
+        {
+          "removed_native_boundary_radius_px": 2,
+          "native_points": 973,
+          "A_inliers": 964,
+          "normal_A": [
+            0.0031039484582925337,
+            -0.711415333827096,
+            -0.7027649594990131
+          ],
+          "normal_B": [
+            0.004197469043247328,
+            -0.7109397041506615,
+            -0.703240441325583
+          ],
+          "origin_A_m": [
+            0.010408222122197863,
+            -0.009072801639270173,
+            0.32757157676349
+          ],
+          "normal_B_on_A_support": [
+            0.0023968487742077826,
+            -0.7130939472892259,
+            -0.7010643889511322
+          ],
+          "A_vs_B_deg": 0.07355524197134083,
+          "A_vs_B_same_support_deg": 0.14277662802923227,
+          "rms_A_m": 0.0007135472603653748,
+          "rms_B_m": 0.0007449189111693312,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.48064631361113375,
+          "B_change_from_original_deg": 1.9888788935339248,
+          "normal_only_center_shift_A_m": 0.0001216381236273098,
+          "top_vs_local_below_A_deg": 6.589474721747536
+        },
+        {
+          "removed_native_boundary_radius_px": 3,
+          "native_points": 828,
+          "A_inliers": 828,
+          "normal_A": [
+            0.008222083159124156,
+            -0.7201834680232171,
+            -0.6937349419876271
+          ],
+          "normal_B": [
+            0.007210010340327642,
+            -0.7208500698948007,
+            -0.6930535278631466
+          ],
+          "origin_A_m": [
+            0.010404415651007646,
+            -0.009018945375193413,
+            0.3274359903381649
+          ],
+          "normal_B_on_A_support": [
+            0.007210010340327642,
+            -0.7208500698948007,
+            -0.6930535278631466
+          ],
+          "A_vs_B_deg": 0.07965916453251655,
+          "A_vs_B_same_support_deg": 0.07965916453251655,
+          "rms_A_m": 0.0006326444230000401,
+          "rms_B_m": 0.0006338128533458246,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.229338128422799,
+          "B_change_from_original_deg": 2.8198628862690898,
+          "normal_only_center_shift_A_m": 0.0003111060028288066,
+          "top_vs_local_below_A_deg": 5.890304935689324
+        }
+      ],
+      "normal_only_A_vs_B_center_shift_m": 0.0004280924891827141,
+      "normal_only_shift_caveat": "Fixed face center, inward nominal14.5mm offset only; not total center uncertainty or absolute accuracy"
+    },
+    {
+      "snapshot": 13,
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "stamps_ns": {
+        "rgb": "1792028835657564974",
+        "depth": "1792028835647399603",
+        "depth_info": "1792028835647399603",
+        "feedback": "1792028835646496768"
+      },
+      "raw_sha256": {
+        "rgb": "1f609e2d45072272de7175ccdf45c7838793ed302c66d783097f8a82e964908f",
+        "depth": "ffcff303525825b3f41b3a039ce33ad57cf72bffc572908f0e2d8f588005bb76"
+      },
+      "rgb_box_xywh": [
+        134,
+        90,
+        28,
+        31
+      ],
+      "original_top_fit": {
+        "native_points": 1310,
+        "A_inliers": 1209,
+        "normal_A": [
+          -0.005977979657136346,
+          -0.704783669105845,
+          -0.7093970986132673
+        ],
+        "normal_B": [
+          -0.001930739502493661,
+          -0.6847074062726421,
+          -0.7288155048023913
+        ],
+        "origin_A_m": [
+          0.010365465368758315,
+          -0.009755977894816656,
+          0.32820099255583624
+        ],
+        "normal_B_on_A_support": [
+          -0.004730770742575185,
+          -0.7035449029717726,
+          -0.7106350605695022
+        ],
+        "A_vs_B_deg": 1.61708530521757,
+        "A_vs_B_same_support_deg": 0.12318756749637533,
+        "rms_A_m": 0.0007434604320742427,
+        "rms_B_m": 0.0010451426572955429,
+        "B_same_support_is_not_an_independent_support_test": true
+      },
+      "table_regions": {
+        "original_ring": {
+          "native_points": 65044,
+          "A_inliers": 44185,
+          "normal_A": [
+            0.006886339488112303,
+            -0.7729535209860682,
+            -0.6344252774942798
+          ],
+          "normal_B": [
+            0.004719184703939775,
+            -0.7937049254284003,
+            -0.6082846542914161
+          ],
+          "origin_A_m": [
+            0.012628490463498806,
+            0.022398445052118285,
+            0.3328513318934484
+          ],
+          "normal_B_on_A_support": [
+            0.006979965115483794,
+            -0.7729152457952229,
+            -0.6344708842053329
+          ],
+          "A_vs_B_deg": 1.916416489027648,
+          "A_vs_B_same_support_deg": 0.006357177934047227,
+          "rms_A_m": 0.0008678075329963598,
+          "rms_B_m": 0.0034271508583246855,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.854966341963771,
+          "top_vs_region_B_deg": 9.328992315141987,
+          "top_face_height_over_region_A_m": 0.02787748127611314
+        },
+        "local_left": {
+          "native_points": 4930,
+          "A_inliers": 4843,
+          "normal_A": [
+            0.033014418037436224,
+            -0.7832355822468582,
+            -0.6208478645401585
+          ],
+          "normal_B": [
+            0.03409546092559831,
+            -0.7829192019500214,
+            -0.6211883955469649
+          ],
+          "origin_A_m": [
+            -0.05280124359574037,
+            -0.0031816469697468924,
+            0.36422093743547596
+          ],
+          "normal_B_on_A_support": [
+            0.0367848881311023,
+            -0.7830019315860197,
+            -0.6209306298917329
+          ],
+          "A_vs_B_deg": 0.06742210695587537,
+          "A_vs_B_same_support_deg": 0.2164984882000318,
+          "rms_A_m": 0.0007071127649573092,
+          "rms_B_m": 0.0007730734153667027,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 7.141587522412872,
+          "top_vs_region_B_deg": 8.607621635829842,
+          "top_face_height_over_region_A_m": 0.02971088458130669
+        },
+        "local_right": {
+          "native_points": 4841,
+          "A_inliers": 4442,
+          "normal_A": [
+            -0.03242166744556899,
+            -0.7830061265811127,
+            -0.6211684483427111
+          ],
+          "normal_B": [
+            -0.031982813676472314,
+            -0.7844205405528467,
+            -0.6194041614229887
+          ],
+          "origin_A_m": [
+            0.07271095771432334,
+            -0.0005172443305245546,
+            0.36370508779828775
+          ],
+          "normal_B_on_A_support": [
+            -0.028400276820420785,
+            -0.7817843336347612,
+            -0.6229018220873783
+          ],
+          "A_vs_B_deg": 0.13197781771502576,
+          "A_vs_B_same_support_deg": 0.26048466576682155,
+          "rms_A_m": 0.0007875810791826046,
+          "rms_B_m": 0.0010925531738358077,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.927843985764195,
+          "top_vs_region_B_deg": 8.662885824646365,
+          "top_face_height_over_region_A_m": 0.03139613312813431
+        },
+        "local_above": {
+          "native_points": 6400,
+          "A_inliers": 3368,
+          "normal_A": [
+            0.005205470760411795,
+            -0.7660329456474615,
+            -0.6427802340278022
+          ],
+          "normal_B": [
+            -0.0070406698265147605,
+            -0.84245676707929,
+            -0.5387179452837124
+          ],
+          "origin_A_m": [
+            -0.002329521009193047,
+            -0.11620614023539687,
+            0.5226033817858236
+          ],
+          "normal_B_on_A_support": [
+            0.00498392039230897,
+            -0.765183871741424,
+            -0.6437925154615631
+          ],
+          "A_vs_B_deg": 7.435914187966557,
+          "A_vs_B_same_support_deg": 0.0767576363197991,
+          "rms_A_m": 0.0007675169799795144,
+          "rms_B_m": 0.0036329761769269835,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.226215985093531,
+          "top_vs_region_B_deg": 14.192845721186728,
+          "top_face_height_over_region_A_m": 0.04355905547279443
+        },
+        "local_below": {
+          "native_points": 6622,
+          "A_inliers": 6582,
+          "normal_A": [
+            -0.004308988524237823,
+            -0.7845135481328023,
+            -0.6200967065014774
+          ],
+          "normal_B": [
+            -0.004379257997570496,
+            -0.7830798178370948,
+            -0.6219057975253269
+          ],
+          "origin_A_m": [
+            0.012927886823146445,
+            0.05475661973279427,
+            0.29357474931631666
+          ],
+          "normal_B_on_A_support": [
+            -0.004519747261233612,
+            -0.7826252816731908,
+            -0.6224766986567878
+          ],
+          "A_vs_B_deg": 0.1323189315423364,
+          "A_vs_B_same_support_deg": 0.17448742054411442,
+          "rms_A_m": 0.0005650297056017859,
+          "rms_B_m": 0.0006017558291286701,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.863870438302725,
+          "top_vs_region_B_deg": 8.332560285424009,
+          "top_face_height_over_region_A_m": 0.029249982157700718
+        }
+      },
+      "top_edge_sensitivity": [
+        {
+          "removed_native_boundary_radius_px": 0,
+          "native_points": 1310,
+          "A_inliers": 1209,
+          "normal_A": [
+            -0.005977979657136346,
+            -0.704783669105845,
+            -0.7093970986132673
+          ],
+          "normal_B": [
+            -0.001930739502493661,
+            -0.6847074062726421,
+            -0.7288155048023913
+          ],
+          "origin_A_m": [
+            0.010365465368758315,
+            -0.009755977894816656,
+            0.32820099255583624
+          ],
+          "normal_B_on_A_support": [
+            -0.004730770742575185,
+            -0.7035449029717726,
+            -0.7106350605695022
+          ],
+          "A_vs_B_deg": 1.61708530521757,
+          "A_vs_B_same_support_deg": 0.12318756749637533,
+          "rms_A_m": 0.0007434604320742427,
+          "rms_B_m": 0.0010451426572955429,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.0,
+          "B_change_from_original_deg": 0.0,
+          "normal_only_center_shift_A_m": 0.0,
+          "top_vs_local_below_A_deg": 6.863870438302725
+        },
+        {
+          "removed_native_boundary_radius_px": 1,
+          "native_points": 1146,
+          "A_inliers": 1096,
+          "normal_A": [
+            -0.0024825525466733813,
+            -0.7086215804285753,
+            -0.7055843625561451
+          ],
+          "normal_B": [
+            0.002163364673901644,
+            -0.6982748908534123,
+            -0.715826443110998
+          ],
+          "origin_A_m": [
+            0.010304061293556535,
+            -0.009371450519746605,
+            0.32783485401460505
+          ],
+          "normal_B_on_A_support": [
+            -0.0005763411104798429,
+            -0.70883193400703,
+            -0.7053771736899187
+          ],
+          "A_vs_B_deg": 0.87560116463462,
+          "A_vs_B_same_support_deg": 0.11052026237266373,
+          "rms_A_m": 0.0007234760339919597,
+          "rms_B_m": 0.0008961410682673084,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.3690340771841293,
+          "B_change_from_original_deg": 1.1014589173241012,
+          "normal_only_center_shift_A_m": 9.339230420343843e-05,
+          "top_vs_local_below_A_deg": 6.554128447279469
+        },
+        {
+          "removed_native_boundary_radius_px": 2,
+          "native_points": 992,
+          "A_inliers": 985,
+          "normal_A": [
+            0.002720907062272552,
+            -0.7106011383082123,
+            -0.7035898086952594
+          ],
+          "normal_B": [
+            0.0066310528633683,
+            -0.7103317374367019,
+            -0.703835813189468
+          ],
+          "origin_A_m": [
+            0.010264549777068225,
+            -0.008967399046718907,
+            0.3274558375634572
+          ],
+          "normal_B_on_A_support": [
+            0.004707409640913705,
+            -0.7119132436841634,
+            -0.7022516456097242
+          ],
+          "A_vs_B_deg": 0.22500801115020796,
+          "A_vs_B_same_support_deg": 0.15647621192072736,
+          "rms_A_m": 0.0007224278822492681,
+          "rms_B_m": 0.0007473777884772074,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.6857323578826425,
+          "B_change_from_original_deg": 2.108335532387598,
+          "normal_only_center_shift_A_m": 0.00017353913202831336,
+          "top_vs_local_below_A_deg": 6.4049839822203145
+        },
+        {
+          "removed_native_boundary_radius_px": 3,
+          "native_points": 854,
+          "A_inliers": 854,
+          "normal_A": [
+            0.007948953244765642,
+            -0.7196903494566599,
+            -0.6942496777394016
+          ],
+          "normal_B": [
+            0.009285017465955652,
+            -0.7201221721882662,
+            -0.6937851580810228
+          ],
+          "origin_A_m": [
+            0.010260169919947043,
+            -0.008871502572264612,
+            0.3272810304449666
+          ],
+          "normal_B_on_A_support": [
+            0.009285017465955652,
+            -0.7201221721882662,
+            -0.6937851580810228
+          ],
+          "A_vs_B_deg": 0.08473806349574452,
+          "A_vs_B_same_support_deg": 0.08473806349574452,
+          "rms_A_m": 0.0006352782387407347,
+          "rms_B_m": 0.0006369979027059375,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.4558627306196978,
+          "B_change_from_original_deg": 2.92584064244829,
+          "normal_only_center_shift_A_m": 0.00036842926087692264,
+          "top_vs_local_below_A_deg": 5.689059723318871
+        }
+      ],
+      "normal_only_A_vs_B_center_shift_m": 0.0004092266288810113,
+      "normal_only_shift_caveat": "Fixed face center, inward nominal14.5mm offset only; not total center uncertainty or absolute accuracy"
+    },
+    {
+      "snapshot": 25,
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "stamps_ns": {
+        "rgb": "1792028843457719576",
+        "depth": "1792028843445922117",
+        "depth_info": "1792028843445922117",
+        "feedback": "1792028843446584064"
+      },
+      "raw_sha256": {
+        "rgb": "ca444dc00c82028a178e8e17d62449ed58824e08e9b92451f9521ccd406636f6",
+        "depth": "8e9a15a02d5831a295f17c6fe054500868c202429085e845da53a4e0f83297a3"
+      },
+      "rgb_box_xywh": [
+        134,
+        91,
+        27,
+        30
+      ],
+      "original_top_fit": {
+        "native_points": 1281,
+        "A_inliers": 1181,
+        "normal_A": [
+          -0.008950073826297377,
+          -0.7115433199644716,
+          -0.7025852261415988
+        ],
+        "normal_B": [
+          -0.004547982904048399,
+          -0.6912795060965716,
+          -0.7225731522153203
+        ],
+        "origin_A_m": [
+          0.010270582439148543,
+          -0.009685264768615906,
+          0.3281803556308267
+        ],
+        "normal_B_on_A_support": [
+          -0.006879666027286411,
+          -0.7102513101690112,
+          -0.7039145875733475
+        ],
+        "A_vs_B_deg": 1.6502528246667623,
+        "A_vs_B_same_support_deg": 0.15922748195634356,
+        "rms_A_m": 0.0007509875549582539,
+        "rms_B_m": 0.0010454165721890776,
+        "B_same_support_is_not_an_independent_support_test": true
+      },
+      "table_regions": {
+        "original_ring": {
+          "native_points": 61296,
+          "A_inliers": 42253,
+          "normal_A": [
+            0.007046620416515504,
+            -0.7728144058684551,
+            -0.6345929712996295
+          ],
+          "normal_B": [
+            0.004763826327473022,
+            -0.7942498021959675,
+            -0.6075726768629314
+          ],
+          "origin_A_m": [
+            0.010907471504832022,
+            0.02079208527335231,
+            0.3347555870876201
+          ],
+          "normal_B_on_A_support": [
+            0.00735321572019659,
+            -0.7727218027635662,
+            -0.6347022496827915
+          ],
+          "A_vs_B_deg": 1.9805640661459565,
+          "A_vs_B_same_support_deg": 0.019389164485490815,
+          "rms_A_m": 0.0008672986083821897,
+          "rms_B_m": 0.003455004253948777,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.325489301604915,
+          "top_vs_region_B_deg": 8.869289133167895,
+          "top_face_height_over_region_A_m": 0.02776183155165441
+        },
+        "local_left": {
+          "native_points": 4640,
+          "A_inliers": 4617,
+          "normal_A": [
+            0.03197074630358224,
+            -0.7838440640871197,
+            -0.6201341424048346
+          ],
+          "normal_B": [
+            0.034241096762396006,
+            -0.7834258229175648,
+            -0.6205413179462305
+          ],
+          "origin_A_m": [
+            -0.050628421261092585,
+            -0.0025084933402269908,
+            0.36354559237600304
+          ],
+          "normal_B_on_A_support": [
+            0.03484886191288332,
+            -0.7835044550876017,
+            -0.6204081927902443
+          ],
+          "A_vs_B_deg": 0.13431200472689106,
+          "A_vs_B_same_support_deg": 0.16678872598641378,
+          "rms_A_m": 0.0006584465168214201,
+          "rms_B_m": 0.0006804984952776791,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.7101557818641195,
+          "top_vs_region_B_deg": 8.1916589383778,
+          "top_face_height_over_region_A_m": 0.02955857662371323
+        },
+        "local_right": {
+          "native_points": 4606,
+          "A_inliers": 4362,
+          "normal_A": [
+            -0.0263492750839129,
+            -0.786381691748064,
+            -0.6171787023107685
+          ],
+          "normal_B": [
+            -0.026636614738826194,
+            -0.7866328140386424,
+            -0.6168462585060415
+          ],
+          "origin_A_m": [
+            0.0703955190543765,
+            -0.0002135694884679693,
+            0.36360247592847045
+          ],
+          "normal_B_on_A_support": [
+            -0.024281831235682446,
+            -0.7853974728536962,
+            -0.6185153209960681
+          ],
+          "A_vs_B_deg": 0.028997855953285894,
+          "A_vs_B_same_support_deg": 0.15191016773478752,
+          "rms_A_m": 0.0007953262054292096,
+          "rms_B_m": 0.0009580311679098584,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.585857423253412,
+          "top_vs_region_B_deg": 8.262191626824599,
+          "top_face_height_over_region_A_m": 0.03093321465169698
+        },
+        "local_above": {
+          "native_points": 6005,
+          "A_inliers": 2887,
+          "normal_A": [
+            0.006353097106852928,
+            -0.768133439193252,
+            -0.6402582742536775
+          ],
+          "normal_B": [
+            -0.005081186527879588,
+            -0.8459732087774052,
+            -0.5332011923977006
+          ],
+          "origin_A_m": [
+            -0.0011075296794820174,
+            -0.1138798178748323,
+            0.5198971606648246
+          ],
+          "normal_B_on_A_support": [
+            0.006224243084092552,
+            -0.7674756397433485,
+            -0.641047893061484
+          ],
+          "A_vs_B_deg": 7.617756858053694,
+          "A_vs_B_same_support_deg": 0.059344750033830065,
+          "rms_A_m": 0.0007833726845317713,
+          "rms_B_m": 0.0034342807342487057,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 4.9039794372264875,
+          "top_vs_region_B_deg": 14.04535521515673,
+          "top_face_height_over_region_A_m": 0.042822569867253316
+        },
+        "local_below": {
+          "native_points": 6176,
+          "A_inliers": 6128,
+          "normal_A": [
+            -0.0013002831736374852,
+            -0.7874221078089148,
+            -0.6164127946412487
+          ],
+          "normal_B": [
+            -0.001351313835830206,
+            -0.7864698400296115,
+            -0.6176272052579245
+          ],
+          "origin_A_m": [
+            0.012714108800435428,
+            0.05328224034543503,
+            0.2953772845952949
+          ],
+          "normal_B_on_A_support": [
+            -0.0017874931177593125,
+            -0.7858790567853869,
+            -0.6183776459207305
+          ],
+          "A_vs_B_deg": 0.08846979832124206,
+          "A_vs_B_same_support_deg": 0.14584025938741135,
+          "rms_A_m": 0.0005302364423950392,
+          "rms_B_m": 0.0006034360051927696,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.596840995476635,
+          "top_vs_region_B_deg": 8.12687222033203,
+          "top_face_height_over_region_A_m": 0.029411835361449406
+        }
+      },
+      "top_edge_sensitivity": [
+        {
+          "removed_native_boundary_radius_px": 0,
+          "native_points": 1281,
+          "A_inliers": 1181,
+          "normal_A": [
+            -0.008950073826297377,
+            -0.7115433199644716,
+            -0.7025852261415988
+          ],
+          "normal_B": [
+            -0.004547982904048399,
+            -0.6912795060965716,
+            -0.7225731522153203
+          ],
+          "origin_A_m": [
+            0.010270582439148543,
+            -0.009685264768615906,
+            0.3281803556308267
+          ],
+          "normal_B_on_A_support": [
+            -0.006879666027286411,
+            -0.7102513101690112,
+            -0.7039145875733475
+          ],
+          "A_vs_B_deg": 1.6502528246667623,
+          "A_vs_B_same_support_deg": 0.15922748195634356,
+          "rms_A_m": 0.0007509875549582539,
+          "rms_B_m": 0.0010454165721890776,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.0,
+          "B_change_from_original_deg": 0.0,
+          "normal_only_center_shift_A_m": 0.0,
+          "top_vs_local_below_A_deg": 6.596840995476635
+        },
+        {
+          "removed_native_boundary_radius_px": 1,
+          "native_points": 1114,
+          "A_inliers": 1066,
+          "normal_A": [
+            -0.00545765971092395,
+            -0.713780599825122,
+            -0.7003481057758126
+          ],
+          "normal_B": [
+            -0.0005762177691795219,
+            -0.7036964534939107,
+            -0.710500506201913
+          ],
+          "origin_A_m": [
+            0.010243456824553658,
+            -0.009294023460734126,
+            0.32779924953096373
+          ],
+          "normal_B_on_A_support": [
+            -0.0032502504132106277,
+            -0.7138077830175236,
+            -0.7003341236694522
+          ],
+          "A_vs_B_deg": 0.8662736692083257,
+          "A_vs_B_same_support_deg": 0.12648738854543307,
+          "rms_A_m": 0.0007499293897815279,
+          "rms_B_m": 0.0008973126017851882,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.2700031384220481,
+          "B_change_from_original_deg": 1.0180487667144549,
+          "normal_only_center_shift_A_m": 6.833037123919016e-05,
+          "top_vs_local_below_A_deg": 6.405479610924288
+        },
+        {
+          "removed_native_boundary_radius_px": 2,
+          "native_points": 962,
+          "A_inliers": 955,
+          "normal_A": [
+            0.0005601628248865455,
+            -0.7155503733126647,
+            -0.6985609132135262
+          ],
+          "normal_B": [
+            0.0036637718231959456,
+            -0.7142749673274491,
+            -0.6998555906938222
+          ],
+          "origin_A_m": [
+            0.010296055623245192,
+            -0.008960670319013056,
+            0.32745445026178477
+          ],
+          "normal_B_on_A_support": [
+            0.0015644250407659834,
+            -0.7160299781331625,
+            -0.6980677782199338
+          ],
+          "A_vs_B_deg": 0.2060677814833395,
+          "A_vs_B_same_support_deg": 0.06974442020533587,
+          "rms_A_m": 0.0007371909974846464,
+          "rms_B_m": 0.0007635773809232422,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.6346588782908549,
+          "B_change_from_original_deg": 1.9109794892500516,
+          "normal_only_center_shift_A_m": 0.00016061404114655185,
+          "top_vs_local_below_A_deg": 6.257888714920481
+        },
+        {
+          "removed_native_boundary_radius_px": 3,
+          "native_points": 820,
+          "A_inliers": 820,
+          "normal_A": [
+            0.007117334120566501,
+            -0.7232072745241807,
+            -0.6905943683743175
+          ],
+          "normal_B": [
+            0.007225482851756507,
+            -0.722878729245186,
+            -0.6909371427289345
+          ],
+          "origin_A_m": [
+            0.010363320309706048,
+            -0.008893688256277702,
+            0.32727682926829327
+          ],
+          "normal_B_on_A_support": [
+            0.007225482851756507,
+            -0.722878729245186,
+            -0.6909371427289345
+          ],
+          "A_vs_B_deg": 0.02790089220011291,
+          "A_vs_B_same_support_deg": 0.02790089220011291,
+          "rms_A_m": 0.000641811066077559,
+          "rms_B_m": 0.000642989538006318,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.3289832636732597,
+          "B_change_from_original_deg": 2.6494844135108155,
+          "normal_only_center_shift_A_m": 0.0003363218984639703,
+          "top_vs_local_below_A_deg": 5.644478707645866
+        }
+      ],
+      "normal_only_A_vs_B_center_shift_m": 0.0004176195709388555,
+      "normal_only_shift_caveat": "Fixed face center, inward nominal14.5mm offset only; not total center uncertainty or absolute accuracy"
+    },
+    {
+      "snapshot": 36,
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "stamps_ns": {
+        "rgb": "1792028851857822113",
+        "depth": "1792028851838022461",
+        "depth_info": "1792028851838022461",
+        "feedback": "1792028851836858368"
+      },
+      "raw_sha256": {
+        "rgb": "6a0046005f8f3e786f6622781e64fcd75d8ba531661a865513076c013272b53a",
+        "depth": "03f024208167f22af851500f71fdec9876785e71976b63d68ce6e2c4a8fafa03"
+      },
+      "rgb_box_xywh": [
+        134,
+        90,
+        27,
+        31
+      ],
+      "original_top_fit": {
+        "native_points": 1290,
+        "A_inliers": 1204,
+        "normal_A": [
+          -0.007278165306033302,
+          -0.7074049139466616,
+          -0.7067710492329851
+        ],
+        "normal_B": [
+          -0.0036670128370111087,
+          -0.692445902567146,
+          -0.7214604805772966
+        ],
+        "origin_A_m": [
+          0.010482753447661993,
+          -0.009721981113648972,
+          0.32809219269103496
+        ],
+        "normal_B_on_A_support": [
+          -0.0044096072847242505,
+          -0.7066285569283884,
+          -0.7075709419534538
+        ],
+        "A_vs_B_deg": 1.2189451983619335,
+        "A_vs_B_same_support_deg": 0.17632948292852912,
+        "rms_A_m": 0.000732893961461187,
+        "rms_B_m": 0.0009896075144421926,
+        "B_same_support_is_not_an_independent_support_test": true
+      },
+      "table_regions": {
+        "original_ring": {
+          "native_points": 62721,
+          "A_inliers": 42568,
+          "normal_A": [
+            0.006880154316172288,
+            -0.7725583960192294,
+            -0.6349064405223661
+          ],
+          "normal_B": [
+            0.004825718592327903,
+            -0.7937142464200098,
+            -0.608271655981095
+          ],
+          "origin_A_m": [
+            0.011452257069886928,
+            0.022245823631734836,
+            0.3328818980667836
+          ],
+          "normal_B_on_A_support": [
+            0.007297953124982486,
+            -0.7725175503334396,
+            -0.6349514739781358
+          ],
+          "A_vs_B_deg": 1.9525295751060767,
+          "A_vs_B_same_support_deg": 0.024190236679150635,
+          "rms_A_m": 0.0008829138677788847,
+          "rms_B_m": 0.003464604459666941,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.6189787344555,
+          "top_vs_region_B_deg": 8.723998900576964,
+          "top_face_height_over_region_A_m": 0.027934762454305984
+        },
+        "local_left": {
+          "native_points": 4747,
+          "A_inliers": 4723,
+          "normal_A": [
+            0.03634499206122855,
+            -0.7824337664065948,
+            -0.621672295296211
+          ],
+          "normal_B": [
+            0.03784294315563467,
+            -0.7824248011123265,
+            -0.6215941941955825
+          ],
+          "origin_A_m": [
+            -0.050755932445848535,
+            -0.0032288037048415074,
+            0.364288376032184
+          ],
+          "normal_B_on_A_support": [
+            0.038663672403740544,
+            -0.7824613866659021,
+            -0.6214976257501952
+          ],
+          "A_vs_B_deg": 0.08594439618629372,
+          "A_vs_B_same_support_deg": 0.13323644508636182,
+          "rms_A_m": 0.0006644969120409404,
+          "rms_B_m": 0.0006818746682696808,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.9685264689017234,
+          "top_vs_region_B_deg": 8.067377120459872,
+          "top_face_height_over_region_A_m": 0.030048330093385592
+        },
+        "local_right": {
+          "native_points": 4667,
+          "A_inliers": 4325,
+          "normal_A": [
+            -0.02222136049020157,
+            -0.7834159296640668,
+            -0.6211003882518107
+          ],
+          "normal_B": [
+            -0.0256081906821424,
+            -0.7844480732282533,
+            -0.6196655880218525
+          ],
+          "origin_A_m": [
+            0.07056412774029855,
+            -0.0004375170806194419,
+            0.3636207215541144
+          ],
+          "normal_B_on_A_support": [
+            -0.020472631945277098,
+            -0.7824944874674415,
+            -0.6223208564914877
+          ],
+          "A_vs_B_deg": 0.2188864399157621,
+          "A_vs_B_same_support_deg": 0.1331020839664891,
+          "rms_A_m": 0.0008083709309105561,
+          "rms_B_m": 0.0010721420786097412,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.621392599581296,
+          "top_vs_region_B_deg": 7.967855595807661,
+          "top_face_height_over_region_A_m": 0.030912898604563623
+        },
+        "local_above": {
+          "native_points": 6228,
+          "A_inliers": 3258,
+          "normal_A": [
+            0.005804655817398743,
+            -0.7662913985727084,
+            -0.6424669629205255
+          ],
+          "normal_B": [
+            -0.004651570241463864,
+            -0.8433067100367512,
+            -0.5374124632917248
+          ],
+          "origin_A_m": [
+            -0.001794234311904271,
+            -0.11617177307160931,
+            0.5224895577395618
+          ],
+          "normal_B_on_A_support": [
+            0.005516864953992406,
+            -0.7653674516816401,
+            -0.6435699092619477
+          ],
+          "A_vs_B_deg": 7.49272325253633,
+          "A_vs_B_same_support_deg": 0.08407054959413984,
+          "rms_A_m": 0.0007654885311466681,
+          "rms_B_m": 0.0037153637363871875,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.053356208862137,
+          "top_vs_region_B_deg": 13.667528732739175,
+          "top_face_height_over_region_A_m": 0.04357651064765655
+        },
+        "local_below": {
+          "native_points": 6404,
+          "A_inliers": 6374,
+          "normal_A": [
+            -0.0026873190910624255,
+            -0.78475670404635,
+            -0.619798107265916
+          ],
+          "normal_B": [
+            -0.0032680836858731822,
+            -0.7836648773762878,
+            -0.621175240649392
+          ],
+          "origin_A_m": [
+            0.01291798603554333,
+            0.05468461132240086,
+            0.29356604957640414
+          ],
+          "normal_B_on_A_support": [
+            -0.0034635757416460996,
+            -0.7833756890047001,
+            -0.6215388431300922
+          ],
+          "A_vs_B_deg": 0.10604936992088583,
+          "A_vs_B_same_support_deg": 0.13485752839862059,
+          "rms_A_m": 0.0005485545359998664,
+          "rms_B_m": 0.0005761515251750894,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.677856444390985,
+          "top_vs_region_B_deg": 7.773330362517944,
+          "top_face_height_over_region_A_m": 0.029393752369700755
+        }
+      },
+      "top_edge_sensitivity": [
+        {
+          "removed_native_boundary_radius_px": 0,
+          "native_points": 1290,
+          "A_inliers": 1204,
+          "normal_A": [
+            -0.007278165306033302,
+            -0.7074049139466616,
+            -0.7067710492329851
+          ],
+          "normal_B": [
+            -0.0036670128370111087,
+            -0.692445902567146,
+            -0.7214604805772966
+          ],
+          "origin_A_m": [
+            0.010482753447661993,
+            -0.009721981113648972,
+            0.32809219269103496
+          ],
+          "normal_B_on_A_support": [
+            -0.0044096072847242505,
+            -0.7066285569283884,
+            -0.7075709419534538
+          ],
+          "A_vs_B_deg": 1.2189451983619335,
+          "A_vs_B_same_support_deg": 0.17632948292852912,
+          "rms_A_m": 0.000732893961461187,
+          "rms_B_m": 0.0009896075144421926,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.0,
+          "B_change_from_original_deg": 0.0,
+          "normal_only_center_shift_A_m": 0.0,
+          "top_vs_local_below_A_deg": 6.677856444390985
+        },
+        {
+          "removed_native_boundary_radius_px": 1,
+          "native_points": 1127,
+          "A_inliers": 1096,
+          "normal_A": [
+            -0.004508998664939574,
+            -0.7095295203123528,
+            -0.7046612865315947
+          ],
+          "normal_B": [
+            0.0001956003896719623,
+            -0.7047724214290719,
+            -0.7094334329121303
+          ],
+          "origin_A_m": [
+            0.01036915385897172,
+            -0.00932428783587752,
+            0.32770711678832776
+          ],
+          "normal_B_on_A_support": [
+            -0.0017249797849559839,
+            -0.7102573358701767,
+            -0.7039400125631021
+          ],
+          "A_vs_B_deg": 0.47086187259602197,
+          "A_vs_B_same_support_deg": 0.16997369467629006,
+          "rms_A_m": 0.0007282989710249638,
+          "rms_B_m": 0.0008441917376016629,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.23367518616704602,
+          "B_change_from_original_deg": 1.0112677665639025,
+          "normal_only_center_shift_A_m": 5.9136779008452056e-05,
+          "top_vs_local_below_A_deg": 6.502003529548459
+        },
+        {
+          "removed_native_boundary_radius_px": 2,
+          "native_points": 975,
+          "A_inliers": 960,
+          "normal_A": [
+            0.0018214707032188613,
+            -0.719410868575951,
+            -0.6945823813049627
+          ],
+          "normal_B": [
+            0.0048247132305545655,
+            -0.7162089824233486,
+            -0.6978691966538961
+          ],
+          "origin_A_m": [
+            0.01028909541966488,
+            -0.009239431550733606,
+            0.3275500000000044
+          ],
+          "normal_B_on_A_support": [
+            0.0032192367203010114,
+            -0.7196810084165793,
+            -0.6942974021551818
+          ],
+          "A_vs_B_deg": 0.31421274579903213,
+          "A_vs_B_same_support_deg": 0.08318626730792646,
+          "rms_A_m": 0.0006381346966742779,
+          "rms_B_m": 0.000693594169294212,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.1102995174930392,
+          "B_change_from_original_deg": 1.9793687147436059,
+          "normal_only_center_shift_A_m": 0.00028098214631965066,
+          "top_vs_local_below_A_deg": 5.698336885530533
+        },
+        {
+          "removed_native_boundary_radius_px": 3,
+          "native_points": 836,
+          "A_inliers": 836,
+          "normal_A": [
+            0.009697435164512824,
+            -0.7251802641569918,
+            -0.6884907727983182
+          ],
+          "normal_B": [
+            0.009134588730256833,
+            -0.7253780106293238,
+            -0.6882901284953703
+          ],
+          "origin_A_m": [
+            0.010286656876157374,
+            -0.009113164050175756,
+            0.3273528708133979
+          ],
+          "normal_B_on_A_support": [
+            0.009134588730256833,
+            -0.7253780106293238,
+            -0.6882901284953703
+          ],
+          "A_vs_B_deg": 0.036062581052314316,
+          "A_vs_B_same_support_deg": 0.036062581052314316,
+          "rms_A_m": 0.0005654109696679751,
+          "rms_B_m": 0.0005668718604304291,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.7551372004272248,
+          "B_change_from_original_deg": 2.77700581943013,
+          "normal_only_center_shift_A_m": 0.0004441600164023545,
+          "top_vs_local_below_A_deg": 5.2597816728417905
+        }
+      ],
+      "normal_only_A_vs_B_center_shift_m": 0.00030847598560133997,
+      "normal_only_shift_caveat": "Fixed face center, inward nominal14.5mm offset only; not total center uncertainty or absolute accuracy"
+    },
+    {
+      "snapshot": 48,
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "stamps_ns": {
+        "rgb": "1792028859657952270",
+        "depth": "1792028859637108624",
+        "depth_info": "1792028859637108624",
+        "feedback": "1792028859646692864"
+      },
+      "raw_sha256": {
+        "rgb": "4a3f4e659ea91ac5f998dc86c964ab450f617984d93bfd079df3c9d06bd0d3c6",
+        "depth": "7b7750e0f8e86522454d2e1924148661819d9c13b01ae91b368b0b80bdf5bc11"
+      },
+      "rgb_box_xywh": [
+        134,
+        89,
+        27,
+        32
+      ],
+      "original_top_fit": {
+        "native_points": 1354,
+        "A_inliers": 1245,
+        "normal_A": [
+          -0.006917965330710677,
+          -0.7074281307402763,
+          -0.7067514284336476
+        ],
+        "normal_B": [
+          -0.004849125041384697,
+          -0.6882293098739191,
+          -0.7254770175662371
+        ],
+        "origin_A_m": [
+          0.010323025401441154,
+          -0.009966267890923702,
+          0.3284072289156676
+        ],
+        "normal_B_on_A_support": [
+          -0.005210750832562172,
+          -0.706024931880658,
+          -0.7081678075418801
+        ],
+        "A_vs_B_deg": 1.5412097573389882,
+        "A_vs_B_same_support_deg": 0.1503911307255939,
+        "rms_A_m": 0.0007336151545463104,
+        "rms_B_m": 0.0010375402428343112,
+        "B_same_support_is_not_an_independent_support_test": true
+      },
+      "table_regions": {
+        "original_ring": {
+          "native_points": 64006,
+          "A_inliers": 42894,
+          "normal_A": [
+            0.006875209602086422,
+            -0.7726538340993978,
+            -0.634790346606206
+          ],
+          "normal_B": [
+            0.005058703964572358,
+            -0.7932472821899113,
+            -0.6088786076160979
+          ],
+          "origin_A_m": [
+            0.010891926236906452,
+            0.024370199405825674,
+            0.33039117427075476
+          ],
+          "normal_B_on_A_support": [
+            0.007244278214437262,
+            -0.7726285594852408,
+            -0.6348170047351547
+          ],
+          "A_vs_B_deg": 1.8993431167321086,
+          "A_vs_B_same_support_deg": 0.021250563898582514,
+          "rms_A_m": 0.0008802196442005629,
+          "rms_B_m": 0.003474524389028317,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.622805965991027,
+          "top_vs_region_B_deg": 9.018077095803038,
+          "top_face_height_over_region_A_m": 0.027933316332697238
+        },
+        "local_left": {
+          "native_points": 4956,
+          "A_inliers": 4905,
+          "normal_A": [
+            0.0390543692325048,
+            -0.7805735498282822,
+            -0.6238426801304358
+          ],
+          "normal_B": [
+            0.039974947635959705,
+            -0.7807495323485567,
+            -0.6235640875635898
+          ],
+          "origin_A_m": [
+            -0.05111506704698288,
+            -0.004814817918058442,
+            0.3662181447502536
+          ],
+          "normal_B_on_A_support": [
+            0.041456880717046236,
+            -0.7808608401414219,
+            -0.6233279035747119
+          ],
+          "A_vs_B_deg": 0.05602250938049867,
+          "A_vs_B_same_support_deg": 0.14173724252363293,
+          "rms_A_m": 0.0007102489872534614,
+          "rms_B_m": 0.0007403261788147508,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.864678033058126,
+          "top_vs_region_B_deg": 8.301391533869875,
+          "top_face_height_over_region_A_m": 0.030163578627377792
+        },
+        "local_right": {
+          "native_points": 4894,
+          "A_inliers": 4480,
+          "normal_A": [
+            -0.03131321834837061,
+            -0.7826736032952017,
+            -0.6216442013415492
+          ],
+          "normal_B": [
+            -0.028034612090819734,
+            -0.7828191316506488,
+            -0.6216174608604891
+          ],
+          "origin_A_m": [
+            0.07069408229931165,
+            -0.001785712727225863,
+            0.3652834188797147
+          ],
+          "normal_B_on_A_support": [
+            -0.027900760026526278,
+            -0.7818088597290025,
+            -0.6228936140619674
+          ],
+          "A_vs_B_deg": 0.18804159039523666,
+          "A_vs_B_same_support_deg": 0.21402640078871402,
+          "rms_A_m": 0.0008022252944619733,
+          "rms_B_m": 0.00109054219600063,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.660980000401623,
+          "top_vs_region_B_deg": 8.16458754898016,
+          "top_face_height_over_region_A_m": 0.03140687213767426
+        },
+        "local_above": {
+          "native_points": 6421,
+          "A_inliers": 3739,
+          "normal_A": [
+            0.006691156200988496,
+            -0.7678260429203771,
+            -0.6406234434064437
+          ],
+          "normal_B": [
+            -0.0035185922235265346,
+            -0.8408044951942826,
+            -0.5413274613114065
+          ],
+          "origin_A_m": [
+            -0.0033331107722784177,
+            -0.119755950434959,
+            0.5269173133529571
+          ],
+          "normal_B_on_A_support": [
+            0.006398426043473316,
+            -0.7670310975779082,
+            -0.6415780198016416
+          ],
+          "A_vs_B_deg": 7.0892516925172995,
+          "A_vs_B_same_support_deg": 0.07312444108493678,
+          "rms_A_m": 0.0007864761780795877,
+          "rms_B_m": 0.004010315737382908,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.192035961361854,
+          "top_vs_region_B_deg": 13.735065354502536,
+          "top_face_height_over_region_A_m": 0.04309799334504191
+        },
+        "local_below": {
+          "native_points": 6576,
+          "A_inliers": 6561,
+          "normal_A": [
+            -0.0025338428926699286,
+            -0.7828817370521179,
+            -0.6221653843074635
+          ],
+          "normal_B": [
+            -0.0028591416428100018,
+            -0.7819265855075064,
+            -0.623363970875474
+          ],
+          "origin_A_m": [
+            0.01287124821941994,
+            0.05523052868983377,
+            0.29293019356805566
+          ],
+          "normal_B_on_A_support": [
+            -0.002985304419765418,
+            -0.7817526254355204,
+            -0.6235815268128074
+          ],
+          "A_vs_B_deg": 0.0897688656103613,
+          "A_vs_B_same_support_deg": 0.10694792755986787,
+          "rms_A_m": 0.0005340211468620721,
+          "rms_B_m": 0.0005667105772104296,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.502777428801459,
+          "top_vs_region_B_deg": 7.947617653443936,
+          "top_face_height_over_region_A_m": 0.02915248959119726
+        }
+      },
+      "top_edge_sensitivity": [
+        {
+          "removed_native_boundary_radius_px": 0,
+          "native_points": 1354,
+          "A_inliers": 1245,
+          "normal_A": [
+            -0.006917965330710677,
+            -0.7074281307402763,
+            -0.7067514284336476
+          ],
+          "normal_B": [
+            -0.004849125041384697,
+            -0.6882293098739191,
+            -0.7254770175662371
+          ],
+          "origin_A_m": [
+            0.010323025401441154,
+            -0.009966267890923702,
+            0.3284072289156676
+          ],
+          "normal_B_on_A_support": [
+            -0.005210750832562172,
+            -0.706024931880658,
+            -0.7081678075418801
+          ],
+          "A_vs_B_deg": 1.5412097573389882,
+          "A_vs_B_same_support_deg": 0.1503911307255939,
+          "rms_A_m": 0.0007336151545463104,
+          "rms_B_m": 0.0010375402428343112,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.0,
+          "B_change_from_original_deg": 0.0,
+          "normal_only_center_shift_A_m": 0.0,
+          "top_vs_local_below_A_deg": 6.502777428801459
+        },
+        {
+          "removed_native_boundary_radius_px": 1,
+          "native_points": 1174,
+          "A_inliers": 1121,
+          "normal_A": [
+            -0.0030022041186614423,
+            -0.7104011869736703,
+            -0.7037905514546429
+          ],
+          "normal_B": [
+            -0.000561039040264194,
+            -0.7007791702080786,
+            -0.7133780483289853
+          ],
+          "origin_A_m": [
+            0.010318394406113767,
+            -0.009537241422577772,
+            0.3279848349687836
+          ],
+          "normal_B_on_A_support": [
+            -0.0013727299447020575,
+            -0.710312387120163,
+            -0.7038852380297193
+          ],
+          "A_vs_B_deg": 0.7907349263283117,
+          "A_vs_B_same_support_deg": 0.09365779269553383,
+          "rms_A_m": 0.0007242283929781519,
+          "rms_B_m": 0.0008851955255268185,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.32883550924906413,
+          "B_change_from_original_deg": 1.0285835424236696,
+          "normal_only_center_shift_A_m": 8.321918962563796e-05,
+          "top_vs_local_below_A_deg": 6.257624986995355
+        },
+        {
+          "removed_native_boundary_radius_px": 2,
+          "native_points": 1006,
+          "A_inliers": 982,
+          "normal_A": [
+            0.005389981165565828,
+            -0.7160824803484138,
+            -0.6979948634775892
+          ],
+          "normal_B": [
+            0.005109484473974118,
+            -0.7133858037598358,
+            -0.7007528723896488
+          ],
+          "origin_A_m": [
+            0.010351785805878578,
+            -0.00924636445060192,
+            0.3276848484848537
+          ],
+          "normal_B_on_A_support": [
+            0.005366918130555549,
+            -0.718511987765834,
+            -0.6954938674255654
+          ],
+          "A_vs_B_deg": 0.22159008334801766,
+          "A_vs_B_same_support_deg": 0.1997810398484332,
+          "rms_A_m": 0.000688940571925433,
+          "rms_B_m": 0.0007417836365949519,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.9974541902329923,
+          "B_change_from_original_deg": 2.1000734876069034,
+          "normal_only_center_shift_A_m": 0.0002524252788652069,
+          "top_vs_local_below_A_deg": 5.810325338314788
+        },
+        {
+          "removed_native_boundary_radius_px": 3,
+          "native_points": 858,
+          "A_inliers": 858,
+          "normal_A": [
+            0.011820931748766073,
+            -0.7232391346641116,
+            -0.6904965022814367
+          ],
+          "normal_B": [
+            0.011001894023831189,
+            -0.7238602208049488,
+            -0.689858926929339
+          ],
+          "origin_A_m": [
+            0.010240408202878236,
+            -0.009082665395030148,
+            0.32744405594405734
+          ],
+          "normal_B_on_A_support": [
+            0.011001894023831189,
+            -0.7238602208049488,
+            -0.689858926929339
+          ],
+          "A_vs_B_deg": 0.06930358078809833,
+          "A_vs_B_same_support_deg": 0.06930358078809833,
+          "rms_A_m": 0.0006076923874798891,
+          "rms_B_m": 0.0006095822389726695,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.685527650499809,
+          "B_change_from_original_deg": 3.0264505388898564,
+          "normal_only_center_shift_A_m": 0.00042654572219571666,
+          "top_vs_local_below_A_deg": 5.263225807036012
+        }
+      ],
+      "normal_only_A_vs_B_center_shift_m": 0.00039002641958229195,
+      "normal_only_shift_caveat": "Fixed face center, inward nominal14.5mm offset only; not total center uncertainty or absolute accuracy"
+    },
+    {
+      "snapshot": 60,
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "stamps_ns": {
+        "rgb": "1792028868258063270",
+        "depth": "1792028868233114349",
+        "depth_info": "1792028868233114349",
+        "feedback": "1792028868246808064"
+      },
+      "raw_sha256": {
+        "rgb": "32dba88b29f69265203b8278f434e5cf8ee9f44d0cd165cffa25366bac920016",
+        "depth": "467c9e95e2f7f7fe6b73e9c0174124364d7a97f5b3fbd73aaf89ec7eec5d0c50"
+      },
+      "rgb_box_xywh": [
+        134,
+        91,
+        28,
+        30
+      ],
+      "original_top_fit": {
+        "native_points": 1304,
+        "A_inliers": 1206,
+        "normal_A": [
+          -0.016274348593386972,
+          -0.7117682076823029,
+          -0.7022258640285068
+        ],
+        "normal_B": [
+          -0.008639693258018498,
+          -0.6928766138500353,
+          -0.7210044061447313
+        ],
+        "origin_A_m": [
+          0.009972423868255573,
+          -0.009753983551248787,
+          0.3281200331125875
+        ],
+        "normal_B_on_A_support": [
+          -0.012791741387923676,
+          -0.7112098729707728,
+          -0.7028633494080921
+        ],
+        "A_vs_B_deg": 1.5876856486506803,
+        "A_vs_B_same_support_deg": 0.2053611500323219,
+        "rms_A_m": 0.0007399715318891648,
+        "rms_B_m": 0.001000798655560377,
+        "B_same_support_is_not_an_independent_support_test": true
+      },
+      "table_regions": {
+        "original_ring": {
+          "native_points": 63591,
+          "A_inliers": 43714,
+          "normal_A": [
+            0.007079206672964441,
+            -0.7724352763199084,
+            -0.6350540360705283
+          ],
+          "normal_B": [
+            0.0048356831993338805,
+            -0.7943072917714801,
+            -0.6074969484751777
+          ],
+          "origin_A_m": [
+            0.01227649051410263,
+            0.02036110459565508,
+            0.33517864476386017
+          ],
+          "normal_B_on_A_support": [
+            0.007247155957631357,
+            -0.772367643254372,
+            -0.6351343971036468
+          ],
+          "A_vs_B_deg": 2.0199832209759663,
+          "A_vs_B_same_support_deg": 0.011349640169648368,
+          "rms_A_m": 0.000873826686922934,
+          "rms_B_m": 0.0035019310972775595,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 5.357785381196227,
+          "top_vs_region_B_deg": 8.764438372050703,
+          "top_face_height_over_region_A_m": 0.027858367896218632
+        },
+        "local_left": {
+          "native_points": 4811,
+          "A_inliers": 4779,
+          "normal_A": [
+            0.03214586590488919,
+            -0.7840399097554931,
+            -0.6198774582252717
+          ],
+          "normal_B": [
+            0.033852649963452816,
+            -0.7835183506122652,
+            -0.6204458012947525
+          ],
+          "origin_A_m": [
+            -0.05276713186767284,
+            -0.002486591198655265,
+            0.3633324963381478
+          ],
+          "normal_B_on_A_support": [
+            0.034849695022422224,
+            -0.7835835781110745,
+            -0.6203082095793104
+          ],
+          "A_vs_B_deg": 0.10731532590602684,
+          "A_vs_B_same_support_deg": 0.1590356026148021,
+          "rms_A_m": 0.0006643360823167961,
+          "rms_B_m": 0.0006942277891018685,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.86741168441753,
+          "top_vs_region_B_deg": 8.136692179138679,
+          "top_face_height_over_region_A_m": 0.02970138022542425
+        },
+        "local_right": {
+          "native_points": 4729,
+          "A_inliers": 4392,
+          "normal_A": [
+            -0.025073130132499625,
+            -0.7850683023784787,
+            -0.6189015258875454
+          ],
+          "normal_B": [
+            -0.02620524999721538,
+            -0.7859227776635523,
+            -0.6177691093136577
+          ],
+          "origin_A_m": [
+            0.07262486828031539,
+            0.00031562470261100277,
+            0.36273964497041095
+          ],
+          "normal_B_on_A_support": [
+            -0.023519422054035313,
+            -0.7845424073273163,
+            -0.6196289598552537
+          ],
+          "A_vs_B_deg": 0.10399131266352651,
+          "A_vs_B_same_support_deg": 0.1028093767354508,
+          "rms_A_m": 0.0007968026637133022,
+          "rms_B_m": 0.0010322040843444994,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.381754125555362,
+          "top_vs_region_B_deg": 8.032827176980419,
+          "top_face_height_over_region_A_m": 0.031058394003992934
+        },
+        "local_above": {
+          "native_points": 6253,
+          "A_inliers": 3036,
+          "normal_A": [
+            0.0059003992266605685,
+            -0.7679735520576991,
+            -0.6404543766958319
+          ],
+          "normal_B": [
+            -0.004729128672226377,
+            -0.8465543018005594,
+            -0.5322813630449305
+          ],
+          "origin_A_m": [
+            -0.0006747740530841661,
+            -0.11370930328957697,
+            0.519624176548093
+          ],
+          "normal_B_on_A_support": [
+            0.005885344560809539,
+            -0.7671328498780224,
+            -0.6414612641129812
+          ],
+          "A_vs_B_deg": 7.6905269012602755,
+          "A_vs_B_same_support_deg": 0.07516082359648958,
+          "rms_A_m": 0.000789334963142004,
+          "rms_B_m": 0.0034989417520912215,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 4.95239978518938,
+          "top_vs_region_B_deg": 13.981036261798227,
+          "top_face_height_over_region_A_m": 0.04299769175340033
+        },
+        "local_below": {
+          "native_points": 6386,
+          "A_inliers": 6345,
+          "normal_A": [
+            -0.0019853494530930496,
+            -0.7873603415984441,
+            -0.6164898627435251
+          ],
+          "normal_B": [
+            -0.0022638402134587524,
+            -0.7862535155285836,
+            -0.6178998983220755
+          ],
+          "origin_A_m": [
+            0.012737734162087639,
+            0.053288533662696036,
+            0.2953078014184334
+          ],
+          "normal_B_on_A_support": [
+            -0.002587692106338756,
+            -0.7857713578991452,
+            -0.618511662747677
+          ],
+          "A_vs_B_deg": 0.10393811766297388,
+          "A_vs_B_same_support_deg": 0.15132340568002656,
+          "rms_A_m": 0.0005363211673263604,
+          "rms_B_m": 0.0005927244857562081,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "top_vs_region_A_deg": 6.603622911778435,
+          "top_vs_region_B_deg": 7.984871576446733,
+          "top_face_height_over_region_A_m": 0.029577103612894777
+        }
+      },
+      "top_edge_sensitivity": [
+        {
+          "removed_native_boundary_radius_px": 0,
+          "native_points": 1304,
+          "A_inliers": 1206,
+          "normal_A": [
+            -0.016274348593386972,
+            -0.7117682076823029,
+            -0.7022258640285068
+          ],
+          "normal_B": [
+            -0.008639693258018498,
+            -0.6928766138500353,
+            -0.7210044061447313
+          ],
+          "origin_A_m": [
+            0.009972423868255573,
+            -0.009753983551248787,
+            0.3281200331125875
+          ],
+          "normal_B_on_A_support": [
+            -0.012791741387923676,
+            -0.7112098729707728,
+            -0.7028633494080921
+          ],
+          "A_vs_B_deg": 1.5876856486506803,
+          "A_vs_B_same_support_deg": 0.2053611500323219,
+          "rms_A_m": 0.0007399715318891648,
+          "rms_B_m": 0.001000798655560377,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.0,
+          "B_change_from_original_deg": 0.0,
+          "normal_only_center_shift_A_m": 0.0,
+          "top_vs_local_below_A_deg": 6.603622911778435
+        },
+        {
+          "removed_native_boundary_radius_px": 1,
+          "native_points": 1134,
+          "A_inliers": 1082,
+          "normal_A": [
+            -0.011139545225124425,
+            -0.7135272889939404,
+            -0.7005388771461121
+          ],
+          "normal_B": [
+            -0.0028985337305784506,
+            -0.7040222946523159,
+            -0.7101719560322699
+          ],
+          "origin_A_m": [
+            0.009969427801751661,
+            -0.009385004663347936,
+            0.3277228360957703
+          ],
+          "normal_B_on_A_support": [
+            -0.007042397588936424,
+            -0.7147531446640333,
+            -0.6993413664506591
+          ],
+          "A_vs_B_deg": 0.9078455230550697,
+          "A_vs_B_same_support_deg": 0.25445651829457777,
+          "rms_A_m": 0.0007154230517958818,
+          "rms_B_m": 0.0008633074763894807,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 0.3256628017520849,
+          "B_change_from_original_deg": 0.9493400097663504,
+          "normal_only_center_shift_A_m": 8.241626711576816e-05,
+          "top_vs_local_below_A_deg": 6.43465192117723
+        },
+        {
+          "removed_native_boundary_radius_px": 2,
+          "native_points": 972,
+          "A_inliers": 954,
+          "normal_A": [
+            -0.0008062122331828237,
+            -0.7184020267931759,
+            -0.6956276862814561
+          ],
+          "normal_B": [
+            0.002652191040730099,
+            -0.7140852743387875,
+            -0.7000537028365623
+          ],
+          "origin_A_m": [
+            0.010110570680224204,
+            -0.009140956037236006,
+            0.32742033542977306
+          ],
+          "normal_B_on_A_support": [
+            0.00125916407638661,
+            -0.7183355725870927,
+            -0.6956956372306804
+          ],
+          "A_vs_B_deg": 0.40589010155512123,
+          "A_vs_B_same_support_deg": 0.11846259992371676,
+          "rms_A_m": 0.0006571530170630394,
+          "rms_B_m": 0.0007197462026143,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.0357955814981608,
+          "B_change_from_original_deg": 1.8265872712736535,
+          "normal_only_center_shift_A_m": 0.000262128057968673,
+          "top_vs_local_below_A_deg": 6.017303189046238
+        },
+        {
+          "removed_native_boundary_radius_px": 3,
+          "native_points": 824,
+          "A_inliers": 824,
+          "normal_A": [
+            0.006285583410865413,
+            -0.72450721924996,
+            -0.6892385513709134
+          ],
+          "normal_B": [
+            0.006615317969140768,
+            -0.7241566690396752,
+            -0.6896037675749238
+          ],
+          "origin_A_m": [
+            0.010070470030476673,
+            -0.008992839577553305,
+            0.327207524271845
+          ],
+          "normal_B_on_A_support": [
+            0.006615317969140768,
+            -0.7241566690396752,
+            -0.6896037675749238
+          ],
+          "A_vs_B_deg": 0.03461505518297725,
+          "A_vs_B_same_support_deg": 0.03461505518297725,
+          "rms_A_m": 0.0005939542510728531,
+          "rms_B_m": 0.0005948823158864237,
+          "B_same_support_is_not_an_independent_support_test": true,
+          "A_change_from_original_deg": 1.6605519229107029,
+          "B_change_from_original_deg": 2.6859194038550753,
+          "normal_only_center_shift_A_m": 0.0004202257200034127,
+          "top_vs_local_below_A_deg": 5.530906456623778
+        }
+      ],
+      "normal_only_A_vs_B_center_shift_m": 0.0004017871046237766,
+      "normal_only_shift_caveat": "Fixed face center, inward nominal14.5mm offset only; not total center uncertainty or absolute accuracy"
+    }
+  ],
+  "summary": {
+    "table_regions": {
+      "original_ring": {
+        "usable_frames": 6,
+        "A_vs_B_deg": {
+          "minimum": 1.8993431167321086,
+          "median": 1.9650640186507338,
+          "maximum": 2.0199832209759663
+        },
+        "A_vs_B_same_support_deg": {
+          "minimum": 0.006357177934047227,
+          "median": 0.01609496367512985,
+          "maximum": 0.024190236679150635
+        },
+        "top_vs_region_A_deg": {
+          "minimum": 5.325489301604915,
+          "median": 5.618948193156421,
+          "maximum": 5.854966341963771
+        },
+        "top_vs_region_B_deg": {
+          "minimum": 8.723998900576964,
+          "median": 8.943683114485466,
+          "maximum": 9.328992315141987
+        },
+        "top_face_height_over_region_A_m": {
+          "minimum": 0.02776183155165441,
+          "median": 0.027867924586165885,
+          "maximum": 0.027934762454305984
+        }
+      },
+      "local_left": {
+        "usable_frames": 6,
+        "A_vs_B_deg": {
+          "minimum": 0.04064907045675841,
+          "median": 0.07668325157108455,
+          "maximum": 0.13431200472689106
+        },
+        "A_vs_B_same_support_deg": {
+          "minimum": 0.13323644508636182,
+          "median": 0.1592595155112665,
+          "maximum": 0.2164984882000318
+        },
+        "top_vs_region_A_deg": {
+          "minimum": 6.7101557818641195,
+          "median": 6.8932149208286315,
+          "maximum": 7.141587522412872
+        },
+        "top_vs_region_B_deg": {
+          "minimum": 8.067377120459872,
+          "median": 8.246525236123837,
+          "maximum": 8.607621635829842
+        },
+        "top_face_height_over_region_A_m": {
+          "minimum": 0.02955857662371323,
+          "median": 0.02970613240336547,
+          "maximum": 0.030163578627377792
+        }
+      },
+      "local_right": {
+        "usable_frames": 6,
+        "A_vs_B_deg": {
+          "minimum": 0.028997855953285894,
+          "median": 0.13576247358953464,
+          "maximum": 0.2188864399157621
+        },
+        "A_vs_B_same_support_deg": {
+          "minimum": 0.1028093767354508,
+          "median": 0.14482533916968393,
+          "maximum": 0.26048466576682155
+        },
+        "top_vs_region_A_deg": {
+          "minimum": 6.381754125555362,
+          "median": 6.6411862999914595,
+          "maximum": 6.927843985764195
+        },
+        "top_vs_region_B_deg": {
+          "minimum": 7.967855595807661,
+          "median": 8.21338958790238,
+          "maximum": 8.707447311287854
+        },
+        "top_face_height_over_region_A_m": {
+          "minimum": 0.030912898604563623,
+          "median": 0.03112804893932361,
+          "maximum": 0.03140687213767426
+        }
+      },
+      "local_above": {
+        "usable_frames": 6,
+        "A_vs_B_deg": {
+          "minimum": 7.0892516925172995,
+          "median": 7.5552400552950125,
+          "maximum": 7.784012737324204
+        },
+        "A_vs_B_same_support_deg": {
+          "minimum": 0.059344750033830065,
+          "median": 0.07595922995814433,
+          "maximum": 0.08601587205434433
+        },
+        "top_vs_region_A_deg": {
+          "minimum": 4.9039794372264875,
+          "median": 5.030145508494833,
+          "maximum": 5.226215985093531
+        },
+        "top_vs_region_B_deg": {
+          "minimum": 13.667528732739175,
+          "median": 14.013195738477478,
+          "maximum": 14.427188984009991
+        },
+        "top_face_height_over_region_A_m": {
+          "minimum": 0.042822569867253316,
+          "median": 0.04332852440891817,
+          "maximum": 0.04361312924097817
+        }
+      },
+      "local_below": {
+        "usable_frames": 6,
+        "A_vs_B_deg": {
+          "minimum": 0.08846979832124206,
+          "median": 0.10499374379192986,
+          "maximum": 0.1448464822513993
+        },
+        "A_vs_B_same_support_deg": {
+          "minimum": 0.10694792755986787,
+          "median": 0.14858183253371895,
+          "maximum": 0.17970506748866907
+        },
+        "top_vs_region_A_deg": {
+          "minimum": 6.502777428801459,
+          "median": 6.64073967808471,
+          "maximum": 6.906392316435965
+        },
+        "top_vs_region_B_deg": {
+          "minimum": 7.773330362517944,
+          "median": 8.055871898389382,
+          "maximum": 8.450106530213487
+        },
+        "top_face_height_over_region_A_m": {
+          "minimum": 0.02915248959119726,
+          "median": 0.02940279386557508,
+          "maximum": 0.029577103612894777
+        }
+      }
+    },
+    "maximum_normal_only_A_vs_B_center_shift_m": 0.0004280924891827141,
+    "physical_table_or_cube_orthogonality_verified": false,
+    "camera_depth_systematic_error_excluded": false,
+    "calibration_or_TF_adoption_approved": false
+  }
+}
