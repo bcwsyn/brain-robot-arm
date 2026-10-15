@@ -1,0 +1,42 @@
+{
+  "subscription_only": true,
+  "hardware_synchronized": false,
+  "camera_calibration": false,
+  "topics": [
+    "/camera/color/image_raw",
+    "/camera/depth/image_raw",
+    "/camera/depth/camera_info",
+    "/joint_states_feedback"
+  ],
+  "message_filters_file": "/opt/ros/humble/local/lib/python3.10/dist-packages/message_filters/__init__.py",
+  "slop_s": 0.12,
+  "max_age_s": 0.5,
+  "requested_frames": 5,
+  "saved_frames": 5,
+  "static_window_s": 3.0,
+  "full_same_frame_depth_info": true,
+  "received": {
+    "/camera/color/image_raw": 35,
+    "/joint_states_feedback": 303,
+    "/camera/depth/image_raw": 85,
+    "/camera/depth/camera_info": 102
+  },
+  "rejected": {
+    "feedback not settled for 3s": 8,
+    "depth info is not from the same frame": 9
+  },
+  "matched_packets": 26,
+  "stop_on_feedback_loss": false,
+  "image_byte_limit": null,
+  "image_bytes": 663647,
+  "stop_reason": null,
+  "elapsed_s": 7.165834236991941,
+  "start_q_rad": [
+    0.010832724,
+    1.817438028,
+    -1.0051930560000002,
+    -0.13269650800000002,
+    0.6538360080000001,
+    0.276278072
+  ]
+}

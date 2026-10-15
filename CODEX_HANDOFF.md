@@ -1,4 +1,6 @@
-# 当前断点（2026-10-15 12:10 +08:00）：第二组夹持B保存，等待本组释放/回观测授权
+# 当前断点（2026-10-15）：第二组attempt02新位置B已保存，待观测A
+
+**最新2026-10-15 13:03 +08:00：第二组new_pair03 attempt02新位置夹持B已纯只读保存，A未采，完整仍1/6。** 用户“已完成”确认新位置实际夹紧；原SDK60/59fresh/qspread0，全窗因索引38 J5速度−7mrad/s保留rc2，原连续[1:38]37fresh/3.616s按原静止函数通过；五原RGB-D/同戳Info/实际q/FK/现读factory/19资产SHA齐全。q_mdeg[621,104187,-57624,-7607,37482,15838]、六true/37.1mm；与第一组工具原点差66.18mm/z轴差7.77°，不宣称可辨识。只用receive-only SDK桥和原相机，无production driver/adapter/controller/使能arm/开闭或轨迹；TX8370始终不变，源90秒全部退出。下一先保存B检查点，再确认本次原位张爪及原回观测许可，SEARCH前停止后采A；不沿旧attempt许可自动动，旧失败保持排除，生产全冻结。
 
 **最新2026-10-15 12:50 +08:00：用户要求整理并准备新的第二位置，只准备、不采集或运动。** 第一组new_pair02 attempt02的164资产SHA重新验证通过，完成仍1/6；第二组旧B/异常/已叫停retry均封存并明确退出拟合候选，原路径/字节不改。37个retry原文件（含33254消息ROS bag）无损压缩归档2.27MB/逐项SHA通过。登记重置为new_pair03 attempt02、B/A均null，等操作者新位置实际夹紧且静止确认；空白runtime .../new_pair03_attempt02.v22Alq。夹持B只用原receive-only桥/相机，不启动生产driver/adapter/controller，不提前使能/arm。旧动作许可不跨用户停止/新位置自动续用。根55%/34GB、共享73%/137GB，没有删数据或新取实体反馈、所有相关源仍退出，生产全冻结。见P1/new_pair03/attempt02与closed_attempts。
 

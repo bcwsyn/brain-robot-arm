@@ -1,0 +1,781 @@
+{
+  "offline_only": true,
+  "motion_commands_sent": false,
+  "captures": [
+    "grip_rgbd"
+  ],
+  "config_sha256": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+  "depth_units": "uint16 millimetres; zero means missing, not a zero-distance sample",
+  "registration_mode": "Unchanged production pinhole D->C R/T, endpoint resize, no distortion correction",
+  "raw_samples_never_filled": true,
+  "target_reference": "visible surface, not cube center",
+  "joint_spread_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "temporal": {
+    "usable_frames": 0,
+    "requested_frames": 30,
+    "median_z_m": null,
+    "thirty_frame_requirement_met": false,
+    "accuracy_verified": false
+  },
+  "high_support_temporal": {
+    "usable_frames": 0,
+    "requested_frames": 30,
+    "median_z_m": null,
+    "thirty_frame_requirement_met": false,
+    "accuracy_verified": false
+  },
+  "high_support_definition": "Offline statistical stratum: >=50% color-mask projection coverage and >=10 measured depth points. All other frames remain in report.",
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1792040468961314196",
+        "depth": "1792040468862735752",
+        "depth_info": "1792040468862735752",
+        "feedback": "1792040468945199616"
+      },
+      "stamp_span_s": 0.098578444,
+      "actual_q_rad": [
+        0.010832724,
+        1.817438028,
+        -1.0051930560000002,
+        -0.13269650800000002,
+        0.6538360080000001,
+        0.276278072
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        151,
+        76,
+        89
+      ],
+      "native_depth_samples": 0,
+      "eroded_color_pixels": 5975,
+      "color_pixel_coverage": 0.0,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": null,
+      "surface_mad_m": null,
+      "surface_componentwise_median_xyz_m": null,
+      "surface_not_cube_center": true,
+      "histogram_mm": {},
+      "depth_info": {
+        "stamp_ns": "1792040468862735752",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792040468.862736
+      },
+      "images": {
+        "rgb": {
+          "path": "grip_rgbd/evidence/0001_rgb.png",
+          "stamp": 1792040468.9613142,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "74ae2709843f0863a6080ecd273efce3e882a021bf84b39c7842cd1db026f222"
+        },
+        "depth": {
+          "path": "grip_rgbd/evidence/0001_depth.png",
+          "stamp": 1792040468.862736,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "33120dd4a628910ac1faf6c9368883275db47104793a7e2468d2ec377a86b6ba"
+        }
+      },
+      "capture_id": "grip_rgbd",
+      "T_base_tool": [
+        [
+          -0.9656720270648197,
+          0.1714481729442099,
+          0.19514881536564344,
+          0.3263086055116604
+        ],
+        [
+          0.1588959316373148,
+          0.9841797133787825,
+          -0.07837330338046343,
+          -0.0038000367547243825
+        ],
+        [
+          -0.20549846484495052,
+          -0.04467455391773597,
+          -0.9776372359820483,
+          0.14861175948135963
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1792040469561371890",
+        "depth": "1792040469525542176",
+        "depth_info": "1792040469525542176",
+        "feedback": "1792040469545135104"
+      },
+      "stamp_span_s": 0.035829714,
+      "actual_q_rad": [
+        0.010832724,
+        1.817438028,
+        -1.0051930560000002,
+        -0.13269650800000002,
+        0.6538360080000001,
+        0.276278072
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        151,
+        77,
+        89
+      ],
+      "native_depth_samples": 0,
+      "eroded_color_pixels": 5980,
+      "color_pixel_coverage": 0.0,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": null,
+      "surface_mad_m": null,
+      "surface_componentwise_median_xyz_m": null,
+      "surface_not_cube_center": true,
+      "histogram_mm": {},
+      "depth_info": {
+        "stamp_ns": "1792040469525542176",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792040469.5255423
+      },
+      "images": {
+        "rgb": {
+          "path": "grip_rgbd/evidence/0002_rgb.png",
+          "stamp": 1792040469.5613718,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "1f627337dcf681740721374d7b2e5f3b1b13be121eaeb9cdbb3dea433c3ba33f"
+        },
+        "depth": {
+          "path": "grip_rgbd/evidence/0002_depth.png",
+          "stamp": 1792040469.5255423,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "33120dd4a628910ac1faf6c9368883275db47104793a7e2468d2ec377a86b6ba"
+        }
+      },
+      "capture_id": "grip_rgbd",
+      "T_base_tool": [
+        [
+          -0.9656720270648197,
+          0.1714481729442099,
+          0.19514881536564344,
+          0.3263086055116604
+        ],
+        [
+          0.1588959316373148,
+          0.9841797133787825,
+          -0.07837330338046343,
+          -0.0038000367547243825
+        ],
+        [
+          -0.20549846484495052,
+          -0.04467455391773597,
+          -0.9776372359820483,
+          0.14861175948135963
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1792040470161377934",
+        "depth": "1792040470096130290",
+        "depth_info": "1792040470096130290",
+        "feedback": "1792040470145119488"
+      },
+      "stamp_span_s": 0.065247644,
+      "actual_q_rad": [
+        0.010832724,
+        1.817438028,
+        -1.0051930560000002,
+        -0.13269650800000002,
+        0.6538360080000001,
+        0.276278072
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        151,
+        77,
+        89
+      ],
+      "native_depth_samples": 0,
+      "eroded_color_pixels": 5983,
+      "color_pixel_coverage": 0.0,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": null,
+      "surface_mad_m": null,
+      "surface_componentwise_median_xyz_m": null,
+      "surface_not_cube_center": true,
+      "histogram_mm": {},
+      "depth_info": {
+        "stamp_ns": "1792040470096130290",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792040470.0961304
+      },
+      "images": {
+        "rgb": {
+          "path": "grip_rgbd/evidence/0003_rgb.png",
+          "stamp": 1792040470.1613781,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "554e5783b561975de14c779e862b4bddb16be302760e04063153d54fbaf9db40"
+        },
+        "depth": {
+          "path": "grip_rgbd/evidence/0003_depth.png",
+          "stamp": 1792040470.0961304,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "33120dd4a628910ac1faf6c9368883275db47104793a7e2468d2ec377a86b6ba"
+        }
+      },
+      "capture_id": "grip_rgbd",
+      "T_base_tool": [
+        [
+          -0.9656720270648197,
+          0.1714481729442099,
+          0.19514881536564344,
+          0.3263086055116604
+        ],
+        [
+          0.1588959316373148,
+          0.9841797133787825,
+          -0.07837330338046343,
+          -0.0038000367547243825
+        ],
+        [
+          -0.20549846484495052,
+          -0.04467455391773597,
+          -0.9776372359820483,
+          0.14861175948135963
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1792040470761396384",
+        "depth": "1792040470758850498",
+        "depth_info": "1792040470758850498",
+        "feedback": "1792040470755731712"
+      },
+      "stamp_span_s": 0.005664672,
+      "actual_q_rad": [
+        0.010832724,
+        1.817438028,
+        -1.0051930560000002,
+        -0.13269650800000002,
+        0.6538360080000001,
+        0.276278072
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        151,
+        77,
+        89
+      ],
+      "native_depth_samples": 0,
+      "eroded_color_pixels": 5966,
+      "color_pixel_coverage": 0.0,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": null,
+      "surface_mad_m": null,
+      "surface_componentwise_median_xyz_m": null,
+      "surface_not_cube_center": true,
+      "histogram_mm": {},
+      "depth_info": {
+        "stamp_ns": "1792040470758850498",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792040470.7588506
+      },
+      "images": {
+        "rgb": {
+          "path": "grip_rgbd/evidence/0004_rgb.png",
+          "stamp": 1792040470.7613964,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "efa186292449046be1b664aefcb564bed3809a21ccedc2c99d98894481bf2b56"
+        },
+        "depth": {
+          "path": "grip_rgbd/evidence/0004_depth.png",
+          "stamp": 1792040470.7588506,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "33120dd4a628910ac1faf6c9368883275db47104793a7e2468d2ec377a86b6ba"
+        }
+      },
+      "capture_id": "grip_rgbd",
+      "T_base_tool": [
+        [
+          -0.9656720270648197,
+          0.1714481729442099,
+          0.19514881536564344,
+          0.3263086055116604
+        ],
+        [
+          0.1588959316373148,
+          0.9841797133787825,
+          -0.07837330338046343,
+          -0.0038000367547243825
+        ],
+        [
+          -0.20549846484495052,
+          -0.04467455391773597,
+          -0.9776372359820483,
+          0.14861175948135963
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1792040472161485233",
+        "depth": "1792040472126739367",
+        "depth_info": "1792040472126739367",
+        "feedback": "1792040472145208576"
+      },
+      "stamp_span_s": 0.034745866,
+      "actual_q_rad": [
+        0.010832724,
+        1.817438028,
+        -1.0051930560000002,
+        -0.13269650800000002,
+        0.6538360080000001,
+        0.276278072
+      ],
+      "rgb_bbox_xywh": [
+        131,
+        152,
+        77,
+        88
+      ],
+      "native_depth_samples": 0,
+      "eroded_color_pixels": 5973,
+      "color_pixel_coverage": 0.0,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": null,
+      "surface_mad_m": null,
+      "surface_componentwise_median_xyz_m": null,
+      "surface_not_cube_center": true,
+      "histogram_mm": {},
+      "depth_info": {
+        "stamp_ns": "1792040472126739367",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792040472.1267395
+      },
+      "images": {
+        "rgb": {
+          "path": "grip_rgbd/evidence/0005_rgb.png",
+          "stamp": 1792040472.1614852,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "915cfc21c100aecb968d5fb5518037a7e45f82041fc44a49c1e6bdc6984bb396"
+        },
+        "depth": {
+          "path": "grip_rgbd/evidence/0005_depth.png",
+          "stamp": 1792040472.1267395,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "33120dd4a628910ac1faf6c9368883275db47104793a7e2468d2ec377a86b6ba"
+        }
+      },
+      "capture_id": "grip_rgbd",
+      "T_base_tool": [
+        [
+          -0.9656720270648197,
+          0.1714481729442099,
+          0.19514881536564344,
+          0.3263086055116604
+        ],
+        [
+          0.1588959316373148,
+          0.9841797133787825,
+          -0.07837330338046343,
+          -0.0038000367547243825
+        ],
+        [
+          -0.20549846484495052,
+          -0.04467455391773597,
+          -0.9776372359820483,
+          0.14861175948135963
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "common_reference": {
+    "desired": "cube geometric center",
+    "confirmed": false,
+    "camera_method": "Identify one face center and its outward normal; center = face_center - normal * edge/2",
+    "gripper_method": "Record verified cube-center coordinates in gripper_base, or jointly estimate a constant offset from multiple non-degenerate manual poses",
+    "do_not": "Do not add half an edge along the optical ray or assume the configured finger tip is the cube center",
+    "cube_edge_m": 0.029,
+    "cube_edge_is_approximate_user_measurement": true,
+    "camera_cube_center_m": null,
+    "gripper_base_cube_center_m": null,
+    "reason_pending": "No identified face center/normal or verified physical jaw-centered offset; no fabricated center used."
+  },
+  "urdf_sha256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "task_sha256": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+}

@@ -1,3 +1,13 @@
+## 2026-10-15 13:03 +08:00：第二组attempt02新位置夹持B纯只读采成，完整仍1/6
+
+- 用户回复“已完成”，对应新第二位置实际夹紧/方块平稳贴桌/保持不动要求。按ROS2/PiPER技能先核真实状态：ifindex10/UP/ERROR-ACTIVE/1Mbps/.75/queue1000/RX10277751/TX8370，已有warning4/passive9428累计计数明示；当前RX持续增长/error-drop0，复用链路，不CAN重载/底层重查。根55%/34GB、共享73%/137GB，无清理。无旧控制/采集源。
+- 只在已准备runtime `.../new_pair03_attempt02.v22Alq`运行原collect_calibration_sdk --duration-s6、calibration_readonly_feedback --duration-s90、原RGB320×240@5Hz/深度launch各90s、只读factory三GET/内部TF、原collect_static_rgbd --duration-s15 --frames5 --settle-s3。没有生产driver/adapter/controller，也没有enable/arm、关节/夹爪命令、观测/SEARCH/Reset/Disable；CAN TX8370始终不变。
+- 原SDK60/59fresh/5.822417s/六qspread0，索引38 J5速度−7mrad/s导致原全窗rc2，原旗标不改。原连续samples[1:38]37样本全fresh/3.616083s经原summarize全部通过，未拼散点/换阈值；默认首条、速度短脉冲和完整失败原始窗均保留。q_mdeg[621,104187,-57624,-7607,37482,15838]、六true、开口37.1mm/effort原−11非牛顿。名义29mm未卡尺、差8.1mm未知原因；接触来源操作者确认，不由SDK/照片虚证，工具内中心仍null。
+- 五对原图7.165834s/rc0/各帧q同SDK/六spread0，同帧完整Info，异戳Info9次仍拒绝；首末原RGB已看，紫块在两指间/下部到画面边缘。B近距原目标深度不可用保留零值，不当作A采集失败或补猜相机中心。factory现读CC1365304DG/完整D→C及内部TF成功；原review/export保存19资产859964B，manifestSHA1a58b6803acc9871454cd58dfff5d2543efe4131af28cdf2375737ee929d08fb。
+- `P1/new_pair03/attempt02/grip_capture`包含原图/真实q/FK/SDK/工厂/配置/全部SHA及原桥报告/assessment。实际FK工具原点相对第一组[-7.218,-65.443,+6.742]mm/距离66.184mm，整体旋转29.398°/工具z轴7.773°，有实际位置/倾斜变化但不能由两组B宣称联合可辨识或已达到1cm精度。只用本次新B，旧第二组全封存排除，第一组不动。
+- 只读桥90.022219s/4298样本/4258发布/40旧戳抑制/rc0/error null，末q同B/六true/37.1mm；RGB及深度正常限时结束timeout124，不误称失败。全部本轮源均已退出，CAN末RX10675855/TX8370/warning4/passive9428计数不变。原桥报告SHA6e13562ec5094ffb867321b582fda5ecc35006db8c889f72002f0a1d0192b504。
+- 当前只完成第二组B，不是完整第二组或拟合；A仍null、P1完整仍1/6。先Git保存检查点，下一确认本次新位置由代理原位张爪、核方块未动，再原轨迹回固定观测/SEARCH前止住、采A60/至少20好帧。没有本次动作许可，不跨旧attempt或用户全停前许可自动续跑；生产代码/门/TF/TCP/模型/入口冻结，本轮Git仅有限数据和文档，未远端发布。
+
 ## 2026-10-15 12:50 +08:00：整理数据，封存第二组旧尝试，空白准备新第二位置
 
 - 用户已叫停所有工作，本次仅要求清理数据、准备手动摆到第二个位置并夹紧。按手术式整理技能只改登记/文档与有限归档，不删原始数据、改算法或新接设备。实际根55%/34GB、共享73%/137GB，P1 runtime124MB/仓库证据39MB；未达到清理阈值，不以腾空间为由删除标定样本，也不宣称本次释放了空间。只读进程检查无driver/adapter/controller/相机/采集源，本轮未取CAN/q/使能，不把旧true当此刻硬件状态。
