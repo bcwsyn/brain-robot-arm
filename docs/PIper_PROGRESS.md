@@ -1,3 +1,10 @@
+## 2026-10-15 10:29 +08:00：第一组真实只读预检，反馈有流但姿态仍在变化
+
+- 用户指示现在开始第一组。本轮按ROS2/PiPER核验与手术式修改技能执行最小实际动作：复用can0 UP/ERROR-ACTIVE/1Mbps/.75/queue1000，RX100359354→100395794、TX始终0，无错误/丢包；没有启动实体控制、相机或桥，也未重载USB/CAN、查询固件、使能/失能/运动/开闭。
+- 原`collect_calibration_sdk.py --output /home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair02_grip.j3jfeN/sdk_samples.json --duration-s 6`只接收，60样本/59新鲜/5.8358085s/error=null；但静止条件false，q_spread_mdeg=[8490,19420,22394,35569,34115,56898]，原数据明确不是已停稳样本。末q_mdeg=[-6225,122221,-80796,-21168,36947,70481]，末速度[141,0,0,-115,201,487]mrad/s，末enabled六false、开口36.7mm；不推断变化原因/实际夹紧，不冒称原点或使能成功。复合shell末尾ip成功rc0不代表SDK质量通过，独立SDK rc未单独录取。
+- 原SDK87,217B，SHA b1f85bd5dd4b7df6ffb451e000cece182bf1f3469df6baf34d04bd1f9a3cd662，归档`docs/evidence/piper_calibration_p1_20261015/new_pair02/preflight_20261015_1028/`，保留为预检/移动窗、不作正式夹持点。登记live_capture_started=true但formal0/6，接触/释放原位/观测许可/正式manifest仍null；没有填假中心/FK静止值。
+- 已询问是否实际夹紧并能保持不动；下一等到位确认再用新目录采静止SDK及原图，不反复采用户尚在摆位的数据，不返回观测/释放/闭爪。当前障碍是缺合格静止夹持窗/接触确认，不是CAN/磁盘/法向；生产全冻结，无新代码或阈值修改。原root35GB/共享137GB，无删除；本轮仅明确原始预检/登记/规范文档Git提交，未推送GitHub。
+
 ## 2026-10-15 10:24 +08:00：按用户选择进入P1准备，正式首组待实际夹紧
 
 - 用户连续确认先采六组、再参考新数据处理法向，并指示进行下一步。已更新当前阶段为P1准备，不再以消除P0残余角度为前置；不是确认误差已解决/TF可部署，也不扩张实体运动许可。
