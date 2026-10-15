@@ -7,7 +7,7 @@
   "raw_placements_with_A_and_B": 6,
   "primary_A_raw_frames_total": 388,
   "placements_meeting_original_top_image_quality": 2,
-  "quality_count_scope": "Unique pair IDs across primary and supplemental A; new_pair07 attempt03 now has raw new B, but explicit same-point/contact confirmation and formal approval are pending",
+  "quality_count_scope": "Unique pair IDs across primary and supplemental A; new_pair07 attempt03 has qualified A, fresh new B and operator-confirmed same-point/contact. Physical correspondence is complete; formal cohort/calibration approval remains separate.",
   "primary_A_placements_meeting_original_top_image_quality": 1,
   "formal_calibration_pair_approvals": 0,
   "held_out_id_fixed": "new_pair07",
@@ -101,8 +101,9 @@
       "new_B_captured": true,
       "new_B_capture_path": "docs/evidence/piper_calibration_p1_20261015/new_pair07/attempt03/grip_capture",
       "B_original_static_feedback_passed": true,
-      "explicit_same_point_confirmed": null,
-      "same_point_pair_approved": false,
+      "explicit_same_point_confirmed": true,
+      "same_point_pair_approved": true,
+      "same_point_scope": "Operator-confirmed physical correspondence, not formal calibration acceptance",
       "old_B_reuse_for_new_placement_allowed": false,
       "not_in_primary_A_total": true
     },
@@ -122,5 +123,5 @@
       "not_in_primary_A_total": true
     }
   ],
-  "conclusion": "Six original placements have raw records, not six qualified calibration pairs. One primary-A ID and supplemental new_pair07 attempt03 meet original top-image quality, totaling two IDs with qualified A. The latter now has new raw B, with explicit A-to-B same-point/contact confirmation pending. Formal approvals remain zero; do not pair old B across positions, fit missing centers, deploy TF or silently lower800/20."
+  "conclusion": "Six original placements have raw records, not six qualified calibration pairs. One primary-A ID and supplemental new_pair07 attempt03 meet original top-image quality, totaling two IDs with qualified A. New held-out A/B physical correspondence is operator-confirmed. Four training IDs still lack original-quality A; do not re-ask or recapture new_pair07. Formal cohort/calibration approvals remain zero; do not pair old B across positions, fit missing centers, deploy TF or silently lower800/20."
 }
