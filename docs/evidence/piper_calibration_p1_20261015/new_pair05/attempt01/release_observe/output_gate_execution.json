@@ -1,0 +1,280 @@
+{
+  "scope": "pair05 in-place open, original observe, stop before SEARCH, A only",
+  "commands": [
+    {
+      "name": "driver",
+      "argv": [
+        "/usr/bin/python3",
+        "-c",
+        "import sys; sys.path.append('/home/johnwick/.local/lib/python3.10/site-packages'); from piper.piper_ctrl_single_node import main; main()",
+        "--ros-args",
+        "--log-level",
+        "WARN",
+        "-p",
+        "can_port:=can0",
+        "-p",
+        "auto_enable:=false",
+        "-p",
+        "gripper_exist:=true",
+        "-r",
+        "joint_states_single:=/joint_states",
+        "-r",
+        "joint_ctrl_single:=/joint_commands"
+      ],
+      "pid": 70368,
+      "epoch": 1792048302.290266
+    },
+    {
+      "name": "visual",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_release_observe_retry.EzwvlG/original_observe_launch.py"
+      ],
+      "pid": 70369,
+      "epoch": 1792048302.2949784
+    },
+    {
+      "name": "bag",
+      "argv": [
+        "ros2",
+        "bag",
+        "record",
+        "-o",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_release_observe_retry.EzwvlG/motion_witness_bag",
+        "/joint_states_feedback",
+        "/joint_commands",
+        "/brain_robot_grasp/arm_trajectory",
+        "/brain_robot_grasp/gripper_command",
+        "/brain_robot_visual_control/state",
+        "/brain_robot_visual_control/reason",
+        "/brain_robot_control/adapter_armed"
+      ],
+      "pid": 70370,
+      "epoch": 1792048302.3061678
+    },
+    {
+      "name": "sdk_armed",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_release_observe_retry.EzwvlG/sdk_armed.json",
+        "--duration-s",
+        "6"
+      ],
+      "pid": 70515,
+      "epoch": 1792048307.5389578
+    },
+    {
+      "name": "depth",
+      "argv": [
+        "ros2",
+        "launch",
+        "astra_camera",
+        "astra.launch.py"
+      ],
+      "pid": 70520,
+      "epoch": 1792048313.8316343
+    },
+    {
+      "name": "color",
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "pid": 70562,
+      "epoch": 1792048316.2527373
+    },
+    {
+      "name": "before_release_view",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_static_rgbd.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_release_observe_retry.EzwvlG/before_release_view",
+        "--duration-s",
+        "12",
+        "--frames",
+        "3",
+        "--settle-s",
+        "3"
+      ],
+      "pid": 70573,
+      "epoch": 1792048320.8984509
+    }
+  ],
+  "events": [
+    {
+      "reason": "WAITING_FOR_START",
+      "epoch": 1792048303.5209851
+    },
+    {
+      "service": "/visual_search_controller/set_parameters",
+      "response": "rcl_interfaces.srv.SetParameters_Response(results=[rcl_interfaces.msg.SetParametersResult(successful=True, reason='')])",
+      "epoch": 1792048307.5120163
+    },
+    {
+      "service": "/visual_search_controller/get_parameters",
+      "response": "rcl_interfaces.srv.GetParameters_Response(values=[rcl_interfaces.msg.ParameterValue(type=1, bool_value=True, integer_value=0, double_value=0.0, string_value='', byte_array_value=[], bool_array_value=[], integer_array_value=[], double_array_value=[], string_array_value=[])])",
+      "epoch": 1792048307.5162823
+    },
+    {
+      "service": "/piper_jog_adapter/enable_motion",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Motion gate enabled; call /piper_jog_adapter/arm to start output.')",
+      "epoch": 1792048307.524302
+    },
+    {
+      "service": "/piper_jog_adapter/arm",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Adapter armed; only clamped low-speed JointJog commands are forwarded.')",
+      "epoch": 1792048307.5319648
+    },
+    {
+      "name": "sdk_armed",
+      "exit_code": 0,
+      "epoch": 1792048313.8266215
+    },
+    {
+      "name": "before_release_view",
+      "exit_code": 0,
+      "epoch": 1792048327.9239686
+    },
+    {
+      "published": "/brain_robot_grasp/gripper_command",
+      "position_m": 0.1,
+      "epoch": 1792048327.927618
+    },
+    {
+      "reason": "USER_STOP",
+      "epoch": 1792048342.9405797
+    },
+    {
+      "service": "/visual_search_controller/stop",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Visual motion stopped.')",
+      "epoch": 1792048342.9425454
+    },
+    {
+      "service": "/piper_jog_adapter/disarm",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Adapter disarmed; command output is held at feedback.')",
+      "epoch": 1792048342.9548943
+    },
+    {
+      "name": "before_release_view",
+      "final_exit_code": 0,
+      "epoch": 1792048342.9564738
+    },
+    {
+      "name": "color",
+      "final_exit_code": 0,
+      "epoch": 1792048343.2195163
+    },
+    {
+      "name": "depth",
+      "final_exit_code": 0,
+      "epoch": 1792048343.8850238
+    },
+    {
+      "name": "sdk_armed",
+      "final_exit_code": 0,
+      "epoch": 1792048343.8850453
+    },
+    {
+      "name": "bag",
+      "final_exit_code": 0,
+      "epoch": 1792048344.0490506
+    },
+    {
+      "name": "visual",
+      "final_exit_code": 0,
+      "epoch": 1792048345.6265662
+    },
+    {
+      "name": "driver",
+      "final_exit_code": 0,
+      "epoch": 1792048345.8911653
+    }
+  ],
+  "error": "TimeoutError('actual original 100mm open tolerance')",
+  "observe_reached": false,
+  "opened": false,
+  "hardware_enable_or_disable_requested": false,
+  "production_modified": false,
+  "before_arm_feedback": {
+    "epoch": 1792048303.8973153,
+    "q": [
+      -0.048302436000000004,
+      1.201438056,
+      -1.128748908,
+      -0.048598984000000005,
+      1.07908584,
+      0.267887508
+    ],
+    "gap_m": 0.0363,
+    "source_stamp_ns": "1792048303896582454"
+  },
+  "stop_after_observe_readback": true,
+  "feedback_at_arm": {
+    "epoch": 1792048307.5235245,
+    "q": [
+      -0.048302436000000004,
+      1.201438056,
+      -1.128748908,
+      -0.048598984000000005,
+      1.07908584,
+      0.267887508
+    ],
+    "gap_m": 0.0363,
+    "source_stamp_ns": "1792048307521012688"
+  },
+  "first_command": {
+    "epoch": 1792048307.5338476,
+    "q": [
+      -0.048302436000000004,
+      1.201438056,
+      -1.128748908,
+      -0.048598984000000005,
+      1.07908584,
+      0.267887508
+    ]
+  },
+  "before_open_feedback": {
+    "epoch": 1792048327.9274163,
+    "q": [
+      -0.048302436000000004,
+      1.201438056,
+      -1.128748908,
+      -0.048598984000000005,
+      1.07908584,
+      0.267887508
+    ],
+    "gap_m": 0.0363,
+    "source_stamp_ns": "1792048327926753421"
+  },
+  "all_owned_sources_exited": true,
+  "last_received_feedback": {
+    "epoch": 1792048342.952514,
+    "q": [
+      -0.048302436000000004,
+      1.201438056,
+      -1.128748908,
+      -0.048598984000000005,
+      1.07908584,
+      0.267887508
+    ],
+    "gap_m": 0.0363,
+    "source_stamp_ns": "1792048342951805111"
+  }
+}

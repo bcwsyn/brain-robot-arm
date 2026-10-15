@@ -1,0 +1,185 @@
+[
+  {
+    "runtime": "new_pair05_release_observe.wA33Uw",
+    "bags": [
+      {
+        "sha256": "f3ad7ad7200223b4bef7efbe7fd71fb74c2a459e1e7b4bbe1636f372578112bc",
+        "SQLite_integrity": "ok",
+        "counts": {},
+        "messages": 0,
+        "first_command": null,
+        "last_command": null,
+        "first_feedback": null,
+        "last_feedback": null,
+        "explicit_jaw_frames": 0,
+        "jaw_target_values": [],
+        "arm_trajectory_messages": 0,
+        "reason_events": []
+      }
+    ]
+  },
+  {
+    "runtime": "new_pair05_release_observe_retry.EzwvlG",
+    "bags": [
+      {
+        "sha256": "eeeda745f1e4b27afaae8bf8f68bb52efbc516a76d0d3311fe227d595c9cb5ab",
+        "SQLite_integrity": "ok",
+        "counts": {
+          "/brain_robot_grasp/gripper_command": 1,
+          "/brain_robot_grasp/arm_trajectory": 1,
+          "/brain_robot_visual_control/reason": 2,
+          "/brain_robot_visual_control/state": 2,
+          "/joint_states_feedback": 7834,
+          "/brain_robot_control/adapter_armed": 2,
+          "/joint_commands": 1737
+        },
+        "messages": 9579,
+        "first_command": {
+          "epoch": 1792048307.534297,
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "gap_m": null
+        },
+        "last_command": {
+          "epoch": 1792048342.9533339,
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "gap_m": null
+        },
+        "first_feedback": {
+          "epoch": 1792048303.8914793,
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "gap_m": 0.0363
+        },
+        "last_feedback": {
+          "epoch": 1792048343.8813632,
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "gap_m": 0.0363
+        },
+        "explicit_jaw_frames": 80,
+        "jaw_target_values": [
+          0.1
+        ],
+        "arm_trajectory_messages": 1,
+        "reason_events": [
+          {
+            "epoch": 1792048303.5588017,
+            "data": "WAITING_FOR_START"
+          },
+          {
+            "epoch": 1792048342.940272,
+            "data": "USER_STOP"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "runtime": "new_pair05_release_observe_enabled.Vk2Bs3",
+    "bags": [
+      {
+        "sha256": "07db6f72f459eca5ea829b9715dfccd5baf94d9ae964155f0d4fec07ad0ba48c",
+        "SQLite_integrity": "ok",
+        "counts": {
+          "/brain_robot_grasp/gripper_command": 1,
+          "/brain_robot_grasp/arm_trajectory": 1,
+          "/brain_robot_visual_control/reason": 2,
+          "/brain_robot_visual_control/state": 2,
+          "/joint_states_feedback": 2447,
+          "/brain_robot_control/adapter_armed": 3,
+          "/joint_commands": 1776
+        },
+        "messages": 4232,
+        "first_command": {
+          "epoch": 1792048410.4056711,
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "gap_m": null
+        },
+        "last_command": {
+          "epoch": 1792048446.4861689,
+          "q": [
+            -0.048302436000000004,
+            1.2022404800000002,
+            -1.123358712,
+            -0.048598984000000005,
+            1.085261016,
+            0.267887508
+          ],
+          "gap_m": null
+        },
+        "first_feedback": {
+          "epoch": 1792048407.8273044,
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "gap_m": 0.0363
+        },
+        "last_feedback": {
+          "epoch": 1792048421.4866488,
+          "q": [
+            -0.048302436000000004,
+            1.2022404800000002,
+            -1.123358712,
+            -0.048598984000000005,
+            1.085261016,
+            0.267887508
+          ],
+          "gap_m": 0.0363
+        },
+        "explicit_jaw_frames": 80,
+        "jaw_target_values": [
+          0.1
+        ],
+        "arm_trajectory_messages": 1,
+        "reason_events": [
+          {
+            "epoch": 1792048407.521636,
+            "data": "WAITING_FOR_START"
+          },
+          {
+            "epoch": 1792048450.2904072,
+            "data": "USER_STOP"
+          }
+        ]
+      }
+    ]
+  }
+]

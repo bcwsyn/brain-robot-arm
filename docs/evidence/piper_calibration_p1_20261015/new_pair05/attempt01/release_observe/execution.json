@@ -1,0 +1,215 @@
+{
+  "schema": "piper_P1_pair05_release_blocked_v1",
+  "recorded_local": "2026-10-15T15:18:00+08:00",
+  "user_authority": "运行: current pair05 in-place open -> original observe trajectory -> stop before SEARCH -> capture A",
+  "B_checkpoint": "2b1becb",
+  "original_B_unmodified": true,
+  "attempts": [
+    {
+      "stage": "startup",
+      "runtime": "new_pair05_release_observe.wA33Uw",
+      "error": "Original driver import lacked user-site python-can under PYTHONNOUSERSITE; temporary launch wrapper tried substitutions on a raw str",
+      "motion_output": false,
+      "fix": "Append user site after system imports for original driver main; normalize string/non-string executable filtering in temporary wrapper. Production untouched."
+    },
+    {
+      "stage": "driver_output_gate",
+      "runtime": "new_pair05_release_observe_retry.EzwvlG",
+      "error": "Agent skipped original enable_srv because SDK already showed motors enabled; fresh driver __enable_flag remained false",
+      "arm_first_command_matches_B": true,
+      "SDK_feedback_unchanged": true,
+      "adapter_explicit_gripper_frames": 80,
+      "driver_gripper_frame_gate": "enable=False feedback_available=True; all suppressed",
+      "fix": "Restore original enable_srv true step once for new driver; no change to production gates or SDK gripper code."
+    },
+    {
+      "stage": "enabled_driver_then_CAN_RX_stall",
+      "runtime": "new_pair05_release_observe_enabled.Vk2Bs3",
+      "original_enable_srv_true_success": true,
+      "enable_false_or_disable_or_reset_requested": false,
+      "first_arm_command_matches_feedback": true,
+      "stop_after_observe_readback": true,
+      "grasp_executor_not_started": true,
+      "driver_feedback_lost_epoch": "1792048421.492085583",
+      "adapter_auto_disarm_epoch": "1792048446.507002752",
+      "driver_output_gates": "enable=True feedback_available=False; 80 explicit jaw frames suppressed",
+      "actual_last_gripper_mm": 36.3,
+      "actual_opening_confirmed": false,
+      "controller_start_requested": false,
+      "observe_reached": false,
+      "A_frames": 0
+    }
+  ],
+  "temporary_orchestration_shortcoming": {
+    "before_release_preview_rc": 2,
+    "before_release_preview_saved_frames": 0,
+    "preview_rc_was_not_checked_before_open_request": true,
+    "feedback_age_at_open_request_s": 14,
+    "physical_jaw_output_blocked_by_original_driver": true,
+    "do_not_directly_rerun_archived_helpers": true,
+    "next_session_must_respect_failed_or_stale_intermediate_capture_before_publishing": true,
+    "raw_executed_helper_bytes_preserved": true
+  },
+  "receive_confirmation": {
+    "independent_passive_SDK_s": 8,
+    "samples": 80,
+    "fresh_samples": 0,
+    "CAN_RX_before": 6347214,
+    "CAN_RX_after": 6347214,
+    "CAN_TX_before": 1485,
+    "CAN_TX_after": 1485,
+    "state": "UP / ERROR-ACTIVE, errors=0",
+    "SDK_default_zero_or_false_is_not_hardware_state": true,
+    "recent_kernel_log": "-- No entries --",
+    "cause_not_established": true,
+    "no_CAN_USB_module_reload_attempted": true
+  },
+  "last_actual_fresh_SDK": {
+    "epoch": 1792048416.4871724,
+    "sdk_receipt_stamps": {
+      "joint": "1792048416.4852145",
+      "high": "1792048416.4811666",
+      "low": "1792048416.4810529",
+      "gripper": "1792048416.485328"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 103.333,
+    "joint_hz": 200,
+    "q_mdeg": [
+      -2769,
+      68920,
+      -64398,
+      -2786,
+      62214,
+      15357
+    ],
+    "q_driver_rad": [
+      -0.048302436000000004,
+      1.2022404800000002,
+      -1.123358712,
+      -0.048598984000000005,
+      1.085261016,
+      0.267887508
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 36300,
+    "gripper_mm": 36.3,
+    "gripper_effort_raw": -657,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "last_actual_ROS_feedback": {
+    "epoch": 1792048421.48713,
+    "q": [
+      -0.048302436000000004,
+      1.2022404800000002,
+      -1.123358712,
+      -0.048598984000000005,
+      1.085261016,
+      0.267887508
+    ],
+    "gap_m": 0.0363,
+    "source_stamp_ns": "1792048421486425687"
+  },
+  "feedback_delta_from_B_rad": [
+    0,
+    0.000802424,
+    0.005390196,
+    0,
+    0.006175176,
+    0
+  ],
+  "physical_cube_same_point_after_this_control_handover_not_independently_verified": true,
+  "stopping": {
+    "original_stop_and_disarm_service_success": true,
+    "auto_disarm_is_software_not_hardware_disable": true,
+    "final_driver_exit_code": -9,
+    "other_final_camera_visual_bag_sources_exit_zero": true,
+    "one_shot_SDK_armed_exit_code": 2,
+    "all_owned_sources_exited": true,
+    "no_Reset_Disable_EnableFalse_calls": true
+  },
+  "stop_trajectories": [
+    {
+      "runtime": "new_pair05_release_observe_retry.EzwvlG",
+      "epoch": 1792048342.938198,
+      "points": [
+        {
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "t_ns": 0
+        },
+        {
+          "q": [
+            -0.048302436000000004,
+            1.201438056,
+            -1.128748908,
+            -0.048598984000000005,
+            1.07908584,
+            0.267887508
+          ],
+          "t_ns": 100000000
+        }
+      ],
+      "classification": "controller USER_STOP two-point stationary hold, not PREPARE observation trajectory"
+    },
+    {
+      "runtime": "new_pair05_release_observe_enabled.Vk2Bs3",
+      "epoch": 1792048450.2889,
+      "points": [
+        {
+          "q": [
+            -0.048302436000000004,
+            1.2022404800000002,
+            -1.123358712,
+            -0.048598984000000005,
+            1.085261016,
+            0.267887508
+          ],
+          "t_ns": 0
+        },
+        {
+          "q": [
+            -0.048302436000000004,
+            1.2022404800000002,
+            -1.123358712,
+            -0.048598984000000005,
+            1.085261016,
+            0.267887508
+          ],
+          "t_ns": 100000000
+        }
+      ],
+      "classification": "controller USER_STOP two-point stationary hold, not PREPARE observation trajectory"
+    }
+  ],
+  "stop_hold_is_not_observe_motion": true,
+  "production_five_SHA_unchanged": true,
+  "complete_pair": false,
+  "qualified_complete_pairs": 1,
+  "next": "Keep arm/cube still. Host VMware disconnect/reconnect USB-CAN only; no arm reboot requested. On new receive stream, verify actual q/gap and cube origin; continue still-authorized original release/observe only with fresh intermediate checkpoints. Do not repeat startup/gate mistakes or motion while no feedback.",
+  "GitHub_pushed": false
+}

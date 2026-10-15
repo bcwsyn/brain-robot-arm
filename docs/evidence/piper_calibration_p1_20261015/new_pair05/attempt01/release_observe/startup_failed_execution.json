@@ -1,0 +1,81 @@
+{
+  "scope": "pair05 in-place open, original observe, stop before SEARCH, A only",
+  "commands": [
+    {
+      "name": "driver",
+      "argv": [
+        "ros2",
+        "run",
+        "piper",
+        "piper_single_ctrl",
+        "--ros-args",
+        "--log-level",
+        "WARN",
+        "-p",
+        "can_port:=can0",
+        "-p",
+        "auto_enable:=false",
+        "-p",
+        "gripper_exist:=true",
+        "-r",
+        "joint_states_single:=/joint_states",
+        "-r",
+        "joint_ctrl_single:=/joint_commands"
+      ],
+      "pid": 70230,
+      "epoch": 1792048240.4642003
+    },
+    {
+      "name": "visual",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_release_observe.wA33Uw/original_observe_launch.py"
+      ],
+      "pid": 70231,
+      "epoch": 1792048240.4699318
+    },
+    {
+      "name": "bag",
+      "argv": [
+        "ros2",
+        "bag",
+        "record",
+        "-o",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_release_observe.wA33Uw/motion_witness_bag",
+        "/joint_states_feedback",
+        "/joint_commands",
+        "/brain_robot_grasp/arm_trajectory",
+        "/brain_robot_grasp/gripper_command",
+        "/brain_robot_visual_control/state",
+        "/brain_robot_visual_control/reason",
+        "/brain_robot_control/adapter_armed"
+      ],
+      "pid": 70232,
+      "epoch": 1792048240.4752483
+    }
+  ],
+  "events": [
+    {
+      "name": "bag",
+      "final_exit_code": 0,
+      "epoch": 1792048258.7511983
+    },
+    {
+      "name": "visual",
+      "final_exit_code": 1,
+      "epoch": 1792048258.751875
+    },
+    {
+      "name": "driver",
+      "final_exit_code": 1,
+      "epoch": 1792048258.7519107
+    }
+  ],
+  "error": "TimeoutError('fresh original driver feedback')",
+  "observe_reached": false,
+  "opened": false,
+  "hardware_enable_or_disable_requested": false,
+  "production_modified": false,
+  "all_owned_sources_exited": true,
+  "last_received_feedback": null
+}
