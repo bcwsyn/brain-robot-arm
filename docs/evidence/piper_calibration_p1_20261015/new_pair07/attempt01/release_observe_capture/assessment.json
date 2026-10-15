@@ -1,0 +1,100 @@
+{
+  "pair_id": "new_pair07",
+  "role": "held_out",
+  "B_checkpoint": "8f8eed6",
+  "operator_motion_permission_recorded": true,
+  "operator_post_release_same_point_confirmed": true,
+  "raw_A_frames": 60,
+  "diagnostic_selected_frames": 20,
+  "complete_face_candidates": 0,
+  "original_good_top_frames": 0,
+  "formal_complete_pairs_unchanged": 1,
+  "formal_pair_accepted": false,
+  "calibration_performed": false,
+  "original_open_feedback": {
+    "epoch": 1792064882.419083,
+    "q": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9333586640000001,
+      -0.22966770400000003,
+      1.0372202400000001,
+      0.42566848800000007
+    ],
+    "gap_m": 0.0971,
+    "source_stamp_ns": "1792064882418615381"
+  },
+  "observation_feedback": {
+    "epoch": 1792064901.9772794,
+    "q": [
+      -0.13360359600000002,
+      0.9445053800000002,
+      -1.259735904,
+      -0.07943997600000001,
+      1.216091016,
+      0.098436492
+    ],
+    "gap_m": 0.0994,
+    "source_stamp_ns": "1792064901975028975"
+  },
+  "START_to_REACHED_s": 19.552953720092773,
+  "original_prepare_points": 6,
+  "original_prepare_duration_s": 20,
+  "first_command_matches_actual_arm_feedback": true,
+  "stopped_before_SEARCH": true,
+  "no_grasp_reset_disable": true,
+  "A_elapsed_s": 45.72963214399351,
+  "A_camera_elapsed_s": 54.275591131008696,
+  "actual_A_q_rad": [
+    -0.134528128,
+    0.9445053800000002,
+    -1.26041622,
+    -0.07797468,
+    1.2179924119999999,
+    0.09698864
+  ],
+  "A_q_spread_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "A_target_depth_samples_all_zero": true,
+  "whole_depth_empty": false,
+  "partial_depth_FOV_loss_does_not_explain_all_missing_support": true,
+  "physical_depth_failure_cause_proven": false,
+  "read_only_A_CAN_TX_delta": 0,
+  "all_owned_sources_exited": true,
+  "production_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18",
+      "actual": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18"
+    }
+  },
+  "deployed_adapter_sha256": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+  "candidate_adapter_deployed": false,
+  "runtime_files_SHA_verified": 170,
+  "portable_assets_SHA_verified": 50,
+  "tests_passed": 216,
+  "raw_data_deleted": false,
+  "GitHub_pushed": false,
+  "next": "Keep current pose/cube, no repeated same-condition60 or motion. Offline compare native-depth/FOV/quality across all six; no fitting/TF deployment from missing centers."
+}

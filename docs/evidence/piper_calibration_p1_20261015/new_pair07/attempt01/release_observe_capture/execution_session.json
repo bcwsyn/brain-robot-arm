@@ -1,0 +1,459 @@
+{
+  "pair_id": "new_pair07",
+  "B_checkpoint": "8f8eed6",
+  "operator_release_observe_permission": true,
+  "operator_quote": "\u5141\u8bb8\u539f\u4f4d\u5f20\u722a\u3001\u8fd4\u56de\u89c2\u6d4b\u5e76\u91c7\u96c6",
+  "opened": true,
+  "observe_reached": true,
+  "reset_or_disable_requested": false,
+  "production_modified": false,
+  "candidate_deployed": false,
+  "camera_during_motion": false,
+  "events": [
+    {
+      "name": "sdk_before",
+      "exit_code": 2,
+      "epoch": 1792064869.821986
+    },
+    {
+      "reason": "WAITING_FOR_START",
+      "epoch": 1792064871.483968
+    },
+    {
+      "service": "/visual_search_controller/set_parameters",
+      "response": "rcl_interfaces.srv.SetParameters_Response(results=[rcl_interfaces.msg.SetParametersResult(successful=True, reason='')])",
+      "epoch": 1792064875.1697376
+    },
+    {
+      "service": "/visual_search_controller/get_parameters",
+      "response": "rcl_interfaces.srv.GetParameters_Response(values=[rcl_interfaces.msg.ParameterValue(type=1, bool_value=True, integer_value=0, double_value=0.0, string_value='', byte_array_value=[], bool_array_value=[], integer_array_value=[], double_array_value=[], string_array_value=[])])",
+      "epoch": 1792064875.174342
+    },
+    {
+      "service": "/enable_srv",
+      "response": "piper_msgs.srv.Enable_Response(enable_response=True)",
+      "epoch": 1792064875.6855512
+    },
+    {
+      "name": "sdk_after_enable",
+      "exit_code": 2,
+      "epoch": 1792064881.990933
+    },
+    {
+      "service": "/piper_jog_adapter/enable_motion",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Motion gate enabled; call /piper_jog_adapter/arm to start output.')",
+      "epoch": 1792064882.0024757
+    },
+    {
+      "service": "/piper_jog_adapter/arm",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Adapter armed; only clamped low-speed JointJog commands are forwarded.')",
+      "epoch": 1792064882.0078928
+    },
+    {
+      "published": "/brain_robot_grasp/gripper_command",
+      "position_m": 0.1,
+      "epoch": 1792064882.0181954
+    },
+    {
+      "reason": "START_AUTHORIZED",
+      "epoch": 1792064882.4259348
+    },
+    {
+      "service": "/visual_search_controller/start",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='PREPARE started; J2/J3 will move to the configured observation pose.')",
+      "epoch": 1792064882.4260948
+    },
+    {
+      "reason": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH",
+      "epoch": 1792064901.9788885
+    },
+    {
+      "service": "/piper_jog_adapter/disarm",
+      "response": "std_srvs.srv.Trigger_Response(success=True, message='Adapter disarmed; command output is held at feedback.')",
+      "epoch": 1792064901.9894974
+    },
+    {
+      "name": "sdk_at_observation",
+      "exit_code": 2,
+      "epoch": 1792064908.2852235
+    },
+    {
+      "name": "sdk_at_observation",
+      "final_exit_code": 2,
+      "epoch": 1792064908.2866378
+    },
+    {
+      "name": "sdk_after_enable",
+      "final_exit_code": 2,
+      "epoch": 1792064908.2866454
+    },
+    {
+      "name": "bag",
+      "final_exit_code": 0,
+      "epoch": 1792064908.450848
+    },
+    {
+      "name": "visual",
+      "final_exit_code": 0,
+      "epoch": 1792064910.0727854
+    },
+    {
+      "name": "driver",
+      "final_exit_code": -9,
+      "epoch": 1792064912.081033
+    },
+    {
+      "name": "sdk_before",
+      "final_exit_code": 2,
+      "epoch": 1792064912.0810442
+    }
+  ],
+  "commands": [
+    {
+      "name": "sdk_before",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/new_pair07_release_observe.muxfhlfs/sdk_before.json",
+        "--duration-s",
+        "10"
+      ],
+      "pid": 85818,
+      "epoch": 1792064859.5596995
+    },
+    {
+      "name": "driver",
+      "argv": [
+        "/usr/bin/python3",
+        "-c",
+        "import sys;sys.path.append('/home/johnwick/.local/lib/python3.10/site-packages');from piper.piper_ctrl_single_node import main;main()",
+        "--ros-args",
+        "--log-level",
+        "WARN",
+        "-p",
+        "can_port:=can0",
+        "-p",
+        "auto_enable:=false",
+        "-p",
+        "gripper_exist:=true",
+        "-r",
+        "joint_states_single:=/joint_states",
+        "-r",
+        "joint_ctrl_single:=/joint_commands"
+      ],
+      "pid": 85824,
+      "epoch": 1792064870.1355252
+    },
+    {
+      "name": "visual",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_after_manual_reset.NBs3LK/original_observe_launch.py"
+      ],
+      "pid": 85825,
+      "epoch": 1792064870.1392496
+    },
+    {
+      "name": "bag",
+      "argv": [
+        "ros2",
+        "bag",
+        "record",
+        "-o",
+        "/home/johnwick/brain_robot_logs/new_pair07_release_observe.muxfhlfs/motion_witness_bag",
+        "/joint_states_feedback",
+        "/joint_commands",
+        "/brain_robot_grasp/arm_trajectory",
+        "/brain_robot_grasp/gripper_command",
+        "/brain_robot_visual_control/state",
+        "/brain_robot_visual_control/reason",
+        "/brain_robot_control/adapter_armed"
+      ],
+      "pid": 85826,
+      "epoch": 1792064870.1427202
+    },
+    {
+      "name": "sdk_after_enable",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/new_pair07_release_observe.muxfhlfs/sdk_after_enable.json",
+        "--duration-s",
+        "6"
+      ],
+      "pid": 85965,
+      "epoch": 1792064875.6951907
+    },
+    {
+      "name": "sdk_at_observation",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/new_pair07_release_observe.muxfhlfs/sdk_at_observation.json",
+        "--duration-s",
+        "6"
+      ],
+      "pid": 86005,
+      "epoch": 1792064902.0005388
+    }
+  ],
+  "error": null,
+  "adapter_sha256": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+  "B_assessment_sha256": "fd752e806d90803ba9f17d529ea08cbfbd57aa6c5a9a572efd344e12e5f0dea6",
+  "initial_measured": {
+    "epoch": 1792064869.6637006,
+    "sdk_receipt_stamps": {
+      "joint": "1792064869.6631904",
+      "high": "1792064869.6595418",
+      "low": "1792064869.6595426",
+      "gripper": "1792064869.6632159"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      8784,
+      56029,
+      -53775,
+      -13166,
+      59021,
+      24402
+    ],
+    "q_driver_rad": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 36900,
+    "gripper_mm": 36.9,
+    "gripper_effort_raw": -77,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "original_contiguous_static_window": {
+    "indices": [
+      24,
+      100
+    ],
+    "quality": {
+      "samples": 76,
+      "fresh_samples": 76,
+      "span_s": 7.528836727142334,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "stop_after_observe_readback": true,
+  "original_enable_true_requested": true,
+  "enabled_measured": {
+    "epoch": 1792064881.8637135,
+    "sdk_receipt_stamps": {
+      "joint": "1792064881.8601494",
+      "high": "1792064881.8611295",
+      "low": "1792064881.8610542",
+      "gripper": "1792064881.8602757"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      8784,
+      56029,
+      -53775,
+      -13166,
+      59021,
+      24402
+    ],
+    "q_driver_rad": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 36900,
+    "gripper_mm": 36.9,
+    "gripper_effort_raw": -84,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "feedback_at_arm": {
+    "epoch": 1792064881.999538,
+    "q": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ],
+    "gap_m": 0.0369,
+    "source_stamp_ns": "1792064881998626844"
+  },
+  "first_command": {
+    "epoch": 1792064882.012033,
+    "q": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ]
+  },
+  "before_open_feedback": {
+    "epoch": 1792064882.0179346,
+    "q": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ],
+    "gap_m": 0.0369,
+    "source_stamp_ns": "1792064882017477921"
+  },
+  "opened_feedback": {
+    "epoch": 1792064882.419083,
+    "q": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9333586640000001,
+      -0.22966770400000003,
+      1.0372202400000001,
+      0.42566848800000007
+    ],
+    "gap_m": 0.0971,
+    "source_stamp_ns": "1792064882418615381"
+  },
+  "observe_feedback": {
+    "epoch": 1792064901.9772794,
+    "q": [
+      -0.13360359600000002,
+      0.9445053800000002,
+      -1.259735904,
+      -0.07943997600000001,
+      1.216091016,
+      0.098436492
+    ],
+    "gap_m": 0.0994,
+    "source_stamp_ns": "1792064901975028975"
+  },
+  "final_sdk": {
+    "epoch": 1792064908.160528,
+    "sdk_receipt_stamps": {
+      "joint": "1792064908.1565154",
+      "high": "1792064908.152372",
+      "low": "1792064908.1522524",
+      "gripper": "1792064908.1565518"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -7712,
+      54145,
+      -72255,
+      -4470,
+      69823,
+      5643
+    ],
+    "q_driver_rad": [
+      -0.134528128,
+      0.9445053800000002,
+      -1.26041622,
+      -0.07797468,
+      1.2179924119999999,
+      0.098436492
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99400,
+    "gripper_mm": 99.4,
+    "gripper_effort_raw": 136,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "all_owned_sources_exited": true,
+  "last_received_feedback": {
+    "epoch": 1792064908.2851589,
+    "q": [
+      -0.134528128,
+      0.9445053800000002,
+      -1.26041622,
+      -0.07797468,
+      1.2179924119999999,
+      0.098436492
+    ],
+    "gap_m": 0.0994,
+    "source_stamp_ns": "1792064908284654912"
+  }
+}

@@ -1,0 +1,1238 @@
+{
+  "subscription_only": true,
+  "hardware_synchronized": false,
+  "camera_calibration": false,
+  "topics": [
+    "/camera/color/image_raw",
+    "/camera/depth/image_raw",
+    "/camera/depth/camera_info",
+    "/joint_states_feedback"
+  ],
+  "message_filters_file": "/opt/ros/humble/local/lib/python3.10/dist-packages/message_filters/__init__.py",
+  "slop_s": 0.12,
+  "max_age_s": 0.5,
+  "requested_frames": 60,
+  "saved_frames": 60,
+  "static_window_s": 3.0,
+  "full_same_frame_depth_info": true,
+  "received": {
+    "/joint_states_feedback": 2178,
+    "/camera/depth/camera_info": 931,
+    "/camera/depth/image_raw": 761,
+    "/camera/color/image_raw": 219
+  },
+  "rejected": {
+    "feedback not settled for 3s": 9,
+    "depth info is not from the same frame": 48
+  },
+  "matched_packets": 203,
+  "stop_on_feedback_loss": true,
+  "image_byte_limit": 67108864,
+  "image_bytes": 8842729,
+  "stop_reason": null,
+  "elapsed_s": 45.72963214399351,
+  "start_q_rad": [
+    -0.134528128,
+    0.9445053800000002,
+    -1.26041622,
+    -0.07797468,
+    1.2179924119999999,
+    0.09698864
+  ],
+  "receipt_diagnostics": {
+    "timestamp_scope": "Original message header and local receipt clocks; not hardware synchronization",
+    "latest_by_topic": {
+      "/joint_states_feedback": {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064996081562608",
+        "receipt_wall_ns": "1792064996081577665",
+        "receipt_monotonic_ns": "95670995911892",
+        "source_stamp_ns": "1792064996077152768",
+        "source_age_at_receipt_ns": 4409840,
+        "local_interarrival_ns": 20518424
+      },
+      "/camera/depth/camera_info": {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064996070319215",
+        "receipt_wall_ns": "1792064996070323916",
+        "receipt_monotonic_ns": "95670984657620",
+        "source_stamp_ns": "1792064996069011501",
+        "source_age_at_receipt_ns": 1307714,
+        "local_interarrival_ns": 34778214
+      },
+      "/camera/depth/image_raw": {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064996070010039",
+        "receipt_wall_ns": "1792064996070029020",
+        "receipt_monotonic_ns": "95670984363733",
+        "source_stamp_ns": "1792064996069011501",
+        "source_age_at_receipt_ns": 998538,
+        "local_interarrival_ns": 34933033
+      },
+      "/camera/color/image_raw": {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064996097959808",
+        "receipt_wall_ns": "1792064996097977867",
+        "receipt_monotonic_ns": "95671012312320",
+        "source_stamp_ns": "1792064996097135168",
+        "source_age_at_receipt_ns": 824640,
+        "local_interarrival_ns": 200080103
+      }
+    },
+    "recent_receipts": [
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994861060230",
+        "receipt_wall_ns": "1792064994861075779",
+        "receipt_monotonic_ns": "95669775410221",
+        "source_stamp_ns": "1792064994857199616",
+        "source_age_at_receipt_ns": 3860614,
+        "local_interarrival_ns": 20935797
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064994871995061",
+        "receipt_wall_ns": "1792064994872017210",
+        "receipt_monotonic_ns": "95669786352371",
+        "source_stamp_ns": "1792064994870760810",
+        "source_age_at_receipt_ns": 1234251,
+        "local_interarrival_ns": 35158448
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064994872423694",
+        "receipt_wall_ns": "1792064994872430884",
+        "receipt_monotonic_ns": "95669786764678",
+        "source_stamp_ns": "1792064994870760810",
+        "source_age_at_receipt_ns": 1662884,
+        "local_interarrival_ns": 34886928
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994881849923",
+        "receipt_wall_ns": "1792064994881867821",
+        "receipt_monotonic_ns": "95669796202351",
+        "source_stamp_ns": "1792064994877270272",
+        "source_age_at_receipt_ns": 4579651,
+        "local_interarrival_ns": 20792130
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064994898006663",
+        "receipt_wall_ns": "1792064994898023331",
+        "receipt_monotonic_ns": "95669812357848",
+        "source_stamp_ns": "1792064994897143185",
+        "source_age_at_receipt_ns": 863478,
+        "local_interarrival_ns": 199979041
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994902488085",
+        "receipt_wall_ns": "1792064994902504976",
+        "receipt_monotonic_ns": "95669816839219",
+        "source_stamp_ns": "1792064994897264640",
+        "source_age_at_receipt_ns": 5223445,
+        "local_interarrival_ns": 20636868
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064994906004724",
+        "receipt_wall_ns": "1792064994906021417",
+        "receipt_monotonic_ns": "95669820355974",
+        "source_stamp_ns": "1792064994905009500",
+        "source_age_at_receipt_ns": 995224,
+        "local_interarrival_ns": 34003603
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064994906270457",
+        "receipt_wall_ns": "1792064994906274765",
+        "receipt_monotonic_ns": "95669820608472",
+        "source_stamp_ns": "1792064994905009500",
+        "source_age_at_receipt_ns": 1260957,
+        "local_interarrival_ns": 33843794
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994923466671",
+        "receipt_wall_ns": "1792064994923481960",
+        "receipt_monotonic_ns": "95669837816292",
+        "source_stamp_ns": "1792064994922064896",
+        "source_age_at_receipt_ns": 1401775,
+        "local_interarrival_ns": 20977073
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064994934549676",
+        "receipt_wall_ns": "1792064994934567395",
+        "receipt_monotonic_ns": "95669848901910",
+        "source_stamp_ns": "1792064994933550706",
+        "source_age_at_receipt_ns": 998970,
+        "local_interarrival_ns": 28545936
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064994934884742",
+        "receipt_wall_ns": "1792064994934890569",
+        "receipt_monotonic_ns": "95669849224311",
+        "source_stamp_ns": "1792064994933550706",
+        "source_age_at_receipt_ns": 1334036,
+        "local_interarrival_ns": 28615839
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994943992941",
+        "receipt_wall_ns": "1792064994944006951",
+        "receipt_monotonic_ns": "95669858341388",
+        "source_stamp_ns": "1792064994942215424",
+        "source_age_at_receipt_ns": 1777517,
+        "local_interarrival_ns": 20525096
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994964556760",
+        "receipt_wall_ns": "1792064994964572174",
+        "receipt_monotonic_ns": "95669878906404",
+        "source_stamp_ns": "1792064994962179328",
+        "source_age_at_receipt_ns": 2377432,
+        "local_interarrival_ns": 20565016
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064994970068488",
+        "receipt_wall_ns": "1792064994970085518",
+        "receipt_monotonic_ns": "95669884420170",
+        "source_stamp_ns": "1792064994969065217",
+        "source_age_at_receipt_ns": 1003271,
+        "local_interarrival_ns": 35518260
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064994970339478",
+        "receipt_wall_ns": "1792064994970344120",
+        "receipt_monotonic_ns": "95669884677830",
+        "source_stamp_ns": "1792064994969065217",
+        "source_age_at_receipt_ns": 1274261,
+        "local_interarrival_ns": 35453519
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064994985408470",
+        "receipt_wall_ns": "1792064994985424617",
+        "receipt_monotonic_ns": "95669899758797",
+        "source_stamp_ns": "1792064994982185728",
+        "source_age_at_receipt_ns": 3222742,
+        "local_interarrival_ns": 20852393
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995005893614",
+        "receipt_wall_ns": "1792064995005909621",
+        "receipt_monotonic_ns": "95669920243938",
+        "source_stamp_ns": "1792064995002171904",
+        "source_age_at_receipt_ns": 3721710,
+        "local_interarrival_ns": 20485141
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995026440260",
+        "receipt_wall_ns": "1792064995026455455",
+        "receipt_monotonic_ns": "95669940789580",
+        "source_stamp_ns": "1792064995022176000",
+        "source_age_at_receipt_ns": 4264260,
+        "local_interarrival_ns": 20545642
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995039771765",
+        "receipt_wall_ns": "1792064995039807919",
+        "receipt_monotonic_ns": "95669954142915",
+        "source_stamp_ns": "1792064995038689733",
+        "source_age_at_receipt_ns": 1082032,
+        "local_interarrival_ns": 69722745
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995040111600",
+        "receipt_wall_ns": "1792064995040116415",
+        "receipt_monotonic_ns": "95669954450190",
+        "source_stamp_ns": "1792064995038689733",
+        "source_age_at_receipt_ns": 1421867,
+        "local_interarrival_ns": 69772360
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995047088306",
+        "receipt_wall_ns": "1792064995047103262",
+        "receipt_monotonic_ns": "95669961437461",
+        "source_stamp_ns": "1792064995042192896",
+        "source_age_at_receipt_ns": 4895410,
+        "local_interarrival_ns": 20647881
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995067751204",
+        "receipt_wall_ns": "1792064995067769880",
+        "receipt_monotonic_ns": "95669982104046",
+        "source_stamp_ns": "1792064995062153728",
+        "source_age_at_receipt_ns": 5597476,
+        "local_interarrival_ns": 20666585
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995068921379",
+        "receipt_wall_ns": "1792064995068931027",
+        "receipt_monotonic_ns": "95669983265425",
+        "source_stamp_ns": "1792064995068147503",
+        "source_age_at_receipt_ns": 773876,
+        "local_interarrival_ns": 28815235
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995088225238",
+        "receipt_wall_ns": "1792064995088239861",
+        "receipt_monotonic_ns": "95670002574177",
+        "source_stamp_ns": "1792064995087178240",
+        "source_age_at_receipt_ns": 1046998,
+        "local_interarrival_ns": 20470131
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064995098229763",
+        "receipt_wall_ns": "1792064995098324795",
+        "receipt_monotonic_ns": "95670012659643",
+        "source_stamp_ns": "1792064995097176847",
+        "source_age_at_receipt_ns": 1052916,
+        "local_interarrival_ns": 200301795
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995108802690",
+        "receipt_wall_ns": "1792064995108817220",
+        "receipt_monotonic_ns": "95670023151478",
+        "source_stamp_ns": "1792064995107208960",
+        "source_age_at_receipt_ns": 1593730,
+        "local_interarrival_ns": 20577301
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995129895649",
+        "receipt_wall_ns": "1792064995129920219",
+        "receipt_monotonic_ns": "95670044255324",
+        "source_stamp_ns": "1792064995127131904",
+        "source_age_at_receipt_ns": 2763745,
+        "local_interarrival_ns": 21103846
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995139400397",
+        "receipt_wall_ns": "1792064995139416365",
+        "receipt_monotonic_ns": "95670053750990",
+        "source_stamp_ns": "1792064995138290582",
+        "source_age_at_receipt_ns": 1109815,
+        "local_interarrival_ns": 99608075
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995139830848",
+        "receipt_wall_ns": "1792064995139844330",
+        "receipt_monotonic_ns": "95670054178537",
+        "source_stamp_ns": "1792064995138290582",
+        "source_age_at_receipt_ns": 1540266,
+        "local_interarrival_ns": 70913112
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995150208104",
+        "receipt_wall_ns": "1792064995150222732",
+        "receipt_monotonic_ns": "95670064556812",
+        "source_stamp_ns": "1792064995147152384",
+        "source_age_at_receipt_ns": 3055720,
+        "local_interarrival_ns": 20301488
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995171032204",
+        "receipt_wall_ns": "1792064995171050091",
+        "receipt_monotonic_ns": "95670085384519",
+        "source_stamp_ns": "1792064995167165440",
+        "source_age_at_receipt_ns": 3866764,
+        "local_interarrival_ns": 20827707
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995174832071",
+        "receipt_wall_ns": "1792064995174848445",
+        "receipt_monotonic_ns": "95670089183051",
+        "source_stamp_ns": "1792064995173904219",
+        "source_age_at_receipt_ns": 927852,
+        "local_interarrival_ns": 35432061
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995175105244",
+        "receipt_wall_ns": "1792064995175110072",
+        "receipt_monotonic_ns": "95670089443842",
+        "source_stamp_ns": "1792064995173904219",
+        "source_age_at_receipt_ns": 1201025,
+        "local_interarrival_ns": 35265305
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995191500769",
+        "receipt_wall_ns": "1792064995191516790",
+        "receipt_monotonic_ns": "95670105850861",
+        "source_stamp_ns": "1792064995187147264",
+        "source_age_at_receipt_ns": 4353505,
+        "local_interarrival_ns": 20466342
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995203480160",
+        "receipt_wall_ns": "1792064995203513276",
+        "receipt_monotonic_ns": "95670117849190",
+        "source_stamp_ns": "1792064995202350619",
+        "source_age_at_receipt_ns": 1129541,
+        "local_interarrival_ns": 28666139
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995204052496",
+        "receipt_wall_ns": "1792064995204065307",
+        "receipt_monotonic_ns": "95670118399539",
+        "source_stamp_ns": "1792064995202350619",
+        "source_age_at_receipt_ns": 1701877,
+        "local_interarrival_ns": 28955697
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995212358753",
+        "receipt_wall_ns": "1792064995212378524",
+        "receipt_monotonic_ns": "95670126713385",
+        "source_stamp_ns": "1792064995207198976",
+        "source_age_at_receipt_ns": 5159777,
+        "local_interarrival_ns": 20862524
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995233115468",
+        "receipt_wall_ns": "1792064995233130530",
+        "receipt_monotonic_ns": "95670147464784",
+        "source_stamp_ns": "1792064995232129280",
+        "source_age_at_receipt_ns": 986188,
+        "local_interarrival_ns": 20751399
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995238127230",
+        "receipt_wall_ns": "1792064995238153419",
+        "receipt_monotonic_ns": "95670152488899",
+        "source_stamp_ns": "1792064995236768994",
+        "source_age_at_receipt_ns": 1358236,
+        "local_interarrival_ns": 34639709
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995238474634",
+        "receipt_wall_ns": "1792064995238479157",
+        "receipt_monotonic_ns": "95670152812895",
+        "source_stamp_ns": "1792064995236768994",
+        "source_age_at_receipt_ns": 1705640,
+        "local_interarrival_ns": 34413356
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995254373775",
+        "receipt_wall_ns": "1792064995254455627",
+        "receipt_monotonic_ns": "95670168790240",
+        "source_stamp_ns": "1792064995252650240",
+        "source_age_at_receipt_ns": 1723535,
+        "local_interarrival_ns": 21325456
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995273375852",
+        "receipt_wall_ns": "1792064995273395627",
+        "receipt_monotonic_ns": "95670187730340",
+        "source_stamp_ns": "1792064995271797297",
+        "source_age_at_receipt_ns": 1578555,
+        "local_interarrival_ns": 34917445
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995274966507",
+        "receipt_wall_ns": "1792064995274978379",
+        "receipt_monotonic_ns": "95670189312503",
+        "source_stamp_ns": "1792064995273076224",
+        "source_age_at_receipt_ns": 1890283,
+        "local_interarrival_ns": 20522263
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995295642827",
+        "receipt_wall_ns": "1792064995295656958",
+        "receipt_monotonic_ns": "95670209991161",
+        "source_stamp_ns": "1792064995292381696",
+        "source_age_at_receipt_ns": 3261131,
+        "local_interarrival_ns": 20678658
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064995298002403",
+        "receipt_wall_ns": "1792064995298026199",
+        "receipt_monotonic_ns": "95670212361669",
+        "source_stamp_ns": "1792064995297134238",
+        "source_age_at_receipt_ns": 868165,
+        "local_interarrival_ns": 199702026
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995302710384",
+        "receipt_wall_ns": "1792064995302740612",
+        "receipt_monotonic_ns": "95670217076002",
+        "source_stamp_ns": "1792064995301304918",
+        "source_age_at_receipt_ns": 1405466,
+        "local_interarrival_ns": 64587103
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995303178252",
+        "receipt_wall_ns": "1792064995303190460",
+        "receipt_monotonic_ns": "95670217524677",
+        "source_stamp_ns": "1792064995301304918",
+        "source_age_at_receipt_ns": 1873334,
+        "local_interarrival_ns": 29794337
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995316413155",
+        "receipt_wall_ns": "1792064995316428288",
+        "receipt_monotonic_ns": "95670230762440",
+        "source_stamp_ns": "1792064995312175360",
+        "source_age_at_receipt_ns": 4237795,
+        "local_interarrival_ns": 20771279
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995337049065",
+        "receipt_wall_ns": "1792064995337068031",
+        "receipt_monotonic_ns": "95670251402673",
+        "source_stamp_ns": "1792064995335802528",
+        "source_age_at_receipt_ns": 1246537,
+        "local_interarrival_ns": 34326671
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995337666212",
+        "receipt_wall_ns": "1792064995337687021",
+        "receipt_monotonic_ns": "95670252020812",
+        "source_stamp_ns": "1792064995335802528",
+        "source_age_at_receipt_ns": 1863684,
+        "local_interarrival_ns": 34496135
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995337885717",
+        "receipt_wall_ns": "1792064995337889753",
+        "receipt_monotonic_ns": "95670252223451",
+        "source_stamp_ns": "1792064995332169984",
+        "source_age_at_receipt_ns": 5715733,
+        "local_interarrival_ns": 21461011
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995358514980",
+        "receipt_wall_ns": "1792064995358529830",
+        "receipt_monotonic_ns": "95670272864078",
+        "source_stamp_ns": "1792064995357026048",
+        "source_age_at_receipt_ns": 1488932,
+        "local_interarrival_ns": 20640627
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995371822906",
+        "receipt_wall_ns": "1792064995371842190",
+        "receipt_monotonic_ns": "95670286176844",
+        "source_stamp_ns": "1792064995370718792",
+        "source_age_at_receipt_ns": 1104114,
+        "local_interarrival_ns": 34774171
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995372135654",
+        "receipt_wall_ns": "1792064995372140874",
+        "receipt_monotonic_ns": "95670286474728",
+        "source_stamp_ns": "1792064995370718792",
+        "source_age_at_receipt_ns": 1416862,
+        "local_interarrival_ns": 34453916
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995379232453",
+        "receipt_wall_ns": "1792064995379249538",
+        "receipt_monotonic_ns": "95670293583853",
+        "source_stamp_ns": "1792064995377157376",
+        "source_age_at_receipt_ns": 2075077,
+        "local_interarrival_ns": 20719775
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995399801194",
+        "receipt_wall_ns": "1792064995399815699",
+        "receipt_monotonic_ns": "95670314150145",
+        "source_stamp_ns": "1792064995397144320",
+        "source_age_at_receipt_ns": 2656874,
+        "local_interarrival_ns": 20566292
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995406783191",
+        "receipt_wall_ns": "1792064995406800805",
+        "receipt_monotonic_ns": "95670321135781",
+        "source_stamp_ns": "1792064995405640828",
+        "source_age_at_receipt_ns": 1142363,
+        "local_interarrival_ns": 34958937
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995407427341",
+        "receipt_wall_ns": "1792064995407434319",
+        "receipt_monotonic_ns": "95670321768246",
+        "source_stamp_ns": "1792064995405640828",
+        "source_age_at_receipt_ns": 1786513,
+        "local_interarrival_ns": 35293518
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995420501770",
+        "receipt_wall_ns": "1792064995420516697",
+        "receipt_monotonic_ns": "95670334851008",
+        "source_stamp_ns": "1792064995417167872",
+        "source_age_at_receipt_ns": 3333898,
+        "local_interarrival_ns": 20700863
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995441160551",
+        "receipt_wall_ns": "1792064995441175439",
+        "receipt_monotonic_ns": "95670355510175",
+        "source_stamp_ns": "1792064995437143296",
+        "source_age_at_receipt_ns": 4017255,
+        "local_interarrival_ns": 20659167
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995461699866",
+        "receipt_wall_ns": "1792064995461715908",
+        "receipt_monotonic_ns": "95670376050083",
+        "source_stamp_ns": "1792064995457319680",
+        "source_age_at_receipt_ns": 4380186,
+        "local_interarrival_ns": 20539908
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995470469265",
+        "receipt_wall_ns": "1792064995470490889",
+        "receipt_monotonic_ns": "95670384825704",
+        "source_stamp_ns": "1792064995469488501",
+        "source_age_at_receipt_ns": 980764,
+        "local_interarrival_ns": 63689923
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995470924417",
+        "receipt_wall_ns": "1792064995470933738",
+        "receipt_monotonic_ns": "95670385267574",
+        "source_stamp_ns": "1792064995469488501",
+        "source_age_at_receipt_ns": 1435916,
+        "local_interarrival_ns": 63499328
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995482368548",
+        "receipt_wall_ns": "1792064995482383850",
+        "receipt_monotonic_ns": "95670396718151",
+        "source_stamp_ns": "1792064995477197568",
+        "source_age_at_receipt_ns": 5170980,
+        "local_interarrival_ns": 20668068
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064995498610912",
+        "receipt_wall_ns": "1792064995498635088",
+        "receipt_monotonic_ns": "95670412970034",
+        "source_stamp_ns": "1792064995497234812",
+        "source_age_at_receipt_ns": 1376100,
+        "local_interarrival_ns": 200608365
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995510995145",
+        "receipt_wall_ns": "1792064995511004146",
+        "receipt_monotonic_ns": "95670425338493",
+        "source_stamp_ns": "1792064995492190976",
+        "source_age_at_receipt_ns": 18804169,
+        "local_interarrival_ns": 28620342
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995513419662",
+        "receipt_wall_ns": "1792064995513435180",
+        "receipt_monotonic_ns": "95670427769335",
+        "source_stamp_ns": "1792064995512581600",
+        "source_age_at_receipt_ns": 838062,
+        "local_interarrival_ns": 42943631
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995513685161",
+        "receipt_wall_ns": "1792064995513690531",
+        "receipt_monotonic_ns": "95670428024250",
+        "source_stamp_ns": "1792064995512581600",
+        "source_age_at_receipt_ns": 1103561,
+        "local_interarrival_ns": 42756676
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995523817864",
+        "receipt_wall_ns": "1792064995523830947",
+        "receipt_monotonic_ns": "95670438165080",
+        "source_stamp_ns": "1792064995522163968",
+        "source_age_at_receipt_ns": 1653896,
+        "local_interarrival_ns": 12826587
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995540414724",
+        "receipt_wall_ns": "1792064995540444797",
+        "receipt_monotonic_ns": "95670454780107",
+        "source_stamp_ns": "1792064995539392414",
+        "source_age_at_receipt_ns": 1022310,
+        "local_interarrival_ns": 27010772
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995540807779",
+        "receipt_wall_ns": "1792064995540813553",
+        "receipt_monotonic_ns": "95670455147403",
+        "source_stamp_ns": "1792064995539392414",
+        "source_age_at_receipt_ns": 1415365,
+        "local_interarrival_ns": 27123153
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995544352633",
+        "receipt_wall_ns": "1792064995544366463",
+        "receipt_monotonic_ns": "95670458700664",
+        "source_stamp_ns": "1792064995542248448",
+        "source_age_at_receipt_ns": 2104185,
+        "local_interarrival_ns": 20535584
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995566071925",
+        "receipt_wall_ns": "1792064995566087372",
+        "receipt_monotonic_ns": "95670480421615",
+        "source_stamp_ns": "1792064995562420480",
+        "source_age_at_receipt_ns": 3651445,
+        "local_interarrival_ns": 21720951
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995569395879",
+        "receipt_wall_ns": "1792064995569413089",
+        "receipt_monotonic_ns": "95670483747616",
+        "source_stamp_ns": "1792064995568480156",
+        "source_age_at_receipt_ns": 915723,
+        "local_interarrival_ns": 28967509
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995569762399",
+        "receipt_wall_ns": "1792064995569768796",
+        "receipt_monotonic_ns": "95670484102589",
+        "source_stamp_ns": "1792064995568480156",
+        "source_age_at_receipt_ns": 1282243,
+        "local_interarrival_ns": 28955186
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995585415969",
+        "receipt_wall_ns": "1792064995585429916",
+        "receipt_monotonic_ns": "95670499764116",
+        "source_stamp_ns": "1792064995582173440",
+        "source_age_at_receipt_ns": 3242529,
+        "local_interarrival_ns": 19342501
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995626760472",
+        "receipt_wall_ns": "1792064995626774796",
+        "receipt_monotonic_ns": "95670541109183",
+        "source_stamp_ns": "1792064995622188800",
+        "source_age_at_receipt_ns": 4571672,
+        "local_interarrival_ns": 41345067
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995647416364",
+        "receipt_wall_ns": "1792064995647431174",
+        "receipt_monotonic_ns": "95670561765421",
+        "source_stamp_ns": "1792064995642159872",
+        "source_age_at_receipt_ns": 5256492,
+        "local_interarrival_ns": 20656238
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995668931955",
+        "receipt_wall_ns": "1792064995668947746",
+        "receipt_monotonic_ns": "95670583282092",
+        "source_stamp_ns": "1792064995667168512",
+        "source_age_at_receipt_ns": 1763443,
+        "local_interarrival_ns": 21516671
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995669556146",
+        "receipt_wall_ns": "1792064995669568841",
+        "receipt_monotonic_ns": "95670583903543",
+        "source_stamp_ns": "1792064995668706821",
+        "source_age_at_receipt_ns": 849325,
+        "local_interarrival_ns": 100155927
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995671074467",
+        "receipt_wall_ns": "1792064995671086114",
+        "receipt_monotonic_ns": "95670585420212",
+        "source_stamp_ns": "1792064995668706821",
+        "source_age_at_receipt_ns": 2367646,
+        "local_interarrival_ns": 101317623
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995688874896",
+        "receipt_wall_ns": "1792064995688890032",
+        "receipt_monotonic_ns": "95670603224453",
+        "source_stamp_ns": "1792064995687272192",
+        "source_age_at_receipt_ns": 1602704,
+        "local_interarrival_ns": 19942361
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064995697910064",
+        "receipt_wall_ns": "1792064995697927004",
+        "receipt_monotonic_ns": "95670612261806",
+        "source_stamp_ns": "1792064995697134432",
+        "source_age_at_receipt_ns": 775632,
+        "local_interarrival_ns": 199291772
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995704046175",
+        "receipt_wall_ns": "1792064995704062267",
+        "receipt_monotonic_ns": "95670618397030",
+        "source_stamp_ns": "1792064995702875585",
+        "source_age_at_receipt_ns": 1170590,
+        "local_interarrival_ns": 34493487
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995704312913",
+        "receipt_wall_ns": "1792064995704317406",
+        "receipt_monotonic_ns": "95670618651110",
+        "source_stamp_ns": "1792064995702875585",
+        "source_age_at_receipt_ns": 1437328,
+        "local_interarrival_ns": 33230898
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995709430250",
+        "receipt_wall_ns": "1792064995709444823",
+        "receipt_monotonic_ns": "95670623779153",
+        "source_stamp_ns": "1792064995707304960",
+        "source_age_at_receipt_ns": 2125290,
+        "local_interarrival_ns": 20554700
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995730213049",
+        "receipt_wall_ns": "1792064995730235435",
+        "receipt_monotonic_ns": "95670644570248",
+        "source_stamp_ns": "1792064995727139328",
+        "source_age_at_receipt_ns": 3073721,
+        "local_interarrival_ns": 20791095
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995738970148",
+        "receipt_wall_ns": "1792064995738992071",
+        "receipt_monotonic_ns": "95670653327158",
+        "source_stamp_ns": "1792064995737856198",
+        "source_age_at_receipt_ns": 1113950,
+        "local_interarrival_ns": 34930128
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995739291200",
+        "receipt_wall_ns": "1792064995739295805",
+        "receipt_monotonic_ns": "95670653629579",
+        "source_stamp_ns": "1792064995737856198",
+        "source_age_at_receipt_ns": 1435002,
+        "local_interarrival_ns": 34978469
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995750601622",
+        "receipt_wall_ns": "1792064995750616030",
+        "receipt_monotonic_ns": "95670664950324",
+        "source_stamp_ns": "1792064995747140608",
+        "source_age_at_receipt_ns": 3461014,
+        "local_interarrival_ns": 20380076
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995771295537",
+        "receipt_wall_ns": "1792064995771311048",
+        "receipt_monotonic_ns": "95670685645264",
+        "source_stamp_ns": "1792064995767164928",
+        "source_age_at_receipt_ns": 4130609,
+        "local_interarrival_ns": 20694940
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995774585495",
+        "receipt_wall_ns": "1792064995774602108",
+        "receipt_monotonic_ns": "95670688936802",
+        "source_stamp_ns": "1792064995773554427",
+        "source_age_at_receipt_ns": 1031068,
+        "local_interarrival_ns": 35609644
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995774884792",
+        "receipt_wall_ns": "1792064995774890206",
+        "receipt_monotonic_ns": "95670689223978",
+        "source_stamp_ns": "1792064995773554427",
+        "source_age_at_receipt_ns": 1330365,
+        "local_interarrival_ns": 35594399
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995791886948",
+        "receipt_wall_ns": "1792064995791908286",
+        "receipt_monotonic_ns": "95670706242740",
+        "source_stamp_ns": "1792064995787157248",
+        "source_age_at_receipt_ns": 4729700,
+        "local_interarrival_ns": 20597476
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995802510376",
+        "receipt_wall_ns": "1792064995802526869",
+        "receipt_monotonic_ns": "95670716861283",
+        "source_stamp_ns": "1792064995801266646",
+        "source_age_at_receipt_ns": 1243730,
+        "local_interarrival_ns": 27924481
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995802844628",
+        "receipt_wall_ns": "1792064995802850906",
+        "receipt_monotonic_ns": "95670717184706",
+        "source_stamp_ns": "1792064995801266646",
+        "source_age_at_receipt_ns": 1577982,
+        "local_interarrival_ns": 27960728
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995812412429",
+        "receipt_wall_ns": "1792064995812427195",
+        "receipt_monotonic_ns": "95670726761503",
+        "source_stamp_ns": "1792064995807202304",
+        "source_age_at_receipt_ns": 5210125,
+        "local_interarrival_ns": 20518763
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995833355165",
+        "receipt_wall_ns": "1792064995833369967",
+        "receipt_monotonic_ns": "95670747704344",
+        "source_stamp_ns": "1792064995831980288",
+        "source_age_at_receipt_ns": 1374877,
+        "local_interarrival_ns": 20942841
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995837341053",
+        "receipt_wall_ns": "1792064995837357831",
+        "receipt_monotonic_ns": "95670751692344",
+        "source_stamp_ns": "1792064995836134772",
+        "source_age_at_receipt_ns": 1206281,
+        "local_interarrival_ns": 34831061
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995837634225",
+        "receipt_wall_ns": "1792064995837639500",
+        "receipt_monotonic_ns": "95670751973289",
+        "source_stamp_ns": "1792064995836134772",
+        "source_age_at_receipt_ns": 1499453,
+        "local_interarrival_ns": 34788583
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995853945680",
+        "receipt_wall_ns": "1792064995853959746",
+        "receipt_monotonic_ns": "95670768293934",
+        "source_stamp_ns": "1792064995852349696",
+        "source_age_at_receipt_ns": 1595984,
+        "local_interarrival_ns": 20589590
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995873356621",
+        "receipt_wall_ns": "1792064995873374376",
+        "receipt_monotonic_ns": "95670787709057",
+        "source_stamp_ns": "1792064995871269657",
+        "source_age_at_receipt_ns": 2086964,
+        "local_interarrival_ns": 36016713
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995873897954",
+        "receipt_wall_ns": "1792064995873903794",
+        "receipt_monotonic_ns": "95670788237676",
+        "source_stamp_ns": "1792064995871269657",
+        "source_age_at_receipt_ns": 2628297,
+        "local_interarrival_ns": 36264387
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995874816252",
+        "receipt_wall_ns": "1792064995874827195",
+        "receipt_monotonic_ns": "95670789161317",
+        "source_stamp_ns": "1792064995872196608",
+        "source_age_at_receipt_ns": 2619644,
+        "local_interarrival_ns": 20867383
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995895476764",
+        "receipt_wall_ns": "1792064995895493217",
+        "receipt_monotonic_ns": "95670809827405",
+        "source_stamp_ns": "1792064995892467200",
+        "source_age_at_receipt_ns": 3009564,
+        "local_interarrival_ns": 20666088
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064995897883680",
+        "receipt_wall_ns": "1792064995897897965",
+        "receipt_monotonic_ns": "95670812232217",
+        "source_stamp_ns": "1792064995897135050",
+        "source_age_at_receipt_ns": 748630,
+        "local_interarrival_ns": 199970411
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995906848359",
+        "receipt_wall_ns": "1792064995906871264",
+        "receipt_monotonic_ns": "95670821206252",
+        "source_stamp_ns": "1792064995905844813",
+        "source_age_at_receipt_ns": 1003546,
+        "local_interarrival_ns": 33497195
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995907201495",
+        "receipt_wall_ns": "1792064995907207766",
+        "receipt_monotonic_ns": "95670821541546",
+        "source_stamp_ns": "1792064995905844813",
+        "source_age_at_receipt_ns": 1356682,
+        "local_interarrival_ns": 33303870
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995916119765",
+        "receipt_wall_ns": "1792064995916134731",
+        "receipt_monotonic_ns": "95670830469251",
+        "source_stamp_ns": "1792064995912916992",
+        "source_age_at_receipt_ns": 3202773,
+        "local_interarrival_ns": 20641846
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995936305468",
+        "receipt_wall_ns": "1792064995936323269",
+        "receipt_monotonic_ns": "95670850657718",
+        "source_stamp_ns": "1792064995935368752",
+        "source_age_at_receipt_ns": 936716,
+        "local_interarrival_ns": 29451466
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995936597610",
+        "receipt_wall_ns": "1792064995936603089",
+        "receipt_monotonic_ns": "95670850936884",
+        "source_stamp_ns": "1792064995935368752",
+        "source_age_at_receipt_ns": 1228858,
+        "local_interarrival_ns": 29395338
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995937081778",
+        "receipt_wall_ns": "1792064995937089304",
+        "receipt_monotonic_ns": "95670851423059",
+        "source_stamp_ns": "1792064995932355584",
+        "source_age_at_receipt_ns": 4726194,
+        "local_interarrival_ns": 20953808
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995958136527",
+        "receipt_wall_ns": "1792064995958153727",
+        "receipt_monotonic_ns": "95670872487998",
+        "source_stamp_ns": "1792064995952405504",
+        "source_age_at_receipt_ns": 5731023,
+        "local_interarrival_ns": 21064939
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064995971009814",
+        "receipt_wall_ns": "1792064995971030515",
+        "receipt_monotonic_ns": "95670885365143",
+        "source_stamp_ns": "1792064995969882643",
+        "source_age_at_receipt_ns": 1127171,
+        "local_interarrival_ns": 34707425
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064995971839864",
+        "receipt_wall_ns": "1792064995971856707",
+        "receipt_monotonic_ns": "95670886191089",
+        "source_stamp_ns": "1792064995969882643",
+        "source_age_at_receipt_ns": 1957221,
+        "local_interarrival_ns": 35254205
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995978568414",
+        "receipt_wall_ns": "1792064995978582410",
+        "receipt_monotonic_ns": "95670892916629",
+        "source_stamp_ns": "1792064995977320960",
+        "source_age_at_receipt_ns": 1247454,
+        "local_interarrival_ns": 20428631
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064995999053999",
+        "receipt_wall_ns": "1792064995999069873",
+        "receipt_monotonic_ns": "95670913404173",
+        "source_stamp_ns": "1792064995997365248",
+        "source_age_at_receipt_ns": 1688751,
+        "local_interarrival_ns": 20487544
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064996006175759",
+        "receipt_wall_ns": "1792064996006194743",
+        "receipt_monotonic_ns": "95670920529344",
+        "source_stamp_ns": "1792064996005108791",
+        "source_age_at_receipt_ns": 1066968,
+        "local_interarrival_ns": 35164201
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064996006475527",
+        "receipt_wall_ns": "1792064996006480200",
+        "receipt_monotonic_ns": "95670920813951",
+        "source_stamp_ns": "1792064996005108791",
+        "source_age_at_receipt_ns": 1366736,
+        "local_interarrival_ns": 34622862
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064996019728322",
+        "receipt_wall_ns": "1792064996019743462",
+        "receipt_monotonic_ns": "95670934077772",
+        "source_stamp_ns": "1792064996017208832",
+        "source_age_at_receipt_ns": 2519490,
+        "local_interarrival_ns": 20673599
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064996035077767",
+        "receipt_wall_ns": "1792064996035095881",
+        "receipt_monotonic_ns": "95670949430700",
+        "source_stamp_ns": "1792064996034122897",
+        "source_age_at_receipt_ns": 954870,
+        "local_interarrival_ns": 28901356
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064996035539434",
+        "receipt_wall_ns": "1792064996035545592",
+        "receipt_monotonic_ns": "95670949879406",
+        "source_stamp_ns": "1792064996034122897",
+        "source_age_at_receipt_ns": 1416537,
+        "local_interarrival_ns": 29065455
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064996040272011",
+        "receipt_wall_ns": "1792064996040286415",
+        "receipt_monotonic_ns": "95670954620709",
+        "source_stamp_ns": "1792064996037249280",
+        "source_age_at_receipt_ns": 3022731,
+        "local_interarrival_ns": 20542937
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064996061042740",
+        "receipt_wall_ns": "1792064996061059197",
+        "receipt_monotonic_ns": "95670975393468",
+        "source_stamp_ns": "1792064996057235200",
+        "source_age_at_receipt_ns": 3807540,
+        "local_interarrival_ns": 20772759
+      },
+      {
+        "topic": "/camera/depth/image_raw",
+        "receipt_ros_ns": "1792064996070010039",
+        "receipt_wall_ns": "1792064996070029020",
+        "receipt_monotonic_ns": "95670984363733",
+        "source_stamp_ns": "1792064996069011501",
+        "source_age_at_receipt_ns": 998538,
+        "local_interarrival_ns": 34933033
+      },
+      {
+        "topic": "/camera/depth/camera_info",
+        "receipt_ros_ns": "1792064996070319215",
+        "receipt_wall_ns": "1792064996070323916",
+        "receipt_monotonic_ns": "95670984657620",
+        "source_stamp_ns": "1792064996069011501",
+        "source_age_at_receipt_ns": 1307714,
+        "local_interarrival_ns": 34778214
+      },
+      {
+        "topic": "/joint_states_feedback",
+        "receipt_ros_ns": "1792064996081562608",
+        "receipt_wall_ns": "1792064996081577665",
+        "receipt_monotonic_ns": "95670995911892",
+        "source_stamp_ns": "1792064996077152768",
+        "source_age_at_receipt_ns": 4409840,
+        "local_interarrival_ns": 20518424
+      },
+      {
+        "topic": "/camera/color/image_raw",
+        "receipt_ros_ns": "1792064996097959808",
+        "receipt_wall_ns": "1792064996097977867",
+        "receipt_monotonic_ns": "95671012312320",
+        "source_stamp_ns": "1792064996097135168",
+        "source_age_at_receipt_ns": 824640,
+        "local_interarrival_ns": 200080103
+      }
+    ],
+    "recent_limit": 128
+  }
+}

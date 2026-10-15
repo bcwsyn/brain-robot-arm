@@ -1,0 +1,3213 @@
+{
+  "schema": "piper_calibration_p0_quality_v1",
+  "offline_only": true,
+  "motion_commands_sent": false,
+  "raw_modified": false,
+  "capture": "capture",
+  "source_manifest_sha256": "796d5c1f14a3e11435db6ab975b6274c3a266868270ee61d17eb95fd2a7c1f96",
+  "script_sha256": "982d0c0eb2957f28f764581a6f498b52343a721ca73ecdbcfc32044e8baae382",
+  "fitting_input_frame": "camera_color_optical_frame",
+  "native_depth_frame": "camera_depth_optical_frame",
+  "transform": "p_C = R_C_D p_D + t_C_D; unchanged factory pinhole/endpoint projection",
+  "minimum_top_plane_inliers": 800,
+  "selection_is_not_a_motion_gate": true,
+  "table_ROI": "cyan = automatic local annulus; red = selected native cube projections; green = measured top-hypothesis plane inliers; physical identity unverified",
+  "nominal_cube_edge_m": 0.029,
+  "caliper_measurement_confirmed": false,
+  "summary": {
+    "frames": 60,
+    "face_quality_candidates": 0,
+    "good_top_frames": 0,
+    "minimum_good_frames": 20,
+    "twenty_good_frames_met": false,
+    "automatic_replenishment_needed": true,
+    "top_witness_review_required": false,
+    "top_plane_normal_statistics": null,
+    "formal_calibration_pair": false
+  },
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1792064955696438775",
+        "depth": "1792064955720683282",
+        "depth_info": "1792064955720683282",
+        "feedback": "1792064955712062464"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "779624d55cb1a8edd02780ab8fb53a164d760b6672c4ad76238da0e1b1f237df",
+        "depth": "980d2e971d08f58192897d34aa854884001628261f11f4a79100bcea7d81a9e7"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.46493489583334,
+        108.14100260416667,
+        109.2375390625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1792064956296406612",
+        "depth": "1792064956284206566",
+        "depth_info": "1792064956284206566",
+        "feedback": "1792064956291858944"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "703e08946bae6e0ab7ab16d44f478450c3ac8d9d967d91f33f64c941a0be65f7",
+        "depth": "2e3ad97a7bd523fb287a2d88fc1d0b2856da400783a884f989074b0e28ea974a"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.48015625,
+        108.14697916666667,
+        109.27640625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1792064956896418746",
+        "depth": "1792064956890117625",
+        "depth_info": "1792064956890117625",
+        "feedback": "1792064956876832768"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "9e84032afaf059dcd6ab811e8de322a577629506f79c491ec9abfed005169a64",
+        "depth": "5d96790cfe03ec91cb8ed01295bc59e3564e5083c06fd776eb65d3d6add5902e"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.47515625,
+        108.16673177083334,
+        109.28524739583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1792064957496489635",
+        "depth": "1792064957490289112",
+        "depth_info": "1792064957490289112",
+        "feedback": "1792064957476963840"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "a9753120ac83729009b448d3b02a9b152de18ca4229bd582fe191f7f043438b9",
+        "depth": "5d2ceb28655eab8642dadca1f7c44781f695c2e55477f725d4c3f75420c3098a"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.50205729166667,
+        108.21854166666667,
+        109.31203125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1792064958096462359",
+        "depth": "1792064958089128246",
+        "depth_info": "1792064958089128246",
+        "feedback": "1792064958076914432"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "153a22e65db7d5796627761ba32d5d0db1a7f6fd8b9d7dff51e7153fe6229c3c",
+        "depth": "bd5d6046275c39698039e4008214656e351d14a19cfca29c2fd3998dce5a2d74"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.5555859375,
+        108.2690625,
+        109.365703125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 6,
+      "stamps_ns": {
+        "rgb": "1792064958696435598",
+        "depth": "1792064958688814858",
+        "depth_info": "1792064958688814858",
+        "feedback": "1792064958676847616"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "034f7a6ea024c172d164819e57441dc35f438c1c14b24838b71b17d6c22994c8",
+        "depth": "4044040c58b8c572f0df1096ac3827f975fdf8818b771c7e96633e17f7ee2858"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.574375,
+        108.2637109375,
+        109.37934895833334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 7,
+      "stamps_ns": {
+        "rgb": "1792064959296446978",
+        "depth": "1792064959288301975",
+        "depth_info": "1792064959288301975",
+        "feedback": "1792064959281995776"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "316fe9c7c7a9fbc0ca1bc7f0b5e1510e76b16826d39433da39a7ef6be1338f5d",
+        "depth": "91496d1cc3ea547ae5dcdee20518eb6a2ab30066ed4342772efc1b8b893d0d28"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.451875,
+        108.15458333333333,
+        109.26725260416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 8,
+      "stamps_ns": {
+        "rgb": "1792064959896714931",
+        "depth": "1792064959890505884",
+        "depth_info": "1792064959890505884",
+        "feedback": "1792064959887173376"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "6fc3c63830930c42293dc670011472d006f893b488181ce5e8aa0477cbecab77",
+        "depth": "ebac7b562de705264974234aafca4acd2a8117ba481c7ee5a3dff69be577dfa8"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.470234375,
+        108.1843359375,
+        109.29782552083333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 9,
+      "stamps_ns": {
+        "rgb": "1792064960696686809",
+        "depth": "1792064960685227086",
+        "depth_info": "1792064960685227086",
+        "feedback": "1792064960672105216"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "d09657186aec672928eda42806324634e6b49175e5ac587bc3d89ec46d8e317a",
+        "depth": "e4a6da0f85c537da6dfab23da1d78ac48b9d0147a479d8e89bc846a9588401cf"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.58375,
+        108.2743359375,
+        109.42247395833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 10,
+      "stamps_ns": {
+        "rgb": "1792064961296546050",
+        "depth": "1792064961284447457",
+        "depth_info": "1792064961284447457",
+        "feedback": "1792064961276844800"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "3cc27e17393a0dd7f8ec0c271e1fe4afe75f86725a48ef7f34235145f60dc1fe",
+        "depth": "df741ea6841a613f6f50efb829dd11ca45d1256db736c64187109b61385f945b"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.52333333333333,
+        108.21227864583334,
+        109.32623697916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 11,
+      "stamps_ns": {
+        "rgb": "1792064961896491843",
+        "depth": "1792064961884022142",
+        "depth_info": "1792064961884022142",
+        "feedback": "1792064961872124928"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "59da1d6eb305738f3934e85f12537f375508b93098ed144f003fafcf4a4ba758",
+        "depth": "007a1f4c72c7b8d0dd38390c59d160bb0242c8990277fecf1fbf396bf90af945"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.47505208333334,
+        108.16901041666667,
+        109.31361979166667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 12,
+      "stamps_ns": {
+        "rgb": "1792064962496569066",
+        "depth": "1792064962483078204",
+        "depth_info": "1792064962483078204",
+        "feedback": "1792064962476895744"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "78059e096691be4128fafb52373bac6bddb62fb0fd72a8337dbc6bc7b3842f64",
+        "depth": "48b8fdf8a87219489ec38035f2921bf7bb4d95fa93421c467512d5845bddecbf"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.47553385416667,
+        108.17484375,
+        109.28858072916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 13,
+      "stamps_ns": {
+        "rgb": "1792064963096576381",
+        "depth": "1792064963082727512",
+        "depth_info": "1792064963082727512",
+        "feedback": "1792064963076886528"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "6e923aa21e73164a9e943ad74f8935e80174b2d33437309c0be9b5cb50b8d3bf",
+        "depth": "db294be0eaa559ef7fecc729a1cbe0b9698550053b0d4a2837eef1333617dfcb"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.44776041666667,
+        108.17122395833333,
+        109.28069010416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 14,
+      "stamps_ns": {
+        "rgb": "1792064963896586634",
+        "depth": "1792064963885546076",
+        "depth_info": "1792064963885546076",
+        "feedback": "1792064963881909248"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "b2a7df7dc08708d7808ee0c8155c70fdb82d03a3b79a74c36a4b6c652e35730f",
+        "depth": "8cfbecb0f5bdcaab37df9739ed31a69edf0c6369a07a51674afad7162e97a4eb"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.46118489583333,
+        108.18774739583333,
+        109.3040234375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 15,
+      "stamps_ns": {
+        "rgb": "1792064964896560207",
+        "depth": "1792064964887263883",
+        "depth_info": "1792064964887263883",
+        "feedback": "1792064964892142592"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "52a72cc37ec48e2787170ef5b3d4fe7d7bb63a87cc1c32cf8fec04f7fb95e580",
+        "depth": "5950bacf40961eaf3f69fdaef9ffa74e52a98454041e3d098c41f69fd7e852a4"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.49049479166666,
+        108.17196614583334,
+        109.2946875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 16,
+      "stamps_ns": {
+        "rgb": "1792064965496620528",
+        "depth": "1792064965485916256",
+        "depth_info": "1792064965485916256",
+        "feedback": "1792064965491988736"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "0e708441b302c82474bd2b09e633fd5949fdc287a28f4e6c166ac904a17b0e19",
+        "depth": "3a93825ab529511a1bc5146007188ba039e3dc4cb6ebbfb713b9dd36f365f383"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.49221354166667,
+        108.16940104166666,
+        109.32255208333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 17,
+      "stamps_ns": {
+        "rgb": "1792064966096796575",
+        "depth": "1792064966050640213",
+        "depth_info": "1792064966050640213",
+        "feedback": "1792064966092026880"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "1fe411ebad15287e4d4cd015c6dde478e59e39bb0131d7b03c1a6d8149591e0b",
+        "depth": "9cecdd52ecbaf8098e6f3e0dc2d2fbd7488ccbc2c664e8050d6c2bc53427d666"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.44321614583333,
+        108.200390625,
+        109.29654947916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 18,
+      "stamps_ns": {
+        "rgb": "1792064966696919854",
+        "depth": "1792064966650209079",
+        "depth_info": "1792064966650209079",
+        "feedback": "1792064966656926464"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "2c661b558ec019b86adcfc59d8162131f17272f5fa6f8f0938939793bd0b2f37",
+        "depth": "7116395353d205c89628fc87a45eeeeb101251b54025071587b56639ba7dc09a"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.47983072916666,
+        108.17325520833333,
+        109.33028645833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 19,
+      "stamps_ns": {
+        "rgb": "1792064967496640523",
+        "depth": "1792064967483562218",
+        "depth_info": "1792064967483562218",
+        "feedback": "1792064967486943488"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "eb2d9ca1e752a3a50fd7579dfe1360dd3f16f5f939d18f509ef429f1f19d0adf",
+        "depth": "9cad7286c8896934d5a36e9a0efad375f0a3df5aa16dd79175f882f193d07176"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        110.01783854166666,
+        108.62221354166667,
+        109.631171875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 20,
+      "stamps_ns": {
+        "rgb": "1792064968896681191",
+        "depth": "1792064968885544041",
+        "depth_info": "1792064968885544041",
+        "feedback": "1792064968882187776"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "00c307ac496479dd7527e84a755e88e4eb07381219e19dbcb8a0a1ca8462820c",
+        "depth": "a73599116fb4b36b1c83db77cc2d25d9995bc5ade267f3f704e9a1912894a42c"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.1237109375,
+        107.87731770833334,
+        108.9884765625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 21,
+      "stamps_ns": {
+        "rgb": "1792064969496733556",
+        "depth": "1792064969484107610",
+        "depth_info": "1792064969484107610",
+        "feedback": "1792064969487011584"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "7fd35e2c92c5d46fd2000a8126a4ecb7aceb42a434b8a27ffcef2443039aa1dd",
+        "depth": "f14325a63dfad87fa477e6363db4c03d677900d4346667c40a9297766108818f"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.48602864583333,
+        108.08518229166667,
+        109.07880208333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 22,
+      "stamps_ns": {
+        "rgb": "1792064970096817412",
+        "depth": "1792064970048766641",
+        "depth_info": "1792064970048766641",
+        "feedback": "1792064970077074432"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "531b4cbcef6d50d7f3d968288b2a47d23b87372592dfc370192115e778d2c33f",
+        "depth": "71f77f8a933f6633d2d26b79eb4445e67158c03b1465f49afa6cb372bd8195be"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.55295572916667,
+        108.17013020833333,
+        109.12078125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 23,
+      "stamps_ns": {
+        "rgb": "1792064970896604833",
+        "depth": "1792064970880596128",
+        "depth_info": "1792064970880596128",
+        "feedback": "1792064970876953088"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "b6311255b8cb5d777b0a24ac5b70dd94a7c65e0018871bcc9672fd1a34cfa1bc",
+        "depth": "6e96a200664032d5916e7b438aa9bf59e8702fbf3136c3b63fc58f319025094e"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.5270703125,
+        108.13901041666666,
+        109.13873697916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 24,
+      "stamps_ns": {
+        "rgb": "1792064971496642131",
+        "depth": "1792064971613915462",
+        "depth_info": "1792064971613915462",
+        "feedback": "1792064971591942144"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "25663b780514906d60133e2ca8ce6501bd5fa17ae41ad0d8feecfba6e6144928",
+        "depth": "b9e16b10f27a9758526b6c894e749cde9b9e73419b8d9c890714593041c8f6b5"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.97768229166667,
+        108.61498697916667,
+        109.61739583333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 25,
+      "stamps_ns": {
+        "rgb": "1792064972096722161",
+        "depth": "1792064972079994312",
+        "depth_info": "1792064972079994312",
+        "feedback": "1792064972086955264"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "9ff617c270ec905643110e923ac02bab8791a8da798a4b7e24887de1e9476eb2",
+        "depth": "543689c50923c6ffaab3063a940da08ab7f9fd288e1cd5208b5155b117745eab"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.90390625,
+        108.5680859375,
+        109.59571614583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 26,
+      "stamps_ns": {
+        "rgb": "1792064972896942879",
+        "depth": "1792064972947509309",
+        "depth_info": "1792064972947509309",
+        "feedback": "1792064972936951296"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "0cfd78afc9d89c128af3696d5d3f10275e46c4e4415ce7c7cd9ea5d184556afb",
+        "depth": "e57b7bc3ef5e43afd1046f744bc4500ebe00b716c7d06e6795e20b657da173d2"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        109.8756640625,
+        108.51321614583334,
+        109.58174479166667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 27,
+      "stamps_ns": {
+        "rgb": "1792064974096770215",
+        "depth": "1792064974081975508",
+        "depth_info": "1792064974081975508",
+        "feedback": "1792064974076970496"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "bff6be2f2301e63aa7bb9db35418fb4b036e723d21ef946a5593ff76ddea9034",
+        "depth": "3448d2be9e16d890d4e5892c5b5127083b3c2974e09d5ab430b79791b2b11acb"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.53397135416667,
+        106.69776041666667,
+        108.50506510416666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 28,
+      "stamps_ns": {
+        "rgb": "1792064974897947837",
+        "depth": "1792064974879324169",
+        "depth_info": "1792064974879324169",
+        "feedback": "1792064974881966592"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "9c46e99f6c0594ae7b1d3357a2beb1e015894d02ae3c683dd0228484b4a9a053",
+        "depth": "76bf89dcf62cae0b8ac189dff71b92ebc5ffaa6eb40516188b57a5d0cbdf2649"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.532734375,
+        106.68889322916667,
+        108.44611979166666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 29,
+      "stamps_ns": {
+        "rgb": "1792064975496811913",
+        "depth": "1792064975478526551",
+        "depth_info": "1792064975478526551",
+        "feedback": "1792064975486984704"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "98d15d8b9e298179d931d323a5bce58594dfe39ce70179dac0dcc053dc314164",
+        "depth": "3bd07978efe790e8bfcc1981ccfde36b92c6831853846a2fa825966673163c88"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.38419270833333,
+        106.57108072916667,
+        108.37158854166667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 30,
+      "stamps_ns": {
+        "rgb": "1792064976096785106",
+        "depth": "1792064976078226542",
+        "depth_info": "1792064976078226542",
+        "feedback": "1792064976082016000"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "f3f1a903a3092e1f1f4f55eeb322c7335b67c34bbdf99be07a617bc00fb6e04d",
+        "depth": "ce287b953526ba892c47d920ff2436e86d65b3635c0b97add2f52e0ee8753ac3"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.41298177083333,
+        106.60053385416667,
+        108.33153645833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 31,
+      "stamps_ns": {
+        "rgb": "1792064976696812195",
+        "depth": "1792064976678210772",
+        "depth_info": "1792064976678210772",
+        "feedback": "1792064976673699840"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "f5f1d01935dc31172e95943aa362e3b2de6c4f9a982858b3031e64c474fc42fd",
+        "depth": "7b80d1834ae0b04468f5bd026852f6768c2775ac4a2e18ac12a9b41c07549298"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.51296875,
+        106.697734375,
+        108.41040364583333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 32,
+      "stamps_ns": {
+        "rgb": "1792064977296928869",
+        "depth": "1792064977278917654",
+        "depth_info": "1792064977278917654",
+        "feedback": "1792064977283529216"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "d60dbd3b6c3f6bdfc1a5e4a7ae474af47f28f51c2dd052e55b35aed6f4d708c2",
+        "depth": "9f435956d7930be948c157068621ab61d12a755bfbc35e9ca3ca63b14e8a915f"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.48766927083334,
+        106.63184895833334,
+        108.43553385416666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 33,
+      "stamps_ns": {
+        "rgb": "1792064977896800664",
+        "depth": "1792064977847889007",
+        "depth_info": "1792064977847889007",
+        "feedback": "1792064977877533184"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "fd7e464eef453c317fe89d50b866681255befac261a80d180ab112360f4bd0eb",
+        "depth": "a1324e1520b7225c8f6f701d141509931378d981bf23f5d2ceec07069bcb8b54"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.50807291666666,
+        106.67361979166667,
+        108.46682291666667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 34,
+      "stamps_ns": {
+        "rgb": "1792064978496903123",
+        "depth": "1792064978609645113",
+        "depth_info": "1792064978609645113",
+        "feedback": "1792064978601991168"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "150206afb2cc2eeedcbbcd54459cc10b6a6db2a05b9f3070157d0b97d406488a",
+        "depth": "4761c6bdae0616e51990f7a2086e621499c6ee44dbed958d7feb3a6da3d2c075"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.51018229166667,
+        106.676953125,
+        108.45184895833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 35,
+      "stamps_ns": {
+        "rgb": "1792064979497026170",
+        "depth": "1792064979443326487",
+        "depth_info": "1792064979443326487",
+        "feedback": "1792064979473278720"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "0285ee82a037b5ed8944a9020749afbd886596158a274c9e292e66d610ab17fc",
+        "depth": "31573754bb4c9fb7ff426645e8818047d7db2fede2e8cb619bb7b1d8a5f05454"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.50795572916667,
+        106.68233072916667,
+        108.46639322916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 36,
+      "stamps_ns": {
+        "rgb": "1792064980096796788",
+        "depth": "1792064980075850881",
+        "depth_info": "1792064980075850881",
+        "feedback": "1792064980076880640"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "bd1a8c0fe336a331220223b2f5dc3bc5ac5cbb480c5dde9147586fd05b827fbc",
+        "depth": "10b22d71b121a8e238552298d5a728f3ee4f477807ffb567b07a925f67ea670a"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.526015625,
+        106.68640625,
+        108.460390625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 37,
+      "stamps_ns": {
+        "rgb": "1792064980896798898",
+        "depth": "1792064980879329413",
+        "depth_info": "1792064980879329413",
+        "feedback": "1792064980877024768"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "8df13bece8c6cee18238e9cfa84adbf0ecba876b10d1c2d9485653ec84505e66",
+        "depth": "4667d402dea48bf6a92afa3234f53585336fe5ea8d30b6193b4293e7d3734910"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.53161458333334,
+        106.7180078125,
+        108.47009114583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 38,
+      "stamps_ns": {
+        "rgb": "1792064981496847694",
+        "depth": "1792064981478482044",
+        "depth_info": "1792064981478482044",
+        "feedback": "1792064981477174528"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "fb9a8b1a23d0cf82f39d0c38cdaf7f43556ab7866ae1629857b5d0d36e8393b8",
+        "depth": "d16b8f0030bca2be83b11f046da9451159f56e745758a11a6c2c1f59972f89dc"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.5146484375,
+        106.704609375,
+        108.44009114583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 39,
+      "stamps_ns": {
+        "rgb": "1792064982096855209",
+        "depth": "1792064982078039423",
+        "depth_info": "1792064982078039423",
+        "feedback": "1792064982077032960"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "f552838013e73d2081e725a94bfa9987bd531d43cd4bd5f39b88f0914b28aaef",
+        "depth": "bfffc485f6b9bed762aac89c825ea284f6062026fc6c12e298d10d4f317ea7bc"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.53661458333333,
+        106.68709635416667,
+        108.47200520833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 40,
+      "stamps_ns": {
+        "rgb": "1792064982696924084",
+        "depth": "1792064982677909740",
+        "depth_info": "1792064982677909740",
+        "feedback": "1792064982682160384"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "6b2eee50cad3a97e5d9c31cddeb0279a4087953ae89b2afbbfa605951af01701",
+        "depth": "04b07f1731b53c94d1cfa6ddb5143f8458652bce32661d7cb1bf9c09d6ee7150"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.53274739583334,
+        106.68270833333334,
+        108.46015625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 41,
+      "stamps_ns": {
+        "rgb": "1792064983296988005",
+        "depth": "1792064983276930523",
+        "depth_info": "1792064983276930523",
+        "feedback": "1792064983282071040"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "5dd33dd81461367f3540ac2f486bb5a06c6ae0907efd16c5865dee87655907df",
+        "depth": "f084ae7081e1067f90fa45fcf8ef3dd1334acbff2f3ed29ee90b54d8a9aee0f5"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.5396484375,
+        106.66470052083334,
+        108.437265625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 42,
+      "stamps_ns": {
+        "rgb": "1792064984096930657",
+        "depth": "1792064984074446832",
+        "depth_info": "1792064984074446832",
+        "feedback": "1792064984087066624"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "02ab3886b91cafc6874bb150d3fc63f8fa502f7b1c1539b71ad0af26370c8b2d",
+        "depth": "435e565496f2f5d9fa50a973ba213e4216ea1a365297dde9efaafa7994dd9d9e"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.51227864583333,
+        106.66251302083333,
+        108.4655078125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 43,
+      "stamps_ns": {
+        "rgb": "1792064985096984556",
+        "depth": "1792064985040850297",
+        "depth_info": "1792064985040850297",
+        "feedback": "1792064985077217024"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "d4688ce9b76e1868c4a18d841bc2ffdfa64b88107daedb0f289cf6259761c831",
+        "depth": "8aff0a7ed611b52a5fbd3fcd72651dca0c8cd52ed416d71c4c2c09fb7df725d3"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.53803385416667,
+        106.7166796875,
+        108.48419270833334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 44,
+      "stamps_ns": {
+        "rgb": "1792064985696949880",
+        "depth": "1792064985674735582",
+        "depth_info": "1792064985674735582",
+        "feedback": "1792064985677082880"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "f308f907cdf4e4a1b9a98980dc0d689f415f66b3f76468d1712e2b63462f56df",
+        "depth": "f06eb769ecef178e58416e38c192a529b0ead007826248817c2ebc2745cfc5b3"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.55104166666666,
+        106.7135546875,
+        108.48325520833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 45,
+      "stamps_ns": {
+        "rgb": "1792064986496969760",
+        "depth": "1792064986473506598",
+        "depth_info": "1792064986473506598",
+        "feedback": "1792064986487079936"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "d2b786748b8034799722a257465225b998601d14fb5e8d59f64dafb57009467d",
+        "depth": "a656460b116cd040aa1a5b3f370089151229f4ba1611f33ba322e8a3bd62e504"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.624140625,
+        106.74947916666666,
+        108.56069010416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 46,
+      "stamps_ns": {
+        "rgb": "1792064987096959860",
+        "depth": "1792064987071525627",
+        "depth_info": "1792064987071525627",
+        "feedback": "1792064987087097856"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "3ff4ef5c6e70359c0026d06f65ebf5d84779f137a29aac9073ba2dda5d1d19ce",
+        "depth": "bcde918c82fc8542c5cad250666d41dce3622776908fdb7683106ce09f57ca28"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.62243489583334,
+        106.75880208333334,
+        108.517890625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 47,
+      "stamps_ns": {
+        "rgb": "1792064987696955168",
+        "depth": "1792064987671238827",
+        "depth_info": "1792064987671238827",
+        "feedback": "1792064987687196928"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "d9b3f9a07a07a07ef156f58140c96b981c433d18a5517ca451e3c0ce771e98a3",
+        "depth": "a5cd9af3d7de33ad111624a955091712d3fa5a323846bab65544284a6f8c0db6"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.6166015625,
+        106.76428385416666,
+        108.54393229166666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 48,
+      "stamps_ns": {
+        "rgb": "1792064988297006904",
+        "depth": "1792064988305529172",
+        "depth_info": "1792064988305529172",
+        "feedback": "1792064988303494656"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "617a3e1dca3d335e6a75ef7cf09b46231183ee7efedfad3029c11e78e92beae8",
+        "depth": "ecb092e8fe9fd17a01647fd73d488969897230b70fa3bef15fce9b6cec68c60a"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.64130208333333,
+        106.76572916666667,
+        108.565390625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 49,
+      "stamps_ns": {
+        "rgb": "1792064988897006243",
+        "depth": "1792064988875587315",
+        "depth_info": "1792064988875587315",
+        "feedback": "1792064988882235136"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "293eb41ca48417bf2d6016a6c83dce86769eaafcc29a8a739e98f21df9d54e5c",
+        "depth": "19fba3fcd5a42d5b821e27b536d2dc6b76a9845cefcd34650bd2cb6ba1ee7df3"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.5971875,
+        106.76489583333333,
+        108.55713541666667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 50,
+      "stamps_ns": {
+        "rgb": "1792064989497100285",
+        "depth": "1792064989474900629",
+        "depth_info": "1792064989474900629",
+        "feedback": "1792064989482180864"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "74f5d3ff5b5ee97e6a269c586cbf01141986eb211cf83f491c15796d8641198d",
+        "depth": "5769321be6dc8f118897867df201c0ed8e8d66229cd955cdf24c65d06dc42972"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.59569010416666,
+        106.7872265625,
+        108.55809895833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 51,
+      "stamps_ns": {
+        "rgb": "1792064990097053522",
+        "depth": "1792064990074423663",
+        "depth_info": "1792064990074423663",
+        "feedback": "1792064990081994752"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "cd1e44af412baca18243dc90c2b1af992e8c681f7589ca9183ca417d9d19a38f",
+        "depth": "2ffd9a56f8482fba5e2b2882375f6a91de19bf96e7291a45a51c425f38dda87d"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.6615234375,
+        106.804921875,
+        108.57809895833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 52,
+      "stamps_ns": {
+        "rgb": "1792064990697016400",
+        "depth": "1792064990674008861",
+        "depth_info": "1792064990674008861",
+        "feedback": "1792064990682102528"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "df18d5a620fb6affb65119f9b56d78ecd812183ad2861ba6ad42fdc13934621f",
+        "depth": "2e5fb6e34376e119dc0a973feae48442e67ccf33e698a58640b8c1355b3941af"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.51118489583334,
+        106.65932291666667,
+        108.478125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 53,
+      "stamps_ns": {
+        "rgb": "1792064991297128765",
+        "depth": "1792064991273821245",
+        "depth_info": "1792064991273821245",
+        "feedback": "1792064991277196288"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "9a547758e43a3295667073a7b3ec14f0006c8dd6a6db56efcb2765c665623494",
+        "depth": "e96f8bc80d2ab27dfa01d14d8d5a81bfa62ec9951f7dba848a722a213d740775"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.5190625,
+        106.67899739583333,
+        108.49494791666666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 54,
+      "stamps_ns": {
+        "rgb": "1792064991897022331",
+        "depth": "1792064991872944080",
+        "depth_info": "1792064991872944080",
+        "feedback": "1792064991877105408"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "f51c3a58d79ca06bd3e2e07bb97746b1291f96c0162b44d79ce0237e766e203c",
+        "depth": "9922ed2c9d1817cd88611a872c452478349c3e9006fcbb3a6edb55c502038c8e"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.52369791666666,
+        106.717578125,
+        108.51446614583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 55,
+      "stamps_ns": {
+        "rgb": "1792064992497047927",
+        "depth": "1792064992472221465",
+        "depth_info": "1792064992472221465",
+        "feedback": "1792064992482205696"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "a1b08c63b3d23e8cd10995aba6e8844308eac8a7e7349b3347ed0e03605405f0",
+        "depth": "29f0fa3e7cab53353e12e8dcbe489c2fc5329874e8928242be3ca806ac8d2f0f"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.5734765625,
+        106.7257421875,
+        108.515625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 56,
+      "stamps_ns": {
+        "rgb": "1792064993097151725",
+        "depth": "1792064993039187534",
+        "depth_info": "1792064993039187534",
+        "feedback": "1792064993077278976"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "f8048a97d9530a4e5576c73690aa08123f57030c2ca4fa75a2352f849ef29350",
+        "depth": "256aff14f10e16da59bed7f9a7b913ad83e1f85b0d10d986a169256c05464952"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.65705729166666,
+        106.79877604166667,
+        108.58076822916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 57,
+      "stamps_ns": {
+        "rgb": "1792064993897187557",
+        "depth": "1792064993969831382",
+        "depth_info": "1792064993969831382",
+        "feedback": "1792064993967395072"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "e9f15d939c518001f10e050276f899c72f251effb3593c3aa74e255229db0c73",
+        "depth": "522657b3d1156ff0a10d3da2b18d24beaa827bd2bce14bf7499da3120fe8bd32"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.61755208333334,
+        106.78260416666667,
+        108.5657421875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 58,
+      "stamps_ns": {
+        "rgb": "1792064994497126180",
+        "depth": "1792064994468711024",
+        "depth_info": "1792064994468711024",
+        "feedback": "1792064994482272256"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "33c079c4a73e82f9adf1a425e706e3746b5ac11e6c1455a933046467f8412bad",
+        "depth": "e7d09c4bf8f48d13bceabf5fec30b325e14236a5b702add300ac437d399d60a5"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.53015625,
+        106.69515625,
+        108.4801171875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 59,
+      "stamps_ns": {
+        "rgb": "1792064995497234812",
+        "depth": "1792064995469488501",
+        "depth_info": "1792064995469488501",
+        "feedback": "1792064995477197568"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "bdeed611d8e0c6ac8106439da0cc5d8fc5b28c373899758381a50ec5469f9950",
+        "depth": "6a9981e62b87a96bd017d50adb791f443d35a3c4eca8dc3c89aae65d78fbfda0"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.5413671875,
+        106.72109375,
+        108.52360677083334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 60,
+      "stamps_ns": {
+        "rgb": "1792064996097135168",
+        "depth": "1792064996069011501",
+        "depth_info": "1792064996069011501",
+        "feedback": "1792064996077152768"
+      },
+      "actual_q_rad": [
+        -0.134528128,
+        0.9445053800000002,
+        -1.26041622,
+        -0.07797468,
+        1.2179924119999999,
+        0.09698864
+      ],
+      "raw_image_sha256": {
+        "rgb": "8a7da793b1acee8732ed8ab456d8b2fc5930d2bcb8e3bbdc1879706f7d259b1f",
+        "depth": "02c848e2c2ad1b0c5628894ff8779feb9395b5a5ab67d61722d356764f82c83b"
+      },
+      "native_selected_points": 0,
+      "color_pixel_coverage": 0.0,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        107.59626302083333,
+        106.75294270833334,
+        108.54446614583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    }
+  ],
+  "witnesses": [
+    "annulus_witness_0001.png"
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "source_bag": "/home/johnwick/brain_robot_logs/new_pair07_release_observe.muxfhlfs/motion_witness_bag/motion_witness_bag_0.db3",
+  "counts": {
+    "/joint_states_feedback": 7300,
+    "/brain_robot_visual_control/reason": 3,
+    "/brain_robot_visual_control/state": 3,
+    "/brain_robot_control/adapter_armed": 2,
+    "/joint_commands": 999,
+    "/brain_robot_grasp/gripper_command": 1,
+    "/brain_robot_grasp/arm_trajectory": 2
+  },
+  "states": [
+    {
+      "topic": "/brain_robot_visual_control/reason",
+      "data": "WAITING_FOR_START",
+      "bag_stamp_ns": "1792064871527353480"
+    },
+    {
+      "topic": "/brain_robot_visual_control/state",
+      "data": "IDLE",
+      "bag_stamp_ns": "1792064871527680091"
+    },
+    {
+      "topic": "/brain_robot_visual_control/state",
+      "data": "PREPARE",
+      "bag_stamp_ns": "1792064882425398886"
+    },
+    {
+      "topic": "/brain_robot_visual_control/reason",
+      "data": "START_AUTHORIZED",
+      "bag_stamp_ns": "1792064882425424232"
+    },
+    {
+      "topic": "/brain_robot_visual_control/state",
+      "data": "STOPPED",
+      "bag_stamp_ns": "1792064901977083600"
+    },
+    {
+      "topic": "/brain_robot_visual_control/reason",
+      "data": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH",
+      "bag_stamp_ns": "1792064901977641017"
+    }
+  ],
+  "gripper_commands": [
+    {
+      "bag_stamp_ns": "1792064882018758829",
+      "names": [
+        "gripper"
+      ],
+      "position_m": [
+        0.1
+      ]
+    }
+  ],
+  "trajectories": [
+    {
+      "bag_stamp_ns": "1792064882427418184",
+      "names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "points": 6,
+      "first_q": [
+        0.15322809600000004,
+        0.9773698760000001,
+        -0.9333586640000001,
+        -0.22966770400000003,
+        1.0372202400000001,
+        0.42566848800000007
+      ],
+      "last_q": [
+        -0.141941828,
+        0.942464432,
+        -1.269242884,
+        -0.07443354800000002,
+        1.22108,
+        0.089435388
+      ],
+      "duration_s": 20.0
+    },
+    {
+      "bag_stamp_ns": "1792064901976867029",
+      "names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "points": 2,
+      "first_q": [
+        -0.13360359600000002,
+        0.9445053800000002,
+        -1.259735904,
+        -0.07943997600000001,
+        1.216091016,
+        0.098436492
+      ],
+      "last_q": [
+        -0.13360359600000002,
+        0.9445053800000002,
+        -1.259735904,
+        -0.07943997600000001,
+        1.216091016,
+        0.098436492
+      ],
+      "duration_s": 0.1
+    }
+  ],
+  "first_command": {
+    "bag_stamp_ns": "1792064882012158289",
+    "q_rad": [
+      0.15322809600000004,
+      0.9773698760000001,
+      -0.9380511,
+      -0.22966770400000003,
+      1.029562324,
+      0.42566848800000007
+    ],
+    "gripper_m": null
+  },
+  "last_command": {
+    "bag_stamp_ns": "1792064901972420496",
+    "q_rad": [
+      -0.13520096985476548,
+      0.9432615750263349,
+      -1.2615722248435384,
+      -0.07797866333800851,
+      1.2168811556733778,
+      0.0971140146030019
+    ],
+    "gripper_m": null
+  },
+  "last_feedback": {
+    "bag_stamp_ns": "1792064908285930216",
+    "q_rad": [
+      -0.134528128,
+      0.9445053800000002,
+      -1.26041622,
+      -0.07797468,
+      1.2179924119999999,
+      0.098436492
+    ],
+    "gripper_m": 0.0994
+  },
+  "max_adjacent_command_step_rad": [
+    0.0003205436015098831,
+    3.79060189480418e-05,
+    0.006960155999999995,
+    0.0001685785420386665,
+    0.0053378639999999145,
+    0.0003651366892679364
+  ],
+  "first_command_matches_actual_arm_feedback": true,
+  "SEARCH_ALIGN_grasp_absent": true,
+  "hold_identity": "Original StopLocked constant 2-point hold, not another movement",
+  "SDK": {
+    "sdk_before.json": {
+      "original_whole_quality": {
+        "samples": 100,
+        "fresh_samples": 99,
+        "span_s": 9.838808059692383,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_original_contiguous": {
+        "indices": [
+          24,
+          100
+        ],
+        "quality": {
+          "samples": 76,
+          "fresh_samples": 76,
+          "span_s": 7.528836727142334,
+          "static_three_seconds_and_thirty_samples": true,
+          "freshness_not_per_motor_verified": true,
+          "q_spread_mdeg": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "sdk_after_enable.json": {
+      "original_whole_quality": {
+        "samples": 60,
+        "fresh_samples": 60,
+        "span_s": 5.9187421798706055,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          8784,
+          56029,
+          53775,
+          13166,
+          0,
+          0
+        ]
+      },
+      "longest_original_contiguous": null
+    },
+    "sdk_at_observation.json": {
+      "original_whole_quality": {
+        "samples": 60,
+        "fresh_samples": 59,
+        "span_s": 5.821670770645142,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_original_contiguous": null
+    }
+  },
+  "source_exits": [
+    {
+      "name": "sdk_at_observation",
+      "final_exit_code": 2,
+      "epoch": 1792064908.2866378
+    },
+    {
+      "name": "sdk_after_enable",
+      "final_exit_code": 2,
+      "epoch": 1792064908.2866454
+    },
+    {
+      "name": "bag",
+      "final_exit_code": 0,
+      "epoch": 1792064908.450848
+    },
+    {
+      "name": "visual",
+      "final_exit_code": 0,
+      "epoch": 1792064910.0727854
+    },
+    {
+      "name": "driver",
+      "final_exit_code": -9,
+      "epoch": 1792064912.081033
+    },
+    {
+      "name": "sdk_before",
+      "final_exit_code": 2,
+      "epoch": 1792064912.0810442
+    }
+  ]
+}

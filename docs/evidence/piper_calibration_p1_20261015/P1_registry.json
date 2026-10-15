@@ -1,0 +1,87 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "fit_performed": false,
+  "raw_placements_with_A_and_B": 6,
+  "primary_A_raw_frames_total": 388,
+  "placements_meeting_original_top_image_quality": 1,
+  "formal_calibration_pair_approvals": 0,
+  "held_out_id_fixed": "new_pair07",
+  "rows": [
+    {
+      "pair_id": "new_pair02",
+      "role": "fit",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt02/observe_capture/p0_report.json",
+      "source_sha256": "05ae4c2fcb0090143ba1c7591ff60ade6978305e014578bae41b1685a26b9ba6",
+      "primary_A_raw_frames": 60,
+      "complete_face_candidates": 60,
+      "original_good_top_frames": 60,
+      "twenty_good_frames_met": true,
+      "formal_calibration_pair_approved": false,
+      "top_identity_witness_review_still_required": true
+    },
+    {
+      "pair_id": "new_pair03",
+      "role": "fit",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair03/attempt02/observe_capture/p0_report.json",
+      "source_sha256": "a122294a099a9fe99e6bb6a5c2550a04e90ec8d5b2f8b87da4a27057d2864301",
+      "primary_A_raw_frames": 120,
+      "complete_face_candidates": 0,
+      "original_good_top_frames": 0,
+      "twenty_good_frames_met": false,
+      "formal_calibration_pair_approved": false,
+      "top_identity_witness_review_still_required": false
+    },
+    {
+      "pair_id": "new_pair04",
+      "role": "fit",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair04/attempt01/observe_after_reconnect/p0_report.json",
+      "source_sha256": "96f3de0402c29c5f0eb9c91dcc82a6c0c786a4425ce54c23af8a918ae621baef",
+      "primary_A_raw_frames": 28,
+      "complete_face_candidates": 0,
+      "original_good_top_frames": 0,
+      "twenty_good_frames_met": false,
+      "formal_calibration_pair_approved": false,
+      "top_identity_witness_review_still_required": false
+    },
+    {
+      "pair_id": "new_pair05",
+      "role": "fit",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair05/attempt01/observe_capture/p0_report.json",
+      "source_sha256": "bf318b382ec38d39d559fc30e917044a6a4d1529551dcca87f0ce67f81f43e92",
+      "primary_A_raw_frames": 60,
+      "complete_face_candidates": 0,
+      "original_good_top_frames": 0,
+      "twenty_good_frames_met": false,
+      "formal_calibration_pair_approved": false,
+      "top_identity_witness_review_still_required": false
+    },
+    {
+      "pair_id": "new_pair06",
+      "role": "fit",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair06/attempt01/observe_capture/quality_all60/report.json",
+      "source_sha256": "6600f66081b18a5946f5c5c0f33faf306142c17abf11fb92bfeb0e4b7c369eba",
+      "primary_A_raw_frames": 60,
+      "complete_face_candidates": 60,
+      "original_good_top_frames": 0,
+      "twenty_good_frames_met": false,
+      "formal_calibration_pair_approved": false,
+      "top_identity_witness_review_still_required": true
+    },
+    {
+      "pair_id": "new_pair07",
+      "role": "held_out",
+      "source": "docs/evidence/piper_calibration_p1_20261015/new_pair07/attempt01/release_observe_capture/quality_all60/report.json",
+      "source_sha256": "c3d897272970d3b03ac73dbe6f12f67d4332368d7223c79fdead58ecd6c41deb",
+      "primary_A_raw_frames": 60,
+      "complete_face_candidates": 0,
+      "original_good_top_frames": 0,
+      "twenty_good_frames_met": false,
+      "formal_calibration_pair_approved": false,
+      "top_identity_witness_review_still_required": false
+    }
+  ],
+  "calibration_adoption_or_subcentimeter_accuracy_verified": false,
+  "conclusion": "Six placements have raw records, not six qualified calibration pairs. Only one meets original top-image threshold, and that report still requires witness/reference review. Do not fit missing centers, deploy TF or silently lower800/20."
+}

@@ -1,0 +1,1733 @@
+{
+  "receive_only": true,
+  "piper_init": false,
+  "motion_commands_sent": false,
+  "command_topics_or_services": false,
+  "topic": "/joint_states_feedback",
+  "duration_limit_s": 90.0,
+  "feedback_id_mapping": "receive-only 0x3A0..0x3A7 -> id - 0xFF; original driver",
+  "samples": 2554,
+  "published": 2492,
+  "suppressed_stale_or_duplicate": 62,
+  "actual_last_sample": {
+    "epoch": 1792064997.0942495,
+    "sdk_receipt_stamps": {
+      "joint": "1792064997.0921693",
+      "high": "1792064997.0931711",
+      "low": "1792064997.0932913",
+      "gripper": "1792064997.0924633"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 206.667,
+    "q_mdeg": [
+      -7712,
+      54145,
+      -72255,
+      -4470,
+      69823,
+      5560
+    ],
+    "q_driver_rad": [
+      -0.134528128,
+      0.9445053800000002,
+      -1.26041622,
+      -0.07797468,
+      1.2179924119999999,
+      0.09698864
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99400,
+    "gripper_mm": 99.4,
+    "gripper_effort_raw": 133,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "error": null,
+  "interrupted": true,
+  "elapsed_s": 53.36880646800273,
+  "recent_source_samples": [
+    {
+      "local_wall_ns": "1792064994463805613",
+      "local_monotonic_ns": "95669378140145",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.4622018",
+        "high": "1792064994.4632282",
+        "low": "1792064994.4629173",
+        "gripper": "1792064994.4622958"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994462201856",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994484468478",
+      "local_monotonic_ns": "95669398803303",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.4822721",
+        "high": "1792064994.4831285",
+        "low": "1792064994.4827363",
+        "gripper": "1792064994.482289"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994482272256",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994506776166",
+      "local_monotonic_ns": "95669421110819",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.5041475",
+        "high": "1792064994.5041506",
+        "low": "1792064994.5041502",
+        "gripper": "1792064994.504148"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994504147456",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994527310410",
+      "local_monotonic_ns": "95669441644889",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.522157",
+        "high": "1792064994.523137",
+        "low": "1792064994.522749",
+        "gripper": "1792064994.5222943"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994522157056",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994548389457",
+      "local_monotonic_ns": "95669462723809",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.5422637",
+        "high": "1792064994.543236",
+        "low": "1792064994.543254",
+        "gripper": "1792064994.5422862"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994542263808",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994569345511",
+      "local_monotonic_ns": "95669483680085",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.5673587",
+        "high": "1792064994.5631404",
+        "low": "1792064994.563092",
+        "gripper": "1792064994.5673594"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994567358720",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994590080556",
+      "local_monotonic_ns": "95669504415162",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.5871425",
+        "high": "1792064994.5831664",
+        "low": "1792064994.582663",
+        "gripper": "1792064994.5873103"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994587142400",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994610774915",
+      "local_monotonic_ns": "95669525109748",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.6073213",
+        "high": "1792064994.6031108",
+        "low": "1792064994.6030793",
+        "gripper": "1792064994.6073267"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994607321344",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994631327136",
+      "local_monotonic_ns": "95669545661851",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.627259",
+        "high": "1792064994.62319",
+        "low": "1792064994.6227806",
+        "gripper": "1792064994.6272774"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994627259136",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994653285332",
+      "local_monotonic_ns": "95669567619771",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.6471424",
+        "high": "1792064994.64315",
+        "low": "1792064994.6432781",
+        "gripper": "1792064994.6473322"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994647142400",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994674027147",
+      "local_monotonic_ns": "95669588361784",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.672848",
+        "high": "1792064994.6633058",
+        "low": "1792064994.6632447",
+        "gripper": "1792064994.6728518"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994672847872",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994694707818",
+      "local_monotonic_ns": "95669609042582",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.692381",
+        "high": "1792064994.693193",
+        "low": "1792064994.6933622",
+        "gripper": "1792064994.6923814"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994692380928",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994715445158",
+      "local_monotonic_ns": "95669629780194",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.712184",
+        "high": "1792064994.713187",
+        "low": "1792064994.7128756",
+        "gripper": "1792064994.7125297"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994712184064",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994736133607",
+      "local_monotonic_ns": "95669650468101",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.7321918",
+        "high": "1792064994.7332883",
+        "low": "1792064994.732689",
+        "gripper": "1792064994.7323139"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994732191744",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994756837571",
+      "local_monotonic_ns": "95669671172279",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.7529256",
+        "high": "1792064994.7532835",
+        "low": "1792064994.7531145",
+        "gripper": "1792064994.7529266"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994752925696",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994777385380",
+      "local_monotonic_ns": "95669691720410",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.7724338",
+        "high": "1792064994.773144",
+        "low": "1792064994.7727816",
+        "gripper": "1792064994.7725315"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994772433664",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994798036801",
+      "local_monotonic_ns": "95669712371697",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.7971673",
+        "high": "1792064994.793141",
+        "low": "1792064994.793284",
+        "gripper": "1792064994.7973151"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994797167360",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994818620528",
+      "local_monotonic_ns": "95669732954966",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.817181",
+        "high": "1792064994.813499",
+        "low": "1792064994.8134377",
+        "gripper": "1792064994.817377"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994817181184",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994839247015",
+      "local_monotonic_ns": "95669753581910",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.8375535",
+        "high": "1792064994.8331347",
+        "low": "1792064994.8328948",
+        "gripper": "1792064994.837554"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994837553408",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994859981739",
+      "local_monotonic_ns": "95669774316476",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.8571997",
+        "high": "1792064994.85334",
+        "low": "1792064994.8530412",
+        "gripper": "1792064994.8572943"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994857199616",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994880984988",
+      "local_monotonic_ns": "95669795320239",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.8772702",
+        "high": "1792064994.87323",
+        "low": "1792064994.8731349",
+        "gripper": "1792064994.8772898"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994877270272",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994901730851",
+      "local_monotonic_ns": "95669816066004",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.8972647",
+        "high": "1792064994.8931997",
+        "low": "1792064994.8933225",
+        "gripper": "1792064994.897302"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994897264640",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994922414580",
+      "local_monotonic_ns": "95669836749099",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.922065",
+        "high": "1792064994.9131706",
+        "low": "1792064994.9129",
+        "gripper": "1792064994.9173024"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994922064896",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994943382383",
+      "local_monotonic_ns": "95669857716855",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.9422154",
+        "high": "1792064994.9430318",
+        "low": "1792064994.942529",
+        "gripper": "1792064994.9424162"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994942215424",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994963973470",
+      "local_monotonic_ns": "95669878308218",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.9621794",
+        "high": "1792064994.9632564",
+        "low": "1792064994.9628918",
+        "gripper": "1792064994.962511"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994962179328",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064994984551898",
+      "local_monotonic_ns": "95669898886373",
+      "sdk_receipt_stamps": {
+        "joint": "1792064994.9821858",
+        "high": "1792064994.9831762",
+        "low": "1792064994.9826803",
+        "gripper": "1792064994.9823399"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064994982185728",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995005209729",
+      "local_monotonic_ns": "95669919544139",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.002172",
+        "high": "1792064995.0031362",
+        "low": "1792064995.0030062",
+        "gripper": "1792064995.002298"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995002171904",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995025767050",
+      "local_monotonic_ns": "95669940101641",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.022176",
+        "high": "1792064995.0232732",
+        "low": "1792064995.0228205",
+        "gripper": "1792064995.022371"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995022176000",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995046314298",
+      "local_monotonic_ns": "95669960648961",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.042193",
+        "high": "1792064995.0431948",
+        "low": "1792064995.0435007",
+        "gripper": "1792064995.0423024"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995042192896",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995066936809",
+      "local_monotonic_ns": "95669981271388",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.0621538",
+        "high": "1792064995.0631585",
+        "low": "1792064995.0630012",
+        "gripper": "1792064995.062279"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995062153728",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995087621603",
+      "local_monotonic_ns": "95670001956075",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.0871782",
+        "high": "1792064995.0831625",
+        "low": "1792064995.082684",
+        "gripper": "1792064995.0873067"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995087178240",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995108183693",
+      "local_monotonic_ns": "95670022518231",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.107209",
+        "high": "1792064995.1031597",
+        "low": "1792064995.1031163",
+        "gripper": "1792064995.107335"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995107208960",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995128948653",
+      "local_monotonic_ns": "95670043283783",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.127132",
+        "high": "1792064995.1231322",
+        "low": "1792064995.1227796",
+        "gripper": "1792064995.127256"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995127131904",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995149602948",
+      "local_monotonic_ns": "95670063937572",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.1471524",
+        "high": "1792064995.143221",
+        "low": "1792064995.1434078",
+        "gripper": "1792064995.1472797"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995147152384",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995170270359",
+      "local_monotonic_ns": "95670084605212",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.1671655",
+        "high": "1792064995.1631372",
+        "low": "1792064995.1629386",
+        "gripper": "1792064995.1673088"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995167165440",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995190934571",
+      "local_monotonic_ns": "95670105269094",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.1871471",
+        "high": "1792064995.1831534",
+        "low": "1792064995.1827116",
+        "gripper": "1792064995.1873226"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995187147264",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995211498263",
+      "local_monotonic_ns": "95670125833372",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.2071989",
+        "high": "1792064995.2031338",
+        "low": "1792064995.203016",
+        "gripper": "1792064995.2072845"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995207198976",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995232535956",
+      "local_monotonic_ns": "95670146870661",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.2321293",
+        "high": "1792064995.223145",
+        "low": "1792064995.222779",
+        "gripper": "1792064995.227291"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995232129280",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995253412246",
+      "local_monotonic_ns": "95670167747652",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.2526503",
+        "high": "1792064995.2528965",
+        "low": "1792064995.2432883",
+        "gripper": "1792064995.2526534"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995252650240",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995274286582",
+      "local_monotonic_ns": "95670188621802",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.2730763",
+        "high": "1792064995.2732034",
+        "low": "1792064995.273184",
+        "gripper": "1792064995.2730784"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995273076224",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995295019432",
+      "local_monotonic_ns": "95670209354376",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.2923818",
+        "high": "1792064995.293861",
+        "low": "1792064995.2938614",
+        "gripper": "1792064995.2923827"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995292381696",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995315741538",
+      "local_monotonic_ns": "95670230076549",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.3121753",
+        "high": "1792064995.3131537",
+        "low": "1792064995.3131151",
+        "gripper": "1792064995.312378"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995312175360",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995336600015",
+      "local_monotonic_ns": "95670250935023",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.33217",
+        "high": "1792064995.3331654",
+        "low": "1792064995.332625",
+        "gripper": "1792064995.3324094"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995332169984",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995357871861",
+      "local_monotonic_ns": "95670272206483",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.357026",
+        "high": "1792064995.3531327",
+        "low": "1792064995.3530874",
+        "gripper": "1792064995.3525176"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995357026048",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995378553364",
+      "local_monotonic_ns": "95670292888045",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.3771574",
+        "high": "1792064995.373154",
+        "low": "1792064995.372783",
+        "gripper": "1792064995.3772728"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995377157376",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995399170798",
+      "local_monotonic_ns": "95670313505424",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.3971443",
+        "high": "1792064995.3931415",
+        "low": "1792064995.3932588",
+        "gripper": "1792064995.3972905"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995397144320",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995419850744",
+      "local_monotonic_ns": "95670334185924",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.417168",
+        "high": "1792064995.413215",
+        "low": "1792064995.4128983",
+        "gripper": "1792064995.417289"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995417167872",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995440559369",
+      "local_monotonic_ns": "95670354894138",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.4371433",
+        "high": "1792064995.4331746",
+        "low": "1792064995.432638",
+        "gripper": "1792064995.4373183"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995437143296",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995461084339",
+      "local_monotonic_ns": "95670375418644",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.4573197",
+        "high": "1792064995.4531503",
+        "low": "1792064995.4530315",
+        "gripper": "1792064995.4573402"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995457319680",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995481708867",
+      "local_monotonic_ns": "95670396043653",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.4771976",
+        "high": "1792064995.4732711",
+        "low": "1792064995.4731765",
+        "gripper": "1792064995.4773083"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995477197568",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995502381103",
+      "local_monotonic_ns": "95670416716152",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.492191",
+        "high": "1792064995.4932225",
+        "low": "1792064995.4932415",
+        "gripper": "1792064995.492333"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995492190976",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995523222484",
+      "local_monotonic_ns": "95670437556987",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.5221639",
+        "high": "1792064995.5228775",
+        "low": "1792064995.5227542",
+        "gripper": "1792064995.5222793"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995522163968",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995543785279",
+      "local_monotonic_ns": "95670458119674",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.5422485",
+        "high": "1792064995.5431576",
+        "low": "1792064995.5432606",
+        "gripper": "1792064995.5422668"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995542248448",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995564308267",
+      "local_monotonic_ns": "95670478642656",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.5624206",
+        "high": "1792064995.5634682",
+        "low": "1792064995.563017",
+        "gripper": "1792064995.562421"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995562420480",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995584854980",
+      "local_monotonic_ns": "95670499189742",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.5821733",
+        "high": "1792064995.5832698",
+        "low": "1792064995.5826378",
+        "gripper": "1792064995.58228"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995582173440",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995605482888",
+      "local_monotonic_ns": "95670519817677",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.6021914",
+        "high": "1792064995.6031384",
+        "low": "1792064995.602994",
+        "gripper": "1792064995.6022825"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995602191360",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995626039125",
+      "local_monotonic_ns": "95670540373775",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.6221888",
+        "high": "1792064995.6231527",
+        "low": "1792064995.6228263",
+        "gripper": "1792064995.6223743"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995622188800",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995646631445",
+      "local_monotonic_ns": "95670560966250",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.64216",
+        "high": "1792064995.6431313",
+        "low": "1792064995.6432698",
+        "gripper": "1792064995.6422858"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995642159872",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995667538362",
+      "local_monotonic_ns": "95670581873078",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.6671686",
+        "high": "1792064995.6631322",
+        "low": "1792064995.6628933",
+        "gripper": "1792064995.6622934"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995667168512",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995688185293",
+      "local_monotonic_ns": "95670602519976",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.687272",
+        "high": "1792064995.6833112",
+        "low": "1792064995.682644",
+        "gripper": "1792064995.6873074"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995687272192",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995708834642",
+      "local_monotonic_ns": "95670623169055",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.707305",
+        "high": "1792064995.7031481",
+        "low": "1792064995.7030349",
+        "gripper": "1792064995.7073271"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995707304960",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995729385780",
+      "local_monotonic_ns": "95670643720274",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.7271392",
+        "high": "1792064995.7231636",
+        "low": "1792064995.722782",
+        "gripper": "1792064995.727332"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995727139328",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995749969289",
+      "local_monotonic_ns": "95670664303848",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.7471406",
+        "high": "1792064995.7431436",
+        "low": "1792064995.7432845",
+        "gripper": "1792064995.7472913"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995747140608",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995770530409",
+      "local_monotonic_ns": "95670684864981",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.767165",
+        "high": "1792064995.7631066",
+        "low": "1792064995.762901",
+        "gripper": "1792064995.7672894"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995767164928",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995791168580",
+      "local_monotonic_ns": "95670705502986",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.7871573",
+        "high": "1792064995.7831469",
+        "low": "1792064995.7827067",
+        "gripper": "1792064995.7873113"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995787157248",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995811838240",
+      "local_monotonic_ns": "95670726172803",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.8072023",
+        "high": "1792064995.8031385",
+        "low": "1792064995.8030143",
+        "gripper": "1792064995.8073056"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995807202304",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995832544041",
+      "local_monotonic_ns": "95670746878833",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.8319802",
+        "high": "1792064995.8231764",
+        "low": "1792064995.8228087",
+        "gripper": "1792064995.827289"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995831980288",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995853275130",
+      "local_monotonic_ns": "95670767609653",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.8523498",
+        "high": "1792064995.8527598",
+        "low": "1792064995.8432596",
+        "gripper": "1792064995.8524075"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995852349696",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995874014909",
+      "local_monotonic_ns": "95670788349239",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.8721967",
+        "high": "1792064995.8731706",
+        "low": "1792064995.8727686",
+        "gripper": "1792064995.8723693"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995872196608",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995894776331",
+      "local_monotonic_ns": "95670809110966",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.8924673",
+        "high": "1792064995.8932657",
+        "low": "1792064995.8932848",
+        "gripper": "1792064995.8924844"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995892467200",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995915436793",
+      "local_monotonic_ns": "95670829771496",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.912917",
+        "high": "1792064995.913246",
+        "low": "1792064995.9131525",
+        "gripper": "1792064995.9129517"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995912916992",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995936097414",
+      "local_monotonic_ns": "95670850432103",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.9323556",
+        "high": "1792064995.9331408",
+        "low": "1792064995.9329653",
+        "gripper": "1792064995.9324324"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995932355584",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995957352607",
+      "local_monotonic_ns": "95670871687166",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.9524055",
+        "high": "1792064995.9531887",
+        "low": "1792064995.9531877",
+        "gripper": "1792064995.95249"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995952405504",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995977942655",
+      "local_monotonic_ns": "95670892277196",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.977321",
+        "high": "1792064995.973163",
+        "low": "1792064995.9730613",
+        "gripper": "1792064995.9773214"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995977320960",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064995998475433",
+      "local_monotonic_ns": "95670912809968",
+      "sdk_receipt_stamps": {
+        "joint": "1792064995.9973652",
+        "high": "1792064995.9933324",
+        "low": "1792064995.9933517",
+        "gripper": "1792064995.9973867"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064995997365248",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996019054212",
+      "local_monotonic_ns": "95670933389069",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.0172088",
+        "high": "1792064996.0131664",
+        "low": "1792064996.0130913",
+        "gripper": "1792064996.0173688"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996017208832",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996039660970",
+      "local_monotonic_ns": "95670953995293",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.0372493",
+        "high": "1792064996.0331998",
+        "low": "1792064996.0329008",
+        "gripper": "1792064996.0373337"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996037249280",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996060394111",
+      "local_monotonic_ns": "95670974728824",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.0572352",
+        "high": "1792064996.0531764",
+        "low": "1792064996.053137",
+        "gripper": "1792064996.057338"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996057235200",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996080920976",
+      "local_monotonic_ns": "95670995255521",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.0771527",
+        "high": "1792064996.0731936",
+        "low": "1792064996.0729182",
+        "gripper": "1792064996.0772798"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996077152768",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996101790220",
+      "local_monotonic_ns": "95671016125070",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.0971692",
+        "high": "1792064996.0931532",
+        "low": "1792064996.0932696",
+        "gripper": "1792064996.0973604"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996097169152",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996123172971",
+      "local_monotonic_ns": "95671037507637",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.1223142",
+        "high": "1792064996.1131687",
+        "low": "1792064996.1129062",
+        "gripper": "1792064996.1223323"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996122314240",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996143648658",
+      "local_monotonic_ns": "95671057983215",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.1421828",
+        "high": "1792064996.1430936",
+        "low": "1792064996.1425204",
+        "gripper": "1792064996.1423013"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996142182912",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996164121093",
+      "local_monotonic_ns": "95671078455672",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.1621776",
+        "high": "1792064996.1631622",
+        "low": "1792064996.1628945",
+        "gripper": "1792064996.1624262"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996162177536",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996184703330",
+      "local_monotonic_ns": "95671099037985",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.1821659",
+        "high": "1792064996.1831412",
+        "low": "1792064996.1826394",
+        "gripper": "1792064996.182288"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996182165760",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996205159377",
+      "local_monotonic_ns": "95671119494057",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.202175",
+        "high": "1792064996.2031639",
+        "low": "1792064996.2030518",
+        "gripper": "1792064996.20229"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996202174976",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996225637375",
+      "local_monotonic_ns": "95671139971930",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.2221854",
+        "high": "1792064996.2231712",
+        "low": "1792064996.222802",
+        "gripper": "1792064996.2224445"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996222185472",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996246150687",
+      "local_monotonic_ns": "95671160485435",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.2422",
+        "high": "1792064996.243196",
+        "low": "1792064996.243256",
+        "gripper": "1792064996.2423396"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996242199808",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996266728948",
+      "local_monotonic_ns": "95671181063445",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.262203",
+        "high": "1792064996.2631888",
+        "low": "1792064996.2629225",
+        "gripper": "1792064996.2623343"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996262202880",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996287263235",
+      "local_monotonic_ns": "95671201597903",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.2869246",
+        "high": "1792064996.2832227",
+        "low": "1792064996.2826807",
+        "gripper": "1792064996.2823238"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996286924544",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996307717512",
+      "local_monotonic_ns": "95671222052268",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.3072786",
+        "high": "1792064996.3031778",
+        "low": "1792064996.3030083",
+        "gripper": "1792064996.3072925"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996307278592",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996328155936",
+      "local_monotonic_ns": "95671242490532",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.3272462",
+        "high": "1792064996.3231103",
+        "low": "1792064996.3227692",
+        "gripper": "1792064996.3272667"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996327246080",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996348800550",
+      "local_monotonic_ns": "95671263134965",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.3473005",
+        "high": "1792064996.343155",
+        "low": "1792064996.3432622",
+        "gripper": "1792064996.3473017"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996347300608",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996369326176",
+      "local_monotonic_ns": "95671283660693",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.3671584",
+        "high": "1792064996.3633037",
+        "low": "1792064996.3630044",
+        "gripper": "1792064996.3673046"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996367158528",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996389828555",
+      "local_monotonic_ns": "95671304162888",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.3873198",
+        "high": "1792064996.3831768",
+        "low": "1792064996.3827493",
+        "gripper": "1792064996.38734"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996387319808",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996410300399",
+      "local_monotonic_ns": "95671324634916",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.4072173",
+        "high": "1792064996.4031408",
+        "low": "1792064996.403039",
+        "gripper": "1792064996.4073021"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996407217152",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996430828364",
+      "local_monotonic_ns": "95671345162841",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.4271514",
+        "high": "1792064996.4232233",
+        "low": "1792064996.4228923",
+        "gripper": "1792064996.4273386"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996427151360",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996451374076",
+      "local_monotonic_ns": "95671365708432",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.4471686",
+        "high": "1792064996.4431388",
+        "low": "1792064996.4432783",
+        "gripper": "1792064996.4473422"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996447168512",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996474258698",
+      "local_monotonic_ns": "95671388593466",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.4671679",
+        "high": "1792064996.4631512",
+        "low": "1792064996.4629033",
+        "gripper": "1792064996.4673054"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996467167744",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996494796659",
+      "local_monotonic_ns": "95671409131245",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.4925394",
+        "high": "1792064996.4932666",
+        "low": "1792064996.4932833",
+        "gripper": "1792064996.492701"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996492539392",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996515283830",
+      "local_monotonic_ns": "95671429618289",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.5121589",
+        "high": "1792064996.5131714",
+        "low": "1792064996.5129035",
+        "gripper": "1792064996.5125325"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996512158976",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996535938884",
+      "local_monotonic_ns": "95671450273252",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.5323372",
+        "high": "1792064996.5331273",
+        "low": "1792064996.532747",
+        "gripper": "1792064996.5324988"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996532337152",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996557106240",
+      "local_monotonic_ns": "95671471440835",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.5522206",
+        "high": "1792064996.5532877",
+        "low": "1792064996.553027",
+        "gripper": "1792064996.5525951"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996552220672",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996577785484",
+      "local_monotonic_ns": "95671492120312",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.5772398",
+        "high": "1792064996.5732017",
+        "low": "1792064996.573155",
+        "gripper": "1792064996.5772586"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996577239808",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996598366853",
+      "local_monotonic_ns": "95671512701493",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.59719",
+        "high": "1792064996.5935812",
+        "low": "1792064996.5935838",
+        "gripper": "1792064996.5973897"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996597189888",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996618915312",
+      "local_monotonic_ns": "95671533249728",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.6172748",
+        "high": "1792064996.6132455",
+        "low": "1792064996.6129074",
+        "gripper": "1792064996.6172922"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996617274880",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996639383039",
+      "local_monotonic_ns": "95671553717445",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.637148",
+        "high": "1792064996.6331449",
+        "low": "1792064996.6326427",
+        "gripper": "1792064996.6372688"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996637147904",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996659906903",
+      "local_monotonic_ns": "95671574241305",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.6571562",
+        "high": "1792064996.6532924",
+        "low": "1792064996.653026",
+        "gripper": "1792064996.6572752"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996657156352",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996680427342",
+      "local_monotonic_ns": "95671594761909",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.6772754",
+        "high": "1792064996.6731417",
+        "low": "1792064996.6728003",
+        "gripper": "1792064996.6773138"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996677275392",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996700959211",
+      "local_monotonic_ns": "95671615293466",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.6971781",
+        "high": "1792064996.6932983",
+        "low": "1792064996.6933162",
+        "gripper": "1792064996.697283"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996697178112",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996721493238",
+      "local_monotonic_ns": "95671635827980",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.717169",
+        "high": "1792064996.713321",
+        "low": "1792064996.7129347",
+        "gripper": "1792064996.7173295"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996717169152",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996742853663",
+      "local_monotonic_ns": "95671657188311",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.7421923",
+        "high": "1792064996.7335172",
+        "low": "1792064996.73347",
+        "gripper": "1792064996.737269"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996742192384",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996763602174",
+      "local_monotonic_ns": "95671677936523",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.7621992",
+        "high": "1792064996.7631764",
+        "low": "1792064996.762908",
+        "gripper": "1792064996.7623172"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996762199040",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996784119362",
+      "local_monotonic_ns": "95671698454111",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.7822266",
+        "high": "1792064996.7831614",
+        "low": "1792064996.7826576",
+        "gripper": "1792064996.7823138"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996782226688",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996804689201",
+      "local_monotonic_ns": "95671719023706",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.8021402",
+        "high": "1792064996.8031452",
+        "low": "1792064996.8030035",
+        "gripper": "1792064996.8022847"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996802140160",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996825121745",
+      "local_monotonic_ns": "95671739456496",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.822436",
+        "high": "1792064996.8231869",
+        "low": "1792064996.8227923",
+        "gripper": "1792064996.8224385"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996822436096",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996846190202",
+      "local_monotonic_ns": "95671760524994",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.8421736",
+        "high": "1792064996.8432148",
+        "low": "1792064996.8433862",
+        "gripper": "1792064996.8424525"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996842173696",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996867333002",
+      "local_monotonic_ns": "95671781667563",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.8622322",
+        "high": "1792064996.863194",
+        "low": "1792064996.8629985",
+        "gripper": "1792064996.8622873"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996862232320",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996887929690",
+      "local_monotonic_ns": "95671802264282",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.887288",
+        "high": "1792064996.883275",
+        "low": "1792064996.8828063",
+        "gripper": "1792064996.8872893"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996887288064",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996908535332",
+      "local_monotonic_ns": "95671822869935",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.907292",
+        "high": "1792064996.903196",
+        "low": "1792064996.9031541",
+        "gripper": "1792064996.9073105"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996907291904",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996929052870",
+      "local_monotonic_ns": "95671843387560",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.9272618",
+        "high": "1792064996.9231806",
+        "low": "1792064996.922818",
+        "gripper": "1792064996.927307"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996927261952",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996949587105",
+      "local_monotonic_ns": "95671863921819",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.9471679",
+        "high": "1792064996.9431672",
+        "low": "1792064996.9433064",
+        "gripper": "1792064996.9473436"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996947168000",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996970119963",
+      "local_monotonic_ns": "95671884454663",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.9672656",
+        "high": "1792064996.9631639",
+        "low": "1792064996.9629874",
+        "gripper": "1792064996.967284"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996967265536",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064996990654672",
+      "local_monotonic_ns": "95671904989817",
+      "sdk_receipt_stamps": {
+        "joint": "1792064996.9871504",
+        "high": "1792064996.9831812",
+        "low": "1792064996.982694",
+        "gripper": "1792064996.9872894"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064996987150336",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064997011213946",
+      "local_monotonic_ns": "95671925548528",
+      "sdk_receipt_stamps": {
+        "joint": "1792064997.007185",
+        "high": "1792064997.0031595",
+        "low": "1792064997.003016",
+        "gripper": "1792064997.0072818"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064997007184896",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064997031833336",
+      "local_monotonic_ns": "95671946168160",
+      "sdk_receipt_stamps": {
+        "joint": "1792064997.0272505",
+        "high": "1792064997.0232823",
+        "low": "1792064997.0227952",
+        "gripper": "1792064997.0272865"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064997027250432",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064997053273535",
+      "local_monotonic_ns": "95671967608607",
+      "sdk_receipt_stamps": {
+        "joint": "1792064997.052333",
+        "high": "1792064997.0431554",
+        "low": "1792064997.0433288",
+        "gripper": "1792064997.047278"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064997052333056",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064997073807278",
+      "local_monotonic_ns": "95671988141850",
+      "sdk_receipt_stamps": {
+        "joint": "1792064997.0721781",
+        "high": "1792064997.0730462",
+        "low": "1792064997.0727825",
+        "gripper": "1792064997.072617"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064997072178176",
+      "suppression_scope": null
+    },
+    {
+      "local_wall_ns": "1792064997094330257",
+      "local_monotonic_ns": "95672008664758",
+      "sdk_receipt_stamps": {
+        "joint": "1792064997.0921693",
+        "high": "1792064997.0931711",
+        "low": "1792064997.0932913",
+        "gripper": "1792064997.0924633"
+      },
+      "fresh_after_passive_connection": true,
+      "forwarded_stamp_ns": "1792064997092169216",
+      "suppression_scope": null
+    }
+  ],
+  "recent_source_sample_limit": 128
+}

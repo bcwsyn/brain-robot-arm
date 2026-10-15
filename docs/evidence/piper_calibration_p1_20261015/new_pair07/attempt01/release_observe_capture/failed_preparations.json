@@ -1,0 +1,88 @@
+{
+  "failures": [
+    {
+      "directory": "/home/johnwick/brain_robot_logs/new_pair07_release_observe.ij_8_3nq",
+      "error": "AssertionError()",
+      "all_sources_exited": true,
+      "original_SDK_quality": {
+        "samples": 60,
+        "fresh_samples": 59,
+        "span_s": 5.818798780441284,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "CAN_after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 36896804,
+        "tx": 12554
+      },
+      "cause": "Temporary wrapper incorrectly required whole6s static instead of existing contiguous window"
+    },
+    {
+      "directory": "/home/johnwick/brain_robot_logs/new_pair07_release_observe.64k5sjro",
+      "error": "TimeoutError('/visual_search_controller/set_parameters discovery')",
+      "all_sources_exited": true,
+      "original_SDK_quality": {
+        "samples": 100,
+        "fresh_samples": 99,
+        "span_s": 9.839188575744629,
+        "static_three_seconds_and_thirty_samples": true,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "CAN_after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 37092715,
+        "tx": 12567
+      },
+      "cause": "Agent reused obsolete launch wrapper; str/substitution AttributeError before nodes, while driver startup TX increased13; no arm/open/start API"
+    },
+    {
+      "directory": "/home/johnwick/brain_robot_logs/new_pair07_release_observe.t6rezhgb",
+      "error": "RuntimeError('No original continuous >=3s/30-sample static window ending at latest actual feedback; no driver or movement started')",
+      "all_sources_exited": true,
+      "original_SDK_quality": {
+        "samples": 100,
+        "fresh_samples": 99,
+        "span_s": 9.841201066970825,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "CAN_after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 37245948,
+        "tx": 12567
+      },
+      "cause": "Agent-added ending-at-latest extra condition rejected an original79-sample7.830564s static interval; this condition was removed"
+    }
+  ],
+  "not_hardware_fault_proven": true,
+  "temporary_orchestrator_versions": "Final successful wrapper only is snapshotted; old variants reconstructed from differences described here, not falsely claimed binary-identical snapshots",
+  "production_code_changed": false
+}
