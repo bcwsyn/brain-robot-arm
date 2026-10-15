@@ -1,0 +1,3330 @@
+{
+  "schema": "piper_P1_fixed_region_sensitivity_v1",
+  "offline_only": true,
+  "hardware_commands_sent": false,
+  "raw_or_production_modified": false,
+  "replacement_qualification": false,
+  "source_manifest_sha256": "2f53a21f814d1662a597fd9cc70f16237b8b2c3be35e34a1d3140b7eeeab648f",
+  "source_quality_sha256": "96f3de0402c29c5f0eb9c91dcc82a6c0c786a4425ce54c23af8a918ae621baef",
+  "script_sha256": "e4ee760eecd7f144acf2412f69b28afdb860549de3dc5d41a2b6f97fc35e8354",
+  "manual_ROIs_fixed_before_numeric_results": {
+    "pad_left": [
+      142,
+      86,
+      166,
+      116
+    ],
+    "pad_below": [
+      155,
+      124,
+      199,
+      139
+    ],
+    "white_desk_right": [
+      218,
+      55,
+      235,
+      108
+    ]
+  },
+  "ROIs_scope": "Intersection with original annulus, not whole-image segmentation; manually labelled from visible raw RGB, not measured physical surface identity",
+  "original_frames": 28,
+  "original_good_top_frames": 0,
+  "original_plane_inliers": {
+    "n": 28,
+    "min": 692.0,
+    "median": 717.5,
+    "max": 736.0
+  },
+  "erosion0_plane_inliers": {
+    "n": 28,
+    "min": 754.0,
+    "median": 775.5,
+    "max": 796.0
+  },
+  "erosion0_center_shift_m": {
+    "n": 28,
+    "min": 0.0003304303014285775,
+    "median": 0.0009059415953346308,
+    "max": 0.0015825683207145646
+  },
+  "regions": {
+    "original_annulus": {
+      "support_fraction": {
+        "n": 28,
+        "min": 0.5243905775491778,
+        "median": 0.5394463108168948,
+        "max": 0.5537920314161826
+      },
+      "face_height_m": {
+        "n": 28,
+        "min": 0.034463010265364226,
+        "median": 0.03493533648030936,
+        "max": 0.03945762198749986
+      },
+      "top_inliers": null,
+      "would_meet_original_800": 0,
+      "errors": {
+        "Automatic table annulus has no dominant plane": 28
+      }
+    },
+    "pad_left": {
+      "support_fraction": {
+        "n": 28,
+        "min": 0.7968578735842163,
+        "median": 0.8279453331813877,
+        "max": 0.8476434051881622
+      },
+      "face_height_m": {
+        "n": 28,
+        "min": 0.03126353844498128,
+        "median": 0.031797899320196735,
+        "max": 0.03233086072268239
+      },
+      "top_inliers": {
+        "n": 28,
+        "min": 692.0,
+        "median": 717.5,
+        "max": 736.0
+      },
+      "would_meet_original_800": 0,
+      "errors": {}
+    },
+    "pad_below": {
+      "support_fraction": {
+        "n": 28,
+        "min": 0.9657643312101911,
+        "median": 0.9836619246410134,
+        "max": 0.9980087614496217
+      },
+      "face_height_m": {
+        "n": 28,
+        "min": 0.029196559747474485,
+        "median": 0.03055907178333564,
+        "max": 0.031515379125506816
+      },
+      "top_inliers": {
+        "n": 28,
+        "min": 692.0,
+        "median": 717.5,
+        "max": 736.0
+      },
+      "would_meet_original_800": 0,
+      "errors": {}
+    },
+    "white_desk_right": {
+      "support_fraction": {
+        "n": 28,
+        "min": 0.9967445989937851,
+        "median": 0.9986684639375467,
+        "max": 1.0
+      },
+      "face_height_m": {
+        "n": 28,
+        "min": 0.03514556329037939,
+        "median": 0.03550680123733499,
+        "max": 0.03586590577222302
+      },
+      "top_inliers": null,
+      "would_meet_original_800": 0,
+      "errors": {
+        "Measured face extent inconsistent with complete nominal square": 28
+      }
+    }
+  },
+  "frames": [
+    {
+      "snapshot": 1,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        23,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 720,
+      "original_cube_samples": 903,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 38335,
+          "table_plane_support_fraction": 0.5535411503847659,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.059775613800940514,
+            -0.4278385338572273,
+            -0.9018764133414393
+          ],
+          "origin_depth_m": [
+            0.11132706390091222,
+            -0.030951826421293405,
+            0.513965663416699
+          ],
+          "original_face_height_m": 0.03495517209884871,
+          "normal_difference_from_original_face_deg": 10.281739104541073,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.845451223967848,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03320769924637567,
+            -0.3473966415039905,
+            -0.9371300988563489
+          ],
+          "origin_depth_m": [
+            0.014679021974886667,
+            -0.015184451612371313,
+            0.5004317199654253
+          ],
+          "original_face_height_m": 0.03233086072268239,
+          "normal_difference_from_original_face_deg": 5.215984408287455,
+          "top_plane_inliers": 720,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059217346672477994,
+            -0.03762110626602028,
+            0.4901076333914336
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2512,
+          "table_plane_support_fraction": 0.9693471337579618,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.006156900523503541,
+            -0.4321795522993253,
+            -0.90176655912176
+          ],
+          "origin_depth_m": [
+            0.05879569715930137,
+            0.048028827252719106,
+            0.4690073921971253
+          ],
+          "original_face_height_m": 0.030174484401690852,
+          "normal_difference_from_original_face_deg": 9.375708137154625,
+          "top_plane_inliers": 720,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059217346672477994,
+            -0.03762110626602028,
+            0.4901076333914336
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3376,
+          "table_plane_support_fraction": 0.9994075829383886,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.054381255185494325,
+            -0.4243418458288655,
+            -0.903867621371073
+          ],
+          "origin_depth_m": [
+            0.17073887154072492,
+            -0.0542112995354994,
+            0.5286158861884943
+          ],
+          "original_face_height_m": 0.03529589686602941,
+          "normal_difference_from_original_face_deg": 9.935592557702222,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1095,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 778,
+        "plane_rms_m": 0.000687324864907171,
+        "face_extent_m": [
+          0.030402811244130135,
+          0.031620848923921585
+        ],
+        "center_shift_from_original_face_m": 0.0015825683207145646,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 2,
+      "rgb_bbox_xywh": [
+        178,
+        76,
+        21,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 719,
+      "original_cube_samples": 895,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36551,
+          "table_plane_support_fraction": 0.5243905775491778,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05798003775137682,
+            -0.4312923601199378,
+            -0.9003472748470575
+          ],
+          "origin_depth_m": [
+            0.11590869586806271,
+            -0.03800615043647038,
+            0.5178421550094494
+          ],
+          "original_face_height_m": 0.03515170574691917,
+          "normal_difference_from_original_face_deg": 11.29068788192195,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8081841432225064,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03296993696358533,
+            -0.33509536250183775,
+            -0.9416071799250361
+          ],
+          "origin_depth_m": [
+            0.015059652725162468,
+            -0.015843682031597837,
+            0.5006567299006304
+          ],
+          "original_face_height_m": 0.03204384927729595,
+          "normal_difference_from_original_face_deg": 5.847986158600795,
+          "top_plane_inliers": 719,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05981906808590337,
+            -0.037969383197085343,
+            0.4902674841347272
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2513,
+          "table_plane_support_fraction": 0.9685634699562277,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.009473691972376387,
+            -0.42318238515635065,
+            -0.9059949878745437
+          ],
+          "origin_depth_m": [
+            0.0591620711695967,
+            0.047931550622662404,
+            0.46899835661462574
+          ],
+          "original_face_height_m": 0.029196559747474485,
+          "normal_difference_from_original_face_deg": 9.201822709547033,
+          "top_plane_inliers": 719,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05981906808590337,
+            -0.037969383197085343,
+            0.4902674841347272
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3378,
+          "table_plane_support_fraction": 0.9991119005328597,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05151544731453056,
+            -0.4250027450041035,
+            -0.9037249722271489
+          ],
+          "origin_depth_m": [
+            0.17073906054920343,
+            -0.054180660606217235,
+            0.5285697777777705
+          ],
+          "original_face_height_m": 0.035488390114478706,
+          "normal_difference_from_original_face_deg": 10.746628959839388,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1080,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 773,
+        "plane_rms_m": 0.0006742545454454973,
+        "face_extent_m": [
+          0.030465759336948395,
+          0.03119492344558239
+        ],
+        "center_shift_from_original_face_m": 0.0014540944364796295,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 3,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 730,
+      "original_cube_samples": 897,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36652,
+          "table_plane_support_fraction": 0.547691803994325,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06028898411381575,
+            -0.42862722951296767,
+            -0.9014676569431441
+          ],
+          "origin_depth_m": [
+            0.1139133931235148,
+            -0.03263292713365824,
+            0.5148089539007084
+          ],
+          "original_face_height_m": 0.035046365504828834,
+          "normal_difference_from_original_face_deg": 11.191325171376512,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8162221410303252,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.028566155529116784,
+            -0.35046118439977103,
+            -0.9361415133340667
+          ],
+          "origin_depth_m": [
+            0.014622499824607527,
+            -0.015006035248575009,
+            0.5004333631484782
+          ],
+          "original_face_height_m": 0.03230205155300011,
+          "normal_difference_from_original_face_deg": 6.212191456353364,
+          "top_plane_inliers": 730,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059885749646326675,
+            -0.03832144172688422,
+            0.4901703299496442
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2512,
+          "table_plane_support_fraction": 0.9657643312101911,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.005637240572882639,
+            -0.43552785287473283,
+            -0.9001576033612384
+          ],
+          "origin_depth_m": [
+            0.05910015869798204,
+            0.04797188565895358,
+            0.4689546578730428
+          ],
+          "original_face_height_m": 0.030635624775052845,
+          "normal_difference_from_original_face_deg": 10.016403056479165,
+          "top_plane_inliers": 730,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059885749646326675,
+            -0.03832144172688422,
+            0.4901703299496442
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3380,
+          "table_plane_support_fraction": 1.0,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.053376179599832436,
+            -0.42448566353284806,
+            -0.9038600029354127
+          ],
+          "origin_depth_m": [
+            0.17070190182408132,
+            -0.054198139640548794,
+            0.5284698224852
+          ],
+          "original_face_height_m": 0.035483316992752756,
+          "normal_difference_from_original_face_deg": 10.74660659944172,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1098,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 794,
+        "plane_rms_m": 0.0007020177313444699,
+        "face_extent_m": [
+          0.03062252327799797,
+          0.030710259452462196
+        ],
+        "center_shift_from_original_face_m": 0.0008459557052764879,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 4,
+      "rgb_bbox_xywh": [
+        178,
+        76,
+        21,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 704,
+      "original_cube_samples": 879,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36551,
+          "table_plane_support_fraction": 0.5427758474460344,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06404849032722622,
+            -0.4326078355817998,
+            -0.899304315279335
+          ],
+          "origin_depth_m": [
+            0.11096314624438881,
+            -0.034311992029210266,
+            0.5150833333333313
+          ],
+          "original_face_height_m": 0.034476440500653925,
+          "normal_difference_from_original_face_deg": 11.01482129499041,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8374132261600292,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03378255540629156,
+            -0.3413297028045536,
+            -0.9393363470736006
+          ],
+          "origin_depth_m": [
+            0.014731348582535893,
+            -0.015257375626842264,
+            0.5003081952920632
+          ],
+          "original_face_height_m": 0.03220673291538492,
+          "normal_difference_from_original_face_deg": 5.388064987189011,
+          "top_plane_inliers": 704,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059517809103944774,
+            -0.038076729609392415,
+            0.4901852351240797
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2511,
+          "table_plane_support_fraction": 0.970131421744325,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.003946683151651048,
+            -0.4295695273466388,
+            -0.9030251629203286
+          ],
+          "origin_depth_m": [
+            0.058843803315147214,
+            0.0480044978373888,
+            0.4690004105090305
+          ],
+          "original_face_height_m": 0.030081143579862902,
+          "normal_difference_from_original_face_deg": 9.407006390844442,
+          "top_plane_inliers": 704,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059517809103944774,
+            -0.038076729609392415,
+            0.4901852351240797
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3380,
+          "table_plane_support_fraction": 0.9979289940828402,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.050215636723731825,
+            -0.4257758383226828,
+            -0.9034341842818696
+          ],
+          "origin_depth_m": [
+            0.1707523833173509,
+            -0.054105465446244706,
+            0.5285137859472213
+          ],
+          "original_face_height_m": 0.03569168671369235,
+          "normal_difference_from_original_face_deg": 10.231978270205323,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1070,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 759,
+        "plane_rms_m": 0.0007178626063008506,
+        "face_extent_m": [
+          0.030445968732237816,
+          0.0308005940169096
+        ],
+        "center_shift_from_original_face_m": 0.0008460872275970025,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 5,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 711,
+      "original_cube_samples": 898,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36624,
+          "table_plane_support_fraction": 0.5449978156400175,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.0587738245646966,
+            -0.4291161311167042,
+            -0.9013351116879171
+          ],
+          "origin_depth_m": [
+            0.11279358857351537,
+            -0.03396377952702302,
+            0.5155366951823488
+          ],
+          "original_face_height_m": 0.035109380496594574,
+          "normal_difference_from_original_face_deg": 10.908826408342259,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8472780416514432,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03304083766215487,
+            -0.345470935847658,
+            -0.9378476078399554
+          ],
+          "origin_depth_m": [
+            0.014764017157371306,
+            -0.015264987660408298,
+            0.5003702586206876
+          ],
+          "original_face_height_m": 0.03228991900131566,
+          "normal_difference_from_original_face_deg": 5.972680035175328,
+          "top_plane_inliers": 711,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05862330086146074,
+            -0.03796593173551647,
+            0.49010642132713
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2512,
+          "table_plane_support_fraction": 0.973328025477707,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.0005555109421075242,
+            -0.4234898535504014,
+            -0.905900676314712
+          ],
+          "origin_depth_m": [
+            0.05879783595248589,
+            0.04800048221025281,
+            0.4690249488752533
+          ],
+          "original_face_height_m": 0.02966306295233094,
+          "normal_difference_from_original_face_deg": 9.072735003515104,
+          "top_plane_inliers": 711,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05862330086146074,
+            -0.03796593173551647,
+            0.49010642132713
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9988162178159219,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.048881592779533724,
+            -0.4253117913187535,
+            -0.9037258821415755
+          ],
+          "origin_depth_m": [
+            0.17075563739674968,
+            -0.05415215898949007,
+            0.528589629629622
+          ],
+          "original_face_height_m": 0.03586590577222302,
+          "normal_difference_from_original_face_deg": 10.387380509666695,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1091,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 775,
+        "plane_rms_m": 0.000711478435162519,
+        "face_extent_m": [
+          0.03052150458097458,
+          0.031611911952495575
+        ],
+        "center_shift_from_original_face_m": 0.0003304303014285775,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 6,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        21,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 725,
+      "original_cube_samples": 930,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 34972,
+          "table_plane_support_fraction": 0.528537115406611,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.010380819574944872,
+            -0.429152030096138,
+            -0.9031726156440506
+          ],
+          "origin_depth_m": [
+            0.12334697366349139,
+            -0.07634686413915812,
+            0.5387864538395143
+          ],
+          "original_face_height_m": 0.03945762198749986,
+          "normal_difference_from_original_face_deg": 10.057955395851323,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8359517720131531,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.027966837074155603,
+            -0.3433727263431139,
+            -0.9387827367542315
+          ],
+          "origin_depth_m": [
+            0.014862293701861363,
+            -0.01573258659286338,
+            0.5006954048140023
+          ],
+          "original_face_height_m": 0.03212825090469919,
+          "normal_difference_from_original_face_deg": 6.040337577846746,
+          "top_plane_inliers": 725,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059542062540589386,
+            -0.03816010224963718,
+            0.49010891202010365
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9689243027888447,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.003902868233667106,
+            -0.4241801522904828,
+            -0.9055694153527789
+          ],
+          "origin_depth_m": [
+            0.058879719744243345,
+            0.048014350873232,
+            0.46910448375154146
+          ],
+          "original_face_height_m": 0.02977114654241233,
+          "normal_difference_from_original_face_deg": 9.50744884281431,
+          "top_plane_inliers": 725,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059542062540589386,
+            -0.03816010224963718,
+            0.49010891202010365
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3380,
+          "table_plane_support_fraction": 0.9985207100591716,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.049929018096869934,
+            -0.42538836358586773,
+            -0.9036325764809612
+          ],
+          "origin_depth_m": [
+            0.17075870448706018,
+            -0.054138151514341586,
+            0.528563851851844
+          ],
+          "original_face_height_m": 0.03583879924627463,
+          "normal_difference_from_original_face_deg": 10.851512001598781,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1125,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 783,
+        "plane_rms_m": 0.0006933093675675553,
+        "face_extent_m": [
+          0.03046950325369835,
+          0.030876178294420242
+        ],
+        "center_shift_from_original_face_m": 0.0013570744921246253,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 7,
+      "rgb_bbox_xywh": [
+        177,
+        76,
+        23,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 720,
+      "original_cube_samples": 918,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 40082,
+          "table_plane_support_fraction": 0.5405917868369842,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05968134860832832,
+            -0.4280183090637259,
+            -0.9017973518116587
+          ],
+          "origin_depth_m": [
+            0.1118223988729874,
+            -0.03109582757966741,
+            0.5140381258612757
+          ],
+          "original_face_height_m": 0.03501870854338289,
+          "normal_difference_from_original_face_deg": 11.407234448290332,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8370478626233102,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03159830506950691,
+            -0.3436238104120204,
+            -0.9385756357559356
+          ],
+          "origin_depth_m": [
+            0.014645636604098178,
+            -0.015500131173753241,
+            0.5005718027062397
+          ],
+          "original_face_height_m": 0.032207954813591094,
+          "normal_difference_from_original_face_deg": 6.423616512574451,
+          "top_plane_inliers": 720,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05914328678885196,
+            -0.03852839803407781,
+            0.49037551794759526
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9844621513944223,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.0037606989690653495,
+            -0.4303021648875125,
+            -0.9026770762772168
+          ],
+          "origin_depth_m": [
+            0.05873737254179047,
+            0.04793700801247872,
+            0.4690186159449606
+          ],
+          "original_face_height_m": 0.030152538570673328,
+          "normal_difference_from_original_face_deg": 9.842035042255654,
+          "top_plane_inliers": 720,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05914328678885196,
+            -0.03852839803407781,
+            0.49037551794759526
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3377,
+          "table_plane_support_fraction": 0.9991116375481196,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.050684613663257334,
+            -0.42480853328259544,
+            -0.9038632529249635
+          ],
+          "origin_depth_m": [
+            0.17074414908568328,
+            -0.05419815185415199,
+            0.5286028452874857
+          ],
+          "original_face_height_m": 0.035698950882918586,
+          "normal_difference_from_original_face_deg": 10.934837893293542,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1113,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 777,
+        "plane_rms_m": 0.0007001496087043269,
+        "face_extent_m": [
+          0.03074873983860016,
+          0.031490668654441833
+        ],
+        "center_shift_from_original_face_m": 0.0007119750822729711,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 8,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 700,
+      "original_cube_samples": 902,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36629,
+          "table_plane_support_fraction": 0.5405552977149254,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06092330511858443,
+            -0.42800869102160544,
+            -0.9017188648927114
+          ],
+          "origin_depth_m": [
+            0.11265929922334507,
+            -0.03181237012756603,
+            0.5143717421124822
+          ],
+          "original_face_height_m": 0.03491550086177002,
+          "normal_difference_from_original_face_deg": 10.927575342355489,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8414322250639387,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.025251630750364854,
+            -0.34069447103508477,
+            -0.9398348964315864
+          ],
+          "origin_depth_m": [
+            0.014796214788748062,
+            -0.015404495580599389,
+            0.5005234374999975
+          ],
+          "original_face_height_m": 0.03171015670666806,
+          "normal_difference_from_original_face_deg": 5.386509808268878,
+          "top_plane_inliers": 700,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059145215330071915,
+            -0.03847564215919874,
+            0.49038578940644917
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9752988047808765,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0005092358287533465,
+            -0.4305922063515084,
+            -0.9025464489477597
+          ],
+          "origin_depth_m": [
+            0.0585641366300238,
+            0.048073433566121156,
+            0.4690424836601301
+          ],
+          "original_face_height_m": 0.030340299796084092,
+          "normal_difference_from_original_face_deg": 9.601000670326796,
+          "top_plane_inliers": 700,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059145215330071915,
+            -0.03847564215919874,
+            0.49038578940644917
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.999408108907961,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.04908898253618136,
+            -0.42597165242489066,
+            -0.9034037984887879
+          ],
+          "origin_depth_m": [
+            0.17074116178561222,
+            -0.05418190179785595,
+            0.5285771394728976
+          ],
+          "original_face_height_m": 0.035777172951941924,
+          "normal_difference_from_original_face_deg": 10.446014520580388,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1095,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 769,
+        "plane_rms_m": 0.0006900494550924073,
+        "face_extent_m": [
+          0.030702851712703705,
+          0.03150414675474167
+        ],
+        "center_shift_from_original_face_m": 0.0013585655337902674,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 9,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 696,
+      "original_cube_samples": 896,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36630,
+          "table_plane_support_fraction": 0.5382746382746383,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.0610810715854843,
+            -0.4277951930721444,
+            -0.9018095006587231
+          ],
+          "origin_depth_m": [
+            0.11485751011783507,
+            -0.031963185541601324,
+            0.5145225307237133
+          ],
+          "original_face_height_m": 0.034897238078888525,
+          "normal_difference_from_original_face_deg": 11.144677693304804,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.7990500548045305,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.022000767786617845,
+            -0.33690661011637124,
+            -0.9412809900750649
+          ],
+          "origin_depth_m": [
+            0.015166238747070777,
+            -0.015329527409075937,
+            0.5005427135678379
+          ],
+          "original_face_height_m": 0.031547992841271855,
+          "normal_difference_from_original_face_deg": 5.505782272729821,
+          "top_plane_inliers": 697,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.0595018306201473,
+            -0.0382043304075215,
+            0.49018478176527974
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9892430278884462,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0007899171689563114,
+            -0.4295183999839236,
+            -0.9030577612235645
+          ],
+          "origin_depth_m": [
+            0.058700286882689356,
+            0.047996369833149505,
+            0.4690942408376944
+          ],
+          "original_face_height_m": 0.030301821462090782,
+          "normal_difference_from_original_face_deg": 9.530471828975564,
+          "top_plane_inliers": 697,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.0595018306201473,
+            -0.0382043304075215,
+            0.49018478176527974
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3380,
+          "table_plane_support_fraction": 1.0,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05081648457903593,
+            -0.4250072223325282,
+            -0.9037624388412133
+          ],
+          "origin_depth_m": [
+            0.17073840851442804,
+            -0.05421048564025129,
+            0.528584911242596
+          ],
+          "original_face_height_m": 0.03569837609191545,
+          "normal_difference_from_original_face_deg": 10.643047982634766,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1098,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 757,
+        "plane_rms_m": 0.0007260688031636314,
+        "face_extent_m": [
+          0.030494380742311478,
+          0.031183240935206413
+        ],
+        "center_shift_from_original_face_m": 0.0011205699936510255,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 10,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 725,
+      "original_cube_samples": 916,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36675,
+          "table_plane_support_fraction": 0.5479481935923654,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06150929324311445,
+            -0.4281603425175966,
+            -0.901607080684234
+          ],
+          "origin_depth_m": [
+            0.1115531177764888,
+            -0.03151713782752115,
+            0.5141303380782906
+          ],
+          "original_face_height_m": 0.034787515050522515,
+          "normal_difference_from_original_face_deg": 12.054083484964474,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8286445012787724,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.021106749695667528,
+            -0.34656828453671457,
+            -0.9377872516037759
+          ],
+          "origin_depth_m": [
+            0.014987471945939888,
+            -0.01527459108096024,
+            0.5004394539850265
+          ],
+          "original_face_height_m": 0.031440017930780176,
+          "normal_difference_from_original_face_deg": 6.588372525901576,
+          "top_plane_inliers": 725,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.058984465991373206,
+            -0.038491929592818525,
+            0.4904171173046707
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2508,
+          "table_plane_support_fraction": 0.992822966507177,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.002202324497529224,
+            -0.4303793491018607,
+            -0.9026454263072884
+          ],
+          "origin_depth_m": [
+            0.05896575110623752,
+            0.0479418827251214,
+            0.4691365461847369
+          ],
+          "original_face_height_m": 0.030324155374825718,
+          "normal_difference_from_original_face_deg": 10.614510124803013,
+          "top_plane_inliers": 725,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.058984465991373206,
+            -0.038491929592818525,
+            0.4904171173046707
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3378,
+          "table_plane_support_fraction": 0.9991119005328597,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05275537975947579,
+            -0.4253511205658399,
+            -0.9034895097010359
+          ],
+          "origin_depth_m": [
+            0.1707537766076501,
+            -0.054204159649856774,
+            0.5286364444444374
+          ],
+          "original_face_height_m": 0.03542751151214982,
+          "normal_difference_from_original_face_deg": 11.618192260230776,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1113,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 786,
+        "plane_rms_m": 0.0006964999793601033,
+        "face_extent_m": [
+          0.030542466789484024,
+          0.03160819038748741
+        ],
+        "center_shift_from_original_face_m": 0.0007617996047989176,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 11,
+      "rgb_bbox_xywh": [
+        178,
+        76,
+        21,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 717,
+      "original_cube_samples": 899,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36541,
+          "table_plane_support_fraction": 0.5391478065734381,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05980439186472601,
+            -0.4313920745229219,
+            -0.9001801557202314
+          ],
+          "origin_depth_m": [
+            0.11257072107786768,
+            -0.035275405979874726,
+            0.5160475319926853
+          ],
+          "original_face_height_m": 0.0350012982852993,
+          "normal_difference_from_original_face_deg": 11.129899611955908,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8476434051881622,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.02522572699573196,
+            -0.3408542620677913,
+            -0.9397776517494755
+          ],
+          "origin_depth_m": [
+            0.014746956892313414,
+            -0.014986902034565144,
+            0.5003987068965493
+          ],
+          "original_face_height_m": 0.03177837986279221,
+          "normal_difference_from_original_face_deg": 5.341487274965347,
+          "top_plane_inliers": 717,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059329407641070184,
+            -0.03864107380736457,
+            0.49040468926372527
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9697211155378486,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0028069034853790463,
+            -0.4426559317967427,
+            -0.8966871513175493
+          ],
+          "origin_depth_m": [
+            0.058113878175746696,
+            0.04816737037986976,
+            0.4689498767460974
+          ],
+          "original_face_height_m": 0.031515379125506816,
+          "normal_difference_from_original_face_deg": 10.573521876384488,
+          "top_plane_inliers": 707,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05989158574483601,
+            -0.038167622090486575,
+            0.49024828316174923
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3378,
+          "table_plane_support_fraction": 0.9991119005328597,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05072481597628807,
+            -0.42522919340122195,
+            -0.9036631707243126
+          ],
+          "origin_depth_m": [
+            0.17073179897825747,
+            -0.05417883350674455,
+            0.5285478518518443
+          ],
+          "original_face_height_m": 0.03568650134400392,
+          "normal_difference_from_original_face_deg": 10.5233755040773,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1096,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 769,
+        "plane_rms_m": 0.000676054254274495,
+        "face_extent_m": [
+          0.030445925891399384,
+          0.03059290535748005
+        ],
+        "center_shift_from_original_face_m": 0.0007371169958864758,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 12,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        23,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 717,
+      "original_cube_samples": 913,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 40066,
+          "table_plane_support_fraction": 0.5393350970898019,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.060102249199650216,
+            -0.42732103978900654,
+            -0.9021000213916333
+          ],
+          "origin_depth_m": [
+            0.11199808845462023,
+            -0.029195302107817123,
+            0.5131833718244793
+          ],
+          "original_face_height_m": 0.0351188633161822,
+          "normal_difference_from_original_face_deg": 11.595919149432131,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8355864084764341,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.02889464692203867,
+            -0.342981039603251,
+            -0.9388978143823341
+          ],
+          "origin_depth_m": [
+            0.014842028986546484,
+            -0.014933823815955136,
+            0.5001973741794283
+          ],
+          "original_face_height_m": 0.03195508021179327,
+          "normal_difference_from_original_face_deg": 6.403573471565135,
+          "top_plane_inliers": 717,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05952063988819535,
+            -0.038293235423762534,
+            0.4901849774485906
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2511,
+          "table_plane_support_fraction": 0.9780963759458383,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0006291655849836721,
+            -0.4336113049476773,
+            -0.9010997949018961
+          ],
+          "origin_depth_m": [
+            0.058747176810232754,
+            0.04800553454420934,
+            0.4689991856677519
+          ],
+          "original_face_height_m": 0.030622592868889374,
+          "normal_difference_from_original_face_deg": 10.412914124310523,
+          "top_plane_inliers": 717,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05952063988819535,
+            -0.038293235423762534,
+            0.4901849774485906
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3378,
+          "table_plane_support_fraction": 0.9994079336885732,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0522462263411624,
+            -0.4251082046148552,
+            -0.903633413615412
+          ],
+          "origin_depth_m": [
+            0.17075988834732397,
+            -0.054203547641604864,
+            0.5286492890995187
+          ],
+          "original_face_height_m": 0.03565852937708186,
+          "normal_difference_from_original_face_deg": 11.220546589780591,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1112,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 778,
+        "plane_rms_m": 0.0007107243501474897,
+        "face_extent_m": [
+          0.030537940561771393,
+          0.031609948724508286
+        ],
+        "center_shift_from_original_face_m": 0.0008330100035900019,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 13,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        23,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 711,
+      "original_cube_samples": 903,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 38298,
+          "table_plane_support_fraction": 0.5472087315264504,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.061450815474551924,
+            -0.42696143405506903,
+            -0.9021794339859178
+          ],
+          "origin_depth_m": [
+            0.11182196321678724,
+            -0.029376354568669518,
+            0.5129995697073988
+          ],
+          "original_face_height_m": 0.03465512951286373,
+          "normal_difference_from_original_face_deg": 11.437376707939809,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8224333211545488,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03197345671680075,
+            -0.3479391811638106,
+            -0.936971730777741
+          ],
+          "origin_depth_m": [
+            0.014113947995139198,
+            -0.013929692859757495,
+            0.499842292314526
+          ],
+          "original_face_height_m": 0.03209663588355055,
+          "normal_difference_from_original_face_deg": 6.573719897180447,
+          "top_plane_inliers": 711,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05838761760024121,
+            -0.038493400584304914,
+            0.4904443429766264
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2508,
+          "table_plane_support_fraction": 0.9808612440191388,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0016653414035677624,
+            -0.4322712970735068,
+            -0.9017420653182359
+          ],
+          "origin_depth_m": [
+            0.058395830259572366,
+            0.04809429908331235,
+            0.46907560975609697
+          ],
+          "original_face_height_m": 0.03050970739948523,
+          "normal_difference_from_original_face_deg": 10.153102384501686,
+          "top_plane_inliers": 711,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05838761760024121,
+            -0.038493400584304914,
+            0.4904443429766264
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3380,
+          "table_plane_support_fraction": 0.9979289940828402,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05083656672677215,
+            -0.42689510145082243,
+            -0.9028710959160926
+          ],
+          "origin_depth_m": [
+            0.1707419172606983,
+            -0.05410572664799248,
+            0.5284832493329301
+          ],
+          "original_face_height_m": 0.035433592635014964,
+          "normal_difference_from_original_face_deg": 11.083167319610542,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1116,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 782,
+        "plane_rms_m": 0.0007124551872733211,
+        "face_extent_m": [
+          0.030725333839654922,
+          0.031600914895534515
+        ],
+        "center_shift_from_original_face_m": 0.0008615736061819094,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 14,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 713,
+      "original_cube_samples": 906,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36617,
+          "table_plane_support_fraction": 0.5332495835267772,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.011454309099056877,
+            -0.42863311842362095,
+            -0.903406026431917
+          ],
+          "origin_depth_m": [
+            0.124907309197941,
+            -0.07543563199090395,
+            0.5383923006416111
+          ],
+          "original_face_height_m": 0.03932876204740111,
+          "normal_difference_from_original_face_deg": 10.213147150814374,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.824990865911582,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.027794683326400803,
+            -0.3405894561348894,
+            -0.9398011906507276
+          ],
+          "origin_depth_m": [
+            0.01463482213570999,
+            -0.015177031498049871,
+            0.5003666961913187
+          ],
+          "original_face_height_m": 0.031817418777601254,
+          "normal_difference_from_original_face_deg": 6.1041401928632055,
+          "top_plane_inliers": 713,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.058499772089185456,
+            -0.038037119722041574,
+            0.49019839970600965
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9749003984063745,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.004314037171228339,
+            -0.43551494646725364,
+            -0.9001711617725322
+          ],
+          "origin_depth_m": [
+            0.058351917048217815,
+            0.048124323359288394,
+            0.4691263758662847
+          ],
+          "original_face_height_m": 0.030947307795512476,
+          "normal_difference_from_original_face_deg": 10.490859532122567,
+          "top_plane_inliers": 713,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.058499772089185456,
+            -0.038037119722041574,
+            0.49019839970600965
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9988162178159219,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.049278028849303275,
+            -0.42487144263921595,
+            -0.9039114630882819
+          ],
+          "origin_depth_m": [
+            0.17074000886305873,
+            -0.05416450820221686,
+            0.5285431111111033
+          ],
+          "original_face_height_m": 0.03571412358682895,
+          "normal_difference_from_original_face_deg": 10.98211669117397,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1106,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 771,
+        "plane_rms_m": 0.0007104585458226708,
+        "face_extent_m": [
+          0.030319686979055405,
+          0.031261712312698364
+        ],
+        "center_shift_from_original_face_m": 0.0008286982682984274,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 15,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 718,
+      "original_cube_samples": 905,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36668,
+          "table_plane_support_fraction": 0.5434984182393368,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05879026539624302,
+            -0.43029839578059403,
+            -0.9007702233551498
+          ],
+          "origin_depth_m": [
+            0.11533529828759938,
+            -0.033792071611730985,
+            0.5156508795669817
+          ],
+          "original_face_height_m": 0.034998652897803705,
+          "normal_difference_from_original_face_deg": 11.524978862567929,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.7994154183412495,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.021597385634143523,
+            -0.3418552605636974,
+            -0.9395044085892821
+          ],
+          "origin_depth_m": [
+            0.014199283341942726,
+            -0.014402386879011839,
+            0.5000745313214436
+          ],
+          "original_face_height_m": 0.03135868482257506,
+          "normal_difference_from_original_face_deg": 5.796131504993058,
+          "top_plane_inliers": 718,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05938778983780474,
+            -0.03803300427827564,
+            0.490279353091693
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9681147867676365,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.004477714583241448,
+            -0.43937023667273245,
+            -0.898294909925609
+          ],
+          "origin_depth_m": [
+            0.05816697031040451,
+            0.04817020467524439,
+            0.4691486208316178
+          ],
+          "original_face_height_m": 0.031259548227459646,
+          "normal_difference_from_original_face_deg": 10.751409351811436,
+          "top_plane_inliers": 718,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05938778983780474,
+            -0.03803300427827564,
+            0.490279353091693
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9985202722699024,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05125613415136587,
+            -0.4245152029709985,
+            -0.9039688330680152
+          ],
+          "origin_depth_m": [
+            0.1707527399362385,
+            -0.05415149789163537,
+            0.528563129816234
+          ],
+          "original_face_height_m": 0.035525212360191266,
+          "normal_difference_from_original_face_deg": 10.978102682106654,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1099,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 771,
+        "plane_rms_m": 0.0006900959911728534,
+        "face_extent_m": [
+          0.030463596805930138,
+          0.031199228018522263
+        ],
+        "center_shift_from_original_face_m": 0.0014482069823675333,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 16,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 711,
+      "original_cube_samples": 897,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 38320,
+          "table_plane_support_fraction": 0.5444415448851775,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06072479144584949,
+            -0.42860523328732303,
+            -0.9014488636093438
+          ],
+          "origin_depth_m": [
+            0.11121697220905773,
+            -0.029874924549026037,
+            0.5133871107266427
+          ],
+          "original_face_height_m": 0.034815587951500415,
+          "normal_difference_from_original_face_deg": 11.800126074648611,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8315674095725246,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.025252813861164427,
+            -0.3376383913026346,
+            -0.9409370925362981
+          ],
+          "origin_depth_m": [
+            0.01500236722022361,
+            -0.015176611436168974,
+            0.5003637961335679
+          ],
+          "original_face_height_m": 0.031472129947389516,
+          "normal_difference_from_original_face_deg": 6.399698838265937,
+          "top_plane_inliers": 711,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05917192045157346,
+            -0.038339852384950156,
+            0.4904218158455323
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9856516540454364,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0006716934076005726,
+            -0.4292023726651044,
+            -0.9032081001223422
+          ],
+          "origin_depth_m": [
+            0.05883986658472932,
+            0.04799262513781088,
+            0.4692058228871799
+          ],
+          "original_face_height_m": 0.030216352970313845,
+          "normal_difference_from_original_face_deg": 10.003708480140979,
+          "top_plane_inliers": 711,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05917192045157346,
+            -0.038339852384950156,
+            0.4904218158455323
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3377,
+          "table_plane_support_fraction": 0.9979271542789458,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05174423123769262,
+            -0.42524480372670503,
+            -0.9035980253614194
+          ],
+          "origin_depth_m": [
+            0.17075226184235306,
+            -0.05412033039715779,
+            0.5285602373887165
+          ],
+          "original_face_height_m": 0.03544330234674855,
+          "normal_difference_from_original_face_deg": 11.30437500517155,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1092,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 774,
+        "plane_rms_m": 0.0006786094813468952,
+        "face_extent_m": [
+          0.03050636313855648,
+          0.03159233182668686
+        ],
+        "center_shift_from_original_face_m": 0.0006770942674185552,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 17,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 709,
+      "original_cube_samples": 884,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36639,
+          "table_plane_support_fraction": 0.5296269002974971,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05792419037019577,
+            -0.42882505919045355,
+            -0.9015286222745574
+          ],
+          "origin_depth_m": [
+            0.11760663806873226,
+            -0.03512746121253889,
+            0.5164423791821551
+          ],
+          "original_face_height_m": 0.034972049058370695,
+          "normal_difference_from_original_face_deg": 11.154942772812,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2738,
+          "table_plane_support_fraction": 0.827246165084003,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.03145405182894717,
+            -0.33849824978079535,
+            -0.940441161114761
+          ],
+          "origin_depth_m": [
+            0.014736709259505687,
+            -0.01547680823931259,
+            0.5005863134657819
+          ],
+          "original_face_height_m": 0.032027503205919974,
+          "normal_difference_from_original_face_deg": 5.846512756127165,
+          "top_plane_inliers": 709,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059195990671752116,
+            -0.03753413867287696,
+            0.4901433766001331
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2512,
+          "table_plane_support_fraction": 0.9777070063694268,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            -0.0005649425484590258,
+            -0.4354322774664739,
+            -0.9002213131115464
+          ],
+          "origin_depth_m": [
+            0.05843328533326403,
+            0.048068570280876716,
+            0.4689678338762217
+          ],
+          "original_face_height_m": 0.03049298183227491,
+          "normal_difference_from_original_face_deg": 10.13695019446071,
+          "top_plane_inliers": 709,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059195990671752116,
+            -0.03753413867287696,
+            0.4901433766001331
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3377,
+          "table_plane_support_fraction": 0.9985193959135327,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0528491036492232,
+            -0.42526258021827146,
+            -0.9035257108182212
+          ],
+          "origin_depth_m": [
+            0.17072565541469523,
+            -0.05412690074361449,
+            0.528511565836292
+          ],
+          "original_face_height_m": 0.03523385903373828,
+          "normal_difference_from_original_face_deg": 10.802613190602457,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1074,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 763,
+        "plane_rms_m": 0.0006988258112521307,
+        "face_extent_m": [
+          0.029737522825598717,
+          0.030809437856078148
+        ],
+        "center_shift_from_original_face_m": 0.001336826377349935,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 18,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 726,
+      "original_cube_samples": 928,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36654,
+          "table_plane_support_fraction": 0.5345664866044634,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06311102621028723,
+            -0.4279143245356638,
+            -0.9016131815961161
+          ],
+          "origin_depth_m": [
+            0.11612440694709603,
+            -0.030837710586541476,
+            0.5139493787390692
+          ],
+          "original_face_height_m": 0.03465241025783397,
+          "normal_difference_from_original_face_deg": 12.14768884593736,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2736,
+          "table_plane_support_fraction": 0.820906432748538,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.030592312611541266,
+            -0.3380525245099863,
+            -0.9406298959109811
+          ],
+          "origin_depth_m": [
+            0.015072652980995175,
+            -0.015519108359357206,
+            0.500483741648107
+          ],
+          "original_face_height_m": 0.03195244553940027,
+          "normal_difference_from_original_face_deg": 6.751564474821664,
+          "top_plane_inliers": 726,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05836669093307838,
+            -0.038739899875575926,
+            0.4904157343550668
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9904344360302909,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.003525307269264977,
+            -0.43248708675353226,
+            -0.9016332358559659
+          ],
+          "origin_depth_m": [
+            0.058541620125722296,
+            0.04802429187401906,
+            0.469097786720321
+          ],
+          "original_face_height_m": 0.030668728916281432,
+          "normal_difference_from_original_face_deg": 10.728765090370654,
+          "top_plane_inliers": 726,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05836669093307838,
+            -0.038739899875575926,
+            0.4904157343550668
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9985202722699024,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05057727275237776,
+            -0.4257773635286882,
+            -0.9034132920139544
+          ],
+          "origin_depth_m": [
+            0.17075553936213858,
+            -0.05415588210844288,
+            0.5285735032602176
+          ],
+          "original_face_height_m": 0.03565935638730681,
+          "normal_difference_from_original_face_deg": 11.610454045406101,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1121,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 782,
+        "plane_rms_m": 0.0006600619772637579,
+        "face_extent_m": [
+          0.03037079982459545,
+          0.033412203192710876
+        ],
+        "center_shift_from_original_face_m": 0.0009006209985938603,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 19,
+      "rgb_bbox_xywh": [
+        178,
+        76,
+        21,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 702,
+      "original_cube_samples": 892,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36558,
+          "table_plane_support_fraction": 0.5335904589966628,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06420834065632074,
+            -0.430237313519265,
+            -0.9004294214683835
+          ],
+          "origin_depth_m": [
+            0.11196284133267755,
+            -0.0328462190258799,
+            0.5146078971533493
+          ],
+          "original_face_height_m": 0.034619915246897684,
+          "normal_difference_from_original_face_deg": 11.409547013467597,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8297405918889295,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.028000448481278247,
+            -0.3413153056057437,
+            -0.9395317115691757
+          ],
+          "origin_depth_m": [
+            0.015001120368795398,
+            -0.015576496266008738,
+            0.5006848591549289
+          ],
+          "original_face_height_m": 0.03200476084769297,
+          "normal_difference_from_original_face_deg": 5.7726697176983714,
+          "top_plane_inliers": 702,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05873571164887638,
+            -0.038756901921796455,
+            0.49046052866956746
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2511,
+          "table_plane_support_fraction": 0.9980087614496217,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0009530514731584135,
+            -0.4328182725828756,
+            -0.9014806900933959
+          ],
+          "origin_depth_m": [
+            0.05885805789443023,
+            0.04794899395682839,
+            0.469148044692736
+          ],
+          "original_face_height_m": 0.03064721510308119,
+          "normal_difference_from_original_face_deg": 9.992867114324394,
+          "top_plane_inliers": 702,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05873571164887638,
+            -0.038756901921796455,
+            0.49046052866956746
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3377,
+          "table_plane_support_fraction": 0.9982232750962393,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.051891131190438665,
+            -0.42445028425388154,
+            -0.9039630892357143
+          ],
+          "origin_depth_m": [
+            0.17076411086446713,
+            -0.05415531141553786,
+            0.5286134678136978
+          ],
+          "original_face_height_m": 0.035645662672120645,
+          "normal_difference_from_original_face_deg": 10.705219053850904,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1084,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 769,
+        "plane_rms_m": 0.0006944964294178484,
+        "face_extent_m": [
+          0.030806761234998703,
+          0.0314321294426918
+        ],
+        "center_shift_from_original_face_m": 0.0003983667207312924,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 20,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 712,
+      "original_cube_samples": 901,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36620,
+          "table_plane_support_fraction": 0.53599126160568,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06285452213048215,
+            -0.4270687366228568,
+            -0.9020319302813541
+          ],
+          "origin_depth_m": [
+            0.11291880811366968,
+            -0.030451737468476788,
+            0.5136447307869285
+          ],
+          "original_face_height_m": 0.03483310531685652,
+          "normal_difference_from_original_face_deg": 11.169797090431153,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8399707709170625,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.023728980087922492,
+            -0.3407533344982465,
+            -0.9398532335063345
+          ],
+          "origin_depth_m": [
+            0.015105603729715185,
+            -0.015089564957049004,
+            0.5004243478260864
+          ],
+          "original_face_height_m": 0.03170987720874047,
+          "normal_difference_from_original_face_deg": 5.587533939292364,
+          "top_plane_inliers": 712,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05930616502720942,
+            -0.03821441554343465,
+            0.49018736782707123
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2511,
+          "table_plane_support_fraction": 0.997610513739546,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.001733276587928429,
+            -0.43211893075283225,
+            -0.9018149618615222
+          ],
+          "origin_depth_m": [
+            0.05882419561140274,
+            0.04795770252552587,
+            0.4691317365269436
+          ],
+          "original_face_height_m": 0.030597811309726785,
+          "normal_difference_from_original_face_deg": 9.87333985416447,
+          "top_plane_inliers": 712,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05930616502720942,
+            -0.03821441554343465,
+            0.49018736782707123
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3377,
+          "table_plane_support_fraction": 1.0,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05089264411946755,
+            -0.4245766695237837,
+            -0.9039605027160318
+          ],
+          "origin_depth_m": [
+            0.17073677044257257,
+            -0.054242462502196324,
+            0.5286298489783757
+          ],
+          "original_face_height_m": 0.03575128676346794,
+          "normal_difference_from_original_face_deg": 10.64506848120552,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1092,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 774,
+        "plane_rms_m": 0.000685220724009188,
+        "face_extent_m": [
+          0.030524879693984985,
+          0.03151153773069382
+        ],
+        "center_shift_from_original_face_m": 0.001014082135418399,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 21,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        21,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 722,
+      "original_cube_samples": 910,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 34970,
+          "table_plane_support_fraction": 0.5264798398627395,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.011165667387143394,
+            -0.428895428317922,
+            -0.903285137395599
+          ],
+          "origin_depth_m": [
+            0.12365804647475563,
+            -0.07639147289284234,
+            0.5388030237580966
+          ],
+          "original_face_height_m": 0.03927229943844718,
+          "normal_difference_from_original_face_deg": 10.450510553015217,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8377785896967482,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.020577005126030796,
+            -0.3418135908130461,
+            -0.9395424716294282
+          ],
+          "origin_depth_m": [
+            0.015196114375448563,
+            -0.014972890467188527,
+            0.5003096380287829
+          ],
+          "original_face_height_m": 0.03127645505973211,
+          "normal_difference_from_original_face_deg": 6.148426692898579,
+          "top_plane_inliers": 722,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05892867364527181,
+            -0.03869690818482011,
+            0.4905252622012475
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2511,
+          "table_plane_support_fraction": 0.98805256869773,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.00428498299932402,
+            -0.4388398588807792,
+            -0.8985550718671581
+          ],
+          "origin_depth_m": [
+            0.05846112821530588,
+            0.048071944163069265,
+            0.46921563885529866
+          ],
+          "original_face_height_m": 0.031287162839065255,
+          "normal_difference_from_original_face_deg": 10.908081017571101,
+          "top_plane_inliers": 722,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05892867364527181,
+            -0.03869690818482011,
+            0.4905252622012475
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9976324356318438,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.052768926182290656,
+            -0.4243011585593958,
+            -0.9039822826110709
+          ],
+          "origin_depth_m": [
+            0.17074827515692187,
+            -0.05408409191754028,
+            0.5285010382675688
+          ],
+          "original_face_height_m": 0.03539335457673876,
+          "normal_difference_from_original_face_deg": 11.32795406953546,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1103,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 780,
+        "plane_rms_m": 0.0006955887867215354,
+        "face_extent_m": [
+          0.030608022585511208,
+          0.031436603516340256
+        ],
+        "center_shift_from_original_face_m": 0.0007693992606625192,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 22,
+      "rgb_bbox_xywh": [
+        177,
+        76,
+        22,
+        23
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 735,
+      "original_cube_samples": 925,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 40028,
+          "table_plane_support_fraction": 0.5296292595183372,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.060922646679811766,
+            -0.4277725759539049,
+            -0.9018309455675644
+          ],
+          "origin_depth_m": [
+            0.11133911927656429,
+            -0.02929888147789151,
+            0.5131814306016125
+          ],
+          "original_face_height_m": 0.03498924763665784,
+          "normal_difference_from_original_face_deg": 11.51433795690654,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8125685056631348,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.02649200321197041,
+            -0.3373371775431175,
+            -0.9410110532895245
+          ],
+          "origin_depth_m": [
+            0.015111577243510418,
+            -0.014915240672255454,
+            0.500186936936937
+          ],
+          "original_face_height_m": 0.03155546934772701,
+          "normal_difference_from_original_face_deg": 6.053658018882935,
+          "top_plane_inliers": 735,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05907952507879212,
+            -0.03869857939245621,
+            0.4904666568672291
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2507,
+          "table_plane_support_fraction": 0.992820103709613,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0027953502475397776,
+            -0.4289579830008837,
+            -0.9033201175866765
+          ],
+          "origin_depth_m": [
+            0.05896693856749147,
+            0.047944695755217565,
+            0.4691984732824406
+          ],
+          "original_face_height_m": 0.030332864256312854,
+          "normal_difference_from_original_face_deg": 9.93326170406306,
+          "top_plane_inliers": 735,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05907952507879212,
+            -0.03869857939245621,
+            0.4904666568672291
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9970405445398047,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05117044095796738,
+            -0.4241983779405478,
+            -0.9041224043926658
+          ],
+          "origin_depth_m": [
+            0.17076137280276932,
+            -0.05405516169540251,
+            0.5285114277233528
+          ],
+          "original_face_height_m": 0.035637980496729824,
+          "normal_difference_from_original_face_deg": 10.993118559174198,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1129,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 793,
+        "plane_rms_m": 0.0006977753855310219,
+        "face_extent_m": [
+          0.030953306704759598,
+          0.03161083161830902
+        ],
+        "center_shift_from_original_face_m": 0.0009834018849234217,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 23,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 736,
+      "original_cube_samples": 914,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36669,
+          "table_plane_support_fraction": 0.5537920314161826,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.057869478792693635,
+            -0.4325528992434076,
+            -0.899749472231234
+          ],
+          "origin_depth_m": [
+            0.11076978815826483,
+            -0.03476074438006539,
+            0.5158346631205649
+          ],
+          "original_face_height_m": 0.03486449920515435,
+          "normal_difference_from_original_face_deg": 11.577157900280037,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8403361344537815,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.025460153864151253,
+            -0.3402380549759408,
+            -0.9399945991926775
+          ],
+          "origin_depth_m": [
+            0.015011324427151912,
+            -0.015111860165322627,
+            0.500423795049934
+          ],
+          "original_face_height_m": 0.03157897592246896,
+          "normal_difference_from_original_face_deg": 5.884014462404052,
+          "top_plane_inliers": 736,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05819923214662735,
+            -0.037668881341856496,
+            0.49022077768616584
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9864487843762455,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0021077272918127834,
+            -0.43339032677208145,
+            -0.9012038516040927
+          ],
+          "origin_depth_m": [
+            0.05873677284136651,
+            0.04802647856204743,
+            0.46916323232323165
+          ],
+          "original_face_height_m": 0.030520332256944498,
+          "normal_difference_from_original_face_deg": 10.257606214668956,
+          "top_plane_inliers": 736,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05819923214662735,
+            -0.037668881341856496,
+            0.49022077768616584
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3377,
+          "table_plane_support_fraction": 0.9979271542789458,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05490773767192157,
+            -0.4230767474763992,
+            -0.9044286627968747
+          ],
+          "origin_depth_m": [
+            0.17076040919212565,
+            -0.05409972182174416,
+            0.5285869436201708
+          ],
+          "original_face_height_m": 0.03514556329037939,
+          "normal_difference_from_original_face_deg": 10.97464188645627,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1104,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 796,
+        "plane_rms_m": 0.0007078381434169423,
+        "face_extent_m": [
+          0.031102554872632027,
+          0.03159916400909424
+        ],
+        "center_shift_from_original_face_m": 0.0015474547506484388,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 24,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        23,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 727,
+      "original_cube_samples": 942,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 38343,
+          "table_plane_support_fraction": 0.5445061680098062,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05956592992034446,
+            -0.42828811936225264,
+            -0.9016768749423871
+          ],
+          "origin_depth_m": [
+            0.11291567266683337,
+            -0.031032674531997307,
+            0.5140984455958528
+          ],
+          "original_face_height_m": 0.034788758950809816,
+          "normal_difference_from_original_face_deg": 10.871702973796756,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.7968578735842163,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.02187697629615733,
+            -0.3372317334219661,
+            -0.9411674430627922
+          ],
+          "origin_depth_m": [
+            0.015508427865485423,
+            -0.015598208967630249,
+            0.5006674311926596
+          ],
+          "original_face_height_m": 0.03126353844498128,
+          "normal_difference_from_original_face_deg": 5.147709448246047,
+          "top_plane_inliers": 727,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05827749898096349,
+            -0.038460089320703154,
+            0.49060666512913403
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9884462151394422,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.002802520077549894,
+            -0.4393515904845262,
+            -0.8983108180468116
+          ],
+          "origin_depth_m": [
+            0.058864015261031195,
+            0.0479740420143515,
+            0.46914711809753973
+          ],
+          "original_face_height_m": 0.031066748505764435,
+          "normal_difference_from_original_face_deg": 10.061897442602861,
+          "top_plane_inliers": 727,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05827749898096349,
+            -0.038460089320703154,
+            0.49060666512913403
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9967445989937851,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05229182978540731,
+            -0.42601349832501295,
+            -0.9032043311358611
+          ],
+          "origin_depth_m": [
+            0.17076997928625143,
+            -0.05404452089816648,
+            0.5285204869358593
+          ],
+          "original_face_height_m": 0.035252475374022964,
+          "normal_difference_from_original_face_deg": 10.51226830265491,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1147,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 784,
+        "plane_rms_m": 0.0006999134873368538,
+        "face_extent_m": [
+          0.0307976882904768,
+          0.03235428035259247
+        ],
+        "center_shift_from_original_face_m": 0.0011241120332101983,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 25,
+      "rgb_bbox_xywh": [
+        177,
+        77,
+        22,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 732,
+      "original_cube_samples": 916,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36655,
+          "table_plane_support_fraction": 0.5417269131087165,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.05969521871702271,
+            -0.43024062014247316,
+            -0.9007383025284023
+          ],
+          "origin_depth_m": [
+            0.1128455393549489,
+            -0.03265073557363039,
+            0.5148972385694874
+          ],
+          "original_face_height_m": 0.034885384957605285,
+          "normal_difference_from_original_face_deg": 12.143481494110029,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8140299598100109,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.028391830192141858,
+            -0.33832855455405675,
+            -0.9405996455196565
+          ],
+          "origin_depth_m": [
+            0.015479159216373,
+            -0.015206388063599115,
+            0.500423180592991
+          ],
+          "original_face_height_m": 0.0317337650346191,
+          "normal_difference_from_original_face_deg": 6.512980631438573,
+          "top_plane_inliers": 732,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05862309382974511,
+            -0.038370352843607805,
+            0.49041639892078376
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2510,
+          "table_plane_support_fraction": 0.9844621513944223,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.004080075416959171,
+            -0.4339398500658415,
+            -0.9009326054203094
+          ],
+          "origin_depth_m": [
+            0.05870733666733546,
+            0.047990988751125015,
+            0.4691363820315652
+          ],
+          "original_face_height_m": 0.030665360885307538,
+          "normal_difference_from_original_face_deg": 10.963906115310353,
+          "top_plane_inliers": 732,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05862309382974511,
+            -0.038370352843607805,
+            0.49041639892078376
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3379,
+          "table_plane_support_fraction": 0.9991121633619414,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.052278022457022136,
+            -0.42499562838175914,
+            -0.9036845269364615
+          ],
+          "origin_depth_m": [
+            0.17074947336369553,
+            -0.054166865402991565,
+            0.5285847156398037
+          ],
+          "original_face_height_m": 0.03538875272532121,
+          "normal_difference_from_original_face_deg": 11.62723783766657,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1118,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 796,
+        "plane_rms_m": 0.0006694052267707632,
+        "face_extent_m": [
+          0.030729271471500397,
+          0.03156750649213791
+        ],
+        "center_shift_from_original_face_m": 0.0006694365624262456,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 26,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        21,
+        22
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 717,
+      "original_cube_samples": 920,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 36567,
+          "table_plane_support_fraction": 0.5395575245439878,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.0599605598341205,
+            -0.43140924683342335,
+            -0.9001615371759657
+          ],
+          "origin_depth_m": [
+            0.11267248945038577,
+            -0.03318422325649754,
+            0.5150957350272221
+          ],
+          "original_face_height_m": 0.034763608746072615,
+          "normal_difference_from_original_face_deg": 12.166873998382163,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8129338691998539,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.029740237490428728,
+            -0.343356844788075,
+            -0.9387340386984967
+          ],
+          "origin_depth_m": [
+            0.01523971701967269,
+            -0.015018580108557071,
+            0.5003258426966288
+          ],
+          "original_face_height_m": 0.03187887150645606,
+          "normal_difference_from_original_face_deg": 6.857535601527715,
+          "top_plane_inliers": 717,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059330541818981425,
+            -0.0375911763175119,
+            0.49014767385038616
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9880430450378637,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0029151105733687625,
+            -0.4401560513961475,
+            -0.8979165621313023
+          ],
+          "origin_depth_m": [
+            0.058957274319940536,
+            0.04795598810815231,
+            0.46908914885034253
+          ],
+          "original_face_height_m": 0.03105301067681361,
+          "normal_difference_from_original_face_deg": 11.136965295437921,
+          "top_plane_inliers": 717,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.059330541818981425,
+            -0.0375911763175119,
+            0.49014767385038616
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3378,
+          "table_plane_support_fraction": 0.9976317347542925,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.052541924906761676,
+            -0.4252440902381357,
+            -0.9035523282271107
+          ],
+          "origin_depth_m": [
+            0.1707572156212116,
+            -0.054082061793124026,
+            0.5285127596439095
+          ],
+          "original_face_height_m": 0.035266806843638726,
+          "normal_difference_from_original_face_deg": 11.594827779384858,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1113,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 773,
+        "plane_rms_m": 0.0007092732509271422,
+        "face_extent_m": [
+          0.029739506542682648,
+          0.030924221500754356
+        ],
+        "center_shift_from_original_face_m": 0.0009494269430506011,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 27,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        21,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 723,
+      "original_cube_samples": 924,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 34986,
+          "table_plane_support_fraction": 0.534785342708512,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.06549464575194666,
+            -0.4274963103422072,
+            -0.9016414786497049
+          ],
+          "origin_depth_m": [
+            0.11460515570699298,
+            -0.03061223352628483,
+            0.5136015325670475
+          ],
+          "original_face_height_m": 0.034463010265364226,
+          "normal_difference_from_original_face_deg": 12.545334985940572,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.7990500548045305,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.02554881835442407,
+            -0.3307904329307021,
+            -0.9433583345485486
+          ],
+          "origin_depth_m": [
+            0.015260475782069538,
+            -0.0158488309027431,
+            0.5006160877513698
+          ],
+          "original_face_height_m": 0.031526491723893865,
+          "normal_difference_from_original_face_deg": 6.561987556114776,
+          "top_plane_inliers": 723,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05951816962574544,
+            -0.038435317052631424,
+            0.49029654035462894
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9828616978876046,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0005795444914465784,
+            -0.443081461112543,
+            -0.8964811670897255
+          ],
+          "origin_depth_m": [
+            0.05901077902726105,
+            0.047960208028708005,
+            0.4691086780210862
+          ],
+          "original_face_height_m": 0.03150264850507644,
+          "normal_difference_from_original_face_deg": 11.639522635173941,
+          "top_plane_inliers": 719,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.06022481269767159,
+            -0.03773354136003158,
+            0.49005276078934956
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3380,
+          "table_plane_support_fraction": 0.999112426035503,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05303414492425387,
+            -0.4247249743551937,
+            -0.9037677111023239
+          ],
+          "origin_depth_m": [
+            0.17074614905525748,
+            -0.05416585416492091,
+            0.5285602605863114
+          ],
+          "original_face_height_m": 0.035458165199927144,
+          "normal_difference_from_original_face_deg": 11.972757409512111,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1112,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 776,
+        "plane_rms_m": 0.0007183468689351752,
+        "face_extent_m": [
+          0.029740313068032265,
+          0.030934125185012817
+        ],
+        "center_shift_from_original_face_m": 0.001047837070374083,
+        "error": null
+      }
+    },
+    {
+      "snapshot": 28,
+      "rgb_bbox_xywh": [
+        178,
+        77,
+        21,
+        21
+      ],
+      "original_good_top_frame": false,
+      "original_plane_inliers": 692,
+      "original_cube_samples": 898,
+      "original_top_error": "Automatic table annulus has no dominant plane",
+      "regions": {
+        "original_annulus": {
+          "native_table_samples": 34990,
+          "table_plane_support_fraction": 0.5303229494141183,
+          "original_60percent_table_dominance_met": false,
+          "normal_depth": [
+            0.011291557175017139,
+            -0.4296007354580238,
+            -0.9029483422823746
+          ],
+          "origin_depth_m": [
+            0.12396614973168206,
+            -0.0774057471151549,
+            0.5392811556705448
+          ],
+          "original_face_height_m": 0.0392742128846054,
+          "normal_difference_from_original_face_deg": 10.158793613839913,
+          "error": "Automatic table annulus has no dominant plane"
+        },
+        "pad_left": {
+          "native_table_samples": 2737,
+          "table_plane_support_fraction": 0.8012422360248447,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.027279030964843125,
+            -0.33441890358296633,
+            -0.9420296446481851
+          ],
+          "origin_depth_m": [
+            0.014939640005212407,
+            -0.015563862651858159,
+            0.5005038866026502
+          ],
+          "original_face_height_m": 0.031724115896250474,
+          "normal_difference_from_original_face_deg": 5.6336671877888485,
+          "top_plane_inliers": 692,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05915671043606156,
+            -0.037999524651626135,
+            0.4901442313260706
+          ],
+          "error": null
+        },
+        "pad_below": {
+          "native_table_samples": 2509,
+          "table_plane_support_fraction": 0.9900358708648864,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.0009201285502267723,
+            -0.4360097764360632,
+            -0.8999414582158247
+          ],
+          "origin_depth_m": [
+            0.05897442995841356,
+            0.047927209858899464,
+            0.4690531400966173
+          ],
+          "original_face_height_m": 0.030788977390746913,
+          "normal_difference_from_original_face_deg": 10.369578734040596,
+          "top_plane_inliers": 692,
+          "original_800_rule_would_be_met": false,
+          "candidate_center_C_m": [
+            0.05915671043606156,
+            -0.037999524651626135,
+            0.4901442313260706
+          ],
+          "error": null
+        },
+        "white_desk_right": {
+          "native_table_samples": 3378,
+          "table_plane_support_fraction": 0.9973357015985791,
+          "original_60percent_table_dominance_met": true,
+          "normal_depth": [
+            0.05214838540883004,
+            -0.4258819631854787,
+            -0.9032746533212005
+          ],
+          "origin_depth_m": [
+            0.17074792589106486,
+            -0.054109992922676604,
+            0.5285129118432698
+          ],
+          "original_face_height_m": 0.03546872753580927,
+          "normal_difference_from_original_face_deg": 10.975850422518816,
+          "error": "Measured face extent inconsistent with complete nominal square"
+        }
+      },
+      "erosion_zero_diagnostic": {
+        "native_samples": 1087,
+        "production_parameter_modified": false,
+        "diagnostic_selection_only": true,
+        "plane_inliers": 754,
+        "plane_rms_m": 0.0007164606401692453,
+        "face_extent_m": [
+          0.029553880915045738,
+          0.030583268031477928
+        ],
+        "center_shift_from_original_face_m": 0.0009112621920754014,
+        "error": null
+      }
+    }
+  ],
+  "warning": "Sensitivity only. No new point pair accepted, no change to 800/20 or plane gates; no production camera TF used."
+}

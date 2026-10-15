@@ -1,0 +1,49 @@
+{
+  "schema": "piper_offline_region_audit_verification_v1",
+  "all_28_frame_original_inlier_counts_reproduced": true,
+  "source_65_asset_SHA_before_after_and_HEAD_unchanged": true,
+  "original_quality_SHA_unchanged": true,
+  "all_regions_below_original_800_rule": true,
+  "actual_source_manifest_SHA256": "2f53a21f814d1662a597fd9cc70f16237b8b2c3be35e34a1d3140b7eeeab648f",
+  "artifacts": [
+    {
+      "path": "audit_regions.py",
+      "bytes": 9902,
+      "sha256": "e4ee760eecd7f144acf2412f69b28afdb860549de3dc5d41a2b6f97fc35e8354"
+    },
+    {
+      "path": "report.json",
+      "bytes": 111944,
+      "sha256": "056ebee90316c81137e8416f494db1a9e3dec49d54f28eacec373cf7a505bd35"
+    },
+    {
+      "path": "fixed_regions_witness.png",
+      "bytes": 106550,
+      "sha256": "5e9971e764a368fda9bc1f563e0f2e622a20886d558ac0ea10dddef43adfd19d"
+    }
+  ],
+  "imported_geometry_source_SHA256": {
+    "calibration_p0_quality.py": "982d0c0eb2957f28f764581a6f498b52343a721ca73ecdbcfc32044e8baae382",
+    "estimate_calibration_cube_center.py": "1571fc692a3f6bd1754188feed729c7d27d9a5759c15086c87f52468bead92a4",
+    "review_pair_sampling.py": "8a0f477020a91ef42c1209ee5fadc2ea4bb13df1bc1e36696bfd81b431d04b64",
+    "review_depth_registration.py": "d2c95d8bcf54fad8866d63477d134f1fb0fb66904220af1cac25979244045ec5",
+    "review_calibration_capture.py": "12d0f76c0c2578e5dfe4a6e6da628b1e9a1b269fdb37650a345291fcf22f3701",
+    "export_calibration_bundle.py": "a3e860e7476bbbeb3759b6cc27eb6c50dbcdeed7d82a65c8fc3c2bcbdd5e3de4"
+  },
+  "production_five_SHA_unchanged": true,
+  "production_hashes": {
+    "start_script": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "task_config": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+    "detector_config": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "grasp_executor": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "adapter": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8"
+  },
+  "ROI_half_open_boundary_test_passed": true,
+  "empty_and_nonempty_statistics_tests_passed": true,
+  "existing_output_rejected_with_expected_rc": 1,
+  "actual_offline_audit_rc": 0,
+  "hardware_accessed": false,
+  "acceptance_rules_changed": false,
+  "completed_pairs": 1,
+  "GitHub_pushed": false
+}
