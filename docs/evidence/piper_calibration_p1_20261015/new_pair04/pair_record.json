@@ -14,11 +14,13 @@
   "A_raw_manifest": "attempt01/observe_after_reconnect/portable/manifest.json",
   "A_reconnect_record": "attempt01/observe_after_reconnect/execution.json",
   "A_qualified_manifest": null,
-  "physical_cube_same_point_as_B_confirmed": null,
+  "physical_cube_same_point_as_B_confirmed": true,
+  "physical_same_point_confirmation_source": "same_point_confirmation.json",
+  "physical_same_point_confirmation_scope": "operator statement; not independent metric verification",
   "complete_pair": false,
   "fit_eligible": false,
   "calibration_accepted": false,
   "camera_cube_center_m": null,
   "gripper_base_cube_center_m": null,
-  "warning": "CAN recovered; actual observation q unchanged. Read-only A has 28 raw frames but zero pass original top-quality selection. Same physical point with B is not confirmed. Do not repeat motion or pair a moved cube with old B."
+  "warning": "Operator confirms same physical cube position from B through A. Read-only A still has zero frames passing original top-quality selection; pair remains incomplete and not fit-eligible. No new motion authority."
 }
