@@ -87,7 +87,15 @@ def synchronizer(filters):
                                       allow_headerless=False)
 
 
-def collect(output, duration_s, frames, settle_s=.25):
+def feedback_lost(history, now_ns, elapsed_s):
+    """P0 opt-in: allow initialization, then stop on missing/stale source stamps."""
+    if elapsed_s < 3.:
+        return False
+    return not history or now_ns - history[-1][0] > MAX_AGE_NS or history[-1][0] > now_ns
+
+
+def collect(output, duration_s, frames, settle_s=.25, stop_on_feedback_loss=False,
+            max_bytes=None):
     import cv2
     from cv_bridge import CvBridge
     import message_filters
@@ -104,7 +112,9 @@ def collect(output, duration_s, frames, settle_s=.25):
                'slop_s': SLOP_NS / 1e9, 'max_age_s': MAX_AGE_NS / 1e9,
                'requested_frames': frames, 'saved_frames': 0,
                'static_window_s': settle_s, 'full_same_frame_depth_info': True,
-               'received': {}, 'rejected': {}, 'matched_packets': 0}
+               'received': {}, 'rejected': {}, 'matched_packets': 0,
+               'stop_on_feedback_loss': stop_on_feedback_loss,
+               'image_byte_limit': max_bytes, 'image_bytes': 0, 'stop_reason': None}
     received, rejected, history = Counter(), Counter(), deque(maxlen=1000)
     start_q, latest_saved_ns = None, 0
     bridge = CvBridge()
@@ -143,10 +153,20 @@ def collect(output, duration_s, frames, settle_s=.25):
                               TOPICS[2]: dict(full_camera_info(info),
                                   stamp=packet['stamps_ns']['depth_info'] / 1e9)},
                    'images': {}}
+            encoded_images = []
             for label, message, encoding in (('rgb', rgb, 'bgr8'), ('depth', depth, 'passthrough')):
+                ok, encoded = cv2.imencode('.png', bridge.imgmsg_to_cv2(message, encoding))
+                if not ok:
+                    raise RuntimeError('image encoding failed')
+                encoded_images.append((label, message, encoded))
+            if max_bytes is not None and summary['image_bytes'] + sum(e.nbytes for _, _, e in encoded_images) > max_bytes:
+                summary['stop_reason'] = 'image_byte_limit'
+                return
+            for label, message, encoded in encoded_images:
                 path = evidence / f"{row['snapshot']:04d}_{label}.png"
-                if path.exists() or not cv2.imwrite(str(path), bridge.imgmsg_to_cv2(message, encoding)):
-                    raise RuntimeError('image write failed or would overwrite evidence')
+                with path.open('xb') as image_stream:
+                    image_stream.write(encoded.tobytes())
+                summary['image_bytes'] += encoded.nbytes
                 row['images'][label] = {'path': str(path), 'stamp': packet['stamps_ns'][label] / 1e9,
                                         'frame': message.header.frame_id,
                                         'source_encoding': message.encoding,
@@ -170,6 +190,11 @@ def collect(output, duration_s, frames, settle_s=.25):
     try:
         while rclpy.ok() and time.monotonic() - started < duration_s and summary['saved_frames'] < frames:
             rclpy.spin_once(node, timeout_sec=0.05)
+            if stop_on_feedback_loss and feedback_lost(history, node.get_clock().now().nanoseconds,
+                                                       time.monotonic() - started):
+                summary['stop_reason'] = 'feedback_lost'
+            if summary['stop_reason'] is not None:
+                break
     except KeyboardInterrupt:
         summary['interrupted'] = True
     except Exception as error:

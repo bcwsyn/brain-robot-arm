@@ -1,0 +1,3177 @@
+{
+  "schema": "piper_calibration_p0_capture_v1",
+  "subscription_only": true,
+  "motion_commands_sent": false,
+  "automatic_CAN_recovery": false,
+  "production_tf_modified": false,
+  "maximum_batches": 1,
+  "maximum_seconds_per_batch": 45.0,
+  "maximum_image_bytes_per_batch": 67108864,
+  "config_sha256": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+  "can_checks": [
+    {
+      "before": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 94594602,
+        "tx": 0
+      },
+      "after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 94595082,
+        "tx": 0
+      },
+      "healthy": true
+    }
+  ],
+  "batches": [
+    {
+      "capture": "batch_01",
+      "returncode": 0,
+      "capture_summary": {
+        "subscription_only": true,
+        "hardware_synchronized": false,
+        "camera_calibration": false,
+        "topics": [
+          "/camera/color/image_raw",
+          "/camera/depth/image_raw",
+          "/camera/depth/camera_info",
+          "/joint_states_feedback"
+        ],
+        "message_filters_file": "/opt/ros/humble/local/lib/python3.10/dist-packages/message_filters/__init__.py",
+        "slop_s": 0.12,
+        "max_age_s": 0.5,
+        "requested_frames": 60,
+        "saved_frames": 60,
+        "static_window_s": 3.0,
+        "full_same_frame_depth_info": true,
+        "received": {
+          "/joint_states_feedback": 2113,
+          "/camera/depth/image_raw": 829,
+          "/camera/depth/camera_info": 1068,
+          "/camera/color/image_raw": 219
+        },
+        "rejected": {
+          "feedback not settled for 3s": 10,
+          "depth info is not from the same frame": 59
+        },
+        "matched_packets": 217,
+        "stop_on_feedback_loss": true,
+        "image_byte_limit": 67108864,
+        "image_bytes": 9316586,
+        "stop_reason": null,
+        "elapsed_s": 43.89313311300066,
+        "start_q_rad": [
+          -0.156071468,
+          -0.002075836,
+          -0.025799676000000004,
+          0.059885252,
+          0.4395888,
+          -0.07553252
+        ]
+      },
+      "quality": {
+        "frames": 60,
+        "face_quality_candidates": 0,
+        "good_top_frames": 0,
+        "minimum_good_frames": 20,
+        "twenty_good_frames_met": false,
+        "automatic_replenishment_needed": true,
+        "top_witness_review_required": false,
+        "formal_calibration_pair": false
+      }
+    }
+  ],
+  "stop_reason": "bounded_replenishment_exhausted",
+  "exposure": null,
+  "gain": null,
+  "illumination_lux": null,
+  "formal_calibration_pair": false,
+  "camera_controls_before": {
+    "epoch": 1792028823.9093995,
+    "device": "/dev/video0",
+    "scope": "batch metadata, not synchronized per-frame exposure or measured lux",
+    "controls_raw": "\nUser Controls\n\n                     brightness 0x00980900 (int)    : min=-64 max=64 step=1 default=0 value=0\n                       contrast 0x00980901 (int)    : min=0 max=64 step=1 default=32 value=32\n                     saturation 0x00980902 (int)    : min=0 max=128 step=1 default=64 value=64\n                            hue 0x00980903 (int)    : min=-40 max=40 step=1 default=0 value=0\n        white_balance_automatic 0x0098090c (bool)   : default=1 value=1\n                          gamma 0x00980910 (int)    : min=72 max=500 step=1 default=100 value=100\n                           gain 0x00980913 (int)    : min=0 max=100 step=1 default=0 value=0\n           power_line_frequency 0x00980918 (menu)   : min=0 max=2 default=1 value=1 (50 Hz)\n      white_balance_temperature 0x0098091a (int)    : min=2800 max=6500 step=1 default=4600 value=4600 flags=inactive\n                      sharpness 0x0098091b (int)    : min=0 max=6 step=1 default=3 value=3\n         backlight_compensation 0x0098091c (int)    : min=0 max=2 step=1 default=1 value=1\n\nCamera Controls\n\n                  auto_exposure 0x009a0901 (menu)   : min=0 max=3 default=3 value=3 (Aperture Priority Mode)\n         exposure_time_absolute 0x009a0902 (int)    : min=1 max=5000 step=1 default=157 value=157 flags=inactive\n     exposure_dynamic_framerate 0x009a0903 (bool)   : default=0 value=0\n",
+    "error": null
+  },
+  "camera_controls_after": {
+    "epoch": 1792028878.609865,
+    "device": "/dev/video0",
+    "scope": "batch metadata, not synchronized per-frame exposure or measured lux",
+    "controls_raw": "\nUser Controls\n\n                     brightness 0x00980900 (int)    : min=-64 max=64 step=1 default=0 value=0\n                       contrast 0x00980901 (int)    : min=0 max=64 step=1 default=32 value=32\n                     saturation 0x00980902 (int)    : min=0 max=128 step=1 default=64 value=64\n                            hue 0x00980903 (int)    : min=-40 max=40 step=1 default=0 value=0\n        white_balance_automatic 0x0098090c (bool)   : default=1 value=1\n                          gamma 0x00980910 (int)    : min=72 max=500 step=1 default=100 value=100\n                           gain 0x00980913 (int)    : min=0 max=100 step=1 default=0 value=0\n           power_line_frequency 0x00980918 (menu)   : min=0 max=2 default=1 value=1 (50 Hz)\n      white_balance_temperature 0x0098091a (int)    : min=2800 max=6500 step=1 default=4600 value=4600 flags=inactive\n                      sharpness 0x0098091b (int)    : min=0 max=6 step=1 default=3 value=3\n         backlight_compensation 0x0098091c (int)    : min=0 max=2 step=1 default=1 value=1\n\nCamera Controls\n\n                  auto_exposure 0x009a0901 (menu)   : min=0 max=3 default=3 value=3 (Aperture Priority Mode)\n         exposure_time_absolute 0x009a0902 (int)    : min=1 max=5000 step=1 default=157 value=157 flags=inactive\n     exposure_dynamic_framerate 0x009a0903 (bool)   : default=0 value=0\n",
+    "error": null
+  },
+  "summary": {
+    "frames": 60,
+    "face_quality_candidates": 0,
+    "good_top_frames": 0,
+    "minimum_good_frames": 20,
+    "twenty_good_frames_met": false,
+    "automatic_replenishment_needed": true,
+    "top_witness_review_required": false,
+    "formal_calibration_pair": false
+  },
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1792028827457411142",
+        "depth": "1792028827452823703",
+        "depth_info": "1792028827452823703",
+        "feedback": "1792028827441477120"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a71b9b3bb1c0cfe4fb634903c5307de2322a2c62a347ce013b3ec93ae0e76051",
+        "depth": "a7b650bc77e3b88aa626bb42f8e189e8da5dafa1be6db1f5c2e44f20efcdaced"
+      },
+      "native_selected_points": 2235,
+      "color_pixel_coverage": 0.958664546899841,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1794,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.84506510416666,
+        102.36889322916667,
+        103.55002604166667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1792028828457481237",
+        "depth": "1792028828448505220",
+        "depth_info": "1792028828448505220",
+        "feedback": "1792028828451491072"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "89c6c2777fb311cf5d71c7470cd2ac816088f2ffed1803df56fddd27725daa43",
+        "depth": "26afea4dcbb70f8f62a694fa2dd731d36f0f0fc294c7dcbba2e40935097ebb61"
+      },
+      "native_selected_points": 2261,
+      "color_pixel_coverage": 0.9528301886792453,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1823,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.8229296875,
+        102.37709635416667,
+        103.5279296875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1792028829057466430",
+        "depth": "1792028829047646266",
+        "depth_info": "1792028829047646266",
+        "feedback": "1792028829036454912"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "0618d643b5bc3f864924f842fc85f7f09b31546662bfc41da0aa367cb3f6f034",
+        "depth": "e29016ded6eda1aadc784d24d8f084a10fc70a457d268148b10352c4fe31ca70"
+      },
+      "native_selected_points": 2258,
+      "color_pixel_coverage": 0.9499217527386542,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1824,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.81322916666667,
+        102.378359375,
+        103.56885416666667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1792028829857451336",
+        "depth": "1792028829852717506",
+        "depth_info": "1792028829852717506",
+        "feedback": "1792028829852205824"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a7db3ead58651901a540c080fbb594287d107f538dd0ac84423470d27184d42e",
+        "depth": "cd2c7b6c26177d638fc97f15e829d6cf42fbcf99b80d9e1e92b3cee23a9ae34f"
+      },
+      "native_selected_points": 2215,
+      "color_pixel_coverage": 0.9614147909967846,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1782,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.80247395833334,
+        102.38622395833333,
+        103.56162760416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1792028830457489347",
+        "depth": "1792028830450479681",
+        "depth_info": "1792028830450479681",
+        "feedback": "1792028830451496704"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a5007e926856a0186a5cf275ac9fda25fdf49d735369a52d3e428d6b9a63415d",
+        "depth": "ac2f62c88275264626e81d26f7488755571f3b3e90be221d1c5fa7ca551b4da2"
+      },
+      "native_selected_points": 2257,
+      "color_pixel_coverage": 0.9529042386185244,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1819,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.78615885416667,
+        102.38763020833333,
+        103.55111979166666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 6,
+      "stamps_ns": {
+        "rgb": "1792028831057781665",
+        "depth": "1792028831050155338",
+        "depth_info": "1792028831050155338",
+        "feedback": "1792028831051538688"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "fd1240287821ad990ccae0dfc10c77a32fdd0524d831a1e800b71aa683a6e567",
+        "depth": "61d52e63e98738948f10b8f40452e6ff1b394d7689635b7ab00d176c58ef1b06"
+      },
+      "native_selected_points": 2205,
+      "color_pixel_coverage": 0.9642857142857143,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1768,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.7861328125,
+        102.38576822916667,
+        103.5666015625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 7,
+      "stamps_ns": {
+        "rgb": "1792028831657474098",
+        "depth": "1792028831649266808",
+        "depth_info": "1792028831649266808",
+        "feedback": "1792028831651534336"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "b86344c359bf597b683341754906b9252d3065d93804483455b5aaf14e67c2aa",
+        "depth": "df313b606818e348cf08d5f076a61c6ff8f8cee245215c7e357c23e828c1548f"
+      },
+      "native_selected_points": 2234,
+      "color_pixel_coverage": 0.9540412044374009,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1817,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.81358072916667,
+        102.37822916666667,
+        103.593203125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 8,
+      "stamps_ns": {
+        "rgb": "1792028832257470589",
+        "depth": "1792028832248732787",
+        "depth_info": "1792028832248732787",
+        "feedback": "1792028832251618048"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "42e019b1bd93636ce6c05f5488f8019ba765a99704ce61e07b5583d33b6a3820",
+        "depth": "8302190a56418722ef8d8069c6c0597c659a849ae39696557b302ce9ab698d10"
+      },
+      "native_selected_points": 2304,
+      "color_pixel_coverage": 0.9597523219814241,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1840,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.793046875,
+        102.3909375,
+        103.61196614583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 9,
+      "stamps_ns": {
+        "rgb": "1792028832857493330",
+        "depth": "1792028832848491961",
+        "depth_info": "1792028832848491961",
+        "feedback": "1792028832836836864"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "4805d2ff8713958c1290af4f9c2ac57319203aef4001854d12b10e4047f3f335",
+        "depth": "0a205f718402b961c53811ce32b7bfe0a9663e083d39d5a63b1b2900208300ad"
+      },
+      "native_selected_points": 2273,
+      "color_pixel_coverage": 0.9638364779874213,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1823,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79734375,
+        102.39654947916667,
+        103.57837239583333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 10,
+      "stamps_ns": {
+        "rgb": "1792028833457542404",
+        "depth": "1792028833447877777",
+        "depth_info": "1792028833447877777",
+        "feedback": "1792028833437162752"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "399b21d51958b7b55a47849b85b45d47dc998281ff6631f9a8f374b5b6f3b790",
+        "depth": "84dbe09aa5ab86d481713ab924684803c6b7716461e4112679be74d1dfd45b78"
+      },
+      "native_selected_points": 2225,
+      "color_pixel_coverage": 0.9598070739549839,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1796,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.81983072916667,
+        102.41161458333333,
+        103.61576822916666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 11,
+      "stamps_ns": {
+        "rgb": "1792028834057607172",
+        "depth": "1792028834012201808",
+        "depth_info": "1792028834012201808",
+        "feedback": "1792028834051679744"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "47689087a1b3f2d2ce2e5d46ff09cda6e0554c5b4be35107c70afcbb05602785",
+        "depth": "f727848c83b39a3a1a32c1c29c69dce118c4b1dfdf30be6f2834839c155039c2"
+      },
+      "native_selected_points": 2247,
+      "color_pixel_coverage": 0.9584664536741214,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1812,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.7667578125,
+        102.39100260416667,
+        103.5646484375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 12,
+      "stamps_ns": {
+        "rgb": "1792028835057592632",
+        "depth": "1792028835048332899",
+        "depth_info": "1792028835048332899",
+        "feedback": "1792028835046682368"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "49a9bdd3b1da4ee227cfefa23b1b2f7026d839a44da91c692f254071c17ca710",
+        "depth": "90e7beea60bcd96ea0977f9af9822b089e09029f43dd76c13636150c3be681b2"
+      },
+      "native_selected_points": 2229,
+      "color_pixel_coverage": 0.9507936507936507,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1792,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79947916666667,
+        102.40118489583334,
+        103.59631510416666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 13,
+      "stamps_ns": {
+        "rgb": "1792028835657564974",
+        "depth": "1792028835647399603",
+        "depth_info": "1792028835647399603",
+        "feedback": "1792028835646496768"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "1f609e2d45072272de7175ccdf45c7838793ed302c66d783097f8a82e964908f",
+        "depth": "ffcff303525825b3f41b3a039ce33ad57cf72bffc572908f0e2d8f588005bb76"
+      },
+      "native_selected_points": 2215,
+      "color_pixel_coverage": 0.9534510433386838,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1768,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.82263020833334,
+        102.39341145833333,
+        103.59516927083334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 14,
+      "stamps_ns": {
+        "rgb": "1792028836257514413",
+        "depth": "1792028836212429115",
+        "depth_info": "1792028836212429115",
+        "feedback": "1792028836241536000"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "195266679e64b6497ba6a37030f258fef596325ea46c44477ceb206483b980d7",
+        "depth": "f1ba4ae1f04b6a8b18e3566651ad3569adc9d5adc48dda1834284c61c5258bc5"
+      },
+      "native_selected_points": 2225,
+      "color_pixel_coverage": 0.9537480063795853,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1774,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.81087239583333,
+        102.40380208333333,
+        103.62670572916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 15,
+      "stamps_ns": {
+        "rgb": "1792028837257659972",
+        "depth": "1792028837248172958",
+        "depth_info": "1792028837248172958",
+        "feedback": "1792028837236629504"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "6ed51c2a3b9882673dd56187de2769733d37e0ad9b984b3e2121dca1315bf414",
+        "depth": "b92ff2f366cbfbf7ae10258e300c1f13f7e6ed3b1c148d1702f48b19d87538c3"
+      },
+      "native_selected_points": 2271,
+      "color_pixel_coverage": 0.9547581903276131,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1812,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.82178385416667,
+        102.41576822916667,
+        103.6015625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 16,
+      "stamps_ns": {
+        "rgb": "1792028837857606615",
+        "depth": "1792028837847059616",
+        "depth_info": "1792028837847059616",
+        "feedback": "1792028837856640512"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a373cb9d42b72b5e0e02eb25163cfc3c65dc455a927f1a57a75f7f48b5499bef",
+        "depth": "b03e203df8a11edd8f3c84f3823f967229a1805d526c98a62fd01ada6d7aa1b1"
+      },
+      "native_selected_points": 2237,
+      "color_pixel_coverage": 0.9571428571428572,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1792,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79854166666667,
+        102.4091015625,
+        103.6241796875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 17,
+      "stamps_ns": {
+        "rgb": "1792028838457607726",
+        "depth": "1792028838446605170",
+        "depth_info": "1792028838446605170",
+        "feedback": "1792028838451539968"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "5f6d4a7fa52974a17a5fb6a402ad84a8cc6d37713b6f76bf1b638022dadab3be",
+        "depth": "d4da89afee9e2ddcb812841b97a1533430e0ee9ef8ab81ecb21006500fdbe294"
+      },
+      "native_selected_points": 2249,
+      "color_pixel_coverage": 0.957345971563981,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1811,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77938802083334,
+        102.39779947916666,
+        103.56428385416666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 18,
+      "stamps_ns": {
+        "rgb": "1792028839057628629",
+        "depth": "1792028838947232716",
+        "depth_info": "1792028838947232716",
+        "feedback": "1792028839046849792"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "e73b30fd60b7d528790b16595dcac63497db30509e300abc868162685e14a856",
+        "depth": "ee2e2e6eba24a57bb64f07f413e3b96de97a0dbe5e34b767a2d65e15b94e7e0c"
+      },
+      "native_selected_points": 2238,
+      "color_pixel_coverage": 0.9584664536741214,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1786,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77631510416667,
+        102.39916666666667,
+        103.59005208333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 19,
+      "stamps_ns": {
+        "rgb": "1792028839657635455",
+        "depth": "1792028839546914978",
+        "depth_info": "1792028839546914978",
+        "feedback": "1792028839646536704"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "b29617f80bd492f9fb489d15fb2feffd0a1ba8e44d282f2dfd7228d7c702a023",
+        "depth": "72f4594ffc306b5c7efd0c784a63f5b9cf1537ba1dadea1d549346a22dcdd660"
+      },
+      "native_selected_points": 2219,
+      "color_pixel_coverage": 0.9537480063795853,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1769,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.78444010416666,
+        102.39361979166667,
+        103.61967447916666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 20,
+      "stamps_ns": {
+        "rgb": "1792028840457564324",
+        "depth": "1792028840443576787",
+        "depth_info": "1792028840443576787",
+        "feedback": "1792028840451562752"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "cf61877a99573d731ec7271e73c564903065545424dac463a652b2b532ac1eee",
+        "depth": "2d4f6390484e2917090b3c0c2aae810f145b143975d826374819f1539760fa5a"
+      },
+      "native_selected_points": 2265,
+      "color_pixel_coverage": 0.95141065830721,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1816,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77869791666667,
+        102.37986979166666,
+        103.59888020833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 21,
+      "stamps_ns": {
+        "rgb": "1792028841057721061",
+        "depth": "1792028841042744427",
+        "depth_info": "1792028841042744427",
+        "feedback": "1792028841051572992"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "453d9f5435a61aeddbc1ce88901360efeacdc9fe36480e0f69cba9255a8d9102",
+        "depth": "d045e9e3be738082bf0ac9802b9f610f992067ed08c8bbf192b8a66a5c8ecf84"
+      },
+      "native_selected_points": 2245,
+      "color_pixel_coverage": 0.9528301886792453,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1800,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77298177083334,
+        102.36359375,
+        103.6234765625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 22,
+      "stamps_ns": {
+        "rgb": "1792028841657636132",
+        "depth": "1792028841577838827",
+        "depth_info": "1792028841577838827",
+        "feedback": "1792028841646545152"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "19ba3eb047f55d8bdab9ee225679eb49b8990920de46196ee5762539543d3084",
+        "depth": "cdec99aea57039d2dfd20266419c66172c9f970dcae8bea71588c903013e680b"
+      },
+      "native_selected_points": 2305,
+      "color_pixel_coverage": 0.9567901234567902,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1854,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.6830859375,
+        102.33348958333333,
+        103.52861979166667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 23,
+      "stamps_ns": {
+        "rgb": "1792028842257759384",
+        "depth": "1792028842241720901",
+        "depth_info": "1792028842241720901",
+        "feedback": "1792028842246564864"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "5d40d9eaa27ec76ac51c3fde4c46a64fed6ff106a89d708d80e836630b5a7029",
+        "depth": "92db149c519d53487ab1853599647d75faf51227b138b5360ade973308d404cb"
+      },
+      "native_selected_points": 2284,
+      "color_pixel_coverage": 0.9593114241001565,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1829,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.75747395833334,
+        102.34526041666666,
+        103.58119791666667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 24,
+      "stamps_ns": {
+        "rgb": "1792028842857735907",
+        "depth": "1792028842840614850",
+        "depth_info": "1792028842840614850",
+        "feedback": "1792028842846672896"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a204cbec10eab1caceb1bdb92828516206ae390218a96d1b42b8ec5444499c71",
+        "depth": "f460d4ec64fc2b7ac95537caeac50a908cfa2f46bc8fbb50b236afa73343af8e"
+      },
+      "native_selected_points": 2199,
+      "color_pixel_coverage": 0.9470304975922953,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1787,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.696015625,
+        102.32625,
+        103.51654947916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 25,
+      "stamps_ns": {
+        "rgb": "1792028843457719576",
+        "depth": "1792028843445922117",
+        "depth_info": "1792028843445922117",
+        "feedback": "1792028843446584064"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "ca444dc00c82028a178e8e17d62449ed58824e08e9b92451f9521ccd406636f6",
+        "depth": "8e9a15a02d5831a295f17c6fe054500868c202429085e845da53a4e0f83297a3"
+      },
+      "native_selected_points": 2198,
+      "color_pixel_coverage": 0.9532258064516129,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1762,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.729375,
+        102.35091145833333,
+        103.55515625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 26,
+      "stamps_ns": {
+        "rgb": "1792028844257667978",
+        "depth": "1792028844243081745",
+        "depth_info": "1792028844243081745",
+        "feedback": "1792028844251975168"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "b512c061d1c6016155a0773b93c753c43d96494af6b62e5e21ca8f92444a327f",
+        "depth": "183ea5b7d46fdc34a9162dd5c3688ac5f41b414f94392e1e8bf7435c99720263"
+      },
+      "native_selected_points": 2267,
+      "color_pixel_coverage": 0.9544740973312402,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1823,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.6675,
+        102.3164453125,
+        103.53701822916666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 27,
+      "stamps_ns": {
+        "rgb": "1792028844857786475",
+        "depth": "1792028844842466706",
+        "depth_info": "1792028844842466706",
+        "feedback": "1792028844846773504"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "ee98cdf123595f2d4a882176cb009b2a185c017e94a24b9c98baf5f1947f1008",
+        "depth": "77db119999e81d0b902cc1ca13f526d90911532fd3af1bb2f553e36d3697f8d5"
+      },
+      "native_selected_points": 2228,
+      "color_pixel_coverage": 0.9522292993630573,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1797,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.7136328125,
+        102.34477864583333,
+        103.55803385416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 28,
+      "stamps_ns": {
+        "rgb": "1792028845857773453",
+        "depth": "1792028845843478204",
+        "depth_info": "1792028845843478204",
+        "feedback": "1792028845841587200"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "fcd37a18c7210b0005e39d515f560a77485f5aea9401cf65ad24d9294fa54581",
+        "depth": "54a990c9fb542ab97a8571067c62f3ec3612c4919c4bb37d7cfbc067efea663c"
+      },
+      "native_selected_points": 2275,
+      "color_pixel_coverage": 0.9546875,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1831,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.7257421875,
+        102.38256510416667,
+        103.61563802083333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 29,
+      "stamps_ns": {
+        "rgb": "1792028846457805198",
+        "depth": "1792028846442882104",
+        "depth_info": "1792028846442882104",
+        "feedback": "1792028846441616640"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "640adf67ee7c1674c5cd89fdc25fb4509d0c0df8b2b314274e986599e851bc06",
+        "depth": "9520aae2a8a585dd6054bfbe18ac46693d3716d1594f143015980f70fc99a741"
+      },
+      "native_selected_points": 2273,
+      "color_pixel_coverage": 0.9577464788732394,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1822,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.7360546875,
+        102.39915364583334,
+        103.61368489583333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 30,
+      "stamps_ns": {
+        "rgb": "1792028847657766841",
+        "depth": "1792028847641759200",
+        "depth_info": "1792028847641759200",
+        "feedback": "1792028847641604096"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "75bf8b7f63f10fad1e306d6f1c85457e4fd52896d31e98cfd76d859986362f8d",
+        "depth": "a40e7f82f64d00f1cf250f42c9a7d4800b9421b157c32d55e942d61cb4a99fc4"
+      },
+      "native_selected_points": 2247,
+      "color_pixel_coverage": 0.9632,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1814,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.75751302083333,
+        102.40947916666667,
+        103.59173177083333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 31,
+      "stamps_ns": {
+        "rgb": "1792028848657773963",
+        "depth": "1792028848642717629",
+        "depth_info": "1792028848642717629",
+        "feedback": "1792028848656631552"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "3379ca1a391fdc512245a874c469b5d9bb9ca7c5c5698b688a1845c0bea17b3c",
+        "depth": "308b75a9692feab702a8b115bfe11edba41207784bd58c1bd43c7714ef3bf037"
+      },
+      "native_selected_points": 2277,
+      "color_pixel_coverage": 0.9578125,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1819,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.7814453125,
+        102.41104166666666,
+        103.62075520833334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 32,
+      "stamps_ns": {
+        "rgb": "1792028849257867429",
+        "depth": "1792028849241978010",
+        "depth_info": "1792028849241978010",
+        "feedback": "1792028849236604416"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "00dc559012a5744bd533cb0988366f3892f9cc5621ed4b5abc11fcf48317438c",
+        "depth": "4acef246cead84e904b654af824980efb7ec7d7231febe92891e26af0a9aa2ab"
+      },
+      "native_selected_points": 2220,
+      "color_pixel_coverage": 0.9550561797752809,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1778,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.75045572916666,
+        102.41923177083333,
+        103.61322916666667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 33,
+      "stamps_ns": {
+        "rgb": "1792028849857800620",
+        "depth": "1792028849807309078",
+        "depth_info": "1792028849807309078",
+        "feedback": "1792028849851627264"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "1e701a382f22a019505af5b9b488ecea032760442ac6252d281df8e5038e4ed3",
+        "depth": "3d32716b5d606f78804b578fb00d7675d8fda778e7baa46f34576ca470a97c56"
+      },
+      "native_selected_points": 2259,
+      "color_pixel_coverage": 0.9512578616352201,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1815,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77563802083333,
+        102.41901041666667,
+        103.60670572916666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 34,
+      "stamps_ns": {
+        "rgb": "1792028850657805479",
+        "depth": "1792028850638848955",
+        "depth_info": "1792028850638848955",
+        "feedback": "1792028850641611264"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "6ca1516932bb674346b260856725432fd306ce1d1ad5bf89fd6aae31ffe0d390",
+        "depth": "1938116a853226a4b8ad4700c6bbc58c5bc1fb3afbbe369ff7f22ea1e8552a41"
+      },
+      "native_selected_points": 2288,
+      "color_pixel_coverage": 0.9579439252336449,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1846,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79010416666667,
+        102.42020833333333,
+        103.61536458333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 35,
+      "stamps_ns": {
+        "rgb": "1792028851257842923",
+        "depth": "1792028851238357253",
+        "depth_info": "1792028851238357253",
+        "feedback": "1792028851241644544"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "805534deef4df2e97eafeb8c618a6f88f2bd190bb90c58738cf3da28167c2e1b",
+        "depth": "8e9782f333867ee4fa79f2f44e700e83d5b63e04fc6338c8e5adedb559cb549e"
+      },
+      "native_selected_points": 2247,
+      "color_pixel_coverage": 0.9571428571428572,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1802,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77354166666667,
+        102.417890625,
+        103.64098958333334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 36,
+      "stamps_ns": {
+        "rgb": "1792028851857822113",
+        "depth": "1792028851838022461",
+        "depth_info": "1792028851838022461",
+        "feedback": "1792028851836858368"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "6a0046005f8f3e786f6622781e64fcd75d8ba531661a865513076c013272b53a",
+        "depth": "03f024208167f22af851500f71fdec9876785e71976b63d68ce6e2c4a8fafa03"
+      },
+      "native_selected_points": 2226,
+      "color_pixel_coverage": 0.9599358974358975,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1790,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79709635416667,
+        102.435,
+        103.66303385416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 37,
+      "stamps_ns": {
+        "rgb": "1792028852457816457",
+        "depth": "1792028852437312727",
+        "depth_info": "1792028852437312727",
+        "feedback": "1792028852436662016"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "03e1658c11e5c11dd648504c6c3d9c829ba9bec34a2ccb99654e1bdbdaebb500",
+        "depth": "584e89a9a7a93128ffc64d6cde97a17fb2f103005df6b89a90bc6506c62bccb4"
+      },
+      "native_selected_points": 2194,
+      "color_pixel_coverage": 0.9735537190082645,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1770,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.72897135416666,
+        102.42502604166667,
+        103.6313671875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 38,
+      "stamps_ns": {
+        "rgb": "1792028853257832044",
+        "depth": "1792028853205457982",
+        "depth_info": "1792028853205457982",
+        "feedback": "1792028853246648832"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "cb42df5288257d7c33bc1742064f6c02795a685ad9586618c36584b5fb53de31",
+        "depth": "fec1dffe053a581e650a3d0ec1d3a4ad22268fca7c5f1ff3db05ef98c514cde8"
+      },
+      "native_selected_points": 2239,
+      "color_pixel_coverage": 0.9555555555555556,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1807,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77985677083333,
+        102.42579427083334,
+        103.64485677083333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 39,
+      "stamps_ns": {
+        "rgb": "1792028853857848273",
+        "depth": "1792028853840841136",
+        "depth_info": "1792028853840841136",
+        "feedback": "1792028853846722816"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "2cd687d9b3b5f9651e6527a99302f81ebfe19a059485df589b274acd9236f517",
+        "depth": "2e90a871025628b925385d2a7f9df4debb80b3722ce12c886b4059c08cf6e32b"
+      },
+      "native_selected_points": 2286,
+      "color_pixel_coverage": 0.9667721518987342,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1831,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77997395833333,
+        102.4196875,
+        103.63787760416666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 40,
+      "stamps_ns": {
+        "rgb": "1792028854457805543",
+        "depth": "1792028854439249449",
+        "depth_info": "1792028854439249449",
+        "feedback": "1792028854446620672"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "e417a220b079b73146d063a273cf276f764f949237ef73ae58601797d5c569a2",
+        "depth": "524714dcb97fffb278df034287f1e51cf0c5a60f811b1264e0352e3d39765f04"
+      },
+      "native_selected_points": 2286,
+      "color_pixel_coverage": 0.9579439252336449,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1841,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77131510416666,
+        102.457734375,
+        103.620703125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 41,
+      "stamps_ns": {
+        "rgb": "1792028855057854996",
+        "depth": "1792028855038494217",
+        "depth_info": "1792028855038494217",
+        "feedback": "1792028855041635072"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "f1d8395a94902d9b6bb821cadbbaec0f302914d7092fb82dfd6bae896a2ee6c2",
+        "depth": "2b2a10e11800ede438a64bffb6ba17eb771d830560c431eb985828e38050fa31"
+      },
+      "native_selected_points": 2248,
+      "color_pixel_coverage": 0.9588607594936709,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1801,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.78235677083333,
+        102.432890625,
+        103.643203125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 42,
+      "stamps_ns": {
+        "rgb": "1792028855657915812",
+        "depth": "1792028855603347805",
+        "depth_info": "1792028855603347805",
+        "feedback": "1792028855641692160"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "6742acd66606153842ad6f3bd9accd5426d868418e1e0a38dede31f495fdc219",
+        "depth": "15b812e41051826eb8016c082a8f36535a8cdbc790da73c31f8690343c0dc3fb"
+      },
+      "native_selected_points": 2220,
+      "color_pixel_coverage": 0.94896331738437,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1768,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.76795572916667,
+        102.42522135416667,
+        103.6483984375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 43,
+      "stamps_ns": {
+        "rgb": "1792028856257853017",
+        "depth": "1792028856238323782",
+        "depth_info": "1792028856238323782",
+        "feedback": "1792028856241692416"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "f7d092e93a15f81f5a6c550b6b8a74bfc2d943eceea55eb6b3724daac2bdb0a4",
+        "depth": "ecc190f987f56358a3c747e16b18e9d1335548cc4fd8cb343c6cb406adf79ff4"
+      },
+      "native_selected_points": 2294,
+      "color_pixel_coverage": 0.9565891472868217,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1847,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.773828125,
+        102.4291015625,
+        103.65859375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 44,
+      "stamps_ns": {
+        "rgb": "1792028857057906213",
+        "depth": "1792028857034849295",
+        "depth_info": "1792028857034849295",
+        "feedback": "1792028857046655744"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "ff8606379ea3deb67144e46c67d17a2e062cdbcca6a538aad4bfa09cfb8c7c3b",
+        "depth": "0316e69f2540ca3ea1401ecd89a0fd5041525afa1910f8ba9cdc0ade412fc2b7"
+      },
+      "native_selected_points": 2261,
+      "color_pixel_coverage": 0.9455676516329704,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1801,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.78385416666667,
+        102.43088541666667,
+        103.66890625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 45,
+      "stamps_ns": {
+        "rgb": "1792028857657941367",
+        "depth": "1792028857634408117",
+        "depth_info": "1792028857634408117",
+        "feedback": "1792028857646708992"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "dc6abd4c6900c4d31ff37c8e36e97bbedcb19cb5e6b79c50cb15defa3828ad66",
+        "depth": "430e739e46a5cf9b4809efb83947165dd6d5dfa09e4b53d541f8ae70c1853898"
+      },
+      "native_selected_points": 2227,
+      "color_pixel_coverage": 0.9661290322580646,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1777,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.78876302083333,
+        102.434765625,
+        103.65703125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 46,
+      "stamps_ns": {
+        "rgb": "1792028858257857678",
+        "depth": "1792028858233713439",
+        "depth_info": "1792028858233713439",
+        "feedback": "1792028858246770176"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "1b6985af537706fffda147ff7f6d8f04550e001989d88755a350cfe9ad622064",
+        "depth": "ad4a594cdcd11774e1c35b73d764d25c690cb72d0d1894d7ef8a1de1225ea404"
+      },
+      "native_selected_points": 2250,
+      "color_pixel_coverage": 0.964968152866242,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1815,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.77611979166667,
+        102.430078125,
+        103.66743489583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 47,
+      "stamps_ns": {
+        "rgb": "1792028859057991770",
+        "depth": "1792028859003204787",
+        "depth_info": "1792028859003204787",
+        "feedback": "1792028859051767040"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a6fe4fb10aba09f17316762f3256ea900f3590a63d4fa9b6d72fcf469ef0e8ee",
+        "depth": "b153014e20cef8f49c449f5726f524b7e7d13404f6862b04446f85048e223049"
+      },
+      "native_selected_points": 2301,
+      "color_pixel_coverage": 0.9507692307692308,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1851,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.78981770833333,
+        102.45067708333333,
+        103.68618489583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 48,
+      "stamps_ns": {
+        "rgb": "1792028859657952270",
+        "depth": "1792028859637108624",
+        "depth_info": "1792028859637108624",
+        "feedback": "1792028859646692864"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "4a3f4e659ea91ac5f998dc86c964ab450f617984d93bfd079df3c9d06bd0d3c6",
+        "depth": "7b7750e0f8e86522454d2e1924148661819d9c13b01ae91b368b0b80bdf5bc11"
+      },
+      "native_selected_points": 2317,
+      "color_pixel_coverage": 0.9568567026194145,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1835,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79563802083334,
+        102.44604166666667,
+        103.67828125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 49,
+      "stamps_ns": {
+        "rgb": "1792028860658028603",
+        "depth": "1792028860637443199",
+        "depth_info": "1792028860637443199",
+        "feedback": "1792028860641839616"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "fb6e8c8a815cefff04b1dcdcb10312f407e9c3260af2e31d6697e4223192377c",
+        "depth": "00328b1140cb2204020a795e8fa765aeefc0912200fcf1d8335ab8250831cdf8"
+      },
+      "native_selected_points": 2303,
+      "color_pixel_coverage": 0.9626749611197511,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1848,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79833333333333,
+        102.4541796875,
+        103.67352864583333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 50,
+      "stamps_ns": {
+        "rgb": "1792028861258010126",
+        "depth": "1792028861236624208",
+        "depth_info": "1792028861236624208",
+        "feedback": "1792028861241682176"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "ebb1226dbcb0f91192a84dc5649bfa813e019cda1d47165e91313f1f234e010a",
+        "depth": "2205d2f5e310009086797d60f116aadabd2a760ccb1a8cfbbe61dc23b5df4d37"
+      },
+      "native_selected_points": 2270,
+      "color_pixel_coverage": 0.9484375,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1808,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.80540364583334,
+        102.4592578125,
+        103.66821614583333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 51,
+      "stamps_ns": {
+        "rgb": "1792028861857972681",
+        "depth": "1792028861766435454",
+        "depth_info": "1792028861766435454",
+        "feedback": "1792028861841807872"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "01c2f2ec298bc3590cacb4f76b1a3d86db6c8085232b2c345f873891440afa4c",
+        "depth": "5a59a2501e1f39c0d336909a763b36fa4890f6459d776ecfaaf9b89f7fb25416"
+      },
+      "native_selected_points": 2304,
+      "color_pixel_coverage": 0.9640625,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1857,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.8005859375,
+        102.4483203125,
+        103.67703125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 52,
+      "stamps_ns": {
+        "rgb": "1792028862458051032",
+        "depth": "1792028862400887875",
+        "depth_info": "1792028862400887875",
+        "feedback": "1792028862437029632"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "4d9c7c67e39560cd65b9e196093961362d77f2c9438873829d6357c463b01ce6",
+        "depth": "d57b3292dbc308232f9740d4385b19283a2357766cfd8edddcb0ed4d41b22a5d"
+      },
+      "native_selected_points": 2264,
+      "color_pixel_coverage": 0.9605055292259084,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1799,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79455729166666,
+        102.43640625,
+        103.6737109375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 53,
+      "stamps_ns": {
+        "rgb": "1792028863058000375",
+        "depth": "1792028863034948004",
+        "depth_info": "1792028863034948004",
+        "feedback": "1792028863036853248"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "df0782a10a5c53e41604daf4d73db737719fc1af0308600b70e05c43c985abc7",
+        "depth": "21d75afe5ccc3836d6c5fb1bfbd4db47b15402faaf8a936caf5f0010543cd1c1"
+      },
+      "native_selected_points": 2279,
+      "color_pixel_coverage": 0.9593114241001565,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1820,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79221354166667,
+        102.43216145833334,
+        103.7077734375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 54,
+      "stamps_ns": {
+        "rgb": "1792028863657990591",
+        "depth": "1792028863634484012",
+        "depth_info": "1792028863634484012",
+        "feedback": "1792028863651734016"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "ad2e2a9bd411162193ff49dae59b4b6aa358eca253dff3e4106f6a052abc37e1",
+        "depth": "de637768cc6975b84e6788d3ca9259c1b8736e49a61c1c171d90a6fef78abe4f"
+      },
+      "native_selected_points": 2288,
+      "color_pixel_coverage": 0.9460708782742681,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1835,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.80299479166666,
+        102.45119791666667,
+        103.6787109375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 55,
+      "stamps_ns": {
+        "rgb": "1792028864258005701",
+        "depth": "1792028864234056857",
+        "depth_info": "1792028864234056857",
+        "feedback": "1792028864251725312"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "f5da61801cbcecc3a07131e71f5a75a2220b19b520dd5d29d1f1e9f947efa40d",
+        "depth": "4d95d87772da05580c48ba77b99a113d874d0793d437e72cc561106c71d79182"
+      },
+      "native_selected_points": 2230,
+      "color_pixel_coverage": 0.960127591706539,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1785,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.81360677083333,
+        102.4396484375,
+        103.6741796875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 56,
+      "stamps_ns": {
+        "rgb": "1792028865058017680",
+        "depth": "1792028865032126744",
+        "depth_info": "1792028865032126744",
+        "feedback": "1792028865036689152"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "bb8d50f2b04d55e1d90dfb9ffec8e670611670233661d33ada072c2a0b29b408",
+        "depth": "09f030b264c7a5e9a6d10425812f5fbdf564e45a644379d0e54d3d6f23d3c233"
+      },
+      "native_selected_points": 2261,
+      "color_pixel_coverage": 0.9606299212598425,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1827,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79587239583333,
+        102.4273828125,
+        103.661328125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 57,
+      "stamps_ns": {
+        "rgb": "1792028866258029283",
+        "depth": "1792028866230050966",
+        "depth_info": "1792028866230050966",
+        "feedback": "1792028866236970752"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "a08876ef1931514ba085914f25ffd6f58f317400abe8eddb7428aeff04f25ec8",
+        "depth": "fa6af9c01a1994e7aff6da7bf09214216b7f282c896ddb4b4db8eae27fe666f2"
+      },
+      "native_selected_points": 2214,
+      "color_pixel_coverage": 0.9596774193548387,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1775,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.81779947916667,
+        102.43834635416667,
+        103.69083333333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 58,
+      "stamps_ns": {
+        "rgb": "1792028866858133939",
+        "depth": "1792028866829756350",
+        "depth_info": "1792028866829756350",
+        "feedback": "1792028866856893440"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "f97e7bb6b2e0f45048a3352e0c7b91b5e338e437745fb3b73376ed7cf37ea15d",
+        "depth": "1883c6e239139c4d0023f22a72b0454e69bb7c882c4eacdf0e5a7e6c64e16c7d"
+      },
+      "native_selected_points": 2262,
+      "color_pixel_coverage": 0.9590551181102362,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1805,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.75658854166667,
+        102.42774739583334,
+        103.68634114583334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 59,
+      "stamps_ns": {
+        "rgb": "1792028867658073085",
+        "depth": "1792028867633588963",
+        "depth_info": "1792028867633588963",
+        "feedback": "1792028867646710016"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "0ea07d3c391b5426b78900d00e62ec9878bcede2af040dcdd6371d1773ee8db5",
+        "depth": "3ae9b5a6586d21b9462d6369e5d0f4a177e1601780c5e5570e1c3e3baac1baf5"
+      },
+      "native_selected_points": 2308,
+      "color_pixel_coverage": 0.9554531490015361,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1854,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.79529947916667,
+        102.45641927083334,
+        103.65014322916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    },
+    {
+      "snapshot": 60,
+      "stamps_ns": {
+        "rgb": "1792028868258063270",
+        "depth": "1792028868233114349",
+        "depth_info": "1792028868233114349",
+        "feedback": "1792028868246808064"
+      },
+      "actual_q_rad": [
+        -0.156071468,
+        -0.002075836,
+        -0.025799676000000004,
+        0.059885252,
+        0.4395888,
+        -0.07553252
+      ],
+      "raw_image_sha256": {
+        "rgb": "32dba88b29f69265203b8278f434e5cf8ee9f44d0cd165cffa25366bac920016",
+        "depth": "467c9e95e2f7f7fe6b73e9c0174124364d7a97f5b3fbd73aaf89ec7eec5d0c50"
+      },
+      "native_selected_points": 2239,
+      "color_pixel_coverage": 0.9554140127388535,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 1800,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": {
+        "29": "No dominant face: less than 60% measured plane support"
+      },
+      "brightness_mean_bgr": [
+        102.8056640625,
+        102.44967447916666,
+        103.6792578125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness",
+      "capture_batch": 1
+    }
+  ]
+}

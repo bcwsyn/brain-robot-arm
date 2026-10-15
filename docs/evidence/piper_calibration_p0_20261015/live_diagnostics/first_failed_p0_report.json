@@ -1,0 +1,91 @@
+{
+  "schema": "piper_calibration_p0_capture_v1",
+  "subscription_only": true,
+  "motion_commands_sent": false,
+  "automatic_CAN_recovery": false,
+  "production_tf_modified": false,
+  "maximum_batches": 2,
+  "maximum_seconds_per_batch": 45.0,
+  "maximum_image_bytes_per_batch": 67108864,
+  "config_sha256": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+  "can_checks": [
+    {
+      "before": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 94127895,
+        "tx": 0
+      },
+      "after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 94128367,
+        "tx": 0
+      },
+      "healthy": true
+    }
+  ],
+  "batches": [
+    {
+      "capture": "batch_01",
+      "returncode": 2,
+      "capture_summary": {
+        "subscription_only": true,
+        "hardware_synchronized": false,
+        "camera_calibration": false,
+        "topics": [
+          "/camera/color/image_raw",
+          "/camera/depth/image_raw",
+          "/camera/depth/camera_info",
+          "/joint_states_feedback"
+        ],
+        "message_filters_file": "/opt/ros/humble/local/lib/python3.10/dist-packages/message_filters/__init__.py",
+        "slop_s": 0.12,
+        "max_age_s": 0.5,
+        "requested_frames": 60,
+        "saved_frames": 0,
+        "static_window_s": 3.0,
+        "full_same_frame_depth_info": true,
+        "received": {
+          "/joint_states_feedback": 2157,
+          "/camera/depth/image_raw": 840,
+          "/camera/depth/camera_info": 1076
+        },
+        "rejected": {},
+        "matched_packets": 0,
+        "stop_on_feedback_loss": true,
+        "image_byte_limit": 67108864,
+        "image_bytes": 0,
+        "stop_reason": null,
+        "elapsed_s": 45.00219628999912,
+        "start_q_rad": null
+      },
+      "quality": {
+        "frames": 0,
+        "face_quality_candidates": 0,
+        "good_top_frames": 0,
+        "minimum_good_frames": 20,
+        "twenty_good_frames_met": false,
+        "automatic_replenishment_needed": true,
+        "top_witness_review_required": false,
+        "formal_calibration_pair": false
+      }
+    }
+  ],
+  "stop_reason": "incomplete_batch_do_not_blindly_retry",
+  "exposure": null,
+  "gain": null,
+  "illumination_lux": null,
+  "formal_calibration_pair": false,
+  "summary": {
+    "frames": 0,
+    "face_quality_candidates": 0,
+    "good_top_frames": 0,
+    "minimum_good_frames": 20,
+    "twenty_good_frames_met": false,
+    "automatic_replenishment_needed": true,
+    "top_witness_review_required": false,
+    "formal_calibration_pair": false
+  },
+  "frames": []
+}

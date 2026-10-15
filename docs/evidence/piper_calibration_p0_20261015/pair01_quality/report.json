@@ -1,0 +1,4495 @@
+{
+  "schema": "piper_calibration_p0_quality_v1",
+  "offline_only": true,
+  "motion_commands_sent": false,
+  "raw_modified": false,
+  "capture": "pair01_observe_remeasure_20261014_rgbd",
+  "source_manifest_sha256": "4c6021b1d408968bd6b15e278f99ccd0de56ae2d226e6ef82461aaf03ed9f26f",
+  "script_sha256": "982d0c0eb2957f28f764581a6f498b52343a721ca73ecdbcfc32044e8baae382",
+  "fitting_input_frame": "camera_color_optical_frame",
+  "native_depth_frame": "camera_depth_optical_frame",
+  "transform": "p_C = R_C_D p_D + t_C_D; unchanged factory pinhole/endpoint projection",
+  "minimum_top_plane_inliers": 800,
+  "selection_is_not_a_motion_gate": true,
+  "table_ROI": "cyan = automatic local annulus; red = selected native cube projections; green = measured top-hypothesis plane inliers; physical identity unverified",
+  "nominal_cube_edge_m": 0.029,
+  "caliper_measurement_confirmed": false,
+  "summary": {
+    "frames": 30,
+    "face_quality_candidates": 4,
+    "good_top_frames": 4,
+    "minimum_good_frames": 20,
+    "twenty_good_frames_met": false,
+    "automatic_replenishment_needed": true,
+    "top_witness_review_required": true,
+    "top_plane_normal_statistics": {
+      "normal_difference_A_deg": {
+        "minimum": 3.82608477804312,
+        "median": 4.57497136345515,
+        "maximum": 5.20251347667225
+      },
+      "normal_difference_B_deg": {
+        "minimum": 4.909682360820965,
+        "median": 5.58503816892922,
+        "maximum": 6.242843568844962
+      },
+      "face_method_disagreement_deg": {
+        "minimum": 1.2629907471795112,
+        "median": 1.2921988270041165,
+        "maximum": 1.4318016764886823
+      },
+      "table_method_disagreement_deg": {
+        "minimum": 0.11805094365205071,
+        "median": 0.18172960004945093,
+        "maximum": 0.2663966702982802
+      }
+    },
+    "formal_calibration_pair": false
+  },
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1791972213358258345",
+        "depth": "1791972213334938325",
+        "depth_info": "1791972213334938325",
+        "feedback": "1791972213356954194"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "bb82ede8d395e1a83e58034606f181be960077f06f6f99d210e4e3c209393443",
+        "depth": "7e77be3bb78cce7ec5e34243c6c3aa600f6f9b5c3245c613b0020efec92f6b57"
+      },
+      "native_selected_points": 124,
+      "color_pixel_coverage": 0.14388489208633093,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.06846354166667,
+        112.97313802083333,
+        114.0847265625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1791972213958244874",
+        "depth": "1791972213905182972",
+        "depth_info": "1791972213905182972",
+        "feedback": "1791972213956831756"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "7c2ee79f7833fbd35ca7f8eefa5509d2f8f57e3b5e2d9b4796e390355c550448",
+        "depth": "d0e04b17dbab1a0b4209540d503e883e71b8a99c756cf3dc54694916a576304d"
+      },
+      "native_selected_points": 976,
+      "color_pixel_coverage": 0.9460431654676259,
+      "plane_inliers": 768,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.012831903827419004,
+          0.035961269712486685,
+          0.43980770810030095
+        ],
+        "cube_center_depth_m": [
+          -0.012471104076143609,
+          0.041141076344046915,
+          0.45334615065471334
+        ],
+        "outward_normal_depth": [
+          -0.02488274146726862,
+          -0.3572280435558777,
+          -0.933685693407751
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0004393772576893381,
+            0.05044027441543135,
+            0.43391436260116795
+          ],
+          [
+            0.002792204001158108,
+            0.023423421837695906,
+            0.4441883045470876
+          ],
+          [
+            -0.026103184912527347,
+            0.02148226500954202,
+            0.445701053599434
+          ],
+          [
+            -0.028456011655996115,
+            0.04849911758727746,
+            0.43542711165351433
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011154295203960518,
+          0.03627091054545444,
+          0.4396445312499941
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011874931751151684,
+          0.035914198362658106,
+          0.4398002142695528
+        ],
+        "measured_face_sides_m": [
+          0.026004353538155556,
+          0.02811681106686592
+        ],
+        "plane_inliers": 768,
+        "plane_inlier_fraction": 0.9230769230769231,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.000534135426772319,
+        "plane_p95_m": 0.0010426860828587183,
+        "square_boundary_rms_m": 0.001458425300782094,
+        "face_hull_fill_ratio": 0.9049069260238272,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.035512401707925634,
+          0.040159709355781746,
+          0.4537309169847927
+        ],
+        "face_center_color_m": [
+          -0.03611944793011299,
+          0.03502439431900879,
+          0.44018432936745516
+        ],
+        "outward_normal_color": [
+          -0.041865256702576195,
+          -0.3541596577084786,
+          -0.9342474218853453
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.561946577567963e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 832,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.477003562965792,
+        "normal_difference_B_deg": 5.5610248791876264,
+        "face_method_disagreement_deg": 1.4318016764886823,
+        "table_method_disagreement_deg": 0.1823680318985731,
+        "face_normal_depth_A": [
+          -0.02488274146726862,
+          -0.3572280435558777,
+          -0.933685693407751
+        ],
+        "table_normal_depth_A": [
+          0.007756855610629034,
+          -0.42268167539438267,
+          -0.9062450179045582
+        ],
+        "face_normal_depth_B": [
+          -0.021763271361603897,
+          -0.33398868658304903,
+          -0.9423258020738746
+        ],
+        "table_normal_depth_B": [
+          0.006751639185804521,
+          -0.4199458698194153,
+          -0.9075240392352808
+        ],
+        "face_rms_A_m": 0.000534135426772319,
+        "table_rms_A_m": 0.001007612478021071,
+        "face_rms_B_m": 0.0008915634134518622,
+        "table_rms_B_m": 0.0015930108528681495,
+        "table_native_samples": 32772,
+        "table_plane_inliers": 26341,
+        "face_center_height_above_table_candidate_m": 0.028094980035401357,
+        "height_minus_nominal_edge_m": -0.000905019964598644,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 768,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.035512401707925634,
+        0.040159709355781746,
+        0.4537309169847927
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.012471104076143609,
+        0.041141076344046915,
+        0.45334615065471334
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.012831903827419004,
+          0.035961269712486685,
+          0.43980770810030095
+        ],
+        "cube_center_depth_m": [
+          -0.012471104076143609,
+          0.041141076344046915,
+          0.45334615065471334
+        ],
+        "outward_normal_depth": [
+          -0.02488274146726862,
+          -0.3572280435558777,
+          -0.933685693407751
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0004393772576893381,
+            0.05044027441543135,
+            0.43391436260116795
+          ],
+          [
+            0.002792204001158108,
+            0.023423421837695906,
+            0.4441883045470876
+          ],
+          [
+            -0.026103184912527347,
+            0.02148226500954202,
+            0.445701053599434
+          ],
+          [
+            -0.028456011655996115,
+            0.04849911758727746,
+            0.43542711165351433
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011154295203960518,
+          0.03627091054545444,
+          0.4396445312499941
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011874931751151684,
+          0.035914198362658106,
+          0.4398002142695528
+        ],
+        "measured_face_sides_m": [
+          0.026004353538155556,
+          0.02811681106686592
+        ],
+        "plane_inliers": 768,
+        "plane_inlier_fraction": 0.7868852459016393,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.000534135426772319,
+        "plane_p95_m": 0.0010426860828587183,
+        "square_boundary_rms_m": 0.001458425300782094,
+        "face_hull_fill_ratio": 0.9049069260238272,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.035512401707925634,
+          0.040159709355781746,
+          0.4537309169847927
+        ],
+        "face_center_color_m": [
+          -0.03611944793011299,
+          0.03502439431900879,
+          0.44018432936745516
+        ],
+        "outward_normal_color": [
+          -0.041865256702576195,
+          -0.3541596577084786,
+          -0.9342474218853453
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.561946577567963e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.477003562965792,
+        "normal_difference_B_deg": 9.184101546667481,
+        "face_method_disagreement_deg": 5.803790549622361,
+        "table_method_disagreement_deg": 0.1823680318985731,
+        "face_normal_depth_A": [
+          -0.02488274146726862,
+          -0.3572280435558777,
+          -0.933685693407751
+        ],
+        "table_normal_depth_A": [
+          0.007756855610629034,
+          -0.42268167539438267,
+          -0.9062450179045582
+        ],
+        "face_normal_depth_B": [
+          0.017609047336930132,
+          -0.27002157469417976,
+          -0.9626932380834309
+        ],
+        "table_normal_depth_B": [
+          0.006751639185804521,
+          -0.4199458698194153,
+          -0.9075240392352808
+        ],
+        "face_rms_A_m": 0.000534135426772319,
+        "table_rms_A_m": 0.001007612478021071,
+        "face_rms_B_m": 0.008626705934753863,
+        "table_rms_B_m": 0.0015930108528681495,
+        "table_native_samples": 32772,
+        "table_plane_inliers": 26341,
+        "face_center_height_above_table_candidate_m": 0.028094980035401357,
+        "height_minus_nominal_edge_m": -0.000905019964598644,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 703,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.031251812515531247,
+          -0.36825147487020604,
+          -0.9292008262320972
+        ],
+        "normal_depth_B": [
+          -0.02701765625866538,
+          -0.3262482227290654,
+          -0.9448979539698532
+        ],
+        "method_disagreement_deg": 2.5808197594144486,
+        "difference_from_table_A_deg": 4.056843117135136,
+        "difference_from_table_B_deg": 6.097927071247728
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.07342447916666,
+        112.98463541666666,
+        114.0959375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1791972214558254218",
+        "depth": "1791972214534132213",
+        "depth_info": "1791972214534132213",
+        "feedback": "1791972214557070525"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "3e238ad93493639b70413d10835e217f5606e5523debf87f3bf68dd19fe8ea04",
+        "depth": "4ea867ea85774d9052e3e9594b77442ed955bd1c723d3fdd7cef73cc88e69974"
+      },
+      "native_selected_points": 991,
+      "color_pixel_coverage": 0.9333333333333333,
+      "plane_inliers": 772,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013279592920007308,
+          0.035723571238859414,
+          0.43983681533213637
+        ],
+        "cube_center_depth_m": [
+          -0.012913337360522532,
+          0.04087684391423209,
+          0.45338523360138105
+        ],
+        "outward_normal_depth": [
+          -0.02525900410239829,
+          -0.3553981155429432,
+          -0.9343736737410145
+        ],
+        "face_corners_depth_m": [
+          [
+            0.00089472121083666,
+            0.04944266442637886,
+            0.43423544933513936
+          ],
+          [
+            0.0015298815018096237,
+            0.022337980344966382,
+            0.44452780923224733
+          ],
+          [
+            -0.027453907050851274,
+            0.022004478051339968,
+            0.44543818132913343
+          ],
+          [
+            -0.028089067341824238,
+            0.049109162132752446,
+            0.43514582143202546
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.010978917761582675,
+          0.0360675577059761,
+          0.43964378238341434
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011026860183583755,
+          0.03552522863226468,
+          0.43985135855351193
+        ],
+        "measured_face_sides_m": [
+          0.026125745847821236,
+          0.029942568391561508
+        ],
+        "plane_inliers": 772,
+        "plane_inlier_fraction": 0.9290012033694344,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006048951178502706,
+        "plane_p95_m": 0.0011956365699716447,
+        "square_boundary_rms_m": 0.0014629224435097833,
+        "face_hull_fill_ratio": 0.8794495891637635,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.03595694741196674,
+          0.03990026076224793,
+          0.4537754375565448
+        ],
+        "face_center_color_m": [
+          -0.03656929374891981,
+          0.034791567780711914,
+          0.4402190261683729
+        ],
+        "outward_normal_color": [
+          -0.04223078185883251,
+          -0.35232365389903564,
+          -0.9349249233222042
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.551115123125783e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 831,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.55250660145936,
+        "normal_difference_B_deg": 5.504467436755588,
+        "face_method_disagreement_deg": 1.3791499036014914,
+        "table_method_disagreement_deg": 0.17991217445577148,
+        "face_normal_depth_A": [
+          -0.02525900410239829,
+          -0.3553981155429432,
+          -0.9343736737410145
+        ],
+        "table_normal_depth_A": [
+          0.008337536168191911,
+          -0.4218218314177061,
+          -0.9066404072343436
+        ],
+        "face_normal_depth_B": [
+          -0.019152176241305673,
+          -0.3335887662169745,
+          -0.94252412658725
+        ],
+        "table_normal_depth_B": [
+          0.007051443644988619,
+          -0.4192270280101435,
+          -0.9078540500148159
+        ],
+        "face_rms_A_m": 0.0006048951178502706,
+        "table_rms_A_m": 0.0009941126532521933,
+        "face_rms_B_m": 0.0009222489136477814,
+        "table_rms_B_m": 0.0015678914720128618,
+        "table_native_samples": 34507,
+        "table_plane_inliers": 27755,
+        "face_center_height_above_table_candidate_m": 0.028102854651311102,
+        "height_minus_nominal_edge_m": -0.0008971453486888992,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 772,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.03595694741196674,
+        0.03990026076224793,
+        0.4537754375565448
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.012913337360522532,
+        0.04087684391423209,
+        0.45338523360138105
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013279592920007308,
+          0.035723571238859414,
+          0.43983681533213637
+        ],
+        "cube_center_depth_m": [
+          -0.012913337360522532,
+          0.04087684391423209,
+          0.45338523360138105
+        ],
+        "outward_normal_depth": [
+          -0.02525900410239829,
+          -0.3553981155429432,
+          -0.9343736737410145
+        ],
+        "face_corners_depth_m": [
+          [
+            0.00089472121083666,
+            0.04944266442637886,
+            0.43423544933513936
+          ],
+          [
+            0.0015298815018096237,
+            0.022337980344966382,
+            0.44452780923224733
+          ],
+          [
+            -0.027453907050851274,
+            0.022004478051339968,
+            0.44543818132913343
+          ],
+          [
+            -0.028089067341824238,
+            0.049109162132752446,
+            0.43514582143202546
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.010978917761582675,
+          0.0360675577059761,
+          0.43964378238341434
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011026860183583755,
+          0.03552522863226468,
+          0.43985135855351193
+        ],
+        "measured_face_sides_m": [
+          0.026125745847821236,
+          0.029942568391561508
+        ],
+        "plane_inliers": 772,
+        "plane_inlier_fraction": 0.7790110998990918,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006048951178502706,
+        "plane_p95_m": 0.0011956365699716447,
+        "square_boundary_rms_m": 0.0014629224435097833,
+        "face_hull_fill_ratio": 0.8794495891637635,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.03595694741196674,
+          0.03990026076224793,
+          0.4537754375565448
+        ],
+        "face_center_color_m": [
+          -0.03656929374891981,
+          0.034791567780711914,
+          0.4402190261683729
+        ],
+        "outward_normal_color": [
+          -0.04223078185883251,
+          -0.35232365389903564,
+          -0.9349249233222042
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.551115123125783e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.55250660145936,
+        "normal_difference_B_deg": 10.018434615665893,
+        "face_method_disagreement_deg": 6.846091388474047,
+        "table_method_disagreement_deg": 0.17991217445577148,
+        "face_normal_depth_A": [
+          -0.02525900410239829,
+          -0.3553981155429432,
+          -0.9343736737410145
+        ],
+        "table_normal_depth_A": [
+          0.008337536168191911,
+          -0.4218218314177061,
+          -0.9066404072343436
+        ],
+        "face_normal_depth_B": [
+          0.03425217941325388,
+          -0.25677321870442726,
+          -0.9658645362376707
+        ],
+        "table_normal_depth_B": [
+          0.007051443644988619,
+          -0.4192270280101435,
+          -0.9078540500148159
+        ],
+        "face_rms_A_m": 0.0006048951178502706,
+        "table_rms_A_m": 0.0009941126532521933,
+        "face_rms_B_m": 0.00889994778534604,
+        "table_rms_B_m": 0.0015678914720128618,
+        "table_native_samples": 34507,
+        "table_plane_inliers": 27755,
+        "face_center_height_above_table_candidate_m": 0.028102854651311102,
+        "height_minus_nominal_edge_m": -0.0008971453486888992,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 699,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.038907526445832466,
+          -0.3742752165045355,
+          -0.9265010883406182
+        ],
+        "normal_depth_B": [
+          -0.026884784248372425,
+          -0.32196997382570697,
+          -0.946368080786008
+        ],
+        "method_disagreement_deg": 3.279389580858927,
+        "difference_from_table_A_deg": 4.006288270470375,
+        "difference_from_table_B_deg": 6.304134880226234
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.06631510416666,
+        112.9682421875,
+        114.08522135416666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1791972215158267776",
+        "depth": "1791972215139715939",
+        "depth_info": "1791972215139715939",
+        "feedback": "1791972215151890965"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "4befcc3ebc68ee936f389e34a40c780f97045160b2e0db2db077bb705bc1c6e5",
+        "depth": "da2ff60279eed843a9c298394f8c4315b4d6c08aa2db1da024967b2bab3cb4f9"
+      },
+      "native_selected_points": 134,
+      "color_pixel_coverage": 0.1524822695035461,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.1683984375,
+        113.0733984375,
+        114.18891927083334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1791972215758218657",
+        "depth": "1791972215738984819",
+        "depth_info": "1791972215738984819",
+        "feedback": "1791972215756983470"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "091e210dd8c7f2d1d00f564dbb6675740bbc300fb04adaf717231ee0f283c831",
+        "depth": "ca2d802732c8142f378ee43891eb19b402e4b7860f17d19c5ee1f05de0d63488"
+      },
+      "native_selected_points": 129,
+      "color_pixel_coverage": 0.1474820143884892,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.16651041666667,
+        113.08080729166667,
+        114.21434895833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 6,
+      "stamps_ns": {
+        "rgb": "1791972216358282240",
+        "depth": "1791972216338398950",
+        "depth_info": "1791972216338398950",
+        "feedback": "1791972216357068713"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "3cfbe056899184a6279c07d1cb742b4f3b8f91a539bedf60fddc0f0e4f9a5765",
+        "depth": "d93477ac34b7ab5eb5b5ba34daeda5d29f4d4e8304193c2198345cda4faf7a33"
+      },
+      "native_selected_points": 119,
+      "color_pixel_coverage": 0.13780918727915195,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.1271875,
+        113.04533854166667,
+        114.21908854166666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 7,
+      "stamps_ns": {
+        "rgb": "1791972216958546623",
+        "depth": "1791972216941184713",
+        "depth_info": "1791972216941184713",
+        "feedback": "1791972216956942054"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "eab8957df8d264b666129cf0585cbbe75b04a78ea8911f1e0ec9a12c44b6f027",
+        "depth": "53dd2215194ee5dd577ba1b888a0045912bc425cc5a421cbcab354a3db46f324"
+      },
+      "native_selected_points": 1029,
+      "color_pixel_coverage": 0.9482758620689655,
+      "plane_inliers": 812,
+      "minimum_800_face_inliers_met": true,
+      "face_quality_candidate": true,
+      "good_top_frame": true,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013661651712193777,
+          0.0362216582957597,
+          0.43986202526911283
+        ],
+        "cube_center_depth_m": [
+          -0.013904903075596345,
+          0.04117102159768321,
+          0.4534890070214957
+        ],
+        "outward_normal_depth": [
+          0.016775956096728814,
+          -0.34133540013265584,
+          -0.9397918449919218
+        ],
+        "face_corners_depth_m": [
+          [
+            0.00025964591573339815,
+            0.022151155287791362,
+            0.44522098201995747
+          ],
+          [
+            -0.028714197340859882,
+            0.02304863469015192,
+            0.4443778108245866
+          ],
+          [
+            -0.027582949340120948,
+            0.05029216130372804,
+            0.4345030685182682
+          ],
+          [
+            0.0013908939164723293,
+            0.04939468190136748,
+            0.4353462397136391
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011752288151275506,
+          0.036213657250936254,
+          0.43989901477832405
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.012693530142687906,
+          0.03579657680878531,
+          0.44003369788497076
+        ],
+        "measured_face_sides_m": [
+          0.029140466824173927,
+          0.02953941561281681
+        ],
+        "plane_inliers": 812,
+        "plane_inlier_fraction": 0.9333333333333333,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006407046181951206,
+        "plane_p95_m": 0.0012568044406856445,
+        "square_boundary_rms_m": 0.0007567903168823642,
+        "face_hull_fill_ratio": 0.861945017410603,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036943647978971345,
+          0.040205058788312084,
+          0.4538938951527198
+        ],
+        "face_center_color_m": [
+          -0.036945420847475194,
+          0.035293765628290286,
+          0.4402509776395474
+        ],
+        "outward_normal_color": [
+          -0.00012226679336929148,
+          -0.33870987310495165,
+          -0.9408908629774035
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.551115123125783e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 870,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 5.20251347667225,
+        "normal_difference_B_deg": 6.242843568844962,
+        "face_method_disagreement_deg": 1.2819612068267268,
+        "table_method_disagreement_deg": 0.2663966702982802,
+        "face_normal_depth_A": [
+          0.016775956096728814,
+          -0.34133540013265584,
+          -0.9397918449919218
+        ],
+        "table_normal_depth_A": [
+          0.008662778570370195,
+          -0.42486800409645603,
+          -0.9052138616716685
+        ],
+        "face_normal_depth_B": [
+          0.018571544468362303,
+          -0.3202793045976729,
+          -0.9471411007777515
+        ],
+        "table_normal_depth_B": [
+          0.007121521619347875,
+          -0.4208981178367185,
+          -0.9070799624792365
+        ],
+        "face_rms_A_m": 0.0006407046181951206,
+        "table_rms_A_m": 0.0009930404406536728,
+        "face_rms_B_m": 0.0009011104143865639,
+        "table_rms_B_m": 0.001535195376841529,
+        "table_native_samples": 34762,
+        "table_plane_inliers": 28438,
+        "face_center_height_above_table_candidate_m": 0.028214797838380927,
+        "height_minus_nominal_edge_m": -0.0007852021616190745,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 812,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.036943647978971345,
+        0.040205058788312084,
+        0.4538938951527198
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.013904903075596345,
+        0.04117102159768321,
+        0.4534890070214957
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013661651712193777,
+          0.0362216582957597,
+          0.43986202526911283
+        ],
+        "cube_center_depth_m": [
+          -0.013904903075596345,
+          0.04117102159768321,
+          0.4534890070214957
+        ],
+        "outward_normal_depth": [
+          0.016775956096728814,
+          -0.34133540013265584,
+          -0.9397918449919218
+        ],
+        "face_corners_depth_m": [
+          [
+            0.00025964591573339815,
+            0.022151155287791362,
+            0.44522098201995747
+          ],
+          [
+            -0.028714197340859882,
+            0.02304863469015192,
+            0.4443778108245866
+          ],
+          [
+            -0.027582949340120948,
+            0.05029216130372804,
+            0.4345030685182682
+          ],
+          [
+            0.0013908939164723293,
+            0.04939468190136748,
+            0.4353462397136391
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011752288151275506,
+          0.036213657250936254,
+          0.43989901477832405
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.012693530142687906,
+          0.03579657680878531,
+          0.44003369788497076
+        ],
+        "measured_face_sides_m": [
+          0.029140466824173927,
+          0.02953941561281681
+        ],
+        "plane_inliers": 812,
+        "plane_inlier_fraction": 0.7891156462585034,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006407046181951206,
+        "plane_p95_m": 0.0012568044406856445,
+        "square_boundary_rms_m": 0.0007567903168823642,
+        "face_hull_fill_ratio": 0.861945017410603,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036943647978971345,
+          0.040205058788312084,
+          0.4538938951527198
+        ],
+        "face_center_color_m": [
+          -0.036945420847475194,
+          0.035293765628290286,
+          0.4402509776395474
+        ],
+        "outward_normal_color": [
+          -0.00012226679336929148,
+          -0.33870987310495165,
+          -0.9408908629774035
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.551115123125783e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 5.20251347667225,
+        "normal_difference_B_deg": 10.310251799618152,
+        "face_method_disagreement_deg": 5.425559815912909,
+        "table_method_disagreement_deg": 0.2663966702982802,
+        "face_normal_depth_A": [
+          0.016775956096728814,
+          -0.34133540013265584,
+          -0.9397918449919218
+        ],
+        "table_normal_depth_A": [
+          0.008662778570370195,
+          -0.42486800409645603,
+          -0.9052138616716685
+        ],
+        "face_normal_depth_B": [
+          0.04949214889897454,
+          -0.2562635323470737,
+          -0.9653390747226396
+        ],
+        "table_normal_depth_B": [
+          0.007121521619347875,
+          -0.4208981178367185,
+          -0.9070799624792365
+        ],
+        "face_rms_A_m": 0.0006407046181951206,
+        "table_rms_A_m": 0.0009930404406536728,
+        "face_rms_B_m": 0.00905329875826772,
+        "table_rms_B_m": 0.001535195376841529,
+        "table_native_samples": 34762,
+        "table_plane_inliers": 28438,
+        "face_center_height_above_table_candidate_m": 0.028214797838380927,
+        "height_minus_nominal_edge_m": -0.0007852021616190745,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 727,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          0.0034544126477640165,
+          -0.3539204705286564,
+          -0.9352691417843494
+        ],
+        "normal_depth_B": [
+          0.011607496803882757,
+          -0.301476121300526,
+          -0.9534030702192743
+        ],
+        "method_disagreement_deg": 3.2139545877807905,
+        "difference_from_table_A_deg": 4.425877723889993,
+        "difference_from_table_B_deg": 7.348640103813623
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.11283854166666,
+        113.04209635416667,
+        114.17875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 8,
+      "stamps_ns": {
+        "rgb": "1791972217758505619",
+        "depth": "1791972217699564009",
+        "depth_info": "1791972217699564009",
+        "feedback": "1791972217756987952"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "22435569ce070a3c69bcf890f632252b63c62b15b6e707f3cd2c78efce6b132f",
+        "depth": "9fcf486d4943480a2808032d1d402679ee1c4eae72361e872dba774153bae6f5"
+      },
+      "native_selected_points": 116,
+      "color_pixel_coverage": 0.13523131672597866,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.01305989583334,
+        112.95098958333334,
+        114.06950520833334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 9,
+      "stamps_ns": {
+        "rgb": "1791972218358331168",
+        "depth": "1791972218334114471",
+        "depth_info": "1791972218334114471",
+        "feedback": "1791972218356823250"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "d3958011ddc2352fa2e2c46b93f374050b2e76060bcf2ba2a2de36d06f0a8b92",
+        "depth": "463e9904cdf2da3e383f62f8470167dea092ac40c8c212d2b94aa7538d744306"
+      },
+      "native_selected_points": 981,
+      "color_pixel_coverage": 0.942652329749104,
+      "plane_inliers": 777,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013458549083505945,
+          0.036122928413555494,
+          0.43977998861970236
+        ],
+        "cube_center_depth_m": [
+          -0.013020084361801926,
+          0.04121215894034987,
+          0.45335045218337494
+        ],
+        "outward_normal_depth": [
+          -0.030238946324415164,
+          -0.3509814156409915,
+          -0.9358940388739716
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0011745140439310183,
+            0.04941202121231657,
+            0.43432348093672773
+          ],
+          [
+            0.0008937664399239556,
+            0.022262932819176504,
+            0.4445140736674923
+          ],
+          [
+            -0.028091612210942907,
+            0.022833835614794427,
+            0.44523649630267703
+          ],
+          [
+            -0.027810864606935846,
+            0.04998292400793449,
+            0.4350459035719125
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011413130360846593,
+          0.03603953860395128,
+          0.43974517374516836
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011736547655491618,
+          0.03595673754128886,
+          0.43978667570029323
+        ],
+        "measured_face_sides_m": [
+          0.027472928166389465,
+          0.027808036655187607
+        ],
+        "plane_inliers": 777,
+        "plane_inlier_fraction": 0.9228028503562945,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0005713525915778925,
+        "plane_p95_m": 0.001054987779742129,
+        "square_boundary_rms_m": 0.0011040412497347672,
+        "face_hull_fill_ratio": 0.9099207370990157,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036060447170695245,
+          0.04023683561308607,
+          0.45374309565439597
+        ],
+        "face_center_color_m": [
+          -0.036744589164613164,
+          0.03519304323498384,
+          0.4401658312031058
+        ],
+        "outward_normal_color": [
+          -0.04718220647709814,
+          -0.34784775021394687,
+          -0.936363065606215
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.551115123125783e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 842,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.98351226402922,
+        "normal_difference_B_deg": 6.054805587618108,
+        "face_method_disagreement_deg": 1.3878771257080673,
+        "table_method_disagreement_deg": 0.12472242960394633,
+        "face_normal_depth_A": [
+          -0.030238946324415164,
+          -0.3509814156409915,
+          -0.9358940388739716
+        ],
+        "table_normal_depth_A": [
+          0.008313634509493552,
+          -0.4229962687239597,
+          -0.9060932844508066
+        ],
+        "face_normal_depth_B": [
+          -0.02684672072381971,
+          -0.3284586083482698,
+          -0.9441367465512054
+        ],
+        "table_normal_depth_B": [
+          0.007562254835528404,
+          -0.4211466753221259,
+          -0.9069610191000064
+        ],
+        "face_rms_A_m": 0.0005713525915778925,
+        "table_rms_A_m": 0.0010099442211960574,
+        "face_rms_B_m": 0.0009159391161492798,
+        "table_rms_B_m": 0.0015408925697470812,
+        "table_native_samples": 33046,
+        "table_plane_inliers": 27323,
+        "face_center_height_above_table_candidate_m": 0.028102413167170517,
+        "height_minus_nominal_edge_m": -0.0008975868328294848,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 777,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.036060447170695245,
+        0.04023683561308607,
+        0.45374309565439597
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.013020084361801926,
+        0.04121215894034987,
+        0.45335045218337494
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013458549083505945,
+          0.036122928413555494,
+          0.43977998861970236
+        ],
+        "cube_center_depth_m": [
+          -0.013020084361801926,
+          0.04121215894034987,
+          0.45335045218337494
+        ],
+        "outward_normal_depth": [
+          -0.030238946324415164,
+          -0.3509814156409915,
+          -0.9358940388739716
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0011745140439310183,
+            0.04941202121231657,
+            0.43432348093672773
+          ],
+          [
+            0.0008937664399239556,
+            0.022262932819176504,
+            0.4445140736674923
+          ],
+          [
+            -0.028091612210942907,
+            0.022833835614794427,
+            0.44523649630267703
+          ],
+          [
+            -0.027810864606935846,
+            0.04998292400793449,
+            0.4350459035719125
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011413130360846593,
+          0.03603953860395128,
+          0.43974517374516836
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011736547655491618,
+          0.03595673754128886,
+          0.43978667570029323
+        ],
+        "measured_face_sides_m": [
+          0.027472928166389465,
+          0.027808036655187607
+        ],
+        "plane_inliers": 777,
+        "plane_inlier_fraction": 0.7920489296636085,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0005713525915778925,
+        "plane_p95_m": 0.001054987779742129,
+        "square_boundary_rms_m": 0.0011040412497347672,
+        "face_hull_fill_ratio": 0.9099207370990157,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036060447170695245,
+          0.04023683561308607,
+          0.45374309565439597
+        ],
+        "face_center_color_m": [
+          -0.036744589164613164,
+          0.03519304323498384,
+          0.4401658312031058
+        ],
+        "outward_normal_color": [
+          -0.04718220647709814,
+          -0.34784775021394687,
+          -0.936363065606215
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.551115123125783e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.98351226402922,
+        "normal_difference_B_deg": 9.599834824516362,
+        "face_method_disagreement_deg": 5.568394845085004,
+        "table_method_disagreement_deg": 0.12472242960394633,
+        "face_normal_depth_A": [
+          -0.030238946324415164,
+          -0.3509814156409915,
+          -0.9358940388739716
+        ],
+        "table_normal_depth_A": [
+          0.008313634509493552,
+          -0.4229962687239597,
+          -0.9060932844508066
+        ],
+        "face_normal_depth_B": [
+          0.0024362533666633136,
+          -0.264079195716295,
+          -0.9644979227864454
+        ],
+        "table_normal_depth_B": [
+          0.007562254835528404,
+          -0.4211466753221259,
+          -0.9069610191000064
+        ],
+        "face_rms_A_m": 0.0005713525915778925,
+        "table_rms_A_m": 0.0010099442211960574,
+        "face_rms_B_m": 0.00788580511287601,
+        "table_rms_B_m": 0.0015408925697470812,
+        "table_native_samples": 33046,
+        "table_plane_inliers": 27323,
+        "face_center_height_above_table_candidate_m": 0.028102413167170517,
+        "height_minus_nominal_edge_m": -0.0008975868328294848,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 703,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.03873446892946359,
+          -0.36263497988829607,
+          -0.931125937925782
+        ],
+        "normal_depth_B": [
+          -0.038524898773184976,
+          -0.31828270279738247,
+          -0.947212728627793
+        ],
+        "method_disagreement_deg": 2.7034661669628144,
+        "difference_from_table_A_deg": 4.61476482295376,
+        "difference_from_table_B_deg": 6.8617183535969914
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.02118489583333,
+        112.9393359375,
+        114.0663671875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 10,
+      "stamps_ns": {
+        "rgb": "1791972218958347155",
+        "depth": "1791972218899030153",
+        "depth_info": "1791972218899030153",
+        "feedback": "1791972218956979420"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "3f14c2529f99d86d77d1e76a543f6201f493ecd93bea034e7dc5a382c3572567",
+        "depth": "75aa3c1d1efad1f4e032f7bdc2f2d1ee9f5953b346bcb3f0a5eada0372d94dcf"
+      },
+      "native_selected_points": 132,
+      "color_pixel_coverage": 0.15302491103202848,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.15059895833333,
+        113.07295572916667,
+        114.1946875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 11,
+      "stamps_ns": {
+        "rgb": "1791972219558421260",
+        "depth": "1791972219533645945",
+        "depth_info": "1791972219533645945",
+        "feedback": "1791972219556852298"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "10baa102adec660a6d046613814ebe1661ba0f3144ef816ece58bdc8ccd7c723",
+        "depth": "353befeac5e0fab8f03966ef06d5a2033a458d08ff40d68c38e7d920308ea093"
+      },
+      "native_selected_points": 1024,
+      "color_pixel_coverage": 0.9446366782006921,
+      "plane_inliers": 791,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.012298317285001746,
+          0.035281663862027586,
+          0.44028956533022656
+        ],
+        "cube_center_depth_m": [
+          -0.012653550072788644,
+          0.04048949370578489,
+          0.45381740026361306
+        ],
+        "outward_normal_depth": [
+          0.024498812950820587,
+          -0.3591606788798139,
+          -0.9329541333369998
+        ],
+        "face_corners_depth_m": [
+          [
+            -0.001480603765058243,
+            0.01912129458809016,
+            0.44679491229487117
+          ],
+          [
+            -0.029711665427544415,
+            0.02502986004187374,
+            0.4437789527979184
+          ],
+          [
+            -0.023116030804945245,
+            0.051442033135965015,
+            0.4337842183655819
+          ],
+          [
+            0.0051150308575409215,
+            0.04553346768218143,
+            0.43680017786253467
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.01210095963190875,
+          0.03644566326579704,
+          0.43984664131812323
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011844306326180826,
+          0.0353265588653454,
+          0.4402842040909829
+        ],
+        "measured_face_sides_m": [
+          0.028333259746432304,
+          0.030037445947527885
+        ],
+        "plane_inliers": 789,
+        "plane_inlier_fraction": 0.928235294117647,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006519203078318689,
+        "plane_p95_m": 0.0013184293089322017,
+        "square_boundary_rms_m": 0.0008859633445577421,
+        "face_hull_fill_ratio": 0.8419198876251295,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.03569546340832374,
+          0.03950878540639463,
+          0.45420283760492103
+        ],
+        "face_center_color_m": [
+          -0.03558675325792623,
+          0.034337512087377876,
+          0.4406567637806724
+        ],
+        "outward_normal_color": [
+          0.0074972517515522995,
+          -0.35663953924253433,
+          -0.9342119878792124
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.594315114139762e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 850,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 3.9586393100338335,
+        "normal_difference_B_deg": 5.212875252311627,
+        "face_method_disagreement_deg": 1.3567709217960011,
+        "table_method_disagreement_deg": 0.13128836755853243,
+        "face_normal_depth_A": [
+          0.024498812950820587,
+          -0.3591606788798139,
+          -0.9329541333369998
+        ],
+        "table_normal_depth_A": [
+          0.006234216726800658,
+          -0.42060900634700066,
+          -0.9072205896702256
+        ],
+        "face_normal_depth_B": [
+          0.027759083420095625,
+          -0.33714567952688573,
+          -0.9410431573865413
+        ],
+        "table_normal_depth_B": [
+          0.00508208318911319,
+          -0.4188139629196696,
+          -0.9080578378572483
+        ],
+        "face_rms_A_m": 0.0006519203078318689,
+        "table_rms_A_m": 0.0010153184618076048,
+        "face_rms_B_m": 0.0009338960069171758,
+        "table_rms_B_m": 0.0015462464542652242,
+        "table_native_samples": 38043,
+        "table_plane_inliers": 31269,
+        "face_center_height_above_table_candidate_m": 0.028104333936016607,
+        "height_minus_nominal_edge_m": -0.0008956660639833948,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 789,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.03576482936972502,
+        0.039463869949032886,
+        0.4542233827509375
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.012722696456727243,
+        0.04044387032395316,
+        0.4538371086994306
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.012366367876424979,
+          0.035250716518348525,
+          0.44030366185488307
+        ],
+        "cube_center_depth_m": [
+          -0.012722696456727243,
+          0.04044387032395316,
+          0.4538371086994306
+        ],
+        "outward_normal_depth": [
+          0.024574384848432003,
+          -0.35814853831756144,
+          -0.933341161692934
+        ],
+        "face_corners_depth_m": [
+          [
+            -0.0013486504207471748,
+            0.019202905659858844,
+            0.4467517366619083
+          ],
+          [
+            -0.029653818872814604,
+            0.02480896983722237,
+            0.4438552761772186
+          ],
+          [
+            -0.02338408533210278,
+            0.05129852737683821,
+            0.4338555870478578
+          ],
+          [
+            0.004921083119964647,
+            0.045692463199474675,
+            0.43675204753254754
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.012096568489166149,
+          0.036478989091250386,
+          0.4398394437420977
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.011844356586700687,
+          0.03532847138080217,
+          0.4402875694712806
+        ],
+        "measured_face_sides_m": [
+          0.02833293192088604,
+          0.030040493234992027
+        ],
+        "plane_inliers": 791,
+        "plane_inlier_fraction": 0.7724609375,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006590150930659566,
+        "plane_p95_m": 0.00132589538968367,
+        "square_boundary_rms_m": 0.0008915192807080565,
+        "face_hull_fill_ratio": 0.8419280301545305,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.03576482936972502,
+          0.039463869949032886,
+          0.4542233827509375
+        ],
+        "face_center_color_m": [
+          -0.03565493928089502,
+          0.034307276261264334,
+          0.44067172353850614
+        ],
+        "outward_normal_color": [
+          0.007578626815862027,
+          -0.35562715088059055,
+          -0.9345971870642308
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.597004042492165e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.019687734831981,
+        "normal_difference_B_deg": 9.014433297828772,
+        "face_method_disagreement_deg": 5.092586964937187,
+        "table_method_disagreement_deg": 0.13128836755853243,
+        "face_normal_depth_A": [
+          0.024574384848432003,
+          -0.35814853831756144,
+          -0.933341161692934
+        ],
+        "table_normal_depth_A": [
+          0.006234216726800658,
+          -0.42060900634700066,
+          -0.9072205896702256
+        ],
+        "face_normal_depth_B": [
+          0.056187623171660955,
+          -0.2790539646548632,
+          -0.9586301872008423
+        ],
+        "table_normal_depth_B": [
+          0.00508208318911319,
+          -0.4188139629196696,
+          -0.9080578378572483
+        ],
+        "face_rms_A_m": 0.0006590150930659566,
+        "table_rms_A_m": 0.0010153184618076048,
+        "face_rms_B_m": 0.009892742259716503,
+        "table_rms_B_m": 0.0015462464542652242,
+        "table_native_samples": 38043,
+        "table_plane_inliers": 31269,
+        "face_center_height_above_table_candidate_m": 0.028104137767944043,
+        "height_minus_nominal_edge_m": -0.0008958622320559585,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 718,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          0.01086420612897194,
+          -0.3704179998878774,
+          -0.9288016334956843
+        ],
+        "normal_depth_B": [
+          0.010185159149586974,
+          -0.3200681294464289,
+          -0.9473397780341336
+        ],
+        "method_disagreement_deg": 3.07477386163986,
+        "difference_from_table_A_deg": 3.141914178574424,
+        "difference_from_table_B_deg": 6.098851460299698
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.17936197916667,
+        113.07837239583333,
+        114.21436197916667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 12,
+      "stamps_ns": {
+        "rgb": "1791972220158352237",
+        "depth": "1791972220068739306",
+        "depth_info": "1791972220068739306",
+        "feedback": "1791972220156830059"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "89b7a416fd9fd40f40cc7d4f29f03bbe23ff4a802b5b80640e45f12d8ae09067",
+        "depth": "cc113991570703e91abc254438aaa761ea13d591b911fdabf9b4249c77cc8e64"
+      },
+      "native_selected_points": 143,
+      "color_pixel_coverage": 0.15384615384615385,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.16255208333334,
+        113.08006510416666,
+        114.22798177083334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 13,
+      "stamps_ns": {
+        "rgb": "1791972220758373426",
+        "depth": "1791972220731630086",
+        "depth_info": "1791972220731630086",
+        "feedback": "1791972220757157598"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "5f7569c4fe1dc39ead511f2b5fca8b7e0da8d0351beb1faaf54562520e0f7af0",
+        "depth": "dfe9036e48f4557df22810ec986a647c862a08bc2d2959a270f0160d9ed7ec96"
+      },
+      "native_selected_points": 123,
+      "color_pixel_coverage": 0.14545454545454545,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.147109375,
+        113.07596354166667,
+        114.21255208333334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 14,
+      "stamps_ns": {
+        "rgb": "1791972221558433910",
+        "depth": "1791972221534825309",
+        "depth_info": "1791972221534825309",
+        "feedback": "1791972221556889607"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "f4c4a67862ebe945d1c9810d53e410fbdda607d6039c5d4a3d3eeb79e227d48e",
+        "depth": "d385cc7592c7422ced4c1a87182e00416f4d56502e12b72483e39c2229d807ed"
+      },
+      "native_selected_points": 1067,
+      "color_pixel_coverage": 0.9530201342281879,
+      "plane_inliers": 846,
+      "minimum_800_face_inliers_met": true,
+      "face_quality_candidate": true,
+      "good_top_frame": true,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.01278979302856902,
+          0.03556102970331663,
+          0.4399532943624869
+        ],
+        "cube_center_depth_m": [
+          -0.012997987002063163,
+          0.040745701994811326,
+          0.4534930812330107
+        ],
+        "outward_normal_depth": [
+          0.014358205068561655,
+          -0.35756360630997924,
+          -0.933778404863708
+        ],
+        "face_corners_depth_m": [
+          [
+            -4.183151530327486e-05,
+            0.02062752258602886,
+            0.44586767027497426
+          ],
+          [
+            -0.028849145063912673,
+            0.023572338713991347,
+            0.4442970830966882
+          ],
+          [
+            -0.02553775454183476,
+            0.050494536820604397,
+            0.4340389184499996
+          ],
+          [
+            0.003269559006774633,
+            0.04754972069264192,
+            0.4356095056282856
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011966346848154555,
+          0.03591663496142606,
+          0.4398297872340393
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.012940368124910864,
+          0.035508920833554156,
+          0.4399709326449699
+        ],
+        "measured_face_sides_m": [
+          0.02889353036880493,
+          0.029924873262643814
+        ],
+        "plane_inliers": 846,
+        "plane_inlier_fraction": 0.9368770764119602,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006545788029706212,
+        "plane_p95_m": 0.001251491262158404,
+        "square_boundary_rms_m": 0.0010648322876191147,
+        "face_hull_fill_ratio": 0.9011349283134278,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036041531962594776,
+          0.039769742009439855,
+          0.4538840892238579
+        ],
+        "face_center_color_m": [
+          -0.0360797474487041,
+          0.034623283587428146,
+          0.44032818619253306
+        ],
+        "outward_normal_color": [
+          -0.0026355507661601756,
+          -0.35492816703529007,
+          -0.9348898642293031
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.553824967135427e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 903,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.178126803817252,
+        "normal_difference_B_deg": 5.232343353922324,
+        "face_method_disagreement_deg": 1.2700460602739772,
+        "table_method_disagreement_deg": 0.2438788068604107,
+        "face_normal_depth_A": [
+          0.014358205068561655,
+          -0.35756360630997924,
+          -0.933778404863708
+        ],
+        "table_normal_depth_A": [
+          0.009003130906749906,
+          -0.4244989126374323,
+          -0.9053836848560468
+        ],
+        "face_normal_depth_B": [
+          0.016072205890146487,
+          -0.3368301725032578,
+          -0.9414282336371956
+        ],
+        "table_normal_depth_B": [
+          0.007349625215202107,
+          -0.42095015893919446,
+          -0.9070539932651545
+        ],
+        "face_rms_A_m": 0.0006545788029706212,
+        "table_rms_A_m": 0.0009803437046209452,
+        "face_rms_B_m": 0.000922320624212782,
+        "table_rms_B_m": 0.0015714241699767034,
+        "table_native_samples": 34751,
+        "table_plane_inliers": 27988,
+        "face_center_height_above_table_candidate_m": 0.028326595015795198,
+        "height_minus_nominal_edge_m": -0.0006734049842048034,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 846,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.036041531962594776,
+        0.039769742009439855,
+        0.4538840892238579
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.012997987002063163,
+        0.040745701994811326,
+        0.4534930812330107
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.01278979302856902,
+          0.03556102970331663,
+          0.4399532943624869
+        ],
+        "cube_center_depth_m": [
+          -0.012997987002063163,
+          0.040745701994811326,
+          0.4534930812330107
+        ],
+        "outward_normal_depth": [
+          0.014358205068561655,
+          -0.35756360630997924,
+          -0.933778404863708
+        ],
+        "face_corners_depth_m": [
+          [
+            -4.183151530327486e-05,
+            0.02062752258602886,
+            0.44586767027497426
+          ],
+          [
+            -0.028849145063912673,
+            0.023572338713991347,
+            0.4442970830966882
+          ],
+          [
+            -0.02553775454183476,
+            0.050494536820604397,
+            0.4340389184499996
+          ],
+          [
+            0.003269559006774633,
+            0.04754972069264192,
+            0.4356095056282856
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011966346848154555,
+          0.03591663496142606,
+          0.4398297872340393
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.012940368124910864,
+          0.035508920833554156,
+          0.4399709326449699
+        ],
+        "measured_face_sides_m": [
+          0.02889353036880493,
+          0.029924873262643814
+        ],
+        "plane_inliers": 846,
+        "plane_inlier_fraction": 0.7928772258669166,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006545788029706212,
+        "plane_p95_m": 0.001251491262158404,
+        "square_boundary_rms_m": 0.0010648322876191147,
+        "face_hull_fill_ratio": 0.9011349283134278,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036041531962594776,
+          0.039769742009439855,
+          0.4538840892238579
+        ],
+        "face_center_color_m": [
+          -0.0360797474487041,
+          0.034623283587428146,
+          0.44032818619253306
+        ],
+        "outward_normal_color": [
+          -0.0026355507661601756,
+          -0.35492816703529007,
+          -0.9348898642293031
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.553824967135427e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.178126803817252,
+        "normal_difference_B_deg": 9.040952456915013,
+        "face_method_disagreement_deg": 5.119476956080676,
+        "table_method_disagreement_deg": 0.2438788068604107,
+        "face_normal_depth_A": [
+          0.014358205068561655,
+          -0.35756360630997924,
+          -0.933778404863708
+        ],
+        "table_normal_depth_A": [
+          0.009003130906749906,
+          -0.4244989126374323,
+          -0.9053836848560468
+        ],
+        "face_normal_depth_B": [
+          0.040053347090808905,
+          -0.27621914558736504,
+          -0.9602597112228594
+        ],
+        "table_normal_depth_B": [
+          0.007349625215202107,
+          -0.42095015893919446,
+          -0.9070539932651545
+        ],
+        "face_rms_A_m": 0.0006545788029706212,
+        "table_rms_A_m": 0.0009803437046209452,
+        "face_rms_B_m": 0.008899445916400038,
+        "table_rms_B_m": 0.0015714241699767034,
+        "table_native_samples": 34751,
+        "table_plane_inliers": 27988,
+        "face_center_height_above_table_candidate_m": 0.028326595015795198,
+        "height_minus_nominal_edge_m": -0.0006734049842048034,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 770,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          0.009648120099131189,
+          -0.3782950637451373,
+          -0.9256347867947785
+        ],
+        "normal_depth_B": [
+          0.012683406916712813,
+          -0.3240612995752782,
+          -0.945951058621199
+        ],
+        "method_disagreement_deg": 3.3232579944862866,
+        "difference_from_table_A_deg": 2.890944766773204,
+        "difference_from_table_B_deg": 5.992505809985902
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.120625,
+        113.02919270833333,
+        114.14428385416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 15,
+      "stamps_ns": {
+        "rgb": "1791972222158382557",
+        "depth": "1791972222099439804",
+        "depth_info": "1791972222099439804",
+        "feedback": "1791972222156950756"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "d5ce1b3038a308f799eb2a2e85171da3bed5e86d7c2e6f8f97d491b4c86b691f",
+        "depth": "cad08b88609855d2992bc075e85d57ddc092e0dd9b8ea376c9783a910607c807"
+      },
+      "native_selected_points": 989,
+      "color_pixel_coverage": 0.9366197183098591,
+      "plane_inliers": 804,
+      "minimum_800_face_inliers_met": true,
+      "face_quality_candidate": true,
+      "good_top_frame": true,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.01328507001589288,
+          0.03636139422712094,
+          0.43959474441201424
+        ],
+        "cube_center_depth_m": [
+          -0.012953627755328018,
+          0.04150863629091559,
+          0.45314635114939467
+        ],
+        "outward_normal_depth": [
+          -0.022858086935507733,
+          -0.3549822112961831,
+          -0.9345935680952021
+        ],
+        "face_corners_depth_m": [
+          [
+            0.000789609918240371,
+            0.0501853021284764,
+            0.43399984002618697
+          ],
+          [
+            0.001620756925526056,
+            0.02307940007683431,
+            0.44427501732972124
+          ],
+          [
+            -0.02735974995002613,
+            0.022537486325765473,
+            0.4451896487978415
+          ],
+          [
+            -0.028190896957311813,
+            0.04964338837740756,
+            0.43491447149430723
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011550539112558053,
+          0.03609309391900403,
+          0.4396542288557167
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.01187174490292504,
+          0.035838047184708594,
+          0.4397589580202924
+        ],
+        "measured_face_sides_m": [
+          0.02779344655573368,
+          0.029470039531588554
+        ],
+        "plane_inliers": 804,
+        "plane_inlier_fraction": 0.9327146171693735,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006214738939111166,
+        "plane_p95_m": 0.0012584365280865666,
+        "square_boundary_rms_m": 0.0006225380098558521,
+        "face_hull_fill_ratio": 0.8977442362687533,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.035993563746646515,
+          0.04053316543864602,
+          0.4535389198261223
+        ],
+        "face_center_color_m": [
+          -0.03657107997524157,
+          0.03543012777505734,
+          0.43997885038103657
+        ],
+        "outward_normal_color": [
+          -0.0398287054203487,
+          -0.35193363197163313,
+          -0.9351772031093616
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 1.1125245686377491e-16,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 862,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.597436125450941,
+        "normal_difference_B_deg": 5.609051458670813,
+        "face_method_disagreement_deg": 1.2688885107453234,
+        "table_method_disagreement_deg": 0.11805094365205071,
+        "face_normal_depth_A": [
+          -0.022858086935507733,
+          -0.3549822112961831,
+          -0.9345935680952021
+        ],
+        "table_normal_depth_A": [
+          0.00910057863644281,
+          -0.4228430057330304,
+          -0.9061572556522065
+        ],
+        "face_normal_depth_B": [
+          -0.01955967012610413,
+          -0.33445066820620456,
+          -0.9422102577668008
+        ],
+        "table_normal_depth_B": [
+          0.007654302544000208,
+          -0.4215179067136017,
+          -0.9067877733915186
+        ],
+        "face_rms_A_m": 0.0006214738939111166,
+        "table_rms_A_m": 0.0009973217137394636,
+        "face_rms_B_m": 0.0009446444892033169,
+        "table_rms_B_m": 0.0015549428234680003,
+        "table_native_samples": 33081,
+        "table_plane_inliers": 26986,
+        "face_center_height_above_table_candidate_m": 0.028227633039227144,
+        "height_minus_nominal_edge_m": -0.0007723669607728571,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 804,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.035993563746646515,
+        0.04053316543864602,
+        0.4535389198261223
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.012953627755328018,
+        0.04150863629091559,
+        0.45314635114939467
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.01328507001589288,
+          0.03636139422712094,
+          0.43959474441201424
+        ],
+        "cube_center_depth_m": [
+          -0.012953627755328018,
+          0.04150863629091559,
+          0.45314635114939467
+        ],
+        "outward_normal_depth": [
+          -0.022858086935507733,
+          -0.3549822112961831,
+          -0.9345935680952021
+        ],
+        "face_corners_depth_m": [
+          [
+            0.000789609918240371,
+            0.0501853021284764,
+            0.43399984002618697
+          ],
+          [
+            0.001620756925526056,
+            0.02307940007683431,
+            0.44427501732972124
+          ],
+          [
+            -0.02735974995002613,
+            0.022537486325765473,
+            0.4451896487978415
+          ],
+          [
+            -0.028190896957311813,
+            0.04964338837740756,
+            0.43491447149430723
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011550539112558053,
+          0.03609309391900403,
+          0.4396542288557167
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.01187174490292504,
+          0.035838047184708594,
+          0.4397589580202924
+        ],
+        "measured_face_sides_m": [
+          0.02779344655573368,
+          0.029470039531588554
+        ],
+        "plane_inliers": 804,
+        "plane_inlier_fraction": 0.8129423660262892,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006214738939111166,
+        "plane_p95_m": 0.0012584365280865666,
+        "square_boundary_rms_m": 0.0006225380098558521,
+        "face_hull_fill_ratio": 0.8977442362687533,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.035993563746646515,
+          0.04053316543864602,
+          0.4535389198261223
+        ],
+        "face_center_color_m": [
+          -0.03657107997524157,
+          0.03543012777505734,
+          0.43997885038103657
+        ],
+        "outward_normal_color": [
+          -0.0398287054203487,
+          -0.35193363197163313,
+          -0.9351772031093616
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 1.1125245686377491e-16
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.597436125450941,
+        "normal_difference_B_deg": 9.090336072677434,
+        "face_method_disagreement_deg": 5.179291279258771,
+        "table_method_disagreement_deg": 0.11805094365205071,
+        "face_normal_depth_A": [
+          -0.022858086935507733,
+          -0.3549822112961831,
+          -0.9345935680952021
+        ],
+        "table_normal_depth_A": [
+          0.00910057863644281,
+          -0.4228430057330304,
+          -0.9061572556522065
+        ],
+        "face_normal_depth_B": [
+          0.0035207144617405307,
+          -0.2730146819979166,
+          -0.9620034241016273
+        ],
+        "table_normal_depth_B": [
+          0.007654302544000208,
+          -0.4215179067136017,
+          -0.9067877733915186
+        ],
+        "face_rms_A_m": 0.0006214738939111166,
+        "table_rms_A_m": 0.0009973217137394636,
+        "face_rms_B_m": 0.007760296520493868,
+        "table_rms_B_m": 0.0015549428234680003,
+        "table_native_samples": 33081,
+        "table_plane_inliers": 26986,
+        "face_center_height_above_table_candidate_m": 0.028227633039227144,
+        "height_minus_nominal_edge_m": -0.0007723669607728571,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 707,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.03675165229184585,
+          -0.37644387178479227,
+          -0.9257101746494385
+        ],
+        "normal_depth_B": [
+          -0.031457024750845185,
+          -0.3284968260810936,
+          -0.9439810860650082
+        ],
+        "method_disagreement_deg": 2.9558007292644066,
+        "difference_from_table_A_deg": 3.9026025669043936,
+        "difference_from_table_B_deg": 6.164856732122992
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.02893229166666,
+        112.93419270833333,
+        114.10627604166666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 16,
+      "stamps_ns": {
+        "rgb": "1791972222758401500",
+        "depth": "1791972222733804759",
+        "depth_info": "1791972222733804759",
+        "feedback": "1791972222756859174"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "e476c7b51e225ea020a85f2b077f2451130e4d62f3cd5c9373f1b2ca26016dad",
+        "depth": "540233acf3661e4a33dc3a4350f649610a643278c18f766d659834e96d16b0e0"
+      },
+      "native_selected_points": 142,
+      "color_pixel_coverage": 0.15789473684210525,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.058046875,
+        112.97856770833333,
+        114.08388020833333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 17,
+      "stamps_ns": {
+        "rgb": "1791972223358413979",
+        "depth": "1791972223333567967",
+        "depth_info": "1791972223333567967",
+        "feedback": "1791972223353434568"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "0388b843bbbf27b55569f2a6fe38241bc0ce0b83c8fc01323b66871e182d281f",
+        "depth": "e46e32136e527535f834394c5c7acf0614cf8b20e6e7df4c149511ac0a20b7fe"
+      },
+      "native_selected_points": 142,
+      "color_pixel_coverage": 0.1601423487544484,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.13639322916667,
+        113.05765625,
+        114.2075390625
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 18,
+      "stamps_ns": {
+        "rgb": "1791972223958402232",
+        "depth": "1791972223932379933",
+        "depth_info": "1791972223932379933",
+        "feedback": "1791972223956859411"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "87cd31b171114053a2f3e1e77bbf6dfb9c2f67aab3a6e80d2761802ff505dc91",
+        "depth": "ec7696f8e562cb494081e037cd34c80802030c245e40ce10a1f6bbc871e96aff"
+      },
+      "native_selected_points": 132,
+      "color_pixel_coverage": 0.14590747330960854,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.17053385416666,
+        113.081015625,
+        114.20868489583333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 19,
+      "stamps_ns": {
+        "rgb": "1791972224558456487",
+        "depth": "1791972224532297540",
+        "depth_info": "1791972224532297540",
+        "feedback": "1791972224556937382"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "206d01a4d71317733b3843907a940ea7b57e18e50e3a599da844c166a3530478",
+        "depth": "b972fcd3426044f79612799eb460c8b997420200fed74499f56653c8819bdfe9"
+      },
+      "native_selected_points": 1059,
+      "color_pixel_coverage": 0.9461279461279462,
+      "plane_inliers": 823,
+      "minimum_800_face_inliers_met": true,
+      "face_quality_candidate": true,
+      "good_top_frame": true,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013519251447988885,
+          0.03606975825197839,
+          0.4399336719029725
+        ],
+        "cube_center_depth_m": [
+          -0.013743803748532438,
+          0.04105365293701382,
+          0.4535483834325201
+        ],
+        "outward_normal_depth": [
+          0.015486365554727795,
+          -0.3437168748300295,
+          -0.9389456227274203
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0005583639399632401,
+            0.022144450955323185,
+            0.44526345254410726
+          ],
+          [
+            -0.028426293324817928,
+            0.02276910397368544,
+            0.4445567334699206
+          ],
+          [
+            -0.02759686683594101,
+            0.049995065548633595,
+            0.43460389126183774
+          ],
+          [
+            0.001387790428840156,
+            0.049370412530271336,
+            0.43531061033602436
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.012040444158409548,
+          0.035988388056498295,
+          0.4399878493317126
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.013683941834095497,
+          0.036346723556774437,
+          0.43982956778644283
+        ],
+        "measured_face_sides_m": [
+          0.029027557000517845,
+          0.02969628944993019
+        ],
+        "plane_inliers": 823,
+        "plane_inlier_fraction": 0.9352272727272727,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006690999076405705,
+        "plane_p95_m": 0.0013873711276581192,
+        "square_boundary_rms_m": 0.0005080616416520898,
+        "face_hull_fill_ratio": 0.8575322910837259,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036783046282262644,
+          0.04008574299494571,
+          0.4539506823951722
+        ],
+        "face_center_color_m": [
+          -0.03680372667623871,
+          0.0351400907519966,
+          0.4403201982474738
+        ],
+        "outward_normal_color": [
+          -0.0014262340673151398,
+          -0.3410794650309727,
+          -0.9400333894964444
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.605063087764203e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 880,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.871501661039244,
+        "normal_difference_B_deg": 6.027119849430502,
+        "face_method_disagreement_deg": 1.3024364471815062,
+        "table_method_disagreement_deg": 0.1873659915501609,
+        "face_normal_depth_A": [
+          0.015486365554727795,
+          -0.3437168748300295,
+          -0.9389456227274203
+        ],
+        "table_normal_depth_A": [
+          0.007405862241172932,
+          -0.42190714518186384,
+          -0.9066087987930376
+        ],
+        "face_normal_depth_B": [
+          0.017746869416558002,
+          -0.32237758517435905,
+          -0.9464447903618365
+        ],
+        "table_normal_depth_B": [
+          0.005656822637622434,
+          -0.41940523907904853,
+          -0.907781496721922
+        ],
+        "face_rms_A_m": 0.0006690999076405705,
+        "table_rms_A_m": 0.0010301534356081062,
+        "face_rms_B_m": 0.0008939892565327026,
+        "table_rms_B_m": 0.0015652595217815202,
+        "table_native_samples": 36258,
+        "table_plane_inliers": 29415,
+        "face_center_height_above_table_candidate_m": 0.028049645984931093,
+        "height_minus_nominal_edge_m": -0.0009503540150689084,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 823,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.036783046282262644,
+        0.04008574299494571,
+        0.4539506823951722
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.013743803748532438,
+        0.04105365293701382,
+        0.4535483834325201
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013519251447988885,
+          0.03606975825197839,
+          0.4399336719029725
+        ],
+        "cube_center_depth_m": [
+          -0.013743803748532438,
+          0.04105365293701382,
+          0.4535483834325201
+        ],
+        "outward_normal_depth": [
+          0.015486365554727795,
+          -0.3437168748300295,
+          -0.9389456227274203
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0005583639399632401,
+            0.022144450955323185,
+            0.44526345254410726
+          ],
+          [
+            -0.028426293324817928,
+            0.02276910397368544,
+            0.4445567334699206
+          ],
+          [
+            -0.02759686683594101,
+            0.049995065548633595,
+            0.43460389126183774
+          ],
+          [
+            0.001387790428840156,
+            0.049370412530271336,
+            0.43531061033602436
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.012040444158409548,
+          0.035988388056498295,
+          0.4399878493317126
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.013683941834095497,
+          0.036346723556774437,
+          0.43982956778644283
+        ],
+        "measured_face_sides_m": [
+          0.029027557000517845,
+          0.02969628944993019
+        ],
+        "plane_inliers": 823,
+        "plane_inlier_fraction": 0.777148253068933,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006690999076405705,
+        "plane_p95_m": 0.0013873711276581192,
+        "square_boundary_rms_m": 0.0005080616416520898,
+        "face_hull_fill_ratio": 0.8575322910837259,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036783046282262644,
+          0.04008574299494571,
+          0.4539506823951722
+        ],
+        "face_center_color_m": [
+          -0.03680372667623871,
+          0.0351400907519966,
+          0.4403201982474738
+        ],
+        "outward_normal_color": [
+          -0.0014262340673151398,
+          -0.3410794650309727,
+          -0.9400333894964444
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.605063087764203e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.871501661039244,
+        "normal_difference_B_deg": 8.960964779772361,
+        "face_method_disagreement_deg": 4.246308718377147,
+        "table_method_disagreement_deg": 0.1873659915501609,
+        "face_normal_depth_A": [
+          0.015486365554727795,
+          -0.3437168748300295,
+          -0.9389456227274203
+        ],
+        "table_normal_depth_A": [
+          0.007405862241172932,
+          -0.42190714518186384,
+          -0.9066087987930376
+        ],
+        "face_normal_depth_B": [
+          0.031201476893630266,
+          -0.27475077083412375,
+          -0.9610090955686689
+        ],
+        "table_normal_depth_B": [
+          0.005656822637622434,
+          -0.41940523907904853,
+          -0.907781496721922
+        ],
+        "face_rms_A_m": 0.0006690999076405705,
+        "table_rms_A_m": 0.0010301534356081062,
+        "face_rms_B_m": 0.01068534972908518,
+        "table_rms_B_m": 0.0015652595217815202,
+        "table_native_samples": 36258,
+        "table_plane_inliers": 29415,
+        "face_center_height_above_table_candidate_m": 0.028049645984931093,
+        "height_minus_nominal_edge_m": -0.0009503540150689084,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 737,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.000265371734300246,
+          -0.353168960633971,
+          -0.9355595196579226
+        ],
+        "normal_depth_B": [
+          -0.0037830571670349443,
+          -0.31208678625315844,
+          -0.9500460653698043
+        ],
+        "method_disagreement_deg": 2.504214443370374,
+        "difference_from_table_A_deg": 4.297017646991564,
+        "difference_from_table_B_deg": 6.634353768637823
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.113984375,
+        113.03686197916667,
+        114.18755208333333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 20,
+      "stamps_ns": {
+        "rgb": "1791972225358693010",
+        "depth": "1791972225434700414",
+        "depth_info": "1791972225434700414",
+        "feedback": "1791972225431898120"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "717f2ed8180c33a8baa445b70c570a7c77afbac357cd716b6606a7effaf959be",
+        "depth": "377bbac17c61b634543de48e01f4098fd090624f4b789b5858e82c18afc7cc36"
+      },
+      "native_selected_points": 148,
+      "color_pixel_coverage": 0.16376306620209058,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.13524739583333,
+        113.0647265625,
+        114.229296875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 21,
+      "stamps_ns": {
+        "rgb": "1791972225958455627",
+        "depth": "1791972225868740659",
+        "depth_info": "1791972225868740659",
+        "feedback": "1791972225956934832"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "ecc60f3f9867c527144e7fb6bc25a6f47b17612b05dace9b489986d56a5a7032",
+        "depth": "20cee7e3d556471bcdf7783731951b910fcf8ab707b9b2f81002a7488b0e92e2"
+      },
+      "native_selected_points": 117,
+      "color_pixel_coverage": 0.13768115942028986,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.15515625,
+        113.07255208333333,
+        114.21834635416667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 22,
+      "stamps_ns": {
+        "rgb": "1791972226558527938",
+        "depth": "1791972226499111307",
+        "depth_info": "1791972226499111307",
+        "feedback": "1791972226556850296"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "ac0d7189288e9699b0373906aaec7bb8a75218a940a7c4121f991e9c2928b659",
+        "depth": "c0819ee61707570f8eaaf6529dd2c92413334ff9ef3b03b1f87957e52f8f4750"
+      },
+      "native_selected_points": 162,
+      "color_pixel_coverage": 0.1724137931034483,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.18256510416667,
+        113.06360677083333,
+        114.24075520833334
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 23,
+      "stamps_ns": {
+        "rgb": "1791972227158498500",
+        "depth": "1791972227134369307",
+        "depth_info": "1791972227134369307",
+        "feedback": "1791972227156883136"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "56dabf05bd6b3eeb667fd42c494d16c8aa33b0300cb199da934bfc4507388e32",
+        "depth": "70c4df72f8926844070413d19c719e2008952d4d1f399844364ca7d4c10aaaae"
+      },
+      "native_selected_points": 140,
+      "color_pixel_coverage": 0.15625,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.1005859375,
+        113.05919270833333,
+        114.1717578125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 24,
+      "stamps_ns": {
+        "rgb": "1791972227758472038",
+        "depth": "1791972227732812007",
+        "depth_info": "1791972227732812007",
+        "feedback": "1791972227757012864"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "84ba688c1d1e3dfa25ef1d98cf2ef64342e5471842ca4e78ee5dc8f7bef3a274",
+        "depth": "8f94fa8ded0159f69a39a31fe214ec734061f7b00f0c2a835559c3ffc99cf5d1"
+      },
+      "native_selected_points": 1006,
+      "color_pixel_coverage": 0.9370629370629371,
+      "plane_inliers": 797,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013039726637088083,
+          0.03565837103481206,
+          0.43995784639077806
+        ],
+        "cube_center_depth_m": [
+          -0.013069437010221391,
+          0.040893364415048664,
+          0.45347982707419154
+        ],
+        "outward_normal_depth": [
+          0.0020489912505729144,
+          -0.3610340262232144,
+          -0.93255039195955
+        ],
+        "face_corners_depth_m": [
+          [
+            -0.00024848120190252773,
+            0.02072127513322255,
+            0.44576880209905556
+          ],
+          [
+            -0.02906727401041696,
+            0.02371798349317523,
+            0.4445453152518411
+          ],
+          [
+            -0.02583097207227364,
+            0.05059546693640156,
+            0.43414689068250056
+          ],
+          [
+            0.0029878207362407927,
+            0.04759875857644888,
+            0.4353703775297151
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011439783384964018,
+          0.03611600362917003,
+          0.4397841907151778
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.012716238108109946,
+          0.03575913589974737,
+          0.43991954634819397
+        ],
+        "measured_face_sides_m": [
+          0.02844778448343277,
+          0.029418572783470154
+        ],
+        "plane_inliers": 797,
+        "plane_inlier_fraction": 0.9321637426900585,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006695148224617176,
+        "plane_p95_m": 0.0013544900022721576,
+        "square_boundary_rms_m": 0.0009970877903897396,
+        "face_hull_fill_ratio": 0.8909303302781953,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036111519326588945,
+          0.03991822295151175,
+          0.45387225097047984
+        ],
+        "face_center_color_m": [
+          -0.03632849923360268,
+          0.034723364464965836,
+          0.4403365069316333
+        ],
+        "outward_normal_color": [
+          -0.014964131518188473,
+          -0.35826610252040814,
+          -0.9334995888859628
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.561946577567963e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 855,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 3.82608477804312,
+        "normal_difference_B_deg": 4.909682360820965,
+        "face_method_disagreement_deg": 1.2760703801943347,
+        "table_method_disagreement_deg": 0.20707704519110054,
+        "face_normal_depth_A": [
+          0.0020489912505729144,
+          -0.3610340262232144,
+          -0.93255039195955
+        ],
+        "table_normal_depth_A": [
+          0.007944560574752183,
+          -0.4222087553504807,
+          -0.9064638166317904
+        ],
+        "face_normal_depth_B": [
+          0.003927851411196195,
+          -0.34024943968525273,
+          -0.9403270126807818
+        ],
+        "table_normal_depth_B": [
+          0.005996150321753786,
+          -0.4194531799942509,
+          -0.9077571679551913
+        ],
+        "face_rms_A_m": 0.0006695148224617176,
+        "table_rms_A_m": 0.0010268009048888932,
+        "face_rms_B_m": 0.0009572899481672715,
+        "table_rms_B_m": 0.00160895866805615,
+        "table_native_samples": 36229,
+        "table_plane_inliers": 29285,
+        "face_center_height_above_table_candidate_m": 0.028132787471155243,
+        "height_minus_nominal_edge_m": -0.0008672125288447588,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 797,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.036111519326588945,
+        0.03991822295151175,
+        0.45387225097047984
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.013069437010221391,
+        0.040893364415048664,
+        0.45347982707419154
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013039726637088083,
+          0.03565837103481206,
+          0.43995784639077806
+        ],
+        "cube_center_depth_m": [
+          -0.013069437010221391,
+          0.040893364415048664,
+          0.45347982707419154
+        ],
+        "outward_normal_depth": [
+          0.0020489912505729144,
+          -0.3610340262232144,
+          -0.93255039195955
+        ],
+        "face_corners_depth_m": [
+          [
+            -0.00024848120190252773,
+            0.02072127513322255,
+            0.44576880209905556
+          ],
+          [
+            -0.02906727401041696,
+            0.02371798349317523,
+            0.4445453152518411
+          ],
+          [
+            -0.02583097207227364,
+            0.05059546693640156,
+            0.43414689068250056
+          ],
+          [
+            0.0029878207362407927,
+            0.04759875857644888,
+            0.4353703775297151
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.011439783384964018,
+          0.03611600362917003,
+          0.4397841907151778
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.012716238108109946,
+          0.03575913589974737,
+          0.43991954634819397
+        ],
+        "measured_face_sides_m": [
+          0.02844778448343277,
+          0.029418572783470154
+        ],
+        "plane_inliers": 797,
+        "plane_inlier_fraction": 0.7922465208747514,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0006695148224617176,
+        "plane_p95_m": 0.0013544900022721576,
+        "square_boundary_rms_m": 0.0009970877903897396,
+        "face_hull_fill_ratio": 0.8909303302781953,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.036111519326588945,
+          0.03991822295151175,
+          0.45387225097047984
+        ],
+        "face_center_color_m": [
+          -0.03632849923360268,
+          0.034723364464965836,
+          0.4403365069316333
+        ],
+        "outward_normal_color": [
+          -0.014964131518188473,
+          -0.35826610252040814,
+          -0.9334995888859628
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.561946577567963e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 3.82608477804312,
+        "normal_difference_B_deg": 8.512449469144395,
+        "face_method_disagreement_deg": 5.01505630218034,
+        "table_method_disagreement_deg": 0.20707704519110054,
+        "face_normal_depth_A": [
+          0.0020489912505729144,
+          -0.3610340262232144,
+          -0.93255039195955
+        ],
+        "table_normal_depth_A": [
+          0.007944560574752183,
+          -0.4222087553504807,
+          -0.9064638166317904
+        ],
+        "face_normal_depth_B": [
+          0.028749424382937434,
+          -0.28200878045617606,
+          -0.9589809791352849
+        ],
+        "table_normal_depth_B": [
+          0.005996150321753786,
+          -0.4194531799942509,
+          -0.9077571679551913
+        ],
+        "face_rms_A_m": 0.0006695148224617176,
+        "table_rms_A_m": 0.0010268009048888932,
+        "face_rms_B_m": 0.009013014710290765,
+        "table_rms_B_m": 0.00160895866805615,
+        "table_native_samples": 36229,
+        "table_plane_inliers": 29285,
+        "face_center_height_above_table_candidate_m": 0.028132787471155243,
+        "height_minus_nominal_edge_m": -0.0008672125288447588,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 701,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.016909244670759695,
+          -0.3846484979464879,
+          -0.9229082351307604
+        ],
+        "normal_depth_B": [
+          -0.014266457544372215,
+          -0.3323960784719027,
+          -0.9430319799485251
+        ],
+        "method_disagreement_deg": 3.2121875768423593,
+        "difference_from_table_A_deg": 2.747417177564818,
+        "difference_from_table_B_deg": 5.507831876103162
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.109765625,
+        113.041484375,
+        114.1544921875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 25,
+      "stamps_ns": {
+        "rgb": "1791972228358504556",
+        "depth": "1791972228297230515",
+        "depth_info": "1791972228297230515",
+        "feedback": "1791972228356891436"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "800a4ad30337330bc3be5701b7df0160c014bac5b8fa3937cd849f4cb0860e81",
+        "depth": "382fb7c51fcec1213ecbc0b991bc9ff66154f2ed05efffdbed041af7a05a29d9"
+      },
+      "native_selected_points": 957,
+      "color_pixel_coverage": 0.9379562043795621,
+      "plane_inliers": 774,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013517697558645512,
+          0.03567736194725981,
+          0.4399296776454859
+        ],
+        "cube_center_depth_m": [
+          -0.013092948355738286,
+          0.04081067059098372,
+          0.45348396591462414
+        ],
+        "outward_normal_depth": [
+          -0.029293048476360467,
+          -0.35402128577406267,
+          -0.9347785013198802
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0017220638710328008,
+            0.048343436197413825,
+            0.43465518860330604
+          ],
+          [
+            0.00018955773903349404,
+            0.021277054734352006,
+            0.44495384965469564
+          ],
+          [
+            -0.028757458988323818,
+            0.0230112876971058,
+            0.4452041666876657
+          ],
+          [
+            -0.027224952856324515,
+            0.05007766916016762,
+            0.43490550563627617
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.010996462745238156,
+          0.03629285000381299,
+          0.43961757105942617
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.01084114476606365,
+          0.03548510638874238,
+          0.4399186142431243
+        ],
+        "measured_face_sides_m": [
+          0.024250824004411697,
+          0.030596338212490082
+        ],
+        "plane_inliers": 774,
+        "plane_inlier_fraction": 0.9314079422382672,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0005997671447181788,
+        "plane_p95_m": 0.0011742384945892543,
+        "square_boundary_rms_m": 0.002067852500144436,
+        "face_hull_fill_ratio": 0.8993081711981268,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.03613588551736765,
+          0.03983578183363612,
+          0.4538764856231891
+        ],
+        "face_center_color_m": [
+          -0.03680657689846516,
+          0.034747714799975946,
+          0.4403150790333997
+        ],
+        "outward_normal_color": [
+          -0.04625457800672507,
+          -0.3509011747351835,
+          -0.9352694199854775
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.594315114139762e-17,
+        "selection": {
+          "method": "measured height over local table candidate, then complete square fit",
+          "height_band_m": [
+            0.023,
+            0.035
+          ],
+          "native_height_selected_points": 831,
+          "assumption": "Identified local annulus is table; cube rests on it",
+          "physical_top_identity_independently_verified": false
+        }
+      },
+      "top_plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.748801141783613,
+        "normal_difference_B_deg": 5.609212522102384,
+        "face_method_disagreement_deg": 1.2629907471795112,
+        "table_method_disagreement_deg": 0.1810911682003288,
+        "face_normal_depth_A": [
+          -0.029293048476360467,
+          -0.35402128577406267,
+          -0.9347785013198802
+        ],
+        "table_normal_depth_A": [
+          0.008370020526787869,
+          -0.42218143312576334,
+          -0.9064727134780491
+        ],
+        "face_normal_depth_B": [
+          -0.024606596540934687,
+          -0.333841291606035,
+          -0.9423080745836183
+        ],
+        "table_normal_depth_B": [
+          0.0065076657872244585,
+          -0.41987100821711965,
+          -0.907560459002452
+        ],
+        "face_rms_A_m": 0.0005997671447181788,
+        "table_rms_A_m": 0.0010120082856473803,
+        "face_rms_B_m": 0.0009219333479948678,
+        "table_rms_B_m": 0.0015596765493550344,
+        "table_native_samples": 32778,
+        "table_plane_inliers": 26589,
+        "face_center_height_above_table_candidate_m": 0.02811618568091174,
+        "height_minus_nominal_edge_m": -0.0008838143190882629,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "top_error": null,
+      "top_plane_inliers": 774,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": [
+        -0.03613588551736765,
+        0.03983578183363612,
+        0.4538764856231891
+      ],
+      "cube_center_depth_candidate_m": [
+        -0.013092948355738286,
+        0.04081067059098372,
+        0.45348396591462414
+      ],
+      "candidate": {
+        "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+        "nominal_edge_m": 0.029,
+        "edge_is_not_confirmed_caliper_measurement": true,
+        "face_center_depth_m": [
+          -0.013517697558645512,
+          0.03567736194725981,
+          0.4399296776454859
+        ],
+        "cube_center_depth_m": [
+          -0.013092948355738286,
+          0.04081067059098372,
+          0.45348396591462414
+        ],
+        "outward_normal_depth": [
+          -0.029293048476360467,
+          -0.35402128577406267,
+          -0.9347785013198802
+        ],
+        "face_corners_depth_m": [
+          [
+            0.0017220638710328008,
+            0.048343436197413825,
+            0.43465518860330604
+          ],
+          [
+            0.00018955773903349404,
+            0.021277054734352006,
+            0.44495384965469564
+          ],
+          [
+            -0.028757458988323818,
+            0.0230112876971058,
+            0.4452041666876657
+          ],
+          [
+            -0.027224952856324515,
+            0.05007766916016762,
+            0.43490550563627617
+          ]
+        ],
+        "plane_origin_depth_m": [
+          -0.010996462745238156,
+          0.03629285000381299,
+          0.43961757105942617
+        ],
+        "measured_rectangle_center_depth_m": [
+          -0.01084114476606365,
+          0.03548510638874238,
+          0.4399186142431243
+        ],
+        "measured_face_sides_m": [
+          0.024250824004411697,
+          0.030596338212490082
+        ],
+        "plane_inliers": 774,
+        "plane_inlier_fraction": 0.8087774294670846,
+        "plane_threshold_m": 0.002,
+        "plane_rms_m": 0.0005997671447181788,
+        "plane_p95_m": 0.0011742384945892543,
+        "square_boundary_rms_m": 0.002067852500144436,
+        "face_hull_fill_ratio": 0.8993081711981268,
+        "absolute_center_verified": false,
+        "assumptions": [
+          "Selected dominant plane is one full physical cube face.",
+          "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+          "A high-support candidate is not an approved calibration pair."
+        ],
+        "coordinate_frames": {
+          "depth": "camera_depth_optical_frame",
+          "color": "camera_color_optical_frame"
+        },
+        "cube_center_color_m": [
+          -0.03613588551736765,
+          0.03983578183363612,
+          0.4538764856231891
+        ],
+        "face_center_color_m": [
+          -0.03680657689846516,
+          0.034747714799975946,
+          0.4403150790333997
+        ],
+        "outward_normal_color": [
+          -0.04625457800672507,
+          -0.3509011747351835,
+          -0.9352694199854775
+        ],
+        "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+        "C_to_D_roundtrip_error_m": 5.594315114139762e-17
+      },
+      "plane_audit": {
+        "method_A": "separate RANSAC + orthogonal SVD fits",
+        "method_B": "separate all-point robust graph regression",
+        "normal_difference_A_deg": 4.748801141783613,
+        "normal_difference_B_deg": 9.117792415092934,
+        "face_method_disagreement_deg": 5.456243129417576,
+        "table_method_disagreement_deg": 0.1810911682003288,
+        "face_normal_depth_A": [
+          -0.029293048476360467,
+          -0.35402128577406267,
+          -0.9347785013198802
+        ],
+        "table_normal_depth_A": [
+          0.008370020526787869,
+          -0.42218143312576334,
+          -0.9064727134780491
+        ],
+        "face_normal_depth_B": [
+          0.0074751774865567935,
+          -0.27074674669394155,
+          -0.9626215875805981
+        ],
+        "table_normal_depth_B": [
+          0.0065076657872244585,
+          -0.41987100821711965,
+          -0.907560459002452
+        ],
+        "face_rms_A_m": 0.0005997671447181788,
+        "table_rms_A_m": 0.0010120082856473803,
+        "face_rms_B_m": 0.007827723756390107,
+        "table_rms_B_m": 0.0015596765493550344,
+        "table_native_samples": 32778,
+        "table_plane_inliers": 26589,
+        "face_center_height_above_table_candidate_m": 0.02811618568091174,
+        "height_minus_nominal_edge_m": -0.0008838143190882629,
+        "top_identity_confirmed": false,
+        "reason": "Automatic annulus/table and dominant face require witness review; no normal/height threshold silently declares a top.",
+        "mounting_TF_can_change_relative_normal_angle": false
+      },
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 677,
+        "used_to_replace_center_or_filter_good_frames": false,
+        "normal_depth_A": [
+          -0.036540106337847114,
+          -0.3720854566731925,
+          -0.9274789666408185
+        ],
+        "normal_depth_B": [
+          -0.02737591722877166,
+          -0.32238604261927717,
+          -0.9462123433353451
+        ],
+        "method_disagreement_deg": 3.088480100093595,
+        "difference_from_table_A_deg": 4.039188677565766,
+        "difference_from_table_B_deg": 6.317544047135337
+      },
+      "rejected": {},
+      "brightness_mean_bgr": [
+        114.0401171875,
+        112.95658854166666,
+        114.11619791666666
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 26,
+      "stamps_ns": {
+        "rgb": "1791972229358508127",
+        "depth": "1791972229299202718",
+        "depth_info": "1791972229299202718",
+        "feedback": "1791972229356915254"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "7331d39a3ee2d920538dc60021389d4db2942e5cbf4eb466177503d5186dab9e",
+        "depth": "32a61a4e1e11af081e6ceda53003e8f41725c7b64f24111694b9aa4178e7caee"
+      },
+      "native_selected_points": 130,
+      "color_pixel_coverage": 0.14855072463768115,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.12341145833334,
+        113.06111979166667,
+        114.16141927083333
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 27,
+      "stamps_ns": {
+        "rgb": "1791972229958518212",
+        "depth": "1791972229898116411",
+        "depth_info": "1791972229898116411",
+        "feedback": "1791972229956824900"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "958dbea0844a061d58ad19734fbf501a308a5dd46855f8ef26b7300a41eab97a",
+        "depth": "f5a5ee5679c0f161840212370c804be1b4a5d3055c661de4a0b7b7cee36e28a6"
+      },
+      "native_selected_points": 118,
+      "color_pixel_coverage": 0.13448275862068965,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.14458333333333,
+        113.08111979166667,
+        114.2182421875
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 28,
+      "stamps_ns": {
+        "rgb": "1791972230558519478",
+        "depth": "1791972230497183673",
+        "depth_info": "1791972230497183673",
+        "feedback": "1791972230557239791"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "8d9ef445871d9f63be5d0a26f44a0c3db3cf622b8f6b4aa9d185a1a19b84cda4",
+        "depth": "311cfdf928007bde2bc27bd21b547b09698b0f59aea051ce51860d16d5348133"
+      },
+      "native_selected_points": 141,
+      "color_pixel_coverage": 0.15120274914089346,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.12286458333334,
+        113.063203125,
+        114.1887109375
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 29,
+      "stamps_ns": {
+        "rgb": "1791972231358571942",
+        "depth": "1791972231329697050",
+        "depth_info": "1791972231329697050",
+        "feedback": "1791972231357111502"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "d23c13aeb423af70a04b02cdfc2493658593d46c855644a64cd61fe7c785e5c8",
+        "depth": "341cc5d700407ad6e9698fa110d0c9370abb67cd9797fe36fb2f68102869add0"
+      },
+      "native_selected_points": 112,
+      "color_pixel_coverage": 0.13653136531365315,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.06772135416666,
+        113.01334635416667,
+        114.145078125
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    },
+    {
+      "snapshot": 30,
+      "stamps_ns": {
+        "rgb": "1791972231958556389",
+        "depth": "1791972231929828870",
+        "depth_info": "1791972231929828870",
+        "feedback": "1791972231957102368"
+      },
+      "actual_q_rad": [
+        -0.141418508,
+        0.9435982920000001,
+        -1.2688067840000001,
+        -0.06872936,
+        1.220923004,
+        0.088563188
+      ],
+      "raw_image_sha256": {
+        "rgb": "46ad017e4c4f59d22db76c1fd306c078e8785ca3bd632fc787622735c76e7c11",
+        "depth": "b709b4e4dfb3a26dfea797236f5be95ad0550cad5702f0c3f7dde8f7d58994fd"
+      },
+      "native_selected_points": 139,
+      "color_pixel_coverage": 0.15602836879432624,
+      "plane_inliers": 0,
+      "minimum_800_face_inliers_met": false,
+      "face_quality_candidate": false,
+      "good_top_frame": false,
+      "top_identity_confirmed": false,
+      "top_candidate": null,
+      "top_plane_audit": null,
+      "top_error": "Insufficient real coverage or truncated color target; no top extrapolation",
+      "top_plane_inliers": 0,
+      "good_top_definition": "Complete measured square at 29+/-6mm above automatic table candidate, >=800 native plane inliers; conditional geometric quality, not physical/calibration approval",
+      "cube_center_color_candidate_m": null,
+      "cube_center_depth_candidate_m": null,
+      "candidate": null,
+      "plane_audit": null,
+      "plane_audit_error": null,
+      "edge_sensitivity_audit": {
+        "native_erosion_radius_px": 2,
+        "native_samples": 0,
+        "used_to_replace_center_or_filter_good_frames": false
+      },
+      "rejected": "Insufficient measured face coverage; edge/background samples do not define cube center",
+      "brightness_mean_bgr": [
+        114.08807291666666,
+        112.99977864583333,
+        114.13401041666667
+      ],
+      "exposure": null,
+      "gain": null,
+      "illumination_lux": null,
+      "exposure_source": "Not present in image/CameraInfo; never inferred from brightness"
+    }
+  ],
+  "witnesses": [
+    "annulus_witness_0001.png",
+    "annulus_witness_0007.png"
+  ]
+}
