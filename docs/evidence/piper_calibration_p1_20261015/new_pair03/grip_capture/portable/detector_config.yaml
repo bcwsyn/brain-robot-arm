@@ -1,0 +1,81 @@
+cube_detector:
+  ros__parameters:
+    # Astra/OpenNI remains depth-only because its libusb UVC path conflicts
+    # with the kernel-owned colour interface in VMware. The one-key script
+    # publishes low-bandwidth 320x240 BGR through image_tools/cam2image. The
+    # detector performs calibrated software colour-to-depth registration before
+    # applying colour, rectangle and metric-depth gates; hardware D2C remains
+    # off because it suppresses depth frames while OpenNI colour is disabled.
+    rgb_topic: /camera/color/image_raw
+    depth_topic: /camera/depth/image_raw
+    camera_info_topic: /camera/depth/camera_info
+    camera_optical_frame: camera_depth_optical_frame
+    debug_topic: /brain_robot_vision/debug_image
+    target_topic: /brain_robot_vision/target_pixel
+    target_point_camera_topic: /brain_robot_vision/target_point_camera
+    target_size_topic: /brain_robot_vision/target_size
+    error_topic: /brain_robot_vision/pixel_error
+    valid_topic: /brain_robot_vision/target_valid
+    depth_valid_topic: /brain_robot_vision/depth_valid
+    depth_diagnostic_topic: /brain_robot_vision/depth_diagnostic
+    input_reliability: reliable
+    # Factory calibration read on 2026-10-13 from current serial CC1365304DG
+    # via /camera/get_device_info, /camera/get_camera_info,
+    # /camera/get_camera_params and /camera/extrinsic/depth_to_color.
+    # Translation is converted from millimetres to metres; see the numeric
+    # evidence in docs/evidence/piper_camera_factory_20261013.json.
+    # This is lens-to-lens registration, not the robot mounting TF/TCP.
+    software_registration_enabled: true
+    color_calibration_width: 640
+    color_calibration_height: 480
+    color_fx: 488.80865478515625
+    color_fy: 488.80865478515625
+    color_cx: 315.5068054199219
+    color_cy: 214.38182067871094
+    color_mirror_horizontal: false
+    depth_to_color_rotation: [0.9998412728309631, 0.011080970056355, 0.01395333744585514,
+      -0.011040600016713142, 0.9999346137046814, -0.0029670665971934795,
+      -0.013985303230583668, 0.0028125427197664976, 0.9998982548713684]
+    depth_to_color_translation_m: [-0.029824851989746094, 0.0002287428230047226, 0.0001407688856124878]
+
+    # OpenCV HSV hue is 0..179. These bounds are deliberately parameters:
+    # purple depends on illumination and the material finish.
+    hue_low_1: 125
+    hue_high_1: 160
+    hue_low_2: 0
+    hue_high_2: 0
+    # The real cube measured S=35..70 under the current ceiling lighting;
+    # rectangle, stable depth and metric size remain mandatory safety gates.
+    saturation_min: 35
+    value_min: 45
+
+    # A small cube is selected by colour plus rectangular geometry.
+    # Do not tie the detector to the 4 cm calibration sample. Pixel area is
+    # only a noise floor; physical size is estimated from depth below.
+    min_area_px: 40.0
+    max_area_px: 0.0
+    min_circularity: 0.0
+    min_rectangularity: 0.58
+    # The wrist camera sees a rotated cube face; use its oriented shape box.
+    shape_use_rotated_rectangle: true
+    min_aspect_ratio: 1.0
+    max_aspect_ratio: 1.45
+    target_label: PURPLE_CUBE
+    morphology_kernel: 3
+    sync_queue_size: 10
+    sync_age_penalty: 0.05
+    min_depth_m: 0.05
+    max_depth_m: 3.0
+    min_depth_samples: 10
+    depth_erode_px: 1
+    # depth_valid is a grasp authorization, not just a nonzero depth sample.
+    # A colour/shape-valid cube remains trackable while this gate is false.
+    max_depth_mad_m: 0.012
+    max_depth_frame_delta_m: 0.030
+    required_depth_stable_frames: 3
+    # Real-arm ALIGN is forbidden for colour-only candidates: require stable depth
+    # and a plausible physical square size before target_valid becomes true.
+    require_depth_for_target_valid: true
+    min_target_size_m: 0.015
+    max_target_size_m: 0.120
+    max_target_size_aspect_ratio: 1.45

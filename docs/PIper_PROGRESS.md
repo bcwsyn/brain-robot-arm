@@ -1,3 +1,12 @@
+## 2026-10-15 12:10 +08:00：第二组new_pair03夹持B只读归档，P1配对仍1/6
+
+- 用户“我已按照要求完成”对应第二组新位置/改变夹持倾斜/实际夹紧请求；按ROS2/PiPER技能只读取实际反馈和原图，不启动控制driver、一键、使能、开闭或运动。正常ifindex10/UP/ERROR-ACTIVE/1Mbps/.75/queue1000复用，RX2662658→3136029/TX1→1，error/drop0；根55%/34GB、共享73%/137GB，无需清理/重载。
+- runtime `.../piper_calibration_p1_20261015/new_pair03_grip.FzBGLV`，原SDK6秒60/60fresh/5.919896s/原静止通过rc0/六qspread0/速度0/六true。q_mdeg[1987,99516,-49937,-15090,26474,24769]，夹爪36.9mm/effort原2非牛顿；比名义29mm多7.9mm未知原因，保留原值，不凭它推翻用户接触确认/猜c_G。
+- 原只读桥和原RGB各90s限时；collect_static_rgbd --duration-s15 --frames5 --settle-s3采五原RGB/native16深度/同戳完整Info/真实q，5.499792s/rc0、qspread0，异戳Info4次拒绝。已看首末原RGB，方块在两指之间；B近距目标无有效深度原样保存，不将B当A或填中心。factory原三GET/内部TF成功，实际serial CC1365304DG。
+- 原review/export成功，P1/new_pair03/grip_capture/portable十九资产878007B全部SHA通过，manifestSHA7ecccb21cae3136b89fee963dca1af56a858201bf77c32c7d56265478dd3df2f；首离线review漏设PYTHONNOUSERSITE误载NumPy2失败，恢复原系统环境成功，无依赖/源码修改。原始数据不覆盖，原export中SDK contact=false仅表示SDK不验证接触，用户确认另记assessment。
+- 用两组原sdk_review实际FK比较：工具原点差[-24.225,-61.498,7.994]mm/距离66.579mm、相对旋转30.362°、工具z变化9.896°。确有位置/倾斜变化，但两组B不是两组完整点对、不证明满秩或安装精度，c_G仍未知。A尚未采、角色fit不变，正式完整进度仍1/6。
+- 本组未获开爪/回观测动作许可，不沿用第一组；下一本组授权原位张爪并核方块未移动、原轨迹回既定观测/SEARCH前停止后采A60/至少20好帧。生产算法/门/TF/TCP/模型/入口冻结，Git仅本批有限数据和文档，未远端推送。
+
 ## 2026-10-15 11:57 +08:00：纯只读补A成功，new_pair02第一组采集齐全，P1进度1/6
 
 - 用户确认链路恢复；按ROS2/PiPER技能实际核新ifindex10/DOWN/STOPPED/RX0、USB003-015，旧driver/adapter/controller已无进程。sudo-n通过后仅既有授权固定1Mbps/.75/queue1000/up一次，RX56增长；不模块/USB/xHCI重载、不启动一键或控制driver，不新使能/开闭/观测运动。root55%/34GB、共享73%/137GB，未删除。

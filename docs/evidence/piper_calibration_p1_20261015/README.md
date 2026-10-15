@@ -1,5 +1,7 @@
 # P1正式六组采集登记（2026-10-15）
 
+**12:10最新：第二组new_pair03夹持B已保存，完整配对仍1/6。** [数据与实际姿态核验](new_pair03/grip_capture/README.md)。SDK60fresh/原静止通过、五图/实际FK/工厂/19项SHA；尚未张爪或返回观测，下一须本组动作授权后采A，不沿用第一组许可。生产全冻结。
+
 **最新11:57 +08:00：第一组new_pair02采集已齐，P1进度1/6，下一new_pair03。** [配对总记录](new_pair02/pair_record.json)、[观测A完整数据](new_pair02/attempt02/observe_capture/README.md)、[夹持B](new_pair02/attempt02/grip_capture/README.md)。纯只读补A60帧/60原质量通过，TX0/无运动；137资产SHA、原图/Info/实际q/FK/工厂/质量/witness齐全。1/6是P1采集进度，不是拟合或绝对精度验收；已知法向/环带/夹爪读数风险保留。下一新位置/改变夹持倾斜真夹紧后通知，回观测需本组授权，不自动运动。
 
 **最新11:43 +08:00：新位置B9a82bab已存，开爪99.4mm/原观测返回已完成，但随后CAN再停流，A0帧、正式0/6。** [本组释放/返回与阻断证据](new_pair02/attempt02/release_observe/README.md)。下一保持方块/机械臂原位，宿主只重连USB-CAN，fresh q核观测后原只读桥+相机补A；不重走已完成的轨迹/一键运动，不复用旧位置，不把空A写成功。
