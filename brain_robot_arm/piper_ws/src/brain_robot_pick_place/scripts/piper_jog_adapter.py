@@ -267,6 +267,8 @@ class PiperJogAdapter(Node):
         self.targets = {name: self.positions[name] for name in self.joint_names}
         self.visual_baseline = {name: self.positions[name] for name in self.joint_names}
         self.velocities = {name: 0.0 for name in self.joint_names}
+        # Re-arming is a new feedback-anchored hold, not a resume request.
+        self.trajectory = None
         # Arming the six-axis motion path must not move the gripper. The grasp
         # executor sends an explicit bounded open/close burst when needed.
         self.pending_gripper_target = None
@@ -333,7 +335,8 @@ class PiperJogAdapter(Node):
         if trajectory_active:
             if not self._apply_trajectory(now, dt):
                 self.trajectory = None
-                trajectory_active = False
+                # Publish this trajectory's final bounded step before idle
+                # handling begins on the next tick; do not overwrite it.
         if not trajectory_active and now - self.last_command_time > self.command_timeout_s:
             self.velocities = {name: 0.0 for name in self.joint_names}
             self.targets.update(self.positions)
@@ -372,11 +375,27 @@ class PiperJogAdapter(Node):
         return True
 
     def _limit_visual_target(self, index, name, desired):
+        measured = self.positions.get(name, desired)
+        # A hand-guided pose can be outside the task's software envelope.
+        # Holding it must not become an implicit move to the nearest limit.
+        # Jog is not an out-of-bounds recovery path; trajectory admission
+        # retains its original bounds and start-tolerance checks.
+        if not self.joint_min[index] <= measured <= self.joint_max[index]:
+            return measured
+        current = self.targets.get(name, measured)
+        if not self.joint_min[index] <= current <= self.joint_max[index]:
+            return measured
+        if desired == current:
+            return current
         baseline = self.visual_baseline.get(name, self.positions.get(name, desired))
         delta = float(self.visual_joint_max_delta[index])
         lower = max(self.joint_min[index], baseline - delta)
         upper = min(self.joint_max[index], baseline + delta)
-        return max(lower, min(upper, desired))
+        if lower > upper:
+            return measured
+        bounded = max(lower, min(upper, desired))
+        # Clipping may shorten a requested step, never reverse or enlarge it.
+        return max(min(current, desired), min(max(current, desired), bounded))
 
     def _apply_trajectory(self, now, dt):
         points = self.trajectory.points
@@ -392,9 +411,12 @@ class PiperJogAdapter(Node):
             # trajectory converge without increasing speed or bypassing the
             # feedback watchdog.
             current = self.positions.get(name, self.targets.get(name, 0.0))
-            delta = max(-max_step, min(max_step, desired - current))
             joint_index = self.joint_names.index(name)
-            return max(self.joint_min[joint_index], min(self.joint_max[joint_index], current + delta))
+            desired = max(self.joint_min[joint_index], min(self.joint_max[joint_index], desired))
+            # Apply rate limiting last. Clipping the resulting step instead
+            # could jump an already out-of-bounds measurement to the limit.
+            delta = max(-max_step, min(max_step, desired - current))
+            return current + delta
 
         def point_time(point):
             return float(point.time_from_start.sec) + float(point.time_from_start.nanosec) * 1e-9
