@@ -1,5 +1,7 @@
 # P1正式六组采集登记（2026-10-15）
 
+**最新2026-10-15 12:23 +08:00：new_pair03本组已获张爪/原回观测许可，但arm后、张爪前实际姿态变化，当前停止，尚未A。** 原SDK预检仍匹配B；原AUTO_START=0、stop_after_observe=true回读/enable_motion/arm成功后0.220s，J3+11.286°/J5−12.334°。没有发开爪或controller/start；不伪称已返回观测/方块未动。原disarm成功、入口退出143/driver精确退出137，无Reset/Disable，末SDK仍六true/36.9mm；CAN有流/磁盘充足，根因尚未确定。完整原CAN可逆压缩、三对异常原图/实际q/FK/前后SDK已归档P1/new_pair03/release_observe；原B7650461不覆盖，完整仍1/6。当前等操作者确认方块是否仍贴桌/被带动；授权已具备，不重复要同一许可，不盲重arm。生产全冻结，无代码/TF/门修改。
+
 **12:10最新：第二组new_pair03夹持B已保存，完整配对仍1/6。** [数据与实际姿态核验](new_pair03/grip_capture/README.md)。SDK60fresh/原静止通过、五图/实际FK/工厂/19项SHA；尚未张爪或返回观测，下一须本组动作授权后采A，不沿用第一组许可。生产全冻结。
 
 **最新11:57 +08:00：第一组new_pair02采集已齐，P1进度1/6，下一new_pair03。** [配对总记录](new_pair02/pair_record.json)、[观测A完整数据](new_pair02/attempt02/observe_capture/README.md)、[夹持B](new_pair02/attempt02/grip_capture/README.md)。纯只读补A60帧/60原质量通过，TX0/无运动；137资产SHA、原图/Info/实际q/FK/工厂/质量/witness齐全。1/6是P1采集进度，不是拟合或绝对精度验收；已知法向/环带/夹爪读数风险保留。下一新位置/改变夹持倾斜真夹紧后通知，回观测需本组授权，不自动运动。
