@@ -2,6 +2,8 @@
 
 ## 最高优先（2026-10-15）：采用P0—P5；当前P1准备，不再修靠近
 
+**最新11:21 +08:00：用户重新连接后，CAN和原驱动已恢复、六轴使能已实体确认。** 新ifindex9/USB003-014最初DOWN，仅既定1Mbps/.75/queue1000激活后RX56→62863→348019；使能前后各6秒SDK均59fresh/姿态波动0/速度0，false六轴→true六轴。旧controller/adapter/driver精确退出后只重连原driver(auto_enable=false，session17394/PID39486)，命令topic发布者0，原enable_srv true成功，开口仍37.2mm、q未变；无关节/开闭目标、轨迹、复位或失能。当前不是观测姿态，RGB源/窗口已超时退出，不把旧观测或旧图当当前；下一继续P1须按组回既定观测/放稳确认后重采新A+B，0/6、生产冻结。证据docs/evidence/piper_can_reconnect_20261015_1118；以下11:10停流已解决，不再原地重复底层排查。
+
 **最新11:10 +08:00：用户重载gs_usb后新can0 ifindex7已UP，但RX固定18，新candump4秒也0帧；当前暂停采集/使能，先恢复VMware USB-CAN数据流。** USB1d50:606f仍在003/012，1Mbps/.75 ERROR-ACTIVE不等于收到实体反馈；/enable_srv确实存在。旧driver仍是重载前进程，恢复流后须重连而非沿旧socket继续。未重复模块/USB/xHCI重载、未发CAN/使能/运动/开闭或改生产。具体见docs/evidence/piper_can_rx_stall_20261015_1108.json；下一宿主VMware仅断开/重连USB-CAN，不要求重启机械臂，再有限核验RX和新鲜SDK。P1重采决定及0/6保留，不拿默认零值当当前实体姿态。
 
 **最新11:00 +08:00：原位张爪及原观测返回已完成，第一组attempt01因方块出画排除；用户选择移动方块入完整视野后重采。** 原入口AUTO_START=0、原adapter开爪实读99.4mm，原9点/31.2s观测轨迹实际到`OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`；未搜索/抓取/复位/失能。两批120帧完整采到但0合格，原RGB明确下沿裁切；不重复同视角补采或改J5/生产目标。旧B检查点5b94bb0及失败A全保留，移动后的新A绝不配旧B，正式0/6。现在adapter已disarm（软件停输出，不是硬件失能），原控制器STOPPED、相机保留；等用户放稳确认，先采新A，再由用户手摆真夹紧采新B。见P1登记及attempt01_release_observe；生产冻结继续。

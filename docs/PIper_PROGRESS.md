@@ -1,3 +1,13 @@
+## 2026-10-15 11:21 +08:00：用户重连后新CAN恢复，原驱动重连并完成使能，未运动
+
+- 用户回复已恢复。本轮按ROS2/PiPER技能只核当前路径/反馈、最小恢复，生产算法/门/TF/模型/入口冻结。实际USB由003/012变003/014，新can0 ifindex9、DOWN/STOPPED、RX0/TX0；不是上一新ifindex7的RX18。sudo-n true后仅既有授权固定bitrate1000000/sample-point.75/txqueuelen1000/up一次，全rc0，立即RX56；未USB reset/模块/xHCI重载/刷写/主从/Reset。
+- 新runtime `/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/can_reconnect_20261015.DOQaqO`。原collect_calibration_sdk `--duration-s6`、piper_init=false，前窗60/59fresh/5.821666956s/全六q波动0/原静止通过/rc0，六enabled=false、速度0、开口37.2mm。RX后达62863/TX0，已证真实新流，停止重复底层恢复。当前q_mdeg[1046,104766,-51433,-5998,24410,17143]，不能当先前观测目标或默认零值。
+- 原命令topic /joint_commands唯一发布者为旧adapter，/pos_cmd与/enable_flag为0。只给已核验旧controller30526/adapter30524/driver30181/wrapper30177 SIGINT，下一ps证实四者全部退出；原driver退出路径无DisableArm。这样移除旧socket和旧轨迹可能续跑的来源，不结束其他用户/相机/仿真节点，不发硬件失能。
+- 仅原driver重连：原安装`piper_single_ctrl`入口、auto_enable=false/gripper_exist=true、原topic remap；系统NumPy/SciPy路径确认，PYTHONNOUSERSITE1、sys.path末尾追加原installed SDK，runpy执行原entry，不修改驱动文件/安装或另写基础控制。src/build driver SHA均d607ec10854f231588fcdfc9f334c4766d5b8c4474e10fd72f79ef5723984b2e。session17394/PID39486留运行；初始化一次lost→.01s恢复正常，不当再次硬件停流。原ROS /joint_states_feedback新戳1792034418.885088442、q与SDK一致，/joint_commands发布者0。
+- 按原用户使能请求，`timeout -s INT -k2s12s ros2 service call /enable_srv piper_msgs/srv/Enable '{enable_request:true}'`成功rc0/enable_response=true。原driver日志1792034432.024793收到、1792034433.040809返回true；不是只相信服务返回。后窗原SDK6秒60/59fresh/5.819900990s/原静止通过/rc0，59新鲜样本六轴均true、q波动0/速度0、前后q相同、夹爪37.2mm未变；夹爪使能位true，但未给任何开闭目标。无JointCtrl关节目标/轨迹、观测/SEARCH/抓取/闭爪、Reset或Disable；不把使能持位说成到观测。
+- 末can0 UP/ERROR-ACTIVE/RX348019、TX16、error/drop/busoff0。TX来自本轮原驱动初始化/使能，不声称收发全程TX0，也不据恢复已发生推断历史断流唯一根因。原始前后SDK与服务/driver日志限定归档`docs/evidence/piper_can_reconnect_20261015_1118`，JSON/哈希/范围检查后提交；没有新拟合/标定点。
+- 五冻结源SHA仍相同，根54%/35GB、共享73%/137GB，无清理/删除。host已无旧adapter/controller/RGB/image_view，原相机窗口限时已结束，未重开。本轮只解决CAN/使能，P1正式0/6/旧attempt01排除；下一按组授权回既定观测、核实视野、等用户放稳确认，再采新A和人工真夹紧新B。旧B不复用，不能从“已恢复”自动回观测/抓取。仅本轮证据与交接限定Git，其他dirty保持、未推送GitHub。
+
 ## 2026-10-15 11:10 +08:00：用户模块重载后CAN无帧，最小核对指向真实RX停流而非ROS服务缺失
 
 - 用户请求解决截图candump无输出。本轮使用ROS2/PiPER技能核实际路径/接口/原驱动证据，不改代码/门/TF；HEAD0a4c5ca，规范本轮路径原干净，其他已有dirty保留。截图及内核明确用户11:07:07卸载gs_usb、11:07:08重载；当前can0新ifindex7、UP/LOWER_UP/ERROR-ACTIVE、1Mbps/.750、qlen10、RX18/140B、TX0、error/drop/busoff0。qlen10记录为当前配置，不凭它归因接收停流，不重复无效模块重载。

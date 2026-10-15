@@ -1,5 +1,11 @@
 ## 最新接力（2026-10-15）：进入P1准备，等待第一组实际夹紧
 
+**最新11:21 +08:00：CAN收流与原驱动使能已恢复，停止沿旧RX18阻断。** 用户重新连接后新ifindex9/USB003-014，初DOWN/STOPPED；sudo-n通过，仅固定1Mbps/.75/queue1000/up一次。RX56→62863→348019，ERROR-ACTIVE/error-drop0；模块/USB/xHCI未重载。原只读SDK前后两窗各60/59fresh、5.821667/5.819901s、q波动0/速度0、rc0；使能前六false、后六true，q_mdeg两侧均[1046,104766,-51433,-5998,24410,17143]，开口37.2mm。当前不在旧观测姿态，不自动复用旧图/q作正式组。
+
+本轮SIGINT仅旧30526/30524/30181/30177，已确认全部退出，无Disable；只重连原安装driver auto_enable=false（session17394/PID39486），没有adapter/controller或轨迹生产者，/joint_commands发布者0，/pos_cmd和/enable_flag原也是0。系统NumPy/SciPy优先、sys.path末尾补原用户SDK，通过runpy执行原piper_single_ctrl入口而非新写运动程序；源码/build SHA均d607ec1085…，未改源。原enable_srv true返回true，并以新SDK59个样本六true验证；TX16包含正常驱动初始化/使能，不声称全程只收。原driver保持运行供后续，不自动失能或关节/夹爪目标。所有原SDK与服务/驱动日志在docs/evidence/piper_can_reconnect_20261015_1118。
+
+生产五SHA不变、根35GB/54%，无删除；其他dirty保留，仅本轮记录Git、未推送。P1仍0/6、attempt01排除；用户只确认链路恢复，未确认新方块放稳，也没有本轮新回观测授权。相机/窗口600秒后已退出（host确认），下一要继续时先按组授权原回观测，核真实q/原图再采新A、后人工夹紧采新B，不自动启动一键AUTO1/搜索/抓取。以下11:10阻断是历史，不重复模块重载/无帧试验。
+
 **最新11:10 +08:00：当前新接口RX停在18，不是enable_srv缺失；恢复流前不再使能/采正式组。** 用户截图已执行can0 down→gs_usb卸载/加载→1Mbps/up，内核11:07:07—08印证，新ifindex7；本轮只读检查ERROR-ACTIVE/.750/RX18/TX0，独立新candump4秒0输出、前后RX18。USB003/012正常枚举只能证明枚举，不能证明机械臂在线；没有本窗新增USB报错，根因在实体端静默与虚拟USB数据面之间尚未区分。原driver30181仍存但早在1792032777已lost，原enable_srv列举存在；旧socket重载后不能沿用，RX恢复后再定向重启原驱动auto_enable=false/无运动，再按现有使能授权处理。不在RX0时重启有控制接口的driver或重跑一键。
 
 证据`docs/evidence/piper_can_rx_stall_20261015_1108.json`，磁盘根54%/35GB，当前无空间耗尽证据。本轮没有发CAN/使能/运动/开闭/Reset/Disable、未清理用户candump或改生产；不重复历史guest reset/modprobe/xHCI无效链。下一需宿主VMware仅USB-CAN断开后重新连到本VM（不是只确认菜单已连接），本会话没有宿主菜单控制接口，不要求重启机械臂。原P1移动方块重采仍0/6/未放稳确认；等链路新证据和用户确认，不混旧B。
