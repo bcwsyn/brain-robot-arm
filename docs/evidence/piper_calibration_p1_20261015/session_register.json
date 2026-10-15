@@ -7,12 +7,12 @@
   "live_capture_started": true,
   "completed_formal_pairs": 1,
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
-  "current_pair_id": "new_pair03",
-  "current_step": "new_pair03_attempt02_ALIGN_J5_upper_limited_A_preview_not_qualified",
-  "current_attempt_id": "attempt02",
-  "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_attempt02.v22Alq/",
-  "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "User authorized original observation/search/alignment for this second placement, no approach/close. Completed one bounded attempt and stopped at original J5 upper; further posture changes require a specific plan/consent.",
+  "current_pair_id": "new_pair04",
+  "current_step": "new_pair04_prepared_wait_operator_grip_and_still_confirmation",
+  "current_attempt_id": "attempt01",
+  "prepared_runtime_root": null,
+  "current_retake_observation_return_authorized": false,
+  "current_authority_scope": "User chose observation-only A and preparation of third placement; operator has not confirmed new actual grip/stillness. No new device reads or physical actions this turn, no blanket motion authorization.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -175,7 +175,7 @@
     {
       "pair_id": "new_pair03",
       "role": "fit",
-      "state": "attempt02_ALIGNMENT_J5_upper_limited_A_preview_not_qualified",
+      "state": "deferred_missing_qualified_A_user_proceeds_to_third",
       "attempt_id": "attempt02",
       "preparation_record": "new_pair03/attempt02/README.md",
       "grip_manifest": "new_pair03/attempt02/grip_capture/portable/manifest.json",
@@ -232,17 +232,26 @@
       "alignment_record": "new_pair03/attempt02/align_capture/execution.json",
       "alignment_preview_manifest": "new_pair03/attempt02/align_capture/portable/manifest.json",
       "alignment_preview_frames": 3,
-      "alignment_preview_qualified_frames": 0
+      "alignment_preview_qualified_frames": 0,
+      "deferred": true,
+      "deferred_reason": "User chose to prepare next placement; no qualified A yet",
+      "complete_pair": false,
+      "future_A_must_not_pair_if_cube_moved": true
     },
     {
       "pair_id": "new_pair04",
       "role": "fit",
-      "state": "not_started",
+      "state": "prepared_wait_operator_actual_grip_and_still_confirmation",
       "grip_manifest": null,
       "observe_manifest": null,
       "physical_grip_verified": null,
       "released_without_object_motion_verified": null,
-      "observation_return_authorized": null
+      "observation_return_authorized": false,
+      "attempt_id": "attempt01",
+      "preparation_record": "new_pair04/README.md",
+      "collection_complete": false,
+      "calibration_accepted": false,
+      "in_place_open_authorized": false
     },
     {
       "pair_id": "new_pair05",
@@ -277,7 +286,14 @@
   ],
   "not_a_fitting_input": true,
   "no_joint_center_or_contact_values_fabricated": true,
-  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_observe_continue.QUVyXE/",
-  "current_alignment_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_align_A.EeZaUn",
-  "observation_A_policy": "From now on release B -> existing observation/search/ALIGN -> stop and collect A using actual per-frame q/FK, not fixed observation-only collection; no blanket new-placement motion authority."
+  "current_return_runtime_root": null,
+  "current_alignment_runtime_root": null,
+  "observation_A_policy": "B -> in-place open under current-placement authority -> existing observation trajectory -> stop_after_observe=true, stop before SEARCH -> static A; no SEARCH or ALIGN for acquisition. Actual per-frame q/FK and all original quality checks retained.",
+  "deferred_group_runtime_history": {
+    "pair_id": "new_pair03",
+    "attempt_id": "attempt02",
+    "grip": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_attempt02.v22Alq/",
+    "observe": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_observe_continue.QUVyXE/",
+    "align": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_align_A.EeZaUn"
+  }
 }
