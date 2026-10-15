@@ -1,5 +1,13 @@
 ## 最新接力（2026-10-15）：进入P1准备，等待第一组实际夹紧
 
+**最新11:57 +08:00：第一组new_pair02 attempt02已完成采集，1/6；下一new_pair03待操作者准备。** 新ifindex10/USB003-015初DOWN，既有固定1Mbps/.75/queue1000/up一次；原被动SDKq_mdeg[-7917,54571,-72619,-4192,69618,5010]、六true/99.4mm，与先前观测相同。全六秒60/59fresh/qspread0但速度短脉冲rc2，原连续索引9—59共51fresh/5.018875s按原summarize全部通过，保留原失败旗标。只启动原只读反馈桥120秒、原RGB120秒、相机factory GET；不运行原一键/driver/adapter/controller，不发CAN控制/使能/开闭/复位/失能。
+
+A批60帧/41.189674s/rc0，60均满足原顶面质量候选（978—1030内点、覆盖≥.9765），实际q与SDK一致/六spread0、同戳Info。原表面418—419mm不再旧双峰；A137资产9,920,108B+manifest/全部原图/逐帧实际q/FK/工厂K/D/R/T齐，另原p0_report、只读桥报告和既有工具witness。已看原首尾及annulus_witness：绿点在紫块可见顶面，环带有白桌/夹爪边缘污染，不伪称纯桌面或法向根因已解；A/B法向差中位5.4787°/6.8057°保留，双法向中心敏感性1.21—1.57mm不是精度上界。
+
+配对总记录`docs/evidence/piper_calibration_p1_20261015/new_pair02/pair_record.json`；新A在`attempt02/observe_capture/`，B为9a82bab的attempt02/grip_capture，不用旧attempt01/pair01。P1采集完成1/6不等同P2拟合/10mm精度/TF采用：C中位中心仅候选、c_G仍null，29mm未卡尺，夹紧SDK37.4mm与29mm有8.4mm差异按用户真接触确认记录/不猜原因。单组点约束最多3/9，不能宣称激励充分；下一组需新位置并改变夹持倾斜，不仅偏航，不自动设计关节轨迹。旧D-only拟合器未接收C输入，P2 C接口/先验按原计划后续。
+
+桥自然结束rc0/5739发布/120.018s、RGB按120秒SIGINT正常关流/timeout124，全部本轮源/控制源无残留，仅旧深度保留。收尾CAN RX1110441/TX0/error0，当前停流已解决，不能据此断言历次停流唯一根因。五生产SHA冻结，root55%/34GB，无删除。下一等用户第二组手摆真夹紧确认，随后只读B，回观测仍逐组授权；无自动失能/张爪/回观测或抓取。只本地限定Git，未推送GitHub/新网址。
+
 **最新11:43 +08:00：新位置B检查点9a82bab保留，实际开爪和原观测返回完成；随后CAN再次停流，正式A为空，仍0/6。** 原AUTO0一键复用新driver和健康CAN，不新使能/改生产。原stop_after_observe=true设置/回读，enable_motion/arm成功；首次单次publish后无adapter接收日志、SDK仍37.4mm，不误报开。核同topic原可靠订阅1，仅本次CLI --keep-alive3s再发一次同100mm目标，adapter1792035345.499849864接收80帧/driver执行，实际99.4mm；原RGB两指离开方块，背景ORB/H补偿中心差1.4617px，未见明显移位、非三维零误差证明。
 
 原controller start成功，1792035431.715818602发布13点46.3s、1792035431.728724161接受，1792035477.611758887实际`OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`，无SEARCH/抓取。之后disarm成功。11:38:23原can_health记录CAN_RX_STALLED_3S；driver1792035525.270945558缺流25秒、脚本5314返回143/无Disable/Reset。新observe_preview15s只收depth308/info365，RGB0/joint0/保存0/rc2；被动SDK6秒0fresh/rc2。新独立candump4秒0帧/rc124、RX2801987/TX37262前后固定，ERROR-ACTIVE并不能证明恢复；本窗仅drain_vmap_area_work CPU警告，不当USB/磁盘根因证明。根55%/34GB，未空间不足/删除。

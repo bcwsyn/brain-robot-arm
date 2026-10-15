@@ -1,3 +1,14 @@
+## 2026-10-15 11:57 +08:00：纯只读补A成功，new_pair02第一组采集齐全，P1进度1/6
+
+- 用户确认链路恢复；按ROS2/PiPER技能实际核新ifindex10/DOWN/STOPPED/RX0、USB003-015，旧driver/adapter/controller已无进程。sudo-n通过后仅既有授权固定1Mbps/.75/queue1000/up一次，RX56增长；不模块/USB/xHCI重载、不启动一键或控制driver，不新使能/开闭/观测运动。root55%/34GB、共享73%/137GB，未删除。
+- 新runtime `.../piper_calibration_p1_20261015/new_pair02_observe_readonly.u5PKQb`，原SDK6秒60/59fresh/5.821068s、qspread0、六true/99.4mm；q_mdeg[-7917,54571,-72619,-4192,69618,5010]，与前次观测保持一致。原全窗因速度短脉冲rc2原样保留；原连续切片[9:60]51fresh/5.018875122s按原summarize全部通过，不删点拼接/改旗标或静止阈值。
+- 原只读桥duration120s/rc0，samples5780/published5739/suppressed41/120.017693s/error null，仅发布原joint反馈，无控制接口或CAN发送；原RGB320×240@5Hz/device0/frame/topic限时120s。相机factory只GET原三服务/内部TF，新读CC1365304DG成功rc0；无相机外参安装TF更改。先原只读3预览/4.392491s，实际看原RGB方块完整；然后原有界P0工具复用P1 `--max-batches2 --frames60 --seconds50`，第一批即采60/41.189674s/rc0，原800顶面标准60/60通过，未开第二批。
+- 60帧原RGB/native uint16/同戳完整Info/真实q齐全，六轴spread0，异戳Info35次仍拒绝。顶面真实内点978—1030、覆盖≥.976510；原表面深度418—419mm，63（含3预览）同姿态高支撑、MAD0/峰峰1mm；静止精密度不是绝对精度。原顶面高度候选29.857—30.260mm/名义29mm，面边中位28.582/30.799mm。没有填补深度零值或删坏帧；本次60全通过不代表所有位置/材料已无深度问题。
+- 既有calibration_p0_quality离线回放60帧生成两张annulus_witness和完整报告，已看原首尾RGB/叠图；绿色点确在单个紫块可见顶面，cyan环带包含白桌及夹爪边缘，不宣称所有区域纯桌面/硬件因果已排除。原top_identity_confirmed=false等工具旗标保持，人工视觉一致性另记。法向A/B中位5.478714°/6.805674°，桌面两方法差中位3.241581°；按用户决定随数据留后续研究，不新增P0冻结或修改生产TF。固定面中心分别沿顶面/桌面A法向补14.5mm，中心差1.2115—1.5722mm，仅方法敏感性不是误差上界。
+- A可移植137资产9,920,108B+manifest，含63对原图/每帧实际FK/SDK/工厂/配置，manifestSHA553eb3779831ffb91634e12f041a5a3abd201c3180dab963d2df9de40dc42f10。规范`P1/new_pair02/attempt02/observe_capture`另含原p0_report、桥、witness；B仍9a82bab/27资产。`new_pair02/pair_record.json`将同一新位置B/A关联，训练role fit不变；旧attempt01和trial均排除。按原合格面/内移方法，60帧逐帧D→C后C中心分量中位[-.1146939723,.0773937645,.4338560361]m，D中位[-.0917706150,.0774371126,.4322547911]m，均候选；c_G未解/不猜0。实际T完整在包及配对记录，未把配置目标当实际q。
+- **完成的是P1第一组原始配对采集（1/6），不是P2拟合、外参/10mm验收或抓取成功。** 夹持37.4mm vs名义29mm差8.4mm记为未核量，不推翻用户真接触确认、不猜原因/工具中心。单组仅3个点方程/9未知量，上界秩3，激励不充分；下一new_pair03更换位置并改变倾斜，仍由操作者示教，不能只偏航或自动生成关节运动。旧D-only拟合器未接收新C坐标，没有拟合或候选TF写入。
+- 本轮CAN检查RX272830→273323、TX0→0，收尾RX1110441/TX0/error-drop0，120秒只读源自然退出，无旧控制节点/RGB/桥残留，仅旧深度30328保留。相机timeout124为限时正常收尾、桥rc0，不冒称失败。五冻结生产SHA全部相同，其他dirty保留，Git仅本轮有限数据/文档，无新远端发布。下一等待第二组手摆实际夹紧确认再采B；回观测仍按组授权，不复用第一组动作许可。
+
 ## 2026-10-15 11:43 +08:00：attempt02张爪/原观测返回成功，返回后CAN复发阻断A，仅余原地只读补采
 
 - 收尾12张释放PNG/5个raw文件SHA和B27资产重新核验通过；原始visual_stack_trace有7处MoveIt/Servo行尾空格，原字节保留。其他路径标准Git检查，仅该raw用一次性core.whitespace=-blank-at-eol检查，不改全局设置/源代码检查；空A/0fresh按原失败保留。
