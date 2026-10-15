@@ -1,5 +1,9 @@
 ## 最新接力（2026-10-15）：进入P1准备，等待第一组实际夹紧
 
+**最新11:10 +08:00：当前新接口RX停在18，不是enable_srv缺失；恢复流前不再使能/采正式组。** 用户截图已执行can0 down→gs_usb卸载/加载→1Mbps/up，内核11:07:07—08印证，新ifindex7；本轮只读检查ERROR-ACTIVE/.750/RX18/TX0，独立新candump4秒0输出、前后RX18。USB003/012正常枚举只能证明枚举，不能证明机械臂在线；没有本窗新增USB报错，根因在实体端静默与虚拟USB数据面之间尚未区分。原driver30181仍存但早在1792032777已lost，原enable_srv列举存在；旧socket重载后不能沿用，RX恢复后再定向重启原驱动auto_enable=false/无运动，再按现有使能授权处理。不在RX0时重启有控制接口的driver或重跑一键。
+
+证据`docs/evidence/piper_can_rx_stall_20261015_1108.json`，磁盘根54%/35GB，当前无空间耗尽证据。本轮没有发CAN/使能/运动/开闭/Reset/Disable、未清理用户candump或改生产；不重复历史guest reset/modprobe/xHCI无效链。下一需宿主VMware仅USB-CAN断开后重新连到本VM（不是只确认菜单已连接），本会话没有宿主菜单控制接口，不要求重启机械臂。原P1移动方块重采仍0/6/未放稳确认；等链路新证据和用户确认，不混旧B。
+
 **最新11:00 +08:00：本组张爪→回观测成功，但方块下沿裁切；用户已选移动方块后整组重采。** 原AUTO0入口，首次张爪被原driver内部enable flag拦住、开口仍36.7mm；按原`/enable_srv true`完成原握手后只重试一次原adapter100mm命令，实读99.4mm。六轴小幅持位变化照实保存，未写零/复位。原`stop_after_observe=true`实读确认，9点31.2s轨迹到`OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`，未SEARCH/抓取。A两批60+60，真实q波动0/同帧Info齐全，但原RGB方块在底边裁切、好帧0；不能作中心拟合，0/6不变。
 
 本轮源目录`/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair02_release_observe.AymErb`；仓库`docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt01_release_observe/`保留完整120对原图/工厂新读/实际q与FK/失败报告及张爪前后10对图/SDK。A portable251资产18,810,820B及另外20张释放PNG全部SHA核验通过。B原5b94bb0保留但此尝试排除，不拿旧夹持q配移动后的物体。用户下一搬方块到当前画面完整可见、放稳后确认；先只读新A，再手摆真夹紧采新B，不能自动执行摆位/闭爪/其他轨迹。

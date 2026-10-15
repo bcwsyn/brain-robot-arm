@@ -1,0 +1,67 @@
+{
+  "schema": "piper_passive_link_diagnosis_v1",
+  "observed_local_time": "2026-10-15T11:08:17+08:00",
+  "recorded_local_time": "2026-10-15T11:10:00+08:00",
+  "user_request": "Resolve candump can0 showing no output after module reload",
+  "user_reloaded_gs_usb": true,
+  "kernel_events": [
+    {"local_time": "2026-10-15T11:07:07+08:00", "message": "usbcore: deregistering interface driver gs_usb"},
+    {"local_time": "2026-10-15T11:07:08+08:00", "message": "gs_usb 3-1.2:1.0: Configuring for 1 interfaces"},
+    {"local_time": "2026-10-15T11:07:08+08:00", "message": "usbcore: registered new interface driver gs_usb"}
+  ],
+  "interface": {
+    "name": "can0", "ifindex": 7,
+    "flags": ["NOARP", "UP", "LOWER_UP", "ECHO"],
+    "can_state": "ERROR-ACTIVE", "bitrate": 1000000,
+    "sample_point": 0.75, "txqueuelen": 10,
+    "driver": "gs_usb", "parent": "3-1.2:1.0",
+    "rx_bytes_before": 140, "rx_packets_before": 18,
+    "rx_bytes_after": 140, "rx_packets_after": 18,
+    "tx_packets_before": 0, "tx_packets_after": 0,
+    "rx_errors": 0, "rx_dropped": 0, "bus_errors": 0, "bus_off": 0
+  },
+  "new_passive_monitor": {
+    "command": "timeout -s INT -k 1s 4s candump -L -n 12 can0",
+    "frames_observed": 0, "stdout": "",
+    "individual_return_code_not_captured": true,
+    "outer_command_last_journal_rc": 0,
+    "not_reported_as_successful_CAN_receive": true
+  },
+  "usb": {"vendor_product": "1d50:606f", "bus": "003", "device": "012", "present": true},
+  "ros": {
+    "original_driver_pid": 30181,
+    "original_driver_wrapper_pid": 30177,
+    "old_adapter_pid": 30524,
+    "old_controller_pid": 30526,
+    "enable_service_listed": "/enable_srv [piper_msgs/srv/Enable]",
+    "service_list_command_returncode": 0,
+    "enable_service_called_this_round": false,
+    "old_driver_feedback_lost_epoch": "1792032777.238879813",
+    "old_driver_holding_after_25s_epoch": "1792032802.236317394",
+    "old_driver_output_log": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair02_release_observe.AymErb/onekey/piper_driver.log",
+    "new_can0_receive_all_entries": 1,
+    "new_can0_entry_matches": 0
+  },
+  "disk": {"root_used_percent": 54, "root_available_GiB_rounded": 35, "shared_used_percent": 73, "shared_available_GiB_rounded": 137, "files_deleted": false},
+  "agent_actions": {
+    "read_only_diagnostics": true,
+    "can_frames_sent": 0,
+    "usb_or_module_or_xhci_reset": false,
+    "CAN_reconfigured": false,
+    "driver_restarted": false,
+    "hardware_enable_disable_reset_or_gripper_command": false,
+    "production_code_tf_or_gate_changed": false,
+    "user_candump_pid_38827_left_running": true
+  },
+  "conclusions": {
+    "new_socket_also_receives_no_frames": true,
+    "stale_old_driver_is_not_complete_explanation": true,
+    "hardware_fault_proven": false,
+    "USB_path_vs_arm_transmit_silence_disambiguated": false,
+    "current_actual_joint_angles": null,
+    "current_actual_enabled": null,
+    "next_action": "Host VMware disconnect/reconnect only USB-CAN to this VM, then bounded passive RX and fresh SDK verification; reconnect old driver only after valid flow, no automatic motion",
+    "host_VMware_UI_access_available_to_this_session": false
+  },
+  "calibration": {"formal_pairs_completed": 0, "retake_first_observe_then_new_manual_grip": true, "reuse_old_grip_after_cube_move": false}
+}

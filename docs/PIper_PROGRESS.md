@@ -1,3 +1,11 @@
+## 2026-10-15 11:10 +08:00：用户模块重载后CAN无帧，最小核对指向真实RX停流而非ROS服务缺失
+
+- 用户请求解决截图candump无输出。本轮使用ROS2/PiPER技能核实际路径/接口/原驱动证据，不改代码/门/TF；HEAD0a4c5ca，规范本轮路径原干净，其他已有dirty保留。截图及内核明确用户11:07:07卸载gs_usb、11:07:08重载；当前can0新ifindex7、UP/LOWER_UP/ERROR-ACTIVE、1Mbps/.750、qlen10、RX18/140B、TX0、error/drop/busoff0。qlen10记录为当前配置，不凭它归因接收停流，不重复无效模块重载。
+- 精确只读命令`ip -details -statistics link show can0`→`timeout -s INT -k 1s 4s candump -L -n 12 can0`→再次ip：新监听0帧，RX18→18/TX0→0。外层最后journal命令rc0不是candump成功；candump子码未单独捕获，不能伪称原始独立rc124。`journalctl -k --since '2026-10-15 11:00:00' --no-pager -n100`只有本次模块注销/注册，未发现本窗USB报错，不套旧xHCI历史。
+- `lsusb`确认1d50:606f Bus003 Device012、sysfs parent3-1.2:1.0。进程30177/30181为本轮原driver旧实例，30524/30526为已停止输出的adapter/controller；用户38827 candump保留。本机/proc/net/can/rcvlist_all仅新can0一个raw监听/matches0，旧驱动并未在新接口恢复接收。原driver日志早在1792032777反馈lost、1792032802缺流25秒后holding all output，无新反馈。旧socket需要在流恢复后重连，但它解释不了独立新candump也0帧；不能把全部问题说成ROS/软件或已证实机械臂硬件损坏。
+- 用原overlays、ROS_LOCALHOST_ONLY0、原FastDDS文件，只读`timeout -s INT -k2s 8s ros2 service list -t`并筛/enable_srv，rc0，确有`/enable_srv [piper_msgs/srv/Enable]`；服务存在不等于CAN可用。未调用该服务或发任何查询/控制CAN；不以SDK默认0/false判断当前姿态/使能。磁盘根54%/35GB、共享73%/137GB，没有ENOSPC/磁盘满证据，无删除。
+- 事实摘要`docs/evidence/piper_can_rx_stall_20261015_1108.json`。不重复已知无效guest USB reset/gs_usb/xHCI/刷写/主从/Reset，未启动驱动或运动。下一需宿主VMware对唯一USB-CAN断开后重连到本虚拟机，非仅菜单确认、非重启机械臂；会话没有宿主菜单控制接口。恢复后有限RX/fresh SDK验证，旧driver定向重连auto_enable=false后再处理用户使能，不自动一键/搜索/开闭。P1仍0/6、重采先新A后新B，旧B不复用。仅本轮文档/证据限定Git，无生产修改/新发布。
+
 ## 2026-10-15 11:00 +08:00：原位张爪/原观测返回完成，首尝试裁切，用户选择移动方块整组重采
 
 - 夹持检查点`5b94bb0`后执行用户仅本组授权。原`BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_LOG_DIR=.../onekey /home/johnwick/start_brain_robot_cube_real.sh`，复用有效CAN不重载，原适配器/控制器/驱动链，不写新基础运动。原首次100mm张爪被driver内部GetEnableFlag拦住，SDK仍36.7mm；核实际`piper_ctrl_single_node.py`而非_new副本，调用原`/enable_srv piper_msgs/srv/Enable {enable_request:true}`成功后仅重试一次原`/brain_robot_grasp/gripper_command`100mm。开爪实测99.4mm，六轴enabled=true，非写零/Reset/Disable。前后全部SDK/图像保留，不能把首次命令接受说成物理已打开。
