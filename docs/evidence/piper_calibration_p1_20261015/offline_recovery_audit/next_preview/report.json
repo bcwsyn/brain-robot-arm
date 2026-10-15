@@ -1,0 +1,42 @@
+{
+  "offline_only": true,
+  "robot_motion_planned_or_sent": false,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "assumed_depths_m_not_measurements": [
+    0.15,
+    0.18,
+    0.2,
+    0.23,
+    0.28,
+    0.35,
+    0.5
+  ],
+  "factory_pinhole_convention_unchanged": true,
+  "common_field_fraction": 0.7284505208333333,
+  "illustrative_box_width_px": 72,
+  "illustrative_cube_centre_rgb_xy": [
+    137,
+    159
+  ],
+  "current_cube_bbox_xywh": [
+    99,
+    179,
+    40,
+    40
+  ],
+  "placement_surface": "Flat black mat, not the elevated bottle/support; this is a NEW placement requiring a new paired B",
+  "guidance_is_not_new_collection_or_motion_gate": true,
+  "depth_validity_guaranteed": false,
+  "requires_new_physical_cube_placement": true,
+  "robot_stays_at_observation": true,
+  "next_acquisition_protocol": [
+    "Operator moves cube/support only; no manual arm/grip yet",
+    "Single continuous RGB-D source; bounded original read-only acquisition first",
+    "Require original >=20 good-top frames with >=800 measured inliers before asking manual grip",
+    "If not met, stop and inspect; no same-condition repeated60 or guessed depth",
+    "Capture new manual B for this same new placement; never pair new A with old B"
+  ],
+  "held_out_id_remains_new_pair07": true,
+  "not_a_reachable_joint_trajectory_proposal": true
+}
