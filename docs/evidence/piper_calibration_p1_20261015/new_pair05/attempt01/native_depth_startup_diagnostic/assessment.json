@@ -1,0 +1,132 @@
+{
+  "schema": "piper_native_depth_startup_diagnostic_v1",
+  "single_camera_session_s": 26.103011819999665,
+  "all_sources_exited": true,
+  "motion_or_camera_setters": false,
+  "automatic_reopen_or_CAN_recovery": false,
+  "native_diagnostic_saved_frames": 0,
+  "paired_RGBD_saved_frames": 0,
+  "native_received": {
+    "feedback": 1083
+  },
+  "native_rejections": {},
+  "paired_capture_received": {
+    "/joint_states_feedback": 688,
+    "/camera/color/image_raw": 67
+  },
+  "GET_requests_sent": 46,
+  "GET_replies_received": 0,
+  "GET_error_counts": {
+    "service_not_ready": 2,
+    "response_timeout": 44,
+    "observer_deadline_or_shutdown": 2
+  },
+  "factory_error": "RuntimeError('Timed out get_device_info')",
+  "depth_started_marker_in_log": false,
+  "current_blocker": "Original OpenNI depth-source initialization did not complete; both independent observers received no depth/Info. GET services advertised but returned no replies.",
+  "exact_blocked_function_verified": false,
+  "GET_before_depth_ready_causal_role_verified": false,
+  "source_ordering_fact": "First GET sent before SENSOR_DEPTH-started confirmation; unlike an active verified stream, advertised services alone did not prove startup complete.",
+  "kernel_window_correct_command": "journalctl -k --since=@1792052060 --until=@1792052110 --no-pager -o short-iso",
+  "kernel_window_has_entries": false,
+  "kernel_first_command_parse_failure_retained": true,
+  "preflight_full_SDK_static_passed": true,
+  "preflight_q_equals_prior_observation": true,
+  "last_fresh_feedback": {
+    "epoch": 1792052097.6269908,
+    "sdk_receipt_stamps": {
+      "joint": "1792052097.6245463",
+      "high": "1792052097.6203785",
+      "low": "1792052097.6199114",
+      "gripper": "1792052097.6245716"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -7973,
+      54505,
+      -72477,
+      -4187,
+      69768,
+      5433
+    ],
+    "q_driver_rad": [
+      -0.139081012,
+      0.9507852200000001,
+      -1.2642887880000002,
+      -0.073038028,
+      1.217032992,
+      0.094773252
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 80,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "last_sample_not_current_monitoring": true,
+  "CAN_before": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 6888884,
+    "tx": 3070
+  },
+  "CAN_after": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 6950152,
+    "tx": 3070
+  },
+  "new_CAN_TX": 0,
+  "source_SHA_before_and_after_equal": true,
+  "production_five_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+      "actual": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8"
+    }
+  },
+  "new_tool_offline_tests_total": 59,
+  "new_tool_successful_live_depth_storage_verified": false,
+  "formal_A_previous_60_not_overwritten": true,
+  "formal_qualified_complete_pairs": 1,
+  "camera_cube_center_m": null,
+  "gripper_base_cube_center_m": null,
+  "source_initialization_call_site_candidate": "ob_camera_node.cpp startStreams() lines223-260 contains several configuration/start calls before its completion log; no live thread stack was recorded.",
+  "next_proposal_not_implemented": "In diagnostic native mode only, defer all camera GET calls until real depth+same-stamp Info has been received; first perform a pure-subscription startup check, no driver/config/laser/TF change. Requires specific approval.",
+  "GitHub_pushed": false
+}

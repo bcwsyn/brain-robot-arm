@@ -47,3 +47,9 @@ def test_no_publishers_processes_or_configurable_service_names():
     attrs={n.attr for n in ast.walk(tree) if isinstance(n,ast.Attribute)}
     assert not attrs & {'create_publisher','Popen','run','system','publish'}
     assert controls.SERVICES==('/camera/get_depth_exposure','/camera/get_depth_gain')
+
+
+def test_existing_native_output_rejected_before_ros(tmp_path):
+    native=tmp_path/'existing';native.mkdir()
+    with pytest.raises(FileExistsError):
+        controls.collect(tmp_path/'new.json',20,native)

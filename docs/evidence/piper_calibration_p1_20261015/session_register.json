@@ -15,14 +15,14 @@
     "new_pair05"
   ],
   "next_pair_id": null,
-  "next_placement_preparation": "One camera diagnostic completed with 44 GET replies but only one RGB-D packet. No new placement or repeat-camera authority implied. Propose diagnostic native depth recording independent of RGB, requires approval.",
+  "next_placement_preparation": "No new placement requested. Preserve original B/A; pause further live diagnostic attempts after two incomplete continuous comparisons, first propose GET-startup timing isolation.",
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair05",
-  "current_step": "new_pair05_one_continuous_metadata_trial_done_RGB_single_frame_depth_GET_unverified_next_native_only_capture_proposal",
+  "current_step": "new_pair05_native_tool_implemented_live_depth_source_startup_incomplete_zero_frames_stop_further_sessions_pending_GET_timing_isolation_approval",
   "current_attempt_id": "attempt01",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_preview.Bu8bar",
   "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "Current-group authorized open and original observation return completed; sources exited. No search, grasp or fresh motion authority implied by this same-point confirmation.",
+  "current_authority_scope": "User-approved native diagnostic implementation and one bounded session completed. No authority to repeat sessions, alter driver/config/TF, or move arm. Proposed first-depth-before-any-GET timing isolation awaits explicit approval.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -367,7 +367,11 @@
       "latest_metadata_diagnostic": "new_pair05/attempt01/continuous_metadata_diagnostic/README.md",
       "supplementary_diagnostic_paired_frames": 1,
       "supplementary_diagnostic_good_top_frames": 0,
-      "continuous_depth_metadata_comparison_complete": false
+      "continuous_depth_metadata_comparison_complete": false,
+      "native_depth_diagnostic": "new_pair05/attempt01/native_depth_startup_diagnostic/README.md",
+      "native_depth_saved_frames": 0,
+      "native_depth_live_positive_test_verified": false,
+      "depth_source_started_in_latest_session": false
     },
     {
       "pair_id": "new_pair06",
@@ -411,7 +415,7 @@
     true
   ],
   "current_last_fresh_gripper_mm": 99.6,
-  "current_last_fresh_SDK_epoch": 1792051386.6437852,
+  "current_last_fresh_SDK_epoch": 1792052097.6269908,
   "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_feedback_fresh": false,
   "current_live_enabled_after_RX_loss": [
@@ -443,7 +447,7 @@
       0.0645
     ]
   },
-  "current_feedback_fresh_scope": "Fresh throughout completed 26.13s receive-only session; all sources now exited, last sample is historical.",
+  "current_feedback_fresh_scope": "Fresh in finished 26.10s session; all new sources exited. Current depth source failed before first frame; this is not evidence of CAN feedback loss.",
   "current_readonly_A_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_A_batch60.3MFdVm",
   "receive_recovery_A_record": "new_pair04/attempt01/observe_after_reconnect/execution.json",
   "latest_CAN_readonly_A": {
@@ -490,12 +494,13 @@
     "independent_SDK_fresh": 0,
     "record": "new_pair05/attempt01/release_observe/execution.json"
   },
-  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a",
+  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV",
   "latest_metadata_diagnostic_record": "new_pair05/attempt01/continuous_metadata_diagnostic/assessment.json",
   "latest_CAN_diagnostic": {
     "up": true,
     "state": "ERROR-ACTIVE",
-    "rx": 5233890,
+    "rx": 6950152,
     "tx": 3070
-  }
+  },
+  "latest_native_depth_diagnostic_record": "new_pair05/attempt01/native_depth_startup_diagnostic/assessment.json"
 }

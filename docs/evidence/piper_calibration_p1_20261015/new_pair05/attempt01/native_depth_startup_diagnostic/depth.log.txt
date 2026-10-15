@@ -1,0 +1,35 @@
+DISPLAY COPY: trailing whitespace removed only; original bytes remain in runtime_closed.tar.gz:depth.log.
+[INFO] [launch]: All log files can be found below /home/johnwick/.ros/log/2026-10-15-16-14-33-559857-johnwick-virtual-machine-74978
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container-1]: process started with pid [75006]
+[component_container-1] [INFO] [1792052073.995837369] [astra_camera_container]: Load Library: /home/johnwick/ros2_ws/install/astra_camera/lib/libastra_camera.so
+[component_container-1] [INFO] [1792052074.120819167] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792052074.120902528] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792052074.214140035] [camera.camera]: init done.
+[component_container-1] [INFO] [1792052074.214319894] [camera.camera]: Waiting for device connection...
+[component_container-1] [INFO] [1792052074.214922894] [device_listener]: Found 1 devices
+[component_container-1] [INFO] [1792052074.214958312] [camera.camera]: Trying to open device: 2bc5/0657@3/7
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792052074.218870364] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792052074.218899673] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792052074.218909754] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyz' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792052074.262664386] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792052074.262724705] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792052074.262734336] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[component_container-1] [INFO] [1792052074.262743113] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyzrgb' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792052074.488943881] [camera.camera]: Device connected: Astra serial number: CC1365304DG
+[component_container-1] [INFO] [1792052074.489032288] [camera.camera]: starting device
+[component_container-1] [INFO] [1792052074.718461333] [camera.camera]: ir is not enable
+[component_container-1] [INFO] [1792052074.718504445] [camera.camera]: color is not enable
+[component_container-1] [INFO] [1792052074.729999155] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [INFO] [1792052074.921589078] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [WARN] [1792052074.921697798] [camera.camera]: Publishing dynamic camera transforms (/tf) at 10 Hz
+[component_container-1] Warning: USB events thread - failed to set priority. This might cause loss of data...
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [component_container-1]: sending signal 'SIGINT' to process[component_container-1]
+[component_container-1] [INFO] [1792052097.646876737] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[component_container-1] [INFO] [1792052098.297039178] [rclcpp]: signal_handler(SIGINT/SIGTERM)

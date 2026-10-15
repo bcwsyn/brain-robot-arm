@@ -1,0 +1,179 @@
+{
+  "read_only": true,
+  "motion_commands_sent": false,
+  "camera_setters_called": false,
+  "automatic_reopen": false,
+  "events": [
+    {
+      "name": "sdk_before",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV/sdk_before.json",
+        "--duration-s",
+        "6"
+      ],
+      "pid": 74971,
+      "epoch": 1792052066.4179647
+    },
+    {
+      "name": "feedback",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/calibration_readonly_feedback.py",
+        "--duration-s",
+        "40",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV/feedback.json"
+      ],
+      "pid": 74977,
+      "epoch": 1792052073.0558188
+    },
+    {
+      "name": "depth",
+      "argv": [
+        "ros2",
+        "launch",
+        "astra_camera",
+        "astra.launch.py"
+      ],
+      "pid": 74978,
+      "epoch": 1792052073.0605958
+    },
+    {
+      "name": "controls",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_depth_controls.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV/depth_controls.json",
+        "--duration-s",
+        "24",
+        "--native-output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV/native"
+      ],
+      "pid": 74979,
+      "epoch": 1792052073.0648656
+    },
+    {
+      "name": "color",
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "pid": 75028,
+      "epoch": 1792052077.1013818
+    },
+    {
+      "name": "factory",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/calibration_stage1_activated_20261014.kfNDAQ/capture_factory_metadata.py",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV/factory.json"
+      ],
+      "pid": 75029,
+      "epoch": 1792052077.1061363
+    },
+    {
+      "name": "capture",
+      "argv": [
+        "/usr/bin/python3",
+        "-c",
+        "from pathlib import Path; from collect_static_rgbd import collect; import sys; sys.exit(collect(Path(sys.argv[1]),16.,3,settle_s=3.,stop_on_feedback_loss=True,max_bytes=4<<20))",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_native_continuous.xlKYkV/capture"
+      ],
+      "pid": 75030,
+      "epoch": 1792052077.1175368
+    },
+    {
+      "name": "sdk_before",
+      "exit_code": 0,
+      "epoch": 1792052099.155038
+    },
+    {
+      "name": "feedback",
+      "exit_code": 0,
+      "epoch": 1792052099.1550632
+    },
+    {
+      "name": "depth",
+      "exit_code": -9,
+      "epoch": 1792052099.1587558
+    },
+    {
+      "name": "controls",
+      "exit_code": 2,
+      "epoch": 1792052099.158773
+    },
+    {
+      "name": "color",
+      "exit_code": 0,
+      "epoch": 1792052099.158812
+    },
+    {
+      "name": "factory",
+      "exit_code": 2,
+      "epoch": 1792052099.1588178
+    },
+    {
+      "name": "capture",
+      "exit_code": 2,
+      "epoch": 1792052099.1588233
+    }
+  ],
+  "error": null,
+  "camera_session_started": true,
+  "sdk_before_rc": 0,
+  "original_static_slice": {
+    "slice": [
+      0,
+      60
+    ],
+    "quality": {
+      "samples": 60,
+      "fresh_samples": 60,
+      "span_s": 5.9312286376953125,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "pre_q_delta_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "camera_start_epoch": 1792052073.055821,
+  "native_depth_independent_of_RGB": true,
+  "RGB_depth_startup_order": "Wait at most4s for original depth started log, then open RGB once; no restart",
+  "end_reason": "original_collectors_finished",
+  "all_owned_sources_exited": true,
+  "camera_session_upper_bound_s": 26.103011819999665,
+  "within_30s_camera_bound": true,
+  "camera_stop_epoch": 1792052099.1588337
+}
