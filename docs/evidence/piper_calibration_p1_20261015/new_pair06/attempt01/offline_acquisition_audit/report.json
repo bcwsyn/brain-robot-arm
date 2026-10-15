@@ -1,0 +1,108 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "devices_accessed": false,
+  "production_or_capture_source_changed": false,
+  "archives_verified": {
+    "B": {
+      "archive_sha256": "6a08a20c973800283c0365c2e4e020d4627f9dafe776cf87f736104672bb0f86",
+      "raw_files_SHA_verified": 67
+    },
+    "preview": {
+      "archive_sha256": "d6fe530afd3b3c8cef57ccfbf0d269da22b6ad9ba50173936fd2d88c3f6368e0",
+      "raw_files_SHA_verified": 66
+    },
+    "current": {
+      "archive_sha256": "9ba3fc64cdea8fd2426975e1eee56a0a073b943fbb9a18fc18a8df4c01d19a1a",
+      "raw_files_SHA_verified": 42
+    }
+  },
+  "collector_SHA": "b41bb7811e7095955e39ca1024f33f45081dcfcfae3494f89466011a91915745",
+  "observed": {
+    "B_RGB_only_success_start_epoch": 1792056226.6580052,
+    "B_first_publication_epoch": 1792056230.4719963,
+    "B_start_to_first_publication_s": 3.813991069793701,
+    "preview_RGBD_start_to_first_RGB_publication_s": 4.104283332824707,
+    "A_RGB_start_epoch": 1792058724.1526067,
+    "A_RGB_SIGINT_epoch": 1792058727.3212283,
+    "A_RGB_start_to_SIGINT_s": 3.16862154006958,
+    "A_SIGINT_to_open_error_s": 0.0005486011505126953,
+    "A_received": {
+      "/joint_states_feedback": 302,
+      "/camera/depth/camera_info": 43,
+      "/camera/depth/image_raw": 39
+    },
+    "A_matched_packets": 0,
+    "A_stop_reason": "feedback_lost",
+    "A_raw_RGBD_saved": 0
+  },
+  "strict_existing_feedback_rule_synthetic_checks": [
+    {
+      "synthetic": true,
+      "name": "initialization_only",
+      "predicate_result": false,
+      "last_feedback_age_ns": null
+    },
+    {
+      "synthetic": true,
+      "name": "no_history_after_grace",
+      "predicate_result": true,
+      "last_feedback_age_ns": null
+    },
+    {
+      "synthetic": true,
+      "name": "fresh_at_exact_500ms",
+      "predicate_result": false,
+      "last_feedback_age_ns": 500000000
+    },
+    {
+      "synthetic": true,
+      "name": "stale_by_one_nanosecond",
+      "predicate_result": true,
+      "last_feedback_age_ns": 500000001
+    },
+    {
+      "synthetic": true,
+      "name": "future_by_one_nanosecond",
+      "predicate_result": true,
+      "last_feedback_age_ns": -1
+    },
+    {
+      "synthetic": true,
+      "name": "fresh",
+      "predicate_result": false,
+      "last_feedback_age_ns": 1000000
+    }
+  ],
+  "timing_budget": {
+    "original_minimum_save_interval_s": 0.5,
+    "absolute_lower_bound_60_frames_after_first_s": 29.5,
+    "synthetic_ideal_5Hz_60_saved_span_s": 35.4,
+    "current_camera_deadline_s": 39.0,
+    "current_collector_duration_s": 43.0,
+    "synthetic_using_A_launch_gap_and_historical_B_startup_total_s": 40.63285126686096,
+    "synthetic_using_A_launch_gap_and_historical_RGBD_preview_startup_total_s": 40.923143529891966,
+    "synthetic_would_fit_39s_camera_window": false,
+    "not_a_measurement_of_current_future_camera_startup": true
+  },
+  "conclusions": [
+    "RGB source was terminated before the earlier successful RGB-only startup delay; conditions differ (depth off/on), so not proof of unique root cause.",
+    "The Could not open log follows SIGINT; cannot use it alone as evidence of prior device failure.",
+    "Same feedback_lost boolean covers missing, stale and future stamps. Raw stop-time source/arrival/clock trace was not saved, so the actual category is unknown.",
+    "60 raw sets do not take12s at5Hz: original save throttle requires at least29.5s and ideally35.4s at exact5Hz. Current39s whole-camera budget can be insufficient."
+  ],
+  "proposal_not_implemented": {
+    "scope": "Acquisition-only bounded orchestration/readiness + diagnostic timestamps; no motion or production changes.",
+    "startup_budget_s": 20,
+    "original_collector_duration_s": 55,
+    "original_collector_frames": 60,
+    "camera_total_budget_including_cleanup_s": 80,
+    "bridge_duration_s": 90,
+    "readiness": "Observe real RGB/depth/same-stamp Info/fresh actual joints before starting formal collector. Original collector still independently requires3s static history and original120ms/500ms rules.",
+    "diagnostics": "Store source stamps, local receipt/ROS/monotonic times and exact existing stop predicate reason; do not refresh stamps or lower original quality requirements.",
+    "requires_user_approval_before_change_or_real_session": true
+  },
+  "current_formal_A_frames": 0,
+  "current_qualified_pairs": 1,
+  "B_checkpoint": "1a2e633"
+}

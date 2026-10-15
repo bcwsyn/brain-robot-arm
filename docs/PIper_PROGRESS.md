@@ -1,4 +1,12 @@
-## 本轮收尾核验（2026-10-15 18:07 +08:00）：实际回观测成功，A0帧；停止追加实体采集
+## 本轮离线后续（2026-10-15）：原启动与保存预算审计完成，采集修改待批准
+
+按用户“进行下一步”只离线读取原B/预览/复位后3包，175原文件及三个包SHA通过。原成功B首RGB3.813991s、成功RGB-D预览4.104283s，本次RGB3.168622s即SIGINT、约0.549ms后报开流错误；这是提前终止启动的明确时序线索，但条件不同，不证明唯一根因。原feedback_lost同一布尔覆盖无history/年龄>500ms/未来戳，六组合成原谓词断言通过；原触发瞬间源戳/到达戳/双时钟未落盘，无法断言是实体反馈或订阅调度/时钟问题。
+
+从原AST确认500ms保存间隔：60帧首帧后至少29.5s，理想5Hz按原节流需35.4s；合原启动间隔与历史开流估计40.63—40.92s>原39s相机窗，明确是合成预算风险不是当前0帧实测根因。只提出采集侧方案：离线导入预检；20s真实四源就绪，再原采集器原规则60帧/55s；相机含清理总80s、反馈桥90s、一次不重开；仅补源/接收/ROS/monotonic时戳与原失败类别，不改阈值/源戳。尚未修改或实测，等用户批准后再离线验证/一次静止复核。
+
+复现 `PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 docs/evidence/piper_calibration_p1_20261015/new_pair06/attempt01/offline_acquisition_audit/replay_offline.py` 返回0；原六个pytest文件152通过、collector/bridge/home adapter及一键/两个YAML SHA不变。无ROS初始化/设备/运动/使能/开闭/重载/删除/生产修改，根34GB可用。B1a2e633/原位确认/A0/合格完整1/6不变，不重复复位/回观测/原失败采集。报告见同目录README/report.json；本轮限定Git提交，未推送。
+
+## 历史收尾核验（2026-10-15 18:07 +08:00）：实际回观测成功，A0帧；停止追加实体采集
 
 用户“已复位”接续其人工复位后由代理返回观测/记录的请求；后又明确方块/支撑物“始终未移动”。原SDK59fresh/静止通过/q[-.061054,0,0,-.487961012,.32437118,.717628716]在原任务范围内、六false；复用ERROR-ACTIVE且RX增长链路，不恢复接口。原driver auto_enable=false启动后仅enable_srv true，使能实读六true/q不变；原stop_after_observe=true设/回读、原arm首命令=真实反馈。原17点计划63.4621442s，实际63.068682s→OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH，原StopLocked另发2点同姿态持位、软件disarm成功。bag16021反馈/3155命令/0夹爪消息，无SEARCH/ALIGN/代理开闭/Reset/硬件失能。候选fef28d6未部署，/home仍旧a5074c61…；生产/TF/门/限位不改，旧J3越界不再是当前位置阻断。
 
