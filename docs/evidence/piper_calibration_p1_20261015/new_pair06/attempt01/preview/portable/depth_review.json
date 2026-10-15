@@ -1,0 +1,969 @@
+{
+  "offline_only": true,
+  "motion_commands_sent": false,
+  "captures": [
+    "capture"
+  ],
+  "config_sha256": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+  "depth_units": "uint16 millimetres; zero means missing, not a zero-distance sample",
+  "registration_mode": "Unchanged production pinhole D->C R/T, endpoint resize, no distortion correction",
+  "raw_samples_never_filled": true,
+  "target_reference": "visible surface, not cube center",
+  "joint_spread_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "temporal": {
+    "usable_frames": 5,
+    "requested_frames": 30,
+    "median_z_m": 0.275,
+    "temporal_mad_m": 0.0,
+    "p05_p95_z_m": [
+      0.275,
+      0.275
+    ],
+    "minimum_maximum_z_m": [
+      0.275,
+      0.275
+    ],
+    "peak_to_peak_m": 0.0,
+    "thirty_frame_requirement_met": false,
+    "accuracy_verified": false,
+    "warning": "Static precision is not absolute accuracy. No low-coverage frame is silently removed."
+  },
+  "high_support_temporal": {
+    "usable_frames": 5,
+    "requested_frames": 30,
+    "median_z_m": 0.275,
+    "temporal_mad_m": 0.0,
+    "p05_p95_z_m": [
+      0.275,
+      0.275
+    ],
+    "minimum_maximum_z_m": [
+      0.275,
+      0.275
+    ],
+    "peak_to_peak_m": 0.0,
+    "thirty_frame_requirement_met": false,
+    "accuracy_verified": false,
+    "warning": "Static precision is not absolute accuracy. No low-coverage frame is silently removed."
+  },
+  "high_support_definition": "Offline statistical stratum: >=50% color-mask projection coverage and >=10 measured depth points. All other frames remain in report.",
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1792055306188984875",
+        "depth": "1792055306186394691",
+        "depth_info": "1792055306186394691",
+        "feedback": "1792055306179034112"
+      },
+      "stamp_span_s": 0.009950763,
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "rgb_bbox_xywh": [
+        190,
+        11,
+        38,
+        41
+      ],
+      "native_depth_samples": 3127,
+      "eroded_color_pixels": 959,
+      "color_pixel_coverage": 0.8738269030239834,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.275,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        0.08091415405973695,
+        -0.08467036279664072,
+        0.275
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "267": 7,
+        "268": 102,
+        "269": 205,
+        "270": 161,
+        "271": 236,
+        "272": 161,
+        "273": 336,
+        "274": 258,
+        "275": 316,
+        "276": 187,
+        "277": 257,
+        "278": 115,
+        "279": 205,
+        "280": 124,
+        "281": 130,
+        "282": 58,
+        "283": 48,
+        "284": 37,
+        "285": 28,
+        "286": 16,
+        "287": 19,
+        "288": 12,
+        "289": 33,
+        "290": 27,
+        "291": 11,
+        "292": 2,
+        "299": 4,
+        "602": 23,
+        "603": 9
+      },
+      "depth_info": {
+        "stamp_ns": "1792055306186394691",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792055306.1863947
+      },
+      "images": {
+        "rgb": {
+          "path": "capture/evidence/0001_rgb.png",
+          "stamp": 1792055306.1889849,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "34597a793aee15a047105a8e508e629f6bec2d4db8dfe847a9aa611c9d80f8dc"
+        },
+        "depth": {
+          "path": "capture/evidence/0001_depth.png",
+          "stamp": 1792055306.1863947,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "56ad023877e1e6616ece9d749e4c5591fa3712077ce49664aff402eeaa59e5e7"
+        }
+      },
+      "capture_id": "capture",
+      "T_base_tool": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1792055306989064666",
+        "depth": "1792055306949324972",
+        "depth_info": "1792055306949324972",
+        "feedback": "1792055306969113088"
+      },
+      "stamp_span_s": 0.039739694,
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "rgb_bbox_xywh": [
+        190,
+        11,
+        38,
+        41
+      ],
+      "native_depth_samples": 3156,
+      "eroded_color_pixels": 973,
+      "color_pixel_coverage": 0.8674203494347379,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.275,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        0.08091288757635261,
+        -0.08467036279664072,
+        0.275
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "268": 98,
+        "269": 206,
+        "270": 172,
+        "271": 237,
+        "272": 168,
+        "273": 348,
+        "274": 244,
+        "275": 324,
+        "276": 183,
+        "277": 282,
+        "278": 132,
+        "279": 200,
+        "280": 99,
+        "281": 112,
+        "282": 49,
+        "283": 51,
+        "284": 42,
+        "285": 35,
+        "286": 20,
+        "287": 21,
+        "288": 17,
+        "289": 30,
+        "290": 28,
+        "291": 8,
+        "292": 4,
+        "298": 2,
+        "299": 2,
+        "602": 16,
+        "603": 26
+      },
+      "depth_info": {
+        "stamp_ns": "1792055306949324972",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792055306.949325
+      },
+      "images": {
+        "rgb": {
+          "path": "capture/evidence/0002_rgb.png",
+          "stamp": 1792055306.9890647,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "ca86ec7d91b450babc5acb52924232c9379b71707433fa916d6b7812552afebe"
+        },
+        "depth": {
+          "path": "capture/evidence/0002_depth.png",
+          "stamp": 1792055306.949325,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "438025d33e4ba84e36f2c2e432d8a92c3ad9681edf1eb88161b1d6adc8fa1dc8"
+        }
+      },
+      "capture_id": "capture",
+      "T_base_tool": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1792055308989040097",
+        "depth": "1792055308979923965",
+        "depth_info": "1792055308979923965",
+        "feedback": "1792055308964850944"
+      },
+      "stamp_span_s": 0.024189153,
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "rgb_bbox_xywh": [
+        190,
+        11,
+        38,
+        41
+      ],
+      "native_depth_samples": 3116,
+      "eroded_color_pixels": 960,
+      "color_pixel_coverage": 0.8677083333333333,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.275,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        0.08116599366591801,
+        -0.0847223431787004,
+        0.275
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "268": 81,
+        "269": 182,
+        "270": 163,
+        "271": 250,
+        "272": 173,
+        "273": 312,
+        "274": 257,
+        "275": 344,
+        "276": 180,
+        "277": 248,
+        "278": 109,
+        "279": 203,
+        "280": 140,
+        "281": 144,
+        "282": 60,
+        "283": 62,
+        "284": 41,
+        "285": 24,
+        "286": 9,
+        "287": 15,
+        "288": 8,
+        "289": 34,
+        "290": 30,
+        "291": 9,
+        "292": 2,
+        "602": 33,
+        "603": 3
+      },
+      "depth_info": {
+        "stamp_ns": "1792055308979923965",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792055308.979924
+      },
+      "images": {
+        "rgb": {
+          "path": "capture/evidence/0003_rgb.png",
+          "stamp": 1792055308.9890401,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "91b0033a9ca42c0793ed3210303d16d7f8ce817d26559ca1bc2c01c7bb5a45cc"
+        },
+        "depth": {
+          "path": "capture/evidence/0003_depth.png",
+          "stamp": 1792055308.979924,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "ffbc6924e6aa0a4928f5f78965e047f1a17c83f38a354387b4619202b8649fd2"
+        }
+      },
+      "capture_id": "capture",
+      "T_base_tool": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1792055309589038330",
+        "depth": "1792055309579282096",
+        "depth_info": "1792055309579282096",
+        "feedback": "1792055309569177600"
+      },
+      "stamp_span_s": 0.01986073,
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "rgb_bbox_xywh": [
+        190,
+        10,
+        38,
+        42
+      ],
+      "native_depth_samples": 3179,
+      "eroded_color_pixels": 976,
+      "color_pixel_coverage": 0.8729508196721312,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.275,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        0.08116599366591801,
+        -0.0847223431787004,
+        0.275
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "268": 83,
+        "269": 179,
+        "270": 153,
+        "271": 271,
+        "272": 168,
+        "273": 324,
+        "274": 261,
+        "275": 340,
+        "276": 174,
+        "277": 272,
+        "278": 136,
+        "279": 227,
+        "280": 119,
+        "281": 116,
+        "282": 55,
+        "283": 66,
+        "284": 35,
+        "285": 30,
+        "286": 15,
+        "287": 10,
+        "288": 14,
+        "289": 24,
+        "290": 33,
+        "291": 13,
+        "292": 8,
+        "299": 4,
+        "602": 10,
+        "603": 39
+      },
+      "depth_info": {
+        "stamp_ns": "1792055309579282096",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792055309.5792823
+      },
+      "images": {
+        "rgb": {
+          "path": "capture/evidence/0004_rgb.png",
+          "stamp": 1792055309.5890384,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "df7ad968dd896754e551be5418a0c3c9b0c35654c916c33cf70acdcccc646c10"
+        },
+        "depth": {
+          "path": "capture/evidence/0004_depth.png",
+          "stamp": 1792055309.5792823,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "88a349cc23ebbb6d8c3297ea7c431573fc38606c8fb0074af688b4dbbd80c5cc"
+        }
+      },
+      "capture_id": "capture",
+      "T_base_tool": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1792055310189068978",
+        "depth": "1792055310079885217",
+        "depth_info": "1792055310079885217",
+        "feedback": "1792055310174078720"
+      },
+      "stamp_span_s": 0.109183761,
+      "actual_q_rad": [
+        -0.139081012,
+        0.9507852200000001,
+        -1.2642887880000002,
+        -0.073038028,
+        1.2176609760000001,
+        0.094773252
+      ],
+      "rgb_bbox_xywh": [
+        190,
+        10,
+        38,
+        42
+      ],
+      "native_depth_samples": 3199,
+      "eroded_color_pixels": 975,
+      "color_pixel_coverage": 0.8810256410256411,
+      "coverage_definition": "Unique RGB mask pixels hit by real depth projections / eroded RGB mask pixels; differs from production diagnostic coverage",
+      "surface_z_m": 0.275,
+      "surface_mad_m": 0.0030000000000000027,
+      "surface_componentwise_median_xyz_m": [
+        0.08120289792608863,
+        -0.08467036279664072,
+        0.275
+      ],
+      "surface_not_cube_center": true,
+      "histogram_mm": {
+        "268": 81,
+        "269": 179,
+        "270": 160,
+        "271": 255,
+        "272": 187,
+        "273": 318,
+        "274": 248,
+        "275": 337,
+        "276": 188,
+        "277": 248,
+        "278": 127,
+        "279": 230,
+        "280": 142,
+        "281": 127,
+        "282": 61,
+        "283": 66,
+        "284": 40,
+        "285": 26,
+        "286": 12,
+        "287": 12,
+        "288": 14,
+        "289": 34,
+        "290": 27,
+        "291": 12,
+        "292": 6,
+        "297": 8,
+        "602": 39,
+        "603": 15
+      },
+      "depth_info": {
+        "stamp_ns": "1792055310079885217",
+        "frame": "camera_depth_optical_frame",
+        "size": [
+          640,
+          400
+        ],
+        "distortion_model": "plumb_bob",
+        "k": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "r": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "p": [
+          476.5286560058594,
+          0.0,
+          325.8017578125,
+          0.0,
+          0.0,
+          476.5286560058594,
+          199.88507080078125,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        },
+        "stamp": 1792055310.0798852
+      },
+      "images": {
+        "rgb": {
+          "path": "capture/evidence/0005_rgb.png",
+          "stamp": 1792055310.189069,
+          "frame": "camera_color_optical_frame",
+          "source_encoding": "bgr8",
+          "size": [
+            320,
+            240
+          ],
+          "sha256": "fdaf2906d8713b7f4c46d196b25c30d34bfc4c6f56af3490024169247523c184"
+        },
+        "depth": {
+          "path": "capture/evidence/0005_depth.png",
+          "stamp": 1792055310.0798852,
+          "frame": "camera_depth_optical_frame",
+          "source_encoding": "16UC1",
+          "size": [
+            640,
+            400
+          ],
+          "sha256": "2231af659b1c4aa7e9052afe0d5e62ee92d056b980dc6feb5d5bbc3f8936a671"
+        }
+      },
+      "capture_id": "capture",
+      "T_base_tool": [
+        [
+          -0.7068690847158212,
+          0.23440629990257958,
+          0.667375294447583,
+          0.14945400470212172
+        ],
+        [
+          0.1688839170662465,
+          0.9721362110948976,
+          -0.16257124479568086,
+          -0.02721500351384887
+        ],
+        [
+          -0.6868874140857275,
+          -0.0022076331302871566,
+          -0.7267604878683097,
+          0.42713387155893473
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "common_reference": {
+    "desired": "cube geometric center",
+    "confirmed": false,
+    "camera_method": "Identify one face center and its outward normal; center = face_center - normal * edge/2",
+    "gripper_method": "Record verified cube-center coordinates in gripper_base, or jointly estimate a constant offset from multiple non-degenerate manual poses",
+    "do_not": "Do not add half an edge along the optical ray or assume the configured finger tip is the cube center",
+    "cube_edge_m": 0.029,
+    "cube_edge_is_approximate_user_measurement": true,
+    "camera_cube_center_m": null,
+    "gripper_base_cube_center_m": null,
+    "reason_pending": "No identified face center/normal or verified physical jaw-centered offset; no fabricated center used."
+  },
+  "urdf_sha256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "task_sha256": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+}
