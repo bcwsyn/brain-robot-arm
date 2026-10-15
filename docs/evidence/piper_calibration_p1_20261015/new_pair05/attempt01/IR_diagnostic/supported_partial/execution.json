@@ -1,0 +1,204 @@
+{
+  "diagnostic_only": true,
+  "motion_commands_sent": false,
+  "camera_setters_called": false,
+  "only_runtime_parameter_override": {
+    "enable_ir": true,
+    "ir_height": 400
+  },
+  "automatic_reopen": false,
+  "events": [
+    {
+      "name": "sdk_before",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/sdk_before.json",
+        "--duration-s",
+        "6"
+      ],
+      "pid": 77099,
+      "epoch": 1792054037.2173393
+    },
+    {
+      "name": "feedback",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/calibration_readonly_feedback.py",
+        "--duration-s",
+        "40",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/feedback.json"
+      ],
+      "pid": 77105,
+      "epoch": 1792054043.723506
+    },
+    {
+      "name": "camera",
+      "argv": [
+        "ros2",
+        "launch",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/ir_diagnostic.launch.py"
+      ],
+      "pid": 77106,
+      "epoch": 1792054043.727953
+    },
+    {
+      "name": "observer",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_ir_depth_diagnostic.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/streams",
+        "--duration-s",
+        "24"
+      ],
+      "pid": 77107,
+      "epoch": 1792054043.7313883
+    },
+    {
+      "name": "color",
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "pid": 77170,
+      "epoch": 1792054045.1439939
+    },
+    {
+      "name": "capture",
+      "argv": [
+        "/usr/bin/python3",
+        "-c",
+        "from pathlib import Path; from collect_static_rgbd import collect; import sys; sys.exit(collect(Path(sys.argv[1]),16.,3,settle_s=3.,stop_on_feedback_loss=True,max_bytes=4<<20))",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/capture"
+      ],
+      "pid": 77171,
+      "epoch": 1792054045.1479795
+    },
+    {
+      "name": "factory",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/calibration_stage1_activated_20261014.kfNDAQ/capture_factory_metadata.py",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/factory.json"
+      ],
+      "pid": 77189,
+      "epoch": 1792054045.7088497
+    },
+    {
+      "name": "controls",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_depth_controls.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_supported.5HgOz3/depth_controls.json",
+        "--duration-s",
+        "16.0"
+      ],
+      "pid": 77190,
+      "epoch": 1792054045.712156
+    },
+    {
+      "name": "sdk_before",
+      "returncode": 2,
+      "epoch": 1792054062.848262
+    },
+    {
+      "name": "feedback",
+      "returncode": 0,
+      "epoch": 1792054062.8482866
+    },
+    {
+      "name": "camera",
+      "returncode": 0,
+      "epoch": 1792054062.848293
+    },
+    {
+      "name": "observer",
+      "returncode": 2,
+      "epoch": 1792054062.848297
+    },
+    {
+      "name": "color",
+      "returncode": 0,
+      "epoch": 1792054062.848305
+    },
+    {
+      "name": "capture",
+      "returncode": 0,
+      "epoch": 1792054062.8483105
+    },
+    {
+      "name": "factory",
+      "returncode": 0,
+      "epoch": 1792054062.8483148
+    },
+    {
+      "name": "controls",
+      "returncode": 0,
+      "epoch": 1792054062.8483202
+    }
+  ],
+  "error": null,
+  "camera_session_started": true,
+  "SDK_original_returncode": 2,
+  "actual_q_delta_from_original_observe_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0006279840000000814,
+    0.0
+  ],
+  "camera_start_epoch": 1792054043.7235096,
+  "real_depth_ready": {
+    "epoch": 1792054045.6893783,
+    "stamps_ns": {
+      "depth": "1792054045685451300",
+      "depth_info": "1792054045685451300",
+      "feedback": "1792054045658244608"
+    },
+    "depth_frame": "camera_depth_optical_frame",
+    "depth_size": [
+      640,
+      400
+    ],
+    "scope": "Actual depth+same-stamp Info+fresh feedback received; not top quality or calibration acceptance"
+  },
+  "real_ir_ready": {
+    "epoch": 1792054045.27935,
+    "stamps_ns": {
+      "ir": "1792054045276423071",
+      "ir_info": "1792054045276423071",
+      "feedback": "1792054045260456192"
+    },
+    "ir_frame": "camera_ir_optical_frame",
+    "ir_size": [
+      640,
+      400
+    ],
+    "scope": "Actual ir+same-stamp Info+fresh feedback received; not top quality or calibration acceptance"
+  },
+  "all_owned_sources_exited": true,
+  "camera_elapsed_s": 19.124818912998307,
+  "within_30s_camera_bound": true,
+  "factory_started": true,
+  "controls_started": true,
+  "camera_stop_epoch": 1792054062.8483298
+}

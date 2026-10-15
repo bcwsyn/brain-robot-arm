@@ -14,15 +14,15 @@
     "new_pair04",
     "new_pair05"
   ],
-  "next_pair_id": null,
-  "next_placement_preparation": "Preserve original B/A. Do not repeat same-condition captures or return motion. Next proposed diagnostic is bounded IR intensity observation; additional stream requires specific approval, not yet executed.",
+  "next_pair_id": "new_pair06",
+  "next_placement_preparation": "Ask operator to place cube slightly farther from current camera than fourth placement, away from mat edge; do not manually pose or grip yet. First bounded passive original depth+RGB preview at current stationary observation, then grip-side pairing only if original quality is adequate.",
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair05",
-  "current_step": "native_flow_and_GET_after_flow_verified_36_frames_target_native_depth_holes_remain",
+  "current_step": "IR_partial_raw_evidence_saved_near_target_mono8_clipping_next_placement_preview_first",
   "current_attempt_id": "attempt01",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_preview.Bu8bar",
   "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "Latest user autonomous progress approved GET-after-real-flow timing fix and one <=30s diagnostic. Completed one 25.618s actual camera session; SDK-only preflight failure preserved separately. No authority inferred for IR configuration, setters, arm motion, or additional unchanged sessions.",
+  "current_authority_scope": "User explicitly authorized autonomous diagnostic progress until next physical placement. Temporary supported IR stream and diagnostic-side fixes completed; no exposure/gain/laser setters, production changes, arm movement or blanket per-group motion authority inferred.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -317,7 +317,7 @@
     {
       "pair_id": "new_pair05",
       "role": "fit",
-      "state": "original_A60_zero_good_top_native_flow_restored_target_holes_persist",
+      "state": "raw_B_A_preserved_qualified_A_missing_IR_brightness_ceiling_clue",
       "preparation_record": "new_pair05/README.md",
       "grip_manifest": "new_pair05/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": "new_pair05/attempt01/observe_capture/portable/manifest.json",
@@ -380,17 +380,28 @@
       "latest_GET_timing_diagnostic": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json",
       "startup_order_diagnostic_RGBD_frames": 3,
       "startup_order_diagnostic_good_top_frames": 0,
-      "continuous_native_depth_metadata_comparison_complete": true
+      "continuous_native_depth_metadata_comparison_complete": true,
+      "IR_diagnostic": "new_pair05/attempt01/IR_diagnostic/README.md",
+      "IR_diagnostic_saved_frames": 4,
+      "IR_companion_depth_frames": 4,
+      "IR_supplementary_RGBD_frames": 6,
+      "IR_continuous_comparison_complete": false,
+      "IR_cause_proven": false
     },
     {
       "pair_id": "new_pair06",
       "role": "fit",
-      "state": "not_started",
+      "state": "awaiting_new_placement_preview_first",
       "grip_manifest": null,
       "observe_manifest": null,
       "physical_grip_verified": null,
       "released_without_object_motion_verified": null,
-      "observation_return_authorized": null
+      "observation_return_authorized": null,
+      "preparation_record": "new_pair06/README.md",
+      "physical_placement_confirmed": false,
+      "preview_before_manual_grip": true,
+      "collection_complete": false,
+      "calibration_accepted": false
     },
     {
       "pair_id": "new_pair07",
@@ -424,7 +435,7 @@
     true
   ],
   "current_last_fresh_gripper_mm": 99.6,
-  "current_last_fresh_SDK_epoch": 1792052828.345153,
+  "current_last_fresh_SDK_epoch": 1792054218.745643,
   "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_feedback_fresh": false,
   "current_live_enabled_after_RX_loss": [
@@ -456,7 +467,7 @@
       0.0645
     ]
   },
-  "current_feedback_fresh_scope": "Fresh only in finished startup-order diagnostic. All owned sources exited; no current continuous monitor, no CAN loss inferred.",
+  "current_feedback_fresh_scope": "All three IR diagnostic sessions ended. Last SDK receipt was fresh only in completed session; partial passive observer hit original 500ms rule, not proof of physical CAN failure.",
   "current_readonly_A_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_A_batch60.3MFdVm",
   "receive_recovery_A_record": "new_pair04/attempt01/observe_after_reconnect/execution.json",
   "latest_CAN_readonly_A": {
@@ -480,7 +491,7 @@
     "state": "ERROR-ACTIVE"
   },
   "last_valid_new_pair05_ROS_feedback": {
-    "epoch": 1792052828.345153,
+    "epoch": 1792054218.745643,
     "q": [
       -0.139081012,
       0.9507852200000001,
@@ -503,14 +514,17 @@
     "independent_SDK_fresh": 0,
     "record": "new_pair05/attempt01/release_observe/execution.json"
   },
-  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_startup_order_execute.Q5T3q3",
+  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_IR_drained.9TuwUl",
   "latest_metadata_diagnostic_record": "new_pair05/attempt01/continuous_metadata_diagnostic/assessment.json",
   "latest_CAN_diagnostic": {
     "up": true,
     "state": "ERROR-ACTIVE",
-    "rx": 8714890,
+    "rx": 12072952,
     "tx": 3070
   },
   "latest_native_depth_diagnostic_record": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json",
-  "latest_native_GET_timing_diagnostic_record": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json"
+  "latest_native_GET_timing_diagnostic_record": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json",
+  "latest_IR_diagnostic_record": "new_pair05/attempt01/IR_diagnostic/audit.json",
+  "next_placement_preview_before_manual_grip": true,
+  "autonomous_diagnostic_user_quote": "你自行推行，只需要让我进行下一次摆放即可"
 }

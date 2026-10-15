@@ -1,0 +1,49 @@
+{
+  "schema": "piper_native_ir_diagnostic_v1",
+  "diagnostic_only": true,
+  "formal_calibration_pair": false,
+  "RGB_required": false,
+  "motion_commands_sent": false,
+  "topics": [
+    "/camera/ir/image_raw",
+    "/camera/ir/camera_info",
+    "/joint_states_feedback"
+  ],
+  "max_frames": 60,
+  "interval_s": 0.5,
+  "max_image_bytes": 33554432,
+  "cache_per_topic_limit": 64,
+  "static_window_s": 3.0,
+  "same_stamp_depth_Info": true,
+  "hardware_synchronized": false,
+  "saved_frames": 4,
+  "image_bytes": 742694,
+  "received": {
+    "feedback": 284,
+    "ir": 55,
+    "info": 42
+  },
+  "rejected": {
+    "feedback_span_exceeds_original_120ms": 2
+  },
+  "stop_reason": null,
+  "first_received_pair": {
+    "epoch": 1792054201.9205506,
+    "stamps_ns": {
+      "ir": "1792054201918305325",
+      "ir_info": "1792054201918305325",
+      "feedback": "1792054201915247104"
+    },
+    "ir_frame": "camera_ir_optical_frame",
+    "ir_size": [
+      640,
+      400
+    ],
+    "scope": "Actual ir+same-stamp Info+fresh feedback received; not top quality or calibration acceptance"
+  },
+  "stream_kind": "ir",
+  "physical_radiometry_verified": false,
+  "driver_IR_intrinsics_independently_verified": false,
+  "unmatched_cached_ir_images": 13,
+  "unmatched_cached_Info": 0
+}

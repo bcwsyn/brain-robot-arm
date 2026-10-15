@@ -16,7 +16,9 @@ from collect_static_rgbd import (stamp_ns, joint_positions, settled_feedback,
 TOPICS = ('/camera/depth/image_raw', '/camera/depth/camera_info', '/joint_states_feedback')
 
 
-def checked_native_packet(depth, info, feedback, now_ns):
+def checked_native_packet(depth, info, feedback, now_ns, stream_kind='depth'):
+    if stream_kind not in ('depth', 'ir'):
+        raise ValueError('unsupported_diagnostic_stream')
     stamps = [stamp_ns(m) for m in (depth, info, feedback)]
     if stamps[0] != stamps[1]:
         raise ValueError('depth_info_not_same_stamp')
@@ -26,11 +28,12 @@ def checked_native_packet(depth, info, feedback, now_ns):
         raise ValueError('stale_or_future_input')
     if depth.header.frame_id != info.header.frame_id or (depth.width,depth.height)!=(info.width,info.height):
         raise ValueError('depth_Info_frame_or_size_mismatch')
-    if depth.width <= 0 or depth.height <= 0 or depth.encoding not in ('16UC1','mono16'):
+    formats = ('16UC1','mono16') if stream_kind == 'depth' else ('mono8',)
+    if depth.width <= 0 or depth.height <= 0 or depth.encoding not in formats:
         raise ValueError('invalid_native_depth_format')
     if len(info.k)!=9 or not all(math.isfinite(x) for x in info.k) or info.k[0]<=0 or info.k[4]<=0:
         raise ValueError('invalid_native_intrinsics')
-    return {'stamps_ns':dict(zip(('depth','depth_info','feedback'),map(str,stamps))),
+    return {'stamps_ns':dict(zip((stream_kind,stream_kind+'_info','feedback'),map(str,stamps))),
             'stamp_span_s':(max(stamps)-min(stamps))/1e9,'oldest_age_s':(now_ns-min(stamps))/1e9,
             'q_rad':joint_positions(feedback)}
 
@@ -52,13 +55,32 @@ def encode_message(message):
     return encode_native_array(image,message.width,message.height)
 
 
+def encode_ir_message(message):
+    from cv_bridge import CvBridge
+    return encode_ir_array(CvBridge().imgmsg_to_cv2(message,'passthrough'),message.width,message.height)
+
+
+def encode_ir_array(image, width, height):
+    import cv2
+    import numpy as np
+    if image.dtype != np.uint8 or image.shape != (height,width):
+        raise ValueError('passthrough_ir_dtype_or_shape_mismatch')
+    ok, encoded = cv2.imencode('.png',image)
+    if not ok:
+        raise RuntimeError('native_ir_png_encoding_failed')
+    return encoded.tobytes()
+
+
 class NativeDepthRecorder:
-    def __init__(self, output, encoder=encode_message):
+    def __init__(self, output, encoder=None, stream_kind='depth'):
+        if stream_kind not in ('depth','ir'):
+            raise ValueError('unsupported_diagnostic_stream')
+        self.stream_kind = stream_kind
         self.output=Path(output)
         self.output.mkdir(exist_ok=False)
         (self.output/'evidence').mkdir()
         self.stream=(self.output/'observer.jsonl').open('x')
-        self.encoder=encoder
+        self.encoder=encoder or (encode_message if stream_kind == 'depth' else encode_ir_message)
         self.depths,self.infos={},{}
         self.history=deque(maxlen=1000)
         self.feedback=None
@@ -72,6 +94,11 @@ class NativeDepthRecorder:
                       'hardware_synchronized':False,'saved_frames':0,'image_bytes':0,
                       'received':Counter(),'rejected':Counter(),'stop_reason':None,
                       'first_received_pair':None}
+        if stream_kind == 'ir':
+            self.summary.update(schema='piper_native_ir_diagnostic_v1',
+                                topics=['/camera/ir/image_raw','/camera/ir/camera_info',TOPICS[2]],
+                                stream_kind='ir',physical_radiometry_verified=False,
+                                driver_IR_intrinsics_independently_verified=False)
 
     def receive(self, kind, message, now_ns, epoch):
         self.summary['received'][kind]+=1
@@ -84,7 +111,7 @@ class NativeDepthRecorder:
                 self.history.append((stamp,q))
                 self.feedback=message
                 return
-            cache=self.depths if kind=='depth' else self.infos
+            cache=self.depths if kind==self.stream_kind else self.infos
             cache[stamp]=message
             while len(cache)>64:
                 del cache[min(cache)]
@@ -94,11 +121,11 @@ class NativeDepthRecorder:
             depth,info=self.depths.pop(stamp),self.infos.pop(stamp)
             if self.summary['stop_reason'] or self.summary['saved_frames']>=60 or stamp-self.last_saved_ns<500_000_000:
                 return
-            packet=checked_native_packet(depth,info,self.feedback,now_ns)
+            packet=checked_native_packet(depth,info,self.feedback,now_ns,self.stream_kind)
             if self.summary['first_received_pair'] is None:
                 first={'epoch':epoch,'stamps_ns':packet['stamps_ns'],
-                       'depth_frame':depth.header.frame_id,'depth_size':[depth.width,depth.height],
-                       'scope':'Actual depth+same-stamp Info+fresh feedback received; not top quality or calibration acceptance'}
+                       self.stream_kind+'_frame':depth.header.frame_id,self.stream_kind+'_size':[depth.width,depth.height],
+                       'scope':f'Actual {self.stream_kind}+same-stamp Info+fresh feedback received; not top quality or calibration acceptance'}
                 with (self.output/'ready.json').open('x') as stream:
                     json.dump(first,stream,indent=2,allow_nan=False)
                 self.summary['first_received_pair']=first
@@ -112,17 +139,17 @@ class NativeDepthRecorder:
                 self.summary['stop_reason']='diagnostic_image_budget_exhausted'
                 return
             number=self.summary['saved_frames']+1
-            relative=f'evidence/{number:04d}_depth.png'
+            relative=f'evidence/{number:04d}_{self.stream_kind}.png'
             with (self.output/relative).open('xb') as stream:
                 stream.write(encoded)
             fb=self.feedback
             row={'epoch':epoch,'snapshot':number,'diagnostic_only':True,
                  'timestamp_paired_not_hardware_sync':True,**packet,
-                 'depth_info':full_camera_info(info),
+                 self.stream_kind+'_info':full_camera_info(info),
                  'feedback':{'raw_names':list(fb.name),'raw_positions':list(fb.position),
                              'raw_velocity':list(fb.velocity),'raw_effort':list(fb.effort),
                              'frame':fb.header.frame_id},
-                 'images':{'depth':{'path':relative,'sha256':hashlib.sha256(encoded).hexdigest(),
+                 'images':{self.stream_kind:{'path':relative,'sha256':hashlib.sha256(encoded).hexdigest(),
                                     'source_encoding':depth.encoding,'frame':depth.header.frame_id,
                                     'size':[depth.width,depth.height]}}}
             self.stream.write(json.dumps(row,allow_nan=False)+'\n');self.stream.flush()
@@ -138,7 +165,7 @@ class NativeDepthRecorder:
 
     def finish(self):
         self.stream.close()
-        self.summary['unmatched_cached_depths']=len(self.depths)
+        self.summary['unmatched_cached_depths' if self.stream_kind=='depth' else 'unmatched_cached_ir_images']=len(self.depths)
         self.summary['unmatched_cached_Info']=len(self.infos)
         with (self.output/'summary.json').open('x') as stream:
             json.dump(self.summary,stream,indent=2,allow_nan=False)

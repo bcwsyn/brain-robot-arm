@@ -1,0 +1,46 @@
+{
+  "schema": "piper_native_depth_diagnostic_v1",
+  "diagnostic_only": true,
+  "formal_calibration_pair": false,
+  "RGB_required": false,
+  "motion_commands_sent": false,
+  "topics": [
+    "/camera/depth/image_raw",
+    "/camera/depth/camera_info",
+    "/joint_states_feedback"
+  ],
+  "max_frames": 60,
+  "interval_s": 0.5,
+  "max_image_bytes": 33554432,
+  "cache_per_topic_limit": 64,
+  "static_window_s": 3.0,
+  "same_stamp_depth_Info": true,
+  "hardware_synchronized": false,
+  "saved_frames": 4,
+  "image_bytes": 169101,
+  "received": {
+    "feedback": 284,
+    "depth": 24,
+    "info": 29
+  },
+  "rejected": {
+    "feedback_span_exceeds_original_120ms": 2
+  },
+  "stop_reason": null,
+  "first_received_pair": {
+    "epoch": 1792054202.0977373,
+    "stamps_ns": {
+      "depth": "1792054201950039003",
+      "depth_info": "1792054201950039003",
+      "feedback": "1792054201915247104"
+    },
+    "depth_frame": "camera_depth_optical_frame",
+    "depth_size": [
+      640,
+      400
+    ],
+    "scope": "Actual depth+same-stamp Info+fresh feedback received; not top quality or calibration acceptance"
+  },
+  "unmatched_cached_depths": 2,
+  "unmatched_cached_Info": 7
+}

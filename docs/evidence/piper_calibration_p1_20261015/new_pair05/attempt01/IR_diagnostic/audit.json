@@ -1,0 +1,1136 @@
+{
+  "diagnostic_only": true,
+  "formal_A_replaced": false,
+  "formal_complete_pairs": 1,
+  "cube_material_or_minimum_range_or_exposure_cause_proven": false,
+  "original_3s_120ms_500ms_rules_preserved": true,
+  "production_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+      "actual": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8"
+    }
+  },
+  "final_observer_exit_status_fix_after_live_run_unit_tested_only": true,
+  "last_valid_feedback": {
+    "epoch": 1792054218.745643,
+    "sdk_receipt_stamps": {
+      "joint": "1792054218.745323",
+      "high": "1792054218.741442",
+      "low": "1792054218.741509",
+      "gripper": "1792054218.7454114"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -7973,
+      54505,
+      -72477,
+      -4187,
+      69804,
+      5433
+    ],
+    "q_driver_rad": [
+      -0.139081012,
+      0.9507852200000001,
+      -1.2642887880000002,
+      -0.073038028,
+      1.2176609760000001,
+      0.094773252
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 87,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "sessions": [
+    {
+      "session": "unsupported_default",
+      "camera_elapsed_s": 26.328782181997667,
+      "runtime_override": {
+        "enable_ir": true
+      },
+      "all_owned_sources_exited": true,
+      "actual_as_run_collector_returncode": 2,
+      "observer_stop_reason": null,
+      "continuous_IR_comparison_complete": false,
+      "source_before_after_SHA_equal": true,
+      "as_run_collector_code_SHA_verified": true,
+      "depth_saved": 36,
+      "IR_saved": 0,
+      "RGBD_saved": 0,
+      "good_top_frames": 0,
+      "new_CAN_TX": 0,
+      "CAN_before": {
+        "before": {
+          "up": true,
+          "state": "ERROR-ACTIVE",
+          "rx": 11505316,
+          "tx": 3070
+        },
+        "after": {
+          "up": true,
+          "state": "ERROR-ACTIVE",
+          "rx": 11505824,
+          "tx": 3070
+        },
+        "healthy": true
+      },
+      "CAN_after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 11567007,
+        "tx": 3070
+      },
+      "GET_raw_counts": {},
+      "GET_hardware_value_or_units_verified": false,
+      "native_actual_q_spread_rad": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "frames": [
+        {
+          "kind": "depth",
+          "snapshot": 1,
+          "stamps_ns": {
+            "depth": "1792053985927106657",
+            "depth_info": "1792053985927106657",
+            "feedback": "1792053985920743936"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "c8dd418b16ac0bc884f8fd22eaf0de436842b08b6cb295f446eb3c4184df9965",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9994036970781157
+        },
+        {
+          "kind": "depth",
+          "snapshot": 2,
+          "stamps_ns": {
+            "depth": "1792053986427624666",
+            "depth_info": "1792053986427624666",
+            "feedback": "1792053986415349760"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "5e32432ed213944f452e3b872535bd8132d81c40e59f37b21c05d3128d0a16a7",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 3,
+          "stamps_ns": {
+            "depth": "1792053987526286792",
+            "depth_info": "1792053987526286792",
+            "feedback": "1792053987505542912"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "91ee8d8bd14025da4f03446d7511ca55d4df567adc668a6e81436dbcd951c1e5",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 4,
+          "stamps_ns": {
+            "depth": "1792053988356980087",
+            "depth_info": "1792053988356980087",
+            "feedback": "1792053988340308480"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "74884535f0b6050461ce3a48640793ad32a207575ce7ead4667deef9a0f4173b",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9988073941562313
+        },
+        {
+          "kind": "depth",
+          "snapshot": 5,
+          "stamps_ns": {
+            "depth": "1792053989091768597",
+            "depth_info": "1792053989091768597",
+            "feedback": "1792053989085393664"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "0de35fbb94077a2a678edb01fb43b1cb79312b36763e6cd5f7b62f1a1f3cf583",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9991055456171736
+        },
+        {
+          "kind": "depth",
+          "snapshot": 6,
+          "stamps_ns": {
+            "depth": "1792053989661311344",
+            "depth_info": "1792053989661311344",
+            "feedback": "1792053989650556928"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "2422d94ad490f68325499557482c94e1128f5f6f1b40f84075a9c3fb1db00633",
+          "fixed_depth_3354_pixels_zero_fraction": 0.998211091234347
+        },
+        {
+          "kind": "depth",
+          "snapshot": 7,
+          "stamps_ns": {
+            "depth": "1792053990323708937",
+            "depth_info": "1792053990323708937",
+            "feedback": "1792053990320407040"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "c58393352606558f37339b3f2ded301558349af8951d1861cab9f5999d5e246c",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9985092426952892
+        },
+        {
+          "kind": "depth",
+          "snapshot": 8,
+          "stamps_ns": {
+            "depth": "1792053990893928034",
+            "depth_info": "1792053990893928034",
+            "feedback": "1792053990885299968"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "e1a5de36bd9903fa4bc3fb4d1aa8b82bc0aece5eb99b72a2378edefbc29c4efc",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 9,
+          "stamps_ns": {
+            "depth": "1792053991727376919",
+            "depth_info": "1792053991727376919",
+            "feedback": "1792053991715312640"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "0e574be1278b5545181976dbd566e816fba26c41cb80dcf54010d4df70958b3f",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 10,
+          "stamps_ns": {
+            "depth": "1792053992255975606",
+            "depth_info": "1792053992255975606",
+            "feedback": "1792053992235359232"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "7b134a025523ec2301ae27bb7ca29e2ddee3924a53bbfef1260c9125f34a78da",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 11,
+          "stamps_ns": {
+            "depth": "1792053992757481271",
+            "depth_info": "1792053992757481271",
+            "feedback": "1792053992735313920"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "9ecc36be09615b88c73f5fed2e2153688f89d431ced73ceabfd964dc278bd6b9",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 12,
+          "stamps_ns": {
+            "depth": "1792053993291876897",
+            "depth_info": "1792053993291876897",
+            "feedback": "1792053993275316480"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "5208b02c9c9e94aa46948d21a2602587a0f9937534eafaf1cadc40ac1c9ab9e1",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9991055456171736
+        },
+        {
+          "kind": "depth",
+          "snapshot": 13,
+          "stamps_ns": {
+            "depth": "1792053993792481976",
+            "depth_info": "1792053993792481976",
+            "feedback": "1792053993775504128"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "c77d0633770ddd5d97904ab8e4bad79efc2a9757bc868283a7ecd9d46505f0e9",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 14,
+          "stamps_ns": {
+            "depth": "1792053994321969622",
+            "depth_info": "1792053994321969622",
+            "feedback": "1792053994315382784"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "02c39e10e9e59af90f975f76c5ccc3567f9f419869e3933a5466ce31dada3006",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 15,
+          "stamps_ns": {
+            "depth": "1792053994822581682",
+            "depth_info": "1792053994822581682",
+            "feedback": "1792053994820066560"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "995b3dcf88552d1953c895df5b72860a6bebf728a198a3af5f2a19cea8ceeec9",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 16,
+          "stamps_ns": {
+            "depth": "1792053995323035341",
+            "depth_info": "1792053995323035341",
+            "feedback": "1792053995315310080"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "7c1f90609abe1aaaa5b6378df971d064d79e963cde5eb5068109c7b21e503887",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9994036970781157
+        },
+        {
+          "kind": "depth",
+          "snapshot": 17,
+          "stamps_ns": {
+            "depth": "1792053995823929633",
+            "depth_info": "1792053995823929633",
+            "feedback": "1792053995815397376"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "1dce6c18e6c579a1da7bb4ab1c9b127c1f7eb89393c18369859edbef5f80abc1",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9994036970781157
+        },
+        {
+          "kind": "depth",
+          "snapshot": 18,
+          "stamps_ns": {
+            "depth": "1792053996353105671",
+            "depth_info": "1792053996353105671",
+            "feedback": "1792053996335448576"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "fc5745fc5a3ccf56a4e096140c295596494f3b013253652373f5ec0fc4b2384b",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 19,
+          "stamps_ns": {
+            "depth": "1792053996853472985",
+            "depth_info": "1792053996853472985",
+            "feedback": "1792053996835332352"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "4201110e5eb7ea2c653f2d2ba652429a23bb28246b624f564371374939acf087",
+          "fixed_depth_3354_pixels_zero_fraction": 0.998211091234347
+        },
+        {
+          "kind": "depth",
+          "snapshot": 20,
+          "stamps_ns": {
+            "depth": "1792053997354307852",
+            "depth_info": "1792053997354307852",
+            "feedback": "1792053997345427456"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "f779e774a96c3e98a5eb07f0a6a1c16f875ec2dffa85fee54ffd4ec59df30dbd",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 21,
+          "stamps_ns": {
+            "depth": "1792053998052640196",
+            "depth_info": "1792053998052640196",
+            "feedback": "1792053998030470400"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "876d13520f24b1e0ec58a3d7fc488fde2219483151853e7c9f1438271b66adf7",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9991055456171736
+        },
+        {
+          "kind": "depth",
+          "snapshot": 22,
+          "stamps_ns": {
+            "depth": "1792053998553022257",
+            "depth_info": "1792053998553022257",
+            "feedback": "1792053998530774784"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "010398c372b513d652adbd8379ded67da722df3ddfc7dd65ae8cec8826d1e14a",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 23,
+          "stamps_ns": {
+            "depth": "1792053999053473523",
+            "depth_info": "1792053999053473523",
+            "feedback": "1792053999030630400"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "411f15233fd1f51c2751322dc450e3040c4e54b4348baf2a1b411a961200cfa1",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 24,
+          "stamps_ns": {
+            "depth": "1792053999751762436",
+            "depth_info": "1792053999751762436",
+            "feedback": "1792053999735262720"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "a1b55da77f737c23b34f515e8472d6fae2296f7ee320781f41cf51ab28b0bc16",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 25,
+          "stamps_ns": {
+            "depth": "1792054000252152547",
+            "depth_info": "1792054000252152547",
+            "feedback": "1792054000230452224"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "f6e5220b1d5a487152cddc086fb8e8565a7463033932656d47c98eb8a1556679",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 26,
+          "stamps_ns": {
+            "depth": "1792054000753533701",
+            "depth_info": "1792054000753533701",
+            "feedback": "1792054000735294720"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "72455f81bcdded1d648a8dd9e2ebff894a84af0b408061bc5a52f324ed655216",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 27,
+          "stamps_ns": {
+            "depth": "1792054001288428921",
+            "depth_info": "1792054001288428921",
+            "feedback": "1792054001270863104"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "c2bd106376ac87533eefda663a028f163f8a54b1a89ee5b0ed9baac468fe5715",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 28,
+          "stamps_ns": {
+            "depth": "1792054001789204519",
+            "depth_info": "1792054001789204519",
+            "feedback": "1792054001765399296"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "46d08dfc837894c9b035f46bd9d550506d115512dde8f6beb743803b04e812d8",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9991055456171736
+        },
+        {
+          "kind": "depth",
+          "snapshot": 29,
+          "stamps_ns": {
+            "depth": "1792054002317999264",
+            "depth_info": "1792054002317999264",
+            "feedback": "1792054002310134784"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "61d5b4c2709412dd13ed54cb4a75e3689d07285737a8b3b168faf18c15ffe28b",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 30,
+          "stamps_ns": {
+            "depth": "1792054002918911192",
+            "depth_info": "1792054002918911192",
+            "feedback": "1792054002905294848"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "1857f1807b0dc11480fd72fcd0cbfb8ffd52145c55331991a9ef2489b5d91005",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 31,
+          "stamps_ns": {
+            "depth": "1792054003453153529",
+            "depth_info": "1792054003453153529",
+            "feedback": "1792054003445365504"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "9183e1eb87c92244cfde451d71956f6d4fffce7a9302e35332046920fc6db87b",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 32,
+          "stamps_ns": {
+            "depth": "1792054003953586106",
+            "depth_info": "1792054003953586106",
+            "feedback": "1792054003945292800"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "04dd9c9983c9ed21739f5966f976c2a2e7256e57d11f8c2fda8a5b154e360663",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        },
+        {
+          "kind": "depth",
+          "snapshot": 33,
+          "stamps_ns": {
+            "depth": "1792054004518611197",
+            "depth_info": "1792054004518611197",
+            "feedback": "1792054004501511936"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "1e440f43a483aa6014cd152cf0093914ddb53cc53e415a83e0cf3620bb750a04",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 34,
+          "stamps_ns": {
+            "depth": "1792054005019379431",
+            "depth_info": "1792054005019379431",
+            "feedback": "1792054005000417024"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "14e749f680eb05fae7803bed1ac5a354d651188ce3f5ed72839f1f7a84fd9271",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9991055456171736
+        },
+        {
+          "kind": "depth",
+          "snapshot": 35,
+          "stamps_ns": {
+            "depth": "1792054005520207075",
+            "depth_info": "1792054005520207075",
+            "feedback": "1792054005495639808"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "e342fa695fc465d8998b41899bea21063ac5ed891370e1719b3bac5d94bdca22",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9991055456171736
+        },
+        {
+          "kind": "depth",
+          "snapshot": 36,
+          "stamps_ns": {
+            "depth": "1792054006083561742",
+            "depth_info": "1792054006083561742",
+            "feedback": "1792054006080297984"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "f8b4bc0439b5af3f4d7078ea66cb7600c8915367dfd43ceee2cc9509974eaec7",
+          "fixed_depth_3354_pixels_zero_fraction": 0.9997018485390579
+        }
+      ]
+    },
+    {
+      "session": "supported_partial",
+      "camera_elapsed_s": 19.124818912998307,
+      "runtime_override": {
+        "enable_ir": true,
+        "ir_height": 400
+      },
+      "all_owned_sources_exited": true,
+      "actual_as_run_collector_returncode": 2,
+      "observer_stop_reason": "feedback_lost_original_500ms_rule",
+      "continuous_IR_comparison_complete": false,
+      "source_before_after_SHA_equal": true,
+      "as_run_collector_code_SHA_verified": true,
+      "depth_saved": 0,
+      "IR_saved": 0,
+      "RGBD_saved": 3,
+      "good_top_frames": 0,
+      "new_CAN_TX": 0,
+      "CAN_before": {
+        "before": {
+          "up": true,
+          "state": "ERROR-ACTIVE",
+          "rx": 11651863,
+          "tx": 3070
+        },
+        "after": {
+          "up": true,
+          "state": "ERROR-ACTIVE",
+          "rx": 11652355,
+          "tx": 3070
+        },
+        "healthy": true
+      },
+      "CAN_after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 11696113,
+        "tx": 3070
+      },
+      "GET_raw_counts": {
+        "/camera/get_depth_exposure": {
+          "6000": 15
+        },
+        "/camera/get_depth_gain": {
+          "1590": 15
+        }
+      },
+      "GET_hardware_value_or_units_verified": false,
+      "native_actual_q_spread_rad": null,
+      "frames": []
+    },
+    {
+      "session": "drained_partial",
+      "camera_elapsed_s": 19.1007320839999,
+      "runtime_override": {
+        "enable_ir": true,
+        "ir_height": 400
+      },
+      "all_owned_sources_exited": true,
+      "actual_as_run_collector_returncode": 0,
+      "observer_stop_reason": "feedback_lost_original_500ms_rule",
+      "continuous_IR_comparison_complete": false,
+      "source_before_after_SHA_equal": true,
+      "as_run_collector_code_SHA_verified": true,
+      "depth_saved": 4,
+      "IR_saved": 4,
+      "RGBD_saved": 3,
+      "good_top_frames": 0,
+      "new_CAN_TX": 0,
+      "CAN_before": {
+        "before": {
+          "up": true,
+          "state": "ERROR-ACTIVE",
+          "rx": 12020722,
+          "tx": 3070
+        },
+        "after": {
+          "up": true,
+          "state": "ERROR-ACTIVE",
+          "rx": 12021231,
+          "tx": 3070
+        },
+        "healthy": true
+      },
+      "CAN_after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 12072952,
+        "tx": 3070
+      },
+      "GET_raw_counts": {
+        "/camera/get_depth_exposure": {
+          "6000": 16
+        },
+        "/camera/get_depth_gain": {
+          "1618": 16
+        }
+      },
+      "GET_hardware_value_or_units_verified": false,
+      "native_actual_q_spread_rad": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "frames": [
+        {
+          "kind": "depth",
+          "snapshot": 1,
+          "stamps_ns": {
+            "depth": "1792054201950039003",
+            "depth_info": "1792054201950039003",
+            "feedback": "1792054201915247104"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "5cc10bc2c4e9fd9fb7f50d02368e7fc521768188def9a42804ecb869ae2f6e26",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 2,
+          "stamps_ns": {
+            "depth": "1792054202521485551",
+            "depth_info": "1792054202521485551",
+            "feedback": "1792054202515232512"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "7569af5629a53b361882700c86e90a2c26af857f3bc32abb8ae8b70a2d3c9061",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 3,
+          "stamps_ns": {
+            "depth": "1792054203183741787",
+            "depth_info": "1792054203183741787",
+            "feedback": "1792054203165422848"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "45ff70110647a67e7d816e21e07c58c7f803b720a5704268934e5178062eec7a",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "depth",
+          "snapshot": 4,
+          "stamps_ns": {
+            "depth": "1792054203685572141",
+            "depth_info": "1792054203685572141",
+            "feedback": "1792054203666163456"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "5f7fdad8a9a4590bfacbcd2ead08335964807cc36b7f08af40c7c62296b57ea5",
+          "fixed_depth_3354_pixels_zero_fraction": 1.0
+        },
+        {
+          "kind": "ir",
+          "snapshot": 1,
+          "stamps_ns": {
+            "ir": "1792054201918305325",
+            "ir_info": "1792054201918305325",
+            "feedback": "1792054201915247104"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "e1f2706d7689ed52c6055a2a385251bd5b2b916fe81f05945746455f89ae9261",
+          "IR_independent_visual_rectangle_xyxy": [
+            310,
+            245,
+            350,
+            290
+          ],
+          "IR_rectangle_pixels": 1800,
+          "IR_uint8_255_fraction": 0.9122222222222223,
+          "IR_rectangle_min_median_max": [
+            195.0,
+            255.0,
+            255.0
+          ],
+          "pixel_alignment_to_depth_assumed": false,
+          "radiometry_verified": false
+        },
+        {
+          "kind": "ir",
+          "snapshot": 2,
+          "stamps_ns": {
+            "ir": "1792054202645803230",
+            "ir_info": "1792054202645803230",
+            "feedback": "1792054202635255040"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "91708cec53092886dca92fc933c07af32d6893ab748c55a717116667053edd99",
+          "IR_independent_visual_rectangle_xyxy": [
+            310,
+            245,
+            350,
+            290
+          ],
+          "IR_rectangle_pixels": 1800,
+          "IR_uint8_255_fraction": 0.9088888888888889,
+          "IR_rectangle_min_median_max": [
+            191.0,
+            255.0,
+            255.0
+          ],
+          "pixel_alignment_to_depth_assumed": false,
+          "radiometry_verified": false
+        },
+        {
+          "kind": "ir",
+          "snapshot": 3,
+          "stamps_ns": {
+            "ir": "1792054203178541774",
+            "ir_info": "1792054203178541774",
+            "feedback": "1792054203165422848"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "c727716556e81922d4a99623cf69ecf09ca897ab6497d3030685103e8d5887b1",
+          "IR_independent_visual_rectangle_xyxy": [
+            310,
+            245,
+            350,
+            290
+          ],
+          "IR_rectangle_pixels": 1800,
+          "IR_uint8_255_fraction": 0.91,
+          "IR_rectangle_min_median_max": [
+            185.0,
+            255.0,
+            255.0
+          ],
+          "pixel_alignment_to_depth_assumed": false,
+          "radiometry_verified": false
+        },
+        {
+          "kind": "ir",
+          "snapshot": 4,
+          "stamps_ns": {
+            "ir": "1792054203711874034",
+            "ir_info": "1792054203711874034",
+            "feedback": "1792054203690321152"
+          },
+          "actual_q_rad": [
+            -0.139081012,
+            0.9507852200000001,
+            -1.2642887880000002,
+            -0.073038028,
+            1.2176609760000001,
+            0.094773252
+          ],
+          "sha256": "67cb27e0e3826a4bc09a24438a7ba8331493b34db8231b73a092817bc5d6ef7d",
+          "IR_independent_visual_rectangle_xyxy": [
+            310,
+            245,
+            350,
+            290
+          ],
+          "IR_rectangle_pixels": 1800,
+          "IR_uint8_255_fraction": 0.91,
+          "IR_rectangle_min_median_max": [
+            184.0,
+            255.0,
+            255.0
+          ],
+          "pixel_alignment_to_depth_assumed": false,
+          "radiometry_verified": false
+        }
+      ]
+    }
+  ]
+}
