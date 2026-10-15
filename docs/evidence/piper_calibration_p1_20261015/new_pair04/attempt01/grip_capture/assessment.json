@@ -1,0 +1,218 @@
+{
+  "schema": "piper_p1_grip_acquisition_v1",
+  "pair_id": "new_pair04",
+  "placement_index": 3,
+  "attempt_id": "attempt01",
+  "role": "fit",
+  "operator_confirmation": {
+    "reply": "已完成第三组抓取",
+    "context": "In response to request: third placement, actual clamp and remain still",
+    "physical_contact_user_confirmed": true,
+    "physical_contact_verified_by_SDK": false,
+    "object_grounded_user_confirmed": null,
+    "metric_cube_center_verified": false,
+    "not_an_autonomous_pickup_success_claim": true
+  },
+  "SDK": {
+    "duration_s": 6,
+    "returncode": 2,
+    "samples": 60,
+    "fresh_samples": 59,
+    "span_s": 5.821694612503052,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "full_static_flag": false,
+    "full_failed_flag_preserved": true,
+    "speed_pulse_at_original_index": 53,
+    "speed_pulse_millirad_s": [
+      -2,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "accepted_original_contiguous_slice": [
+      1,
+      53
+    ],
+    "accepted_fresh_samples": 52,
+    "accepted_span_s": 5.118834018707275,
+    "accepted_original_summarize_static_passed": true,
+    "no_samples_or_thresholds_changed": true,
+    "q_mdeg": [
+      -13303,
+      128046,
+      -96859,
+      -9004,
+      49061,
+      29678
+    ],
+    "q_driver_rad": [
+      -0.23205753200000004,
+      2.233634424,
+      -1.6896083960000001,
+      -0.157065776,
+      0.8558200840000001,
+      0.517703032
+    ],
+    "driver_conversion": "q_mdeg/1000*.017444, original driver",
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_mm": 36.2,
+    "gripper_effort_raw": -760,
+    "gripper_effort_is_not_newtons": true
+  },
+  "B_images": {
+    "frames": 5,
+    "elapsed_s": 6.019749708997551,
+    "settle_s": 3,
+    "capture_returncode": 0,
+    "q_spread_rad": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "all_frame_q_match_SDK": true,
+    "full_same_frame_depth_Info": true,
+    "Info_mismatch_packets_rejected": 5,
+    "original_RGB_first_last_visually_reviewed": true,
+    "cube_between_two_fingers_visible": true,
+    "near_grip_depth_has_no_valid_cube_points": true,
+    "not_an_observation_A_failure": true
+  },
+  "camera": {
+    "serial": "CC1365304DG",
+    "fresh_factory_GET_success": true,
+    "camera_internal_TF_captured": true,
+    "analysis_frame": "camera_color_optical_frame",
+    "native_frame": "camera_depth_optical_frame",
+    "full_factory_D_to_C_preserved": true
+  },
+  "actual_model_T_base_gripper_base": [
+    [
+      -0.7559399102217468,
+      0.6146589759392206,
+      0.22527582078706673,
+      0.4476008599064548
+    ],
+    [
+      0.589335647072191,
+      0.7887925940713132,
+      -0.1746131112724639,
+      -0.1168316456278854
+    ],
+    [
+      -0.28502341522046853,
+      0.000766051954418645,
+      -0.9585202480597179,
+      0.14371716593632233
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "tool_origin_not_cube_center": true,
+  "comparisons_to_previous_grips": {
+    "new_pair02": {
+      "tool_origin_delta_m": [
+        0.11407421773257281,
+        -0.17847495717993556,
+        0.0018470093166984003
+      ],
+      "tool_origin_distance_m": 0.2118245711316188,
+      "rotation_angle_deg": 57.21534653692517,
+      "tool_z_axis_angle_deg": 12.598555294906923
+    },
+    "new_pair03": {
+      "tool_origin_delta_m": [
+        0.12129225439479441,
+        -0.11303160887316101,
+        -0.004894593545037296
+      ],
+      "tool_origin_distance_m": 0.16586715354945322,
+      "rotation_angle_deg": 28.44202579452114,
+      "tool_z_axis_angle_deg": 5.883486668400467
+    }
+  },
+  "comparison_warning": "Tool frame origins and rotations, not actual cube center distances or proof of full rank; second pair lacks A",
+  "nominal_cube_edge_m": 0.029,
+  "caliper_cube_edge_m": null,
+  "gripper_gap_minus_nominal_mm": 7.2,
+  "gap_difference_physical_cause_unknown": true,
+  "gripper_base_cube_center_m": null,
+  "camera_cube_center_m": null,
+  "portable": {
+    "assets": 19,
+    "bytes": 573568,
+    "manifest": "portable/manifest.json",
+    "manifest_sha256": "e4148db063c83bf3d972abe17339b892b1716207b124956398825b1dbecafde3",
+    "observation_capture_selector_is_grip_B_not_A": true
+  },
+  "bridge": {
+    "seconds": 60.01868428000307,
+    "returncode": 0,
+    "samples": 2867,
+    "published": 2829,
+    "suppressed": 38,
+    "last_fresh_epoch": 1792043753.6806357,
+    "error": null
+  },
+  "CAN": {
+    "ifindex": 11,
+    "state": "UP/ERROR-ACTIVE",
+    "bitrate": 1000000,
+    "sample_point": 0.75,
+    "txqueuelen": 1000,
+    "RX_before": 5803863,
+    "RX_after": 6304807,
+    "TX_before": 18922,
+    "TX_after": 18922,
+    "errors_or_busoff": 0,
+    "recovery_or_reload_attempted": false
+  },
+  "physical_commands": {
+    "enable": false,
+    "disable": false,
+    "jaw_open_or_close": false,
+    "arm_or_pose": false,
+    "reset": false,
+    "MasterSlaveConfig_or_firmware": false
+  },
+  "production_sources_or_TF_modified": false,
+  "ending": {
+    "all_this_run_sources_exited": true,
+    "bridge_returncode": 0,
+    "camera_timeout_returncodes": [
+      124,
+      124
+    ],
+    "hardware_enable_after_exit_not_requeried": true,
+    "root_free_GB_rounded": 34
+  },
+  "qualified_complete_pairs": 1,
+  "third_pair_complete": false,
+  "observation_A_frames": 0,
+  "observation_return_authorized": false,
+  "in_place_open_authorized": false,
+  "fit_eligible": false,
+  "next": "After this B checkpoint, obtain current-placement permission to open in place with cube supported on original table location, then original observe trajectory stop before SEARCH and capture A. No ALIGN/grasp/disable."
+}

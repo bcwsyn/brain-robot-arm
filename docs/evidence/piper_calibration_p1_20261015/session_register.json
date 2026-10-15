@@ -8,11 +8,11 @@
   "completed_formal_pairs": 1,
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair04",
-  "current_step": "new_pair04_prepared_wait_operator_grip_and_still_confirmation",
+  "current_step": "new_pair04_attempt01_readonly_grip_B_saved_await_current_placement_open_and_observe_return_authorization",
   "current_attempt_id": "attempt01",
-  "prepared_runtime_root": null,
+  "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_attempt01.mYeDDO/",
   "current_retake_observation_return_authorized": false,
-  "current_authority_scope": "User chose observation-only A and preparation of third placement; operator has not confirmed new actual grip/stillness. No new device reads or physical actions this turn, no blanket motion authorization.",
+  "current_authority_scope": "User confirmed actual grip/stillness for third placement. B acquired receive-only. No current-placement in-place opening/observe-return authorization yet; preserve cube location and B.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -241,17 +241,28 @@
     {
       "pair_id": "new_pair04",
       "role": "fit",
-      "state": "prepared_wait_operator_actual_grip_and_still_confirmation",
-      "grip_manifest": null,
+      "state": "attempt01_receive_only_grip_B_saved_await_open_and_original_observe_return_authorization",
+      "grip_manifest": "new_pair04/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": null,
-      "physical_grip_verified": null,
+      "physical_grip_verified": true,
       "released_without_object_motion_verified": null,
       "observation_return_authorized": false,
       "attempt_id": "attempt01",
       "preparation_record": "new_pair04/README.md",
       "collection_complete": false,
       "calibration_accepted": false,
-      "in_place_open_authorized": false
+      "in_place_open_authorized": false,
+      "grip_assessment": "new_pair04/attempt01/grip_capture/assessment.json",
+      "physical_grip_verification_scope": "operator confirmation only; SDK does not prove contact",
+      "grip_static_accepted_original_contiguous_slice": [
+        1,
+        53
+      ],
+      "grip_fresh_static_samples": 52,
+      "grip_RGBD_frames": 5,
+      "gripper_mm": 36.2,
+      "all_task_sources_exited": true,
+      "fit_eligible": false
     },
     {
       "pair_id": "new_pair05",
