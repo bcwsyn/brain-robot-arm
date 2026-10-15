@@ -1,5 +1,11 @@
 ## 最新接力（2026-10-15）：进入P1准备，等待第一组实际夹紧
 
+**最新11:00 +08:00：本组张爪→回观测成功，但方块下沿裁切；用户已选移动方块后整组重采。** 原AUTO0入口，首次张爪被原driver内部enable flag拦住、开口仍36.7mm；按原`/enable_srv true`完成原握手后只重试一次原adapter100mm命令，实读99.4mm。六轴小幅持位变化照实保存，未写零/复位。原`stop_after_observe=true`实读确认，9点31.2s轨迹到`OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`，未SEARCH/抓取。A两批60+60，真实q波动0/同帧Info齐全，但原RGB方块在底边裁切、好帧0；不能作中心拟合，0/6不变。
+
+本轮源目录`/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair02_release_observe.AymErb`；仓库`docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt01_release_observe/`保留完整120对原图/工厂新读/实际q与FK/失败报告及张爪前后10对图/SDK。A portable251资产18,810,820B及另外20张释放PNG全部SHA核验通过。B原5b94bb0保留但此尝试排除，不拿旧夹持q配移动后的物体。用户下一搬方块到当前画面完整可见、放稳后确认；先只读新A，再手摆真夹紧采新B，不能自动执行摆位/闭爪/其他轨迹。
+
+原controller已STOPPED，原adapter disarm成功；这是停软件输出，不给硬件Disable，最后鲜SDK六true/99.4mm。收尾核对TTY78821已rc1退出，原RGB于1792032786.895停止；不能假称一键仍运行或全部节点已清理，host尚有本轮driver/深度container/adapter/controller。已仅重开原cam2image同参数和原image_view原始RGB窗口（图源会话72137；首viewer10911 rc0退出，TTY重开66564；各600s上限；Xwayland实际:0），未重启运动链。普通沙箱ROS socket EPERM仅执行上下文限制，同命令require_escalated成功，不改DDS/权限/固件。当前空间根54%/35GB、共享73%/137GB，无删除。下一等“已放好”，先核图源尚在后只读采集，不再同裁切位置补采；生产五SHA不变，未推送GitHub。
+
 **最新10:38 +08:00：第一组B已保存，下一执行已授权的原位张爪/回观测/采A。** 用户确认实际夹紧；SDKq_mdeg[-23437,86965,-37259,-355,44994,-2153]，六true/36.7mm；原60/59fresh全窗因3个J2速度脉冲rc2，但原连续20—57共38/3.712s按原`summarize`通过。五RGB/native depth/同帧Info/实际q与完整模型FK齐全。见P1/new_pair02/grip_capture；旧移动窗保留，不混入。此检查点尚未张爪/回观测，0/6；用户现已授权仅此组由代理张爪→原现有观测轨迹→采图，不能再当作尚无许可，也不能扩成搜索/抓取/整批授权。
 
 原factory补读晚于相机90s自动退出而失败，已保留失败/首导出；成功包显式引用P0同序列号CC1365304DG未改工厂快照，当前日志及逐项同帧K匹配，不伪称新读。工具FK不等于方块中心，c_G仍null；夹持侧近距无目标深度不是观测侧失败。采集CAN TX3→3，未发使能/运动/夹爪。所有采集源已自然退出；下一提交B回退点，复用原adapter/原controller stop_after_observe路径，仅完成授权范围。

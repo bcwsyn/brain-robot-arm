@@ -1,3 +1,13 @@
+## 2026-10-15 11:00 +08:00：原位张爪/原观测返回完成，首尝试裁切，用户选择移动方块整组重采
+
+- 夹持检查点`5b94bb0`后执行用户仅本组授权。原`BRAIN_ROBOT_AUTO_START=0 BRAIN_ROBOT_LOG_DIR=.../onekey /home/johnwick/start_brain_robot_cube_real.sh`，复用有效CAN不重载，原适配器/控制器/驱动链，不写新基础运动。原首次100mm张爪被driver内部GetEnableFlag拦住，SDK仍36.7mm；核实际`piper_ctrl_single_node.py`而非_new副本，调用原`/enable_srv piper_msgs/srv/Enable {enable_request:true}`成功后仅重试一次原`/brain_robot_grasp/gripper_command`100mm。开爪实测99.4mm，六轴enabled=true，非写零/Reset/Disable。前后全部SDK/图像保留，不能把首次命令接受说成物理已打开。
+- 开爪后q_mdeg[-23437,87544,-36945,-355,44994,-2153]；对B的J2/J3变化分别+.010100076/+.005477416rad，不能当原q完全未变。原彩色前后两指分离、方块仍在桌面；背景ORB/H估计后方块中心差[.7293,-.5563]px（约.917px），仅支持“未见明显移位”，不证明三维零位移。两次六秒SDK全窗因速度短脉冲rc2保留，不改静止门/原值。
+- 运行时原`stop_after_observe=true`回读确认后调用原controller start。原直接观测轨迹9点/31.2s/maxstep.080rad，日志1792032554.453发布、1792032554.475接受；1792032585.318521实际`STATE -> STOPPED (OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)`，未SEARCH/ALIGN/抓取。实际观测q_rad[-.1465296,.951448092,-1.259491688,-.071851836,1.213788408,.086626904]，使用真实反馈，不把配置目标当实测。
+- 原有界采集`--max-batches 2 --frames-per-batch 60 --seconds-per-batch 60`两批均采60/rc0，44.185/45.140s，共120帧，六q波动0，同戳depth Info及原16位整图保存。总工具rc2/stop_reason=bounded_replenishment_exhausted，good_top_frames=0。实际看过原RGB：方块只在底边露出一部分，不能外推完整顶面；不是CAN停流/灯光/缺标定源码。两次CAN健康ERROR-ACTIVE/RX增长，TX有原持位控制增量，不声称整个操作receive-only/TX0。不再进行第三次同视角补采。
+- 相机元数据在本次活相机期间成功新读/rc0/CC1365304DG/internal TF齐全，与B的历史factory缓存来源分开记录。原导出/review CLI通过，A portable251资产18,810,820B+manifest；含120对原图/逐帧Info/q/FK、工厂K/D/R/T、SDK/配置/hash，中心null/正式false。仓库`docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt01_release_observe/`另保留首次未开及实际开后共10对原图/SDK、原p0_report；B归档不覆盖。
+- 用户选择“移动方块进完整视野，重采这一组”。本attempt01明确排除正式拟合，不配移动后新A与旧B，正式完成仍0/6。下一用户放稳确认→先只读新观测A→用户手摆真夹紧新B；顺序可变，同一物理方块位置不可混。尚无新放稳确认，不凭旧帧自动采正式新组，不擅动观测J5/算法/TF/门。
+- 原controller STOPPED，适配器disarm服务success（1792033075.595日志），取消队列/停输出但不硬件Disable，最后SDK六enabled=true/99.4mm。收尾poll原TTY78821已rc1、原RGB1792032786.895 SIGINT退出；host仍有driver/深度container/adapter/controller，不假称全退出。更正此前“相机仍在”的口头状态；仅复用原cam2image同参数320×240@5Hz/device0/原topic及image_view原始RGB窗口，各600s上限（图源72137；首viewer10911 rc0退出、TTY重开66564），不重启运动链。实际Xwayland:0/原auth路径核对后打开，无显示权限修改。普通沙箱ROS getifaddrs/socket EPERM后同限定命令require_escalated成功；不当DDS/机械臂故障或修改环境。五冻结SHA复核相同，根54%/35GB、共享73%/137GB，无删除；只本轮数据/文档限定Git，其他dirty保留，本轮未推送GitHub。
+
 ## 2026-10-15 10:38 +08:00：new_pair02夹持侧B已保存，获准原位张爪和回观测
 
 - 操作者明确确认已到位/真夹紧/可保持不动。本轮使用原只读SDK/遥测桥、原Astra与先深度后RGB参数采B，无生产修改/控制命令。SDK60/59fresh、5.82095s、六q波动0、六true/36.7mm/-93原effort；原全窗因3条J2速度-17/-12/+18而rc2保留。原始连续索引20—57共38fresh/3.712128s，原`summarize`全部条件通过；不是删点拼接/改门。另六秒确认窗全量留存、不覆盖首窗。
