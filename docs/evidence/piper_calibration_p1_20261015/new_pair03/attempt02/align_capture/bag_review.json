@@ -1,0 +1,219 @@
+{
+  "SQLite_integrity": "ok",
+  "raw_bag_sha256": "f6c88aabbae5318d59fa9bf2a34d266ea5f4e24c17460ef430eb0fe1b68bb598",
+  "recording_started_after_PREPARE_and_first_ALIGN": true,
+  "counts": {
+    "/joint_states_feedback": 20537,
+    "/joint_commands": 2548,
+    "/brain_robot_visual_control/state": 3,
+    "/brain_robot_visual_control/reason": 3,
+    "/brain_robot_vision/depth_diagnostic": 505,
+    "/brain_robot_vision/pixel_error": 504,
+    "/brain_robot_vision/target_valid": 504,
+    "/brain_robot_grasp/arm_trajectory": 2
+  },
+  "topics": {
+    "/joint_states_feedback": {
+      "first": {
+        "epoch": 1792042837.844337,
+        "q": [
+          -0.017845212,
+          0.952041188,
+          -1.266033188,
+          -0.076020952,
+          1.2208357840000001,
+          0.091284452,
+          0.0996
+        ],
+        "name": [
+          "joint1",
+          "joint2",
+          "joint3",
+          "joint4",
+          "joint5",
+          "joint6",
+          "gripper"
+        ]
+      },
+      "last": {
+        "epoch": 1792042940.765159,
+        "q": [
+          -0.009140656,
+          0.952041188,
+          -1.266033188,
+          -0.076020952,
+          1.2208357840000001,
+          0.091284452,
+          0.0996
+        ],
+        "name": [
+          "joint1",
+          "joint2",
+          "joint3",
+          "joint4",
+          "joint5",
+          "joint6",
+          "gripper"
+        ]
+      },
+      "q5_min": 1.2208357840000001,
+      "q5_max": 1.2208357840000001,
+      "q5_at_upper_count": 0
+    },
+    "/joint_commands": {
+      "first": {
+        "epoch": 1792042837.8443773,
+        "q": [
+          -0.015774891310307012,
+          0.952041188,
+          -1.266033188,
+          -0.076020952,
+          1.22108,
+          0.091284452
+        ],
+        "name": [
+          "joint1",
+          "joint2",
+          "joint3",
+          "joint4",
+          "joint5",
+          "joint6"
+        ]
+      },
+      "last": {
+        "epoch": 1792042888.7795644,
+        "q": [
+          -0.009140656,
+          0.952041188,
+          -1.266033188,
+          -0.076020952,
+          1.2208357840000001,
+          0.091284452
+        ],
+        "name": [
+          "joint1",
+          "joint2",
+          "joint3",
+          "joint4",
+          "joint5",
+          "joint6"
+        ]
+      },
+      "q5_min": 1.2208357840000001,
+      "q5_max": 1.22108,
+      "q5_at_upper_count": 2519
+    },
+    "/brain_robot_visual_control/state": [
+      {
+        "epoch": 1792042837.85058,
+        "value": "ALIGN"
+      },
+      {
+        "epoch": 1792042888.2140775,
+        "value": "STOPPED"
+      }
+    ],
+    "/brain_robot_visual_control/reason": [
+      {
+        "epoch": 1792042837.850583,
+        "value": "TARGET_ACQUIRED"
+      },
+      {
+        "epoch": 1792042888.2140896,
+        "value": "USER_STOP"
+      }
+    ],
+    "/brain_robot_vision/pixel_error": {
+      "first": {
+        "epoch": 1792042837.8688507,
+        "error": [
+          -3.991084695393745,
+          43.07330361565129,
+          0.10768325903912823
+        ]
+      },
+      "last": {
+        "epoch": 1792042938.4676266,
+        "error": [
+          -0.027230046948361064,
+          43.064162754303624,
+          0.10766040688575906
+        ]
+      },
+      "min_y": 42.36946832219037,
+      "max_y": 43.981617048966946
+    },
+    "/brain_robot_grasp/arm_trajectory": [
+      {
+        "epoch": 1792042888.2140937,
+        "names": [
+          "joint1",
+          "joint2",
+          "joint3",
+          "joint4",
+          "joint5",
+          "joint6"
+        ],
+        "points": [
+          {
+            "positions": [
+              -0.009140656,
+              0.952041188,
+              -1.266033188,
+              -0.076020952,
+              1.2208357840000001,
+              0.091284452
+            ],
+            "duration_s": 0
+          },
+          {
+            "positions": [
+              -0.009140656,
+              0.952041188,
+              -1.266033188,
+              -0.076020952,
+              1.2208357840000001,
+              0.091284452
+            ],
+            "duration_s": 0.1
+          }
+        ]
+      },
+      {
+        "epoch": 1792042936.7856257,
+        "names": [
+          "joint1",
+          "joint2",
+          "joint3",
+          "joint4",
+          "joint5",
+          "joint6"
+        ],
+        "points": [
+          {
+            "positions": [
+              -0.009140656,
+              0.952041188,
+              -1.266033188,
+              -0.076020952,
+              1.2208357840000001,
+              0.091284452
+            ],
+            "duration_s": 0
+          },
+          {
+            "positions": [
+              -0.009140656,
+              0.952041188,
+              -1.266033188,
+              -0.076020952,
+              1.2208357840000001,
+              0.091284452
+            ],
+            "duration_s": 0.1
+          }
+        ]
+      }
+    ]
+  }
+}

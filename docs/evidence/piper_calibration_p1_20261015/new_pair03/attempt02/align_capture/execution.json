@@ -1,0 +1,196 @@
+{
+  "schema": "piper_calibration_alignment_A_attempt_v1",
+  "pair_id": "new_pair03",
+  "attempt_id": "attempt02",
+  "recorded_local": "2026-10-15T13:48:00+08:00",
+  "authority": {
+    "user_requested_current_group_original_observe_to_ALIGN": true,
+    "grasp_or_approach_authorized": false,
+    "production_frozen": true,
+    "limit_changes_authorized": false,
+    "future_group_workflow": "grip B -> open in place -> existing observation/search/alignment -> stop and collect A; each new placement still confirmed before motion"
+  },
+  "before": {
+    "q_mdeg": [
+      -7989,
+      54577,
+      -72577,
+      -4358,
+      69694,
+      5233
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_mm": 99.4,
+    "SDK_full_returncode": 2,
+    "accepted_original_contiguous_slice": [
+      13,
+      60
+    ],
+    "fresh_static_samples": 47,
+    "static_span_s": 4.617515802383423
+  },
+  "original_runtime": {
+    "launch": "cube_visual_search.launch.py",
+    "original_launch_generated_and_all_entities_reused_except_grasp_executor": true,
+    "grasp_lift_executor_started": false,
+    "no_new_arm_motion_program": true,
+    "detector": "cube_detector.launch.py",
+    "driver_auto_enable": false,
+    "enable_srv_response": true,
+    "adapter_enable_motion_response": true,
+    "adapter_arm_response": true,
+    "start_service_response": true,
+    "stop_after_observe": false,
+    "depth_only_target_enabled": false,
+    "configuration_or_DDS_changes": false
+  },
+  "state_epochs": {
+    "PREPARE": "1792042835.208030831",
+    "OBSERVE_POSE_REACHED_SEARCH": "1792042835.211119763",
+    "ALIGN_TARGET_ACQUIRED": "1792042835.316500008",
+    "STOPPED_USER_STOP": "1792042888.2140775"
+  },
+  "prepare": {
+    "published_duration_s": 20,
+    "published_points": 2,
+    "already_within_original_observe_tolerance": true,
+    "prepare_and_search_hold_cancelled_on_target_acquisition": true,
+    "do_not_claim_full_20s_trajectory_executed": true
+  },
+  "alignment": {
+    "complete": false,
+    "GRASP_READY_reached": false,
+    "original_active_joints": [
+      "joint1",
+      "joint5"
+    ],
+    "before_q_mdeg": [
+      -7989,
+      54577,
+      -72577,
+      -4358,
+      69694,
+      5233
+    ],
+    "after_q_mdeg": [
+      -524,
+      54577,
+      -72577,
+      -4358,
+      69986,
+      5233
+    ],
+    "joint_delta_deg": [
+      7.465,
+      0,
+      0,
+      0,
+      0.292,
+      0
+    ],
+    "adapter_original_J5_upper_rad": 1.22108,
+    "after_J5_driver_rad": 1.2208357840000001,
+    "after_J5_raw_deg": 69.986,
+    "command_frames_at_J5_upper": 2519,
+    "total_recorded_command_frames": 2548,
+    "pixel_error_last": [
+      -0.027230046948361064,
+      43.064162754303624,
+      0.10766040688575906
+    ],
+    "original_target_acquire_error_ratio": 0.05,
+    "pixel_error_units": "Original RGB error scaled by existing RgbAlignmentError to diagnostic/command 640x400 grid; about26 raw320x240 vertical pixels, not43 raw pixels",
+    "confirmed_limit": "Existing J1/J5-only alignment requests more positive J5, original adapter clamps command at original upper; no further vertical convergence"
+  },
+  "stop": {
+    "original_stop_response": true,
+    "original_disarm_response": true,
+    "manual_stop_preceded_watchdog_timeout": true,
+    "watchdog": "Observed STOPPED after manual stop; at125s repeated original stop/disarm successfully, no autonomous restart",
+    "disable_reset_firmware_MasterSlaveConfig_sent": false,
+    "grasp_close_or_lift_sent": false
+  },
+  "capture": {
+    "formal_A_frames": 0,
+    "stationary_preview_frames": 3,
+    "qualified_frames": 0,
+    "native_selected_points": [
+      103,
+      69,
+      118
+    ],
+    "color_pixel_coverage": [
+      0.1182108626198083,
+      0.08414239482200647,
+      0.1382636655948553
+    ],
+    "no_same_pose_60_frame_repetition": true,
+    "center": null,
+    "fit_eligible": false,
+    "stopped_SDK_full_returncode": 2,
+    "accepted_original_contiguous_slice": [
+      7,
+      60
+    ],
+    "fresh_static_samples": 53,
+    "static_span_s": 5.223073959350586,
+    "gripper_mm": 99.6,
+    "enabled_last_fresh": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "metadata": {
+    "factory_new_read": false,
+    "factory_source": "../observe_capture/portable/camera_factory_current.json from same attempt, explicitly reused",
+    "actual_depth_launch_serial": "CC1365304DG",
+    "per_frame_depth_Info_and_intrinsics_preserved": true,
+    "per_frame_actual_FK_preserved": true,
+    "unknown_centers_remain_null": true
+  },
+  "ending": {
+    "all_this_run_sources_exited": true,
+    "live_enable_not_queried_after_exit": true,
+    "CAN_ifindex": 11,
+    "CAN_RX": 4170589,
+    "CAN_TX": 18920,
+    "CAN_errors_or_bus_off": 0,
+    "root_free_GB_rounded": 34,
+    "visual_wrapper_returncode": 0,
+    "driver_bounded_exit_returncode": 137,
+    "camera_bounded_exit_returncodes": [
+      124,
+      124
+    ],
+    "detector_exit_returncode": 0,
+    "bag_exit_returncode": 0,
+    "watcher_exit_returncode": 0,
+    "shutdown_child_errors": {
+      "move_group": -11,
+      "piper_jog_adapter": 1,
+      "depth_cube_probe": 1
+    },
+    "no_production_shutdown_fix_applied": true
+  },
+  "initial_runtime_wrapper_failure": {
+    "returncode": 1,
+    "error": "ROS Node executable was str; perform_substitutions expected substitutions; normalized only this invocation",
+    "before_any_visual_nodes_started": true,
+    "original_trace_preserved": true,
+    "production_changed": false
+  },
+  "completed_formal_pairs": 1,
+  "complete_second_pair": false,
+  "next": "Need an approved collection posture adjustment with J5 angular margin or operator pose assistance; do not enlarge J5 limit, weaken thresholds or enable J2/J3 assistance without separate consent. No repeated same-limit ALIGN or same-depth capture."
+}

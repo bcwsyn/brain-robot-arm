@@ -8,11 +8,11 @@
   "completed_formal_pairs": 1,
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair03",
-  "current_step": "new_pair03_attempt02_observe_reached_A_raw120_quality_failed",
+  "current_step": "new_pair03_attempt02_ALIGN_J5_upper_limited_A_preview_not_qualified",
   "current_attempt_id": "attempt02",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_attempt02.v22Alq/",
   "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "This placement in-place opening and original observation return were authorized and completed, stopped before SEARCH. No new pose, scene, camera-setting or next-group motion authority.",
+  "current_authority_scope": "User authorized original observation/search/alignment for this second placement, no approach/close. Completed one bounded attempt and stopped at original J5 upper; further posture changes require a specific plan/consent.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -175,7 +175,7 @@
     {
       "pair_id": "new_pair03",
       "role": "fit",
-      "state": "attempt02_observe_reached_A_raw120_quality_failed",
+      "state": "attempt02_ALIGNMENT_J5_upper_limited_A_preview_not_qualified",
       "attempt_id": "attempt02",
       "preparation_record": "new_pair03/attempt02/README.md",
       "grip_manifest": "new_pair03/attempt02/grip_capture/portable/manifest.json",
@@ -226,7 +226,13 @@
       "good_top_frames": 0,
       "raw_capture_complete": true,
       "fit_eligible": false,
-      "all_task_sources_exited": true
+      "all_task_sources_exited": true,
+      "alignment_authorized": true,
+      "alignment_completed": false,
+      "alignment_record": "new_pair03/attempt02/align_capture/execution.json",
+      "alignment_preview_manifest": "new_pair03/attempt02/align_capture/portable/manifest.json",
+      "alignment_preview_frames": 3,
+      "alignment_preview_qualified_frames": 0
     },
     {
       "pair_id": "new_pair04",
@@ -271,5 +277,7 @@
   ],
   "not_a_fitting_input": true,
   "no_joint_center_or_contact_values_fabricated": true,
-  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_observe_continue.QUVyXE/"
+  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_observe_continue.QUVyXE/",
+  "current_alignment_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_align_A.EeZaUn",
+  "observation_A_policy": "From now on release B -> existing observation/search/ALIGN -> stop and collect A using actual per-frame q/FK, not fixed observation-only collection; no blanket new-placement motion authority."
 }
