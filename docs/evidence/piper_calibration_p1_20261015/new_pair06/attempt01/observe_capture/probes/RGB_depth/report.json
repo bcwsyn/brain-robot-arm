@@ -1,0 +1,58 @@
+{
+  "no_robot_interfaces": true,
+  "epoch": 1792061152.87557,
+  "events": [
+    {
+      "name": "images",
+      "pid": 83548,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/capture_scale_frames.py",
+        "/home/johnwick/brain_robot_logs/new_pair06_rgb_dual.4owrbozt/images"
+      ],
+      "epoch": 1792061152.8788462
+    },
+    {
+      "name": "depth",
+      "pid": 83549,
+      "argv": [
+        "ros2",
+        "launch",
+        "astra_camera",
+        "astra.launch.py"
+      ],
+      "epoch": 1792061152.8817825
+    },
+    {
+      "name": "color",
+      "pid": 83590,
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "epoch": 1792061156.888525
+    }
+  ],
+  "published_at_10s": 31,
+  "published_final": 51,
+  "exits": {
+    "images": 0,
+    "depth": -9,
+    "color": 0
+  },
+  "end_epoch": 1792061172.9151905
+}

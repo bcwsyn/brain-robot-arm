@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "/opt/ros/humble/lib/image_tools/cam2image",
+    "--ros-args",
+    "-p",
+    "burger_mode:=false",
+    "-p",
+    "device_id:=0",
+    "-p",
+    "frequency:=5.0",
+    "-p",
+    "width:=320",
+    "-p",
+    "height:=240",
+    "-p",
+    "frame_id:=camera_color_optical_frame",
+    "-r",
+    "image:=/camera/color/image_raw"
+  ],
+  "no_motion": true,
+  "depth_started": false,
+  "epoch": 1792061107.6770566,
+  "strace_pid": 83430,
+  "published_logs": 40,
+  "children": "    PID STAT WCHAN                          COMMAND\n  83433 SLl  futex_wait_queue               /opt/ros/humble/lib/image_tools/cam2image --ros-args -p burger_mode:=false -p device_id:=0 -p frequency:=5.0 -p width:=320 -p height:=240 -p frame_id:=camera_color_optical_frame -r image:=/camera/color/image_raw\n",
+  "returncode": 0,
+  "end_epoch": 1792061122.0922372
+}
