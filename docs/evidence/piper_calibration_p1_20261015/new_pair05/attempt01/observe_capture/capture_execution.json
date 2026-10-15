@@ -1,0 +1,116 @@
+{
+  "receive_only": true,
+  "motion_commands_sent": false,
+  "error": null,
+  "events": [
+    {
+      "name": "A_depth",
+      "argv": [
+        "ros2",
+        "launch",
+        "astra_camera",
+        "astra.launch.py"
+      ],
+      "epoch": 1792050159.3644052
+    },
+    {
+      "name": "A_color",
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "epoch": 1792050160.8729699
+    },
+    {
+      "name": "A_bridge",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/calibration_readonly_feedback.py",
+        "--duration-s",
+        "120",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_A_batch60.3MFdVm/A_bridge.json"
+      ],
+      "epoch": 1792050165.401514
+    },
+    {
+      "name": "A_factory",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/calibration_stage1_activated_20261014.kfNDAQ/capture_factory_metadata.py",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_A_batch60.3MFdVm/A_factory.json"
+      ],
+      "epoch": 1792050165.4055233
+    },
+    {
+      "name": "A_factory",
+      "exit_code": 0,
+      "epoch": 1792050165.9725835
+    },
+    {
+      "name": "A_capture",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_p0.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_A_batch60.3MFdVm/observation",
+        "--config",
+        "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml",
+        "--max-batches",
+        "1",
+        "--frames-per-batch",
+        "60",
+        "--seconds-per-batch",
+        "45"
+      ],
+      "epoch": 1792050165.9766426
+    },
+    {
+      "name": "A_capture",
+      "exit_code": 2,
+      "epoch": 1792050219.5162742
+    },
+    {
+      "name": "A_capture",
+      "final_exit_code": 2,
+      "epoch": 1792050219.516287
+    },
+    {
+      "name": "A_factory",
+      "final_exit_code": 0,
+      "epoch": 1792050219.5163033
+    },
+    {
+      "name": "A_bridge",
+      "final_exit_code": 0,
+      "epoch": 1792050219.680503
+    },
+    {
+      "name": "A_color",
+      "final_exit_code": 0,
+      "epoch": 1792050219.9456325
+    },
+    {
+      "name": "A_depth",
+      "final_exit_code": 0,
+      "epoch": 1792050221.2656207
+    }
+  ],
+  "formal_capture_started": true,
+  "temporary_preview_gate_removed": true,
+  "all_owned_sources_exited": true
+}
