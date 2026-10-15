@@ -1,5 +1,7 @@
 ## 2026-10-15 11:21 +08:00：用户重连后新CAN恢复，原驱动重连并完成使能，未运动
 
+- 证据提交`b789718`（12限定路径）成功；四个raw文件与runtime逐字节复核，SDK59前后/q/六轴使能检查通过。标准show-check仅原CLI enable_service.txt末尾原空白行提示，保留原字节；其余路径标准检查通过，单个raw用一次性core.whitespace=-blank-at-eof检查通过，不改全局设置/生产检查。后续本条仅说明原日志例外，不修改原数据。
+
 - 用户回复已恢复。本轮按ROS2/PiPER技能只核当前路径/反馈、最小恢复，生产算法/门/TF/模型/入口冻结。实际USB由003/012变003/014，新can0 ifindex9、DOWN/STOPPED、RX0/TX0；不是上一新ifindex7的RX18。sudo-n true后仅既有授权固定bitrate1000000/sample-point.75/txqueuelen1000/up一次，全rc0，立即RX56；未USB reset/模块/xHCI重载/刷写/主从/Reset。
 - 新runtime `/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/can_reconnect_20261015.DOQaqO`。原collect_calibration_sdk `--duration-s6`、piper_init=false，前窗60/59fresh/5.821666956s/全六q波动0/原静止通过/rc0，六enabled=false、速度0、开口37.2mm。RX后达62863/TX0，已证真实新流，停止重复底层恢复。当前q_mdeg[1046,104766,-51433,-5998,24410,17143]，不能当先前观测目标或默认零值。
 - 原命令topic /joint_commands唯一发布者为旧adapter，/pos_cmd与/enable_flag为0。只给已核验旧controller30526/adapter30524/driver30181/wrapper30177 SIGINT，下一ps证实四者全部退出；原driver退出路径无DisableArm。这样移除旧socket和旧轨迹可能续跑的来源，不结束其他用户/相机/仿真节点，不发硬件失能。

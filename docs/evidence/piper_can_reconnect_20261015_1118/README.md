@@ -9,6 +9,8 @@
 - `driver_reconnected.txt`：原driver重连/使能日志快照；auto_enable=false、初始反馈.01秒恢复，1792034432.024793684接到true请求，1792034433.040809629返回true。
 - `enable_service.txt`：原`ros2 service call /enable_srv piper_msgs/srv/Enable '{enable_request:true}'`返回enable_response=true，12秒强制宽限外壳内rc0，原服务不是新写SDK运动程序。
 
+归档提交`b789718`。四个原文件与runtime逐字节一致。标准`git show --check b789718`仅在原始`enable_service.txt:5`报告CLI自带的EOF空白行；为了原始证据不改字节，其他全部路径按标准检查通过，仅这一个raw日志使用一次性`-c core.whitespace=-blank-at-eof`检查通过。不改全局Git设置，不放宽任何代码或其他文档检查。
+
 ## 进程及命令范围
 
 仅SIGINT旧controller30526、adapter30524、driver30181/wrapper30177，随后ps确认全部退出；没有调用DisableArm。只重连原安装入口`/home/johnwick/piper_ros/install/piper/lib/piper/piper_single_ctrl`，参数can0/auto_enable=false/gripper_exist=true和原joint topic remap。PYTHONNOUSERSITE=1、系统NumPy/SciPy、sys.path末尾补原用户site-packages后runpy执行原入口，不改源。源/build driver SHA均`d607ec10854f231588fcdfc9f334c4766d5b8c4474e10fd72f79ef5723984b2e`。
