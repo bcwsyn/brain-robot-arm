@@ -1,0 +1,175 @@
+{
+  "read_only": true,
+  "motion_commands_sent": false,
+  "camera_setters_called": false,
+  "automatic_reopen": false,
+  "events": [
+    {
+      "name": "sdk_before",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a/sdk_before.json",
+        "--duration-s",
+        "6"
+      ],
+      "pid": 74193,
+      "epoch": 1792051355.4731057
+    },
+    {
+      "name": "feedback",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/calibration_readonly_feedback.py",
+        "--duration-s",
+        "40",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a/feedback.json"
+      ],
+      "pid": 74199,
+      "epoch": 1792051362.1551073
+    },
+    {
+      "name": "depth",
+      "argv": [
+        "ros2",
+        "launch",
+        "astra_camera",
+        "astra.launch.py"
+      ],
+      "pid": 74200,
+      "epoch": 1792051362.1589072
+    },
+    {
+      "name": "color",
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "pid": 74201,
+      "epoch": 1792051362.1628056
+    },
+    {
+      "name": "controls",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_depth_controls.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a/depth_controls.json",
+        "--duration-s",
+        "24"
+      ],
+      "pid": 74202,
+      "epoch": 1792051362.168715
+    },
+    {
+      "name": "factory",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/calibration_stage1_activated_20261014.kfNDAQ/capture_factory_metadata.py",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a/factory.json"
+      ],
+      "pid": 74203,
+      "epoch": 1792051362.1735468
+    },
+    {
+      "name": "capture",
+      "argv": [
+        "/usr/bin/python3",
+        "-c",
+        "from pathlib import Path; from collect_static_rgbd import collect; import sys; sys.exit(collect(Path(sys.argv[1]),22.,30,settle_s=3.,stop_on_feedback_loss=True,max_bytes=64<<20))",
+        "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a/capture"
+      ],
+      "pid": 74204,
+      "epoch": 1792051362.179722
+    },
+    {
+      "name": "sdk_before",
+      "exit_code": 2,
+      "epoch": 1792051388.1681957
+    },
+    {
+      "name": "feedback",
+      "exit_code": 0,
+      "epoch": 1792051388.1682243
+    },
+    {
+      "name": "depth",
+      "exit_code": 0,
+      "epoch": 1792051388.1682315
+    },
+    {
+      "name": "color",
+      "exit_code": -9,
+      "epoch": 1792051388.2825742
+    },
+    {
+      "name": "controls",
+      "exit_code": 0,
+      "epoch": 1792051388.2826133
+    },
+    {
+      "name": "factory",
+      "exit_code": 0,
+      "epoch": 1792051388.2826233
+    },
+    {
+      "name": "capture",
+      "exit_code": 2,
+      "epoch": 1792051388.282631
+    }
+  ],
+  "error": null,
+  "camera_session_started": true,
+  "sdk_before_rc": 2,
+  "original_static_slice": {
+    "slice": [
+      9,
+      60
+    ],
+    "quality": {
+      "samples": 51,
+      "fresh_samples": 51,
+      "span_s": 5.030161380767822,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "pre_q_delta_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "camera_start_epoch": 1792051362.1551101,
+  "end_reason": "original_collectors_finished",
+  "all_owned_sources_exited": true,
+  "camera_session_upper_bound_s": 26.127544225993915,
+  "within_30s_camera_bound": true,
+  "camera_stop_epoch": 1792051388.282656
+}

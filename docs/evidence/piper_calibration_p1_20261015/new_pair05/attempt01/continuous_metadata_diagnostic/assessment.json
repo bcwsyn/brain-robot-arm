@@ -1,0 +1,193 @@
+{
+  "schema": "piper_continuous_depth_metadata_diagnostic_v1",
+  "motion_commands_sent": false,
+  "camera_setters_called": false,
+  "single_camera_session_s": 26.127544225993915,
+  "within_30_seconds": true,
+  "raw_GET_requests": 44,
+  "raw_GET_replies": 44,
+  "depth_controls": {
+    "/camera/get_depth_exposure": {
+      "requests": 22,
+      "replies": 22,
+      "reported_raw_values": {
+        "6000": 22
+      },
+      "errors": {
+        "service_not_ready": 2
+      },
+      "all_reply_success_flags": true,
+      "hardware_property_status_verified": false,
+      "physical_units": null
+    },
+    "/camera/get_depth_gain": {
+      "requests": 22,
+      "replies": 22,
+      "reported_raw_values": {
+        "1369": 22
+      },
+      "errors": {
+        "service_not_ready": 2
+      },
+      "all_reply_success_flags": true,
+      "hardware_property_status_verified": false,
+      "physical_units": null
+    }
+  },
+  "native_depth_physical_exposure_gain_verified": false,
+  "raw_capture_summary": {
+    "subscription_only": true,
+    "hardware_synchronized": false,
+    "camera_calibration": false,
+    "topics": [
+      "/camera/color/image_raw",
+      "/camera/depth/image_raw",
+      "/camera/depth/camera_info",
+      "/joint_states_feedback"
+    ],
+    "message_filters_file": "/opt/ros/humble/local/lib/python3.10/dist-packages/message_filters/__init__.py",
+    "slop_s": 0.12,
+    "max_age_s": 0.5,
+    "requested_frames": 30,
+    "saved_frames": 1,
+    "static_window_s": 3.0,
+    "full_same_frame_depth_info": true,
+    "received": {
+      "/joint_states_feedback": 1007,
+      "/camera/depth/image_raw": 392,
+      "/camera/depth/camera_info": 471,
+      "/camera/color/image_raw": 1
+    },
+    "rejected": {},
+    "matched_packets": 1,
+    "stop_on_feedback_loss": true,
+    "image_byte_limit": 67108864,
+    "image_bytes": 145943,
+    "stop_reason": null,
+    "elapsed_s": 22.020013704008306,
+    "start_q_rad": [
+      -0.139081012,
+      0.9507852200000001,
+      -1.2642887880000002,
+      -0.073038028,
+      1.217032992,
+      0.094773252
+    ]
+  },
+  "paired_frames": 1,
+  "good_top_frames": 0,
+  "continuous_RGBD_comparison_complete": false,
+  "current_blocker": "RGB publisher emitted one frame; original RGB-paired collector saved one of 30 requested frames (rc2), despite continuous depth/Info/feedback arrivals. No restart attempted.",
+  "ordering_limit": "This runtime started depth and RGB concurrently. The relation of startup order to RGB one-frame stall is unverified; do not claim a cause.",
+  "fixed_native_reference": {
+    "source_mask_sha256": "4c7c038825cc334beed79555b8d997816d51f04c2b3113838ded52bc6f8140ec",
+    "pixels": 3354,
+    "zeros": 3346,
+    "zero_fraction": 0.9976147883124628,
+    "remaining_samples": 8,
+    "remaining_samples_median_mm": 242.0,
+    "remaining_samples_are_not_cube_center": true
+  },
+  "actual_q_rad": [
+    -0.139081012,
+    0.9507852200000001,
+    -1.2642887880000002,
+    -0.073038028,
+    1.217032992,
+    0.094773252
+  ],
+  "same_as_previous_observation": true,
+  "last_fresh_feedback": {
+    "epoch": 1792051386.6437852,
+    "sdk_receipt_stamps": {
+      "joint": "1792051386.6425898",
+      "high": "1792051386.6385193",
+      "low": "1792051386.6384907",
+      "gripper": "1792051386.6426136"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -7973,
+      54505,
+      -72477,
+      -4187,
+      69768,
+      5433
+    ],
+    "q_driver_rad": [
+      -0.139081012,
+      0.9507852200000001,
+      -1.2642887880000002,
+      -0.073038028,
+      1.217032992,
+      0.094773252
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 99,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "last_feedback_not_current_monitoring": true,
+  "CAN_before": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 5172628,
+    "tx": 3070
+  },
+  "CAN_after": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 5233890,
+    "tx": 3070
+  },
+  "new_CAN_TX": 0,
+  "all_sources_exited": true,
+  "formal_A_previous_60_not_overwritten": true,
+  "this_is_supplementary_diagnostic_not_new_formal_pair": true,
+  "qualified_complete_pairs": 1,
+  "physical_centers_still_null": true,
+  "production_five_SHA": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "expected": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "actual": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "expected": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "actual": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a"
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "expected": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "actual": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "expected": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "actual": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33"
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "expected": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+      "actual": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8"
+    }
+  },
+  "GitHub_pushed": false
+}

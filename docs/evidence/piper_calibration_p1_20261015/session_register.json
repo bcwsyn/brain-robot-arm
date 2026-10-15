@@ -15,10 +15,10 @@
     "new_pair05"
   ],
   "next_pair_id": null,
-  "next_placement_preparation": "Offline 66-frame audit complete. No new placement requested. Propose one bounded continuous-camera metadata diagnosis before collecting more A; no automatic motion or parameter write.",
+  "next_placement_preparation": "One camera diagnostic completed with 44 GET replies but only one RGB-D packet. No new placement or repeat-camera authority implied. Propose diagnostic native depth recording independent of RGB, requires approval.",
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair05",
-  "current_step": "new_pair05_native_depth_hole_confirmed_offline_next_continuous_readonly_metadata_capture_proposed_not_executed",
+  "current_step": "new_pair05_one_continuous_metadata_trial_done_RGB_single_frame_depth_GET_unverified_next_native_only_capture_proposal",
   "current_attempt_id": "attempt01",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_preview.Bu8bar",
   "current_retake_observation_return_authorized": true,
@@ -363,7 +363,11 @@
       "offline_native_depth_audit": "new_pair05/attempt01/offline_native_depth_audit/README.md",
       "offline_native_depth_reference_pixels": 3354,
       "subsequent_63_frames_same_native_region_all_zero": true,
-      "original_quality_and_fit_eligibility_unchanged": true
+      "original_quality_and_fit_eligibility_unchanged": true,
+      "latest_metadata_diagnostic": "new_pair05/attempt01/continuous_metadata_diagnostic/README.md",
+      "supplementary_diagnostic_paired_frames": 1,
+      "supplementary_diagnostic_good_top_frames": 0,
+      "continuous_depth_metadata_comparison_complete": false
     },
     {
       "pair_id": "new_pair06",
@@ -407,7 +411,7 @@
     true
   ],
   "current_last_fresh_gripper_mm": 99.6,
-  "current_last_fresh_SDK_epoch": 1792050219.497659,
+  "current_last_fresh_SDK_epoch": 1792051386.6437852,
   "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_feedback_fresh": false,
   "current_live_enabled_after_RX_loss": [
@@ -439,7 +443,7 @@
       0.0645
     ]
   },
-  "current_feedback_fresh_scope": "Fresh throughout completed batch; all sources exited. Last saved sample is not a claim of current continuous monitoring.",
+  "current_feedback_fresh_scope": "Fresh throughout completed 26.13s receive-only session; all sources now exited, last sample is historical.",
   "current_readonly_A_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_A_batch60.3MFdVm",
   "receive_recovery_A_record": "new_pair04/attempt01/observe_after_reconnect/execution.json",
   "latest_CAN_readonly_A": {
@@ -485,5 +489,13 @@
     "TX": 1485,
     "independent_SDK_fresh": 0,
     "record": "new_pair05/attempt01/release_observe/execution.json"
+  },
+  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair05_continuous_metadata.c2zQ7a",
+  "latest_metadata_diagnostic_record": "new_pair05/attempt01/continuous_metadata_diagnostic/assessment.json",
+  "latest_CAN_diagnostic": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 5233890,
+    "tx": 3070
   }
 }
