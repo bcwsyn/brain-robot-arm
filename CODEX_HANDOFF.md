@@ -1,4 +1,6 @@
-# 当前断点（2026-10-15）：第三组arm接管异常；末鲜六轴失能，禁止自动续跑
+# 当前断点（2026-10-15）：已重新使能回观测；CAN停流，仅待原地补A
+
+**最新2026-10-15：按用户新授权已重新使能并实际返回观测，SEARCH前STOPPED；随后CAN接收停流，正式A仍0帧/完整1/6。** 新起点q_mdeg[-10826,-44,-77,-1295,18787,-1837]在原任务限位内，enable_srv true+新SDK确认六true/q不变；原arm首命令没有重演J3裁剪，缺陷本身未修改。原17点63.631s轨迹实际85.809s后1792045099.282919033 OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH。末有效ROS q[-.142744252,.941539900,-1.267969472,-.073823008,1.220591568,.081986800]/64.5mm；之后RX9146121/TX42472固定、新8秒SDK80/0fresh，不能把默认q0/false当实体状态。原adapter25秒反馈超时自动disarm，后手动disarm CLI失败，不虚报；全部源已限时退出，无Disable/Reset/开闭/SEARCH。只读桥误传150>原上限120，启动前失败另记，与独立SDK和计数停流证据分开；严格q相等诊断失败及小幅反馈变化也保留，不改原容差。23使能前后预览资产/63原文件压缩/43172消息bag留SHA，预览不是A，B原件及物体同点不默认成立。下一宿主仅USB-CAN断开/重连，保持当前位置；恢复后只读核q并补A，不重走观测/使能。五生产SHA不变，未推送GitHub，见P1/new_pair04/attempt01/reenable_observe。
 
 **最新2026-10-15：第三组已获张爪/原回观测许可，但在张爪前发现原arm隐式J3裁剪，已停止；A0帧，完整仍1/6。** 预SDK匹配B84d8552/58fresh/静止rc0；原stop_after_observe=true回读。1792044192.519 arm后首条命令将实际J3−1.689608396直接改为下界−1.4rad，跳.289608396rad，bag和原_limit_visual_target AST离线复现一致；此时controller仍IDLE，没有张爪/start/观测规划。代理未在arm前识别越界起点，这是控制接管问题，不归咎操作者。原stop/disarm成功；之后新SDK58fresh/静止rc0显示六false、64.5mm/q明显变化，失能根因尚未证实，画面有人手也不据此推断原因或原位。driver3.49s缺流自行恢复，末CAN ERROR-ACTIVE但warning5/passive6971不忽略，无重载。全部源退出，无本代理Disable/Reset/enable false/开闭指令，不自动重新使能或arm。23资产/60原文件压缩/23214消息bag保留，B原件不覆盖，物体同点关系待核对；五生产SHA未变。下一核对支撑/物体原位，并提仅修arm越界接管不发隐式跳变的方案，需批准后改生产；不扩大限位、不重复实机错误。见P1/new_pair04/attempt01/release_observe/README.md；未推送GitHub。
 

@@ -8,11 +8,11 @@
   "completed_formal_pairs": 1,
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair04",
-  "current_step": "new_pair04_attempt01_arm_handover_clip_before_open_scene_verification_required",
+  "current_step": "new_pair04_observe_reached_A_pending_CAN_receive_and_pair_origin_verification",
   "current_attempt_id": "attempt01",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_attempt01.mYeDDO/",
   "current_retake_observation_return_authorized": true,
-  "current_authority_scope": "User authorized current-group in-place open/original observe return. Before either, arm emitted unexpected J3 clip; original stop/disarm completed. Later fresh six-enabled=false. No automatic re-enable/rearm; scene check and scoped fix approval required.",
+  "current_authority_scope": "User explicitly authorized re-enable/original observe return/recapture. Re-enable and return completed; then RX stalled. Only receive-only A remains after host reconnect and fresh-q/scene verification; no repeat enable, arm, jaw, observe trajectory or SEARCH.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -241,7 +241,7 @@
     {
       "pair_id": "new_pair04",
       "role": "fit",
-      "state": "attempt01_arm_handover_clip_before_open_scene_verification_required",
+      "state": "reenable_succeeded_observe_reached_A_pending_CAN_receive",
       "grip_manifest": "new_pair04/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": null,
       "physical_grip_verified": true,
@@ -264,18 +264,30 @@
       "all_task_sources_exited": true,
       "fit_eligible": false,
       "in_place_open_completed": false,
-      "observation_return_completed": false,
-      "controller_start_requested": false,
+      "observation_return_completed": true,
+      "controller_start_requested": true,
       "release_record": "new_pair04/attempt01/release_observe/execution.json",
       "current_cube_position_unchanged_verified": null,
       "last_fresh_enabled": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pair_record": "new_pair04/pair_record.json",
+      "reenable_record": "new_pair04/attempt01/reenable_observe/execution.json",
+      "current_live_enabled_after_RX_loss": null,
+      "last_valid_observe_q_rad": [
+        -0.14274425200000002,
+        0.9415399000000001,
+        -1.267969472,
+        -0.07382300800000001,
+        1.220591568,
+        0.08198680000000001
+      ],
+      "formal_A_frames": 0
     },
     {
       "pair_id": "new_pair05",
@@ -310,7 +322,7 @@
   ],
   "not_a_fitting_input": true,
   "no_joint_center_or_contact_values_fabricated": true,
-  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
+  "current_return_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_reenable_observe.uiefZv/",
   "current_alignment_runtime_root": null,
   "observation_A_policy": "B -> in-place open under current-placement authority -> existing observation trajectory -> stop_after_observe=true, stop before SEARCH -> static A; no SEARCH or ALIGN for acquisition. Actual per-frame q/FK and all original quality checks retained.",
   "deferred_group_runtime_history": {
@@ -321,13 +333,37 @@
     "align": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair03_align_A.EeZaUn"
   },
   "current_last_fresh_enabled": [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
   ],
   "current_last_fresh_gripper_mm": 64.5,
-  "current_last_fresh_SDK_epoch": 1792044279.0394819
+  "current_last_fresh_SDK_epoch": 1792044992.1841595,
+  "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
+  "current_feedback_fresh": false,
+  "current_live_enabled_after_RX_loss": null,
+  "last_valid_observe_ROS_feedback": {
+    "epoch": 1792045101.7939115,
+    "names": [
+      "joint1",
+      "joint2",
+      "joint3",
+      "joint4",
+      "joint5",
+      "joint6",
+      "gripper"
+    ],
+    "q": [
+      -0.14274425200000002,
+      0.9415399000000001,
+      -1.267969472,
+      -0.07382300800000001,
+      1.220591568,
+      0.08198680000000001,
+      0.0645
+    ]
+  }
 }

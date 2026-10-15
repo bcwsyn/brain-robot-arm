@@ -1,0 +1,208 @@
+{
+  "schema": "piper_p1_reenable_observe_recovery_v1",
+  "pair_id": "new_pair04",
+  "attempt_id": "attempt01",
+  "user_instruction": "你重新使能机械臂比让其进入观测姿态重新采集数据",
+  "authority": {
+    "explicit_reenable_and_original_observe_return": true,
+    "no_search_ALIGN_approach_close_or_disable": true,
+    "no_production_fix_authorized": true,
+    "no_assumption_cube_unmoved_since_B": true
+  },
+  "before_enable": {
+    "q_mdeg": [
+      -10826,
+      -44,
+      -77,
+      -1295,
+      18787,
+      -1837
+    ],
+    "enabled": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "gripper_mm": 64.5,
+    "fresh_samples": 59,
+    "static_s": 5.81829833984375,
+    "SDK_returncode": 0,
+    "all_actual_joints_within_original_task_bounds": true,
+    "scene_preview_frames": 3,
+    "scene_RGB_visually_checked_no_hand_visible": true
+  },
+  "enable": {
+    "service": "/enable_srv",
+    "request": true,
+    "response": true,
+    "new_SDK_fresh_samples": 59,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "actual_q_unchanged_by_enable": true,
+    "gripper_mm": 64.5
+  },
+  "arm": {
+    "original_adapter_used": true,
+    "arm_request_CLI_timeout_returncode": 124,
+    "arm_response_not_captured": true,
+    "actual_arm_log_epoch": "1792044985.468391359",
+    "no_duplicate_arm_request": true,
+    "first_actual_command_matches_enabled_pose": true,
+    "no_J3_boundary_clip_in_first_command": true,
+    "actual_armed_SDK_q_mdeg": [
+      -10826,
+      -90,
+      194,
+      -1295,
+      19326,
+      -1837
+    ],
+    "small_feedback_delta_from_enabled_deg": [
+      0,
+      -0.046,
+      0.271,
+      0,
+      0.539,
+      0
+    ],
+    "exact_q_equality_diagnostic_assert_failed": true,
+    "diagnostic_is_not_an_existing_motion_gate": true,
+    "still_in_original_bounds_and_prepare_start_tolerance": true,
+    "original_full_SDK_flag_preserved": true
+  },
+  "original_return": {
+    "stop_after_observe_set_and_readback": true,
+    "grasp_executor_not_started": true,
+    "controller_start_success": true,
+    "PREPARE_epoch": "1792045013.474073991",
+    "trajectory_points": 17,
+    "planned_duration_s": 63.631351,
+    "max_point_joint_step_rad": 0.08,
+    "adapter_accept_epoch": "1792045013.488349339",
+    "original_prepare_execution_timeout_s": 300,
+    "reached_epoch": "1792045099.282919033",
+    "reason": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH",
+    "actual_elapsed_s": 85.808845042,
+    "SEARCH_or_ALIGN_or_grasp_started": false,
+    "last_valid_ROS_feedback": {
+      "epoch": 1792045101.7939115,
+      "names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6",
+        "gripper"
+      ],
+      "q": [
+        -0.14274425200000002,
+        0.9415399000000001,
+        -1.267969472,
+        -0.07382300800000001,
+        1.220591568,
+        0.08198680000000001,
+        0.0645
+      ]
+    },
+    "do_not_substitute_target_or_SDK_defaults_for_this_pose": true
+  },
+  "receive_stall": {
+    "driver_lost_epoch": "1792045101.798578330",
+    "driver_25s_epoch": "1792045126.799710876",
+    "RX_fixed_across_two_link_checks": 9146121,
+    "TX_fixed": 42472,
+    "ifindex": 11,
+    "state": "UP/ERROR-ACTIVE",
+    "new_passive_SDK_duration_s": 8,
+    "samples": 80,
+    "fresh_samples": 0,
+    "SDK_returncode": 2,
+    "current_actual_q_and_enabled_after_loss": null,
+    "SDK_default_zero_or_false_are_not_hardware_state": true,
+    "baseline_and_final_warning": 5,
+    "baseline_and_final_passive": 6971,
+    "bus_off": 0,
+    "new_CAN_recovery_or_reload_attempted": false,
+    "cause_not_proven": true
+  },
+  "stopping": {
+    "original_controller_already_STOPPED": true,
+    "adapter_auto_disarm_epoch": "1792045126.798640635",
+    "adapter_auto_disarm_reason": "joint state timeout",
+    "later_manual_disarm_CLI_failed": true,
+    "manual_service_error": "rcl node context invalid after bounded control sources exited",
+    "do_not_claim_manual_disarm_success": true,
+    "no_Disable_Reset_or_firmware_calls_by_agent": true
+  },
+  "readonly_bridge_invocation_error": {
+    "requested_s": 150,
+    "tool_max_s": 120,
+    "returncode": 1,
+    "failed_before_device_or_ROS_access": true,
+    "actual_bridge_output_file_exists": false,
+    "original_error_preserved": true,
+    "not_used_as_proof_of_CAN_receive_failure": true,
+    "independent_proof": "New8s SDK0fresh and two fixed kernelRX observations",
+    "no_unchanged_retry_after_proven_RX_stall": true
+  },
+  "capture": {
+    "formal_A_started": false,
+    "formal_A_frames": 0,
+    "qualified_A_frames": 0,
+    "before_enable_and_enabled_preview_pairs": 6,
+    "preview_is_not_observation_A": true,
+    "preview_high_support_frames": 6,
+    "high_support_is_not_800_top_plane_quality_or_calibration_approval": true,
+    "preview_visible_surface_median_m": 0.406,
+    "preview_cube_center": null,
+    "physical_cube_same_point_as_B_confirmed": null
+  },
+  "metadata": {
+    "camera_serial": "CC1365304DG",
+    "fresh_factory_GET_and_internal_TF_success": true,
+    "production_five_SHA_unchanged": true,
+    "arm_clip_bug_not_fixed_or_retested_from_old_out_of_bounds_pose": true
+  },
+  "portable": {
+    "assets": 23,
+    "bytes": 1140872,
+    "manifest_sha256": "922c21e716675ea065d94b2d5712156c1dab8d50741e539af50d619e3b206d6b"
+  },
+  "bag_messages": 43172,
+  "complete_pair": false,
+  "qualified_complete_pairs": 1,
+  "ending": {
+    "all_this_run_control_and_capture_sources_exited": true,
+    "driver_timeout_returncode": 137,
+    "visual_timeout_returncode": 124,
+    "bag_timeout_returncode": 124,
+    "camera_timeout_returncodes": [
+      124,
+      124
+    ],
+    "visual_shutdown_child_exit_codes": {
+      "depth_cube_probe": 1,
+      "move_group": -11
+    },
+    "latest_fresh_SDK_enabled_before_motion": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "current_live_enable_unknown_after_RX_loss": true
+  },
+  "next": "Host VMware disconnect/reconnect USB-CAN only, preserve current arm/cube placement, no arm reboot or return trajectory repeat. After fresh q verified against last valid ROS observe pose, capture A receive-only. Confirm old B/cube same-point relation before pairing; if moved recollect B, do not invent correspondence."
+}
