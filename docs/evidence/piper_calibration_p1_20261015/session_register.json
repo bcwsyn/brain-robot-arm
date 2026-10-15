@@ -7,7 +7,7 @@
   "live_capture_started": true,
   "completed_formal_pairs": 1,
   "placements_with_raw_acquisition": 5,
-  "placement_acquisition_progress": "5/6 placements have some raw acquisition; 4/6 have B and some A; only 1/6 original-quality qualified complete pair.",
+  "placement_acquisition_progress": "5/6 positions have raw B and some observation data; only 1/6 original-quality qualified complete pair.",
   "sampled_placement_ids": [
     "new_pair02",
     "new_pair03",
@@ -16,14 +16,14 @@
     "new_pair06"
   ],
   "next_pair_id": null,
-  "next_placement_preparation": "Do not move to a sixth placement yet. Keep fifth cube position on its current support; operator performs agreed supported manual teaching/grip without lifting or shifting cube. Capture B after explicit contact/static confirmation. Independent support/top identity review remains pending.",
+  "next_placement_preparation": "Do not change cube position or prepare seventh placement yet. Fifth B checkpoint 1a2e633 is complete. Formal A/top identity pending; existing adapter would clamp actual J3 -1.551364696 to -1.4 on arm/idle tick. Do not repeat live takeover; only offline plan review until explicit scoped production-change and this-group motion authority.",
   "completion_count_scope": "P1 paired acquisition only, not P2 calibration acceptance or absolute accuracy",
   "current_pair_id": "new_pair06",
-  "current_step": "new_pair06_preview_has_valid_complete_face_depth_await_same_position_manual_grip_B_top_identity_pending",
+  "current_step": "new_pair06_B_checkpoint_1a2e633_complete_no_release_or_arm_legacy_J3_takeover_requires_review",
   "current_attempt_id": "attempt01",
   "prepared_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_preview.Fx2y1k",
   "current_retake_observation_return_authorized": false,
-  "current_authority_scope": "User confirmed only fifth cube placement and previously authorized autonomous read-only acquisition/analysis. One preview completed; physical grip is not confirmed, no new enable/open/close/arm motion/observation-return or production changes authorized.",
+  "current_authority_scope": "User confirmed same-position supported manual grip. Read-only B, one failed RGBD attempt, one camera-off static check, then successful existing RGB-only recorder completed. No motion/enable/disable/open/return or production-change authority inferred. Do not repeat B.",
   "latest_completed_pair": {
     "pair_id": "new_pair02",
     "attempt_id": "attempt02",
@@ -392,10 +392,10 @@
     {
       "pair_id": "new_pair06",
       "role": "fit",
-      "state": "valid_complete_face_preview_await_B_elevated_support_top_review_pending",
-      "grip_manifest": null,
+      "state": "B_complete_1a2e633_preview_A_only_top_and_takeover_review_pending",
+      "grip_manifest": "new_pair06/attempt01/grip_capture/portable/manifest.json",
       "observe_manifest": null,
-      "physical_grip_verified": null,
+      "physical_grip_verified": true,
       "released_without_object_motion_verified": null,
       "observation_return_authorized": null,
       "preparation_record": "new_pair06/README.md",
@@ -415,7 +415,26 @@
       "pair_record": "new_pair06/pair_record.json",
       "complete_pair": false,
       "fit_eligible": false,
-      "all_task_sources_exited": true
+      "all_task_sources_exited": true,
+      "grip_checkpoint_commit": "1a2e633",
+      "grip_assessment": "new_pair06/attempt01/grip_capture/assessment.json",
+      "grip_bundle_schema": "piper_grip_RGB_only_bundle_v1",
+      "physical_grip_verification_scope": "Operator replied 已完成 to same-position actual grip request; not SDK contact/force proof",
+      "grip_capture_complete": true,
+      "grip_static_accepted_original_contiguous_slice": [
+        4,
+        66
+      ],
+      "grip_fresh_static_samples": 62,
+      "grip_RGB_frames": 5,
+      "grip_all_original_RGB_frames": 28,
+      "grip_RGBD_frames": 0,
+      "gripper_mm": 36.5,
+      "observation_return_completed": false,
+      "in_place_open_authorized": false,
+      "in_place_open_completed": false,
+      "current_actual_J3_below_task_soft_min": true,
+      "takeover_audit": "new_pair06/attempt01/grip_capture/takeover_audit.json"
     },
     {
       "pair_id": "new_pair07",
@@ -448,8 +467,8 @@
     true,
     true
   ],
-  "current_last_fresh_gripper_mm": 99.6,
-  "current_last_fresh_SDK_epoch": 1792055324.128486,
+  "current_last_fresh_gripper_mm": 36.5,
+  "current_last_fresh_SDK_epoch": 1792056236.0801046,
   "previous_arm_incident_runtime": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_release_observe.7bhWxy/",
   "current_feedback_fresh": false,
   "current_live_enabled_after_RX_loss": [
@@ -481,7 +500,7 @@
       0.0645
     ]
   },
-  "current_feedback_fresh_scope": "Fresh only in finished 25.752s fifth-placement preview; all sources exited. No ongoing monitor and no new CAN loss inferred.",
+  "current_feedback_fresh_scope": "Fresh only at end of completed B RGB-only capture; all sources exited, no continuous monitoring. Initial camera-related observer timeout is preserved without physical CAN cause claim.",
   "current_readonly_A_runtime_root": null,
   "receive_recovery_A_record": "new_pair04/attempt01/observe_after_reconnect/execution.json",
   "latest_CAN_readonly_A": {
@@ -493,14 +512,15 @@
     "tx_errors": 0,
     "source": "new_pair05/attempt01/observe_capture/verification.json"
   },
-  "placements_with_raw_B_and_some_A": 4,
+  "placements_with_raw_B_and_some_A": 5,
   "latest_B_CAN": {
-    "pair_id": "new_pair05",
-    "ifindex": 12,
-    "rx_before": 3929008,
-    "rx_after": 4811326,
-    "tx_before": 1,
-    "tx_after": 1,
+    "pair_id": "new_pair06",
+    "ifindex": null,
+    "ifindex_scope": "not captured by read_can helper, not inherited from prior group",
+    "rx_before": 16864380,
+    "rx_after": 16892656,
+    "tx_before": 3071,
+    "tx_after": 3071,
     "new_TX": 0,
     "state": "ERROR-ACTIVE"
   },
@@ -528,13 +548,13 @@
     "independent_SDK_fresh": 0,
     "record": "new_pair05/attempt01/release_observe/execution.json"
   },
-  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_preview.Fx2y1k",
+  "current_diagnostic_runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_B_RGB_only.U8xDq1",
   "latest_metadata_diagnostic_record": "new_pair05/attempt01/continuous_metadata_diagnostic/assessment.json",
   "latest_CAN_diagnostic": {
     "up": true,
     "state": "ERROR-ACTIVE",
-    "rx": 14742339,
-    "tx": 3070
+    "rx": 16892656,
+    "tx": 3071
   },
   "latest_native_depth_diagnostic_record": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json",
   "latest_native_GET_timing_diagnostic_record": "new_pair05/attempt01/startup_order_diagnostic/native_audit.json",
@@ -543,16 +563,19 @@
   "autonomous_diagnostic_user_quote": "你自行推行，只需要让我进行下一次摆放即可",
   "latest_preview_record": "new_pair06/attempt01/preview/audit.json",
   "last_valid_new_pair06_ROS_feedback": {
-    "epoch": 1792055324.128486,
+    "epoch": 1792056236.0801046,
     "q": [
-      -0.139081012,
-      0.9507852200000001,
-      -1.2642887880000002,
-      -0.073038028,
-      1.2176609760000001,
-      0.094773252
+      -0.09602922,
+      1.6882303200000002,
+      -1.551364696,
+      -0.455916384,
+      1.043011648,
+      0.903808528
     ],
-    "gap_m": 0.0996,
+    "gap_m": 0.0365,
     "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented"
-  }
+  },
+  "latest_B_checkpoint": "1a2e633",
+  "latest_grip_record": "new_pair06/attempt01/grip_capture/assessment.json",
+  "latest_takeover_audit": "new_pair06/attempt01/grip_capture/takeover_audit.json"
 }
