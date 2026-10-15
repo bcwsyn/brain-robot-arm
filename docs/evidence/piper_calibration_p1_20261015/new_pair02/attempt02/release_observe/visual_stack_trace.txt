@@ -1,0 +1,468 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair02_retake_preview.4PMunD/release_observe/onekey/ros/2026-10-15-11-32-57-838961-johnwick-virtual-machine-42385
+[INFO] [launch]: Default logging verbosity is set to INFO
+warning: Using load_yaml() directly is deprecated. Use xacro.load_yaml() instead.
+[INFO] [robot_state_publisher-1]: process started with pid [42413]
+[INFO] [static_transform_publisher-2]: process started with pid [42415]
+[INFO] [pointcloud_tf_gate-3]: process started with pid [42417]
+[INFO] [move_group-4]: process started with pid [42419]
+[INFO] [servo_node_main-5]: process started with pid [42423]
+[INFO] [piper_jog_adapter.py-6]: process started with pid [42425]
+[INFO] [visual_search_controller-7]: process started with pid [42432]
+[INFO] [grasp_lift_executor-8]: process started with pid [42435]
+[INFO] [depth_cube_probe.py-9]: process started with pid [42438]
+[INFO] [active_scan_supervisor-10]: process started with pid [42443]
+[static_transform_publisher-2] [WARN] [1792035178.638355987] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-2] [INFO] [1792035178.868272550] [piper_camera_mount_tf]: Spinning until stopped - publishing transform
+[static_transform_publisher-2] translation: ('-0.070000', '0.000000', '0.030800')
+[static_transform_publisher-2] rotation: ('0.000000', '-0.707107', '0.000000', '0.707107')
+[static_transform_publisher-2] from 'gripper_base' to 'camera_link'
+[robot_state_publisher-1] [INFO] [1792035179.001382082] [robot_state_publisher]: got segment base_link
+[robot_state_publisher-1] [INFO] [1792035179.016563619] [robot_state_publisher]: got segment gripper_base
+[robot_state_publisher-1] [INFO] [1792035179.016618471] [robot_state_publisher]: got segment link1
+[robot_state_publisher-1] [INFO] [1792035179.016627543] [robot_state_publisher]: got segment link2
+[robot_state_publisher-1] [INFO] [1792035179.016635188] [robot_state_publisher]: got segment link3
+[robot_state_publisher-1] [INFO] [1792035179.016642883] [robot_state_publisher]: got segment link4
+[robot_state_publisher-1] [INFO] [1792035179.016650347] [robot_state_publisher]: got segment link5
+[robot_state_publisher-1] [INFO] [1792035179.016657807] [robot_state_publisher]: got segment link6
+[robot_state_publisher-1] [INFO] [1792035179.016665123] [robot_state_publisher]: got segment link7
+[robot_state_publisher-1] [INFO] [1792035179.017822550] [robot_state_publisher]: got segment link8
+[robot_state_publisher-1] [INFO] [1792035179.017831549] [robot_state_publisher]: got segment world
+[servo_node_main-5] [WARN] [1792035179.656606067] [moveit_servo.servo_node]: Intra-process communication is disabled, consider enabling it by adding: 
+[servo_node_main-5] extra_arguments=[{'use_intra_process_comms' : True}]
+[servo_node_main-5] to the Servo composable node in the launch file
+[move_group-4] [INFO] [1792035179.744933765] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.0325239 seconds
+[servo_node_main-5] [INFO] [1792035179.751680117] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.0426519 seconds
+[servo_node_main-5] [INFO] [1792035179.751722111] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[servo_node_main-5] [INFO] [1792035179.752015280] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[move_group-4] [INFO] [1792035179.758065520] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[move_group-4] [INFO] [1792035179.758099684] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[grasp_lift_executor-8] [INFO] [1792035180.169704570] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00347756 seconds
+[grasp_lift_executor-8] [INFO] [1792035180.169809261] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[grasp_lift_executor-8] [INFO] [1792035180.169821412] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[visual_search_controller-7] [INFO] [1792035180.734079863] [visual_search_controller]: Visual controller ready: backend=piper, auto motion disabled until ~/start is called.
+[visual_search_controller-7] [INFO] [1792035180.742681436] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00818066 seconds
+[visual_search_controller-7] [INFO] [1792035180.742724702] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[visual_search_controller-7] [INFO] [1792035180.742732827] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[piper_jog_adapter.py-6] [WARN] [1792035181.280525500] [piper_jog_adapter]: PiPER physical adapter is disarmed. Set motion_enabled=true and call /piper_jog_adapter/arm only after the workspace is clear.
+[depth_cube_probe.py-9] [INFO] [1792035182.933518621] [depth_cube_probe]: DEPTH_PROBE_WAITING_FOR_CAMERA_INFO
+[move_group-4] [INFO] [1792035183.727030223] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-4] [INFO] [1792035183.731108707] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-4] [INFO] [1792035183.743810869] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-4] [INFO] [1792035183.758652681] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[move_group-4] [INFO] [1792035183.759064142] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-4] [INFO] [1792035183.765049730] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[move_group-4] [INFO] [1792035183.765084518] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-4] [INFO] [1792035183.770213455] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-4] [INFO] [1792035183.774147627] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[depth_cube_probe.py-9] [INFO] [1792035183.816978029] [depth_cube_probe]: DEPTH_PROBE_NO_TABLE_PLANE inliers=0
+[servo_node_main-5] [INFO] [1792035184.015745357] [moveit_ros.current_state_monitor]: Listening to joint states on topic '/piper_moveit_joint_states'
+[servo_node_main-5] [INFO] [1792035184.027129607] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[servo_node_main-5] [INFO] [1792035184.027165309] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[servo_node_main-5] [INFO] [1792035184.034465507] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[servo_node_main-5] [INFO] [1792035184.034497566] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[servo_node_main-5] [INFO] [1792035184.035590899] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[servo_node_main-5] [INFO] [1792035184.036298698] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[servo_node_main-5] [WARN] [1792035184.036888643] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[servo_node_main-5] [ERROR] [1792035184.036909723] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[servo_node_main-5] [INFO] [1792035185.457495741] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on '/servo_node/publish_planning_scene'
+[move_group-4] [INFO] [1792035186.247181853] [moveit.ros.perception.pointcloud_octomap_updater]: Listening to '/brain_robot_vision/disabled_octomap_points' using message filter with target frame 'world '
+[move_group-4] [INFO] [1792035186.247939398] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'chomp'
+[move_group-4] [INFO] [1792035186.265334344] [moveit.ros_planning.planning_pipeline]: Using planning interface 'CHOMP'
+[move_group-4] [INFO] [1792035186.283625721] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.path_tolerance' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792035186.283658652] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.resample_dt' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792035186.283665869] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.min_angle_change' was not set. Using default value: 0.001000
+[move_group-4] [INFO] [1792035186.283728684] [moveit_ros.fix_workspace_bounds]: Param 'chomp.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-4] [INFO] [1792035186.284025590] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_bounds_error' was set to 0.100000
+[move_group-4] [INFO] [1792035186.284049700] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792035186.284071586] [moveit_ros.fix_start_state_collision]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792035186.284079393] [moveit_ros.fix_start_state_collision]: Param 'chomp.jiggle_fraction' was set to 0.050000
+[move_group-4] [INFO] [1792035186.284088081] [moveit_ros.fix_start_state_collision]: Param 'chomp.max_sampling_attempts' was not set. Using default value: 100
+[move_group-4] [INFO] [1792035186.284100872] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-4] [INFO] [1792035186.284106840] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-4] [INFO] [1792035186.284111745] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-4] [INFO] [1792035186.284116749] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-4] [INFO] [1792035186.284121611] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-4] [INFO] [1792035186.284126623] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-4] [INFO] [1792035186.320618268] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'pilz_industrial_motion_planner'
+[move_group-4] [INFO] [1792035186.361254920] [moveit.pilz_industrial_motion_planner.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-4] [INFO] [1792035186.400771870] [moveit.pilz_industrial_motion_planner]: Available plugins: pilz_industrial_motion_planner/PlanningContextLoaderCIRC pilz_industrial_motion_planner/PlanningContextLoaderLIN pilz_industrial_motion_planner/PlanningContextLoaderPTP 
+[move_group-4] [INFO] [1792035186.400818877] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderCIRC
+[move_group-4] [INFO] [1792035186.416875846] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [CIRC]
+[move_group-4] [INFO] [1792035186.416976959] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderLIN
+[move_group-4] [INFO] [1792035186.424196334] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [LIN]
+[move_group-4] [INFO] [1792035186.424226660] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderPTP
+[move_group-4] [INFO] [1792035186.429322562] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [PTP]
+[move_group-4] [INFO] [1792035186.429369250] [moveit.ros_planning.planning_pipeline]: Using planning interface 'Pilz Industrial Motion Planner'
+[move_group-4] [INFO] [1792035186.431622742] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-4] [INFO] [1792035186.575915771] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-4] [INFO] [1792035186.577307881] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.path_tolerance' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792035186.577387894] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.resample_dt' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792035186.577396234] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.min_angle_change' was not set. Using default value: 0.001000
+[move_group-4] [INFO] [1792035186.577419549] [moveit_ros.fix_workspace_bounds]: Param 'ompl.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-4] [INFO] [1792035186.577436393] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_bounds_error' was set to 0.100000
+[move_group-4] [INFO] [1792035186.577443613] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792035186.577456362] [moveit_ros.fix_start_state_collision]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792035186.577463454] [moveit_ros.fix_start_state_collision]: Param 'ompl.jiggle_fraction' was set to 0.050000
+[move_group-4] [INFO] [1792035186.577483578] [moveit_ros.fix_start_state_collision]: Param 'ompl.max_sampling_attempts' was not set. Using default value: 100
+[move_group-4] [INFO] [1792035186.577498358] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-4] [INFO] [1792035186.577504327] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-4] [INFO] [1792035186.577509459] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-4] [INFO] [1792035186.577514591] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-4] [INFO] [1792035186.577519536] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-4] [INFO] [1792035186.577524393] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-4] [WARN] [1792035186.585527115] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[move_group-4] [INFO] [1792035186.719899126] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for arm_controller
+[move_group-4] [INFO] [1792035186.729443838] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for gripper_controller
+[move_group-4] [INFO] [1792035186.730123176] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-4] [INFO] [1792035186.730430554] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-4] [INFO] [1792035186.732224855] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-4] [INFO] [1792035186.732511475] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-4] [INFO] [1792035186.810075567] [move_group.move_group]: 
+[move_group-4] 
+[move_group-4] ********************************************************
+[move_group-4] * MoveGroup using: 
+[move_group-4] *     - ApplyPlanningSceneService
+[move_group-4] *     - ClearOctomapService
+[move_group-4] *     - CartesianPathService
+[move_group-4] *     - ExecuteTrajectoryAction
+[move_group-4] *     - GetPlanningSceneService
+[move_group-4] *     - KinematicsService
+[move_group-4] *     - MoveAction
+[move_group-4] *     - MotionPlanService
+[move_group-4] *     - QueryPlannersService
+[move_group-4] *     - StateValidationService
+[move_group-4] ********************************************************
+[move_group-4] 
+[move_group-4] [INFO] [1792035186.810181382] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-4] [INFO] [1792035186.810192154] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-4] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-4] [0m[92m
+[move_group-4] You can start planning now!
+[move_group-4] 
+[grasp_lift_executor-8] [INFO] [1792035186.857770749] [move_group_interface]: Ready to take commands for planning group arm.
+[visual_search_controller-7] [INFO] [1792035186.875018378] [move_group_interface]: Ready to take commands for planning group arm.
+[piper_jog_adapter.py-6] [WARN] [1792035227.066344149] [piper_jog_adapter]: PHYSICAL MOTION GATE ENABLED; adapter is still disarmed
+[piper_jog_adapter.py-6] [WARN] [1792035248.618441762] [piper_jog_adapter]: PHYSICAL MOTION ARMED
+[piper_jog_adapter.py-6] [INFO] [1792035345.499849864] [piper_jog_adapter]: Accepted bounded gripper command: target=0.100000 m frames=80
+[piper_jog_adapter.py-6] [INFO] [1792035345.517867279] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=79
+[piper_jog_adapter.py-6] [INFO] [1792035345.537507559] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=78
+[piper_jog_adapter.py-6] [INFO] [1792035345.557402792] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=77
+[piper_jog_adapter.py-6] [INFO] [1792035345.577240279] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=76
+[piper_jog_adapter.py-6] [INFO] [1792035345.598877841] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=75
+[piper_jog_adapter.py-6] [INFO] [1792035345.617229872] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=74
+[piper_jog_adapter.py-6] [INFO] [1792035345.637101637] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=73
+[piper_jog_adapter.py-6] [INFO] [1792035345.657607557] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=72
+[piper_jog_adapter.py-6] [INFO] [1792035345.678186615] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=71
+[piper_jog_adapter.py-6] [INFO] [1792035345.697540257] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=70
+[piper_jog_adapter.py-6] [INFO] [1792035345.717891561] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=69
+[piper_jog_adapter.py-6] [INFO] [1792035345.737348293] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=68
+[piper_jog_adapter.py-6] [INFO] [1792035345.757414893] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=67
+[piper_jog_adapter.py-6] [INFO] [1792035345.777283013] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=66
+[piper_jog_adapter.py-6] [INFO] [1792035345.797328002] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=65
+[piper_jog_adapter.py-6] [INFO] [1792035345.817221933] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=64
+[piper_jog_adapter.py-6] [INFO] [1792035345.837487663] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=63
+[piper_jog_adapter.py-6] [INFO] [1792035345.857746793] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=62
+[piper_jog_adapter.py-6] [INFO] [1792035345.877744789] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=61
+[piper_jog_adapter.py-6] [INFO] [1792035345.897872418] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=60
+[piper_jog_adapter.py-6] [INFO] [1792035345.917210019] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=59
+[piper_jog_adapter.py-6] [INFO] [1792035345.937792583] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=58
+[piper_jog_adapter.py-6] [INFO] [1792035345.957349877] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=57
+[piper_jog_adapter.py-6] [INFO] [1792035345.977598658] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=56
+[piper_jog_adapter.py-6] [INFO] [1792035345.997661627] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=55
+[piper_jog_adapter.py-6] [INFO] [1792035346.019704243] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=54
+[piper_jog_adapter.py-6] [INFO] [1792035346.047078202] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=53
+[piper_jog_adapter.py-6] [INFO] [1792035346.058200821] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=52
+[piper_jog_adapter.py-6] [INFO] [1792035346.077852980] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=51
+[piper_jog_adapter.py-6] [INFO] [1792035346.097323595] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=50
+[piper_jog_adapter.py-6] [INFO] [1792035346.117580355] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=49
+[piper_jog_adapter.py-6] [INFO] [1792035346.137474618] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=48
+[piper_jog_adapter.py-6] [INFO] [1792035346.157628164] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=47
+[piper_jog_adapter.py-6] [INFO] [1792035346.177860073] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=46
+[piper_jog_adapter.py-6] [INFO] [1792035346.197377962] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=45
+[piper_jog_adapter.py-6] [INFO] [1792035346.218011945] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=44
+[piper_jog_adapter.py-6] [INFO] [1792035346.237507970] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=43
+[piper_jog_adapter.py-6] [INFO] [1792035346.257651772] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=42
+[piper_jog_adapter.py-6] [INFO] [1792035346.278011334] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=41
+[piper_jog_adapter.py-6] [INFO] [1792035346.297601082] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=40
+[piper_jog_adapter.py-6] [INFO] [1792035346.317425251] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=39
+[piper_jog_adapter.py-6] [INFO] [1792035346.337540828] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=38
+[piper_jog_adapter.py-6] [INFO] [1792035346.357711390] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=37
+[piper_jog_adapter.py-6] [INFO] [1792035346.378037824] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=36
+[piper_jog_adapter.py-6] [INFO] [1792035346.398093397] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=35
+[piper_jog_adapter.py-6] [INFO] [1792035346.417961870] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=34
+[piper_jog_adapter.py-6] [INFO] [1792035346.437643571] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=33
+[piper_jog_adapter.py-6] [INFO] [1792035346.457743834] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=32
+[piper_jog_adapter.py-6] [INFO] [1792035346.477347317] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=31
+[piper_jog_adapter.py-6] [INFO] [1792035346.497663203] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=30
+[piper_jog_adapter.py-6] [INFO] [1792035346.517565969] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=29
+[piper_jog_adapter.py-6] [INFO] [1792035346.537703014] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=28
+[piper_jog_adapter.py-6] [INFO] [1792035346.557306636] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=27
+[piper_jog_adapter.py-6] [INFO] [1792035346.577551833] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=26
+[piper_jog_adapter.py-6] [INFO] [1792035346.597518603] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=25
+[piper_jog_adapter.py-6] [INFO] [1792035346.617646059] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=24
+[piper_jog_adapter.py-6] [INFO] [1792035346.638235708] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=23
+[piper_jog_adapter.py-6] [INFO] [1792035346.657707710] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=22
+[piper_jog_adapter.py-6] [INFO] [1792035346.678202085] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=21
+[piper_jog_adapter.py-6] [INFO] [1792035346.697971502] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=20
+[piper_jog_adapter.py-6] [INFO] [1792035346.718159306] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=19
+[piper_jog_adapter.py-6] [INFO] [1792035346.738204068] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=18
+[piper_jog_adapter.py-6] [INFO] [1792035346.757558713] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=17
+[piper_jog_adapter.py-6] [INFO] [1792035346.777545472] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=16
+[piper_jog_adapter.py-6] [INFO] [1792035346.797335478] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=15
+[piper_jog_adapter.py-6] [INFO] [1792035346.817475495] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=14
+[piper_jog_adapter.py-6] [INFO] [1792035346.837596735] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=13
+[piper_jog_adapter.py-6] [INFO] [1792035346.857279643] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=12
+[piper_jog_adapter.py-6] [INFO] [1792035346.877434311] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=11
+[piper_jog_adapter.py-6] [INFO] [1792035346.897516915] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=10
+[piper_jog_adapter.py-6] [INFO] [1792035346.918263993] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=9
+[piper_jog_adapter.py-6] [INFO] [1792035346.937575889] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=8
+[piper_jog_adapter.py-6] [INFO] [1792035346.957976651] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=7
+[piper_jog_adapter.py-6] [INFO] [1792035346.977903479] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=6
+[piper_jog_adapter.py-6] [INFO] [1792035346.997817979] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=5
+[piper_jog_adapter.py-6] [INFO] [1792035347.017593010] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=4
+[piper_jog_adapter.py-6] [INFO] [1792035347.037869420] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=3
+[piper_jog_adapter.py-6] [INFO] [1792035347.057228324] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=2
+[piper_jog_adapter.py-6] [INFO] [1792035347.077611812] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=1
+[piper_jog_adapter.py-6] [INFO] [1792035347.097583346] [piper_jog_adapter]: Emitting bounded gripper frame: target=0.100000 m effort=1.000 N.m remaining=0
+[visual_search_controller-7] [INFO] [1792035431.704591443] [visual_search_controller]: STATE -> PREPARE (START_AUTHORIZED)
+[visual_search_controller-7] [INFO] [1792035431.715818602] [visual_search_controller]: Published direct real-arm prepare trajectory (46.3 s, 13 points, max step 0.080 rad).
+[piper_jog_adapter.py-6] [INFO] [1792035431.728724161] [piper_jog_adapter]: REAL ARM trajectory accepted: 13 points
+[depth_cube_probe.py-9] [INFO] [1792035435.658495181] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=645
+[depth_cube_probe.py-9] [INFO] [1792035436.292945006] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=728
+[depth_cube_probe.py-9] [INFO] [1792035436.662544933] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=836
+[depth_cube_probe.py-9] [INFO] [1792035437.022187379] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=932
+[depth_cube_probe.py-9] [INFO] [1792035437.293701807] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1015
+[depth_cube_probe.py-9] [INFO] [1792035437.622542678] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1028
+[depth_cube_probe.py-9] [INFO] [1792035437.919751410] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1183
+[depth_cube_probe.py-9] [INFO] [1792035438.398764024] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1278
+[grasp_lift_executor-8] [INFO] [1792035438.447457941] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035438.381090164 tf_stamp=1792035438.381090164 camera_xyz=(0.0163,0.0430,0.1470) reference=base_link xyz=(0.4133,0.0420,0.0258)
+[grasp_lift_executor-8] [WARN] [1792035438.632020075] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035438.581061840 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035438.581062 but the latest data is at time 1792035438.542501, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035439.032576283] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1697
+[depth_cube_probe.py-9] [INFO] [1792035439.385831194] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1812
+[depth_cube_probe.py-9] [INFO] [1792035439.865808234] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1881
+[depth_cube_probe.py-9] [INFO] [1792035440.253174614] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1985
+[depth_cube_probe.py-9] [INFO] [1792035440.457531033] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1991
+[grasp_lift_executor-8] [WARN] [1792035440.839267700] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035440.781072140 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035440.781072 but the latest data is at time 1792035440.749319, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035440.999439464] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2112
+[depth_cube_probe.py-9] [INFO] [1792035441.352287025] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2164
+[depth_cube_probe.py-9] [INFO] [1792035441.628913750] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2193
+[depth_cube_probe.py-9] [INFO] [1792035441.819126213] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2257
+[depth_cube_probe.py-9] [INFO] [1792035442.281152512] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2283
+[depth_cube_probe.py-9] [INFO] [1792035442.597127909] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2321
+[depth_cube_probe.py-9] [INFO] [1792035442.857735175] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2369
+[grasp_lift_executor-8] [WARN] [1792035443.018911413] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035442.980956078 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035442.980956 but the latest data is at time 1792035442.961707, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035443.438302573] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2483
+[depth_cube_probe.py-9] [INFO] [1792035443.830877012] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2501
+[depth_cube_probe.py-9] [INFO] [1792035444.019427748] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2518
+[depth_cube_probe.py-9] [INFO] [1792035444.462079283] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2564
+[depth_cube_probe.py-9] [INFO] [1792035444.717108759] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2541
+[grasp_lift_executor-8] [WARN] [1792035445.211130418] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035445.180985928 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035445.180986 but the latest data is at time 1792035445.174069, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035445.321970126] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2598
+[depth_cube_probe.py-9] [INFO] [1792035445.891798271] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2621
+[depth_cube_probe.py-9] [INFO] [1792035446.187800929] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2689
+[depth_cube_probe.py-9] [INFO] [1792035446.456581918] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2694
+[depth_cube_probe.py-9] [INFO] [1792035446.857342242] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2690
+[grasp_lift_executor-8] [INFO] [1792035447.213183332] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035447.180974960 tf_stamp=1792035447.180974960 camera_xyz=(-0.0061,0.0470,0.2130) reference=base_link xyz=(0.4318,0.0343,0.0378)
+[depth_cube_probe.py-9] [INFO] [1792035447.352114555] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2713
+[grasp_lift_executor-8] [WARN] [1792035447.827471822] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035447.780938148 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035447.780938 but the latest data is at time 1792035447.766561, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035447.853790340] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2681
+[depth_cube_probe.py-9] [INFO] [1792035448.081876517] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2715
+[depth_cube_probe.py-9] [INFO] [1792035448.280511819] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2704
+[depth_cube_probe.py-9] [INFO] [1792035448.748495603] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.218s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035448.719126 but the latest data is at time 1792035448.687864, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035448.979184489] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2713
+[depth_cube_probe.py-9] [INFO] [1792035449.382696619] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2716
+[grasp_lift_executor-8] [WARN] [1792035450.014290225] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035449.981110573 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035449.981111 but the latest data is at time 1792035449.976462, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035450.711843134] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2723
+[depth_cube_probe.py-9] [INFO] [1792035451.013978659] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2736
+[depth_cube_probe.py-9] [INFO] [1792035451.353718562] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2692
+[depth_cube_probe.py-9] [INFO] [1792035452.081449618] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2708
+[grasp_lift_executor-8] [INFO] [1792035452.228880210] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035452.180898666 tf_stamp=1792035452.180898666 camera_xyz=(-0.0192,0.0493,0.2500) reference=base_link xyz=(0.4411,0.0285,0.0454)
+[grasp_lift_executor-8] [WARN] [1792035452.411359379] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035452.380929232 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035452.380929 but the latest data is at time 1792035452.362908, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035452.582037280] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2707
+[depth_cube_probe.py-9] [INFO] [1792035452.913827324] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2680
+[depth_cube_probe.py-9] [INFO] [1792035453.327294921] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2693
+[depth_cube_probe.py-9] [INFO] [1792035453.717629467] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2698
+[depth_cube_probe.py-9] [INFO] [1792035454.247984192] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2716
+[depth_cube_probe.py-9] [INFO] [1792035454.523216246] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2685
+[grasp_lift_executor-8] [WARN] [1792035454.610158985] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035454.581121683 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035454.581122 but the latest data is at time 1792035454.515573, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035454.721772660] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2637
+[depth_cube_probe.py-9] [INFO] [1792035455.008394045] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2596
+[depth_cube_probe.py-9] [INFO] [1792035455.312744336] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2554
+[depth_cube_probe.py-9] [INFO] [1792035455.649065548] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.396s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035455.615493 but the latest data is at time 1792035455.219507, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035456.106885644] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.862s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035456.081486 but the latest data is at time 1792035455.219507, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035456.480345660] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.229s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035456.448901 but the latest data is at time 1792035455.219507, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035456.614547526] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035456.580904245 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035456.580904 but the latest data is at time 1792035456.523536, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035456.982835298] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.729s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035456.948090 but the latest data is at time 1792035455.219507, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [INFO] [1792035457.245125347] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035457.181274652 tf_stamp=1792035457.181274652 camera_xyz=(-0.0343,0.0528,0.2860) reference=base_link xyz=(0.4503,0.0236,0.0547)
+[depth_cube_probe.py-9] [INFO] [1792035457.647762902] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2303
+[depth_cube_probe.py-9] [INFO] [1792035458.178894491] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2253
+[depth_cube_probe.py-9] [INFO] [1792035458.477825175] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2235
+[grasp_lift_executor-8] [WARN] [1792035458.626980424] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035458.580820560 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035458.580820 but the latest data is at time 1792035458.543084, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035458.716047846] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2210
+[depth_cube_probe.py-9] [INFO] [1792035459.139968037] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2177
+[depth_cube_probe.py-9] [INFO] [1792035459.642969859] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.270s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035459.516506 but the latest data is at time 1792035459.246536, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035459.877791758] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.600s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035459.846187 but the latest data is at time 1792035459.246536, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035460.276375119] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.001s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035460.247801 but the latest data is at time 1792035459.246536, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035460.651108590] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035460.581864357 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035460.581865 but the latest data is at time 1792035460.553556, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035461.022929087] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2177
+[depth_cube_probe.py-9] [INFO] [1792035461.252236846] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2172
+[depth_cube_probe.py-9] [INFO] [1792035461.712319051] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2165
+[depth_cube_probe.py-9] [INFO] [1792035461.980380614] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=2136
+[depth_cube_probe.py-9] [INFO] [1792035462.315903893] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=2150
+[depth_cube_probe.py-9] [INFO] [1792035462.575775172] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2140
+[depth_cube_probe.py-9] [INFO] [1792035462.787068413] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2147
+[grasp_lift_executor-8] [WARN] [1792035462.837866778] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035462.780817270 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035462.780817 but the latest data is at time 1792035462.765511, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035463.588853761] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=2123
+[depth_cube_probe.py-9] [INFO] [1792035463.848313280] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2126
+[depth_cube_probe.py-9] [INFO] [1792035464.141136511] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2123
+[depth_cube_probe.py-9] [INFO] [1792035464.374545201] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2134
+[depth_cube_probe.py-9] [INFO] [1792035464.652310560] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2117
+[grasp_lift_executor-8] [WARN] [1792035465.009809069] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035464.981009007 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035464.981009 but the latest data is at time 1792035464.974189, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035465.062202561] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2120
+[depth_cube_probe.py-9] [INFO] [1792035465.282900699] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2117
+[grasp_lift_executor-8] [INFO] [1792035465.701838342] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035465.580849648 tf_stamp=1792035465.580849648 camera_xyz=(-0.0594,0.0572,0.3410) reference=base_link xyz=(0.4611,0.0121,0.0743)
+[depth_cube_probe.py-9] [INFO] [1792035466.208928444] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2107
+[depth_cube_probe.py-9] [INFO] [1792035466.446623059] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2097
+[depth_cube_probe.py-9] [INFO] [1792035466.846080705] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2109
+[depth_cube_probe.py-9] [INFO] [1792035467.247277729] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2086
+[depth_cube_probe.py-9] [INFO] [1792035467.608918008] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2072
+[depth_cube_probe.py-9] [INFO] [1792035467.846793658] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2073
+[depth_cube_probe.py-9] [INFO] [1792035468.345594578] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2075
+[depth_cube_probe.py-9] [INFO] [1792035468.616777705] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2065
+[depth_cube_probe.py-9] [INFO] [1792035468.910920280] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2042
+[depth_cube_probe.py-9] [INFO] [1792035469.245000828] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2033
+[depth_cube_probe.py-9] [INFO] [1792035469.540056405] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2034
+[depth_cube_probe.py-9] [INFO] [1792035469.853256944] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2027
+[depth_cube_probe.py-9] [INFO] [1792035470.253080023] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2001
+[depth_cube_probe.py-9] [INFO] [1792035470.520274178] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2021
+[depth_cube_probe.py-9] [INFO] [1792035470.876169288] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1999
+[grasp_lift_executor-8] [INFO] [1792035471.030441654] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035470.980851173 tf_stamp=1792035470.980851173 camera_xyz=(-0.0827,0.0635,0.3960) reference=base_link xyz=(0.4771,0.0098,0.0683)
+[depth_cube_probe.py-9] [INFO] [1792035471.346318766] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1933
+[depth_cube_probe.py-9] [INFO] [1792035471.778925176] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1930
+[depth_cube_probe.py-9] [INFO] [1792035472.288644097] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1855
+[depth_cube_probe.py-9] [INFO] [1792035472.781435613] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1832
+[depth_cube_probe.py-9] [INFO] [1792035473.189995801] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1775
+[depth_cube_probe.py-9] [INFO] [1792035473.455653549] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1787
+[depth_cube_probe.py-9] [INFO] [1792035473.845168042] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1769
+[depth_cube_probe.py-9] [INFO] [1792035474.305971833] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1760
+[depth_cube_probe.py-9] [INFO] [1792035474.745895757] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1754
+[depth_cube_probe.py-9] [INFO] [1792035475.001475828] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1725
+[depth_cube_probe.py-9] [INFO] [1792035475.646042371] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.190s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035475.606351 but the latest data is at time 1792035475.534391, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035475.979831140] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1724
+[grasp_lift_executor-8] [INFO] [1792035476.645474080] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035476.580824137 tf_stamp=1792035476.580824137 camera_xyz=(-0.0880,0.0722,0.4120) reference=base_link xyz=(0.4689,-0.0084,0.0972)
+[depth_cube_probe.py-9] [INFO] [1792035476.740880505] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1695
+[grasp_lift_executor-8] [WARN] [1792035477.039035630] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035476.981799603 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035476.981800 but the latest data is at time 1792035476.940986, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035477.149186376] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1672
+[depth_cube_probe.py-9] [INFO] [1792035477.476534947] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1670
+[piper_jog_adapter.py-6] [INFO] [1792035477.606619186] [piper_jog_adapter]: REAL ARM trajectory accepted: 2 points
+[visual_search_controller-7] [INFO] [1792035477.611758887] [visual_search_controller]: STATE -> STOPPED (OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)
+[depth_cube_probe.py-9] [INFO] [1792035478.244222640] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1675
+[depth_cube_probe.py-9] [INFO] [1792035478.671230080] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1667
+[depth_cube_probe.py-9] [INFO] [1792035479.146141173] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1671
+[grasp_lift_executor-8] [WARN] [1792035479.235281562] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035479.180820465 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035479.180820 but the latest data is at time 1792035479.152845, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035479.347659058] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1654
+[depth_cube_probe.py-9] [INFO] [1792035479.806391439] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.127s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035479.773188 but the latest data is at time 1792035479.755465, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035480.404744129] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.726s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035480.372136 but the latest data is at time 1792035480.357185, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035480.846423351] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.157s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035480.803056 but the latest data is at time 1792035480.760072, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035481.053454240] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.361s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035481.006916 but the latest data is at time 1792035480.961287, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035481.246398253] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035481.180776596 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035481.180777 but the latest data is at time 1792035481.162850, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035481.714584836] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.024s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035481.670007 but the latest data is at time 1792035481.665541, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035482.040445562] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1672
+[depth_cube_probe.py-9] [INFO] [1792035482.478866332] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.355s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035482.438290 but the latest data is at time 1792035482.368191, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035482.909694115] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.786s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035482.868819 but the latest data is at time 1792035482.771825, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [INFO] [1792035483.090444121] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035482.980896235 tf_stamp=1792035482.980896235 camera_xyz=(-0.0905,0.0738,0.4190) reference=base_link xyz=(0.4696,-0.0114,0.0991)
+[depth_cube_probe.py-9] [INFO] [1792035483.348411222] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.223s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035483.305884 but the latest data is at time 1792035483.274687, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035483.429086418] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035483.380740404 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035483.380740 but the latest data is at time 1792035483.375134, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035483.785786146] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.653s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035483.736204 but the latest data is at time 1792035483.678194, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035484.179989400] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.055s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035484.138181 but the latest data is at time 1792035484.080553, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035484.601206193] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.486s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035484.568474 but the latest data is at time 1792035484.481698, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035484.904711606] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.117s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035484.873018 but the latest data is at time 1792035484.782440, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035485.318757219] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1677
+[depth_cube_probe.py-9] [INFO] [1792035485.683002577] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1675
+[depth_cube_probe.py-9] [INFO] [1792035485.872534331] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1687
+[depth_cube_probe.py-9] [INFO] [1792035486.303843444] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1665
+[grasp_lift_executor-8] [WARN] [1792035486.425783560] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035486.380743504 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035486.380744 but the latest data is at time 1792035486.368693, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035486.800967429] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1671
+[depth_cube_probe.py-9] [INFO] [1792035487.209792943] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1672
+[depth_cube_probe.py-9] [INFO] [1792035487.442973796] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1673
+[depth_cube_probe.py-9] [INFO] [1792035487.973999419] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1681
+[grasp_lift_executor-8] [INFO] [1792035488.237963656] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035488.180732489 tf_stamp=1792035488.180732489 camera_xyz=(-0.0905,0.0742,0.4190) reference=base_link xyz=(0.4693,-0.0114,0.0988)
+[depth_cube_probe.py-9] [INFO] [1792035488.478196023] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1675
+[grasp_lift_executor-8] [WARN] [1792035488.823962441] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035488.780720234 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035488.780720 but the latest data is at time 1792035488.773309, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035489.273633713] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1662
+[depth_cube_probe.py-9] [INFO] [1792035489.717891245] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.162s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035489.666372 but the latest data is at time 1792035489.504004, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035490.183059998] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.628s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035490.131917 but the latest data is at time 1792035489.504004, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035490.471963436] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.930s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035490.434326 but the latest data is at time 1792035489.504004, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035490.997742060] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1680
+[depth_cube_probe.py-9] [INFO] [1792035491.338489791] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1671
+[depth_cube_probe.py-9] [INFO] [1792035491.770039069] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.347s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035491.732301 but the latest data is at time 1792035491.716693, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035492.120164850] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.679s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035492.064648 but the latest data is at time 1792035492.018022, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035492.801731225] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.382s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035492.767947 but the latest data is at time 1792035492.721030, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035493.068572928] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.644s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035493.029975 but the latest data is at time 1792035493.021949, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035493.223435471] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035493.180810690 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035493.180811 but the latest data is at time 1792035493.122172, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035493.400430326] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.982s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035493.367429 but the latest data is at time 1792035493.322746, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [INFO] [1792035493.639874800] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035493.580808163 tf_stamp=1792035493.580808163 camera_xyz=(-0.0900,0.0738,0.4180) reference=base_link xyz=(0.4688,-0.0118,0.0998)
+[depth_cube_probe.py-9] [INFO] [1792035493.737980221] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.317s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035493.702505 but the latest data is at time 1792035493.623763, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035494.204241432] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1674
+[depth_cube_probe.py-9] [INFO] [1792035494.534424268] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1684
+[depth_cube_probe.py-9] [INFO] [1792035494.936039993] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1666
+[grasp_lift_executor-8] [WARN] [1792035495.227400777] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035495.180730104 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035495.180730 but the latest data is at time 1792035495.128261, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035495.298226464] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1671
+[depth_cube_probe.py-9] [INFO] [1792035495.699300404] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1676
+[depth_cube_probe.py-9] [INFO] [1792035496.230194643] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.621s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035496.196338 but the latest data is at time 1792035496.135827, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035496.546156855] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.923s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035496.498359 but the latest data is at time 1792035496.436549, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035496.938774524] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1672
+[depth_cube_probe.py-9] [INFO] [1792035497.303156210] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1670
+[grasp_lift_executor-8] [WARN] [1792035497.435802948] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035497.380689383 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035497.380689 but the latest data is at time 1792035497.340405, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035497.662592072] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1683
+[depth_cube_probe.py-9] [INFO] [1792035497.869413004] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1665
+[depth_cube_probe.py-9] [INFO] [1792035498.161912214] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1660
+[depth_cube_probe.py-9] [INFO] [1792035498.500060894] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1666
+[depth_cube_probe.py-9] [INFO] [1792035499.199724950] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1668
+[grasp_lift_executor-8] [INFO] [1792035499.813596346] [grasp_lift_executor]: TARGET_TF source=camera_depth_optical_frame image_stamp=1792035499.580658674 tf_stamp=1792035499.580658674 camera_xyz=(-0.0902,0.0740,0.4180) reference=base_link xyz=(0.4687,-0.0116,0.0997)
+[depth_cube_probe.py-9] [INFO] [1792035499.897976062] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1669
+[grasp_lift_executor-8] [WARN] [1792035500.025560313] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035499.980895758 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035499.980896 but the latest data is at time 1792035499.960007, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035500.233196225] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=2 plane_inliers=1659
+[depth_cube_probe.py-9] [INFO] [1792035500.595707523] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.303s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035500.563451 but the latest data is at time 1792035500.462989, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035500.889957015] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.601s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035500.861837 but the latest data is at time 1792035500.764858, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035501.329540473] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.036s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035501.296719 but the latest data is at time 1792035501.270148, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035501.802839746] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.502s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035501.762817 but the latest data is at time 1792035501.671294, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035502.035909971] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035501.981664419 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035501.981664 but the latest data is at time 1792035501.972857, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035502.178758502] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.868s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035502.128842 but the latest data is at time 1792035502.073142, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035502.456347433] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.165s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035502.425835 but the latest data is at time 1792035502.373909, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035502.689184301] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.399s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035502.659532 but the latest data is at time 1792035502.574572, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035503.323493909] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 3.032s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035503.292902 but the latest data is at time 1792035503.276996, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035503.558085967] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 3.265s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035503.525740 but the latest data is at time 1792035503.477963, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035504.086374655] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035503.980662584 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035503.980663 but the latest data is at time 1792035503.979621, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035504.133758469] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 3.805s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035504.065291 but the latest data is at time 1792035503.979621, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035504.458369770] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 4.167s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035504.427657 but the latest data is at time 1792035504.381292, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[visual_search_controller-7] [INFO] [1792035504.568773114] [visual_search_controller]: STATE -> FAULT (EOG_OR_EXTERNAL_EMERGENCY_STOP)
+[piper_jog_adapter.py-6] [WARN] [1792035504.571237499] [piper_jog_adapter]: PHYSICAL MOTION DISARMED: external emergency stop
+[move_group-4] [INFO] [1792035504.593132683] [moveit_ros.trajectory_execution_manager]: Received event 'stop'
+[depth_cube_probe.py-9] [INFO] [1792035504.932840699] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 4.635s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035504.895979 but the latest data is at time 1792035504.883378, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035505.288702711] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 4.999s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035505.259944 but the latest data is at time 1792035505.185674, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035505.720836130] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 5.430s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035505.690661 but the latest data is at time 1792035505.688762, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035506.058158574] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 5.767s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035506.028097 but the latest data is at time 1792035505.990031, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035506.227178457] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035506.180643559 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035506.180644 but the latest data is at time 1792035500.260752, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035506.358020621] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 6.064s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035506.324897 but the latest data is at time 1792035506.291338, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[visual_search_controller-7] [INFO] [1792035506.732852791] [visual_search_controller]: STATE -> STOPPED (USER_STOP)
+[move_group-4] [INFO] [1792035506.734281978] [moveit_ros.trajectory_execution_manager]: Received event 'stop'
+[depth_cube_probe.py-9] [INFO] [1792035507.088786217] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 6.798s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035507.058785 but the latest data is at time 1792035506.995216, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035507.892467765] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 7.601s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035507.861258 but the latest data is at time 1792035507.799983, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035508.264317089] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 7.967s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035508.227862 but the latest data is at time 1792035508.205424, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[grasp_lift_executor-8] [WARN] [1792035508.441897438] [grasp_lift_executor]: Cannot save target in base_link at image_stamp=1792035508.380618334 from camera_depth_optical_frame; latest-TF fallback disabled: Lookup would require extrapolation into the future.  Requested time 1792035508.380618 but the latest data is at time 1792035500.260752, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035508.563819660] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 8.201s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035508.461602 but the latest data is at time 1792035508.406039, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035508.782052809] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 8.497s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035508.757452 but the latest data is at time 1792035508.706750, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792035509.144383566] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 8.828s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035509.089234 but the latest data is at time 1792035509.007598, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[piper_jog_adapter.py-6] [WARN] [1792035509.194357901] [piper_jog_adapter]: PHYSICAL MOTION DISARMED: operator disarm
+[depth_cube_probe.py-9] [INFO] [1792035509.379876763] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 9.096s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792035509.357026 but the latest data is at time 1792035509.309953, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[piper_jog_adapter.py-6] [WARN] [1792035509.426909985] [piper_jog_adapter]: PHYSICAL MOTION DISARMED: operator disarm

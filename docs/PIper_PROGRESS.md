@@ -1,3 +1,16 @@
+## 2026-10-15 11:43 +08:00：attempt02张爪/原观测返回成功，返回后CAN复发阻断A，仅余原地只读补采
+
+- 收尾12张释放PNG/5个raw文件SHA和B27资产重新核验通过；原始visual_stack_trace有7处MoveIt/Servo行尾空格，原字节保留。其他路径标准Git检查，仅该raw用一次性core.whitespace=-blank-at-eol检查，不改全局设置/源代码检查；空A/0fresh按原失败保留。
+
+- 新B先提交9a82bab/36限定路径、27资产SHA及8帧q一致/原SDK静止rc0核验通过，接触用户已确认。随后按本组明确授权原AUTO_START0入口启动，复用原driver/CAN/深度，不新基本运动程序。原脚本常规清理PNG删除0/journal0/apt缓存，根55%仍34GB；不扩删原数据。原controller stop_after_observe=true设置和回读成功、原adapter enable_motion/arm成功，没改生产文件。
+- 首原topic单次100mm发布退出0，但无adapter接收日志、SDK仍37.4mm，原图未开；实际核同topic可靠订阅1、原CLI keep-alive默认.1s。仅本次调用--once -w1 --keep-alive3重试一次，同目标/原入口；1792035345.499849864原adapter Accepted bounded gripper 80帧，原driver明确100000/effort1000执行，不做firmware/写零。实际SDK后读99.4mm、六true；没有“首次publish成功即物理成功”的误报。只调整临时CLI存活时间，不修改代码/门/动作规则或写新持久启动脚本。
+- 释放前后原RGB已看，两指离开方块，背景ORB(1500/y<145/ratio.75)/RANSAC1px，184匹配94内点，H补偿后中心差[-.6058,-1.3302]px/norm1.4617；支持未见明显位移，不保证三维零误差。原抓取B到arm持位后q_mdeg变化J2+771/J3+323；前B不篡改为后姿态，释放前后原q与全部图像保留。两个释放SDK全窗rc2（速度短脉冲；第二首条J1/J2为0的非一致快照），第二后续q固定[10550,107103,-58410,-504,32456,-8654]，不把该首条当真实回零或SDK零值删除。
+- 确认开口/原图后调用原controller start成功；1792035431.715818602发布原13点/46.3s/maxstep.080rad，1792035431.728724161原adapter接受，1792035477.611758887确实`STATE -> STOPPED (OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)`，无SEARCH/ALIGN/抓取/闭爪。原stop_after_observe仍true，之后disarm服务success，软件停输出/不是硬件失能。
+- 之后观测预览15.005s/rc2/0图，只收depth308/info365、RGB0/joint0；被动SDK6秒60条/0fresh/rc2，默认q/false不代表实体回零/失能。原can_health 11:38:23 CAN_RX_STALLED_3S触发脚本保护退出，onekey5314 rc143、明确未Reset/Disable；复用深度不归脚本新建仍活着，解释了只有depth消息。新独立timeout4秒candump -n1无帧/原子码124，RX2801987/TX37262前后固定、error/drop/busoff0。driver缺流25秒1792035525.270945558；不是“目标裁切/TF中心/算法门”阻断，不伪造A中心或拿配置q代实测。此窗kernel仅drain_vmap_area_work CPU警告，不能断言USB/xHCI或磁盘唯一根因；没有ENOSPC、root34GB。
+- 保存`docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt02/release_observe`：6对释放原RGB/native16深度/Info/实际q，三个原SDK，空A原observer/summary，完整有限visual_stack_trace和can_health_trace与执行记录。A无图，不能用导出器造非空成功manifest，不采第二批60或重跑原轨迹。正式仍0/6，B有效保存待配A，不因失败自动丢新B/重采整组；旧attempt01仍排除。
+- 原onekey控制/RGB已退出；复用driver39486在INT/TERM后仍存，最终仅精确KILL该PID，session17394 rc137，随后host无driver/adapter/controller/RGB，保留原深度30328/其他用户节点。未发硬件Disable、Reset、再次开闭或未授权运动；当前新鲜使能/q不可得，不冒称重新验为true/观测角。五冻结源SHA相同，其他dirty保留，本轮仅数据/记录Git，未推送。
+- 下一只需宿主VMware仅USB-CAN断开重连、方块保持原位，恢复RX/fresh q核仍在观测后，用现有只读SDK反馈桥+相机采A60/≥20好帧。**不要再启动一键/adapter持续持位或返回轨迹**；本组已到观测，剩余工作是只读。会话没有宿主菜单控制接口，不重复guest USB/module/xHCI无效动作。若事实表明方块/姿态改变，再据实决定是否重配，不自动认为新pair已完成。
+
 ## 2026-10-15 11:30 +08:00：新位置夹持B只读采成，用户确认接触并授权张爪/原观测返回
 
 - 用户“已完成摆放”后按ROS2/PiPER技能先核原图/实际反馈，不猜其是A还是B。can0 ifindex9 ERROR-ACTIVE/RX1183859/TX18、root35GB；正常链路复用。原driver39486在，旧adapter/controller已退出。只恢复原RGB320×240@5Hz/device0/原frame/topic90秒，不发实体控制。

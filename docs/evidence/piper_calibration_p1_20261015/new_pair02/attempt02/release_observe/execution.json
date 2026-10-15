@@ -1,0 +1,28 @@
+{
+  "schema": "piper_p1_attempt_release_observe_v1",
+  "pair_id": "new_pair02",
+  "attempt_id": "attempt02",
+  "grip_checkpoint_commit": "9a82bab",
+  "runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair02_retake_preview.4PMunD/release_observe",
+  "operator_confirmed_new_position_and_actual_grip": true,
+  "operator_authorized_agent_open_and_existing_observe_return": true,
+  "entry": "/home/johnwick/start_brain_robot_cube_real.sh",
+  "BRAIN_ROBOT_AUTO_START": 0,
+  "production_source_tf_or_gate_modified": false,
+  "stop_after_observe_runtime_parameter_verified": true,
+  "first_open": {"command_m": 0.1, "adapter_accept_log_found": false, "effect_verified": false, "actual_gap_mm": 37.4},
+  "second_open": {"same_command_m": 0.1, "CLI_keep_alive_s": 3, "CLI_default_keep_alive_s": 0.1, "matching_subscriptions": 1, "adapter_accept_epoch": "1792035345.499849864", "original_adapter_frames": 80, "original_driver_execution_logged": true, "actual_gap_mm": 99.4, "actual_q_mdeg_after_open": [10550, 107103, -58410, -504, 32456, -8654], "SDK_full_static_quality_passed": false, "SDK_original_rc": 2, "SDK_first_sample_joint_pair_zero_inconsistent_with_later_samples": true},
+  "release_visual_review": {"before": "../grip_capture/portable/grip_candidate_rgbd/evidence/0005_rgb.png", "after": "open_confirmed_rgbd/evidence/0003_rgb.png", "background_y_less_than": 145, "ORB_features": 1500, "ratio_test": 0.75, "RANSAC_px": 1.0, "matches": 184, "inliers": 94, "compensated_centroid_delta_px": [-0.6057634867105435, -1.3302390831094897], "centroid_delta_magnitude_px": 1.461672131520503, "no_visible_significant_motion": true, "metric_three_dimensional_zero_motion_proven": false},
+  "trajectory": {"source": "Original controller PREPARE through piper_jog_adapter", "points": 13, "duration_s": 46.3, "max_step_rad": 0.08, "published_epoch": "1792035431.715818602", "accepted_epoch": "1792035431.728724161", "observe_reached_epoch": "1792035477.611758887", "result": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH", "search_or_grasp_started": false, "adapter_disarm_after_reached_success": true},
+  "observe_capture": {"requested_preview_frames": 3, "saved_frames": 0, "elapsed_s": 15.005337547001545, "preview_rc": 2, "received_depth": 308, "received_depth_info": 365, "received_RGB": 0, "received_joint_feedback": 0, "SDK_samples": 60, "SDK_fresh_samples": 0, "SDK_rc": 2, "actual_q_from_this_capture": null, "actual_enabled_from_this_capture": null, "formal_manifest_created": false, "A_complete": false},
+  "CAN_stall": {"local_guard_time": "2026-10-15T11:38:23+08:00", "guard_reason": "CAN_RX_STALLED_3S", "driver_25s_absent_epoch": "1792035525.270945558", "state": "ERROR-ACTIVE", "bitrate": 1000000, "sample_point": 0.75, "txqueuelen": 1000, "RX_before_and_after_passive_check": [2801987, 2801987], "TX_before_and_after_passive_check": [37262, 37262], "new_candump_duration_s": 4, "new_candump_frames": 0, "new_candump_returncode": 124, "bus_errors": 0, "bus_off": 0, "new_USB_or_xhci_error_observed": false, "only_kernel_warning_this_window": "drain_vmap_area_work hogged CPU >10000us; not a proven cause", "root_disk_available_GB_rounded": 34, "root_disk_used_percent": 55},
+  "ending": {"onekey_session": 5314, "onekey_returncode": 143, "hardware_reset_or_disable_command_sent": false, "driver_normal_signals_did_not_exit": ["SIGINT", "SIGTERM"], "exact_driver_PID_terminated": 39486, "driver_session": 17394, "driver_session_returncode_after_SIGKILL": 137, "camera_RGB_and_motion_nodes_exited": true, "old_depth_container_30328_preserved": true, "current_fresh_hardware_enable_or_joint_state": null},
+  "next": {"host_USB_CAN_reconnect_needed": true, "preserve_cube_position": true, "verify_fresh_q_still_at_observation": true, "original_receive_only_bridge_and_camera_capture_A_only": true, "rerun_onekey_or_observe_trajectory": false, "new_gripper_command": false, "complete_formal_pairs": 0},
+  "raw_file_SHA256": {
+    "open_sdk.json": "e8dbc2bd9d8e8ed31348dee9f69c27544f32b74b0ea26b26ec164de119c39ff1",
+    "open_confirmed_sdk.json": "21dc6217b7e3588c241279470f216de26425a894319ff771c8a5749653e15fc3",
+    "observe_sdk.json": "8989061bc78c66f7456ae1a9e9d9226b1cd2471404b7e7dcf0db44acf12326f1",
+    "visual_stack_trace.txt": "9a05398852a24f581c2c946375aeafface9762280d74ef2545a0711ff485e9f1",
+    "can_health_trace.txt": "02e56b0d9a0cd55b1584e8e21b65d5f2adf7ed3aa11de8a4ac523f3f57468074"
+  }
+}

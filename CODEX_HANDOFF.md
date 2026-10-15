@@ -1,5 +1,13 @@
 ## 最新接力（2026-10-15）：进入P1准备，等待第一组实际夹紧
 
+**最新11:43 +08:00：新位置B检查点9a82bab保留，实际开爪和原观测返回完成；随后CAN再次停流，正式A为空，仍0/6。** 原AUTO0一键复用新driver和健康CAN，不新使能/改生产。原stop_after_observe=true设置/回读，enable_motion/arm成功；首次单次publish后无adapter接收日志、SDK仍37.4mm，不误报开。核同topic原可靠订阅1，仅本次CLI --keep-alive3s再发一次同100mm目标，adapter1792035345.499849864接收80帧/driver执行，实际99.4mm；原RGB两指离开方块，背景ORB/H补偿中心差1.4617px，未见明显移位、非三维零误差证明。
+
+原controller start成功，1792035431.715818602发布13点46.3s、1792035431.728724161接受，1792035477.611758887实际`OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH`，无SEARCH/抓取。之后disarm成功。11:38:23原can_health记录CAN_RX_STALLED_3S；driver1792035525.270945558缺流25秒、脚本5314返回143/无Disable/Reset。新observe_preview15s只收depth308/info365，RGB0/joint0/保存0/rc2；被动SDK6秒0fresh/rc2。新独立candump4秒0帧/rc124、RX2801987/TX37262前后固定，ERROR-ACTIVE并不能证明恢复；本窗仅drain_vmap_area_work CPU警告，不当USB/磁盘根因证明。根55%/34GB，未空间不足/删除。
+
+源`.../new_pair02_retake_preview.4PMunD/release_observe`，规范`docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt02/release_observe/`，6对释放原图/3个SDK/空A预览/原轨迹及CAN守护日志/执行JSON全部保留。两释放SDK全窗rc2保留；第二SDK首条J1/J2=0、后续值恢复，与原ROS和后续实际q不一致，不解释成机械臂瞬间回零/不删原值。B本身原静止rc0/5图不受后窗质量标记替代。原onekey控制/RGB已退出；复用driver39486 SIGINT/TERM未退出后精确KILL、原会话17394 rc137，未发硬件命令。host仅复用深度container30328保留，不能误称全部相机退出或实体当前使能已重新验证。
+
+**下一无需再动机械臂。** 需宿主只USB-CAN断开/重连到VM，方块原位不动；新鲜q核对仍在观测后，仅现有calibration_readonly_feedback桥+原相机+采集工具采A60/≥20好帧，不重跑一键/持续关节持位输出/开闭。本会话不能操作宿主菜单，不再guest模块/USB/xHCI无效循环；若实体确有移动再按事实重配，不自动复用旧位置。B和旧失败都保留，A未得、无拟合/TF部署/新抓取。生产五SHA未变，Git限定本轮资料/未推送。
+
 **最新11:30 +08:00：new_pair02 attempt02新B已保存，用户已授权代理原位张爪/原回观测/采A。** 用户“已摆放”后先核原图，实际是夹持姿态/两指间方块，不当观测。原3预览+5夹持RGB-D/同帧Info/实际q，SDK6秒60/59fresh/5.820880s/六q波动0/速度0/六true/37.4mm、rc0；当前q_mdeg[10550,106332,-58733,-504,32456,-8654]。用户随后确认已真夹紧/选择新位置，明确要求代理记录后张爪/回既定观测采第一组。接触来源是此确认；导出原sample_id的contact_pending是询问期间的生成标签，不改历史字节，验收见attempt02/grip_capture/README.md。
 
 原factory当前新读CC1365304DG/internal TF成功，27资产1,129,460B含8对原图/q/SDK/FK/工厂/配置/hash。G原点[.333526642,.061643312,.141870157]m，不是方块中心/c_G仍null；B近距没有目标深度不阻断B。A未采/正式0/6，先提交B回退点，再唯一原AUTO0入口+原adapter开爪/核物体未明显动/stop_after_observe true原轨迹返回/采A。无本组搜索/抓取/闭爪/Reset/Disable或生产修改，旧attempt01绝不混用；下一不再等已给出的这项权限。

@@ -2,6 +2,8 @@
 
 ## 最高优先（2026-10-15）：采用P0—P5；当前P1准备，不再修靠近
 
+**最新11:43 +08:00：attempt02已实际张爪99.4mm并按原13点46.3s轨迹到观测，A因随后CAN再次停流未采成；只差原地补A，不要重走轨迹。** B检查点9a82bab有效；首单次开爪无送达日志/未开，原CLI keep-alive从默认0.1s改本次调用3s后仅重试一次，原adapter记录80帧且driver执行。无代码/门修改。1792035477.611758887确认OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH；11:38:23原CAN守护停输出，脚本rc143/无Reset/Disable。A预览0帧/SDK0fresh，RX2801987固定、独立4秒candump0帧/rc124，不能把默认0当回零/失能。当前本轮driver/adapter/controller/RGB均退出，仅旧深度保留。下一宿主仅重连USB-CAN，保持方块原位；恢复后先核新鲜q仍在观测，使用原只读桥+相机采A，不重跑一键/回观测/开闭。0/6，生产冻结；证据attempt02/release_observe。
+
 **最新11:30 +08:00：用户确认新位置实际夹紧，并明确授权记录后由代理张爪→原回观测→采第一组A。** 原图已核是夹持侧而非观测；attempt02 B原SDK6秒59fresh/静止通过/六true、5正式候选图+3预览同实际q保存27资产，开口37.4mm，q_mdeg[10550,106332,-58733,-504,32456,-8654]。用户确认接触才接纳B，不由数值/图像冒称接触。先Git回退点再执行原adapter开爪和原controller stop_after_observe，不搜索/抓取/失能、不改生产。A尚未采、0/6；旧attempt01不复用。当前许可只本组，已获准的动作不再重复询问。
 
 **最新11:21 +08:00：用户重新连接后，CAN和原驱动已恢复、六轴使能已实体确认。** 新ifindex9/USB003-014最初DOWN，仅既定1Mbps/.75/queue1000激活后RX56→62863→348019；使能前后各6秒SDK均59fresh/姿态波动0/速度0，false六轴→true六轴。旧controller/adapter/driver精确退出后只重连原driver(auto_enable=false，session17394/PID39486)，命令topic发布者0，原enable_srv true成功，开口仍37.2mm、q未变；无关节/开闭目标、轨迹、复位或失能。当前不是观测姿态，RGB源/窗口已超时退出，不把旧观测或旧图当当前；下一继续P1须按组回既定观测/放稳确认后重采新A+B，0/6、生产冻结。证据docs/evidence/piper_can_reconnect_20261015_1118；以下11:10停流已解决，不再原地重复底层排查。
