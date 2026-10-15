@@ -1,5 +1,9 @@
 ## 最新接力（2026-10-15）：进入P1准备，等待第一组实际夹紧
 
+**最新11:30 +08:00：new_pair02 attempt02新B已保存，用户已授权代理原位张爪/原回观测/采A。** 用户“已摆放”后先核原图，实际是夹持姿态/两指间方块，不当观测。原3预览+5夹持RGB-D/同帧Info/实际q，SDK6秒60/59fresh/5.820880s/六q波动0/速度0/六true/37.4mm、rc0；当前q_mdeg[10550,106332,-58733,-504,32456,-8654]。用户随后确认已真夹紧/选择新位置，明确要求代理记录后张爪/回既定观测采第一组。接触来源是此确认；导出原sample_id的contact_pending是询问期间的生成标签，不改历史字节，验收见attempt02/grip_capture/README.md。
+
+原factory当前新读CC1365304DG/internal TF成功，27资产1,129,460B含8对原图/q/SDK/FK/工厂/配置/hash。G原点[.333526642,.061643312,.141870157]m，不是方块中心/c_G仍null；B近距没有目标深度不阻断B。A未采/正式0/6，先提交B回退点，再唯一原AUTO0入口+原adapter开爪/核物体未明显动/stop_after_observe true原轨迹返回/采A。无本组搜索/抓取/闭爪/Reset/Disable或生产修改，旧attempt01绝不混用；下一不再等已给出的这项权限。
+
 **最新11:21 +08:00：CAN收流与原驱动使能已恢复，停止沿旧RX18阻断。** 用户重新连接后新ifindex9/USB003-014，初DOWN/STOPPED；sudo-n通过，仅固定1Mbps/.75/queue1000/up一次。RX56→62863→348019，ERROR-ACTIVE/error-drop0；模块/USB/xHCI未重载。原只读SDK前后两窗各60/59fresh、5.821667/5.819901s、q波动0/速度0、rc0；使能前六false、后六true，q_mdeg两侧均[1046,104766,-51433,-5998,24410,17143]，开口37.2mm。当前不在旧观测姿态，不自动复用旧图/q作正式组。
 
 本轮SIGINT仅旧30526/30524/30181/30177，已确认全部退出，无Disable；只重连原安装driver auto_enable=false（session17394/PID39486），没有adapter/controller或轨迹生产者，/joint_commands发布者0，/pos_cmd和/enable_flag原也是0。系统NumPy/SciPy优先、sys.path末尾补原用户SDK，通过runpy执行原piper_single_ctrl入口而非新写运动程序；源码/build SHA均d607ec1085…，未改源。原enable_srv true返回true，并以新SDK59个样本六true验证；TX16包含正常驱动初始化/使能，不声称全程只收。原driver保持运行供后续，不自动失能或关节/夹爪目标。所有原SDK与服务/驱动日志在docs/evidence/piper_can_reconnect_20261015_1118。

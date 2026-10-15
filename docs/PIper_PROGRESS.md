@@ -1,3 +1,11 @@
+## 2026-10-15 11:30 +08:00：新位置夹持B只读采成，用户确认接触并授权张爪/原观测返回
+
+- 用户“已完成摆放”后按ROS2/PiPER技能先核原图/实际反馈，不猜其是A还是B。can0 ifindex9 ERROR-ACTIVE/RX1183859/TX18、root35GB；正常链路复用。原driver39486在，旧adapter/controller已退出。只恢复原RGB320×240@5Hz/device0/原frame/topic90秒，不发实体控制。
+- 新runtime`.../piper_calibration_p1_20261015/new_pair02_retake_preview.4PMunD`。原collect_static_rgbd先3预览/6.737s，再5夹持候选/7.659s，均rc0/settle3s/同戳Info，真实q各轴波动0；实际看过首预览和末夹持原RGB，方块位于两指之间，这是B而非观测。原SDK6秒60/59fresh/5.820880175s/原静止全部通过rc0，六enabled=true/速度0/开口37.4mm/effort原值-84；q_mdeg[10550,106332,-58733,-504,32456,-8654]，真实q与8图一致，不用上轮使能q或旧B。
+- 用户随后明确“已被两指实际夹紧，选择新位置，待代理记录后张爪/回观测记录第一组”。实际接触按用户确认接纳，不由37.4mm或照片推断；该组动作已授权，无需再次询问，不扩成整批或自动搜索/抓取。当前尚未张爪/回观测/A，0/6。
+- 原factory helper在当前深度相机运行时新读成功，CC1365304DG/内部TF完整；原review8帧rc0/q spread0/B近距目标深度null保留，不当正式A失败。原export新目录成功27资产1,129,460B+manifest，包含8对原RGB/native深度/同帧Info/实际q与模型FK/SDK/工厂/配置/hash；生成sample_id含contact_pending只是生成时尚待用户回复，不覆盖原文件，接触后验确认另在README。完整G FK原点[.333526642,.061643312,.141870157]m/c_G未解，工具点不是方块中心。
+- 规范`docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt02/grip_capture`；先核27资产原SHA/原SDK、限定提交B，再用原AUTO0入口、原adapter张爪并核原图方块未明显移位，原controller stop_after_observe=true返回既定观测并采A60帧≥20好帧。保留旧attempt01失败，不与新位置混用；生产算法/门/TF/限位/入口不改，无Reset/Disable/新基础运动。其他dirty保留，本轮只限定原数据/记录Git，未推送GitHub。
+
 ## 2026-10-15 11:21 +08:00：用户重连后新CAN恢复，原驱动重连并完成使能，未运动
 
 - 证据提交`b789718`（12限定路径）成功；四个raw文件与runtime逐字节复核，SDK59前后/q/六轴使能检查通过。标准show-check仅原CLI enable_service.txt末尾原空白行提示，保留原字节；其余路径标准检查通过，单个raw用一次性core.whitespace=-blank-at-eof检查通过，不改全局设置/生产检查。后续本条仅说明原日志例外，不修改原数据。
