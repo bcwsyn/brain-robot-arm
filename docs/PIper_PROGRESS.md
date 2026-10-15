@@ -1,4 +1,10 @@
+## 本轮收尾核验（2026-10-15 13:30 +08:00）
+
+逐项SHA核验第一组27+137资产未变、本组B19/释放23/A259资产全部通过；55原文件压缩包逐项解包读验证一致，所有attempt JSON可解析。原SDK全窗失败与原连续71fresh/7.028s静止通过分别验证；120正式帧0合格、登记仍1/6。五生产SHA未变、根34GB/共享136GB可用、相关控制和采集源已退出。到位后SIGINT收尾时move_group子进程-11、depth_cube_probe重复shutdown rc1、adapter rosout context无效已另记，不将launch包装器rc0等同全部子进程干净退出；冻结期间不扩大修补。原服务日志尾部空行、原MoveIt日志行尾空格保留，只对这两原日志临时豁免对应Git空白检查，其余正常检查。数据/文档限定提交，不包含其他既有dirty，未推送GitHub。
+
 ## 2026-10-15 13:03 +08:00：第二组attempt02新位置夹持B纯只读采成，完整仍1/6
+
+**最新2026-10-15 13:28 +08:00：第二组attempt02已张爪99.4mm并沿原13点44.5s轨迹回观测，SEARCH前停止；A两批120原始帧保存但合格0，完整仍1/6。** 用户确认USB-CAN重连后新ifindex11仅固定激活，原反馈恢复，不重开爪或重采B。1792041364.726550970明确OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH；实际q_mdeg[-7989,54577,-72577,-4358,69694,5233]。随后只读A目标RGB完整、深度支持25—93点/覆盖3.73%—10.00%（中位6.48%），所有帧拒绝缺少实测面；不能据边缘背景算中心或记2/6。259项A资产/23项释放资产/55原文件压缩存档均留SHA，初始发现/图源退出0帧也保留，B63da2d9不覆盖。SDK全窗rc2保留，原连续[29:100]71fresh/7.028s静止通过。原运动/采集源全部退出，无Disable/Reset/SEARCH/抓取，末鲜六true/99.4mm不冒称实时。当前CAN健康/只读TX8569不变、磁盘34GB可用；当前阻断仅A深度质量，物理原因未定。下一先拟一个有针对性的有限质量对照，改场景/相机参数/观测姿态须新具体授权，不重走已完成张爪/返回或重复同条件两批；生产全冻结。详见docs/evidence/piper_calibration_p1_20261015/new_pair03/attempt02/observe_capture/README.md；仅本地归档，未推送GitHub。
 
 - 用户回复“已完成”，对应新第二位置实际夹紧/方块平稳贴桌/保持不动要求。按ROS2/PiPER技能先核真实状态：ifindex10/UP/ERROR-ACTIVE/1Mbps/.75/queue1000/RX10277751/TX8370，已有warning4/passive9428累计计数明示；当前RX持续增长/error-drop0，复用链路，不CAN重载/底层重查。根55%/34GB、共享73%/137GB，无清理。无旧控制/采集源。
 - 只在已准备runtime `.../new_pair03_attempt02.v22Alq`运行原collect_calibration_sdk --duration-s6、calibration_readonly_feedback --duration-s90、原RGB320×240@5Hz/深度launch各90s、只读factory三GET/内部TF、原collect_static_rgbd --duration-s15 --frames5 --settle-s3。没有生产driver/adapter/controller，也没有enable/arm、关节/夹爪命令、观测/SEARCH/Reset/Disable；CAN TX8370始终不变。

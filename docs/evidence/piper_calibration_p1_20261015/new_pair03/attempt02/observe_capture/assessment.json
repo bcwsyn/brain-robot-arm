@@ -1,0 +1,70 @@
+{
+  "schema": "piper_p1_observation_assessment_v1",
+  "pair_id": "new_pair03",
+  "attempt_id": "attempt02",
+  "completed_formal_pairs": 1,
+  "formal_observe_frames": 120,
+  "preview_frames": 3,
+  "good_top_frames": 0,
+  "minimum_good_frames": 20,
+  "qualified_acquisition_complete": false,
+  "raw_capture_complete": true,
+  "fit_eligible": false,
+  "calibration_accepted": false,
+  "depth": {
+    "native_selected_points_range": [
+      25,
+      93
+    ],
+    "measured_color_region_coverage_min": 0.03728813559322034,
+    "measured_color_region_coverage_median": 0.06484717174541049,
+    "measured_color_region_coverage_max": 0.1,
+    "rejection": "Insufficient measured face coverage; edge/background samples do not define cube center",
+    "camera_cube_center_m": null,
+    "do_not_use_sparse_region_median_as_cube_center": true,
+    "physical_cause": "Unresolved; no confirmed lighting, reflectance, sensor, alignment or firmware diagnosis"
+  },
+  "image_review": {
+    "original_RGB_and_witness_viewed": true,
+    "cube_fully_visible": true,
+    "top_plane_normal_unavailable": true,
+    "derived_witness": "witness_review/annulus_witness_0001.png"
+  },
+  "SDK": {
+    "original_full_window_returncode": 2,
+    "original_failed_static_flag_preserved": true,
+    "total_samples": 100,
+    "fresh_samples": 99,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "accepted_original_contiguous_slice": [
+      29,
+      100
+    ],
+    "slice_fresh_samples": 71,
+    "slice_span_s": 7.028236627578735,
+    "original_summarize_passed": true
+  },
+  "camera": {
+    "serial": "CC1365304DG",
+    "fresh_factory_read_succeeded": true,
+    "analysis_frame": "camera_color_optical_frame",
+    "native_depth_frame": "camera_depth_optical_frame",
+    "conversion": "Full factory D to C transform retained in portable/calibration.json",
+    "no_depth_fill": true
+  },
+  "portable": {
+    "assets": 259,
+    "bytes": 18957143,
+    "manifest": "portable/manifest.json",
+    "manifest_sha256": "495061ae532f9bafe9f536eb86935689011f534a32648e4c202975d6e25b517c"
+  },
+  "gripper_base_cube_center_m": null,
+  "next": "Preserve B and cube location. No repeated jaw opening, return trajectory or unchanged batches. Propose one bounded depth-quality comparison; obtain specific authorization before scene, camera setting or observation pose changes."
+}

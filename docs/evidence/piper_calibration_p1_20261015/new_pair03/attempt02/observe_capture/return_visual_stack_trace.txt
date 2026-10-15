@@ -1,0 +1,410 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/.ros/log/2026-10-15-13-15-04-311090-johnwick-virtual-machine-57323
+[INFO] [launch]: Default logging verbosity is set to INFO
+warning: Using load_yaml() directly is deprecated. Use xacro.load_yaml() instead.
+[INFO] [robot_state_publisher-1]: process started with pid [57324]
+[INFO] [static_transform_publisher-2]: process started with pid [57326]
+[INFO] [pointcloud_tf_gate-3]: process started with pid [57328]
+[INFO] [move_group-4]: process started with pid [57330]
+[INFO] [servo_node_main-5]: process started with pid [57332]
+[INFO] [piper_jog_adapter.py-6]: process started with pid [57334]
+[INFO] [visual_search_controller-7]: process started with pid [57345]
+[INFO] [grasp_lift_executor-8]: process started with pid [57353]
+[INFO] [depth_cube_probe.py-9]: process started with pid [57356]
+[INFO] [active_scan_supervisor-10]: process started with pid [57358]
+[static_transform_publisher-2] [WARN] [1792041304.700729137] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-2] [INFO] [1792041304.750903736] [piper_camera_mount_tf]: Spinning until stopped - publishing transform
+[static_transform_publisher-2] translation: ('-0.070000', '0.000000', '0.030800')
+[static_transform_publisher-2] rotation: ('0.000000', '-0.707107', '0.000000', '0.707107')
+[static_transform_publisher-2] from 'gripper_base' to 'camera_link'
+[robot_state_publisher-1] [INFO] [1792041304.800698647] [robot_state_publisher]: got segment base_link
+[robot_state_publisher-1] [INFO] [1792041304.800825782] [robot_state_publisher]: got segment gripper_base
+[robot_state_publisher-1] [INFO] [1792041304.800836459] [robot_state_publisher]: got segment link1
+[robot_state_publisher-1] [INFO] [1792041304.800844624] [robot_state_publisher]: got segment link2
+[robot_state_publisher-1] [INFO] [1792041304.800852154] [robot_state_publisher]: got segment link3
+[robot_state_publisher-1] [INFO] [1792041304.800859725] [robot_state_publisher]: got segment link4
+[robot_state_publisher-1] [INFO] [1792041304.800866948] [robot_state_publisher]: got segment link5
+[robot_state_publisher-1] [INFO] [1792041304.800874139] [robot_state_publisher]: got segment link6
+[robot_state_publisher-1] [INFO] [1792041304.800881492] [robot_state_publisher]: got segment link7
+[robot_state_publisher-1] [INFO] [1792041304.800888816] [robot_state_publisher]: got segment link8
+[robot_state_publisher-1] [INFO] [1792041304.800895968] [robot_state_publisher]: got segment world
+[servo_node_main-5] [WARN] [1792041305.006417273] [moveit_servo.servo_node]: Intra-process communication is disabled, consider enabling it by adding: 
+[servo_node_main-5] extra_arguments=[{'use_intra_process_comms' : True}]
+[servo_node_main-5] to the Servo composable node in the launch file
+[servo_node_main-5] [INFO] [1792041305.077853697] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00503315 seconds
+[servo_node_main-5] [INFO] [1792041305.078407174] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[servo_node_main-5] [INFO] [1792041305.078721168] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[move_group-4] [INFO] [1792041305.203565041] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.0166862 seconds
+[move_group-4] [INFO] [1792041305.203652556] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[move_group-4] [INFO] [1792041305.203661614] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[visual_search_controller-7] [INFO] [1792041305.305192866] [visual_search_controller]: Visual controller ready: backend=piper, auto motion disabled until ~/start is called.
+[visual_search_controller-7] [INFO] [1792041305.312151219] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00603554 seconds
+[visual_search_controller-7] [INFO] [1792041305.312187467] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[visual_search_controller-7] [INFO] [1792041305.312195874] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[grasp_lift_executor-8] [INFO] [1792041305.405109695] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00587221 seconds
+[grasp_lift_executor-8] [INFO] [1792041305.405200657] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[grasp_lift_executor-8] [INFO] [1792041305.405209989] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[piper_jog_adapter.py-6] [WARN] [1792041305.939174602] [piper_jog_adapter]: PiPER physical adapter is disarmed. Set motion_enabled=true and call /piper_jog_adapter/arm only after the workspace is clear.
+[depth_cube_probe.py-9] [INFO] [1792041306.372319095] [depth_cube_probe]: DEPTH_PROBE_WAITING_FOR_CAMERA_INFO
+[servo_node_main-5] [INFO] [1792041306.719316032] [moveit_ros.current_state_monitor]: Listening to joint states on topic '/piper_moveit_joint_states'
+[servo_node_main-5] [INFO] [1792041306.725391002] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[servo_node_main-5] [INFO] [1792041306.725431459] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[servo_node_main-5] [INFO] [1792041306.727281834] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[servo_node_main-5] [INFO] [1792041306.727327093] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[servo_node_main-5] [INFO] [1792041306.728831976] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[servo_node_main-5] [INFO] [1792041306.729753586] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[servo_node_main-5] [WARN] [1792041306.731493233] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[servo_node_main-5] [ERROR] [1792041306.731534876] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[move_group-4] [INFO] [1792041307.219014004] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-4] [INFO] [1792041307.219163060] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-4] [INFO] [1792041307.221137400] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-4] [INFO] [1792041307.222186062] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[move_group-4] [INFO] [1792041307.222205094] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-4] [INFO] [1792041307.222876204] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[move_group-4] [INFO] [1792041307.222894231] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-4] [INFO] [1792041307.223575746] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-4] [INFO] [1792041307.224736132] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[depth_cube_probe.py-9] [INFO] [1792041307.274090137] [depth_cube_probe]: DEPTH_PROBE_NO_TABLE_PLANE inliers=0
+[servo_node_main-5] [INFO] [1792041307.950442926] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on '/servo_node/publish_planning_scene'
+[move_group-4] [INFO] [1792041308.796855589] [moveit.ros.perception.pointcloud_octomap_updater]: Listening to '/brain_robot_vision/disabled_octomap_points' using message filter with target frame 'world '
+[move_group-4] [INFO] [1792041308.797494210] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'chomp'
+[move_group-4] [INFO] [1792041308.804451109] [moveit.ros_planning.planning_pipeline]: Using planning interface 'CHOMP'
+[move_group-4] [INFO] [1792041308.810239196] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.path_tolerance' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792041308.810273770] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.resample_dt' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792041308.810280532] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.min_angle_change' was not set. Using default value: 0.001000
+[move_group-4] [INFO] [1792041308.810300835] [moveit_ros.fix_workspace_bounds]: Param 'chomp.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-4] [INFO] [1792041308.810316386] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_bounds_error' was set to 0.100000
+[move_group-4] [INFO] [1792041308.810324107] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792041308.810335665] [moveit_ros.fix_start_state_collision]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792041308.810342245] [moveit_ros.fix_start_state_collision]: Param 'chomp.jiggle_fraction' was set to 0.050000
+[move_group-4] [INFO] [1792041308.810349216] [moveit_ros.fix_start_state_collision]: Param 'chomp.max_sampling_attempts' was not set. Using default value: 100
+[move_group-4] [INFO] [1792041308.810360668] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-4] [INFO] [1792041308.810366259] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-4] [INFO] [1792041308.810371059] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-4] [INFO] [1792041308.810375921] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-4] [INFO] [1792041308.810380674] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-4] [INFO] [1792041308.810410553] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-4] [INFO] [1792041308.822631236] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'pilz_industrial_motion_planner'
+[move_group-4] [INFO] [1792041308.828151420] [moveit.pilz_industrial_motion_planner.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-4] [INFO] [1792041308.839429717] [moveit.pilz_industrial_motion_planner]: Available plugins: pilz_industrial_motion_planner/PlanningContextLoaderCIRC pilz_industrial_motion_planner/PlanningContextLoaderLIN pilz_industrial_motion_planner/PlanningContextLoaderPTP 
+[move_group-4] [INFO] [1792041308.839474140] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderCIRC
+[move_group-4] [INFO] [1792041308.843867447] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [CIRC]
+[move_group-4] [INFO] [1792041308.843891070] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderLIN
+[move_group-4] [INFO] [1792041308.845814017] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [LIN]
+[move_group-4] [INFO] [1792041308.845855950] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderPTP
+[move_group-4] [INFO] [1792041308.853120195] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [PTP]
+[move_group-4] [INFO] [1792041308.853160258] [moveit.ros_planning.planning_pipeline]: Using planning interface 'Pilz Industrial Motion Planner'
+[move_group-4] [INFO] [1792041308.855999453] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-4] [INFO] [1792041308.898699723] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-4] [INFO] [1792041308.900089867] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.path_tolerance' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792041308.900185352] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.resample_dt' was not set. Using default value: 0.100000
+[move_group-4] [INFO] [1792041308.900193680] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.min_angle_change' was not set. Using default value: 0.001000
+[move_group-4] [INFO] [1792041308.900216212] [moveit_ros.fix_workspace_bounds]: Param 'ompl.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-4] [INFO] [1792041308.900233432] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_bounds_error' was set to 0.100000
+[move_group-4] [INFO] [1792041308.900241052] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792041308.900253355] [moveit_ros.fix_start_state_collision]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-4] [INFO] [1792041308.900260149] [moveit_ros.fix_start_state_collision]: Param 'ompl.jiggle_fraction' was set to 0.050000
+[move_group-4] [INFO] [1792041308.900266140] [moveit_ros.fix_start_state_collision]: Param 'ompl.max_sampling_attempts' was not set. Using default value: 100
+[move_group-4] [INFO] [1792041308.900277535] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-4] [INFO] [1792041308.900283084] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-4] [INFO] [1792041308.900287900] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-4] [INFO] [1792041308.900292794] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-4] [INFO] [1792041308.900297558] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-4] [INFO] [1792041308.900302350] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-4] [WARN] [1792041308.905611873] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[move_group-4] [INFO] [1792041309.031151978] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for arm_controller
+[move_group-4] [INFO] [1792041309.034576136] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for gripper_controller
+[move_group-4] [INFO] [1792041309.034780184] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-4] [INFO] [1792041309.034849243] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-4] [INFO] [1792041309.036005952] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-4] [INFO] [1792041309.036041774] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-4] [WARN] [1792041309.061162936] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Unable to transform object from frame 'camera_link' to planning frame'world' (Could not find a connection between 'world' and 'camera_link' because they are not part of the same tree.Tf has two or more unconnected trees.)
+[move_group-4] [WARN] [1792041309.061621311] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Unable to transform object from frame 'camera_color_frame' to planning frame'world' (Could not find a connection between 'world' and 'camera_color_frame' because they are not part of the same tree.Tf has two or more unconnected trees.)
+[move_group-4] [WARN] [1792041309.061639834] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Unable to transform object from frame 'camera_depth_frame' to planning frame'world' (Could not find a connection between 'world' and 'camera_depth_frame' because they are not part of the same tree.Tf has two or more unconnected trees.)
+[move_group-4] [WARN] [1792041309.062167561] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Unable to transform object from frame 'camera_color_optical_frame' to planning frame'world' (Could not find a connection between 'world' and 'camera_color_optical_frame' because they are not part of the same tree.Tf has two or more unconnected trees.)
+[move_group-4] [WARN] [1792041309.062210684] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Unable to transform object from frame 'camera_depth_optical_frame' to planning frame'world' (Could not find a connection between 'world' and 'camera_depth_optical_frame' because they are not part of the same tree.Tf has two or more unconnected trees.)
+[move_group-4] [INFO] [1792041309.080433803] [move_group.move_group]: 
+[move_group-4] 
+[move_group-4] ********************************************************
+[move_group-4] * MoveGroup using: 
+[move_group-4] *     - ApplyPlanningSceneService
+[move_group-4] *     - ClearOctomapService
+[move_group-4] *     - CartesianPathService
+[move_group-4] *     - ExecuteTrajectoryAction
+[move_group-4] *     - GetPlanningSceneService
+[move_group-4] *     - KinematicsService
+[move_group-4] *     - MoveAction
+[move_group-4] *     - MotionPlanService
+[move_group-4] *     - QueryPlannersService
+[move_group-4] *     - StateValidationService
+[move_group-4] ********************************************************
+[move_group-4] 
+[move_group-4] [INFO] [1792041309.081079716] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-4] [INFO] [1792041309.081097154] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-4] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-4] [0m[92m
+[move_group-4] You can start planning now!
+[move_group-4] 
+[visual_search_controller-7] [INFO] [1792041309.116101101] [move_group_interface]: Ready to take commands for planning group arm.
+[grasp_lift_executor-8] [INFO] [1792041309.119701700] [move_group_interface]: Ready to take commands for planning group arm.
+[piper_jog_adapter.py-6] [WARN] [1792041318.306331653] [piper_jog_adapter]: PHYSICAL MOTION GATE ENABLED; adapter is still disarmed
+[piper_jog_adapter.py-6] [WARN] [1792041319.864257107] [piper_jog_adapter]: PHYSICAL MOTION ARMED
+[visual_search_controller-7] [INFO] [1792041320.621877263] [visual_search_controller]: STATE -> PREPARE (START_AUTHORIZED)
+[visual_search_controller-7] [INFO] [1792041320.624325019] [visual_search_controller]: Published direct real-arm prepare trajectory (44.5 s, 13 points, max step 0.080 rad).
+[piper_jog_adapter.py-6] [INFO] [1792041320.627374862] [piper_jog_adapter]: REAL ARM trajectory accepted: 13 points
+[depth_cube_probe.py-9] [INFO] [1792041323.927720387] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=637
+[depth_cube_probe.py-9] [INFO] [1792041324.294487427] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=967
+[depth_cube_probe.py-9] [INFO] [1792041324.496972013] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1089
+[depth_cube_probe.py-9] [INFO] [1792041324.730637230] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1147
+[depth_cube_probe.py-9] [INFO] [1792041325.104462853] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1268
+[depth_cube_probe.py-9] [INFO] [1792041325.337747430] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1274
+[depth_cube_probe.py-9] [INFO] [1792041325.727717302] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1495
+[depth_cube_probe.py-9] [INFO] [1792041326.128431201] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1637
+[depth_cube_probe.py-9] [INFO] [1792041326.400577251] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1696
+[depth_cube_probe.py-9] [INFO] [1792041326.679199356] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1745
+[depth_cube_probe.py-9] [INFO] [1792041326.928993673] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.883s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041326.902395 but the latest data is at time 1792041326.828068, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041327.294914442] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.249s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041327.268772 but the latest data is at time 1792041327.229169, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041327.562595210] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.517s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041327.536511 but the latest data is at time 1792041327.530123, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041327.929616209] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.883s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041327.902899 but the latest data is at time 1792041327.830931, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041328.862641597] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2306
+[depth_cube_probe.py-9] [INFO] [1792041329.296107632] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2319
+[depth_cube_probe.py-9] [INFO] [1792041329.532172067] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2377
+[depth_cube_probe.py-9] [INFO] [1792041330.235000588] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2503
+[depth_cube_probe.py-9] [INFO] [1792041330.634629266] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2548
+[depth_cube_probe.py-9] [INFO] [1792041330.927043245] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2608
+[depth_cube_probe.py-9] [INFO] [1792041331.262408379] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2662
+[depth_cube_probe.py-9] [INFO] [1792041331.629556407] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2671
+[depth_cube_probe.py-9] [INFO] [1792041332.059920684] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2704
+[depth_cube_probe.py-9] [INFO] [1792041332.328179337] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2709
+[depth_cube_probe.py-9] [INFO] [1792041332.666794026] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2754
+[depth_cube_probe.py-9] [INFO] [1792041332.892717070] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2780
+[depth_cube_probe.py-9] [INFO] [1792041333.331339316] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2800
+[depth_cube_probe.py-9] [INFO] [1792041333.725377619] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2816
+[depth_cube_probe.py-9] [INFO] [1792041333.956027489] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2825
+[depth_cube_probe.py-9] [INFO] [1792041334.456453226] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2857
+[depth_cube_probe.py-9] [INFO] [1792041334.958557787] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2856
+[depth_cube_probe.py-9] [INFO] [1792041335.426729030] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2863
+[depth_cube_probe.py-9] [INFO] [1792041335.764034220] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2874
+[depth_cube_probe.py-9] [INFO] [1792041336.595765853] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2880
+[depth_cube_probe.py-9] [INFO] [1792041337.028537371] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2862
+[depth_cube_probe.py-9] [INFO] [1792041337.266397535] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2842
+[depth_cube_probe.py-9] [INFO] [1792041337.759236838] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2827
+[depth_cube_probe.py-9] [INFO] [1792041338.124007232] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2789
+[depth_cube_probe.py-9] [INFO] [1792041338.323715795] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2779
+[depth_cube_probe.py-9] [INFO] [1792041338.758362435] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2740
+[depth_cube_probe.py-9] [INFO] [1792041338.956087327] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2734
+[depth_cube_probe.py-9] [INFO] [1792041339.392424026] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.317s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041339.367102 but the latest data is at time 1792041339.274030, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041339.859136766] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.784s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041339.833516 but the latest data is at time 1792041339.776309, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041340.157235716] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.080s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041340.129579 but the latest data is at time 1792041340.077302, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041340.427149660] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.347s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041340.397239 but the latest data is at time 1792041340.378016, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041340.693246952] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.615s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041340.664934 but the latest data is at time 1792041340.578582, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041340.929557166] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2569
+[depth_cube_probe.py-9] [INFO] [1792041341.259416133] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2559
+[depth_cube_probe.py-9] [INFO] [1792041341.524392979] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2516
+[depth_cube_probe.py-9] [INFO] [1792041342.221942454] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2462
+[depth_cube_probe.py-9] [INFO] [1792041342.455886257] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2444
+[depth_cube_probe.py-9] [INFO] [1792041342.862205249] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2395
+[depth_cube_probe.py-9] [INFO] [1792041343.127220035] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2369
+[depth_cube_probe.py-9] [INFO] [1792041343.356666149] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2349
+[depth_cube_probe.py-9] [INFO] [1792041343.737733595] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2318
+[depth_cube_probe.py-9] [INFO] [1792041344.218677520] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2281
+[depth_cube_probe.py-9] [INFO] [1792041344.595456900] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2251
+[depth_cube_probe.py-9] [INFO] [1792041344.881893572] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2215
+[depth_cube_probe.py-9] [INFO] [1792041345.183184498] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2173
+[depth_cube_probe.py-9] [INFO] [1792041345.416792676] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2168
+[depth_cube_probe.py-9] [INFO] [1792041345.750987748] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2145
+[depth_cube_probe.py-9] [INFO] [1792041345.984713635] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2114
+[depth_cube_probe.py-9] [INFO] [1792041346.311617118] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2059
+[depth_cube_probe.py-9] [INFO] [1792041346.515485451] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2036
+[depth_cube_probe.py-9] [INFO] [1792041346.814466418] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1911
+[depth_cube_probe.py-9] [INFO] [1792041347.082445388] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2038
+[depth_cube_probe.py-9] [INFO] [1792041347.280098279] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2082
+[depth_cube_probe.py-9] [INFO] [1792041347.586513051] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2147
+[depth_cube_probe.py-9] [INFO] [1792041347.814664307] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2140
+[depth_cube_probe.py-9] [INFO] [1792041348.050799801] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2160
+[depth_cube_probe.py-9] [INFO] [1792041348.312721686] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2179
+[depth_cube_probe.py-9] [INFO] [1792041348.519017084] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2174
+[depth_cube_probe.py-9] [INFO] [1792041348.846210255] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2158
+[depth_cube_probe.py-9] [INFO] [1792041349.117849524] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2169
+[depth_cube_probe.py-9] [INFO] [1792041349.380701363] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2175
+[depth_cube_probe.py-9] [INFO] [1792041349.647341976] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2163
+[depth_cube_probe.py-9] [INFO] [1792041349.847343774] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2186
+[depth_cube_probe.py-9] [INFO] [1792041350.245731691] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2174
+[depth_cube_probe.py-9] [INFO] [1792041350.545091253] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.218s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041350.523132 but the latest data is at time 1792041350.520432, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041350.789764864] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.457s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041350.762034 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041351.279348146] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.952s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041351.256847 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041351.644047454] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.319s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041351.623808 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041351.846607600] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.522s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041351.826578 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041352.044578265] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.719s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041352.024483 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041352.280337651] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.952s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041352.257244 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041352.486387226] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.156s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041352.461102 but the latest data is at time 1792041350.725955, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041352.682130750] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2159
+[depth_cube_probe.py-9] [INFO] [1792041352.979570340] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2174
+[depth_cube_probe.py-9] [INFO] [1792041353.350372903] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2176
+[depth_cube_probe.py-9] [INFO] [1792041353.577807867] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2155
+[depth_cube_probe.py-9] [INFO] [1792041353.878143371] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2160
+[depth_cube_probe.py-9] [INFO] [1792041354.415681372] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2146
+[depth_cube_probe.py-9] [INFO] [1792041354.613609734] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2133
+[depth_cube_probe.py-9] [INFO] [1792041354.843324706] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2131
+[depth_cube_probe.py-9] [INFO] [1792041356.178775093] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2118
+[depth_cube_probe.py-9] [INFO] [1792041356.715439755] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2112
+[depth_cube_probe.py-9] [INFO] [1792041357.009867724] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2127
+[depth_cube_probe.py-9] [INFO] [1792041357.205361734] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2107
+[depth_cube_probe.py-9] [INFO] [1792041357.474177297] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2103
+[depth_cube_probe.py-9] [INFO] [1792041357.777846781] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=2061
+[depth_cube_probe.py-9] [INFO] [1792041358.206827074] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=2065
+[depth_cube_probe.py-9] [INFO] [1792041358.543837823] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1999
+[depth_cube_probe.py-9] [INFO] [1792041358.782676596] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1877
+[depth_cube_probe.py-9] [INFO] [1792041359.041419458] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1850
+[depth_cube_probe.py-9] [INFO] [1792041359.277881649] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1863
+[depth_cube_probe.py-9] [INFO] [1792041359.481251666] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1822
+[depth_cube_probe.py-9] [INFO] [1792041359.874167852] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1814
+[depth_cube_probe.py-9] [INFO] [1792041360.277620842] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1793
+[depth_cube_probe.py-9] [INFO] [1792041360.610143384] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1767
+[depth_cube_probe.py-9] [INFO] [1792041361.045630262] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1746
+[depth_cube_probe.py-9] [INFO] [1792041361.242263666] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1766
+[depth_cube_probe.py-9] [INFO] [1792041361.608053831] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1731
+[depth_cube_probe.py-9] [INFO] [1792041362.176548501] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1716
+[depth_cube_probe.py-9] [INFO] [1792041362.682480092] [depth_cube_probe]: DEPTH_PROBE_NO_CUBE_CANDIDATE plane_inliers=1698
+[depth_cube_probe.py-9] [INFO] [1792041363.016345032] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1686
+[depth_cube_probe.py-9] [INFO] [1792041363.209897964] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1679
+[depth_cube_probe.py-9] [INFO] [1792041363.509369179] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1671
+[depth_cube_probe.py-9] [INFO] [1792041363.845594497] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1664
+[depth_cube_probe.py-9] [INFO] [1792041364.147821289] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1667
+[depth_cube_probe.py-9] [INFO] [1792041364.347768650] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1637
+[depth_cube_probe.py-9] [INFO] [1792041364.677225586] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1647
+[piper_jog_adapter.py-6] [INFO] [1792041364.717956805] [piper_jog_adapter]: REAL ARM trajectory accepted: 2 points
+[visual_search_controller-7] [INFO] [1792041364.726550970] [visual_search_controller]: STATE -> STOPPED (OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH)
+[depth_cube_probe.py-9] [INFO] [1792041365.107921707] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1637
+[depth_cube_probe.py-9] [INFO] [1792041365.312580614] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1631
+[depth_cube_probe.py-9] [INFO] [1792041365.677590694] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1633
+[depth_cube_probe.py-9] [INFO] [1792041365.912152025] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1639
+[depth_cube_probe.py-9] [INFO] [1792041366.211123217] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1635
+[depth_cube_probe.py-9] [INFO] [1792041366.481240242] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1627
+[depth_cube_probe.py-9] [INFO] [1792041366.906632418] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1636
+[depth_cube_probe.py-9] [INFO] [1792041367.255161590] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1633
+[depth_cube_probe.py-9] [INFO] [1792041367.439412166] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1638
+[depth_cube_probe.py-9] [INFO] [1792041367.813984939] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1632
+[depth_cube_probe.py-9] [INFO] [1792041369.080292701] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.422s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041369.052327 but the latest data is at time 1792041369.004741, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041369.312635469] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 0.655s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041369.285010 but the latest data is at time 1792041369.205657, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041369.678776736] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.022s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041369.651819 but the latest data is at time 1792041369.606950, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041369.876134344] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.219s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041369.849749 but the latest data is at time 1792041369.807577, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041370.115808055] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.452s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041370.082591 but the latest data is at time 1792041370.008347, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041370.440034363] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 1.784s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041370.414237 but the latest data is at time 1792041370.409427, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041370.740254000] [depth_cube_probe]: DEPTH_PROBE_STABILITY_TF_UNAVAILABLE camera_depth_optical_frame->base_link: latest transform age 2.086s exceeds 0.100s; exact lookup: Lookup would require extrapolation into the future.  Requested time 1792041370.716592 but the latest data is at time 1792041370.710470, when looking up transform from frame [camera_depth_optical_frame] to frame [base_link]
+[depth_cube_probe.py-9] [INFO] [1792041371.501697929] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1639
+[depth_cube_probe.py-9] [INFO] [1792041371.744340767] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1651
+[depth_cube_probe.py-9] [INFO] [1792041371.976867773] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1643
+[depth_cube_probe.py-9] [INFO] [1792041372.175959303] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1645
+[depth_cube_probe.py-9] [INFO] [1792041372.412363594] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1634
+[depth_cube_probe.py-9] [INFO] [1792041372.941815998] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1628
+[depth_cube_probe.py-9] [INFO] [1792041373.477726916] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1635
+[depth_cube_probe.py-9] [INFO] [1792041373.672814237] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1634
+[depth_cube_probe.py-9] [INFO] [1792041374.138170269] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1629
+[depth_cube_probe.py-9] [INFO] [1792041374.612147807] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1631
+[depth_cube_probe.py-9] [INFO] [1792041374.976968986] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1634
+[depth_cube_probe.py-9] [INFO] [1792041375.275724215] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1635
+[depth_cube_probe.py-9] [INFO] [1792041375.549065696] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1632
+[depth_cube_probe.py-9] [INFO] [1792041375.944603867] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1638
+[depth_cube_probe.py-9] [INFO] [1792041376.605684497] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1634
+[piper_jog_adapter.py-6] [WARN] [1792041376.901106365] [piper_jog_adapter]: PHYSICAL MOTION DISARMED: operator disarm
+[depth_cube_probe.py-9] [INFO] [1792041376.943499856] [depth_cube_probe]: DEPTH_PROBE_NO_CANDIDATE_IN_WORKSPACE geometry_candidates=1 plane_inliers=1639
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [active_scan_supervisor-10]: sending signal 'SIGINT' to process[active_scan_supervisor-10]
+[INFO] [depth_cube_probe.py-9]: sending signal 'SIGINT' to process[depth_cube_probe.py-9]
+[INFO] [grasp_lift_executor-8]: sending signal 'SIGINT' to process[grasp_lift_executor-8]
+[INFO] [visual_search_controller-7]: sending signal 'SIGINT' to process[visual_search_controller-7]
+[INFO] [piper_jog_adapter.py-6]: sending signal 'SIGINT' to process[piper_jog_adapter.py-6]
+[INFO] [servo_node_main-5]: sending signal 'SIGINT' to process[servo_node_main-5]
+[INFO] [move_group-4]: sending signal 'SIGINT' to process[move_group-4]
+[INFO] [pointcloud_tf_gate-3]: sending signal 'SIGINT' to process[pointcloud_tf_gate-3]
+[INFO] [static_transform_publisher-2]: sending signal 'SIGINT' to process[static_transform_publisher-2]
+[INFO] [robot_state_publisher-1]: sending signal 'SIGINT' to process[robot_state_publisher-1]
+[active_scan_supervisor-10] [INFO] [1792041377.058604634] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[grasp_lift_executor-8] [INFO] [1792041377.062340226] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[visual_search_controller-7] [INFO] [1792041377.064212762] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[servo_node_main-5] [INFO] [1792041377.065957661] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[move_group-4] [INFO] [1792041377.066991242] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[pointcloud_tf_gate-3] [INFO] [1792041377.069740517] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[piper_jog_adapter.py-6] [ERROR] [1792041377.069812033] [piper_jog_adapter]: 
+[piper_jog_adapter.py-6] Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:389
+[robot_state_publisher-1] [INFO] [1792041377.072549160] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[static_transform_publisher-2] [INFO] [1792041377.083574676] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[servo_node_main-5] Warning: class_loader.ClassLoader: SEVERE WARNING!!! Attempting to unload library while objects created by this loader exist in the heap! You should delete your objects before attempting to unload the library or destroying the ClassLoader. The library will NOT be unloaded.
+[servo_node_main-5]          at line 127 in ./src/class_loader.cpp
+[servo_node_main-5] [INFO] [1792041377.108484535] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopped publishing maintained planning scene.
+[servo_node_main-5] [INFO] [1792041377.109364136] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping world geometry monitor
+[servo_node_main-5] [INFO] [1792041377.109697816] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping planning scene monitor
+[move_group-4] [INFO] [1792041377.186863779] [moveit.ros_planning_interface.moveit_cpp]: Deleting MoveItCpp
+[move_group-4] [INFO] [1792041377.190465458] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopped publishing maintained planning scene.
+[move_group-4] [INFO] [1792041377.191571745] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping world geometry monitor
+[move_group-4] [INFO] [1792041377.192693270] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping planning scene monitor
+[move_group-4] Warning: class_loader.ClassLoader: SEVERE WARNING!!! Attempting to unload library while objects created by this loader exist in the heap! You should delete your objects before attempting to unload the library or destroying the ClassLoader. The library will NOT be unloaded.
+[move_group-4]          at line 127 in ./src/class_loader.cpp
+[INFO] [robot_state_publisher-1]: process has finished cleanly [pid 57324]
+[depth_cube_probe.py-9] Traceback (most recent call last):
+[depth_cube_probe.py-9]   File "/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/depth_cube_probe.py", line 443, in main
+[depth_cube_probe.py-9]     rclpy.spin(node)
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[depth_cube_probe.py-9]     executor.spin_once()
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[depth_cube_probe.py-9]     self._spin_once_impl(timeout_sec)
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[depth_cube_probe.py-9]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[depth_cube_probe.py-9]     return next(self._cb_iter)
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[depth_cube_probe.py-9]     wait_set.wait(timeout_nsec)
+[depth_cube_probe.py-9] KeyboardInterrupt
+[depth_cube_probe.py-9] 
+[depth_cube_probe.py-9] During handling of the above exception, another exception occurred:
+[depth_cube_probe.py-9] 
+[depth_cube_probe.py-9] Traceback (most recent call last):
+[depth_cube_probe.py-9]   File "/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/depth_cube_probe.py", line 450, in <module>
+[depth_cube_probe.py-9]     main()
+[depth_cube_probe.py-9]   File "/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/depth_cube_probe.py", line 446, in main
+[depth_cube_probe.py-9]     rclpy.shutdown()
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[depth_cube_probe.py-9]     _shutdown(context=context)
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[depth_cube_probe.py-9]     return context.shutdown()
+[depth_cube_probe.py-9]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[depth_cube_probe.py-9]     self.__context.shutdown()
+[depth_cube_probe.py-9] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[move_group-4] Stack trace (most recent call last):
+[move_group-4] #16   Object "", at 0xffffffffffffffff, in 
+[move_group-4] #15   Object "/opt/ros/humble/lib/moveit_ros_move_group/move_group", at 0x598bf9577724, in 
+[INFO] [grasp_lift_executor-8]: process has finished cleanly [pid 57353]
+[INFO] [servo_node_main-5]: process has finished cleanly [pid 57332]
+[INFO] [active_scan_supervisor-10]: process has finished cleanly [pid 57358]
+[INFO] [static_transform_publisher-2]: process has finished cleanly [pid 57326]
+[move_group-4] #14   Source "../csu/libc-start.c", line 392, in __libc_start_main_impl [0x7b0d76a29e3f]
+[move_group-4] #13   Source "../sysdeps/nptl/libc_start_call_main.h", line 58, in __libc_start_call_main [0x7b0d76a29d8f]
+[move_group-4] #12   Object "/opt/ros/humble/lib/moveit_ros_move_group/move_group", at 0x598bf957665b, in 
+[move_group-4] #11   Object "/opt/ros/humble/lib/moveit_ros_move_group/move_group", at 0x598bf9578709, in 
+[move_group-4] #10   Object "/opt/ros/humble/lib/libmoveit_cpp.so.2.5.9", at 0x7b0d7774a876, in moveit_cpp::MoveItCpp::~MoveItCpp()
+[move_group-4] #9    Object "/opt/ros/humble/lib/libmoveit_cpp.so.2.5.9", at 0x7b0d77748ba9, in 
+[move_group-4] #8    Object "/opt/ros/humble/lib/libmoveit_trajectory_execution_manager.so.2.5.9", at 0x7b0d76cd13b5, in trajectory_execution_manager::TrajectoryExecutionManager::~TrajectoryExecutionManager()
+[move_group-4] #7    Object "/opt/ros/humble/lib/libmoveit_trajectory_execution_manager.so.2.5.9", at 0x7b0d76ce42d9, in 
+[move_group-4] #6    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d773abb8c, in rclcpp::Node::~Node()
+[move_group-4] #5    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d773abb2e, in rclcpp::Node::~Node()
+[move_group-4] #4    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d77386d39, in 
+[move_group-4] #3    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d773b50b9, in 
+[move_group-4] #2    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d773b5000, in rclcpp::node_interfaces::NodeBase::~NodeBase()
+[move_group-4] #1    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d77386d39, in 
+[move_group-4] #0    Object "/opt/ros/humble/lib/librclcpp.so", at 0x7b0d7738bb31, in rclcpp::CallbackGroup::~CallbackGroup()
+[move_group-4] Segmentation fault (Address not mapped to object [0x7b0d55d33798])
+[INFO] [pointcloud_tf_gate-3]: process has finished cleanly [pid 57328]
+[INFO] [visual_search_controller-7]: process has finished cleanly [pid 57345]
+[INFO] [piper_jog_adapter.py-6]: process has finished cleanly [pid 57334]
+[ERROR] [depth_cube_probe.py-9]: process has died [pid 57356, exit code 1, cmd '/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/depth_cube_probe.py --ros-args -r __node:=depth_cube_probe --params-file /home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_task_real.yaml --params-file /tmp/launch_params_jst7feqw'].
+[ERROR] [move_group-4]: process has died [pid 57330, exit code -11, cmd '/opt/ros/humble/lib/moveit_ros_move_group/move_group --ros-args -r __node:=move_group --params-file /tmp/launch_params_eyvntizf --params-file /tmp/launch_params_uidzdjpq -r /joint_states:=/piper_moveit_joint_states'].
+[move_group-4] [0m

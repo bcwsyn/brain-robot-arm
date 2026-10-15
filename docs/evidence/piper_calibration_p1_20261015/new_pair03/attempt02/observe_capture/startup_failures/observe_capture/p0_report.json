@@ -1,0 +1,107 @@
+{
+  "schema": "piper_calibration_p0_capture_v1",
+  "subscription_only": true,
+  "motion_commands_sent": false,
+  "automatic_CAN_recovery": false,
+  "production_tf_modified": false,
+  "maximum_batches": 2,
+  "maximum_seconds_per_batch": 60.0,
+  "maximum_image_bytes_per_batch": 67108864,
+  "config_sha256": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+  "can_checks": [
+    {
+      "before": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 488639,
+        "tx": 8569
+      },
+      "after": {
+        "up": true,
+        "state": "ERROR-ACTIVE",
+        "rx": 489134,
+        "tx": 8569
+      },
+      "healthy": true
+    }
+  ],
+  "batches": [
+    {
+      "capture": "batch_01",
+      "returncode": 2,
+      "capture_summary": {
+        "subscription_only": true,
+        "hardware_synchronized": false,
+        "camera_calibration": false,
+        "topics": [
+          "/camera/color/image_raw",
+          "/camera/depth/image_raw",
+          "/camera/depth/camera_info",
+          "/joint_states_feedback"
+        ],
+        "message_filters_file": "/opt/ros/humble/local/lib/python3.10/dist-packages/message_filters/__init__.py",
+        "slop_s": 0.12,
+        "max_age_s": 0.5,
+        "requested_frames": 60,
+        "saved_frames": 0,
+        "static_window_s": 3.0,
+        "full_same_frame_depth_info": true,
+        "received": {
+          "/camera/depth/image_raw": 2,
+          "/camera/depth/camera_info": 2,
+          "/camera/color/image_raw": 15
+        },
+        "rejected": {},
+        "matched_packets": 0,
+        "stop_on_feedback_loss": true,
+        "image_byte_limit": 67108864,
+        "image_bytes": 0,
+        "stop_reason": "feedback_lost",
+        "elapsed_s": 3.0096753589896252,
+        "start_q_rad": null
+      },
+      "quality": {
+        "frames": 0,
+        "face_quality_candidates": 0,
+        "good_top_frames": 0,
+        "minimum_good_frames": 20,
+        "twenty_good_frames_met": false,
+        "automatic_replenishment_needed": true,
+        "top_witness_review_required": false,
+        "top_plane_normal_statistics": null,
+        "formal_calibration_pair": false
+      }
+    }
+  ],
+  "stop_reason": "feedback_lost",
+  "exposure": null,
+  "gain": null,
+  "illumination_lux": null,
+  "formal_calibration_pair": false,
+  "camera_controls_before": {
+    "epoch": 1792041448.5213737,
+    "device": "/dev/video0",
+    "scope": "batch metadata, not synchronized per-frame exposure or measured lux",
+    "controls_raw": "\nUser Controls\n\n                     brightness 0x00980900 (int)    : min=-64 max=64 step=1 default=0 value=0\n                       contrast 0x00980901 (int)    : min=0 max=64 step=1 default=32 value=32\n                     saturation 0x00980902 (int)    : min=0 max=128 step=1 default=64 value=64\n                            hue 0x00980903 (int)    : min=-40 max=40 step=1 default=0 value=0\n        white_balance_automatic 0x0098090c (bool)   : default=1 value=1\n                          gamma 0x00980910 (int)    : min=72 max=500 step=1 default=100 value=100\n                           gain 0x00980913 (int)    : min=0 max=100 step=1 default=0 value=0\n           power_line_frequency 0x00980918 (menu)   : min=0 max=2 default=1 value=1 (50 Hz)\n      white_balance_temperature 0x0098091a (int)    : min=2800 max=6500 step=1 default=4600 value=4600 flags=inactive\n                      sharpness 0x0098091b (int)    : min=0 max=6 step=1 default=3 value=3\n         backlight_compensation 0x0098091c (int)    : min=0 max=2 step=1 default=1 value=1\n\nCamera Controls\n\n                  auto_exposure 0x009a0901 (menu)   : min=0 max=3 default=3 value=3 (Aperture Priority Mode)\n         exposure_time_absolute 0x009a0902 (int)    : min=1 max=5000 step=1 default=157 value=157 flags=inactive\n     exposure_dynamic_framerate 0x009a0903 (bool)   : default=0 value=0\n",
+    "error": null
+  },
+  "camera_controls_after": {
+    "epoch": 1792041451.994299,
+    "device": "/dev/video0",
+    "scope": "batch metadata, not synchronized per-frame exposure or measured lux",
+    "controls_raw": "\nUser Controls\n\n                     brightness 0x00980900 (int)    : min=-64 max=64 step=1 default=0 value=0\n                       contrast 0x00980901 (int)    : min=0 max=64 step=1 default=32 value=32\n                     saturation 0x00980902 (int)    : min=0 max=128 step=1 default=64 value=64\n                            hue 0x00980903 (int)    : min=-40 max=40 step=1 default=0 value=0\n        white_balance_automatic 0x0098090c (bool)   : default=1 value=1\n                          gamma 0x00980910 (int)    : min=72 max=500 step=1 default=100 value=100\n                           gain 0x00980913 (int)    : min=0 max=100 step=1 default=0 value=0\n           power_line_frequency 0x00980918 (menu)   : min=0 max=2 default=1 value=1 (50 Hz)\n      white_balance_temperature 0x0098091a (int)    : min=2800 max=6500 step=1 default=4600 value=4600 flags=inactive\n                      sharpness 0x0098091b (int)    : min=0 max=6 step=1 default=3 value=3\n         backlight_compensation 0x0098091c (int)    : min=0 max=2 step=1 default=1 value=1\n\nCamera Controls\n\n                  auto_exposure 0x009a0901 (menu)   : min=0 max=3 default=3 value=3 (Aperture Priority Mode)\n         exposure_time_absolute 0x009a0902 (int)    : min=1 max=5000 step=1 default=157 value=157 flags=inactive\n     exposure_dynamic_framerate 0x009a0903 (bool)   : default=0 value=0\n",
+    "error": null
+  },
+  "summary": {
+    "frames": 0,
+    "face_quality_candidates": 0,
+    "good_top_frames": 0,
+    "minimum_good_frames": 20,
+    "twenty_good_frames_met": false,
+    "automatic_replenishment_needed": true,
+    "top_witness_review_required": false,
+    "top_plane_normal_statistics": null,
+    "formal_calibration_pair": false
+  },
+  "frames": []
+}

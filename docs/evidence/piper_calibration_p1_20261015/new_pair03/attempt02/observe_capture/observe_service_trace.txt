@@ -1,0 +1,26 @@
+Set parameter successful
+Boolean value is: True
+waiting for service to become available...
+requester: making request: piper_msgs.srv.Enable_Request(enable_request=True)
+
+response:
+piper_msgs.srv.Enable_Response(enable_response=True)
+
+waiting for service to become available...
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=True, message='Motion gate enabled; call /piper_jog_adapter/arm to start output.')
+
+waiting for service to become available...
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=True, message='Adapter armed; only clamped low-speed JointJog commands are forwarded.')
+
+waiting for service to become available...
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=True, message='PREPARE started; J2/J3 will move to the configured observation pose.')
+

@@ -1,0 +1,106 @@
+{
+  "pair_id": "new_pair03",
+  "attempt_id": "attempt02",
+  "grip_checkpoint_commit": "63da2d9",
+  "current_placement_open_and_return_authorized": true,
+  "host_reconnect": {
+    "user_confirmed": true,
+    "can_ifindex": 11,
+    "initial_state": "DOWN/STOPPED",
+    "sudo_n_true_returncode": 0,
+    "activation": "1Mbps/sample-point 0.75/queue1000/UP only",
+    "rx_after_activation": 41,
+    "repeat_open": false,
+    "USB_module_or_firmware_reset": false
+  },
+  "original_motion": {
+    "launch": "cube_visual_search.launch.py",
+    "stop_after_observe_readback": true,
+    "controller_start_success": true,
+    "trajectory_points": 13,
+    "duration_s": 44.5,
+    "max_joint_step_rad": 0.08,
+    "prepare_start_epoch": "1792041320.621877263",
+    "adapter_accepted_epoch": "1792041320.627374862",
+    "reached_epoch": "1792041364.726550970",
+    "reason": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH",
+    "SEARCH_started": false,
+    "grasp_started": false
+  },
+  "actual_observe": {
+    "q_mdeg": [
+      -7989,
+      54577,
+      -72577,
+      -4358,
+      69694,
+      5233
+    ],
+    "q_driver_rad": [
+      -0.139360116,
+      0.952041188,
+      -1.266033188,
+      -0.076020952,
+      1.215742136,
+      0.091284452
+    ],
+    "enabled_last_fresh": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_mm": 99.4
+  },
+  "controller_exit": {
+    "visual_returncode": 0,
+    "launch_wrapper_zero_does_not_mean_all_children_clean": true,
+    "after_SIGINT_move_group_exit_code": -11,
+    "after_SIGINT_move_group_error": "Segmentation fault in callback-group/node teardown after observation reached",
+    "after_SIGINT_depth_cube_probe_exit_code": 1,
+    "after_SIGINT_depth_cube_probe_error": "rcl_shutdown already called on the given context",
+    "after_SIGINT_adapter_rosout_invalid_context_logged": true,
+    "shutdown_errors_retained_not_fixed_under_production_freeze": true,
+    "driver_INT_then_exact_PID_KILL": true,
+    "driver_returncode": 137,
+    "adapter_disarm_success": true,
+    "hardware_disable_or_Reset_sent": false
+  },
+  "startup_failures": {
+    "first_A_frames": 0,
+    "first_A_reason": "No joint feedback before read-only bridge discovery",
+    "preview_frames": 0,
+    "preview_reason": "Bounded cameras had exited; fresh joint messages existed",
+    "reports": "startup_failures",
+    "motion_repeated": false,
+    "production_or_DDS_changes": false
+  },
+  "read_only_capture": {
+    "preview_frames": 3,
+    "formal_batches": 2,
+    "formal_frames": 120,
+    "P0_returncode": 2,
+    "stop_reason": "bounded_replenishment_exhausted",
+    "bridge_elapsed_s": 120.009641568,
+    "bridge_samples": 5760,
+    "bridge_published": 5707,
+    "bridge_returncode": 0,
+    "last_fresh_SDK_epoch": 1792041747.923198,
+    "all_task_sources_exited": true,
+    "current_live_enable_not_requeried": true
+  },
+  "final_CAN": {
+    "ifindex": 11,
+    "state": "ERROR-ACTIVE",
+    "RX": 1479900,
+    "TX": 8569,
+    "RX_errors": 0,
+    "TX_errors": 0,
+    "bus_off": 0,
+    "warning": 0,
+    "passive": 0
+  },
+  "production_frozen": true
+}
