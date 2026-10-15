@@ -9,7 +9,10 @@
   "original_arm_incident": "attempt01/release_observe/execution.json",
   "reenable_observe_record": "attempt01/reenable_observe/execution.json",
   "latest_observe_return_completed": true,
-  "formal_A_frames": 0,
+  "formal_A_frames": 28,
+  "A_good_top_frames": 0,
+  "A_raw_manifest": "attempt01/observe_after_reconnect/portable/manifest.json",
+  "A_reconnect_record": "attempt01/observe_after_reconnect/execution.json",
   "A_qualified_manifest": null,
   "physical_cube_same_point_as_B_confirmed": null,
   "complete_pair": false,
@@ -17,5 +20,5 @@
   "calibration_accepted": false,
   "camera_cube_center_m": null,
   "gripper_base_cube_center_m": null,
-  "warning": "Recovery reached observation, then CAN RX stopped. Pre-enable diagnostic views are not A. Do not use SDK default q0/false or pair a moved cube with old B."
+  "warning": "CAN recovered; actual observation q unchanged. Read-only A has 28 raw frames but zero pass original top-quality selection. Same physical point with B is not confirmed. Do not repeat motion or pair a moved cube with old B."
 }

@@ -1,0 +1,270 @@
+{
+  "schema": "piper_P1_receive_only_A_reconnect_v1",
+  "local_time": "2026-10-15T14:35:08+08:00",
+  "user_message": "已恢复",
+  "pair_id": "new_pair04",
+  "attempt_id": "attempt01",
+  "role": "fit",
+  "runtime_root": "/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair04_A_after_reconnect.ve4Jo4",
+  "B_checkpoint": "84d8552",
+  "physical_cube_same_point_as_B_confirmed": null,
+  "scope": {
+    "limited_existing_CAN_activation": true,
+    "production_control_stack_started": false,
+    "enable_arm_jaw_trajectory_reset_disable_sent": false,
+    "production_changes": false,
+    "readonly_A_only": true
+  },
+  "CAN": {
+    "ifindex": 12,
+    "initial": "DOWN / STOPPED RX0 TX0; USB-CAN re-enumerated",
+    "sudo_n_true_rc": 0,
+    "activation": [
+      "sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75",
+      "sudo -n ip link set can0 txqueuelen 1000",
+      "sudo -n ip link set can0 up"
+    ],
+    "rx_after_activation": 41,
+    "tx_after_activation": 0,
+    "rx_later": 727340,
+    "tx_later": 0,
+    "state_after": "UP / ERROR-ACTIVE",
+    "errors_after": 0,
+    "USB_or_module_reload": false
+  },
+  "SDK_before": {
+    "returncode": 0,
+    "samples": 60,
+    "fresh": 60,
+    "span_s": 5.923790216445923,
+    "static_original_passed": true,
+    "q_mdeg": [
+      -8183,
+      53975,
+      -72688,
+      -4232,
+      69972,
+      4700
+    ],
+    "q_driver_rad": [
+      -0.14274425200000002,
+      0.9415399000000001,
+      -1.267969472,
+      -0.07382300800000001,
+      1.220591568,
+      0.08198680000000001
+    ],
+    "exactly_matches_last_observe_ROS_q": true,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_mm": 64.5
+  },
+  "startup_failure": {
+    "raw_report": "runtime_closed.tar.gz:observation/p0_report.json",
+    "capture_returncode": 2,
+    "duration_s": 45.01913315099955,
+    "saved_frames": 0,
+    "received": {
+      "feedback": 2155,
+      "depth": 869,
+      "depth_info": 1061,
+      "rgb": 0
+    },
+    "color_log": "only Publishing image #1",
+    "diagnosis": "cam2image remained alive; its V4L2 source thread was polling, only owner of /dev/video0. This localizes absent RGB, not root cause of V4L2 stall.",
+    "recent_kernel_log": "No reported new camera disconnect in inspected 5-minute window; not proof of absence of USB issues",
+    "action": "SIGINT only PID66855, after 2s SIGKILL if still present; restart identical original RGB parameters once",
+    "original_color_wrapper_exit_code": 247,
+    "no_DDS_or_camera_parameter_change": true
+  },
+  "readonly_sources": {
+    "first_bridge": {
+      "limit_s": 120,
+      "exit_code": 0,
+      "published": 5717
+    },
+    "second_bridge": {
+      "limit_s": 90,
+      "exit_code": 0,
+      "published": 4327
+    },
+    "depth": {
+      "limit_s": 180,
+      "exit_code": 124
+    },
+    "color_retry": {
+      "limit_s": 90,
+      "exit_code": 124
+    },
+    "all_exited": true,
+    "hardware_disable_sent": false
+  },
+  "capture": {
+    "collector": "original collect_calibration_p0.py",
+    "second_max_batches": 1,
+    "requested_frames": 60,
+    "seconds_limit": 45,
+    "saved_frames": 28,
+    "capture_elapsed_s": 45.018551328001195,
+    "stop_reason": "incomplete_batch_do_not_blindly_retry",
+    "collector_returncode": 2,
+    "why_not_60": "Original depth process reached its 180s lifetime during capture. Agent did not reserve enough source lifetime after diagnosing/reopening color. This scheduling shortfall is not claimed as a new hardware disconnect.",
+    "frame_window_ns": [
+      "1792045937251228435",
+      "1792045954651026982"
+    ],
+    "good_top_frames": 0,
+    "minimum_good_frames": 20,
+    "native_selected_points_range": [
+      879,
+      942
+    ],
+    "plane_inliers_range": [
+      692,
+      736
+    ],
+    "original_required_top_inliers": 800,
+    "coverage_range": [
+      0.9681274900398407,
+      0.9765625
+    ],
+    "top_error_all_28": "Automatic table annulus has no dominant plane",
+    "all_original_images_retained": true,
+    "raw_depth_zero_preserved": true,
+    "per_frame_actual_q_and_FK": true,
+    "same_stamp_depth_info": true,
+    "full_frame_RGB_seen": true,
+    "top_witness_review": "Viewed raw first and last RGB and annulus witness. Cube is near upper-right mat edge; automatic annulus spans mat and white desk. This supports ROI mixing, not a proven sensor/material cause. No frame is promoted to qualified A."
+  },
+  "SDK_during": {
+    "returncode": 2,
+    "fresh": 59,
+    "samples": 60,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "original_static_passed": false,
+    "speed_spikes": {
+      "index28": [
+        0,
+        0,
+        0,
+        0,
+        24,
+        0
+      ],
+      "index34": [
+        0,
+        -31,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "warning": "All six positions constant; retain original velocity failures. No contiguous original >=30 sample, >=3s passing slice exists in this during-window."
+  },
+  "SDK_after": {
+    "shell_returncode_with_following_ip": 0,
+    "SDK_subcommand_returncode_not_separately_captured": null,
+    "original_static_passed": false,
+    "fresh": 59,
+    "samples": 60,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "last_fresh_sample": {
+      "epoch": 1792046041.9900477,
+      "sdk_receipt_stamps": {
+        "joint": "1792046041.9867756",
+        "high": "1792046041.9827926",
+        "low": "1792046041.9826336",
+        "gripper": "1792046041.9869"
+      },
+      "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+      "high_hz": 100,
+      "joint_hz": 200,
+      "q_mdeg": [
+        -8183,
+        53975,
+        -72688,
+        -4232,
+        69972,
+        4700
+      ],
+      "q_driver_rad": [
+        -0.14274425200000002,
+        0.9415399000000001,
+        -1.267969472,
+        -0.07382300800000001,
+        1.220591568,
+        0.08198680000000001
+      ],
+      "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+      "speed_millirad_s": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enabled": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "gripper_raw_micrometers": 64500,
+      "gripper_mm": 64.5,
+      "gripper_effort_raw": 7,
+      "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+      "fresh_after_passive_connection": true,
+      "physical_contact_verified_by_sdk": false
+    },
+    "warning": "Three velocity spikes retained; last fresh enabled is not a promise of continuously monitored current state."
+  },
+  "factory": {
+    "serial": "CC1365304DG",
+    "fresh_GETs_complete": true,
+    "internal_optical_TF_captured": true,
+    "production_TF_modified": false
+  },
+  "offline_environment_probe": {
+    "first_probe_failed": "Missing PYTHONNOUSERSITE=1 loaded user NumPy2, incompatible with system cv2; read-only diagnostic failed before review",
+    "corrected_probe": "Same original function with existing system environment succeeded; no dependency changes"
+  },
+  "portable": {
+    "assets": 65,
+    "bytes": 4483884,
+    "manifest_sha256": "2f53a21f814d1662a597fd9cc70f16237b8b2c3be35e34a1d3140b7eeeab648f"
+  },
+  "result": {
+    "complete_pair": false,
+    "fit_eligible": false,
+    "completed_pairs": 1,
+    "camera_cube_center_m": null,
+    "gripper_base_cube_center_m": null,
+    "blocker": "A does not meet original top-quality contract; physical same-point origin with B not confirmed",
+    "next": "No same-condition recollection or repeat enable/observe. Keep old B/raw A; inspect existing geometry/ROI offline and propose bounded acquisition correction for approval. If cube moved, acquire new B at same position as new A.",
+    "GitHub_pushed": false
+  }
+}
