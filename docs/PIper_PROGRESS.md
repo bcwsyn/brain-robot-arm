@@ -1,4 +1,15 @@
-## 本轮（2026-10-16 14:10）：实际UHCI路径已确认，原授权60秒纯接收通过；无运动
+## 本轮（2026-10-16 14:20）：已批准原链保持实际执行，短空窗自行恢复；诊断包装器提前终止如实记录
+
+- 起点`d9471e2`，用户“好”批准原driver/adapter以新鲜实际q保持30秒，不设新位移/夹爪目标。先按两repo技能核实际部署和原保持行为，四规范最新断点/原驱动/adapter/启动路径已读。USB仍同UHCI、can0 if7 UP/ERROR-ACTIVE，RX持续增加、TX0，未重连/重载/重做60秒；根34GB/56%，不清理。已有约840项无关脏树保留。
+- 新home目录`/home/johnwick/brain_robot_logs/usb2_hold_20261016.gyttMv`，两个诊断包装脚本AST及无motion publisher/SDK运动API检查通过。`run_hold.py`经原四ROS overlays、PYTHONNOUSERSITE=1运行，最终rc2。原SDK10秒准入rc0、99fresh/9.839361秒、原静止整窗通过、六q无变化/六true。原driver auto_enable=false启动，原launch中仅原adapter Node/原参数启动；未启动MoveIt/Servo/visual_search/grasp/camera。读取原adapter 50Hz/.189rad/s/25秒与六限位不改，输入话题无外部publisher后，仅原enable_srv true/enable_motion/arm，未直接SDK控制。
+- 保持14:16:16.183开始，实际982条`/joint_commands`六轴帧、5135条`/joint_states_feedback`；所有六q范围均为0，命令无gripper名称/effort，无轨迹/JointJog/gripper输入。CAN接口TX0→2945（含初始化/原服务/保持，不把全部叫保持帧），RX1367264→1469076、原错误/bus-off0。独立只收raw共101268帧，原始24字节记录（用户态epoch_ns+Linux CAN frame16），非硬件/kernel时间戳。
+- 保持19.495秒附近raw读取空窗：epoch1792131395.678573→1792131396.357108，0.678534985秒；J1/J6高速与2A5/2A6/2A7帧也短空窗。ROS保持命令最大receipt间隔.695443秒、反馈.868145秒，随后无需任何接口/USB动作自行恢复；driver记录feedback lost后抑制及恢复，内核前后无新增行/非法echo。用户态记录无法区分物理总线暂停、USB缓冲、guest调度或SDK/ROS延迟，不能确诊根因，不能把本次短空窗当旧持续断联。raw observer未收到driver关节控制loopback，不能用缺0x159独自证明无夹爪发送；无显式夹爪的ROS帧/原源另证。
+- **调用层问题明确记录**：本次诊断包装器`time.time()-latest['epoch'] <= .5`断言先于原adapter25秒规则终止，约20.265549秒后原software disarm成功；不是生产watchdog触发、不是30秒通过。未修改生产阈值，也不把rc2误写为永久断联。当前不重复同条件运动/重连；后续若重测，先明确仅修诊断包装器为短空窗事件记录、保留原抑制/25秒处理，不能静默改生产门。
+- software disarm非硬件失能；源全退出，adapter0、driver原2秒退出宽限后−9照存，未Disable/Reset/主从/固件/新位移/开闭/搜索。末SDK59fresh/5.820007秒、整窗rc2，原50fresh/4.915430秒静止子窗通过；末q_mdeg[-8254,51759,-69720,-3692,67818,5017]与之前完全一致、六true、99.6mm，只代表该采集时刻。不是已到观测或现在持续监测。
+- 离线`package_hold.py`rc0，[usb2_hold01](evidence/piper_board_handeye_20261016/usb2_hold01/README.md)保留13原文件约913KB压缩归档、逐件SHA回读；原CAN及ROS全样本保留，六冻结源SHA一致。生产/TF/SDK/门/限位不动，原板2/10/无新图或标定结果。最终JSON/AST/归档/六SHA/限定diff检查及Git留证；仅本地未推送，既有分叉/历史审查/共享main发布范围阻断保持。
+- 下一无需操作者手动操作、重启或重连。先审本次调用层提前终止与原抑制恢复证据，提出仅测试包装器局部修正/有限原链保持验证；本轮尚未修或重测，也不扩大为一键/观测返回/9+1。原60秒被动与成功J4不重复。
+
+## 历史本轮（2026-10-16 14:10）：实际UHCI路径已确认，原授权60秒纯接收通过；无运动
 
 - 起点`8fadc02`，用户“已完成”承接USB-CAN连接VM。按两repo技能追实际路由/原反馈、最小动作，不将VM兼容性标签当设备路径，也不扩大成生产修复。14:05只读确认同一1d50:606f适配器接入`1-2.1:1.0`，parent HCD为`uhci_hcd`；can0 ifindex7初DOWN/STOPPED、RX/TX0，无生产控制/相机源。`sudo -n true`可用。
 - 沿`1cf2bf9`既有许可仅三条固定激活，均rc0：`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、`sudo -n ip link set can0 txqueuelen 1000`、`sudo -n ip link set can0 up`。未down/bounce/reset USB/重载模块/改电源/固件/宿主其他变量。原本DOWN才激活，后续健康链路复用。
