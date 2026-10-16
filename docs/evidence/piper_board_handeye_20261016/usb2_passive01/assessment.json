@@ -1,0 +1,323 @@
+{
+  "trial_authorization_commit": "1cf2bf9",
+  "latest_operator_confirmation": "已完成",
+  "actual_USB_route": {
+    "interface_sysfs": "/sys/devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb1/1-2/1-2.1/1-2.1:1.0",
+    "bus": "usb1",
+    "host_controller_driver": "uhci_hcd",
+    "same_expected_CAN_adapter": true
+  },
+  "fixed_CAN_activation_commands": [
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "type",
+        "can",
+        "bitrate",
+        "1000000",
+        "sample-point",
+        "0.75"
+      ],
+      "epoch": 1792130794.6546118,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "txqueuelen",
+        "1000"
+      ],
+      "epoch": 1792130794.6724904,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "up"
+      ],
+      "epoch": 1792130796.293747,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "passive_trial_passed": true,
+  "trial_error": null,
+  "receive_elapsed_s": 60.000080933999925,
+  "frames": 145307,
+  "per_second_frames": [
+    2466,
+    2422,
+    2419,
+    2422,
+    2421,
+    2421,
+    2416,
+    2427,
+    2420,
+    2421,
+    2421,
+    2421,
+    2421,
+    2422,
+    2420,
+    2421,
+    2422,
+    2420,
+    2422,
+    2421,
+    2420,
+    2416,
+    2426,
+    2421,
+    2420,
+    2423,
+    2419,
+    2421,
+    2423,
+    2419,
+    2423,
+    2420,
+    2422,
+    2421,
+    2421,
+    2420,
+    2422,
+    2421,
+    2420,
+    2416,
+    2427,
+    2419,
+    2423,
+    2419,
+    2422,
+    2419,
+    2424,
+    2415,
+    2427,
+    2420,
+    2422,
+    2415,
+    2427,
+    2420,
+    2422,
+    2418,
+    2424,
+    2420,
+    2422,
+    2422
+  ],
+  "frames_every_second": true,
+  "maximum_interframe_gap_s": 0.011946669000280963,
+  "trailing_no_frame_s": 7.733000529697165e-06,
+  "CAN_after": {
+    "ifindex": 7,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "1-2.1:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 1162360,
+        "packets": 145325,
+        "errors": 0,
+        "dropped": 0,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 0,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "TX_packets_unchanged": true,
+  "new_kernel_echo_events": [],
+  "SDK_exit_code": 2,
+  "SDK_quality": {
+    "samples": 60,
+    "fresh_samples": 60,
+    "span_s": 5.922154426574707,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "SDK_fresh_samples": 60,
+  "SDK_last_fresh_not_continuous_monitoring": {
+    "epoch": 1792130853.224685,
+    "sdk_receipt_stamps": {
+      "joint": "1792130853.2215025",
+      "high": "1792130853.217498",
+      "low": "1792130853.2172518",
+      "gripper": "1792130853.221659"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      51759,
+      -69720,
+      -3692,
+      67818,
+      5017
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.902883996,
+      -1.21619568,
+      -0.06440324800000001,
+      1.183017192,
+      0.08751654800000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 0,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "SDK_original_passing_static_subwindow": {
+    "i": 26,
+    "j": 60,
+    "n": 34,
+    "quality": {
+      "samples": 34,
+      "fresh_samples": 34,
+      "span_s": 3.311553478240967,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "SDK_original_thresholds_changed": false,
+  "SDK_receipt_times_are_aggregate_not_per_motor": true,
+  "robot_control_gripper_enable_disable_reset_commands_sent": false,
+  "camera_or_production_driver_started": false,
+  "USB_reset_module_reload": false,
+  "all_owned_receivers_exited": true,
+  "production_six_SHA_unchanged": true,
+  "verification_scope": "Passive receive only on actual UHCI USB2-compatible path. Does not prove active TX, controller/adapter admission, movement, image capture, hand-eye calibration or grasp success.",
+  "causal_limit": "One passive window cannot establish xHCI as root cause; previous xHCI observations primarily failed while robot commands were active. Conditions are not an active-motion A/B comparison.",
+  "next_scope": "If passive checks pass, prepare an explicitly scoped original-driver/adapter current-pose hold TX/feedback check before any displacement; do not repeat successful J4 or automatically launch observation/grasp. Camera pass-through and RGB-D remain separately unverified.",
+  "old_board_candidates": "2/10, unchanged",
+  "Git_sync": "Local only; existing divergent main/pending history publication review and scope blocker unchanged."
+}

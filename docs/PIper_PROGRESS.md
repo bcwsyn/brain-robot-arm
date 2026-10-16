@@ -1,4 +1,14 @@
-## 本轮（2026-10-16 13:59）：用户明确3.1是旧AI建议，不再当硬性需求；仍等USB-CAN透传
+## 本轮（2026-10-16 14:10）：实际UHCI路径已确认，原授权60秒纯接收通过；无运动
+
+- 起点`8fadc02`，用户“已完成”承接USB-CAN连接VM。按两repo技能追实际路由/原反馈、最小动作，不将VM兼容性标签当设备路径，也不扩大成生产修复。14:05只读确认同一1d50:606f适配器接入`1-2.1:1.0`，parent HCD为`uhci_hcd`；can0 ifindex7初DOWN/STOPPED、RX/TX0，无生产控制/相机源。`sudo -n true`可用。
+- 沿`1cf2bf9`既有许可仅三条固定激活，均rc0：`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、`sudo -n ip link set can0 txqueuelen 1000`、`sudo -n ip link set can0 up`。未down/bounce/reset USB/重载模块/改电源/固件/宿主其他变量。原本DOWN才激活，后续健康链路复用。
+- `/usr/bin/python3 /home/johnwick/brain_robot_logs/usb2_passive_20261016.9ucND5/run_passive60.py` rc0：14:06:36开始，实际60.000080934秒，raw socket收到145307帧，60个秒窗均有帧，最大帧间11.946669ms，末端空窗约7.7微秒；末接口RX145325（与socket不同计数窗口）、TX0、ERROR-ACTIVE、所有错误/bus-off0，无新增非法echo。不能拿ERROR-ACTIVE单独当恢复证明，本轮有真实连续帧。
+- 同窗后10秒启动原`collect_calibration_sdk.py --duration-s 6`只收工具，rc2照存：60/60fresh、5.922154秒、六q波动0，样本25的J4速度−21mrad/s使全窗静止false；原summarize连续[26:60]34样本/3.311553秒通过。未改阈值/解析/速度、未重复等待；SDK聚合接收戳不伪称逐电机新鲜度。末q rad[-.143982776,.902883996,-1.21619568,-.064403248,1.183017192,.087516548]、六true、99.6mm/effort0只是该采集时反馈，不是已达观测或持续监测。
+- 全部自有receiver/SDK已退；TX0同时证实窗内无机器人发送。本轮未启动原driver/adapter/MoveIt/相机，未Enable/Disable/Reset/主从/轨迹/开闭/SEARCH。纯接收通过不证明带控制发送/运动/相机/标定成功，不能判定xHCI一定根因（历史失败多在有主动命令时）。原板候选仍2/10，不混新数据。
+- 离线`package_passive.py` rc0；[usb2_passive01](evidence/piper_board_handeye_20261016/usb2_passive01/README.md)保存原结果/SDK/调用脚本、5原文件tar及SHA逐成员回读核验；六冻结源SHA与board_resume03完全一致。原数据保留，无清理/生产变更。最终JSON/AST/归档/六SHA与限定diff检查结果见本轮提交。
+- 下一建议先获准仅原driver/adapter按新鲜实际姿态保持30秒，核带发送是否会停流；不设新位移/夹爪目标，不重复成功J4，不自动续观测/一键；新USB2下相机透传/双流另未验证。当前不用用户再重连/重启/挪板。Git仅本地提交未推送，既有main分叉/积压历史审查/共享main发布范围阻断保留，未自动合并或强推。
+
+## 历史本轮（2026-10-16 13:59）：用户明确3.1是旧AI建议，不再当硬性需求；仍等USB-CAN透传
 
 - 起点f520192。用户对前一事实问题答“是之前ai让我改的”，来源已澄清，不再等同一弹窗/截图，不将旧AI建议当厂商硬规格或已观察到VMware拒绝。2.0仍是已批准隔离试验，非CAN必须2.0/相机必须3.1的结论。
 - 仅`lsusb -t`/`lsusb -d 1d50:606f`/`ip ... can0`复核：EHCI/UHCI、无USB-CAN、can0明确不存在；没有恢复/激活/SDK/相机/运动/开闭/失能/复位或兼容性修改，没有60秒数据。当前q/使能未知，不能将未枚举判为相机USB2不兼容。
