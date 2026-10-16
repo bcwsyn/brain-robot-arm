@@ -1,7 +1,7 @@
 ## 本轮（2026-10-16 13:03）：宿主重连后原观测续跑仍停流；非法echo单次限定恢复失败，不再循环
 
 - 承接用户已完成宿主USB-CAN重连，本轮if5/RX恢复，不把旧故障当当前。新原10秒SDK整窗rc2保留；原summarize连续[0:82]82fresh/8.129435秒/qspread0静止通过，未用近零旧证书代替中途真实姿态，未降阈值。真实中途起点六true/99.6mm；生产六SHA与81f8a7e一致。
-- 原driver/adapter/controller，stop_after_observe设/read true/首持位与实际q相等，发布8点26.535946秒准备轨迹。start1792126734.308689，最后反馈1792126752.676282（18.367593秒），q[-.143982776,.811390216,-1.093407364,-.043871660,1.091157088,.081585588]rad，尚未到观测，最大落点误差约.17584rad。driver报feedback lost并停输出、adapter原25秒超时disarm/控制器FAULT；包装本次识别PIPER_ADAPTER_DISARMED，立即stop/disarm收尾，不再误等305秒。末rc2/AssertionError为未到位判定，非原始根因。
+- 原driver/adapter/controller，stop_after_observe设/read true/首持位与实际q相等，发布8点26.510519秒准备轨迹（原bag精确值，更正最初手录26.535946）。start1792126734.308689，最后反馈1792126752.676282（18.367593秒），q[-.143982776,.811390216,-1.093407364,-.043871660,1.091157088,.081585588]rad，尚未到观测，最大落点误差约.17584rad。driver报feedback lost并停输出、adapter原25秒超时disarm/控制器FAULT；包装本次识别PIPER_ADAPTER_DISARMED，立即stop/disarm收尾，不再误等305秒。末rc2/AssertionError为未到位判定，非原始根因。
 - bag2126关节命令/5285反馈/3轨迹（8点运动、故障与USER_STOP各一条2点恒定保持），0夹爪输入/无带夹爪字段输出。全部自有源退出，原nodes与driver2秒宽限后−9、bag0照存；未发送硬件失能/Reset/固件/开闭，不开相机/SEARCH/抓取，生产冻结保持。
 - 新内核12:59:08 `gs_usb ... Unexpected out of range echo id 343`；独立只读3秒收0帧、RX固定544487/TX2643，接口当时ERROR-ACTIVE/总线错误计数0。不同于单纯ROS丢消息，不等同bus-off；该新echo是USB回显异常证据，不足以独自解释整个后续静默或归责机械臂固件/用户。USB电源on/active/autosuspend=-1000，本来就禁休眠，不修改；本次无相机源，不能说点云/彩色带宽直接造成。
 - 根据PIper_DECISIONS 2026-09-28明确新echo例外、确认自有控制全退，只执行一次接口down/1Mbps/.75/queue1000/up，前三成功、up rc2 ENODEV。独立恢复文件记录本boot b5757c4c…与此次新事件/完整命令；现can0 netdev仍列出但DOWN/STOPPED。不再USB reset/模块重载/反复up或运动。旧echo handled标记mtime Sep28/count1、当前boot也count1，单纯持久化计数非boot-aware；仅记录后续候选问题，生产脚本/标记未改，不能断言此计数就是停流原因。

@@ -7,7 +7,7 @@
 1. 用户明确完成USB-CAN宿主侧重连。新ifindex5初始DOWN，按已有许可固定1Mbps、sample-point0.75、queue1000并UP；没有再次USB reset/模块重载。
 2. 原被动SDK6秒60fresh、q波动0、末六true/夹爪99.6mm；RX持续增长，TX0。整窗速度静止rc2且无合格3秒子窗，原序列保留。
 3. 从真实中途姿态重新运行原观测调用。新的原10秒SDK整窗仍rc2，但原函数连续[0:82]82fresh/8.129435秒静止通过，未沿用近零位旧证书、未改原SDK/准入阈值。
-4. 原driver/原launch去掉grasp executor，`stop_after_observe`设/read为true，第一持位命令与arm时真实q相等。原目标不变，发布8点26.535946秒轨迹，从当前姿态继续，不重做J4/零点复位。
+4. 原driver/原launch去掉grasp executor，`stop_after_observe`设/read为true，第一持位命令与arm时真实q相等。原目标不变，发布8点26.510519秒轨迹（原bag精确时长），从当前姿态继续，不重做J4/零点复位。
 5. 约18.368秒后接收停止。原driver抑制输出、原adapter25秒超时软件disarm，控制器`FAULT/PIPER_ADAPTER_DISARMED`。本次包装已识别终态并收尾，不再误等305秒；末`AssertionError()`来自“未到观测”的判定，不是首发故障。
 
 最后收到的q（不是当前实时物理状态）为：
