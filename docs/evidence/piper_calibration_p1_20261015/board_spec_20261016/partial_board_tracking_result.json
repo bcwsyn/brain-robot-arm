@@ -1,0 +1,104 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "robot_moved": false,
+  "method": "OpenCV calcOpticalFlowPyrLK forward/reverse; seed fixed IDs, no per-frame redetection/renumbering",
+  "opencv_version": "4.5.4",
+  "seed_visible_grid": [
+    9,
+    7
+  ],
+  "fixed_seed_ID_count": 63,
+  "square_length_m_operator_reported": 0.032,
+  "seed_local_frame_arbitrary_but_must_remain_same_physical_points": true,
+  "seed_ids_are_NOT_whole_board_global_IDs": true,
+  "real_frames_same_static_pose_only": true,
+  "actual_motion_tracking_validated": false,
+  "real_frame_checks": [
+    {
+      "from_snapshot": 1,
+      "to_snapshot": 2,
+      "original_ID_count": 63,
+      "forward_and_reverse_success_count": 63,
+      "max_forward_backward_error_px": 0.0023805301170796156,
+      "max_same_index_distance_to_prior_independent_detections_px": 0.1383462942581421,
+      "failed_original_ids": []
+    },
+    {
+      "from_snapshot": 2,
+      "to_snapshot": 3,
+      "original_ID_count": 63,
+      "forward_and_reverse_success_count": 63,
+      "max_forward_backward_error_px": 0.00202827132306993,
+      "max_same_index_distance_to_prior_independent_detections_px": 0.16412754486622105,
+      "failed_original_ids": []
+    },
+    {
+      "from_snapshot": 3,
+      "to_snapshot": 4,
+      "original_ID_count": 63,
+      "forward_and_reverse_success_count": 63,
+      "max_forward_backward_error_px": 0.00047308398643508554,
+      "max_same_index_distance_to_prior_independent_detections_px": 0.1669873381908877,
+      "failed_original_ids": []
+    },
+    {
+      "from_snapshot": 4,
+      "to_snapshot": 5,
+      "original_ID_count": 63,
+      "forward_and_reverse_success_count": 63,
+      "max_forward_backward_error_px": 0.0018252598820254207,
+      "max_same_index_distance_to_prior_independent_detections_px": 0.39072869474230304,
+      "failed_original_ids": []
+    }
+  ],
+  "synthetic_checks": [
+    {
+      "label": "translation",
+      "synthetic_image_not_actual_motion": true,
+      "degrees": 0,
+      "translation_px": [
+        3,
+        -2
+      ],
+      "original_ID_count": 63,
+      "successful_inside_count": 63,
+      "max_known_transform_error_px": 0.001841262339332447,
+      "median_known_transform_error_px": 0.0007325808034764284
+    },
+    {
+      "label": "rotate_plus",
+      "synthetic_image_not_actual_motion": true,
+      "degrees": 3,
+      "translation_px": [
+        0,
+        0
+      ],
+      "original_ID_count": 63,
+      "successful_inside_count": 63,
+      "max_known_transform_error_px": 0.05554955661530449,
+      "median_known_transform_error_px": 0.02079902247483977
+    },
+    {
+      "label": "rotate_minus",
+      "synthetic_image_not_actual_motion": true,
+      "degrees": -3,
+      "translation_px": [
+        0,
+        0
+      ],
+      "original_ID_count": 63,
+      "successful_inside_count": 63,
+      "max_known_transform_error_px": 0.06942297323435444,
+      "median_known_transform_error_px": 0.019444153722537976
+    }
+  ],
+  "limitations": [
+    "Optical flow on repeated checker patterns may slip by a square; low forward/reverse error alone does not prove correct physical identity.",
+    "Synthetic image warps cannot reproduce real 3D motion, blur, lighting or occlusion.",
+    "If identity is lost, do not silently reset the board origin; record that sample as unassociated.",
+    "This does not establish board flatness, printed scale, camera intrinsics or hand-eye accuracy."
+  ],
+  "PnP_hand_eye_or_production_TF_changed": false
+}
