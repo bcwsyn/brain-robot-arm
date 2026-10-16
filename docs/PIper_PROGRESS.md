@@ -1,4 +1,14 @@
-## 本轮（2026-10-16 14:45）：原观测返回实测成功，相机透传已恢复；当前仅RGB零帧待自主隔离
+## 本轮（2026-10-16 14:56）：自主RGB分层隔离/一次精确USB恢复均未出完整帧，转宿主原生彩色画面对照
+
+- 起点`ba08b62`，承接用户自主恢复标定/仅必要手动时再叫。两技能指导窄层证据，不把深度正常当RGB正常、不再重复全预览或运动。末观测姿态保持，生产六SHA不改。无SDK运动、夹爪、硬件失能/ResetPiper、主从/固件、DDS/TF/门/VM兼容性改动。
+- 官方主源核对：[Humble cam2image](https://raw.githubusercontent.com/ros2/demos/humble/image_tools/src/cam2image.cpp)先open后设宽高，frequency仅发布定时器；[OpenCV4.5.4注册表](https://raw.githubusercontent.com/opencv/opencv/4.5.4/modules/videoio/src/videoio_registry.cpp)支持子进程后端优先级0。仅用于设计有区别的诊断，不当本机根因。原RGB-only8秒strace0帧，先GStreamer协商1632×1224YUYV5、清理后回退V4L2 EBUSY；仅子进程OPENCV_VIDEOIO_PRIORITY_GSTREAMER=0对照8秒同样0帧，实际V4L2协商320×240YUYV30、stream-on0而DQBUF EAGAIN。两源按界限SIGINT后−9收尾；清理后警告不冒称清理前故障起因，环境覆盖未写全局/生产。
+- 深度/ROS均关闭的原生`v4l2-ctl`对照：320×240YUYV、传感器真实5fps、最多3帧/8秒上限，STREAMON0但select timeout、文件0字节、进程rc0；不伪造黑图或当成功，原格式/帧率恢复读回。没有照明或目标识别问题的证据，因为连完整RGB帧都未交付；未填数据/修改内参。
+- 每轮源均退出后，仅已核实RGB2bc5:0557、serial CC1365304DG、sysfs2-2、/dev/bus/usb/002/005执行一次USBDEVFS_RESET ioctl0x5514，rc0；不是机械臂Reset。接口短暂消失后uvcvideo自动重绑。随后同一原生5fps仍select timeout/0字节，原模式恢复（本次重枚举后取帧前640×480MJPG25），禁止继续重复reset/同条件开流。未触CAN/深度/根Hub，原物理运动/控制源均未启动。
+- 最后只读4秒原SDK39fresh/高速100Hz，末六true99.6mm、q_mdeg[-8254,53595,-72228,-4126,69528,5120]不变。原整窗rc2/六角度波动0照存，不追采静止窗口；末值非持续监测。CAN TX始终9974、RX增长/ERROR-ACTIVE、无控制或相机源残留，video0/1及两Orbbec仍枚举，不能再说用户未连接。所有raw零字节也存SHA，不删除原件。
+- [camera_rgb_isolation01](evidence/piper_board_handeye_20261016/camera_rgb_isolation01/README.md)归档22原文件约352KB，含两strace、native原log/零文件、精确reset前后设备/CAN/内核、末SDK和代码。`package_all.py`rc0、逐件SHA回读/源AST/JSON/六生产SHA/限定diff核查；未部署任何生产修复。新图/板参考0、旧板2/10，Git仅本地、既有同步分叉/审查/发布范围阻断保持。
+- 下一真正需Windows宿主观察，不是重复VM菜单重连：仅把RGB2bc5:0557交还宿主，用Windows“相机”选择Dabai DC1验证实时彩色图，用户报有/无（错误可截图），关闭应用后只把RGB接回VM。深度/CAN/USB2兼容性/机械臂/棋盘格保持，不重启任何一方。guest无该宿主应用访问能力；这一步区分宿主原生取流与VM路径，尚不确诊硬件坏/USB2不兼容。结果回来后再分支，不继续已证无效的客体捕获/相机reset循环。
+
+## 历史本轮（2026-10-16 14:45）：原观测返回实测成功，相机透传已恢复；当前仅RGB零帧待自主隔离
 
 - 起点`4e44326`；用户批准自主沿原轨迹回观测/SEARCH前停、核相机，后续“已恢复相机两个链接”解除缺透传。按两repo技能复用原调用，仅新home根/元数据/冻结SHA路径及被动candump、前后状态记录；原全部控制helper AST与原launch字节一致，原driver/adapter/controller参数、限位/速度/TF/各门不动。健康UHCI/can0直接复用，不重做保持/J4/纯接收或恢复接口。
 - `/home/johnwick/brain_robot_logs/usb2_observe_20261016.CYJ9bI/executed_return.py`rc0，原stop_after_observe设/read true。原2点20秒轨迹，自实际q起16.565823秒→OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH→原恒定保持/软件disarm。实际最大关节误差.009297652rad≤原joint_position_tolerance=.01rad，是原到位容差而非恰好名义终点；标定须用实际q。bag831命令/6677反馈/2轨迹（1移动1保持），状态仅IDLE→PREPARE→STOPPED，无SEARCH/夹爪/抓取。

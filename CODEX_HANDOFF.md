@@ -1,4 +1,16 @@
-# 当前断点（2026-10-16 14:45）：已实际到观测并停在SEARCH前；相机已连接，继续自主处理RGB零帧
+# 当前断点（2026-10-16 14:56）：RGB原生也无完整帧；已做一次精确相机软件重置，需Windows宿主彩色画面对照
+
+原观测返回已在`ba08b62`留证，不能再要求返回、重做J4/保持/纯接收。相机两路已真实透传且当前仍枚举；深度346/info346正常，而RGB问题已独立于ROS/深度核对：原RGB-only8秒0帧、仅彩色子进程禁GStreamer8秒0帧，原生320×240YUYV传感器5fps stream-on成功但select timeout/0字节。只对2bc5:0557/serial CC1365304DG、/dev/bus/usb/002/005做过一次USBDEVFS_RESET（非ResetPiper），rc0后同一原生取帧仍0；重置时video节点短暂重建后已自动重绑，不再说设备未枚举。不要重复这些试验/重置；没有生产修复部署。
+
+所有临时native格式/帧率均恢复到各自取帧前值，最后读回640×480MJPG25（重枚举后默认/取帧前值），不擅当生产内参已匹配。原GStreamer警告及V4L2 EBUSY发生在有界SIGINT清理后，不能据此确诊原先重复占用或断言换后端即修复。未改全局环境、曝光/增益/TF/门/SDK/固件/VM设置，未调用机械臂使能/失能/复位/夹爪/运动。
+
+[完整RGB隔离证据](docs/evidence/piper_board_handeye_20261016/camera_rgb_isolation01/README.md)22原件SHA归档；末所有控制/采集源退出、CAN仍UHCI ERROR-ACTIVE/RX增长/TX9974未增，末4秒被动SDK39fresh、六true/99.6mm、q_mdeg[-8254,53595,-72228,-4126,69528,5120]不变，原全窗rc2/角度波动0如实存，不为诊断追采静止子窗。六生产SHA不变，未有新RGB/板连续参考或拟合，旧板2/10。
+
+现在只需用户宿主画面对照：VMware仅将RGB2bc5:0557从VM交还Windows→打开Windows“相机”选择Dabai DC1，报告有/无实时彩色图（报错可截图）→关闭相机应用，再只把RGB接回VM。保持深度/CAN、当前USB2兼容性、机械臂及棋盘格不动，不重启机械臂或VM。guest无法执行该Windows应用步骤，不能猜硬件坏或USB2一定不兼容；不继续同条件客体循环。收到宿主结果再据事实选路径，原9+1路线不另造/不混旧ID。
+
+本轮仅本地Git/未同步GitHub，既有分叉/积压历史审查及共享main发布范围阻断不变。下方“自主隔离进行中”已历史。
+
+## 历史断点（2026-10-16 14:45）：已实际到观测并停在SEARCH前；相机已连接，继续自主处理RGB零帧
 
 用户批准自主原观测返回/相机核查，随后明确恢复相机两路。原driver/adapter/controller沿原2点20秒轨迹，16.565823秒达到原0.01rad判据（最大偏差.009297652rad）→OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH。831命令/6677反馈，第二条轨迹仅恒定保持、0夹爪/未SEARCH；末SDK六true99.6mm、39fresh/3.812937秒原静止子窗通过，所有自有源退，无硬件Disable/Reset。原启动层exit0但MoveIt SIGINT析构−11、depth_probe重复shutdown退出1，详原日志，非本次运动失败。[观测完整证据](docs/evidence/piper_board_handeye_20261016/usb2_observe01/README.md)，23原件SHA归档，六生产源不变。
 

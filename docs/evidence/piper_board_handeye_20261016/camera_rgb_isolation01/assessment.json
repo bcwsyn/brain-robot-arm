@@ -1,0 +1,213 @@
+{
+  "baseline_commit": "ba08b62",
+  "operator_instruction": "自主完成，仅真正需要实机操作时再叫用户",
+  "original_RGB_only": {
+    "requested_s": 8,
+    "frames": 0,
+    "source_cleanup_exit_code": -9
+  },
+  "GStreamer_disabled_only_in_capture_process": {
+    "requested_s": 8,
+    "frames": 0,
+    "source_cleanup_exit_code": -9,
+    "production_or_shell_environment_changed": false
+  },
+  "native_YUYV_320x240_sensor_5fps": {
+    "raw_bytes": 0,
+    "capture_rc": 0,
+    "mode_restored": true
+  },
+  "one_exact_RGB_reset": {
+    "target": "/dev/bus/usb/002/005",
+    "vendor_product": "2bc5:0557",
+    "serial": "CC1365304DG",
+    "ioctl_rc": 0,
+    "CAN_device_touched": false
+  },
+  "native_after_reset": {
+    "raw_bytes": 0,
+    "capture_rc": 0,
+    "mode_restored": true
+  },
+  "empty_stream_file_is_not_a_valid_black_image_or_success": true,
+  "state_of_knowledge": "The guest enumerates RGB correctly but obtains no complete frames through original ROS, V4L2-preferred ROS, or native low-rate UVC, with depth stopped. Backend/ROS and sensor-rate alternatives did not restore frames. Exact RGB USB reset returned success but did not fix this.",
+  "cleanup_warning_caveat": "Original GStreamer warnings and V4L2 EBUSY were logged after the bounded SIGINT cleanup; do not claim they prove a pre-existing conflict or that GStreamer alone is the root cause.",
+  "official_primary_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/ros2/demos/humble/image_tools/src/cam2image.cpp",
+      "fact": "cap.open precedes width/height configuration; frequency governs publication timer, not a CAP_PROP_FPS setter."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/opencv/opencv/4.5.4/modules/videoio/src/videoio_registry.cpp",
+      "fact": "Per-backend priority zero disables that backend; used only in the bounded diagnostic child, and did not restore frames."
+    }
+  ],
+  "production_six_SHA_unchanged": true,
+  "CAN_final": {
+    "ifindex": 7,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "1-2.1:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 55579948,
+        "packets": 6948928,
+        "errors": 0,
+        "dropped": 0,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 9974,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "final_passive_SDK_exit_code": 2,
+  "final_passive_SDK_whole_quality": {
+    "samples": 40,
+    "fresh_samples": 39,
+    "span_s": 3.8135247230529785,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "last_fresh_SDK_not_continuous_monitoring": {
+    "epoch": 1792133682.695089,
+    "sdk_receipt_stamps": {
+      "joint": "1792133682.6930883",
+      "high": "1792133682.6940215",
+      "low": "1792133682.6937993",
+      "gripper": "1792133682.6933305"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4126,
+      69528,
+      5120
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 13,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "all_control_and_capture_sources_exited": true,
+  "robot_TX_stayed_9974": true,
+  "final_UVC_mode_readback": "Format Video Capture:\n\tWidth/Height      : 640/480\n\tPixel Format      : 'MJPG' (Motion-JPEG)\n\tField             : None\n\tBytes per Line    : 0\n\tSize Image        : 614989\n\tColorspace        : sRGB\n\tTransfer Function : Default (maps to sRGB)\n\tYCbCr/HSV Encoding: Default (maps to ITU-R 601)\n\tQuantization      : Default (maps to Full Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 25.000 (25/1)\n\tRead buffers     : 0\n",
+  "no_robot_enable_disable_reset_gripper_or_motion_after_observation": true,
+  "camera_exposure_gains_TF_detector_gates_or_VM_compatibility_changed": false,
+  "raw_data_or_firmware_deleted_or_modified": false,
+  "next_required_external_observation": "On Windows host, disconnect only Orbbec/Dabai RGB 2bc5:0557 from this VM to host, open Windows Camera and select Dabai DC1, report whether a live color image appears, then close the app and reconnect only RGB to this VM. Leave depth, CAN, USB compatibility, arm and board unchanged.",
+  "why_external": "Guest-side stream alternatives and one precise reset did not restore frames; native host RGB reception is not observable or controllable from this Ubuntu session. Host test distinguishes camera/host reception from VM passthrough without guessing a new controller setting.",
+  "not_established": "No proof of hardware failure or USB2 incompatibility, and no proof which host/guest/UVC transport layer loses image data. Do not repeatedly reset or reopen identical captures.",
+  "calibration": "Observation return succeeded; no new images/board reference, old candidates 2/10 unchanged. Production TF/approach/gates remain frozen.",
+  "Git_sync": "Local only; existing divergent-main/history-review/publication-scope blocker unchanged."
+}

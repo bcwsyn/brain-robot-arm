@@ -1,0 +1,110 @@
+{
+  "baseline_commit": "ba08b62",
+  "scope": "Native UVC read-frame diagnostic only; no ROS, depth, motion or exposure changes",
+  "commands": [
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "rc": 0,
+      "stdout": "[{\"ifindex\":7,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"1-2.1:1.0\",\"stats64\":{\"rx\":{\"bytes\":50658100,\"packets\":6333570,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":9974,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": "",
+      "epoch": 1792133422.178734
+    },
+    {
+      "argv": [
+        "v4l2-ctl",
+        "-d",
+        "/dev/video0",
+        "--get-fmt-video",
+        "--get-parm"
+      ],
+      "rc": 0,
+      "stdout": "Format Video Capture:\n\tWidth/Height      : 320/240\n\tPixel Format      : 'YUYV' (YUYV 4:2:2)\n\tField             : None\n\tBytes per Line    : 640\n\tSize Image        : 153600\n\tColorspace        : sRGB\n\tTransfer Function : Rec. 709\n\tYCbCr/HSV Encoding: ITU-R 601\n\tQuantization      : Default (maps to Limited Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 30.000 (30/1)\n\tRead buffers     : 0\n",
+      "stderr": "",
+      "epoch": 1792133422.1871128
+    },
+    {
+      "argv": [
+        "v4l2-ctl",
+        "-d",
+        "/dev/video0",
+        "--get-fmt-video",
+        "--get-parm"
+      ],
+      "rc": 0,
+      "stdout": "Format Video Capture:\n\tWidth/Height      : 320/240\n\tPixel Format      : 'YUYV' (YUYV 4:2:2)\n\tField             : None\n\tBytes per Line    : 640\n\tSize Image        : 153600\n\tColorspace        : sRGB\n\tTransfer Function : Rec. 709\n\tYCbCr/HSV Encoding: ITU-R 601\n\tQuantization      : Default (maps to Limited Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 5.000 (5/1)\n\tRead buffers     : 0\n",
+      "stderr": "",
+      "epoch": 1792133424.9899936
+    },
+    {
+      "argv": [
+        "v4l2-ctl",
+        "-d",
+        "/dev/video0",
+        "--set-fmt-video=width=320,height=240,pixelformat=YUYV",
+        "--set-parm=30.0"
+      ],
+      "rc": 0,
+      "stdout": "Frame rate set to 30.000 fps\n",
+      "stderr": "",
+      "epoch": 1792133425.012695
+    },
+    {
+      "argv": [
+        "v4l2-ctl",
+        "-d",
+        "/dev/video0",
+        "--get-fmt-video",
+        "--get-parm"
+      ],
+      "rc": 0,
+      "stdout": "Format Video Capture:\n\tWidth/Height      : 320/240\n\tPixel Format      : 'YUYV' (YUYV 4:2:2)\n\tField             : None\n\tBytes per Line    : 640\n\tSize Image        : 153600\n\tColorspace        : sRGB\n\tTransfer Function : Rec. 709\n\tYCbCr/HSV Encoding: ITU-R 601\n\tQuantization      : Default (maps to Limited Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 30.000 (30/1)\n\tRead buffers     : 0\n",
+      "stderr": "",
+      "epoch": 1792133425.0191433
+    },
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "rc": 0,
+      "stdout": "[{\"ifindex\":7,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"1-2.1:1.0\",\"stats64\":{\"rx\":{\"bytes\":50701228,\"packets\":6338962,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":9974,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": "",
+      "epoch": 1792133425.0240524
+    }
+  ],
+  "camera_mode_restored": true,
+  "error": null,
+  "capture_argv": [
+    "v4l2-ctl",
+    "-d",
+    "/dev/video0",
+    "--set-fmt-video=width=320,height=240,pixelformat=YUYV",
+    "--set-parm=5",
+    "--verbose",
+    "--stream-mmap=3",
+    "--stream-poll",
+    "--stream-count=3",
+    "--stream-to=/home/johnwick/brain_robot_logs/uvc_low_rate_20261016.OPAuCw/frames.YUYV"
+  ],
+  "capture_elapsed_s": 2.7929728950002755,
+  "capture_rc": 0,
+  "configured_mode_readback": "Format Video Capture:\n\tWidth/Height      : 320/240\n\tPixel Format      : 'YUYV' (YUYV 4:2:2)\n\tField             : None\n\tBytes per Line    : 640\n\tSize Image        : 153600\n\tColorspace        : sRGB\n\tTransfer Function : Rec. 709\n\tYCbCr/HSV Encoding: ITU-R 601\n\tQuantization      : Default (maps to Limited Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 5.000 (5/1)\n\tRead buffers     : 0\n",
+  "raw_bytes": 0,
+  "complete_320x240_YUYV_frames": 0,
+  "restored_mode_readback": "Format Video Capture:\n\tWidth/Height      : 320/240\n\tPixel Format      : 'YUYV' (YUYV 4:2:2)\n\tField             : None\n\tBytes per Line    : 640\n\tSize Image        : 153600\n\tColorspace        : sRGB\n\tTransfer Function : Rec. 709\n\tYCbCr/HSV Encoding: ITU-R 601\n\tQuantization      : Default (maps to Limited Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 30.000 (30/1)\n\tRead buffers     : 0\n",
+  "TX_unchanged": true,
+  "all_owned_sources_exited": true
+}
