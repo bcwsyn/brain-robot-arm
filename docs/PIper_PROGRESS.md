@@ -1,4 +1,15 @@
-## 本轮（2026-10-16 13:03）：宿主重连后原观测续跑仍停流；非法echo单次限定恢复失败，不再循环
+## 本轮（2026-10-16 13:26）：用户换口后原观测仍停流，无新echo；等待宿主日志，不再同条件恢复/运动
+
+- 本轮起点22d8487。用户“已完成”承接换另一宿主USB直连口并重连，真实新if6/USB003-012、初DOWN/STOPPED；只固定1Mbps/.75/queue1000/UP，全成功，无USB reset/模块重载。guest仍虚拟xHCI/3-1.2仅说明虚拟路径，不否认用户物理换口，也不证明宿主控制器独立。
+- runtime `/home/johnwick/brain_robot_logs/board_port_reconnect_20261016.FCh8CT`，`check_port_reconnect.py`rc0，五秒纯接收12111帧、逐秒2427/2421/2421/2421/2421/TX0。原观测调用只ROOT/LAUNCH重定位，原十秒SDK整窗速度rc2照存、[10:45]35fresh/3.410390秒静止子窗通过；六true/99.6mm、高速100Hz，新q[-.143982776,.812715960,-1.095762304,-.043871660,1.095204096,.081585588]rad，不复用旧近零静止证书或旧q。
+- 原driver auto_enable=false/原launch减grasp executor，原stop_after_observe设/read true、enable_srv true/adapter arm、首持位与真实q完全相等。原4点20秒准备轨迹被接受，start epoch1792128189.132959；最后反馈1792128203.642230（14.509271秒），q[-.143982776,.901697804,-1.214555944,-.064403248,1.181011132,.085754704]rad，最大离目标.054686940rad，未OBSERVE到位。driver接收丢失停输出、adapter原25秒超时软件disarm/FAULT；包装识别PIPER_ADAPTER_DISARMED后stop/disarm退出，末rc2/AssertionError只是未完成判定，不是首因。
+- bag1978关节命令/4808反馈/3轨迹（1条4点运动，故障及USER_STOP各一条2点恒定保持）/0夹爪、输出无夹爪字段。自有源全退出、原退出码完整保存；没有硬件Disable/ResetPiper/MasterSlave/固件、开闭、相机、SEARCH或新板采样。六生产SHA/TF/门/限位保持冻结，旧板仍2/10，本轮没有图像不能声称视觉/手眼成功。
+- 复用已有只读`capture_post_reconnect_failure.py`，独立三秒收0帧/RX固定156995/TX2101，当前can0仍UP/ERROR-ACTIVE、总线错误0，非上轮DOWN/ENODEV。前后内核对照**无新增非法echo**；旧12:59:08 echo343保留但不当本次新报错/根因。USB原on/active/autosuspend=-1000，不修改休眠；本轮没开相机，不能归因本次点云/带宽。无新echo例外，不再bounce/reset/重载或再次运动；未解释适配器/宿主透传/guest/机械臂侧发送中谁导致停流，不归责用户或断言硬件坏。当前实际q/使能未知，最后六true不能当现在。
+- 只读及离线包[board_resume03_port_reconnect](evidence/piper_board_handeye_20261016/board_resume03_port_reconnect/README.md)：23原件/398744字节，逐成员和归档SHA回读通过，Python AST/六生产源SHA通过；没有生产改动无需构建/重跑106旧测试。两repo技能约束实际路径、小范围调用、原始证据保留，不顺带开发生产或修改旧原件；root约34GB可用，无删除/清理。
+- 下一需要本次13:22—13:25时段宿主vmware.log（可直接作为附件），必要时USB控制器设置截图；guest无该宿主日志路径，先只读分辨透传问题，再决定不同虚拟控制器隔离实验。不要再让用户重复相同换口/菜单重连/机械臂断电/复位/重摆/挪板；如需VM停机改控制器须另安排支撑与停机，不自动做。宿主日志先审个人路径/隐私，不能未审直接公开入Git；当前只等这项新证据，不启动运动/新板采样。
+- Git：origin项目https://github.com/bcwsyn/brain-robot-arm.git/main，缓存HEAD...origin/main=64/11分叉，仅缓存非实时远端验证；完整积压历史推送审查未完成，既有共享main写入范围拒绝保留，本轮不推送/强推/自动合并。只暂存四规范文档与本次独立证据，用户vendor/sim/reference/DEB改动不纳入。**仅本地提交，未同步GitHub**，同步阻断不当实体停流原因。
+
+## 历史本轮（2026-10-16 13:03）：宿主重连后原观测续跑仍停流；非法echo单次限定恢复失败，不再循环
 
 - 承接用户已完成宿主USB-CAN重连，本轮if5/RX恢复，不把旧故障当当前。新原10秒SDK整窗rc2保留；原summarize连续[0:82]82fresh/8.129435秒/qspread0静止通过，未用近零旧证书代替中途真实姿态，未降阈值。真实中途起点六true/99.6mm；生产六SHA与81f8a7e一致。
 - 原driver/adapter/controller，stop_after_observe设/read true/首持位与实际q相等，发布8点26.510519秒准备轨迹（原bag精确值，更正最初手录26.535946）。start1792126734.308689，最后反馈1792126752.676282（18.367593秒），q[-.143982776,.811390216,-1.093407364,-.043871660,1.091157088,.081585588]rad，尚未到观测，最大落点误差约.17584rad。driver报feedback lost并停输出、adapter原25秒超时disarm/控制器FAULT；包装本次识别PIPER_ADAPTER_DISARMED，立即stop/disarm收尾，不再误等305秒。末rc2/AssertionError为未到位判定，非原始根因。

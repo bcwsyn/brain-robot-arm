@@ -1,0 +1,233 @@
+{
+  "operator_confirmation": {
+    "operator_quote": "已完成",
+    "context": "Confirmed requested host physical USB port change/reconnect; continue previously authorized observation and board workflow",
+    "scope": "Original current-to-fixed-observe, stop before SEARCH. Original approved board9fit1heldout only after actual observe and fresh image checks.",
+    "not_authorized": "Production TF, grasp/search/detection logic or thresholds, limits, firmware, reset, hardware disable",
+    "invocation_change": "ROOT/LAUNCH paths only; original SDK static check and fault recognition retained",
+    "source_reference": "/mnt/hgfs/ub/docs/evidence/piper_board_handeye_20261016/board_resume02_host_reconnect/observe_after_host_reconnect/executed_return.py",
+    "reference_SHA256": "0972256dff4aefb39994ea70c6fc4af6d13ecdf1f6ed970f7b3326541e635b87",
+    "executed_SHA256": "900055547b10ce4d7f79a08533699aba4e91b2d2a44122867f52e409b65170f2"
+  },
+  "new_interface": 6,
+  "USB_device_observed": "003/012",
+  "user_reported_physical_port_change": true,
+  "guest_cannot_verify_host_physical_controller_independence": true,
+  "initial_passive_frames_5s": 12111,
+  "initial_per_second_frames": [
+    2427,
+    2421,
+    2421,
+    2421,
+    2421
+  ],
+  "initial_TX_packets": 0,
+  "SDK_whole_window_exit": 2,
+  "original_passing_static_window": {
+    "indices": [
+      10,
+      45
+    ],
+    "quality": {
+      "samples": 35,
+      "fresh_samples": 35,
+      "span_s": 3.4103899002075195,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "initial_actual_SDK": {
+    "epoch": 1792128176.399191,
+    "sdk_receipt_stamps": {
+      "joint": "1792128176.3985605",
+      "high": "1792128176.3990498",
+      "low": "1792128176.389634",
+      "gripper": "1792128176.3986728"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      46590,
+      -62816,
+      -2515,
+      62784,
+      4677
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.8127159600000001,
+      -1.0957623040000002,
+      -0.04387166000000001,
+      1.095204096,
+      0.081585588
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 0,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "observed_goal_reached": false,
+  "board_sampling_started": false,
+  "bag_counts": {
+    "/brain_robot_grasp/arm_trajectory": 3,
+    "/brain_robot_visual_control/reason": 4,
+    "/brain_robot_visual_control/state": 4,
+    "/joint_states_feedback": 4808,
+    "/joint_commands": 1978,
+    "/brain_robot_control/adapter_armed": 3
+  },
+  "trajectories": [
+    {
+      "epoch": 1792128189.132959,
+      "points": 4,
+      "start_q": [
+        -0.143982776,
+        0.8127159600000001,
+        -1.0957623040000002,
+        -0.04387166000000001,
+        1.095204096,
+        0.081585588
+      ],
+      "goal_q": [
+        -0.141941828,
+        0.942464432,
+        -1.269242884,
+        -0.074433548,
+        1.22108,
+        0.089435388
+      ],
+      "duration_s": 20.0
+    },
+    {
+      "epoch": 1792128228.6564956,
+      "points": 2,
+      "start_q": [
+        -0.143982776,
+        0.9016978040000001,
+        -1.2145559440000002,
+        -0.06440324800000001,
+        1.181011132,
+        0.08575470400000001
+      ],
+      "goal_q": [
+        -0.143982776,
+        0.9016978040000001,
+        -1.2145559440000002,
+        -0.06440324800000001,
+        1.181011132,
+        0.08575470400000001
+      ],
+      "duration_s": 0.1
+    },
+    {
+      "epoch": 1792128228.6929252,
+      "points": 2,
+      "start_q": [
+        -0.143982776,
+        0.9016978040000001,
+        -1.2145559440000002,
+        -0.06440324800000001,
+        1.181011132,
+        0.08575470400000001
+      ],
+      "goal_q": [
+        -0.143982776,
+        0.9016978040000001,
+        -1.2145559440000002,
+        -0.06440324800000001,
+        1.181011132,
+        0.08575470400000001
+      ],
+      "duration_s": 0.1
+    }
+  ],
+  "reasons": [
+    {
+      "epoch": 1792128178.829813,
+      "value": "WAITING_FOR_START"
+    },
+    {
+      "epoch": 1792128189.132238,
+      "value": "START_AUTHORIZED"
+    },
+    {
+      "epoch": 1792128228.6565077,
+      "value": "PIPER_ADAPTER_DISARMED"
+    },
+    {
+      "epoch": 1792128228.6934369,
+      "value": "USER_STOP"
+    }
+  ],
+  "last_received_feedback_NOT_current_pose": {
+    "bag_epoch": 1792128203.6422298,
+    "source_stamp_ns": "1792128203641849039",
+    "q": [
+      -0.143982776,
+      0.9016978040000001,
+      -1.2145559440000002,
+      -0.06440324800000001,
+      1.181011132,
+      0.08575470400000001
+    ]
+  },
+  "last_feedback_after_trajectory_start_s": 14.509270906448364,
+  "maximum_goal_error_at_last_received_feedback_rad": 0.05468693999999985,
+  "first_command_matches_actual_arm_start": true,
+  "all_owned_sources_exited": true,
+  "wrapper_error_is_failed_completion_not_root_cause": "AssertionError()",
+  "new_kernel_echo_events_during_this_attempt": [],
+  "no_new_echo_recovery_exception_used": true,
+  "no_USB_reset_module_reload_or_post_fault_CAN_bounce": true,
+  "post_fault_new_CAN_frames_3s": 0,
+  "post_fault_CAN_state": "ERROR-ACTIVE",
+  "post_fault_RX_fixed": 156995,
+  "post_fault_TX_fixed": 2101,
+  "current_physical_pose_or_enable_status_known": false,
+  "no_hardware_disable_reset_gripper_firmware_or_TF_change": true,
+  "camera_was_not_started": true,
+  "production_six_SHA_unchanged": true,
+  "old_board_candidates": 2,
+  "target_new_cohort": 10,
+  "established": "A fresh interface and user-reported host port change restored reception; original observation again lost raw CAN reception while commands were active. This attempt has no newly logged illegal echo.",
+  "not_established": "No proof which of adapter, host passthrough, guest transport or robot-side transmitter caused the silence. Prior echo343 is historical, not a newly reproduced error. Guest virtual USB path remains xHCI; this does not disprove the user changed a physical port.",
+  "next": "No more same-condition motion or reconnect. Need host vmware.log for this interval, optionally USB-controller settings screenshot, before deciding a distinct host-side experiment. No arm movement, reset, disable or power cycle requested.",
+  "Git_sync": {
+    "target": "origin/main https://github.com/bcwsyn/brain-robot-arm.git",
+    "cached_ahead_behind": "64\t11",
+    "live_remote_not_verified_this_round": true,
+    "full_pending_history_review_incomplete": true,
+    "prior_shared_main_write_authorization_denial_preserved": true,
+    "push_attempted": false,
+    "status": "Local only, not synchronized to GitHub; do not force or auto-merge divergent history."
+  }
+}
