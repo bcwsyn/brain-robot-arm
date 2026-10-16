@@ -1,0 +1,197 @@
+{
+  "approved_proposal_commit": "121d1ef",
+  "current_start_rad": [
+    -0.143982776,
+    0.9349111800000001,
+    -1.259945232,
+    -0.07197394400000001,
+    1.212846432,
+    0.08931328000000001
+  ],
+  "SDK_original_static_slice": {
+    "indices": [
+      1,
+      40
+    ],
+    "quality": {
+      "samples": 39,
+      "fresh_samples": 39,
+      "span_s": 3.8146843910217285,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "last_fresh_SDK": {
+    "epoch": 1792134982.8018522,
+    "sdk_receipt_stamps": {
+      "joint": "1792134982.7978516",
+      "high": "1792134982.7987394",
+      "low": "1792134982.7985327",
+      "gripper": "1792134982.7979448"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4126,
+      69528,
+      5120
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -2,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "joint_min_rad": [
+    -1.5,
+    -0.3,
+    -1.4,
+    -0.8,
+    -1.2,
+    -3.14159265359
+  ],
+  "joint_max_rad": [
+    1.5,
+    3.14159265359,
+    0.4,
+    0.8,
+    1.22108,
+    3.14159265359
+  ],
+  "candidate_goals_rad": {
+    "J4_plus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      0.03274581111965977,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "J4_minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.1766936991196598,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "J6_plus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.2289396201595464
+    ],
+    "J6_minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      -0.050313060159546355
+    ],
+    "J5_minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.1430332619202268,
+      0.08931328000000001
+    ],
+    "J4plus_J5minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      0.03274581111965977,
+      1.1430332619202268,
+      0.08931328000000001
+    ],
+    "J4minus_J5minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.1766936991196598,
+      1.1430332619202268,
+      0.08931328000000001
+    ],
+    "J5minus_J6plus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.0732200918404537,
+      0.2289396201595464
+    ],
+    "combined_holdout": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.00216077392022683,
+      1.1081266768803404,
+      -0.015406475119659771
+    ]
+  },
+  "MoveIt_scaling": [
+    0.02,
+    0.02
+  ],
+  "adapter_max_velocity_rad_s": 0.189,
+  "original_goal_tolerance_rad": 0.04,
+  "trajectory_durations_s": [
+    4.576456164,
+    4.576456164,
+    5.284436395,
+    5.284436395,
+    3.73666081,
+    4.576456164,
+    4.576456164,
+    5.284436395,
+    4.576456164
+  ],
+  "scene": {
+    "world_ids": [],
+    "octomap_bytes": 0,
+    "physical_clearance_NOT_proven_by_empty_world": true
+  },
+  "return": "Each original candidate returns to this fresh center; no gripper/SEARCH/grasp.",
+  "stop": "Original feedback/limits/collision + continuous fixed board IDs + original duration+25 timeout; software disarm, never hardware Disable."
+}

@@ -1,0 +1,177 @@
+{
+  "approved_proposal_commit": "121d1ef",
+  "current_start_rad": [
+    -0.143982776,
+    0.9349111800000001,
+    -1.259945232,
+    -0.071659952,
+    1.2132650880000002,
+    0.089522608
+  ],
+  "SDK_original_static_slice": null,
+  "last_fresh_SDK": {
+    "epoch": 1792135484.2281303,
+    "sdk_receipt_stamps": {
+      "joint": "1792135484.2251012",
+      "high": "1792135484.2260487",
+      "low": "1792135484.2255733",
+      "gripper": "1792135484.225199"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4108,
+      69552,
+      5132
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071659952,
+      1.2132650880000002,
+      0.089522608
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 7,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "joint_min_rad": [
+    -1.5,
+    -0.3,
+    -1.4,
+    -0.8,
+    -1.2,
+    -3.14159265359
+  ],
+  "joint_max_rad": [
+    1.5,
+    3.14159265359,
+    0.4,
+    0.8,
+    1.22108,
+    3.14159265359
+  ],
+  "candidate_goals_rad": {
+    "J4_plus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      0.03305980311965978,
+      1.2132650880000002,
+      0.089522608
+    ],
+    "J4_minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.17637970711965978,
+      1.2132650880000002,
+      0.089522608
+    ],
+    "J6_plus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071659952,
+      1.2132650880000002,
+      0.22914894815954637
+    ],
+    "J6_minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071659952,
+      1.2132650880000002,
+      -0.05010373215954636
+    ],
+    "J5_minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071659952,
+      1.143451917920227,
+      0.089522608
+    ],
+    "J4plus_J5minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      0.03305980311965978,
+      1.143451917920227,
+      0.089522608
+    ],
+    "J4minus_J5minus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.17637970711965978,
+      1.143451917920227,
+      0.089522608
+    ],
+    "J5minus_J6plus": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071659952,
+      1.0736387478404539,
+      0.22914894815954637
+    ],
+    "combined_holdout": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.001846781920226817,
+      1.1085453328803405,
+      -0.015197147119659776
+    ]
+  },
+  "MoveIt_scaling": [
+    0.02,
+    0.02
+  ],
+  "adapter_max_velocity_rad_s": 0.189,
+  "original_goal_tolerance_rad": 0.04,
+  "trajectory_durations_s": [
+    4.576456164,
+    4.576456164,
+    5.284436395,
+    5.284436395,
+    3.73666081,
+    4.576456164,
+    4.576456164,
+    5.284436395,
+    4.576456164
+  ],
+  "scene": {
+    "world_ids": [],
+    "octomap_bytes": 0,
+    "physical_clearance_NOT_proven_by_empty_world": true
+  },
+  "return": "Each original candidate returns to this fresh center; no gripper/SEARCH/grasp.",
+  "stop": "Original feedback/limits/collision + continuous fixed board IDs + original duration+25 timeout; software disarm, never hardware Disable."
+}

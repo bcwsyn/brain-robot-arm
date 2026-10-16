@@ -1,0 +1,84 @@
+{
+  "baseline_commit": "8744c14",
+  "epoch": 1792134978.6877453,
+  "CAN_recovery": false,
+  "USB_reset": false,
+  "gripper_commands": 0,
+  "wrapper_added_static_speed_admission_removed": true,
+  "SDK_quality_not_relabelled": true,
+  "original_sampler_helpers_or_production_gates_changed": false,
+  "previous_wrapper_failure": "/home/johnwick/brain_robot_logs/board_usb31_sampling_20261016.9ECrHF/invocation.json",
+  "SDK_before_rc": 0,
+  "original_static_slice": {
+    "indices": [
+      1,
+      40
+    ],
+    "quality": {
+      "samples": 39,
+      "fresh_samples": 39,
+      "span_s": 3.8146843910217285,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "last_fresh_SDK": {
+    "epoch": 1792134982.8018522,
+    "sdk_receipt_stamps": {
+      "joint": "1792134982.7978516",
+      "high": "1792134982.7987394",
+      "low": "1792134982.7985327",
+      "gripper": "1792134982.7979448"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4126,
+      69528,
+      5120
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -2,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  }
+}

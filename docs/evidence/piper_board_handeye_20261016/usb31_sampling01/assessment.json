@@ -1,0 +1,3393 @@
+{
+  "baseline_commit": "8744c14",
+  "runs": [
+    {
+      "label": "wrapper_preflight",
+      "root": "/home/johnwick/brain_robot_logs/board_usb31_sampling_20261016.9ECrHF",
+      "outer": {
+        "baseline_commit": "8744c14",
+        "epoch": 1792134849.6049516,
+        "CAN_recovery": false,
+        "USB_reset": false,
+        "gripper_commands": 0,
+        "SDK_before_rc": 2,
+        "original_static_slice": null,
+        "error": "RuntimeError('Original SDK static condition not met; no control startup')",
+        "all_outer_sources_exited": true,
+        "end_epoch": 1792134860.1373694
+      },
+      "sampler_error": null,
+      "completed_9fit_1heldout": false,
+      "sample_labels": [],
+      "raw_RGB_frames": 0,
+      "final_received_feedback": null,
+      "CAN": {
+        "recorded_frames": 25042,
+        "span_s": 10.34040379524231,
+        "max_timestamp_gap_s": 0.015114068984985352,
+        "gaps_over_half_second": 0,
+        "initial_stats": {
+          "rx": {
+            "bytes": 8328264,
+            "packets": 1041248,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 0,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        },
+        "end_stats": {
+          "rx": {
+            "bytes": 8531636,
+            "packets": 1066675,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 0,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "kernel_new_USB_CAN_lines": [],
+      "bag_audit": null
+    },
+    {
+      "label": "full30",
+      "root": "/home/johnwick/brain_robot_logs/board_usb31_original_20261016.G2lzeV",
+      "outer": {
+        "baseline_commit": "8744c14",
+        "epoch": 1792134978.6877453,
+        "CAN_recovery": false,
+        "USB_reset": false,
+        "gripper_commands": 0,
+        "wrapper_added_static_speed_admission_removed": true,
+        "SDK_quality_not_relabelled": true,
+        "original_sampler_helpers_or_production_gates_changed": false,
+        "previous_wrapper_failure": "/home/johnwick/brain_robot_logs/board_usb31_sampling_20261016.9ECrHF/invocation.json",
+        "SDK_before_rc": 0,
+        "original_static_slice": {
+          "indices": [
+            1,
+            40
+          ],
+          "quality": {
+            "samples": 39,
+            "fresh_samples": 39,
+            "span_s": 3.8146843910217285,
+            "static_three_seconds_and_thirty_samples": true,
+            "freshness_not_per_motor_verified": true,
+            "q_spread_mdeg": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "last_fresh_SDK": {
+          "epoch": 1792134982.8018522,
+          "sdk_receipt_stamps": {
+            "joint": "1792134982.7978516",
+            "high": "1792134982.7987394",
+            "low": "1792134982.7985327",
+            "gripper": "1792134982.7979448"
+          },
+          "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+          "high_hz": 100.0,
+          "joint_hz": 200.0,
+          "q_mdeg": [
+            -8254,
+            53595,
+            -72228,
+            -4126,
+            69528,
+            5120
+          ],
+          "q_driver_rad": [
+            -0.143982776,
+            0.9349111800000001,
+            -1.259945232,
+            -0.07197394400000001,
+            1.212846432,
+            0.08931328000000001
+          ],
+          "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+          "speed_millirad_s": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "gripper_raw_micrometers": 99600,
+          "gripper_mm": 99.6,
+          "gripper_effort_raw": -2,
+          "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+          "fresh_after_passive_connection": true,
+          "physical_contact_verified_by_sdk": false
+        },
+        "sampler_rc": 2,
+        "all_outer_sources_exited": true,
+        "end_epoch": 1792135116.55715
+      },
+      "sampler_error": "RuntimeError(\"Board identity/capture: ValueError('Interior optical-flow inconsistency')\")",
+      "completed_9fit_1heldout": false,
+      "sample_labels": [
+        "start",
+        "J4_plus",
+        "J4_minus",
+        "J6_plus",
+        "J6_minus",
+        "J5_minus",
+        "J4plus_J5minus"
+      ],
+      "raw_RGB_frames": 577,
+      "final_received_feedback": {
+        "epoch": 1792135111.613137,
+        "stamp_ns": 1792135111611544191,
+        "q": [
+          -0.143982776,
+          0.9349111800000001,
+          -1.259945232,
+          -0.150785936,
+          1.160863312,
+          0.089522608
+        ],
+        "gap_m": 0.0996
+      },
+      "CAN": {
+        "recorded_frames": 330060,
+        "span_s": 137.7544379234314,
+        "max_timestamp_gap_s": 0.3859701156616211,
+        "gaps_over_half_second": 0,
+        "initial_stats": {
+          "rx": {
+            "bytes": 10827888,
+            "packets": 1353766,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 0,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        },
+        "end_stats": {
+          "rx": {
+            "bytes": 13469496,
+            "packets": 1684034,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 16618,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "kernel_new_USB_CAN_lines": [],
+      "bag_audit": {
+        "offline_only": true,
+        "root": "/home/johnwick/brain_robot_logs/board_usb31_original_20261016.G2lzeV",
+        "message_counts": {
+          "/brain_robot_grasp/arm_trajectory": 13,
+          "/brain_robot_control/adapter_armed": 2,
+          "/joint_commands": 5534,
+          "/joint_states_feedback": 24673
+        },
+        "trajectory_count": 13,
+        "gripper_requests": 0,
+        "command_frames_with_gripper_field": 0,
+        "windows": [
+          {
+            "trajectory_index": 0,
+            "duration_s": 10.06989312171936,
+            "published_trajectory": {
+              "epoch": 1792135000.93029,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03274581111965977,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 504,
+            "feedback_count": 2014,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.0719650181340001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.03274581111965977,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.0331436,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071884982309,
+              0.03274581111965977
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07197394400000001,
+              0.0331436
+            ]
+          },
+          {
+            "trajectory_index": 1,
+            "duration_s": 7.545357704162598,
+            "published_trajectory": {
+              "epoch": 1792135011.0146844,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03274581111965977,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 378,
+            "feedback_count": 1508,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.03274277453065979,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.0331436,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              0.03274277453065979
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07197394400000001,
+              0.0331436
+            ]
+          },
+          {
+            "trajectory_index": 2,
+            "duration_s": 9.822666645050049,
+            "published_trajectory": {
+              "epoch": 1792135018.5776284,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.1766936991196598,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 492,
+            "feedback_count": 1962,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.1766936991196598,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197506524700002,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.17600996000000002,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071729728,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.1766936991196598,
+              -0.07197506524700002
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.17600996000000002,
+              -0.071729728
+            ]
+          },
+          {
+            "trajectory_index": 3,
+            "duration_s": 7.609264135360718,
+            "published_trajectory": {
+              "epoch": 1792135028.4108326,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.1766936991196598,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 381,
+            "feedback_count": 1521,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.17668701496865974,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.17600996000000002,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.17668701496865974,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.17600996000000002,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 4,
+            "duration_s": 10.567165851593018,
+            "published_trajectory": {
+              "epoch": 1792135036.0328362,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.2289396201595464
+              ]
+            },
+            "command_count": 529,
+            "feedback_count": 2109,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931953767800001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.2289396201595464
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.227801196
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 5,
+            "duration_s": 8.227842569351196,
+            "published_trajectory": {
+              "epoch": 1792135046.6137495,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.2289396201595464
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 412,
+            "feedback_count": 1647,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.2289345845725463
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.08974938
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.22764420000000002
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 6,
+            "duration_s": 10.541812658309937,
+            "published_trajectory": {
+              "epoch": 1792135054.8583865,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                -0.05031306015954637
+              ]
+            },
+            "command_count": 528,
+            "feedback_count": 2107,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              -0.05031306015954637
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.0893105538150001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              -0.049139748000000004
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.09084835200000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 7,
+            "duration_s": 7.924488544464111,
+            "published_trajectory": {
+              "epoch": 1792135065.4155462,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                -0.050313060159546355
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000002
+              ]
+            },
+            "command_count": 397,
+            "feedback_count": 1580,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              -0.050309937834546306
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000002
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              -0.049139748000000004
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.08786542800000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 8,
+            "duration_s": 9.457239866256714,
+            "published_trajectory": {
+              "epoch": 1792135073.343869,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 39,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.1430332619202268,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 473,
+            "feedback_count": 1892,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.1430332619202268,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.2128316448260001,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.142861104,
+              0.08786542800000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.212846432,
+              0.08786542800000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 9,
+            "duration_s": 6.589386463165283,
+            "published_trajectory": {
+              "epoch": 1792135082.810664,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 39,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.1430332619202268,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 330,
+            "feedback_count": 1318,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.1430416110242267,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.142861104,
+              0.08786542800000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.21200912,
+              0.08786542800000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              -0.07197394400000001
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              -0.07254959600000001
+            ]
+          },
+          {
+            "trajectory_index": 10,
+            "duration_s": 10.188445568084717,
+            "published_trajectory": {
+              "epoch": 1792135089.413035,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03274581111965977,
+                1.1430332619202268,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 510,
+            "feedback_count": 2034,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071968236955,
+              1.1430332619202268,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.03274581111965977,
+              1.2128426273033335,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07254959600000001,
+              1.1440996280000002,
+              0.08786542800000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.032690056,
+              1.211799792,
+              0.08974938
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07154552699000014,
+              0.03274581111965977
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07254959600000001,
+              0.032690056
+            ]
+          },
+          {
+            "trajectory_index": 11,
+            "duration_s": 8.945667266845703,
+            "published_trajectory": {
+              "epoch": 1792135099.6143813,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03274581111965977,
+                1.1430332619202268,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 448,
+            "feedback_count": 1788,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000001,
+              1.1430363011962268,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.03274125220565968,
+              1.212846432,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07213094,
+              1.1440996280000002,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.032690056,
+              1.21261966,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07197394400000001,
+              0.03274125220565968
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07213094,
+              0.032690056
+            ]
+          },
+          {
+            "trajectory_index": 12,
+            "duration_s": 3.0327136516571045,
+            "published_trajectory": {
+              "epoch": 1792135108.5673535,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000001,
+                1.212846432,
+                0.08931328000000001
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.1766936991196598,
+                1.1430332619202268,
+                0.08931328000000001
+              ]
+            },
+            "command_count": 152,
+            "feedback_count": 803,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.1528055954882466,
+              1.158958664341169,
+              0.08931328000000001
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07198553418399996,
+              1.2128387052106668,
+              0.08931328000000001
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.153297872,
+              1.159084024,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.072026276,
+              1.212375444,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.1528055954882466,
+              -0.07198553418399996
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.153297872,
+              -0.072026276
+            ]
+          }
+        ],
+        "error": "RuntimeError(\"Board identity/capture: ValueError('Interior optical-flow inconsistency')\")",
+        "sample_labels": [
+          "start",
+          "J4_plus",
+          "J4_minus",
+          "J6_plus",
+          "J6_minus",
+          "J5_minus",
+          "J4plus_J5minus"
+        ],
+        "all_owned_sources_exited": true,
+        "production_SHA_unchanged": true
+      }
+    },
+    {
+      "label": "return",
+      "root": "/home/johnwick/brain_robot_logs/board_return_20261016.8NDic8",
+      "outer": {
+        "baseline_commit": "8744c14",
+        "epoch": 1792135320.988095,
+        "CAN_recovery": false,
+        "USB_reset": false,
+        "gripper_commands": 0,
+        "wrapper_added_static_speed_admission_removed": true,
+        "SDK_quality_not_relabelled": true,
+        "original_sampler_helpers_or_production_gates_changed": false,
+        "previous_wrapper_failure": "/home/johnwick/brain_robot_logs/board_usb31_sampling_20261016.9ECrHF/invocation.json",
+        "SDK_before_rc": 2,
+        "original_static_slice": null,
+        "last_fresh_SDK": {
+          "epoch": 1792135325.111105,
+          "sdk_receipt_stamps": {
+            "joint": "1792135325.1109638",
+            "high": "1792135325.1021173",
+            "low": "1792135325.101565",
+            "gripper": "1792135325.1062396"
+          },
+          "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+          "high_hz": 100.0,
+          "joint_hz": 200.0,
+          "q_mdeg": [
+            -8254,
+            53595,
+            -72228,
+            -8780,
+            66446,
+            5132
+          ],
+          "q_driver_rad": [
+            -0.143982776,
+            0.9349111800000001,
+            -1.259945232,
+            -0.15315832,
+            1.159084024,
+            0.089522608
+          ],
+          "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+          "speed_millirad_s": [
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "gripper_raw_micrometers": 99600,
+          "gripper_mm": 99.6,
+          "gripper_effort_raw": 4,
+          "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+          "fresh_after_passive_connection": true,
+          "physical_contact_verified_by_sdk": false
+        },
+        "sampler_rc": 0,
+        "all_outer_sources_exited": true,
+        "end_epoch": 1792135343.0218568
+      },
+      "sampler_error": null,
+      "completed_9fit_1heldout": false,
+      "sample_labels": [],
+      "raw_RGB_frames": 0,
+      "final_received_feedback": {
+        "epoch": 1792135340.530745,
+        "stamp_ns": 1792135340528552347,
+        "q": [
+          -0.143982776,
+          0.9349111800000001,
+          -1.259945232,
+          -0.071659952,
+          1.211520688,
+          0.089522608
+        ],
+        "gap_m": 0.0996
+      },
+      "CAN": {
+        "recorded_frames": 52164,
+        "span_s": 21.915650129318237,
+        "max_timestamp_gap_s": 0.19631195068359375,
+        "gaps_over_half_second": 0,
+        "initial_stats": {
+          "rx": {
+            "bytes": 17428648,
+            "packets": 2179030,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 16618,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        },
+        "end_stats": {
+          "rx": {
+            "bytes": 17847360,
+            "packets": 2231380,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 17705,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "kernel_new_USB_CAN_lines": [],
+      "bag_audit": {
+        "offline_only": true,
+        "root": "/home/johnwick/brain_robot_logs/board_return_20261016.8NDic8",
+        "message_counts": {
+          "/brain_robot_grasp/arm_trajectory": 1,
+          "/brain_robot_control/adapter_armed": 2,
+          "/joint_commands": 357,
+          "/joint_states_feedback": 1949
+        },
+        "trajectory_count": 1,
+        "gripper_requests": 0,
+        "command_frames_with_gripper_field": 0,
+        "windows": [
+          {
+            "trajectory_index": 0,
+            "duration_s": 7.135267496109009,
+            "published_trajectory": {
+              "epoch": 1792135333.389879,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 42,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.15315832,
+                1.159084024,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.07197394400000004,
+                1.212846432,
+                0.08931328
+              ]
+            },
+            "command_count": 357,
+            "feedback_count": 1434,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.153143839781,
+              1.1590936131781173,
+              0.08931328
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07197394400000004,
+              1.212846432,
+              0.08952257066381006
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.15315832,
+              1.159084024,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071502956,
+              1.211520688,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.153143839781,
+              -0.07197394400000004
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.15315832,
+              -0.071502956
+            ]
+          }
+        ],
+        "error": null,
+        "sample_labels": [],
+        "all_owned_sources_exited": true,
+        "production_SHA_unchanged": true
+      }
+    },
+    {
+      "label": "seed_only",
+      "root": "/home/johnwick/brain_robot_logs/board_safe_seed_20261016.7Zjm2l",
+      "outer": {
+        "baseline_commit": "8744c14",
+        "epoch": 1792135388.166274,
+        "CAN_recovery": false,
+        "USB_reset": false,
+        "gripper_commands": 0,
+        "wrapper_added_static_speed_admission_removed": true,
+        "SDK_quality_not_relabelled": true,
+        "original_sampler_helpers_or_production_gates_changed": false,
+        "previous_wrapper_failure": "/home/johnwick/brain_robot_logs/board_usb31_sampling_20261016.9ECrHF/invocation.json",
+        "SDK_before_rc": 0,
+        "original_static_slice": {
+          "indices": [
+            1,
+            40
+          ],
+          "quality": {
+            "samples": 39,
+            "fresh_samples": 39,
+            "span_s": 3.812588691711426,
+            "static_three_seconds_and_thirty_samples": true,
+            "freshness_not_per_motor_verified": true,
+            "q_spread_mdeg": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "last_fresh_SDK": {
+          "epoch": 1792135392.3238783,
+          "sdk_receipt_stamps": {
+            "joint": "1792135392.320116",
+            "high": "1792135392.3159983",
+            "low": "1792135392.3157954",
+            "gripper": "1792135392.320135"
+          },
+          "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+          "high_hz": 100.0,
+          "joint_hz": 200.0,
+          "q_mdeg": [
+            -8254,
+            53595,
+            -72228,
+            -4108,
+            69552,
+            5132
+          ],
+          "q_driver_rad": [
+            -0.143982776,
+            0.9349111800000001,
+            -1.259945232,
+            -0.071659952,
+            1.2132650880000002,
+            0.089522608
+          ],
+          "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+          "speed_millirad_s": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "gripper_raw_micrometers": 99600,
+          "gripper_mm": 99.6,
+          "gripper_effort_raw": -7,
+          "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+          "fresh_after_passive_connection": true,
+          "physical_contact_verified_by_sdk": false
+        },
+        "sampler_rc": 2,
+        "all_outer_sources_exited": true,
+        "end_epoch": 1792135410.3897424
+      },
+      "sampler_error": "RuntimeError(\"Board identity/capture: ValueError('Insufficient interior seed points')\")",
+      "completed_9fit_1heldout": false,
+      "sample_labels": [],
+      "raw_RGB_frames": 0,
+      "final_received_feedback": {
+        "epoch": 1792135404.9334304,
+        "stamp_ns": 1792135404932994262,
+        "q": [
+          -0.143982776,
+          0.9349111800000001,
+          -1.259945232,
+          -0.071659952,
+          1.2132650880000002,
+          0.089522608
+        ],
+        "gap_m": 0.0996
+      },
+      "CAN": {
+        "recorded_frames": 50030,
+        "span_s": 22.101594924926758,
+        "max_timestamp_gap_s": 0.45089292526245117,
+        "gaps_over_half_second": 0,
+        "initial_stats": {
+          "rx": {
+            "bytes": 18722236,
+            "packets": 2340762,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 17705,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        },
+        "end_stats": {
+          "rx": {
+            "bytes": 19124020,
+            "packets": 2390994,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 17718,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "kernel_new_USB_CAN_lines": [],
+      "bag_audit": {
+        "offline_only": true,
+        "root": "/home/johnwick/brain_robot_logs/board_safe_seed_20261016.7Zjm2l",
+        "message_counts": {
+          "/brain_robot_grasp/arm_trajectory": 0,
+          "/brain_robot_control/adapter_armed": 0,
+          "/joint_commands": 0,
+          "/joint_states_feedback": 2187
+        },
+        "trajectory_count": 0,
+        "gripper_requests": 0,
+        "command_frames_with_gripper_field": 0,
+        "windows": [],
+        "error": "RuntimeError(\"Board identity/capture: ValueError('Insufficient interior seed points')\")",
+        "sample_labels": [],
+        "all_owned_sources_exited": true,
+        "production_SHA_unchanged": true
+      }
+    },
+    {
+      "label": "full_ROI",
+      "root": "/home/johnwick/brain_robot_logs/board_seed_ready_20261016.E0HzVI",
+      "outer": {
+        "baseline_commit": "8744c14",
+        "epoch": 1792135480.0885882,
+        "CAN_recovery": false,
+        "USB_reset": false,
+        "gripper_commands": 0,
+        "wrapper_added_static_speed_admission_removed": true,
+        "SDK_quality_not_relabelled": true,
+        "original_sampler_helpers_or_production_gates_changed": false,
+        "previous_wrapper_failure": "/home/johnwick/brain_robot_logs/board_usb31_sampling_20261016.9ECrHF/invocation.json",
+        "SDK_before_rc": 2,
+        "original_static_slice": null,
+        "last_fresh_SDK": {
+          "epoch": 1792135484.2281303,
+          "sdk_receipt_stamps": {
+            "joint": "1792135484.2251012",
+            "high": "1792135484.2260487",
+            "low": "1792135484.2255733",
+            "gripper": "1792135484.225199"
+          },
+          "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+          "high_hz": 100.0,
+          "joint_hz": 200.0,
+          "q_mdeg": [
+            -8254,
+            53595,
+            -72228,
+            -4108,
+            69552,
+            5132
+          ],
+          "q_driver_rad": [
+            -0.143982776,
+            0.9349111800000001,
+            -1.259945232,
+            -0.071659952,
+            1.2132650880000002,
+            0.089522608
+          ],
+          "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+          "speed_millirad_s": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "gripper_raw_micrometers": 99600,
+          "gripper_mm": 99.6,
+          "gripper_effort_raw": 7,
+          "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+          "fresh_after_passive_connection": true,
+          "physical_contact_verified_by_sdk": false
+        },
+        "sampler_rc": 0,
+        "all_outer_sources_exited": true,
+        "end_epoch": 1792135671.706179
+      },
+      "sampler_error": null,
+      "completed_9fit_1heldout": true,
+      "sample_labels": [
+        "start",
+        "J4_plus",
+        "J4_minus",
+        "J6_plus",
+        "J6_minus",
+        "J5_minus",
+        "J4plus_J5minus",
+        "J4minus_J5minus",
+        "J5minus_J6plus",
+        "combined_holdout"
+      ],
+      "raw_RGB_frames": 842,
+      "final_received_feedback": {
+        "epoch": 1792135663.113819,
+        "stamp_ns": 1792135663113079651,
+        "q": [
+          -0.143982776,
+          0.9349111800000001,
+          -1.259945232,
+          -0.071502956,
+          1.212288224,
+          0.088824848
+        ],
+        "gap_m": 0.0996
+      },
+      "CAN": {
+        "recorded_frames": 459683,
+        "span_s": 191.29766416549683,
+        "max_timestamp_gap_s": 0.4180138111114502,
+        "gaps_over_half_second": 0,
+        "initial_stats": {
+          "rx": {
+            "bytes": 20474260,
+            "packets": 2559809,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 17718,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        },
+        "end_stats": {
+          "rx": {
+            "bytes": 24152928,
+            "packets": 3019737,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 42154,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "kernel_new_USB_CAN_lines": [],
+      "bag_audit": {
+        "offline_only": true,
+        "root": "/home/johnwick/brain_robot_logs/board_seed_ready_20261016.E0HzVI",
+        "message_counts": {
+          "/brain_robot_grasp/arm_trajectory": 18,
+          "/brain_robot_control/adapter_armed": 2,
+          "/joint_commands": 8140,
+          "/joint_states_feedback": 35244
+        },
+        "trajectory_count": 18,
+        "gripper_requests": 0,
+        "command_frames_with_gripper_field": 0,
+        "windows": [
+          {
+            "trajectory_index": 0,
+            "duration_s": 10.286816596984863,
+            "published_trajectory": {
+              "epoch": 1792135500.3128438,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03305980311965978,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 515,
+            "feedback_count": 2055,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07165459974499984,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.03305980311965978,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.033300596,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07083185317999949,
+              0.03305980311965978
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071659952,
+              0.033300596
+            ]
+          },
+          {
+            "trajectory_index": 1,
+            "duration_s": 7.178661584854126,
+            "published_trajectory": {
+              "epoch": 1792135510.6012046,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03305980311965978,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 359,
+            "feedback_count": 1436,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.033045056073659644,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07015976800000001,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.033300596,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              0.033045056073659644
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07015976800000001,
+              0.033300596
+            ]
+          },
+          {
+            "trajectory_index": 2,
+            "duration_s": 9.780815362930298,
+            "published_trajectory": {
+              "epoch": 1792135517.7990763,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.17637970711965978,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 490,
+            "feedback_count": 1951,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.17637970711965978,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.175695968,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07015976800000001,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.17637970711965978,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.175695968,
+              -0.07015976800000001
+            ]
+          },
+          {
+            "trajectory_index": 3,
+            "duration_s": 7.58967661857605,
+            "published_trajectory": {
+              "epoch": 1792135527.5899775,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.17637970711965978,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 380,
+            "feedback_count": 1519,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.1763717175506597,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.17536453200000002,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.0715204,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.1763717175506597,
+              -0.071625064
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.17536453200000002,
+              -0.0715204
+            ]
+          },
+          {
+            "trajectory_index": 4,
+            "duration_s": 10.57945442199707,
+            "published_trajectory": {
+              "epoch": 1792135535.2000175,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.2291489481595464
+              ]
+            },
+            "command_count": 530,
+            "feedback_count": 2110,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.2291489481595464
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.22834196
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              -0.071625064
+            ]
+          },
+          {
+            "trajectory_index": 5,
+            "duration_s": 8.19387435913086,
+            "published_trajectory": {
+              "epoch": 1792135545.7859907,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.22914894815954637
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.08952260799999999
+              ]
+            },
+            "command_count": 410,
+            "feedback_count": 1627,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.08952260799999999
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.22913682801654642
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.08990637600000001
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.228132632
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              -0.071625064
+            ]
+          },
+          {
+            "trajectory_index": 6,
+            "duration_s": 10.581779956817627,
+            "published_trajectory": {
+              "epoch": 1792135553.9984443,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                -0.050103732159546374
+              ]
+            },
+            "command_count": 530,
+            "feedback_count": 2113,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              -0.050103732159546374
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.08951939910300008
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              -0.049261856
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.09095301600000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              -0.071625064
+            ]
+          },
+          {
+            "trajectory_index": 7,
+            "duration_s": 8.122866868972778,
+            "published_trajectory": {
+              "epoch": 1792135564.5970404,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                -0.05010373215954636
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.08952260800000002
+              ]
+            },
+            "command_count": 407,
+            "feedback_count": 1623,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              -0.05010254319554636
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.08952260800000002
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              -0.049261856
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.08945283200000001
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              -0.071625064
+            ]
+          },
+          {
+            "trajectory_index": 8,
+            "duration_s": 9.256476163864136,
+            "published_trajectory": {
+              "epoch": 1792135572.7243335,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 39,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.143451917920227,
+                0.089522608
+              ]
+            },
+            "command_count": 463,
+            "feedback_count": 1843,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.143451917920227,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132514958520004,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.1434890880000002,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.2132650880000002,
+              0.088981844
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              -0.071625064
+            ]
+          },
+          {
+            "trajectory_index": 9,
+            "duration_s": 6.60756254196167,
+            "published_trajectory": {
+              "epoch": 1792135581.99219,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 39,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.143451917920227,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 331,
+            "feedback_count": 1322,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.143458417204227,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.1434890880000002,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.212602216,
+              0.088981844
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              -0.071625064
+            ]
+          },
+          {
+            "trajectory_index": 10,
+            "duration_s": 10.175073385238647,
+            "published_trajectory": {
+              "epoch": 1792135588.6043575,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03305980311965978,
+                1.143451917920227,
+                0.089522608
+              ]
+            },
+            "command_count": 509,
+            "feedback_count": 2028,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07164602992200005,
+              1.143451917920227,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.03305980311965978,
+              1.2132558066146668,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071625064,
+              1.144745056,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.033370372,
+              1.212602216,
+              0.088981844
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07133693068000023,
+              0.03305980311965978
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071625064,
+              0.033370372
+            ]
+          },
+          {
+            "trajectory_index": 11,
+            "duration_s": 7.386946678161621,
+            "published_trajectory": {
+              "epoch": 1792135598.7926247,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                0.03305980311965978,
+                1.143451917920227,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 370,
+            "feedback_count": 1475,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.1434557973102268,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.0330539840346598,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07066564400000001,
+              1.1447625000000001,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.033370372,
+              1.2124277760000002,
+              0.088981844
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              0.0330539840346598
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.07066564400000001,
+              0.033370372
+            ]
+          },
+          {
+            "trajectory_index": 12,
+            "duration_s": 9.590235948562622,
+            "published_trajectory": {
+              "epoch": 1792135606.1898265,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.17637970711965978,
+                1.143451917920227,
+                0.089522608
+              ]
+            },
+            "command_count": 480,
+            "feedback_count": 1917,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.17637970711965978,
+              1.143451917920227,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07166816483899995,
+              1.2132596127740003,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.174858656,
+              1.144605504,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.07066564400000001,
+              1.212078896,
+              0.088981844
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.17637970711965978,
+              -0.07166816483899995
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.174858656,
+              -0.07066564400000001
+            ]
+          },
+          {
+            "trajectory_index": 13,
+            "duration_s": 7.485722303390503,
+            "published_trajectory": {
+              "epoch": 1792135615.7939563,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.17637970711965978,
+                1.143451917920227,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ]
+            },
+            "command_count": 375,
+            "feedback_count": 1498,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.1763752135356599,
+              1.1434549136428935,
+              0.089522608
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000002,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.174858656,
+              1.144605504,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.072968252,
+              1.212811544,
+              0.088981844
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.1763752135356599,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.174858656,
+              -0.072968252
+            ]
+          },
+          {
+            "trajectory_index": 14,
+            "duration_s": 13.483946800231934,
+            "published_trajectory": {
+              "epoch": 1792135623.2953744,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.0736387478404539,
+                0.2291489481595464
+              ]
+            },
+            "command_count": 675,
+            "feedback_count": 2696,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.0736387478404539,
+              0.08952568583600011
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132620101640001,
+              0.2291489481595464
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.072968252,
+              1.074620176,
+              0.088981844
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071206408,
+              1.212567328,
+              0.22842918000000004
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.072968252,
+              -0.071206408
+            ]
+          },
+          {
+            "trajectory_index": 15,
+            "duration_s": 8.288480758666992,
+            "published_trajectory": {
+              "epoch": 1792135636.791323,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 54,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.0736387478404539,
+                0.22914894815954637
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000004,
+                0.08952260799999999
+              ]
+            },
+            "command_count": 415,
+            "feedback_count": 1661,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.073645573667454,
+              0.08952260799999999
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.2132650880000004,
+              0.2291421223325463
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071223852,
+              1.074620176,
+              0.090412252
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071223852,
+              1.213125536,
+              0.22842918000000004
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.071659952
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071223852,
+              -0.071223852
+            ]
+          },
+          {
+            "trajectory_index": 16,
+            "duration_s": 10.079816818237305,
+            "published_trajectory": {
+              "epoch": 1792135645.0996249,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.2132650880000002,
+                0.089522608
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.001846781920226817,
+                1.1085453328803405,
+                -0.015197147119659776
+              ]
+            },
+            "command_count": 505,
+            "feedback_count": 2013,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.1085453328803405,
+              -0.015197147119659776
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.001846781920226817,
+              1.2132650880000004,
+              0.08952260799999999
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071223852,
+              1.1084964240000001,
+              -0.013902868000000002
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.0,
+              1.213125536,
+              0.090412252
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.07159420842800002,
+              -0.001846781920226817
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071223852,
+              0.0
+            ]
+          },
+          {
+            "trajectory_index": 17,
+            "duration_s": 7.911393642425537,
+            "published_trajectory": {
+              "epoch": 1792135655.1923256,
+              "joint_names": [
+                "joint1",
+                "joint2",
+                "joint3",
+                "joint4",
+                "joint5",
+                "joint6"
+              ],
+              "points": 47,
+              "start_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.001846781920226817,
+                1.1085453328803405,
+                -0.015197147119659776
+              ],
+              "goal_q": [
+                -0.143982776,
+                0.9349111800000001,
+                -1.259945232,
+                -0.071659952,
+                1.213265088,
+                0.089522608
+              ]
+            },
+            "command_count": 396,
+            "feedback_count": 1961,
+            "command_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071659952,
+              1.1085513971693406,
+              -0.015191082830659725
+            ],
+            "command_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.0018508247795601842,
+              1.213265088,
+              0.089522608
+            ],
+            "feedback_q_min": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              -0.071816948,
+              1.1086010880000001,
+              -0.013902868000000002
+            ],
+            "feedback_q_max": [
+              -0.143982776,
+              0.9349111800000001,
+              -1.259945232,
+              0.0,
+              1.2125149960000001,
+              0.089069064
+            ],
+            "last_10s_J4_command_range_rad": [
+              -0.071659952,
+              -0.0018508247795601842
+            ],
+            "last_10s_J4_feedback_range_rad": [
+              -0.071816948,
+              0.0
+            ]
+          }
+        ],
+        "error": null,
+        "sample_labels": [
+          "start",
+          "J4_plus",
+          "J4_minus",
+          "J6_plus",
+          "J6_minus",
+          "J5_minus",
+          "J4plus_J5minus",
+          "J4minus_J5minus",
+          "J5minus_J6plus",
+          "combined_holdout"
+        ],
+        "all_owned_sources_exited": true,
+        "production_SHA_unchanged": true
+      }
+    }
+  ],
+  "new_continuous_session_complete": true,
+  "new_session_samples": 10,
+  "new_session_fit": 9,
+  "new_session_heldout": 1,
+  "old_session_7fit_not_pooled": true,
+  "prior_2fit_not_pooled": true,
+  "handeye_fit_performed": true,
+  "heldout_10mm_corner_max_consistency_pass": true,
+  "production_TF_deployed": false,
+  "production_six_SHA_unchanged": true,
+  "gripper_or_hardware_disable_or_ResetPiper": false,
+  "GitHub_pushed": false,
+  "Git_sync_blocker": "Previous shared-main divergence/history publication review unchanged",
+  "final_state": {
+    "epoch": 1792135711.9445868,
+    "post_session_only": true,
+    "motion_commands_sent": false,
+    "audits": [
+      {
+        "root": "/home/johnwick/brain_robot_logs/board_return_20261016.8NDic8",
+        "rc": 0,
+        "stderr": ""
+      },
+      {
+        "root": "/home/johnwick/brain_robot_logs/board_safe_seed_20261016.7Zjm2l",
+        "rc": 0,
+        "stderr": ""
+      },
+      {
+        "root": "/home/johnwick/brain_robot_logs/board_seed_ready_20261016.E0HzVI",
+        "rc": 0,
+        "stderr": ""
+      }
+    ],
+    "remaining_sources": [],
+    "CAN_before_passive": {
+      "ifindex": 3,
+      "ifname": "can0",
+      "flags": [
+        "NOARP",
+        "UP",
+        "LOWER_UP",
+        "ECHO"
+      ],
+      "mtu": 16,
+      "qdisc": "pfifo_fast",
+      "operstate": "UP",
+      "linkmode": "DEFAULT",
+      "group": "default",
+      "txqlen": 1000,
+      "link_type": "can",
+      "promiscuity": 0,
+      "min_mtu": 0,
+      "max_mtu": 0,
+      "linkinfo": {
+        "info_kind": "can",
+        "info_data": {
+          "state": "ERROR-ACTIVE",
+          "restart_ms": 0,
+          "bittiming": {
+            "bitrate": 1000000,
+            "sample_point": 0.75,
+            "tq": 62,
+            "prop_seg": 5,
+            "phase_seg1": 6,
+            "phase_seg2": 4,
+            "sjw": 2
+          },
+          "bittiming_const": {
+            "name": "gs_usb",
+            "tseg1": {
+              "min": 1,
+              "max": 16
+            },
+            "tseg2": {
+              "min": 1,
+              "max": 8
+            },
+            "sjw": {
+              "min": 1,
+              "max": 4
+            },
+            "brp": {
+              "min": 1,
+              "max": 1024
+            },
+            "brp_inc": 1
+          },
+          "clock": 48000000
+        },
+        "info_xstats": {
+          "restarts": 0,
+          "bus_error": 0,
+          "arbitration_lost": 0,
+          "error_warning": 0,
+          "error_passive": 0,
+          "bus_off": 0
+        }
+      },
+      "num_tx_queues": 1,
+      "num_rx_queues": 1,
+      "gso_max_size": 65536,
+      "gso_max_segs": 65535,
+      "parentbus": "usb",
+      "parentdev": "3-2:1.0",
+      "stats64": {
+        "rx": {
+          "bytes": 24944012,
+          "packets": 3118643,
+          "errors": 0,
+          "dropped": 297,
+          "over_errors": 0,
+          "multicast": 0
+        },
+        "tx": {
+          "bytes": 0,
+          "packets": 42154,
+          "errors": 0,
+          "dropped": 0,
+          "carrier_errors": 0,
+          "collisions": 0
+        }
+      }
+    },
+    "SDK_final": {
+      "rc": 0,
+      "stdout": "{\"output\": \"/home/johnwick/brain_robot_logs/board_seed_ready_20261016.E0HzVI/sdk_final.json\", \"quality\": {\"samples\": 40, \"fresh_samples\": 39, \"span_s\": 3.814108371734619, \"static_three_seconds_and_thirty_samples\": true, \"freshness_not_per_motor_verified\": true, \"q_spread_mdeg\": [0, 0, 0, 0, 0, 0]}, \"error\": null}\n",
+      "stderr": ""
+    },
+    "actual_last_SDK": {
+      "epoch": 1792135716.6252642,
+      "sdk_receipt_stamps": {
+        "joint": "1792135716.6208577",
+        "high": "1792135716.6218622",
+        "low": "1792135716.6212885",
+        "gripper": "1792135716.6210647"
+      },
+      "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+      "high_hz": 100.0,
+      "joint_hz": 200.0,
+      "q_mdeg": [
+        -8254,
+        53595,
+        -72228,
+        -4099,
+        69496,
+        5092
+      ],
+      "q_driver_rad": [
+        -0.143982776,
+        0.9349111800000001,
+        -1.259945232,
+        -0.071502956,
+        1.212288224,
+        0.088824848
+      ],
+      "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+      "speed_millirad_s": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enabled": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "gripper_raw_micrometers": 99600,
+      "gripper_mm": 99.6,
+      "gripper_effort_raw": 3,
+      "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+      "fresh_after_passive_connection": true,
+      "physical_contact_verified_by_sdk": false
+    },
+    "fit_rc": 0,
+    "production_SHA_unchanged": true,
+    "CAN_after_passive": {
+      "ifindex": 3,
+      "ifname": "can0",
+      "flags": [
+        "NOARP",
+        "UP",
+        "LOWER_UP",
+        "ECHO"
+      ],
+      "mtu": 16,
+      "qdisc": "pfifo_fast",
+      "operstate": "UP",
+      "linkmode": "DEFAULT",
+      "group": "default",
+      "txqlen": 1000,
+      "link_type": "can",
+      "promiscuity": 0,
+      "min_mtu": 0,
+      "max_mtu": 0,
+      "linkinfo": {
+        "info_kind": "can",
+        "info_data": {
+          "state": "ERROR-ACTIVE",
+          "restart_ms": 0,
+          "bittiming": {
+            "bitrate": 1000000,
+            "sample_point": 0.75,
+            "tq": 62,
+            "prop_seg": 5,
+            "phase_seg1": 6,
+            "phase_seg2": 4,
+            "sjw": 2
+          },
+          "bittiming_const": {
+            "name": "gs_usb",
+            "tseg1": {
+              "min": 1,
+              "max": 16
+            },
+            "tseg2": {
+              "min": 1,
+              "max": 8
+            },
+            "sjw": {
+              "min": 1,
+              "max": 4
+            },
+            "brp": {
+              "min": 1,
+              "max": 1024
+            },
+            "brp_inc": 1
+          },
+          "clock": 48000000
+        },
+        "info_xstats": {
+          "restarts": 0,
+          "bus_error": 0,
+          "arbitration_lost": 0,
+          "error_warning": 0,
+          "error_passive": 0,
+          "bus_off": 0
+        }
+      },
+      "num_tx_queues": 1,
+      "num_rx_queues": 1,
+      "gso_max_size": 65536,
+      "gso_max_segs": 65535,
+      "parentbus": "usb",
+      "parentdev": "3-2:1.0",
+      "stats64": {
+        "rx": {
+          "bytes": 25139188,
+          "packets": 3143045,
+          "errors": 0,
+          "dropped": 297,
+          "over_errors": 0,
+          "multicast": 0
+        },
+        "tx": {
+          "bytes": 0,
+          "packets": 42154,
+          "errors": 0,
+          "dropped": 0,
+          "carrier_errors": 0,
+          "collisions": 0
+        }
+      }
+    },
+    "end_epoch": 1792135722.4281163
+  },
+  "test_result": {
+    "rc": 0,
+    "test_cases": 6,
+    "log": "offline_tests.txt"
+  }
+}

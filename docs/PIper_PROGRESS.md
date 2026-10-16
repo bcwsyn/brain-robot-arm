@@ -1,4 +1,16 @@
-## 本轮（2026-10-16 15:11）：恢复原USB3设置后静止RGB-D实采通过，取消过期宿主对照等待
+## 本轮（2026-10-16 15:34）：原板9＋1完整采齐，手眼候选独立验证通过局部10mm一致性；未部署
+
+- 起点8744c14，用户明确自主推进／仅必要实体操作再叫。两repo技能指导追原入口/最小采集修正，保留无关脏树。复用121d1ef的J4±6°、J6±8°、J5−4°/−8°和原组合、每姿态返回本轮实际起点；只原driver auto_enable=false/原MoveIt/原adapter，无新的基础运动控制、gripper/SEARCH/抓取/硬件Disable/Reset/固件/SDK配置、TF或生产修改。xHCI健康CAN直接复用，不USB/模块重载。
+- 首`board_usb31_sampling_20261016.9ECrHF`：10秒100样本98fresh、六q波动0，但短速度脉冲，无原SDK静止子窗。复用包装器额外把SDK质量当硬准入而未启动控制。去除此**非原板采样器**重复门，原summarize和原生产/采样器实时反馈、3秒q稳定、完整规划及adapter全部不改；失败原样保存，不为通过无限等待。成功新会话前4秒SDK rc2/无静止子窗如实保留，不伪称始终速度0；后续仍由原采样器原判据采稳定q。
+- `board_usb31_original_20261016.G2lzeV`原30点会话得到7fit/577原RGB，18原路径预规划通过、实际13轨迹/5534命令。第578输入中ID13在左夹指边缘、精确BGR→gray重放FB=.81213px>原.5；软件disarm/所有源退，无硬件失能、不继续盲采。原7fit不混入后续新批。`board_return_20261016.8NDic8`仅原helper返回该会话实际起点，完整到位/3秒q稳；不是重新做J4或无故回观测，0夹爪。
+- 只采集副本初始角点限定ROI[110,95,175,165]，从真实检测角点取18点，旧577段精确灰度回放全部通过（最大FB .024825px、step3.86556px），原阈值不改。`board_safe_seed_20261016.7Zjm2l`首候选不足9、arm前结束；精确审计发现imread(gray)与原cv2.cvtColor(BGR,GRAY)在38793像素差1灰度，分别检出8×7/18ROI与3×7/0ROI，解释旧近似离线重测不能反驳在线。旧报告不覆盖。仅在原18秒初始化期限内记拒绝原因/首5原图并等合格候选，建身份后仍全点状态/FB≤.5px/step≤6px/图间隔≤800ms，绝不重编号；所有原控制helper AST/原launch字节保持，生产源不改。
+- 新单一连续会话`board_seed_ready_20261016.E0HzVI`：原18路径全部通过，9fit＋预指定combined_holdout 1组完整、每组5帧，共842原RGB/94682148字节，18固定内部点，184.576922秒；实际18条往返轨迹、8140六轴命令／35244反馈，0夹爪请求或命令gripper字段，成功返回本轮起点/软件disarm。初候选即成功（0拒绝），原源全退出；depth收尾1、original_nodes/driver清理−9及MoveIt析构−11原日志保留，不能称全优雅退出、不当运动失败。末4秒被动SDK rc0，六true99.6mm、q_mdeg[-8254,53595,-72228,-4099,69496,5092]，六高速/关节反馈100/200Hz。末CAN ERROR-ACTIVE、RX3143045/TX42154、错误/bus-off0、rx.dropped297未增；本次主动采样无旧停流，不据单窗承诺永久修复。
+- `board_handeye_fit.py`仅离线按[OpenCV官方眼在手上约定](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)使用`G_i X C_i=W`，实际q/0b41516e…原安装模型FK、原K/D/resize和32mm名义格距，9姿态等权、每姿态5帧合成、PnP保留两分支/选正深度最低RMS；留出不进X/W。实际轴span/平移rank3、条件1.4204，真实FK合成恢复约1e−15m/1e−14°，6单测通过；PARK/HORAUD差0.00063mm/0.00120°。独立留出原点3.535mm、角点RMS2.237mm/max2.836mm<10mm；旧配置只用9fit估W的同口径max19.687mm。9fit逐组留一未参与姿态max6.793mm，但外参参数最大变化11.897mm/1.949°，需报告局部性、不冒充绝对精度或已标定实际夹持TCP。
+- 候选较旧同系X差69.280mm/17.433°。仅离线生成`candidate_review.json`：把彩色光学X正确组合为camera_link提案、重组数值回环<1e−12，原值/SHA回退保留；**没有写生产TF或启动开环抓取**。这支持旧安装配置存在本地一致性偏差，不能以一次标定声明全部实物误差都解决。
+- [usb31_sampling01](evidence/piper_board_handeye_20261016/usb31_sampling01/README.md)保存1602原件/8个≤32MiB原始分块/约161.8MB压缩，原件SHA逐件归档回读，50原RGB与结构数据可直接审阅；完整不相关guest内核历史仅私存home、公开源SHA和USB/CAN增量，不公开宿主日志。所有失败、原SDK rc2、源退出异常保留，旧2fit/7fit不混入新10。六生产SHA不变，无删除/覆盖原数据；便携`refit_from_report.py`无需ROS复算得到X完全相同，实际FK来源已标明非离机重算。JSON/AST/归档/限定diff及提交检查；Git仅本地，既有共享main分叉与积压发布审查不变，未推送。
+- 下一关口P3：用户先审阅并明确批准采用候选，再限定部署/静止TF核对/保留回退；不得把当前自主采样许可扩大成解除生产TF冻结或原AUTO1。之后真正需要用户把紫色方块放回可见桌面位置，再准备原入口开环粗抓及现场验收。P1板采样/P2报告已完成，不再重采9＋1、CAN/J4/保持/观测或切USB2；实际夹持TCP/开环模式/抓取尚未验证。
+
+## 历史本轮（2026-10-16 15:11）：恢复原USB3设置后静止RGB-D实采通过，取消过期宿主对照等待
 
 - 起点a335162；用户在讨论恢复USB3.1后回复“我已恢复”。只读实查CAN3-2:1.0/12M与Depth3-4.1及RGB3-4.2/480M均xhci_hcd，设备两路均枚举，无控制源。当前根34GB/56%不做清理，约840项无关既有改动保留。两技能用于实际路径/最小范围，不改生产/TF或套DDS修复。
 - 新运行根`/home/johnwick/brain_robot_logs/usb31_static_20261016.1oGFil`。can0 if3初DOWN，按已有受限许可仅`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、queue1000、up各一次；未USB reset/模块重载。复制原preview仅改本次metadata，`run_static.py`rc0/preview rc0。原SDK→只读反馈桥→原Astra深度→原cam2image320×240/发布5Hz→原同步采集，真实保存5对原图/深度内参/关节/时间戳，图像共778172字节，相机16.732288秒，采集阶段RGB28/depth166/info166/feedback268。

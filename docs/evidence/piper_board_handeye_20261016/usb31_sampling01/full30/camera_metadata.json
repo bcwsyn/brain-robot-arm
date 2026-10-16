@@ -1,0 +1,296 @@
+{
+  "recent_same_device_factory_snapshot": {
+    "read_epoch": 1792134514.0831013,
+    "read_only": true,
+    "motion_commands_sent": false,
+    "get_device_info": {
+      "info": {
+        "header": {
+          "stamp": {
+            "sec": 0,
+            "nanosec": 0
+          },
+          "frame_id": ""
+        },
+        "name": "Astra",
+        "vid": 11205,
+        "pid": 1623,
+        "serial_number": "CC1365304DG",
+        "firmware_version": "",
+        "supported_min_sdk_version": "",
+        "hardware_version": ""
+      },
+      "success": true,
+      "message": ""
+    },
+    "get_camera_info": {
+      "info": {
+        "header": {
+          "stamp": {
+            "sec": 0,
+            "nanosec": 0
+          },
+          "frame_id": ""
+        },
+        "height": 480,
+        "width": 640,
+        "distortion_model": "plumb_bob",
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "k": [
+          488.80865478515625,
+          0.0,
+          315.5068054199219,
+          0.0,
+          488.80865478515625,
+          214.38182067871094,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "r": [
+          0.9998412728309631,
+          0.011080970056355,
+          0.01395333744585514,
+          -0.011040600016713142,
+          0.9999346137046814,
+          -0.0029670665971934795,
+          -0.013985303230583668,
+          0.0028125427197664976,
+          0.9998982548713684
+        ],
+        "p": [
+          488.80865478515625,
+          0.0,
+          315.5068054199219,
+          -29.824851989746094,
+          0.0,
+          488.80865478515625,
+          214.38182067871094,
+          0.2287428230047226,
+          0.0,
+          0.0,
+          1.0,
+          0.1407688856124878
+        ],
+        "binning_x": 0,
+        "binning_y": 0,
+        "roi": {
+          "x_offset": 0,
+          "y_offset": 0,
+          "height": 0,
+          "width": 0,
+          "do_rectify": false
+        }
+      },
+      "success": true,
+      "message": ""
+    },
+    "get_camera_params": {
+      "l_intr_p": [
+        476.5286560058594,
+        476.5286560058594,
+        325.8017578125,
+        199.88507080078125
+      ],
+      "r_intr_p": [
+        488.80865478515625,
+        488.80865478515625,
+        315.5068054199219,
+        214.38182067871094
+      ],
+      "r2l_r": [
+        0.9998412728309631,
+        0.011080970056355,
+        0.01395333744585514,
+        -0.011040600016713142,
+        0.9999346137046814,
+        -0.0029670665971934795,
+        -0.013985303230583668,
+        0.0028125427197664976,
+        0.9998982548713684
+      ],
+      "r2l_t": [
+        -29.824851989746094,
+        0.2287428230047226,
+        0.1407688856124878
+      ],
+      "l_k": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "r_k": [
+        0.0744049921631813,
+        -0.09923768788576126,
+        0.00045431629405356944,
+        -5.459555904963054e-05,
+        0.0
+      ],
+      "success": true,
+      "message": ""
+    },
+    "camera_link_from_depth_optical": {
+      "header": {
+        "stamp": {
+          "sec": 1792134514,
+          "nanosec": 142695076
+        },
+        "frame_id": "camera_link"
+      },
+      "child_frame_id": "camera_depth_optical_frame",
+      "transform": {
+        "translation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": -0.5,
+          "y": 0.4999999999999999,
+          "z": -0.5,
+          "w": 0.5000000000000001
+        }
+      }
+    },
+    "internal_tf_scope": "Latest camera-internal transform only; not image-time robot mounting TF"
+  },
+  "pose_K": [
+    [
+      244.02184800698723,
+      0.0,
+      157.50652727536004
+    ],
+    [
+      0.0,
+      243.89408871326168,
+      106.96712973321902
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "pose_D": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "K_D_interpretation": "unchanged endpoint/zero-D baseline, not newly calibrated",
+  "source_calibration": {
+    "serial": "CC1365304DG",
+    "depth": {
+      "size": [
+        640,
+        400
+      ],
+      "K": [
+        476.5286560058594,
+        0.0,
+        325.8017578125,
+        0.0,
+        476.5286560058594,
+        199.88507080078125,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D_factory": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "units": "millimetres",
+      "encoding": "16UC1"
+    },
+    "color_factory": {
+      "size": [
+        640,
+        480
+      ],
+      "K": [
+        488.80865478515625,
+        0.0,
+        315.5068054199219,
+        0.0,
+        488.80865478515625,
+        214.38182067871094,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "CameraInfo_D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raw_factory_D": [
+        0.0744049921631813,
+        -0.09923768788576126,
+        0.00045431629405356944,
+        -5.459555904963054e-05,
+        0.0
+      ],
+      "D_reordered_by_installed_driver": [
+        0.0744049921631813,
+        -0.09923768788576126,
+        -5.459555904963054e-05,
+        0.0,
+        0.00045431629405356944
+      ]
+    },
+    "color_capture": {
+      "size": [
+        320,
+        240
+      ],
+      "existing_detector_resize_factors": [
+        0.49921752738654146,
+        0.4989561586638831
+      ],
+      "distortion_in_existing_detector": "disabled; raw and driver-reordered coefficients preserved for independent replay"
+    },
+    "depth_to_color": {
+      "source_frame": "camera_depth_optical_frame",
+      "target_frame": "camera_color_optical_frame",
+      "equation": "p_color = R * p_depth + t",
+      "R_row_major": [
+        0.9998412728309631,
+        0.011080970056355,
+        0.01395333744585514,
+        -0.011040600016713142,
+        0.9999346137046814,
+        -0.0029670665971934795,
+        -0.013985303230583668,
+        0.0028125427197664976,
+        0.9998982548713684
+      ],
+      "t_m": [
+        -0.029824851989746094,
+        0.0002287428230047226,
+        0.0001407688856124878
+      ],
+      "t_raw_mm": [
+        -29.824851989746094,
+        0.2287428230047226,
+        0.1407688856124878
+      ],
+      "direction_source": "Unchanged configured D->C convention corroborated by archived factory extrinsic query; raw field names retained."
+    },
+    "not_robot_camera_mount_calibration": true
+  }
+}
