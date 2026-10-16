@@ -1,0 +1,33 @@
+{
+  "start_epoch": 1792155013.0594742,
+  "domain": 78,
+  "no_hardware_nodes": true,
+  "jobs": [
+    {
+      "name": "fixture",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/replay_p4_plan_only.py",
+        "--capture",
+        "/mnt/hgfs/ub/docs/evidence/piper_p4_preparation_20261016/cube_static01/paired_retry/capture/observer.jsonl",
+        "--output",
+        "/home/johnwick/brain_robot_logs/p4_open_loop_20261016.rK8BhF/preview_result.json"
+      ],
+      "rc": 0,
+      "forced_kill": false
+    },
+    {
+      "name": "nodes",
+      "argv": [
+        "ros2",
+        "launch",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/review_p4_open_loop.launch.py"
+      ],
+      "rc": 0,
+      "forced_kill": false
+    }
+  ],
+  "fixture_rc": 0,
+  "end_epoch": 1792155020.056549,
+  "all_owned_parents_exited": true
+}

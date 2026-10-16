@@ -1,0 +1,54 @@
+schema: p4_board_surface_v1
+frame_id: base_link
+surface_base_m:
+- 0.34541558430187874
+- -0.00938299111853809
+- 0.044519972883465875
+cube_edge_m: 0.029
+provenance: board_RGB_nominal_top_surface; review_SHA256=f573bcc4aea63353e924b4bd4ead2390030a69902dc842c4ba36414fbba53ddc
+source_review: /mnt/hgfs/ub/docs/evidence/piper_p4_preparation_20261016/cube_static01/paired_retry/fixed_board_plane_review.json
+source_review_sha256: f573bcc4aea63353e924b4bd4ead2390030a69902dc842c4ba36414fbba53ddc
+source_capture_sha256: 34c27084306355e807d4f9e13ab02140d416bb8972f2d0985b628233e49f4b39
+source_rgb_stamps_ns:
+- 1792153185856951135
+- 1792153186456913807
+- 1792153187056889511
+- 1792153187656907455
+- 1792153188256994899
+source_q_rad:
+- - -0.143982776
+  - 0.9349111800000001
+  - -1.259945232
+  - -0.071502956
+  - 1.212288224
+  - 0.088824848
+- - -0.143982776
+  - 0.9349111800000001
+  - -1.259945232
+  - -0.071502956
+  - 1.212288224
+  - 0.088824848
+- - -0.143982776
+  - 0.9349111800000001
+  - -1.259945232
+  - -0.071502956
+  - 1.212288224
+  - 0.088824848
+- - -0.143982776
+  - 0.9349111800000001
+  - -1.259945232
+  - -0.071502956
+  - 1.212288224
+  - 0.088824848
+- - -0.143982776
+  - 0.9349111800000001
+  - -1.259945232
+  - -0.071502956
+  - 1.212288224
+  - 0.088824848
+assumptions:
+- STATIC SNAPSHOT, not a live measurement. Cube and support must remain unchanged.
+- 32mm nominal planar board and 29mm nominal cube, not external metrology.
+- Whole RGB silhouette centroid ray is not a verified top-face-center ray.
+- Top surface input for ORIGINAL insertion geometry; do not add half edge again.
+- Existing model TCP is not an independently measured physical grasp center.

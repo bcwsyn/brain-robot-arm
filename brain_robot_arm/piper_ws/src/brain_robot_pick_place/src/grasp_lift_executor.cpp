@@ -358,6 +358,7 @@ public:
         if (!message->data) {
           return;
         }
+        if (p4_open_loop_enabled_) {p4_emergency_stop_latched_ = true;}
         cancel_requested_ = true;
         const auto arm = arm_;
         const auto gripper = gripper_;
@@ -388,13 +389,23 @@ public:
             response->message = "A grasp sequence is already running.";
             return;
           }
-          if (!real_grasp_enabled_ || visual_state != "GRASP_READY") {
+          if (p4_open_loop_enabled_ && (!configuration_ok_ || !arm_ || !planning_scene_)) {
+            response->success = false;
+            response->message = "P4 configuration or MoveIt interfaces are not ready.";
+            return;
+          }
+          if (p4_open_loop_enabled_ && (p4_emergency_stop_latched_ || visual_state == "FAULT")) {
+            response->success = false;
+            response->message = "P4 cannot clear an emergency stop or start from a controller fault.";
+            return;
+          }
+          if (!real_grasp_enabled_ || (!p4_open_loop_enabled_ && visual_state != "GRASP_READY")) {
             response->success = false;
             response->message =
               "Real grasp requires real_grasp_enabled=true and current state GRASP_READY.";
             return;
           }
-          if (!DepthStillTrusted()) {
+          if (!p4_open_loop_enabled_ && !DepthStillTrusted()) {
             response->success = false;
             response->message =
               "Grasp requires a fresh, stable, unclipped RGB-D target; continue visual tracking.";
@@ -406,11 +417,13 @@ public:
         }
         StartWorker();
         response->success = true;
-        response->message = "Real grasp sequence started from the camera target.";
+        response->message = p4_open_loop_enabled_ ?
+          "P4 sequence started from the explicitly frozen board/RGB target." :
+          "Real grasp sequence started from the camera target.";
       });
 
     PublishSceneReady(false);
-    PublishState("WAITING_FOR_LEVEL_ALIGN");
+    PublishState(p4_open_loop_enabled_ ? "P4_WAITING_FOR_EXPLICIT_EXECUTE" : "WAITING_FOR_LEVEL_ALIGN");
   }
 
   ~GraspLiftExecutor() override
@@ -436,6 +449,9 @@ public:
     gripper_ = std::move(gripper);
     planning_scene_ = std::move(planning_scene);
     ConfigureMoveGroups();
+    if (p4_open_loop_enabled_ && configuration_ok_) {
+      PublishState("P4_READY_FOR_EXPLICIT_EXECUTE");
+    }
   }
 
   const std::string & ArmGroup() const {return arm_group_;}
@@ -455,6 +471,12 @@ private:
   {
     simulation_only_ = ParameterOr<bool>("simulation_only", true);
     real_grasp_enabled_ = ParameterOr<bool>("real_grasp_enabled", false);
+    // Opt-in baseline only: no detector callback can replace this base-frame input.
+    p4_open_loop_enabled_ = ParameterOr<bool>("p4_open_loop_enabled", false);
+    p4_plan_only_ = ParameterOr<bool>("p4_plan_only", true);
+    p4_surface_base_m_ = ParameterOr<std::vector<double>>("p4_surface_base_m", {});
+    p4_cube_edge_m_ = ParameterOr<double>("p4_cube_edge_m", 0.029);
+    p4_target_provenance_ = ParameterOr<std::string>("p4_target_provenance", "");
     auto_execute_ = ParameterOr<bool>("auto_execute", true);
     prepare_on_grasp_ready_ = ParameterOr<bool>("prepare_on_grasp_ready", false);
     candidate_grasp_enabled_ = ParameterOr<bool>("candidate_grasp_enabled", false);
@@ -708,6 +730,14 @@ private:
         }) &&
       real_trajectory_limit_margin_rad_ >= 0.0 &&
       joint_state_wait_timeout_s_ > 0.0;
+    if (p4_open_loop_enabled_) {
+      configuration_ok_ = configuration_ok_ && !simulation_only_ &&
+        lift_reference_frame_ == "base_link" && p4_surface_base_m_.size() == 3 &&
+        std::all_of(p4_surface_base_m_.begin(), p4_surface_base_m_.end(),
+          [](double x) {return std::isfinite(x);}) &&
+        std::isfinite(p4_cube_edge_m_) && p4_cube_edge_m_ > 0.0 &&
+        !p4_target_provenance_.empty();
+    }
     if (!configuration_ok_) {
       RCLCPP_ERROR(
         get_logger(),
@@ -742,6 +772,11 @@ private:
 
   void HandleVisualState(const std::string & visual_state)
   {
+    // P4 starts only through ~/execute, never through LEVEL_ALIGN/GRASP_READY.
+    // Preserve the original stop/fault path and the independent E-stop callback.
+    if (p4_open_loop_enabled_ && visual_state != "FAULT" && visual_state != "STOPPED") {
+      return;
+    }
     if (!configuration_ok_ || !arm_ || !planning_scene_ ||
       (simulation_only_ && !gripper_)) {
       return;
@@ -867,6 +902,10 @@ private:
 
   void PointGraspAndLift()
   {
+    if (p4_open_loop_enabled_) {
+      P4OpenLoopGraspAndLift();
+      return;
+    }
     approach_locked_ = false;
     target_model_locked_ = false;
     near_seed_ = {};
@@ -1002,6 +1041,88 @@ private:
       return;
     }
     FinishGraspAndLift();
+  }
+
+  void P4OpenLoopGraspAndLift()
+  {
+    near_depth_tracking_active_ = false;
+    // The selected target is immutable in base_link. No ALIGN, depth handoff,
+    // RGB recovery, or post-motion detector update is part of this baseline.
+    PublishState("P4_FROZEN_TARGET_PLANNING");
+    RCLCPP_INFO(get_logger(),
+      "P4_FROZEN_BOARD_RGB surface=(%.9f,%.9f,%.9f) edge=%.6f plan_only=%d source=%s "
+      "NOMINAL_HEIGHT_AND_TCP_NOT_EXTERNAL_METROLOGY",
+      p4_surface_base_m_[0], p4_surface_base_m_[1], p4_surface_base_m_[2],
+      p4_cube_edge_m_, p4_plan_only_, p4_target_provenance_.c_str());
+    if (!p4_plan_only_) {
+      if (!StopServo()) {Fail("P4_SERVO_STOP_FAILED"); return;}
+      const double before = LatestGripperPosition();
+      PublishState("P4_OPENING_GRIPPER");
+      if (cancel_requested_ || !CommandRealGripper(true)) {Fail("P4_OPEN_FAILED"); return;}
+      std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
+      if (!WaitForGripperCommand(before, gripper_open_value_, false, "P4_OPEN")) {
+        Fail("P4_OPEN_FEEDBACK_UNCONFIRMED"); return;
+      }
+    }
+    const auto state = FreshMeasuredState("P4_START");
+    const auto start = CurrentPoseInFrame(lift_reference_frame_);
+    if (!state || start.header.frame_id.empty()) {Fail("P4_START_UNAVAILABLE"); return;}
+    std::vector<geometry_msgs::msg::Pose> pre, descent;
+    try {
+      const auto path = grasp_geometry::TargetDirectedApproach(
+        {start.pose.position.x, start.pose.position.y, start.pose.position.z},
+        {start.pose.orientation.x, start.pose.orientation.y, start.pose.orientation.z,
+          start.pose.orientation.w},
+        {p4_surface_base_m_[0], p4_surface_base_m_[1], p4_surface_base_m_[2]},
+        gripper_tip_offset_m_, top_down_pregrasp_clearance_m_ + grasp_height_offset_m_,
+        grasp_geometry::SurfaceInsertion(p4_cube_edge_m_, surface_insertion_fraction_,
+          surface_insertion_max_m_) - grasp_height_offset_m_,
+        cartesian_eef_step_m_, target_directed_downward_fraction_, true);
+      const auto convert = [](const auto & source, auto & destination) {
+          for (const auto & p : source) {
+            geometry_msgs::msg::Pose pose;
+            pose.position.x = p.origin[0]; pose.position.y = p.origin[1]; pose.position.z = p.origin[2];
+            pose.orientation.x = p.orientation[0]; pose.orientation.y = p.orientation[1];
+            pose.orientation.z = p.orientation[2]; pose.orientation.w = p.orientation[3];
+            destination.push_back(pose);
+          }
+        };
+      convert(path.pregrasp, pre); convert(path.descent, descent);
+    } catch (const std::invalid_argument & error) {
+      RCLCPP_ERROR(get_logger(), "P4 geometry: %s", error.what());
+      Fail("P4_GEOMETRY_INVALID"); return;
+    }
+    moveit_msgs::msg::RobotTrajectory pre_plan, descent_plan;
+    if (!PlanArmCartesianWaypointsFromState(pre, lift_reference_frame_, "P4_PREGRASP", state,
+        pre_plan) || !PlanArmCartesianWaypointsFromState(descent, lift_reference_frame_,
+        "P4_DESCENT", StateAtTrajectoryEnd(pre_plan.joint_trajectory, "P4_DESCENT_START"),
+        descent_plan)) {Fail("P4_FULL_PATH_PLAN_FAILED"); return;}
+    std::string reason;
+    if (!RealTrajectoryWithinLimits(pre_plan.joint_trajectory, reason) ||
+      !RealTrajectoryWithinLimits(descent_plan.joint_trajectory, reason)) {
+      PublishDiagnostic("P4_REAL_LIMIT_REJECTED:" + reason);
+      Fail("P4_REAL_LIMIT_REJECTED"); return;
+    }
+    geometry_msgs::msg::PoseStamped landing;
+    landing.header.frame_id = lift_reference_frame_; landing.header.stamp = now();
+    landing.pose = descent.back();
+    target_pose_publisher_->publish(landing);
+    if (p4_plan_only_) {
+      PublishState("P4_PLAN_READY_NO_EXECUTION");
+      return;  // No gripper, arm trajectory, Servo, or adapter output in this branch.
+    }
+    PublishState("P4_PREGRASP_EXECUTING");
+    if (cancel_requested_ || !ExecuteArmTrajectory(pre_plan.joint_trajectory)) {
+      Fail("P4_PREGRASP_EXECUTION_FAILED"); return;
+    }
+    PublishState("P4_DESCENT_EXECUTING");
+    if (cancel_requested_ || !ExecuteArmTrajectory(descent_plan.joint_trajectory) ||
+      !EnsureRealTopDownLanding(landing, descent_plan.joint_trajectory)) {
+      Fail("P4_LANDING_UNCONFIRMED_NO_CLOSE"); return;
+    }
+    PublishDiagnostic("P4_OPEN_LOOP_LANDING_CONFIRMED_NOT_RGB_JAW_VERIFICATION");
+    auto retreat = landing; retreat.pose = pre.back();
+    FinishGraspAndLift(retreat);
   }
 
   void CandidatePointGraspAndLift()
@@ -3290,7 +3411,8 @@ private:
   void FinishGraspAndLift(
     const geometry_msgs::msg::PoseStamped & postgrasp_retreat = geometry_msgs::msg::PoseStamped())
   {
-    if (!simulation_only_ && fresh_jaw_capture_required_ && !FreshFaceInsideJaws()) {
+    if (!simulation_only_ && !p4_open_loop_enabled_ &&
+      fresh_jaw_capture_required_ && !FreshFaceInsideJaws()) {
       Fail("FRESH_TARGET_OUTSIDE_JAWS_NO_CLOSE");
       return;
     }
@@ -4734,6 +4856,7 @@ private:
     auto state = std::make_shared<moveit::core::RobotState>(arm_->getRobotModel());
     state->setToDefaultValues();
     std::size_t found = 0;
+    std::size_t fingers_found = 0;
     for (std::size_t i = 0; i < measured.name.size() && i < measured.position.size(); ++i) {
       if (measured.name[i] == "joint1" || measured.name[i] == "joint2" ||
         measured.name[i] == "joint3" || measured.name[i] == "joint4" ||
@@ -4742,9 +4865,20 @@ private:
         state->setVariablePosition(measured.name[i], measured.position[i]);
         ++found;
       }
+      if (p4_open_loop_enabled_ &&
+        (measured.name[i] == "joint7" || measured.name[i] == "joint8") &&
+        std::isfinite(measured.position[i]))
+      {
+        state->setVariablePosition(measured.name[i], measured.position[i]);
+        ++fingers_found;
+      }
     }
     if (found != 6) {
       RCLCPP_WARN(get_logger(), "%s measured state has only %zu/6 arm joints.", stage.c_str(), found);
+      return nullptr;
+    }
+    if (p4_open_loop_enabled_ && fingers_found != 2) {
+      RCLCPP_WARN(get_logger(), "%s P4 requires the actual two-finger model feedback.", stage.c_str());
       return nullptr;
     }
     state->update();
@@ -4849,6 +4983,12 @@ private:
   }
 
   bool simulation_only_{true};
+  bool p4_open_loop_enabled_{false};
+  std::atomic_bool p4_emergency_stop_latched_{false};
+  bool p4_plan_only_{true};
+  std::vector<double> p4_surface_base_m_;
+  double p4_cube_edge_m_{0.029};
+  std::string p4_target_provenance_;
   bool real_grasp_enabled_{false};
   bool auto_execute_{true};
   bool prepare_on_grasp_ready_{false};

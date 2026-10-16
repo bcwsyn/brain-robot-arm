@@ -1,0 +1,35 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 13 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 13 tests from GraspGeometry
+[ RUN      ] GraspGeometry.DirectedApproachAimsAtOneTargetWhileAttitudeChanges
+[       OK ] GraspGeometry.DirectedApproachAimsAtOneTargetWhileAttitudeChanges (0 ms)
+[ RUN      ] GraspGeometry.DirectedAimHasNoPresetYawAndHandlesOppositeDirections
+[       OK ] GraspGeometry.DirectedAimHasNoPresetYawAndHandlesOppositeDirections (0 ms)
+[ RUN      ] GraspGeometry.DirectedSlantedEntryStillAimsAtTargetWithNoFixedAttitude
+[       OK ] GraspGeometry.DirectedSlantedEntryStillAimsAtTargetWithNoFixedAttitude (0 ms)
+[ RUN      ] GraspGeometry.DirectedApproachRejectsUndefinedGeometry
+[       OK ] GraspGeometry.DirectedApproachRejectsUndefinedGeometry (0 ms)
+[ RUN      ] GraspGeometry.PosePitchRotationComposesInReferenceFrameAndZeroRestores
+[       OK ] GraspGeometry.PosePitchRotationComposesInReferenceFrameAndZeroRestores (0 ms)
+[ RUN      ] GraspGeometry.PosePitchRotationRejectsUndefinedInputs
+[       OK ] GraspGeometry.PosePitchRotationRejectsUndefinedInputs (0 ms)
+[ RUN      ] GraspGeometry.FreshJawCaptureRejectsRemoteOrOffCentreCube
+[       OK ] GraspGeometry.FreshJawCaptureRejectsRemoteOrOffCentreCube (0 ms)
+[ RUN      ] GraspGeometry.FreshJawCaptureNeedsOpeningAndFiniteMeasuredFace
+[       OK ] GraspGeometry.FreshJawCaptureNeedsOpeningAndFiniteMeasuredFace (0 ms)
+[ RUN      ] GraspGeometry.InsertionUsesSmallerFaceAndCapsTravel
+[       OK ] GraspGeometry.InsertionUsesSmallerFaceAndCapsTravel (0 ms)
+[ RUN      ] GraspGeometry.LegacyPositiveGapLeavesFingertipsOutsideObject
+[       OK ] GraspGeometry.LegacyPositiveGapLeavesFingertipsOutsideObject (0 ms)
+[ RUN      ] GraspGeometry.CorrectedApproachCrossesSurfaceWithFixedOrientation
+[       OK ] GraspGeometry.CorrectedApproachCrossesSurfaceWithFixedOrientation (0 ms)
+[ RUN      ] GraspGeometry.FarOrSidewaysLandingIsNotAnAcceptedEndpoint
+[       OK ] GraspGeometry.FarOrSidewaysLandingIsNotAnAcceptedEndpoint (0 ms)
+[ RUN      ] GraspGeometry.CloseOnlyAfterLandingAndAtMostOneCorrection
+[       OK ] GraspGeometry.CloseOnlyAfterLandingAndAtMostOneCorrection (0 ms)
+[----------] 13 tests from GraspGeometry (2 ms total)
+
+[----------] Global test environment tear-down
+[==========] 13 tests from 1 test suite ran. (2 ms total)
+[  PASSED  ] 13 tests.

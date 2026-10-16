@@ -1,4 +1,16 @@
-## 本轮（2026-10-16 20:30）：方块已放回；只读采集恢复成功，残余深度高度与棋盘格冲突，原共享几何隔离规划100%
+## 本轮（2026-10-16 20:52）：P4局部模式获准实施，原入口默认关闭；实际执行器隔离规划/141项测试通过，未实机运动
+
+- 基线8a90b00，用户“好”批准上轮提出的P4开环模式及板面/标称尺寸目标范围。重读最高断点，核实际CMakeCache源、installed链接和规范/home SHA，三处原入口/launch/执行器改前字节相同；已有约840项vendor/sim脏改保留。使用ros2-piper-debug/surgical-change，不另写基础运动程序或新一键脚本。
+- 原执行器新增默认false P4分支，显式服务启动，旧LEVEL_ALIGN/GRASP_READY不自启；先张爪读反馈、用真实六轴和两指模型开口、原共享同步转向几何/完整MoveIt规划/限位/碰撞与适配器/落点检查，再原闭爪反馈和反向路径抬升。P4独立不做持续RGB/深度交接和末段视觉门；默认旧门/闭环参数/TF/TCP/界限/adapter不改。保留急停/STOPPED/FAULT取消，P4 execute不清除急停。仅P4抬升停HOLDING、不自动释放/回零/失能。
+- 原脚本增加明确P4开关及目标文件；默认plan_only=1，抓取段不输出且不返回观测/使能。实机设0时原观测轨迹后SEARCH前停，再调用原执行器。目标文件白名单不允许覆盖生产参数；`prepare_p4_board_target.py`只从已审阅原报告导出29mm顶面射线中位点 `[.34541558430187874,-.00938299111853809,.044519972883465875]m/base_link`，不是14.5mm中心，不重复加旧测量/TCP偏移。原戳/q/SHA和32mm板/29mm边长/轮廓质心/TCP未外部验证等假设完整保存；归档快照不当实时测量。
+- home运行目录 `/home/johnwick/brain_robot_logs/p4_open_loop_20261016.rK8BhF` 保存before原脚本/源/旧二进制/launch/CMake及冻结目标；活动源与规范同步，installed C++链接指向实际build，launch指向home source。首次两次CMake配置失败因原登记的部署测试源缺失，只补缺文件，不关闭测试；定向 `cmake --build ... --target grasp_lift_executor grasp_geometry_test -j2` 最终rc0。
+- `PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider` 指定P4、startup、camera_mount、astra_internal_tf、adapter五组：128passed；原C++grasp_geometry_test 13passed，合计141。bash -n及限定Git diff检查通过。首36项测试仅沙箱pytest缓存只读警告，后续关闭测试缓存，不改运行环境。
+- 域78实际新执行器＋原模型/RSP/MoveIt，无驱动/adapter/Servo/CAN/相机；归档q只作标明合成反馈。实际P4预抓取/下降均100%完整，20/9轨迹点，最大相邻步长.077993/.033295rad、原限位通过；结果P4_PLAN_READY_NO_EXECUTION。原臂轨迹/夹爪/joint_commands输出0。首注入旧状态QoS不匹配，不能算隔离验证；原日志保留，仅修fixture匹配真实发布者，重测匹配订阅者1、旧GRASP_READY不自启。最后测试注入1条急停，收到FAULT_ESTOP并验证再次execute被拒；是隔离测试意图，不是新硬件错误。原MoveIt SIGINT析构−11等与父0分账、未掩盖，所有自有源退出。
+- 证据/回退/使用说明 `docs/evidence/piper_p4_open_loop_20261016/optin01/README.md`；目标、原完整日志、源SHA/保护项未变及验证JSON入Git，旧二进制不入Git。根56%/33GB、共享75%/129GB，无删除原始数据/清理、无CAN恢复或实体操作。实际臂当前状态未在离线测试中重新采，不把旧q当新硬件反馈。
+- 下一用同一原入口P4做一次真实反馈/原图伴随的限定实测；先核当前场景是否仍与冻结快照一致，再张爪/靠近/闭爪/抬升，不再等同一代码许可或重复手眼采样。尚未物理夹起，仍以同位置3次≥1次夹起验收。Git仅本地，既有main分叉/历史发布审查保持，不推送/合并/强推。
+- 首暂存全量检查发现原构建/MoveIt日志自身的尾随空格；不篡改原始输出或SHA，仅证据子目录 `*.log -whitespace` 属性豁免机器输出格式，其他代码/文档空白检查保持。完整失败/重测/析构异常文本照存。
+
+## 历史本轮（2026-10-16 20:30）：方块已放回；只读采集恢复成功，残余深度高度与棋盘格冲突，原共享几何隔离规划100%
 
 - 起点822416a，用户“已放好”，按原下一步只读核新目标/base坐标、准备P4；使用ros2-piper-debug/surgical-change技能复用原节点/消息/实发TF/共享几何，0生产代码或参数变化、0运动/开闭/使能失能/复位/刷写/接口恢复。不把放好方块当自动AUTO1或解除靠近/门冻结。
 - 首 `/home/johnwick/brain_robot_logs/p4_cube_static_20261016.Fqi9XH`：原相机/检测器/只读桥/模型TF，相机24.7405秒，RGB只#1、深度/Info各358/反馈603，原采集15秒rc2、0/5。唯一RGB在正式collector订阅前，原检测器另有1个未qualified点、框/原戳TF，不称从无RGB。外层observer只等4秒导致收尾超时/SIGINT KeyboardInterrupt，原color阻塞收尾−9保留，全部源退。SDK原整窗rc2/32fresh原静止子窗3.1097秒分账。相关时段journalctl USB增量无输出/rc1，仅事实，不据此确诊硬件/DDS或永久健康。

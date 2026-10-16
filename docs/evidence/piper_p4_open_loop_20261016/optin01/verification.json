@@ -1,0 +1,55 @@
+{
+  "baseline_commit": "8a90b00",
+  "implementation_approved": true,
+  "real_arm_executed": false,
+  "actual_new_executor_isolated_preview_passed": true,
+  "python_tests": 128,
+  "original_geometry_tests": 13,
+  "synchronized_sources": [
+    {
+      "canonical": "brain_robot_arm/scripts/start_brain_robot_cube_real.sh",
+      "active": "/home/johnwick/start_brain_robot_cube_real.sh",
+      "sha256": "ec605460dac688916c500a133ea3b2097c2f12e4979e26f85b3505414cc4ee36"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp",
+      "sha256": "ccbce261e8e8e93601245a3d3e1f67554e031312cb3ff74af87eca9fe188bf38"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_ball_pick/launch/cube_visual_search.launch.py",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_ball_pick/launch/cube_visual_search.launch.py",
+      "sha256": "b9fcb79783e8cec81b9032cd5a9a17b658bbd63f0c61cae32b16bb7b866ca38a"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/CMakeLists.txt",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/CMakeLists.txt",
+      "sha256": "c2b33dfd1a3899afe2205625fd39d9397e2064f5bb5b61a7ed059fbd4bf540a2"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/prepare_p4_board_target.py",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/prepare_p4_board_target.py",
+      "sha256": "8bb538c50cfb6dbcc9f201eb20cc037d8aaf58dde309b834910f3beade47c5d8"
+    }
+  ],
+  "unchanged_protected_files": {
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "524f7c0ec64deba485c572c75739bdec936ee79304041c3dc3910f07835c52b9",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "unchanged_astra_source_sha256": "e916a45172dd6fc413a9652b61a438fe20049eda73ea5fbfd26865f5a080969b",
+  "unchanged_astra_library_sha256": "7dfeab6f3d61e27355abb5fdeebcde4d84f59c463ac54d23201deab8ac384911",
+  "installed_executor_resolves_to": "/home/johnwick/piper_ws/build/brain_robot_pick_place/grasp_lift_executor",
+  "new_executor_binary_sha256": "8369be31f45689ad8a90b3e54ba361845aa4912eb8fcc99bed40e312db00f1f5",
+  "local_before_backups": {
+    "executor.before.bin": "70c338122cdcbd8309e574849a123d4915be7536b86005d05b4bed84b230250e",
+    "start.before.sh": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "launch.before.py": "2df0e7ed5db5fbcaec8806f16bc918646226b856761c7f08f613ab202d8d156d",
+    "executor.before.cpp": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "CMakeLists.before.txt": "588efd9851daa307dc46b29eff8af42f74c53f92da4bfe03cc84115227e6eb79"
+  },
+  "rollback_baseline": "8a90b00, preserving the approved paired Astra/mount fix",
+  "raw_nominal_target_source_is_static_snapshot_not_fresh_hardware_data": true,
+  "git_publication": "local only, existing divergence/review blocker unchanged"
+}

@@ -15,6 +15,34 @@ def _load_yaml(path):
         return yaml.safe_load(stream)
 
 
+def _p4_overrides(environ):
+    """Explicit frozen target input, not an arbitrary production YAML overlay."""
+    if environ.get('BRAIN_ROBOT_P4_OPEN_LOOP', '0').lower() not in ('1', 'true', 'yes'):
+        return {}, {}
+    path = environ.get('BRAIN_ROBOT_P4_TARGET_CONFIG', '')
+    if not path:
+        raise RuntimeError('P4 requires BRAIN_ROBOT_P4_TARGET_CONFIG; no implicit/stale target')
+    plan_only = environ.get('BRAIN_ROBOT_P4_PLAN_ONLY', '1')
+    if plan_only not in ('0', '1'):
+        raise RuntimeError('BRAIN_ROBOT_P4_PLAN_ONLY must be 0 or 1')
+    target = _load_yaml(path)
+    surface = target.get('surface_base_m', [])
+    edge = target.get('cube_edge_m')
+    if (target.get('schema') != 'p4_board_surface_v1' or target.get('frame_id') != 'base_link' or
+            len(surface) != 3 or not all(math.isfinite(float(v)) for v in surface) or
+            edge is None or not math.isfinite(float(edge)) or float(edge) <= 0 or
+            not target.get('provenance')):
+        raise RuntimeError('P4 target must identify a finite nominal board/RGB surface in base_link')
+    return {'stop_after_observe': True}, {
+        'p4_open_loop_enabled': True,
+        'p4_plan_only': plan_only == '1',
+        'p4_surface_base_m': [float(v) for v in surface],
+        'p4_cube_edge_m': float(edge),
+        'p4_target_provenance': str(target['provenance']),
+        'auto_release_after_lift': False,
+    }
+
+
 def _camera_mount_arguments(task_profile):
     mount = task_profile['piper_camera_mount_tf']['ros__parameters']
     xyz = mount['translation_m']
@@ -50,6 +78,7 @@ def generate_launch_description():
     base_share = get_package_share_directory('brain_robot_pick_place')
     task_config_path = os.path.join(cube_share, 'config', 'cube_task_real.yaml')
     task_profile = _load_yaml(task_config_path)
+    p4_visual, p4_grasp = _p4_overrides(os.environ)
     grasp_parameters = task_profile['grasp_lift_executor']['ros__parameters']
     real_joint_mins = grasp_parameters['real_trajectory_joint_min']
     real_joint_maxs = grasp_parameters['real_trajectory_joint_max']
@@ -169,12 +198,12 @@ def generate_launch_description():
              name='visual_search_controller', output='screen', parameters=[
                  moveit_parameters,
                  task_config_path,
-                 {'backend': 'piper', 'use_sim_time': False}]),
+                 {'backend': 'piper', 'use_sim_time': False}, p4_visual]),
         Node(package='brain_robot_pick_place', executable='grasp_lift_executor',
              name='grasp_lift_executor', output='screen', parameters=[
                  moveit_parameters,
                  task_config_path,
-                 {'use_sim_time': False}],
+                 {'use_sim_time': False}, p4_grasp],
              remappings=[('/joint_states', '/piper_moveit_joint_states')]),
         # Depth geometry gate. It publishes only candidate geometry/validity;
         # the existing controller and grasp executor remain the sole motion

@@ -139,6 +139,7 @@ install(PROGRAMS
   scripts/runtime_monitor.py
   scripts/piper_jog_adapter.py
   scripts/depth_cube_probe.py
+  scripts/prepare_p4_board_target.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -200,6 +201,7 @@ if(BUILD_TESTING)
   ament_add_pytest_test(camera_jaw_alignment_test test/test_camera_jaw_alignment.py
     ENV "PYTHONNOUSERSITE=1")
   ament_add_pytest_test(near_depth_wiring_test test/test_near_depth_wiring.py)
+  ament_add_pytest_test(p4_open_loop_test test/test_p4_open_loop.py)
 endif()
 
 ament_package()
