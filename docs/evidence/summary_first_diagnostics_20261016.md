@@ -1,5 +1,30 @@
 # 摘要优先诊断技能：离线审阅记录
 
+## 23:48实现：查询命令先选型，两个终端工具与33项真实离线测试
+
+用户批准通用方案，不能只针对candump或仅缩短模型回复。本轮在同一个技能目录加入两个Python标准库工具、[按问题选命令的速查表](../../.agents/skills/summary-first-diagnostics/references/commands.md)及离线测试；无依赖安装、运行节点/设备或控制程序修改。实施开始基线5ca2072，期间另一实体工作独立提交到994688c；本轮只记录工具，不覆盖该23:35实体断点或沿用旧实体状态。
+
+- `scripts/counter_probe.py`：接口/sysfs计数或通用计数＋身份文件，有限观察、只一行JSON。`receiving:true/false/null`区分有增长/窗口无增长/无法判断，检测已观察的身份变化/回零/读取失败；不启动candump/CAN socket。初始化读数耗时不充当观察时长，`observed_s`与总`elapsed_s`分开；不能检测所有瞬时重连，也不证明六轴新鲜度/运动成功。通用输入拒绝FIFO/设备文件。
+- `scripts/terminal_summary.py log`：本地全文（限字节预算）统计错误词/警告词/字面匹配行数和最多2条160字符摘录，不只看head/tail。预算/文件变化显示partial，不把未读后半当正常；匹配“0 errors”不自动判命令失败。
+- `... data`：JSON选择字段、数组形状；JSON数组/JSONL/CSV逐记录聚合存在/缺失/null/类型/数值范围/布尔数量，不打印大数组。不完整JSON/CSV拒绝解析，异常JSONL计数并非零返回；时间戳/像素/接触等语义仍交既有专用分析器。
+- `... run --log NEW --timeout S -- COMMAND ARGS`：只包装已授权有限命令，无隐式shell/权限扩张。stdout/stderr落本地新建日志、独占创建不覆盖；真实child rc保留，超时124/日志预算125/启动或摘要失败2分账，超时对自有进程组TERM→KILL。默认日志16MiB、可配置≤128MiB，超预算终止并标不完整；不适用于需常驻的服务、不能保证清理主动逃逸进程组的后代。保留日志私密性，不能擅发GitHub或把wrapper当机器人动作许可。
+- 所有助手摘要最多8KiB；摘要本身超限返回unknown/非零，不是工具截断后仍报成功。文件助手有字节/工作量边界，硬I/O截止需要外层run；定时观察到达预定截止不必然是发布者故障，依实际时长/记录判断。
+- ROS/相机/深度/点云优先复用已验证有界订阅器和既有质量报告再提字段；Git/文件/进程/磁盘优先原生命令限路径/计数/存在性查询，必要时才本地日志摘要。速查覆盖这些不同场景，而不是每景造一个采集器；没有用计数代替视觉、TF、反馈或完整审查。
+
+实际测试命令（仅临时文件、模拟快照和自有Python子进程）：
+
+```text
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -m unittest discover -s .agents/skills/summary-first-diagnostics/tests -v
+Ran 33 tests in 1.127s; OK
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 /home/johnwick/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/summary-first-diagnostics
+```
+
+[完整离线测试输出](summary_first_diagnostics_tests_20261016.txt)保留。覆盖正常/零增长/身份变更但计数更大/计数回零/缺文件/FIFO；初始化延迟；十万行中间错误/长行末端错误/匹配例子上限/扫描预算；JSON大数组不展开/指针/null/布尔/坏格式/JSONL半行/CSV异常；子进程非零返回/忽略TERM后KILL/洪泛输出/日志不覆盖/程序不存在/摘要自身超限及CLI退出码。
+
+一次独立合成日志示例：1200021字节、100001行→423字节摘要，错误匹配1行、位置50001，完整扫描为true；没有访问真实日志/设备。这个测量仅证明该输入的输出体积减少，不是token账单或实机总用时提速证明。计数器工具可执行性也只以临时文件与模拟时钟验证，没有读取can0或恢复通信。
+
+主技能有实际命令路由，不要求后续代理先读完脚本源码再运行；修改/审计时才读代码，参考表按需加载。原两技能、生产程序/门/TF/限位不改，保留必须完整读取的规则与原时长/新鲜反馈。实体断点仍是独立994688c记录的23:35CAN停流等待宿主重连，本次技能实现不解决或自动处理它，未运动/开闭/使能/失能/部署/恢复/推送。
+
 ## 23:03修订：实机完成时间优先于用量
 
 用户要求继续修改同一个技能，基线`eac0117`。新增的是实验效率约束，不改机器人程序、原诊断门限或另建统计框架：

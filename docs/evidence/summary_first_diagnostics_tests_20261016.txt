@@ -1,0 +1,38 @@
+test_counter_reset_without_identity_change_is_unknown (test_diagnostics.CounterTests) ... ok
+test_generic_files_and_fifo_rejection (test_diagnostics.CounterTests) ... ok
+test_growth_is_only_counter_evidence (test_diagnostics.CounterTests) ... ok
+test_identity_change_even_with_higher_counter_is_unknown (test_diagnostics.CounterTests) ... ok
+test_missing_file_is_not_false (test_diagnostics.CounterTests) ... ok
+test_no_growth_is_not_a_hardware_diagnosis (test_diagnostics.CounterTests) ... ok
+test_setup_delay_does_not_replace_observation_window (test_diagnostics.CounterTests) ... ok
+test_csv_aggregation (test_diagnostics.FileTests) ... ok
+test_csv_duplicate_columns_or_extra_cells_rejected (test_diagnostics.FileTests) ... ok
+test_emit_bounds_unicode_or_large_keys_without_false_success (test_diagnostics.FileTests) ... ok
+test_error_in_middle_of_100001_lines_is_retained_in_small_summary (test_diagnostics.FileTests) ... ok
+test_json_array_field_aggregation_missing_null_and_boolean (test_diagnostics.FileTests) ... ok
+test_json_pointer_escapes_and_invalid_shape (test_diagnostics.FileTests) ... ok
+test_jsonl_cut_record_is_not_counted (test_diagnostics.FileTests) ... ok
+test_jsonl_invalid_records_not_silently_skipped (test_diagnostics.FileTests) ... ok
+test_limit_cannot_report_whole_file_success (test_diagnostics.FileTests) ... ok
+test_long_line_error_not_hidden_by_excerpt_prefix (test_diagnostics.FileTests) ... ok
+test_malformed_json_and_nonfinite_json_are_errors (test_diagnostics.FileTests) ... ok
+test_many_matches_counted_but_examples_bounded (test_diagnostics.FileTests) ... ok
+test_oversized_json_not_parsed_as_complete (test_diagnostics.FileTests) ... ok
+test_pipe_is_rejected_without_waiting_for_writer (test_diagnostics.FileTests) ... ok
+test_selected_json_fields_not_full_arrays (test_diagnostics.FileTests) ... ok
+test_cli_counter_with_only_temporary_files (test_diagnostics.RunnerTests) ... ok
+test_cli_high_output_only_returns_summary (test_diagnostics.RunnerTests) ... ok
+test_cli_preserves_failure_and_handles_malformed_data (test_diagnostics.RunnerTests) ... ok
+test_cli_run_summary_overflow_preserves_child_status_without_traceback (test_diagnostics.RunnerTests) ... ok
+test_cli_summary_overflow_is_unknown_and_nonzero (test_diagnostics.RunnerTests) ... ok
+test_existing_log_not_overwritten_and_child_not_started (test_diagnostics.RunnerTests) ... ok
+test_missing_program_not_no_data (test_diagnostics.RunnerTests) ... ok
+test_nonzero_real_return_code_preserved (test_diagnostics.RunnerTests) ... ok
+test_output_flood_is_bounded_on_disk_and_not_success (test_diagnostics.RunnerTests) ... ok
+test_success_preserves_raw_and_does_not_treat_error_word_as_exit_failure (test_diagnostics.RunnerTests) ... ok
+test_timeout_kills_term_ignoring_owned_child (test_diagnostics.RunnerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 1.127s
+
+OK

@@ -1,5 +1,7 @@
 # 当前断点（2026-10-16 23:35）：缓闭推进到25.8mm后新CAN停流，等待宿主仅重连USB-CAN
 
+**23:48工具更新（实体断点不变）：** 用户批准通用终端先算方案，现[summary-first-diagnostics](.agents/skills/summary-first-diagnostics/SKILL.md)已带两个可执行助手＋[命令速查](.agents/skills/summary-first-diagnostics/references/commands.md)：计数/身份变化、日志、JSON/JSONL/CSV、命令真实rc/超时/输出预算；ROS/视觉等复用既有语义分析，Git/进程/磁盘选原生小查询。33离线测试与格式校验，合成100001行→423B摘要且错误位置保留；非实机验证/提速保证。[实现与测试记录](docs/evidence/summary_first_diagnostics_20261016.md)。本轮无设备或生产操作，不恢复CAN/运动/扩大P4许可；下方994688c实体记录和后续现场步骤保持，Git仅本地。
+
 用户本轮要求自行推进/仅必须手操作时叫，特别提醒新skill；已完整读取并沿其先旧证据关联、最小修复/构建、有限实测。修改前说明仅原GentleGripper超前0.5→2mm、名义行程时间×2＋5秒，原10/3mm/s参考/.5N·m/25mm下界/接触空夹判断不变。无TF/TCP/臂限位/默认靠近/adapter/driver/检测YAML或RGB候选抓取改动，不误把自主许可扩成新夹持参考采用。
 
 旧数据888参考中882在150ms匹配同值转发（非独立ACK），停滞期driver仍462调用90.1–90.2mm，不能归因全部被适配器过滤。新8C++、8Python入口、域78原executor三合成回路通过；悲观模型停25.7mm的首次失败保留为未确认负例，未放宽判据。单目标构建106.096秒rc0，新binary61c8e5d185a0778960f591cd63dc35fa731db40e1f4989a6999db327d1996cf5；home头文件/测试与规范一致，原其他控制/配置SHA保持。隔离stale收尾MoveIt子-11/父rc0分账。
