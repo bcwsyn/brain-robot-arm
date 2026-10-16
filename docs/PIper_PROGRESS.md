@@ -1,4 +1,13 @@
-## 本轮（2026-10-16 12:41）：用户确认刚重启/当前安全，候选J4+6°往返实机通过，末保持使能
+## 本轮（2026-10-16 12:58）：原观测中途停流；宿主USB-CAN重连现恢复连续反馈，续原观测准入
+
+- 两repo技能继续约束真实运行路径/小范围调用。用户自主续行要求承接原观测与已批准板9fit+1heldout；不复做J4/不开发靠近/生产TF冻结。runtime `/home/johnwick/brain_robot_logs/board_resume_20261016.SUhpfy`，生产六SHA与81f8a7e一致。
+- 首次原10秒SDK准入无连续3秒速度静止窗，未启动driver/运动。随后只在当前q与81f8a7e原静止终点差≤1.7444e-5rad、最近31fresh/3.009秒六true、SHA不变时复用其原通过静止基线；整窗rc2照存，不降SDK阈值、不把首个尚未完整聚合的false当真实失能。此证书只适用原近零起点，不沿用到中途新姿态。
+- 原driver/原完整launch去除grasp executor，stop_after_observe设/read true、首持位命令与真实反馈相等，原controller发布17点/63.6秒准备轨迹。start epoch1792126119.489，末新鲜反馈1792126157.635，约38.14秒后CAN停流，driver .5秒规则停输出/adapter原25秒规则disarm，控制器FAULT/PIPER_ADAPTER_DISARMED；最大观测误差.530210rad，未到观测。bag3153命令/9635反馈/2轨迹（后一条两点恒定保持）/0夹爪。原包装仅识别FAILED漏识FAULT，精确SIGINT自有包装完成收尾，末KeyboardInterrupt仅收尾结果，主因是接收停流；无硬件Disable/Reset/固件/相机/SEARCH。
+- RX固定4796101、无对应新内核USB错误证据，不猜硬件或用户原因。一次接口固定恢复ENETDOWN，后UP ENODEV；一次限定设备1d50:606f/serial003F001E5246570520323934精确usbreset rc0、激活rc0/新if4 ERROR-ACTIVE，3秒RX0，不能算恢复。未循环重载/重置。
+- 用户现确认宿主侧重连；新if5初DOWN，sudo -n true成功后仅固定1Mbps/.75/queue1000/UP。原被动SDK6秒rc2但60fresh/5.922秒/qspread0、末六true/99.6mm，RX增长/TX0、无控制源。实际q[-.147523908,.548212588,-.739032504,.017461444,.834102304,.064769572]rad，J5较停流前末值仅.000454rad差，不能称已观测。原速度3秒子窗无，保留整窗与脉冲；不重复reset健康链路。
+- 正执行一次原10秒新姿态静止准入，成功后从新鲜实测q续原固定观测/SEARCH前停。只补本次包装识别PIPER_ADAPTER_DISARMED/FAULT终态以立即收尾，不改控制器/adapter/SDK/限位/目标/阈值；原文件完整保留在独立会话，失败则保存原因不循环强推。证据[board_resume01](evidence/piper_board_handeye_20261016/board_resume01/)原34文件681KB归档SHA通过；宿主重连及后续单独追加。旧板仍2/10，无新图/手眼/TF；根约34GB可用，不删除/不推送。
+
+## 历史本轮（2026-10-16 12:41）：用户确认刚重启/当前安全，候选J4+6°往返实机通过，末保持使能
 
 - 用户明确“我刚刚把机械臂断电重启了，现在在零点位置安全”，作为现场背景/支撑确认，不再等待同一事实，不把此前状态变化归咎故障；不等于软件写零/全轴绝对0。按两repo技能只续既有候选部署/限定J4授权，不改生产文件/参数/TF/限位，不需要重复许可或人工操作。
 - 真进程检查无控制源，can0已健康有流复用不重载，root34GB。新原`collect_calibration_sdk.py --duration-s 6`rc0，60/59fresh/5.819287秒全窗静止通过，六false/99.6mm，q_mdeg[-8759,-118,173,8404,16703,1733]。新实际起点非旧观测，不直接发历史q/全零。

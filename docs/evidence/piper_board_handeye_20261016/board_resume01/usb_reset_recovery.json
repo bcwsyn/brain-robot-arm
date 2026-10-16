@@ -1,0 +1,99 @@
+{
+  "target": "/dev/bus/usb/003/007",
+  "serial": "003F001E5246570520323934",
+  "no_arm_motion_enable_disable_or_gripper": true,
+  "commands": [
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "timeout",
+        "-k",
+        "2s",
+        "5s",
+        "/usr/bin/usbreset",
+        "003/007"
+      ],
+      "returncode": 0,
+      "stdout": "Resetting candleLight USB to CAN adapter ... ok\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "type",
+        "can",
+        "bitrate",
+        "1000000",
+        "sample-point",
+        "0.75"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "txqueuelen",
+        "1000"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":4,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-1.2:1.0\",\"stats64\":{\"rx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":4,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-1.2:1.0\",\"stats64\":{\"rx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": ""
+    }
+  ],
+  "received_frames": 0
+}

@@ -1,0 +1,309 @@
+{
+  "operator_authorization": {
+    "operator_quote": "好，你自行完成，等真的需要我实机操作的时候再叫我",
+    "prior_route_approval": "121d1ef board9fit1heldout proposal already approved",
+    "new_instruction_context": "After J4 success, resume existing observation and board sampling workflow autonomously.",
+    "motion_scope": "Existing current-to-fixed-observation trajectory, stop before SEARCH; approved bounded board9fit1heldout wrist poses only after fresh board/plan checks.",
+    "frozen": "Production TF/TCP, limits, detector/grasp/search code and parameters unchanged.",
+    "not_authorized": "Firmware, MasterSlaveConfig, ResetPiper, hardware disable, search/grasp, TF deployment.",
+    "invocation_changes": {
+      "ROOT=Path(tempfile.mkdtemp(prefix='piper_board_return_observe.',dir='/home/johnwick/brain_robot_logs'))": "ROOT=Path('/home/johnwick/brain_robot_logs/board_resume_20261016.SUhpfy/observe')",
+      "FROZEN=Path('/mnt/hgfs/ub/docs/evidence/piper_calibration_p1_20261015/board_open_only/production_SHA_before.json')": "FROZEN=Path('/home/johnwick/brain_robot_logs/board_resume_20261016.SUhpfy/approved_baseline.json')",
+      "LAUNCH=Path('/home/johnwick/brain_robot_logs/piper_calibration_p1_20261015/new_pair06_after_manual_reset.NBs3LK/original_observe_launch.py')": "LAUNCH=Path('/home/johnwick/brain_robot_logs/board_resume_20261016.SUhpfy/observe/original_observe_launch.py')",
+      "assert report['adapter_sha256']=='a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8'": "assert report['adapter_sha256']=='5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172'",
+      "'candidate_deployed':False": "'candidate_deployed':True",
+      "'operator_quote':'允许：沿已有轨迹返回观测姿态，只拍完整棋盘格，并在SEARCH前停止；不再开闭夹爪、不搜索或抓取'": "'operator_quote':'好，你自行完成，等真的需要我实机操作的时候再叫我；承接恢复观测与已批准棋盘格采样，不抓取/不改生产TF'"
+    },
+    "original_observe_source": "/mnt/hgfs/ub/docs/evidence/piper_calibration_p1_20261015/board_observe/piper_board_return_observe.py",
+    "source_SHA256": "bda9fc3e9fb2bc1de3ebe8db3b0bc2a6f51ebff0a048ffdfcf293075abcbdf5b"
+  },
+  "original_observation_reached": false,
+  "new_board_sampling_started": false,
+  "primary_failure": "Original CAN feedback ceased during the observation trajectory; original driver suppressed output and adapter timed out/disarmed.",
+  "wrapper_final_error_is_cleanup_not_primary_failure": "KeyboardInterrupt()",
+  "initial_preflight_failed_no_driver_or_motion": "RuntimeError('No original continuous >=3s/30-sample static window; no driver or movement started')",
+  "baseline_reuse_certificate": {
+    "rule": "CODEX_TASK_PROMPT section6: reuse passed P0/P1 baseline unless relevant state/config changes",
+    "prior_static_source": "/mnt/hgfs/ub/docs/evidence/piper_board_handeye_20261016/j4_roundtrip01/sdk_after.json",
+    "prior_source_SHA256": "7243ae1d3725a29d53963a9b828eb80474a884ca697489bef8c170cfa06e82b9",
+    "prior_passing_subwindow": {
+      "start_index_inclusive": 29,
+      "end_index_exclusive": 60,
+      "quality": {
+        "samples": 31,
+        "fresh_samples": 31,
+        "span_s": 3.009126663208008,
+        "static_three_seconds_and_thirty_samples": true,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "SDK_function_or_threshold_changed": false,
+    "current_full_window_failure_preserved": {
+      "samples": 100,
+      "fresh_samples": 100,
+      "span_s": 9.93186640739441,
+      "static_three_seconds_and_thirty_samples": false,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "current_actual_fresh_samples": 100,
+    "six_enabled_last31_samples_span_s": 3.0089633464813232,
+    "initial_partial_low_speed_aggregate_sample_not_used_as_six_axis_enable_proof": true,
+    "maximum_current_pose_delta_from_verified_endpoint_rad": 1.7443999999922077e-05,
+    "sources_unchanged": true,
+    "CAN_health_checked_before_original_driver_start": true,
+    "scope": "Observation invocation only; not qualify a new calibration sample or replace SDK raw evidence."
+  },
+  "SDK_thresholds_or_production_guards_changed": false,
+  "invocation_initial_partial_low_speed_enable_assertion_failed_then_corrected": true,
+  "explanation": "Only first aggregate SDK low-speed sample was incomplete; following99 samples six enabled. Latest31/3.009s enabled and pose matched verified static baseline within1.7444e-5rad.",
+  "bag_counts": {
+    "/brain_robot_grasp/arm_trajectory": 2,
+    "/brain_robot_visual_control/reason": 3,
+    "/brain_robot_visual_control/state": 3,
+    "/joint_states_feedback": 9635,
+    "/brain_robot_control/adapter_armed": 2,
+    "/joint_commands": 3153
+  },
+  "trajectories": [
+    {
+      "epoch": 1792126119.490772,
+      "points": 17,
+      "joint_names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "start_q": [
+        -0.152791996,
+        -0.0029654800000000004,
+        0.002599156,
+        0.14679126,
+        0.290146052,
+        0.030230452000000005
+      ],
+      "goal_q": [
+        -0.141941828,
+        0.942464432,
+        -1.269242884,
+        -0.07443354799999999,
+        1.22108,
+        0.089435388
+      ],
+      "duration_s": 63.592102
+    },
+    {
+      "epoch": 1792126182.6379328,
+      "points": 2,
+      "joint_names": [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6"
+      ],
+      "start_q": [
+        -0.147523908,
+        0.5482125880000001,
+        -0.7390325040000001,
+        0.017461444,
+        0.83364876,
+        0.06476957200000001
+      ],
+      "goal_q": [
+        -0.147523908,
+        0.5482125880000001,
+        -0.7390325040000001,
+        0.017461444,
+        0.83364876,
+        0.06476957200000001
+      ],
+      "duration_s": 0.1
+    }
+  ],
+  "states": [
+    {
+      "epoch": 1792126108.0337882,
+      "value": "IDLE"
+    },
+    {
+      "epoch": 1792126119.4885368,
+      "value": "PREPARE"
+    },
+    {
+      "epoch": 1792126182.638668,
+      "value": "FAULT"
+    }
+  ],
+  "reasons": [
+    {
+      "epoch": 1792126108.0259175,
+      "value": "WAITING_FOR_START"
+    },
+    {
+      "epoch": 1792126119.4890711,
+      "value": "START_AUTHORIZED"
+    },
+    {
+      "epoch": 1792126182.638826,
+      "value": "PIPER_ADAPTER_DISARMED"
+    }
+  ],
+  "first_command_matches_arm_feedback": true,
+  "last_valid_feedback": {
+    "epoch": 1792126157.6347826,
+    "q": [
+      -0.147523908,
+      0.5482125880000001,
+      -0.7390325040000001,
+      0.017461444,
+      0.83364876,
+      0.06476957200000001
+    ],
+    "gap_m": 0.0996,
+    "source_stamp_ns": "1792126157634042451"
+  },
+  "last_valid_is_not_current_state": true,
+  "actual_feedback_after_trajectory_start_s": 38.14360070228577,
+  "maximum_last_valid_goal_error_rad": 0.53021038,
+  "controller_hold_trajectory_not_extra_return": true,
+  "wrapper_wait_missed_FAULT_because_checked_only_FAILED_string": true,
+  "verified_owned_wrapper_SIGINT_for_cleanup_PID": 5492,
+  "no_hardware_disable_or_reset_or_gripper": true,
+  "all_owned_sources_exited": true,
+  "original_frozen_sources_unchanged": true,
+  "initial_stalled_RX_packets": 4796101,
+  "interface_only_recovery_result": {
+    "first_script_error": "OSError: [Errno 100] Network is down",
+    "initial_command_results_not_written_due_unhandled_receive_exception": true,
+    "subsequent_UP_stderr_observed": "RTNETLINK answers: No such device"
+  },
+  "one_exact_USB_reset_result": {
+    "target": "/dev/bus/usb/003/007",
+    "serial": "003F001E5246570520323934",
+    "no_arm_motion_enable_disable_or_gripper": true,
+    "commands": [
+      {
+        "argv": [
+          "sudo",
+          "-n",
+          "timeout",
+          "-k",
+          "2s",
+          "5s",
+          "/usr/bin/usbreset",
+          "003/007"
+        ],
+        "returncode": 0,
+        "stdout": "Resetting candleLight USB to CAN adapter ... ok\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "sudo",
+          "-n",
+          "ip",
+          "link",
+          "set",
+          "can0",
+          "type",
+          "can",
+          "bitrate",
+          "1000000",
+          "sample-point",
+          "0.75"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "sudo",
+          "-n",
+          "ip",
+          "link",
+          "set",
+          "can0",
+          "txqueuelen",
+          "1000"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "sudo",
+          "-n",
+          "ip",
+          "link",
+          "set",
+          "can0",
+          "up"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "ip",
+          "-json",
+          "-details",
+          "-statistics",
+          "link",
+          "show",
+          "can0"
+        ],
+        "returncode": 0,
+        "stdout": "[{\"ifindex\":4,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-1.2:1.0\",\"stats64\":{\"rx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "ip",
+          "-json",
+          "-details",
+          "-statistics",
+          "link",
+          "show",
+          "can0"
+        ],
+        "returncode": 0,
+        "stdout": "[{\"ifindex\":4,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-1.2:1.0\",\"stats64\":{\"rx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+        "stderr": ""
+      }
+    ],
+    "received_frames": 0
+  },
+  "latest_CAN_ifindex": 4,
+  "latest_CAN_state": "ERROR-ACTIVE",
+  "latest_CAN_RX": 0,
+  "current_arm_pose_and_enable_unknown_until_new_frames": true,
+  "hardware_CAN_failure_cause_not_proven": true,
+  "next_manual_action": "Only detach and reconnect candleLight USB-CAN1d50:606f to this VM via VMware Removable Devices; do not move/powercycle/disable arm or camera.",
+  "no_more_same_software_recovery_loop": true,
+  "board_pose_count_unchanged": 2,
+  "hand_eye_or_TF_deployment": false,
+  "GitHub_pushed": false
+}

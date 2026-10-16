@@ -1,0 +1,47 @@
+{
+  "rule": "CODEX_TASK_PROMPT section6: reuse passed P0/P1 baseline unless relevant state/config changes",
+  "prior_static_source": "/mnt/hgfs/ub/docs/evidence/piper_board_handeye_20261016/j4_roundtrip01/sdk_after.json",
+  "prior_source_SHA256": "7243ae1d3725a29d53963a9b828eb80474a884ca697489bef8c170cfa06e82b9",
+  "prior_passing_subwindow": {
+    "start_index_inclusive": 29,
+    "end_index_exclusive": 60,
+    "quality": {
+      "samples": 31,
+      "fresh_samples": 31,
+      "span_s": 3.009126663208008,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "SDK_function_or_threshold_changed": false,
+  "current_full_window_failure_preserved": {
+    "samples": 100,
+    "fresh_samples": 100,
+    "span_s": 9.93186640739441,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "current_actual_fresh_samples": 100,
+  "six_enabled_last31_samples_span_s": 3.0089633464813232,
+  "initial_partial_low_speed_aggregate_sample_not_used_as_six_axis_enable_proof": true,
+  "maximum_current_pose_delta_from_verified_endpoint_rad": 1.7443999999922077e-05,
+  "sources_unchanged": true,
+  "CAN_health_checked_before_original_driver_start": true,
+  "scope": "Observation invocation only; not qualify a new calibration sample or replace SDK raw evidence."
+}

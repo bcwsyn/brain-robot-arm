@@ -1,0 +1,95 @@
+{
+  "role": "board_full_observation_return",
+  "cube_removed_by_operator": true,
+  "operator_return_permission": true,
+  "operator_quote": "\u597d\uff0c\u4f60\u81ea\u884c\u5b8c\u6210\uff0c\u7b49\u771f\u7684\u9700\u8981\u6211\u5b9e\u673a\u64cd\u4f5c\u7684\u65f6\u5019\u518d\u53eb\u6211\uff1b\u627f\u63a5\u6062\u590d\u89c2\u6d4b\u4e0e\u5df2\u6279\u51c6\u68cb\u76d8\u683c\u91c7\u6837\uff0c\u4e0d\u6293\u53d6/\u4e0d\u6539\u751f\u4ea7TF",
+  "gripper_command_published": false,
+  "observe_reached": false,
+  "reset_or_disable_requested": false,
+  "production_modified": false,
+  "candidate_deployed": true,
+  "camera_during_motion": false,
+  "events": [
+    {
+      "name": "sdk_before",
+      "exit_code": 2,
+      "epoch": 1792126022.9975333
+    },
+    {
+      "name": "sdk_before",
+      "final_exit_code": 2,
+      "epoch": 1792126023.0551043
+    }
+  ],
+  "commands": [
+    {
+      "name": "sdk_before",
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/board_resume_20261016.SUhpfy/observe/sdk_before.json",
+        "--duration-s",
+        "10"
+      ],
+      "pid": 5426,
+      "epoch": 1792126012.334763
+    }
+  ],
+  "error": "RuntimeError('No original continuous >=3s/30-sample static window; no driver or movement started')",
+  "adapter_sha256": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+  "initial_measured": {
+    "epoch": 1792126022.840322,
+    "sdk_receipt_stamps": {
+      "joint": "1792126022.8399386",
+      "high": "1792126022.8359346",
+      "low": "1792126022.8355594",
+      "gripper": "1792126022.840078"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8759,
+      -170,
+      149,
+      8415,
+      16633,
+      1733
+    ],
+    "q_driver_rad": [
+      -0.152791996,
+      -0.0029654800000000004,
+      0.002599156,
+      0.14679126,
+      0.290146052,
+      0.030230452000000005
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 0,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "original_contiguous_static_window": null,
+  "all_owned_sources_exited": true,
+  "last_received_feedback": null
+}
