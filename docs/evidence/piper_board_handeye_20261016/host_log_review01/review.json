@@ -1,0 +1,762 @@
+{
+  "source": {
+    "kind": "user-pasted VMware host log; original kept private",
+    "bytes": 319586,
+    "SHA256": "857bb9ee74a0bf8083f3a2c09fd3c9c2a5cdcb38db91edff7088cc41211e068b",
+    "lines": 2748,
+    "raw_log_in_Git": false
+  },
+  "source_coverage": {
+    "first": {
+      "source_line": 6,
+      "source_line_SHA256": "066c3d33c6b2751d54339c4c97fb23f16b4732400c3edadc59db80f7830f1516",
+      "UTC": "2026-10-16T04:04:40.536000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:04:40.536000+08:00"
+    },
+    "last": {
+      "source_line": 2747,
+      "source_line_SHA256": "b027918110d08d6a4a8fd6c7de970f36c87490cd876f97c96453f0f8a51ca67e",
+      "UTC": "2026-10-16T05:30:51.962000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:30:51.962000+08:00"
+    },
+    "pasted_contiguity_or_original_disk_file_not_independently_verified": true
+  },
+  "target_window": {
+    "UTC_start": "2026-10-16T05:22:00+00:00",
+    "UTC_end_exclusive": "2026-10-16T05:25:00+00:00",
+    "local_start": "2026-10-16T13:22:00+08:00",
+    "local_end_exclusive": "2026-10-16T13:25:00+08:00",
+    "all_record_count": 0,
+    "records": [],
+    "nearest_before": {
+      "source_line": 2741,
+      "source_line_SHA256": "ba510b9ad1eb7c2d52363aaad53836e351221976dda4a3040b04e94b6eb3a6a5",
+      "UTC": "2026-10-16T05:15:34.340000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:34.340000+08:00"
+    },
+    "nearest_after": {
+      "source_line": 2742,
+      "source_line_SHA256": "d21aabb1e19855cb7cc7991bfdc246532da630fa636f6ae130316af0bcc66e54",
+      "UTC": "2026-10-16T05:29:26.626000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:29:26.626000+08:00"
+    },
+    "absence_of_log_records_is_not_absence_of_USB_fault": true
+  },
+  "host_configuration": {
+    "workstation": {
+      "version": "17.6.4",
+      "build": "24832109"
+    },
+    "Hyper_V_detected": true,
+    "monitor_mode": "ULM",
+    "allowlisted_controller_config": [
+      {
+        "source_line": 453,
+        "source_line_SHA256": "ff5cdca5d05223ce4918225c30ae365ddad08dcb9130166eb3db30212b7abc91",
+        "UTC": "2026-10-16T04:04:41.150000+00:00",
+        "local_UTC_plus8": "2026-10-16T12:04:41.150000+08:00",
+        "key": "usb.present",
+        "value": "TRUE"
+      },
+      {
+        "source_line": 454,
+        "source_line_SHA256": "30a7ca062f401fa97dfe7f2661c43e0942b5c1eab8e9f0b58f8f3630c77e9e59",
+        "UTC": "2026-10-16T04:04:41.150000+00:00",
+        "local_UTC_plus8": "2026-10-16T12:04:41.150000+08:00",
+        "key": "ehci.present",
+        "value": "TRUE"
+      },
+      {
+        "source_line": 520,
+        "source_line_SHA256": "45c27e55a0df463960cab76cabdf7a5dffc3ba0bf1a77c54d487d027fd5c1013",
+        "UTC": "2026-10-16T04:04:41.151000+00:00",
+        "local_UTC_plus8": "2026-10-16T12:04:41.151000+08:00",
+        "key": "usb_xhci.present",
+        "value": "TRUE"
+      }
+    ],
+    "Hyper_V_ULM_not_proven_failure_cause": true
+  },
+  "device_path_changes": [
+    {
+      "source_line": 2209,
+      "source_line_SHA256": "e08e455b8da65bd0761f6b642b063722b069249ce434d4895bb8a0041abf9689",
+      "UTC": "2026-10-16T04:05:55.124000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:05:55.124000+08:00",
+      "device": "RGB",
+      "host_path": "1/0/1/1",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2214,
+      "source_line_SHA256": "95f312be5abe98033c3c8b82f03e092f359fd4be97770743fb169e5514d2827e",
+      "UTC": "2026-10-16T04:05:55.541000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:05:55.541000+08:00",
+      "device": "depth",
+      "host_path": "1/0/1/3",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2216,
+      "source_line_SHA256": "285b92606b93d735dc88855dfc2d7a129942136095dee22ee9693b7715baa1f5",
+      "UTC": "2026-10-16T04:06:00.279000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:00.279000+08:00",
+      "device": "USB-CAN",
+      "host_path": "1/0/0",
+      "speed": "full",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2239,
+      "source_line_SHA256": "9b2d46949a90b7b4733d0dfda8b03eab3ee773f184e5dc91d503efdb55ab4f6c",
+      "UTC": "2026-10-16T04:06:11.594000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:11.594000+08:00",
+      "device": "USB-CAN",
+      "host_path": "1/0/0",
+      "speed": "full",
+      "virtual_path": "usb_xhci:9",
+      "connected_virtual_hub": "usb_xhci:4",
+      "connected_virtual_port": 1
+    },
+    {
+      "source_line": 2260,
+      "source_line_SHA256": "3d5ca6f1f650f2d7ff860c4e4aaa498e3754a002e581321e4c73aeb1bca37185",
+      "UTC": "2026-10-16T04:06:14.173000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:14.173000+08:00",
+      "device": "depth",
+      "host_path": "1/0/1/3",
+      "speed": "high",
+      "virtual_path": "usb_xhci:10",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 0
+    },
+    {
+      "source_line": 2276,
+      "source_line_SHA256": "266bdc4f1953abc0c645b2e22f9868747ac7d8f352347bd42c2ca021b033463b",
+      "UTC": "2026-10-16T04:06:16.047000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:16.047000+08:00",
+      "device": "RGB",
+      "host_path": "1/0/1/1",
+      "speed": "high",
+      "virtual_path": "usb_xhci:11",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 1
+    },
+    {
+      "source_line": 2347,
+      "source_line_SHA256": "b1421ca8237dad04e02c7b2044548b2862b66f71ae5a3673874e533ebc77f008",
+      "UTC": "2026-10-16T04:54:48.088000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:48.088000+08:00",
+      "device": "USB-CAN",
+      "host_path": "1/0/0",
+      "speed": "full",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2359,
+      "source_line_SHA256": "10c4540867984c317bb3290894b075fd1a3ad03f2b86c3e4b5e4aa319cadbb89",
+      "UTC": "2026-10-16T04:54:51.651000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:51.651000+08:00",
+      "device": "USB-CAN",
+      "host_path": "1/0/0",
+      "speed": "full",
+      "virtual_path": "usb_xhci:9",
+      "connected_virtual_hub": "usb_xhci:4",
+      "connected_virtual_port": 1
+    },
+    {
+      "source_line": 2435,
+      "source_line_SHA256": "5173d270fd4889ba1cc19dac6387d2370068c87860d81ba29e59ca02341d9c3f",
+      "UTC": "2026-10-16T05:14:32.065000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:32.065000+08:00",
+      "device": "RGB",
+      "host_path": "1/0/0/1",
+      "speed": "high",
+      "virtual_path": "usb_xhci:11",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 1
+    },
+    {
+      "source_line": 2448,
+      "source_line_SHA256": "a2366b36024df7bc5444078e3f7dd901559cd194b02bddd51d03210655b05da5",
+      "UTC": "2026-10-16T05:14:32.661000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:32.661000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2449,
+      "source_line_SHA256": "0fe9f48ee928211bc59330d823e5c765ddb1339c90347a068452f53710922229",
+      "UTC": "2026-10-16T05:14:32.661000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:32.661000+08:00",
+      "device": "depth",
+      "host_path": "1/0/1/3",
+      "speed": "high",
+      "virtual_path": "usb_xhci:10",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 0
+    },
+    {
+      "source_line": 2458,
+      "source_line_SHA256": "036465b33eba928f9dd7cff8bc30abeed16e5d75464f0e9241d64486f9035a6a",
+      "UTC": "2026-10-16T05:14:36.560000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:36.560000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2460,
+      "source_line_SHA256": "8705f63bac147bf25d1a0a88def0d8f52753d3cbac5bec3cf32c39d5de9cdddc",
+      "UTC": "2026-10-16T05:14:36.818000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:36.818000+08:00",
+      "device": "USB-CAN",
+      "host_path": "1/0/1",
+      "speed": "full",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2472,
+      "source_line_SHA256": "c1b35149b2d5ddc606b69a718422206013b951e609c4f96e6d4923696e5a3782",
+      "UTC": "2026-10-16T05:14:40.959000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:40.959000+08:00",
+      "device": "USB-CAN",
+      "host_path": "1/0/1",
+      "speed": "full",
+      "virtual_path": "usb_xhci:9",
+      "connected_virtual_hub": "usb_xhci:4",
+      "connected_virtual_port": 1
+    },
+    {
+      "source_line": 2496,
+      "source_line_SHA256": "fed3b3d337097410b7a7896929e7387ebe702a9ef7a46ecdc6bb87fbc3168ef8",
+      "UTC": "2026-10-16T05:14:43.373000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:43.373000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": "usb_xhci:10",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 0
+    },
+    {
+      "source_line": 2573,
+      "source_line_SHA256": "85653a8e25141762fedde3c144df01444ad48ac36f300b9ac67c7594dcb3f293",
+      "UTC": "2026-10-16T05:14:56.095000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:56.095000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2585,
+      "source_line_SHA256": "2aad3e417b8c2cc4f8e8d4fd853eeac64b4a0664fb736ac92e4453e7b0c941a9",
+      "UTC": "2026-10-16T05:15:01.012000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:01.012000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": "usb_xhci:10",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 0
+    },
+    {
+      "source_line": 2662,
+      "source_line_SHA256": "cb4b3ec3f314e3c90f8a9a13aa64b010bb308b7a68fb300a0712ff480ecfdceb",
+      "UTC": "2026-10-16T05:15:10.813000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:10.813000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2700,
+      "source_line_SHA256": "665fe7a004f6385a18ddbe64faa7ed61502b8108dd9972b919825e2e7210d129",
+      "UTC": "2026-10-16T05:15:26.082000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:26.082000+08:00",
+      "device": "RGB",
+      "host_path": "1/0/0/1",
+      "speed": "high",
+      "virtual_path": null,
+      "connected_virtual_hub": null,
+      "connected_virtual_port": null
+    },
+    {
+      "source_line": 2713,
+      "source_line_SHA256": "b5bd5f8c2ca68ec4d4613cfc60f2d371b0066d0ade5a3238298bf235a514d063",
+      "UTC": "2026-10-16T05:15:30.464000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:30.464000+08:00",
+      "device": "depth",
+      "host_path": "1/0/0/3",
+      "speed": "high",
+      "virtual_path": "usb_xhci:10",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 0
+    },
+    {
+      "source_line": 2731,
+      "source_line_SHA256": "0b60a50808fab84541f0b8ecb719bec5baff9984b11ae455e70884bc10d54787",
+      "UTC": "2026-10-16T05:15:32.339000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:32.339000+08:00",
+      "device": "RGB",
+      "host_path": "1/0/0/1",
+      "speed": "high",
+      "virtual_path": "usb_xhci:11",
+      "connected_virtual_hub": "usb_xhci:5",
+      "connected_virtual_port": 1
+    }
+  ],
+  "device_events": [
+    {
+      "source_line": 2233,
+      "source_line_SHA256": "56afd4b938e0e92f281c6226a17ce1da1632a10b63c49f7f5a255dc209e013d0",
+      "UTC": "2026-10-16T04:06:11.590000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:11.590000+08:00",
+      "device": "USB-CAN",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2237,
+      "source_line_SHA256": "d25c2ac2d3143c77d9b240970bdff5efd0814aa3ce4458b7f3fcbb20b08872b4",
+      "UTC": "2026-10-16T04:06:11.592000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:11.592000+08:00",
+      "device": "USB-CAN",
+      "event": "connected"
+    },
+    {
+      "source_line": 2250,
+      "source_line_SHA256": "d1c4764f675f80ab258ec763d249288bd38174d4e0baa168d950a0015e577dca",
+      "UTC": "2026-10-16T04:06:14.171000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:14.171000+08:00",
+      "device": "depth",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2254,
+      "source_line_SHA256": "5e516ddd1579b94b126757abdcb2355d07ffc93a4202e04fa400cd13b6d852c8",
+      "UTC": "2026-10-16T04:06:14.173000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:14.173000+08:00",
+      "device": "depth",
+      "event": "connected"
+    },
+    {
+      "source_line": 2267,
+      "source_line_SHA256": "c995837882c2b81fa3b46bdc08d9beae15c336830ed597a66df4240edc349bd9",
+      "UTC": "2026-10-16T04:06:16.046000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:16.046000+08:00",
+      "device": "RGB",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2271,
+      "source_line_SHA256": "e095c0bedbdf7b5549d05d54913ec75651b52ba2756c15073bf11ebc9177a3e2",
+      "UTC": "2026-10-16T04:06:16.046000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:06:16.046000+08:00",
+      "device": "RGB",
+      "event": "connected"
+    },
+    {
+      "source_line": 2323,
+      "source_line_SHA256": "e894c8ed5f521b58360f95a11fd7ccaa843fefe768594f13f4f1b487cafceb4a",
+      "UTC": "2026-10-16T04:54:39.287000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:39.287000+08:00",
+      "device": null,
+      "event": "unknown_USB_completion_status"
+    },
+    {
+      "source_line": 2324,
+      "source_line_SHA256": "465afa25a8eb44970823990ea37f544b4ede2ce22c502d3ff2792825329890cd",
+      "UTC": "2026-10-16T04:54:39.290000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:39.290000+08:00",
+      "device": "USB-CAN",
+      "event": "abort_pipe_warning",
+      "status": "INVALID_PARAMETER",
+      "endpoint_hex": "81"
+    },
+    {
+      "source_line": 2325,
+      "source_line_SHA256": "d2b92bfa0c452570a10e05b0aa8357d926b0ccd6c7bd2ac731de7b6d47949333",
+      "UTC": "2026-10-16T04:54:39.867000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:39.867000+08:00",
+      "device": "USB-CAN",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2327,
+      "source_line_SHA256": "5907ef520effc43fa85713a4402c5bfff7ca3055a0bf21e8d944bb713863dd14",
+      "UTC": "2026-10-16T04:54:39.867000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:39.867000+08:00",
+      "device": "USB-CAN",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "2"
+    },
+    {
+      "source_line": 2328,
+      "source_line_SHA256": "1b3c7e0ea0816261ba76a2335e22a07a918e06e764dec0b87699e797f93b834c",
+      "UTC": "2026-10-16T04:54:39.867000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:39.867000+08:00",
+      "device": "USB-CAN",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "81"
+    },
+    {
+      "source_line": 2353,
+      "source_line_SHA256": "88893749ef6e6d0f475a1e6ccc78a54a7e080702353d077c04ee6f382e6df3f8",
+      "UTC": "2026-10-16T04:54:51.645000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:51.645000+08:00",
+      "device": "USB-CAN",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2357,
+      "source_line_SHA256": "0a9c05fa4ee9ae6eccd989b1215c5c27abc99234eab9100e5c030fdeb2fa4524",
+      "UTC": "2026-10-16T04:54:51.647000+00:00",
+      "local_UTC_plus8": "2026-10-16T12:54:51.647000+08:00",
+      "device": "USB-CAN",
+      "event": "connected"
+    },
+    {
+      "source_line": 2374,
+      "source_line_SHA256": "378b1dac331cf04714f9649cd5f68f45ded84ab0e221a598f99bf3fff6ed346f",
+      "UTC": "2026-10-16T05:14:23.742000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:23.742000+08:00",
+      "device": "USB-CAN",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2376,
+      "source_line_SHA256": "015728dd95d6f8d7f082272d688642541f4db914a255d7ae184f23295f384dd0",
+      "UTC": "2026-10-16T05:14:23.747000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:23.747000+08:00",
+      "device": "USB-CAN",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "2"
+    },
+    {
+      "source_line": 2377,
+      "source_line_SHA256": "770bcc2788607a9b45e23e76819f89be6bf408f649ae7add396924d2934f110b",
+      "UTC": "2026-10-16T05:14:23.747000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:23.747000+08:00",
+      "device": "USB-CAN",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "81"
+    },
+    {
+      "source_line": 2395,
+      "source_line_SHA256": "20cd03b12c16ec788dca8d91e222b5d7cb1555eac59c7d350340b102a705e726",
+      "UTC": "2026-10-16T05:14:30.544000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:30.544000+08:00",
+      "device": "RGB",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2397,
+      "source_line_SHA256": "7c4beec876fbc678a22d1ebc56f06e21945690f6d85c7ea474ce625554327dbb",
+      "UTC": "2026-10-16T05:14:30.544000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:30.544000+08:00",
+      "device": "RGB",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "83"
+    },
+    {
+      "source_line": 2405,
+      "source_line_SHA256": "bbe52c9a7f162034feac8479fb98881d466d8c077d174072ee441a695e31b951",
+      "UTC": "2026-10-16T05:14:30.658000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:30.658000+08:00",
+      "device": "depth",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2407,
+      "source_line_SHA256": "41869508814e2823c4b8350f456f0fd8f15118336a3f4b9e88f85514448a1eb4",
+      "UTC": "2026-10-16T05:14:30.658000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:30.658000+08:00",
+      "device": "depth",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "81"
+    },
+    {
+      "source_line": 2408,
+      "source_line_SHA256": "e74bb7b290253ff39856da9079797ff88b476b496a2631d7e6ff1f92f8241b71",
+      "UTC": "2026-10-16T05:14:30.658000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:30.658000+08:00",
+      "device": "depth",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "82"
+    },
+    {
+      "source_line": 2428,
+      "source_line_SHA256": "148788bec0913d3dd115c03932e31f66fba8a0af389e7891146b8f6347d09547",
+      "UTC": "2026-10-16T05:14:32.024000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:32.024000+08:00",
+      "device": "RGB",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2430,
+      "source_line_SHA256": "62ddf96d894f142ff9e9ae50ba67cdd3d8ff96f004408ea4034367bc74fc986d",
+      "UTC": "2026-10-16T05:14:32.024000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:32.024000+08:00",
+      "device": "RGB",
+      "event": "connected"
+    },
+    {
+      "source_line": 2466,
+      "source_line_SHA256": "a1a99910d5edc9904f868ca81de848d81b9ff6f162031ff593cacf4de736dbde",
+      "UTC": "2026-10-16T05:14:40.950000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:40.950000+08:00",
+      "device": "USB-CAN",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2470,
+      "source_line_SHA256": "8f5103e7a8528cff6353e60c73804d20cb196eec02fe214635332aed0ae5b75a",
+      "UTC": "2026-10-16T05:14:40.952000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:40.952000+08:00",
+      "device": "USB-CAN",
+      "event": "connected"
+    },
+    {
+      "source_line": 2485,
+      "source_line_SHA256": "d61b01d9b6f497da13a87f807420728e55a6605f9c329b3bf306a74c89c19ec8",
+      "UTC": "2026-10-16T05:14:43.372000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:43.372000+08:00",
+      "device": "depth",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2489,
+      "source_line_SHA256": "2d7e2d95c84ce84afb10bb2322525aebd47da1fd749a16592ecb0fcab0e0a289",
+      "UTC": "2026-10-16T05:14:43.372000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:43.372000+08:00",
+      "device": "depth",
+      "event": "connected"
+    },
+    {
+      "source_line": 2504,
+      "source_line_SHA256": "55dde894e6a307eb63794ced25ce650d5f8e1791333214fd89533804b7a9d638",
+      "UTC": "2026-10-16T05:14:49.714000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:49.714000+08:00",
+      "device": "RGB",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2506,
+      "source_line_SHA256": "285b1c10a3fab0e04fd9aedaf238300361cbd08b0831dab9f090417873009f06",
+      "UTC": "2026-10-16T05:14:49.715000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:49.715000+08:00",
+      "device": "RGB",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "83"
+    },
+    {
+      "source_line": 2515,
+      "source_line_SHA256": "7056710b8ec89462a913de5c80f04beabda166cb30d5e08d34e6e301618881fe",
+      "UTC": "2026-10-16T05:14:49.768000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:49.768000+08:00",
+      "device": "depth",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2517,
+      "source_line_SHA256": "9cd83f99a61c051e261e864bf9f7a0059ce104c4bbf335819f9099d30ecde8f7",
+      "UTC": "2026-10-16T05:14:49.769000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:49.769000+08:00",
+      "device": "depth",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "81"
+    },
+    {
+      "source_line": 2518,
+      "source_line_SHA256": "91e5b84a01f69fcc9ac040b46d4236dfecd54f893e2e07abbbc82f7da1c7207b",
+      "UTC": "2026-10-16T05:14:49.769000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:49.769000+08:00",
+      "device": "depth",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "82"
+    },
+    {
+      "source_line": 2541,
+      "source_line_SHA256": "f156b6ba39c9e5c980f1fbc7341b1e74eb150f3359ff7635d734629005bf8131",
+      "UTC": "2026-10-16T05:14:55.579000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:55.579000+08:00",
+      "device": "RGB",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2543,
+      "source_line_SHA256": "268079be407debc4c11e69daf62e82c2ac2ab22189a612e70abf6793f0b098db",
+      "UTC": "2026-10-16T05:14:55.579000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:14:55.579000+08:00",
+      "device": "RGB",
+      "event": "connected"
+    },
+    {
+      "source_line": 2574,
+      "source_line_SHA256": "54bce4c87b6eeb109b929fb8a76048caf6946f39489279f85ef74713bf6febb9",
+      "UTC": "2026-10-16T05:15:01.011000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:01.011000+08:00",
+      "device": "depth",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2578,
+      "source_line_SHA256": "37cf2cfcf2ad4151bcd08092c2a99275b9f511babd045eea44f021915034e30f",
+      "UTC": "2026-10-16T05:15:01.011000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:01.011000+08:00",
+      "device": "depth",
+      "event": "connected"
+    },
+    {
+      "source_line": 2593,
+      "source_line_SHA256": "58f67388742d95908519b1cf95695023ba410cc8726b9a4f5676bd2bc374d059",
+      "UTC": "2026-10-16T05:15:04.530000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:04.530000+08:00",
+      "device": "RGB",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2595,
+      "source_line_SHA256": "0b6406f11fb8182fe72e09512dfc09a5d2ede2814d1c91e94827fadc3c5ca412",
+      "UTC": "2026-10-16T05:15:04.530000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:04.530000+08:00",
+      "device": "RGB",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "83"
+    },
+    {
+      "source_line": 2604,
+      "source_line_SHA256": "52996aa401d2c40d63fdfaac19a017e071b90334bd3be7355bfe5ba74e362107",
+      "UTC": "2026-10-16T05:15:04.551000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:04.551000+08:00",
+      "device": "depth",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2606,
+      "source_line_SHA256": "a2324d047ff5ed995f9364a5470884a0c6584c943ee73f3501e7a9a6e0c67a2f",
+      "UTC": "2026-10-16T05:15:04.551000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:04.551000+08:00",
+      "device": "depth",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "81"
+    },
+    {
+      "source_line": 2607,
+      "source_line_SHA256": "e6c4db65f299bcea455fbaaf6163523c05bb1e64df6e817e63dc730678246c08",
+      "UTC": "2026-10-16T05:15:04.551000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:04.551000+08:00",
+      "device": "depth",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "82"
+    },
+    {
+      "source_line": 2630,
+      "source_line_SHA256": "614131d8d4d61c6602153a08ae8cace9be005c8d66d7a76fac5e81d6b4a7bac9",
+      "UTC": "2026-10-16T05:15:10.221000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:10.221000+08:00",
+      "device": "RGB",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2632,
+      "source_line_SHA256": "b710983515435285075feccf90445094aa0d0daec041850fe2e39fcd3d1b9367",
+      "UTC": "2026-10-16T05:15:10.221000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:10.221000+08:00",
+      "device": "RGB",
+      "event": "connected"
+    },
+    {
+      "source_line": 2670,
+      "source_line_SHA256": "1db1bf41b3ef82f8267804627b8c6197490c7b0dc9a5bf59841d37168b6cf3bc",
+      "UTC": "2026-10-16T05:15:16.020000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:16.020000+08:00",
+      "device": "RGB",
+      "event": "host_disconnect"
+    },
+    {
+      "source_line": 2672,
+      "source_line_SHA256": "088b6e84000ea8459f083869757b22bff7e0f358479e1c7c2ea81f5cbbeb7a1f",
+      "UTC": "2026-10-16T05:15:16.020000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:16.020000+08:00",
+      "device": "RGB",
+      "event": "abort_pipe_warning",
+      "status": "DEVICE_NOT_PRESENT",
+      "endpoint_hex": "83"
+    },
+    {
+      "source_line": 2702,
+      "source_line_SHA256": "27b0e138203051b696228f3090b3f7af4f33621a2a52641401a24ca4a29b4732",
+      "UTC": "2026-10-16T05:15:30.463000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:30.463000+08:00",
+      "device": "depth",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2706,
+      "source_line_SHA256": "25c0e77f87723af45f664f1ec6f2048c46ec17067ee238a9eb46a13082e9a831",
+      "UTC": "2026-10-16T05:15:30.464000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:30.464000+08:00",
+      "device": "depth",
+      "event": "connected"
+    },
+    {
+      "source_line": 2721,
+      "source_line_SHA256": "11b32087c1e2f51ec45cb368ed3de14bbc1f9fe6487bda8f5d32cba9baa50ef3",
+      "UTC": "2026-10-16T05:15:32.339000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:32.339000+08:00",
+      "device": "RGB",
+      "event": "arrived"
+    },
+    {
+      "source_line": 2725,
+      "source_line_SHA256": "fa573dfac7d203f341e8f5896acbafcf6cfee14aea04ec70889bf82e35940339",
+      "UTC": "2026-10-16T05:15:32.339000+00:00",
+      "local_UTC_plus8": "2026-10-16T13:15:32.339000+08:00",
+      "device": "RGB",
+      "event": "connected"
+    }
+  ],
+  "privacy_policy": "Only timestamps, source hashes/lines, known camera/CAN categories, USB topology and allowlisted status/config. No hostnames, IPs, Windows paths, unrelated devices, serial or instance IDs.",
+  "synthetic_checks": {
+    "UTC_window_device_mapping_privacy": "passed"
+  }
+}

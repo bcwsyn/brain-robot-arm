@@ -1,4 +1,16 @@
-## 本轮（2026-10-16 13:26）：用户换口后原观测仍停流，无新echo；等待宿主日志，不再同条件恢复/运动
+## 本轮（2026-10-16 13:36）：宿主日志只读审阅完成，确认换口但故障窗无记录；提出待批准USB2.0隔离
+
+- 用户已提供VMware文本，起点f6b197b；两repo技能约束只读/真实时间与设备身份/小范围记录，不启动设备或改生产。完整2748行319586字节输入经解析，源SHA857bb9ee74a0bf8083f3a2c09fd3c9c2a5cdcb38db91edff7088cc41211e068b，私有副本`/home/johnwick/brain_robot_logs/vmware_host_review_20261016.hs91D9/vmware.original.private.txt`与附件cmp rc0。原件含宿主账户/路径/IP/无关设备，未入Git；只提交白名单结构化事件/源行号SHA，不复制原始日志整行。
+- [host_log_review01](evidence/piper_board_handeye_20261016/host_log_review01/README.md)解析命令`review_vmware_log.py <private-original> review.json`rc0，合成UTC转换/窗口/设备映射/隐私测试通过、实际全报告重放相同。49事件/21类别路径状态变更包含null→连接，不当21次物理换口；Python AST/源hash/实际report隐私白名单/六生产SHA验证通过，无生产修改不构建或重复旧J4测试。
+- 关键事实：CAN宿主路径1/0/0→1/0/1（13:14:36），用户已换口被宿主日志支持；13:14:40重连后实际虚拟映射仍usb_xhci:9、hub usb_xhci:4 port1。ehci.present与usb_xhci.present同时true不等于CAN已走EHCI；不再要求用户重复换口，不把guest旧路径当用户没操作。
+- 时间按ISO Z为UTC、转客户端UTC+8：所给文本最早12:04:40.536、最晚13:30:51.962；目标13:22—13:25全部记录0条，紧邻记录13:15:34.340/13:29:26.626。只知所给文本情况，未独立证明粘贴连续性/完整磁盘原件；不能把“无日志”当“无USB故障”。guest最后反馈13:23:23.642在该大空窗，宿主/guest非本轮硬件同步且枚举有延迟，不能拿秒级不同直接判新故障。
+- 较早12:54:39 CAN abort-pipe INVALID_PARAMETER/随后DEVICE_NOT_PRESENT，13:14:23 CAN host_disconnect及相机13:14—13:15多次事件位于用户受请求重连/换口上下文，不是本次13:23同一时间的自发断联证据，不能归咎用户/相机或据旧error直接确诊适配器/VMware。Workstation17.6.4/build24832109、Hyper-V detected/ULM是环境事实，不证明导致静默、不建议关闭VBS/内存完整性。
+- 已查Broadcom Desktop Hypervisor307966/315312，官方区分host/guest/虚拟控制器、提供单项quirk/必要时USB analyzer和Full日志流程；未盲套skip-reset/skip-setconfig或开启无界日志。较旧Workstation xHCI支持说明307817也不支持“full-speed接xHCI即非法”，ESXi USB2排障398992不当本机Workstation17.6.4的修复公告；来源/适用边界/事实与推断分开列在本轮README。
+- 下一只提出待批准单变量环境实验：保存原VM USB配置/回退，临时兼容性2.0使CAN不沿当前虚拟xHCI；不是已证实根因/保证修复。需要用户同意并安排机械臂可靠支撑及VM正常关机，不擅改.vmx/关机/失能/断电/Reset。若获准，重启先核真正路由变化、60秒纯接收/实际q使能，不立即再跑原整段观测；不叠加Hyper-V/内核/驱动/quirks/固件/TF改变。若仍同症状，恢复原配置并另计划有界官方USB诊断/非虚拟化对照，而非同条件循环。
+- 旧“等宿主日志”已解除，不再请求同一文件或无必要截图；现在仅等新环境实验批准/停机安排。本轮无新CAN/q、ROS/相机、enable/arm/轨迹/开闭/失能/复位/恢复/TF/生产访问，当前机械臂状态仍未知，旧板2/10、无标定完成。创建规范证据目录首次受普通沙箱只读限制，escalated创建精确路径后apply_patch成功，不chmod/改挂载；原数据不删除。
+- Git仅本地记录；origin项目main既有积压历史审查/分叉/共享main写入范围阻断保留，未推送/强推/merge，不把同步问题当实机根因。仅四规范文档和本轮三个脱敏分析文件纳入，其他用户vendor/sim/reference及原宿主日志均不纳入，未同步GitHub。
+
+## 历史本轮（2026-10-16 13:26）：用户换口后原观测仍停流，无新echo；等待宿主日志，不再同条件恢复/运动
 
 - 本轮起点22d8487。用户“已完成”承接换另一宿主USB直连口并重连，真实新if6/USB003-012、初DOWN/STOPPED；只固定1Mbps/.75/queue1000/UP，全成功，无USB reset/模块重载。guest仍虚拟xHCI/3-1.2仅说明虚拟路径，不否认用户物理换口，也不证明宿主控制器独立。
 - runtime `/home/johnwick/brain_robot_logs/board_port_reconnect_20261016.FCh8CT`，`check_port_reconnect.py`rc0，五秒纯接收12111帧、逐秒2427/2421/2421/2421/2421/TX0。原观测调用只ROOT/LAUNCH重定位，原十秒SDK整窗速度rc2照存、[10:45]35fresh/3.410390秒静止子窗通过；六true/99.6mm、高速100Hz，新q[-.143982776,.812715960,-1.095762304,-.043871660,1.095204096,.081585588]rad，不复用旧近零静止证书或旧q。
