@@ -1,0 +1,78 @@
+{
+  "ifindex": 3,
+  "ifname": "can0",
+  "flags": [
+    "NOARP",
+    "ECHO"
+  ],
+  "mtu": 16,
+  "qdisc": "noop",
+  "operstate": "DOWN",
+  "linkmode": "DEFAULT",
+  "group": "default",
+  "txqlen": 10,
+  "link_type": "can",
+  "promiscuity": 0,
+  "min_mtu": 0,
+  "max_mtu": 0,
+  "linkinfo": {
+    "info_kind": "can",
+    "info_data": {
+      "state": "STOPPED",
+      "restart_ms": 0,
+      "bittiming_const": {
+        "name": "gs_usb",
+        "tseg1": {
+          "min": 1,
+          "max": 16
+        },
+        "tseg2": {
+          "min": 1,
+          "max": 8
+        },
+        "sjw": {
+          "min": 1,
+          "max": 4
+        },
+        "brp": {
+          "min": 1,
+          "max": 1024
+        },
+        "brp_inc": 1
+      },
+      "clock": 48000000
+    },
+    "info_xstats": {
+      "restarts": 0,
+      "bus_error": 0,
+      "arbitration_lost": 0,
+      "error_warning": 0,
+      "error_passive": 0,
+      "bus_off": 0
+    }
+  },
+  "num_tx_queues": 1,
+  "num_rx_queues": 1,
+  "gso_max_size": 65536,
+  "gso_max_segs": 65535,
+  "parentbus": "usb",
+  "parentdev": "3-2:1.0",
+  "stats64": {
+    "rx": {
+      "bytes": 0,
+      "packets": 0,
+      "errors": 0,
+      "dropped": 0,
+      "over_errors": 0,
+      "multicast": 0
+    },
+    "tx": {
+      "bytes": 0,
+      "packets": 0,
+      "errors": 0,
+      "dropped": 0,
+      "carrier_errors": 0,
+      "collisions": 0
+    }
+  }
+}

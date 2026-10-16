@@ -1,0 +1,131 @@
+{
+  "operator_quote": "我已恢复",
+  "epoch": 1792134418.042988,
+  "commands": [
+    {
+      "argv": [
+        "lsusb",
+        "-t"
+      ],
+      "rc": 0,
+      "stdout": "/:  Bus 04.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/4p, 20000M/x2\n/:  Bus 03.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/4p, 480M\n    |__ Port 1: Dev 2, If 0, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 2: Dev 3, If 1, Class=Application Specific Interface, Driver=, 12M\n    |__ Port 2: Dev 3, If 0, Class=Vendor Specific Class, Driver=gs_usb, 12M\n    |__ Port 3: Dev 4, If 0, Class=Hub, Driver=hub/7p, 12M\n    |__ Port 4: Dev 5, If 0, Class=Hub, Driver=hub/7p, 480M\n        |__ Port 1: Dev 6, If 0, Class=Vendor Specific Class, Driver=, 480M\n        |__ Port 2: Dev 7, If 0, Class=Video, Driver=uvcvideo, 480M\n        |__ Port 2: Dev 7, If 1, Class=Video, Driver=uvcvideo, 480M\n/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/6p, 480M\n/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M\n    |__ Port 2: Dev 2, If 0, Class=Hub, Driver=hub/7p, 12M\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "lsusb"
+      ],
+      "rc": 0,
+      "stdout": "Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 003 Device 007: ID 2bc5:0557 Orbbec 3D Technology International, Inc Dabai DC1\nBus 003 Device 006: ID 2bc5:0657 Orbbec 3D Technology International, Inc ORBBEC Depth Sensor\nBus 003 Device 005: ID 0e0f:0002 VMware, Inc. Virtual USB Hub\nBus 003 Device 004: ID 0e0f:0002 VMware, Inc. Virtual USB Hub\nBus 003 Device 003: ID 1d50:606f OpenMoko, Inc. Geschwister Schneider CAN adapter\nBus 003 Device 002: ID 0e0f:0003 VMware, Inc. Virtual Mouse\nBus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 001 Device 002: ID 0e0f:0002 VMware, Inc. Virtual USB Hub\nBus 001 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "v4l2-ctl",
+        "-d",
+        "/dev/video0",
+        "--get-fmt-video",
+        "--get-parm"
+      ],
+      "rc": 0,
+      "stdout": "Format Video Capture:\n\tWidth/Height      : 640/480\n\tPixel Format      : 'MJPG' (Motion-JPEG)\n\tField             : None\n\tBytes per Line    : 0\n\tSize Image        : 614989\n\tColorspace        : sRGB\n\tTransfer Function : Default (maps to sRGB)\n\tYCbCr/HSV Encoding: Default (maps to ITU-R 601)\n\tQuantization      : Default (maps to Full Range)\n\tFlags             : \nStreaming Parameters Video Capture:\n\tCapabilities     : timeperframe\n\tFrames per second: 25.000 (25/1)\n\tRead buffers     : 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "rc": 0,
+      "stdout": "[{\"ifindex\":3,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":10,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"STOPPED\",\"restart_ms\":0,\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-2:1.0\",\"stats64\":{\"rx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "type",
+        "can",
+        "bitrate",
+        "1000000",
+        "sample-point",
+        "0.75"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "txqueuelen",
+        "1000"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sudo",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "can0",
+        "up"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "rc": 0,
+      "stdout": "[{\"ifindex\":3,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-2:1.0\",\"stats64\":{\"rx\":{\"bytes\":368,\"packets\":46,\"errors\":0,\"dropped\":46,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ip",
+        "-json",
+        "-details",
+        "-statistics",
+        "link",
+        "show",
+        "can0"
+      ],
+      "rc": 0,
+      "stdout": "[{\"ifindex\":3,\"ifname\":\"can0\",\"flags\":[\"NOARP\",\"UP\",\"LOWER_UP\",\"ECHO\"],\"mtu\":16,\"qdisc\":\"pfifo_fast\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"can\",\"promiscuity\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"can\",\"info_data\":{\"state\":\"ERROR-ACTIVE\",\"restart_ms\":0,\"bittiming\":{\"bitrate\":1000000,\"sample_point\":0.750,\"tq\":62,\"prop_seg\":5,\"phase_seg1\":6,\"phase_seg2\":4,\"sjw\":2},\"bittiming_const\":{\"name\":\"gs_usb\",\"tseg1\":{\"min\":1,\"max\":16},\"tseg2\":{\"min\":1,\"max\":8},\"sjw\":{\"min\":1,\"max\":4},\"brp\":{\"min\":1,\"max\":1024},\"brp_inc\":1},\"clock\":48000000},\"info_xstats\":{\"restarts\":0,\"bus_error\":0,\"arbitration_lost\":0,\"error_warning\":0,\"error_passive\":0,\"bus_off\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"parentbus\":\"usb\",\"parentdev\":\"3-2:1.0\",\"stats64\":{\"rx\":{\"bytes\":512960,\"packets\":64134,\"errors\":0,\"dropped\":297,\"over_errors\":0,\"multicast\":0},\"tx\":{\"bytes\":0,\"packets\":0,\"errors\":0,\"dropped\":0,\"carrier_errors\":0,\"collisions\":0}}}]\n",
+      "stderr": ""
+    }
+  ],
+  "robot_control_started": false,
+  "USB_reset": false,
+  "CAN_activation": true,
+  "preview_rc": 0,
+  "end_epoch": 1792134445.7503865,
+  "production_unchanged": true
+}

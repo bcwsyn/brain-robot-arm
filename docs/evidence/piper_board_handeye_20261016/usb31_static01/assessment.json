@@ -1,0 +1,181 @@
+{
+  "baseline_commit": "a335162",
+  "operator_quote": "我已恢复",
+  "scope": "Restored USB3 setting static RGB-D and receive-only CAN comparison; no robot control",
+  "actual_paths": {
+    "CAN": "3-2:1.0 / xhci_hcd / 12M",
+    "depth": "3-4.1 / xhci_hcd / 480M",
+    "RGB": "3-4.2 / xhci_hcd / 480M"
+  },
+  "preview_RC": 0,
+  "saved_RGBD_pairs": 5,
+  "source_camera_elapsed_s": 16.732288202000007,
+  "SDK_full_window_rc": 2,
+  "original_static_slice": {
+    "indices": [
+      1,
+      32
+    ],
+    "quality": {
+      "samples": 31,
+      "fresh_samples": 31,
+      "span_s": 3.009124994277954,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "actual_last_feedback": {
+    "epoch": 1792134444.9969037,
+    "sdk_receipt_stamps": {
+      "joint": "1792134444.9935172",
+      "high": "1792134444.9944518",
+      "low": "1792134444.9943378",
+      "gripper": "1792134444.9935882"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4126,
+      69528,
+      5120
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -1,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "CAN": {
+    "frames": 63804,
+    "span_s": 27.38453722000122,
+    "max_timestamp_gap_s": 0.3657338619232178,
+    "gaps_over_half_second": 0,
+    "clock_scope": "candump receive timestamps; not hardware/per-motor freshness",
+    "before_stats": {
+      "rx": {
+        "bytes": 368,
+        "packets": 46,
+        "errors": 0,
+        "dropped": 46,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 0,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    },
+    "after_stats": {
+      "rx": {
+        "bytes": 512960,
+        "packets": 64134,
+        "errors": 0,
+        "dropped": 297,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 0,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    },
+    "drop_counter_note": "rx.dropped preserved, including intervals without receive sockets; not assumed physical loss or ignored"
+  },
+  "end_CAN_stats": {
+    "rx": {
+      "bytes": 3926056,
+      "packets": 490859,
+      "errors": 0,
+      "dropped": 297,
+      "over_errors": 0,
+      "multicast": 0
+    },
+    "tx": {
+      "bytes": 0,
+      "packets": 0,
+      "errors": 0,
+      "dropped": 0,
+      "carrier_errors": 0,
+      "collisions": 0
+    }
+  },
+  "initial_factory_rc": 2,
+  "initial_factory_error": "RuntimeError('Missing read-only service get_device_info')",
+  "factory_followup_rc": 0,
+  "factory_scope": "Separate original-depth-only getter session; service graph captured, no production edit or RGB reopen",
+  "preview_exit_zero_does_not_hide_auxiliary_failures": true,
+  "offline_grid": [
+    8,
+    7
+  ],
+  "interior_points": 30,
+  "PnP_best_RMS_px": [
+    1.3581643750936632,
+    1.3564647270138457,
+    1.3547097630443523,
+    1.3581830824003127,
+    1.3598287353805742
+  ],
+  "offline_initial_invocation_error": "First offline audit omitted PYTHONNOUSERSITE=1 and failed on user NumPy2/OpenCV ABI before processing; rerun with existing environment succeeded. No dependency/production changes.",
+  "all_owned_sources_exited": true,
+  "production_six_SHA_unchanged": true,
+  "robot_TX_increase": 0,
+  "established": "Original RGB-D capture succeeds after restoring xHCI, unlike prior EHCI zero-frame probes; simultaneous passive CAN received during this bounded static window.",
+  "not_established": [
+    "Permanent CAN fix or stability under control commands",
+    "USB3.1 hardware requirement; restored xHCI success only",
+    "Hand-eye calibration, printed-board flatness, or mount accuracy",
+    "Continuous board identity across stopped camera sessions"
+  ],
+  "continuous_board_session_reference": false,
+  "hand_eye_fit_performed": false,
+  "old_board_pose_count": "2/10 retained separately",
+  "next": "Use these actual pixels/K/feedback to prepare the existing approved 9fit+1heldout route in a new continuous camera session; do not reuse these sparse stopped-preview IDs or old sample IDs. Static CAN pass is not a permanent/active-control fix. No more USB2 toggles or Windows Camera test needed now.",
+  "Git": "Local commit only; previous sync/history publication blocker unchanged"
+}

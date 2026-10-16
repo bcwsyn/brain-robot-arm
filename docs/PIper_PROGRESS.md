@@ -1,4 +1,14 @@
-## 本轮（2026-10-16 14:56）：自主RGB分层隔离/一次精确USB恢复均未出完整帧，转宿主原生彩色画面对照
+## 本轮（2026-10-16 15:11）：恢复原USB3设置后静止RGB-D实采通过，取消过期宿主对照等待
+
+- 起点a335162；用户在讨论恢复USB3.1后回复“我已恢复”。只读实查CAN3-2:1.0/12M与Depth3-4.1及RGB3-4.2/480M均xhci_hcd，设备两路均枚举，无控制源。当前根34GB/56%不做清理，约840项无关既有改动保留。两技能用于实际路径/最小范围，不改生产/TF或套DDS修复。
+- 新运行根`/home/johnwick/brain_robot_logs/usb31_static_20261016.1oGFil`。can0 if3初DOWN，按已有受限许可仅`sudo -n ip link set can0 type can bitrate 1000000 sample-point 0.75`、queue1000、up各一次；未USB reset/模块重载。复制原preview仅改本次metadata，`run_static.py`rc0/preview rc0。原SDK→只读反馈桥→原Astra深度→原cam2image320×240/发布5Hz→原同步采集，真实保存5对原图/深度内参/关节/时间戳，图像共778172字节，相机16.732288秒，采集阶段RGB28/depth166/info166/feedback268。
+- 原SDK整窗rc2保留，原31fresh/3.009125秒静止子窗通过；五组实际q全相同，末桥SDK六true/99.6mm、q_mdeg[-8254,53595,-72228,-4126,69528,5120]，不是持续监测。CAN独立candump27.384537秒63804帧，最大接收戳间隔.365734秒，无>.5秒；TX始终0/错误及bus-off0，rx.dropped46→297如实存，不作“零丢帧”或物理故障结论。最终RX490859继续增，所有自有控制/采集源均退出，无使能/运动/开闭/硬件Disable/Reset/SEARCH。
+- 初工厂getter2秒未发现get_device_info/rc2，预览主rc0不掩盖辅助失败。之后仅原深度+直接服务图3秒/原getter等待6秒的独立有限只读会话成功rc0，serial CC1365304DG、三个getter及内部TF保存，彩色K/D与旧归档逐值匹配。不改原工具、DDS或曝光，不再次开RGB/重复同条件RGB实验。原Astra退出参数撤销警告存原log，不跨范围修复。
+- 新图离线可见8×7子网格、30内部固定ID，五帧LK与两种平面PnP候选保存，最低RMS1.355—1.360px。原图和分析叠图分开。首次audit漏原PYTHONNOUSERSITE=1，用户NumPy2/OpenCV ABI在导入时rc1，按原环境重跑rc0；未安装/降级依赖、未重复实机。此为已停止预览的静止诊断，不是新连续采样参考/手眼精度，旧板2/10不混用。
+- [usb31_static01](evidence/piper_board_handeye_20261016/usb31_static01/README.md)50原件约1.25MB压缩归档，逐件SHA回读/JSON/AST/六生产与四只读源一致性通过。原图/深度另可直接审阅，未删旧证据。本地Git留证，不推送，原同步分叉/审查/共享main范围阻断保持。
+- 结论：原链在恢复xHCI后出图，支持USB2虚拟路径与先前RGB零帧相关，不当“厂商硬需3.1”或CAN主动永久修复。当前保持已工作设置，无需再叫用户Windows相机对照/相同重连/切USB2。下一准备原批准9fit+1heldout的新连续相机参考、真实反馈起点和原规划/adapter；不重做成功观测/J4/保持、不混旧ID，不改冻结靠近/门/生产TF。本轮未多姿态采样/拟合/部署/抓取，无新增需用户实体操作。
+
+## 历史本轮（2026-10-16 14:56）：自主RGB分层隔离/一次精确USB恢复均未出完整帧，转宿主原生彩色画面对照
 
 - 起点`ba08b62`，承接用户自主恢复标定/仅必要手动时再叫。两技能指导窄层证据，不把深度正常当RGB正常、不再重复全预览或运动。末观测姿态保持，生产六SHA不改。无SDK运动、夹爪、硬件失能/ResetPiper、主从/固件、DDS/TF/门/VM兼容性改动。
 - 官方主源核对：[Humble cam2image](https://raw.githubusercontent.com/ros2/demos/humble/image_tools/src/cam2image.cpp)先open后设宽高，frequency仅发布定时器；[OpenCV4.5.4注册表](https://raw.githubusercontent.com/opencv/opencv/4.5.4/modules/videoio/src/videoio_registry.cpp)支持子进程后端优先级0。仅用于设计有区别的诊断，不当本机根因。原RGB-only8秒strace0帧，先GStreamer协商1632×1224YUYV5、清理后回退V4L2 EBUSY；仅子进程OPENCV_VIDEOIO_PRIORITY_GSTREAMER=0对照8秒同样0帧，实际V4L2协商320×240YUYV30、stream-on0而DQBUF EAGAIN。两源按界限SIGINT后−9收尾；清理后警告不冒称清理前故障起因，环境覆盖未写全局/生产。
