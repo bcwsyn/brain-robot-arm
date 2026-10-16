@@ -1,4 +1,12 @@
-# 当前断点（2026-10-16 20:52）：已批准的P4默认关闭开环分支完成实现/构建/隔离实际节点验证，待原入口限定实测
+# 当前断点（2026-10-16 21:24进行中）：原入口实测发现P4参数覆盖无效，已停/局部修复/完整launch隔离回读通过，继续限定复测
+
+用户已批准实机自主推进，仅必须实体操作时叫。新5对RGB-D、实际q与同戳TF/debug完整；复用原板面方法生成新冻结顶面 `[.345009256,-.009759589,.044174985]m/base_link`，文件 `/home/johnwick/brain_robot_logs/p4_real01_20261016.whRYe8/frozen_target.yaml`。不再使用旧20:19文件作新观测。仅角点身份参考旧13点、当前像素和三维均新测，RMS约.20px。
+
+首次因包装器PYTHONNOUSERSITE漏python-can未运动，已修子进程包搜索路径（系统NumPy优先/用户CAN SDK末尾，不改全局/生产）。第二次真正[7/7]后意外SEARCH→ALIGN；已原软件急停+adapter disarm成功，原入口TERM143，真实J1/J5有运动、0夹爪/P4靠近。实际参数get stop_after_observe=False，源码和二进制原分支存在：根因/**参数字典覆盖被任务节点限定False压过，不是快捷轨迹bug，不改控制器C++。
+
+仅原launch P4额外节点限定CLI `visual_search_controller:stop_after_observe:=true`、`grasp_lift_executor:auto_release_after_lift:=false`，默认args空。原完整launch隔离域78回读stop=True/auto_release=False/P4=True/preview=True，30项测试通过；无driver/CAN/start/execute，隔离收尾父−9/原子异常留证，全退出。所有实机源亦退、保持电机使能。末实际q源记录约 `[.040260752,.934911180,-1.259945232,-.071502956,1.220923004,.088824848]rad`（后续须读新鲜值）。下一继续**同一原入口**P4，使用新冻结文件/真实起点；不重新要求用户摆放/重启、不重采标定/重载CAN、不把代码字典测试当运行值。尚无实际P4抓取；完整归档在本轮末补。Git仅本地/既有远端阻断保持。
+
+# 历史断点（2026-10-16 20:52）：已批准的P4默认关闭开环分支完成实现/构建/隔离实际节点验证，待原入口限定实测
 
 从8a90b00接手，用户“好”批准上一轮P4局部控制范围和标称板面目标采用。不要再次请求同一实现许可，也不要误回默认AUTO1闭环。唯一入口仍 `/home/johnwick/start_brain_robot_cube_real.sh`；显式 `BRAIN_ROBOT_P4_OPEN_LOOP=1` 及 `BRAIN_ROBOT_P4_TARGET_CONFIG`，预览默认 `BRAIN_ROBOT_P4_PLAN_ONLY=1`，实机设0。P4原观测→SEARCH前停→显式execute→张爪反馈→原同步转向/完整MoveIt预抓取及下降→原adapter/真实落点→原闭爪反馈/反向路径抬升→HOLDING，保持使能，不自动释放、回零或失能。原急停/FAULT/STOPPED取消保持，P4 execute不能清除急停；默认闭环门/TF/TCP/界限/adapter不改。P4独立跳过持续视觉/深度门，不再给旧分支堆门。
 

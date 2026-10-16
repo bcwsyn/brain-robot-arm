@@ -79,6 +79,14 @@ def generate_launch_description():
     task_config_path = os.path.join(cube_share, 'config', 'cube_task_real.yaml')
     task_profile = _load_yaml(task_config_path)
     p4_visual, p4_grasp = _p4_overrides(os.environ)
+    # launch's flat dicts become /** YAML. The task file has node-specific
+    # values for these two keys, which take precedence over that wildcard.
+    # Node-qualified CLI assignments make the opt-in handoff unambiguous;
+    # disabled mode emits no extra arguments and changes no task YAML.
+    p4_visual_args = ['--ros-args', '-p',
+                      'visual_search_controller:stop_after_observe:=true'] if p4_visual else []
+    p4_grasp_args = ['--ros-args', '-p',
+                     'grasp_lift_executor:auto_release_after_lift:=false'] if p4_grasp else []
     grasp_parameters = task_profile['grasp_lift_executor']['ros__parameters']
     real_joint_mins = grasp_parameters['real_trajectory_joint_min']
     real_joint_maxs = grasp_parameters['real_trajectory_joint_max']
@@ -195,12 +203,12 @@ def generate_launch_description():
                  'visual_joint_max_delta_rad': [1.50, 0.20, 0.20, 0.05, 0.95, 0.05],
              }]),
         Node(package='brain_robot_pick_place', executable='visual_search_controller',
-             name='visual_search_controller', output='screen', parameters=[
+             name='visual_search_controller', output='screen', arguments=p4_visual_args, parameters=[
                  moveit_parameters,
                  task_config_path,
                  {'backend': 'piper', 'use_sim_time': False}, p4_visual]),
         Node(package='brain_robot_pick_place', executable='grasp_lift_executor',
-             name='grasp_lift_executor', output='screen', parameters=[
+             name='grasp_lift_executor', output='screen', arguments=p4_grasp_args, parameters=[
                  moveit_parameters,
                  task_config_path,
                  {'use_sim_time': False}, p4_grasp],

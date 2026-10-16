@@ -74,6 +74,14 @@ def test_explicit_mode_requires_target():
         launch_helpers()({'BRAIN_ROBOT_P4_OPEN_LOOP': '1'})
 
 
+def test_handoff_flags_override_node_specific_task_yaml_not_only_wildcard_dicts():
+    source = LAUNCH.read_text()
+    assert 'visual_search_controller:stop_after_observe:=true' in source
+    assert 'grasp_lift_executor:auto_release_after_lift:=false' in source
+    assert 'if p4_visual else []' in source and 'if p4_grasp else []' in source
+    assert 'arguments=p4_visual_args' in source and 'arguments=p4_grasp_args' in source
+
+
 def test_export_uses_top_surface_not_half_height_or_bad_depth(tmp_path):
     review = tmp_path / 'review.json'; capture = tmp_path / 'observer.jsonl'
     review.write_text(json.dumps({'frames': [{'nominal_height_ray_intersections': [

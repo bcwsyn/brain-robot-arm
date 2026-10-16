@@ -1,4 +1,12 @@
-## 本轮（2026-10-16 20:52）：P4局部模式获准实施，原入口默认关闭；实际执行器隔离规划/141项测试通过，未实机运动
+## 本轮进行中（2026-10-16 21:24）：原入口P4首次实测发现参数覆盖未生效，已停止并修复，仅待同一流程复测
+
+- 基线681a715，用户明确授权自行完成，仅必要实体操作时叫。新只读5对RGB-D/同戳debug和实际q已采，六true/99.6mm；高频约100Hz，CAN RX增长/TX42154不变。SDK整窗rc2因短速度脉冲保留，六q波动0，不另加SDK准入门。当前图完整紫色方块，深度原16位显示近黑不等于整图空；原debug可用。复用已核13角点身份对新图LK/PnP，首跨会话角点位移max.199px/FB.00161px、五图RMS约.194—.198px；只借旧像素身份，三维点和TF/q均来自新帧。新冻结29mm顶面base `[.345009256,-.009759589,.044174985]m`，较旧约.65mm；原逐帧SB因小子网格不足4内部点失败，原失败留证，未采用其输出。
+- 运行根 `/home/johnwick/brain_robot_logs/p4_real01_20261016.whRYe8`。首次包装器把PYTHONNOUSERSITE=1直接传原入口，驱动缺用户site内的python-can，未运动/0关节或夹爪命令；原入口反馈echo收尾挂起，限定终止自有CLI组后rc130/保持使能。仅包装器子进程显式系统dist-packages优先、用户CAN/SDK路径末尾，实测can/SDK/cv_bridge可导入且NumPy1.21.5，不装依赖/改全局环境或生产源。
+- 第二次原一键真正到[7/7]，但原控制器进入SEARCH→ALIGN而非P4观测后停。已立即原软件急停和adapter disarm成功、正常TERM原入口rc143，未张爪/P4靠近/闭爪。实际轨迹消息7、关节命令1548，J1范围[-.143983,.054809]rad、J5[1.212846,1.220923]rad，其余四轴不变，末J1 .040261rad；**不是0运动**。初看似“快捷分支遗漏”，进一步回读明确stop_after_observe=False，源码/二进制均含原停止分支；真正原因是launch扁平字典生成/**覆盖，被任务YAML节点限定False覆盖。未盲改控制器/TF/CAN。
+- 同一已批准P4实现局部修正：仅原launch为P4两项冲突布尔值增加节点限定CLI赋值 `visual_search_controller:stop_after_observe:=true`、`grasp_lift_executor:auto_release_after_lift:=false`。默认关闭时不产生这些参数，原任务YAML、默认搜索/闭环/限位/TCP/driver/adapter/C++不变。添加回归。隔离域78无driver/CAN、无使能/start/execute调用，**原完整launch实际回读**stop=True、auto_release=False、P4=True、plan_only=True；30项针对性测试通过。隔离图收尾6秒仍有Servo/MoveIt退出异常，父被限定SIGKILL rc−9留证，所有对应进程已退，不称优雅退出或硬件失败。
+- 当前未完成P4靠近/抓取。下一继续同一原入口/同一新冻结目标限定复测，先读当前实际反馈（J1已变化），不再把“纯参数字典测试通过”当运行值证明，不重载健康CAN/不重复标定。无新的用户实体操作需要。现所有实机源已正常退出，电机未失能；Git仍仅本地，原共享分叉/发布审查保持。完整原始证据本轮结束后补归档。
+
+## 历史本轮（2026-10-16 20:52）：P4局部模式获准实施，原入口默认关闭；实际执行器隔离规划/141项测试通过，未实机运动
 
 - 基线8a90b00，用户“好”批准上轮提出的P4开环模式及板面/标称尺寸目标范围。重读最高断点，核实际CMakeCache源、installed链接和规范/home SHA，三处原入口/launch/执行器改前字节相同；已有约840项vendor/sim脏改保留。使用ros2-piper-debug/surgical-change，不另写基础运动程序或新一键脚本。
 - 原执行器新增默认false P4分支，显式服务启动，旧LEVEL_ALIGN/GRASP_READY不自启；先张爪读反馈、用真实六轴和两指模型开口、原共享同步转向几何/完整MoveIt规划/限位/碰撞与适配器/落点检查，再原闭爪反馈和反向路径抬升。P4独立不做持续RGB/深度交接和末段视觉门；默认旧门/闭环参数/TF/TCP/界限/adapter不改。保留急停/STOPPED/FAULT取消，P4 execute不清除急停。仅P4抬升停HOLDING、不自动释放/回零/失能。
