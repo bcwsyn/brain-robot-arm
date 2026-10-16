@@ -1,0 +1,220 @@
+{
+  "offline_only": true,
+  "no_hardware_or_production_changes": true,
+  "user_hint": "15mm lower, possibly 15mm forward; direction/physical displacement not measured",
+  "code_reference": "P4OpenLoopGraspAndLift -> TargetDirectedApproach(surface, tip_offset, SurfaceInsertion)",
+  "target_is_TOP_surface_NOT_visual_reconstructed_cube_center": true,
+  "insertion_along_final_tool_axis_m": 0.011600000000000001,
+  "surface_base_m": [
+    0.34500925630583745,
+    -0.009759589234425659,
+    0.044174985383372
+  ],
+  "nominal_center_from_board_normal_m": [
+    0.34418435605230174,
+    -0.010605817302339934,
+    0.029723222943143786
+  ],
+  "descent_trajectory_receipt_epoch": 1792157296.5703502,
+  "commanded_model_tip_base_m": [
+    0.34774604633869916,
+    -0.009535890005363729,
+    0.03290467220453877
+  ],
+  "commanded_final_axis_base": [
+    0.2359302255181394,
+    0.01928440468007653,
+    -0.9715786331651671
+  ],
+  "tip_minus_surface_m": [
+    0.0027367900328617023,
+    0.00022369922906192996,
+    -0.01127031317883323
+  ],
+  "tip_minus_nominal_cube_center_m": [
+    0.003561690286397412,
+    0.0010699272969762058,
+    0.003181449261394985
+  ],
+  "offset_hypotheses_NOT_new_targets": [
+    {
+      "label": "unchanged",
+      "tip_base_m": [
+        0.34774604633869916,
+        -0.009535890005363729,
+        0.03290467220453877
+      ],
+      "signed_distance_to_nominal_board_plane_m": 0.0179449330186296,
+      "delta_base_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "planned_or_executed": false
+    },
+    {
+      "label": "base_down_15mm",
+      "tip_base_m": [
+        0.34774604633869916,
+        -0.009535890005363729,
+        0.01790467220453877
+      ],
+      "signed_distance_to_nominal_board_plane_m": 0.0029948339425314476,
+      "delta_base_m": [
+        0.0,
+        0.0,
+        -0.015
+      ],
+      "planned_or_executed": false
+    },
+    {
+      "label": "base_down_and_radial_out_15mm_HYPOTHESIS",
+      "tip_base_m": [
+        0.3627400483961734,
+        -0.009960038918433356,
+        0.01790467220453877
+      ],
+      "signed_distance_to_nominal_board_plane_m": 0.003823084244842517,
+      "delta_base_m": [
+        0.014994002057474245,
+        -0.00042414891306962843,
+        -0.015
+      ],
+      "planned_or_executed": false
+    }
+  ],
+  "board_fixed_ID_replay": [],
+  "tracking_stop": {
+    "image": "/home/johnwick/brain_robot_logs/p4_real01_20261016.whRYe8/real_record/0042_rgb.png",
+    "reason": "PnP_RMS_above_1px",
+    "candidates": [
+      {
+        "unrefined_IPPE_T_color_optical_from_local_board": [
+          [
+            0.062471036421431037,
+            0.7751466260133415,
+            -0.6286851976852689,
+            -0.137568263885111
+          ],
+          [
+            0.909073726435734,
+            -0.3041795247112502,
+            -0.2847099869177168,
+            0.000980554270212236
+          ],
+          [
+            -0.41192515037647437,
+            -0.5537350674524515,
+            -0.7236678420109242,
+            0.5062965287417657
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_color_optical_from_local_board": [
+          [
+            0.052566888522690536,
+            0.7703169790317043,
+            -0.6354907348234999,
+            -0.13864053568111578
+          ],
+          [
+            0.9077544988745408,
+            -0.3020808172531533,
+            -0.29108237600496956,
+            0.0014944359609393423
+          ],
+          [
+            -0.4161952570658085,
+            -0.5615682787187468,
+            -0.7151381519208646,
+            0.5208394031711326
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "all_points_positive_depth": true,
+        "unrefined_IPPE_rms_px": 4.532743191644063,
+        "refined_rms_px": 4.4416346523484345,
+        "refined_max_px": 8.348096662849242,
+        "minimum_point_depth_m": 0.4043519821239214
+      },
+      {
+        "unrefined_IPPE_T_color_optical_from_local_board": [
+          [
+            -0.04608498492131763,
+            0.5807532298380798,
+            0.8127741754001785,
+            -0.10893528178801579
+          ],
+          [
+            0.9425191093720646,
+            -0.24428822163144936,
+            0.22799340613411084,
+            -0.008383698278611747
+          ],
+          [
+            0.3309590648906471,
+            0.7765622646026409,
+            -0.5361129979415964,
+            0.3422215096177881
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_color_optical_from_local_board": [
+          [
+            -0.035556602589683295,
+            0.6296962776045014,
+            0.7760272714172574,
+            -0.11953289079707342
+          ],
+          [
+            0.9281808860774539,
+            -0.2670169951160326,
+            0.25919522958510827,
+            -0.0037677597076337136
+          ],
+          [
+            0.37042674138451676,
+            0.7295097821758383,
+            -0.5749778317265885,
+            0.38231075062913605
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "all_points_positive_depth": true,
+        "unrefined_IPPE_rms_px": 4.884591110078261,
+        "refined_rms_px": 4.677990758028228,
+        "refined_max_px": 9.5478784671392,
+        "minimum_point_depth_m": 0.41750871938306744
+      }
+    ]
+  },
+  "limitations": [
+    "Nominal finger free-end point is not a measured contact-pad center.",
+    "The 29mm edge, 32mm grid, plane, camera intrinsics and mounting are assumptions/estimates.",
+    "Base-down and radial-out are explicit OFFLINE hypotheses, not an interpretation approved for motion.",
+    "Planar ambiguity, repeated-grid ID slips, nonplanar paper and nearest-received q may affect the witness.",
+    "Low LK FB/PnP RMS alone cannot prove correct physical board identity or isolate the calibration error.",
+    "A board-drift result cannot uniquely separate hand-eye, FK, timing, board geometry and camera model.",
+    "No new TCP, TF, placement, motion rule or threshold is adopted."
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "offline_only": true,
+  "manual_records_actually_consumed": true,
+  "TF_TCP_or_control_changed": false,
+  "pairs": [
+    {
+      "pair": "new_pair02",
+      "A_quality_source": "/mnt/hgfs/ub/docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt02/observe_capture/p0_report.json",
+      "A_sha256": "05ae4c2fcb0090143ba1c7591ff60ade6978305e014578bae41b1685a26b9ba6",
+      "B_source": "/mnt/hgfs/ub/docs/evidence/piper_calibration_p1_20261015/new_pair02/attempt02/grip_capture/portable/sdk_review.json",
+      "B_sha256": "8c1bf6a1345121ac6749c8e7a8ac4d5c7dc2914b1ee9fa775d042a064b90609a",
+      "good_A_frames": 60,
+      "fresh_B_samples": 59,
+      "actual_B_q_rad": [
+        0.18403420000000004,
+        1.854855408,
+        -1.024538452,
+        -0.008791776000000001,
+        0.5661624640000001,
+        -0.150960376
+      ],
+      "A_candidate_center_base_m": [
+        0.35089849699356246,
+        0.048164543615690406,
+        0.006168083571546218
+      ],
+      "implied_tool_center_m_under_NEW_X": [
+        0.023201249371043453,
+        -0.012287392254649906,
+        0.1349415917117741
+      ],
+      "difference_from_nominal_tip_m": [
+        0.023201249371043453,
+        -0.012287392254649906,
+        -0.0008584082882258925
+      ],
+      "candidate_only_not_a_verified_TCP": true
+    },
+    {
+      "pair": "new_pair07",
+      "A_quality_source": "/mnt/hgfs/ub/docs/evidence/piper_calibration_p1_20261015/new_pair07/attempt03/observe_capture/quality_all60/report.json",
+      "A_sha256": "11440888014f3ecbd47551f390822f0377f17e3152819cee1dc82e5f3a0fb3db",
+      "B_source": "/mnt/hgfs/ub/docs/evidence/piper_calibration_p1_20261015/new_pair07/attempt03/grip_capture/portable/sdk_review.json",
+      "B_sha256": "cda8ca514b0a1fb0bbf020a0431376697a47ad70773ca736bf6be1c884c85f6a",
+      "good_A_frames": 60,
+      "fresh_B_samples": 59,
+      "actual_B_q_rad": [
+        -0.11668291600000001,
+        1.942703392,
+        -1.1898203520000001,
+        -0.10541409200000001,
+        0.772891308,
+        0.198216172
+      ],
+      "A_candidate_center_base_m": [
+        0.3584648046401242,
+        -0.07499592045454627,
+        0.01359029210323806
+      ],
+      "implied_tool_center_m_under_NEW_X": [
+        0.012300071110220079,
+        -0.018062793425999597,
+        0.131768870511541
+      ],
+      "difference_from_nominal_tip_m": [
+        0.012300071110220079,
+        -0.018062793425999597,
+        -0.004031129488459018
+      ],
+      "candidate_only_not_a_verified_TCP": true
+    }
+  ],
+  "inter_pair_implied_TCP_difference_m": 0.012738018133865419,
+  "limitations": [
+    "Assumes camera mounting unchanged since manual sessions.",
+    "A centres are original high-support nominal29mm face/normal candidates, not external metrology.",
+    "B actual contact was operator-confirmed; unknown axial grip depth remains.",
+    "These implied points may absorb FK/hand-eye errors and are NOT adopted as a physical TCP."
+  ]
+}
