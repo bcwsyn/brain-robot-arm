@@ -1,4 +1,16 @@
-## 本轮（2026-10-16 14:20）：已批准原链保持实际执行，短空窗自行恢复；诊断包装器提前终止如实记录
+## 本轮（2026-10-16 14:24）：仅诊断包装器修正已批准并完成，原链30秒保持实际通过
+
+- 起点`bf18c2c`，用户“同意”批准仅将测试包装器短空窗改事件、原生产抑制/25秒不改并重测30秒。按两repo技能追原运行链/最小差异，先核无生产控制源、同UHCI/can0 if7 ERROR-ACTIVE、RX2258274/TX2945、错误0，未接口/USB恢复或重复纯接收，根34GB/56%不清理。约840项既有无关修改保留。
+- 新目录`/home/johnwick/brain_robot_logs/usb2_hold_retry_20261016.zfCy9F`；从上轮原件复制独立诊断副本，apply_patch仅替换保持循环age>.5硬断言为纯记录observe_feedback_gap，并补完整30秒/末端新鲜/是否有空窗分账，保留新鲜起点、原25秒回读/armed终态、原限位/到位与无外部输入检查。没有修改旧失败证据或生产源；`harness_change.diff`保留准确差异。`test_gap_observer.py`rc0，5项离线测试覆盖新鲜边界、旧.678/.868秒空窗不抛出、长空窗观察器不取代控制超时、多次/未恢复事件及原控制不变量，未访问ROS/CAN。
+- 原四overlays+PYTHONNOUSERSITE=1运行`run_hold.py`rc0：原SDK10秒整窗rc2照存，原37fresh/3.612986秒静止子窗通过、六true/原q；仅原driver auto_enable=false/原launch适配器Node及原参数。原enable_srv true/enable_motion/arm后，14:23:09.464592开始，14:23:39.465616结束，monotonic保持30.001014557秒。原watchdog未触发，自有wrapper未因短空窗提早退出，没有输入轨迹/点动/夹爪或启动MoveIt/Servo/相机/任务。
+- 原ROS实际1501六轴命令、7259总反馈，保持内5999反馈；六目标与实测q范围全0，命令无gripper名称/effort。保持内命令最大receipt间隔23.234ms、反馈17.686ms。独立raw全窗126479帧，保持内用户态读取最大196.002ms（开始后首段），无>0.5秒读取/反馈间隔；与循环事件列表为空分开复核，避免共享调度暂停被循环漏记。原始24字节记录不是hardware/kernel戳，不能凭读取间隔确诊总线物理层。
+- CAN RX2360697→2487698/TX2945→7465（发送增4520含初始化/使能/保持），末ERROR-ACTIVE、错误/bus-off0，无新内核行/非法echo。此限定30秒保持通过，不能当任意运动/相机/手眼/抓取或永久链路修好，也不能倒推上轮短空窗原因。原60秒/J4与本次保持不再重复。
+- 原软件disarm成功后末SDK6秒整窗rc2照存，原32fresh/3.110373秒静止子窗通过，六q_mdeg与初始完全一致[-8254,51759,-69720,-3692,67818,5017]，末六true/99.6mm。所有源退出（adapter0、driver原2秒宽限后−9留原件），未硬件Disable/Reset/夹爪/新位移；末值非持续监测、非已达观测。
+- 离线`package_hold_retry.py`rc0；[usb2_hold_retry01](evidence/piper_board_handeye_20261016/usb2_hold_retry01/README.md)保留16原文件约1.14MB归档/逐件SHA回读，全部CAN和ROS原数据保留；六生产源与原driver/launch/SDK枚举SHA均与前轮一致。原板2/10/无新图或拟合，生产TF/靠近/各门/限位继续冻结。JSON/AST/归档/数据一致性及限定Git diff检查，提交后`git show --check`核对；仅本地，未推送、未自动合并/强推，既有同步分叉/历史审查/发布范围阻断保持。
+- 初次暂存`git diff --cached --check`提示原`harness_change.diff`的3处空白上下文行是尾随空格；原diff不篡改，完整保留home及tar原件，只不加入多余松散文本副本，随后限定检查重做。其余原件SHA不动。
+- 下一只需明确授权原当前姿态→既定观测、SEARCH前停及随后相机核对的范围，再恢复标定；本轮不自动运动或扩成一键/9+1。CAN无需用户再重启/重连；新USB2下相机透传和RGB-D仍未验证，旧板会话不得混入新连续ID批次。
+
+## 历史本轮（2026-10-16 14:20）：已批准原链保持实际执行，短空窗自行恢复；诊断包装器提前终止如实记录
 
 - 起点`d9471e2`，用户“好”批准原driver/adapter以新鲜实际q保持30秒，不设新位移/夹爪目标。先按两repo技能核实际部署和原保持行为，四规范最新断点/原驱动/adapter/启动路径已读。USB仍同UHCI、can0 if7 UP/ERROR-ACTIVE，RX持续增加、TX0，未重连/重载/重做60秒；根34GB/56%，不清理。已有约840项无关脏树保留。
 - 新home目录`/home/johnwick/brain_robot_logs/usb2_hold_20261016.gyttMv`，两个诊断包装脚本AST及无motion publisher/SDK运动API检查通过。`run_hold.py`经原四ROS overlays、PYTHONNOUSERSITE=1运行，最终rc2。原SDK10秒准入rc0、99fresh/9.839361秒、原静止整窗通过、六q无变化/六true。原driver auto_enable=false启动，原launch中仅原adapter Node/原参数启动；未启动MoveIt/Servo/visual_search/grasp/camera。读取原adapter 50Hz/.189rad/s/25秒与六限位不改，输入话题无外部publisher后，仅原enable_srv true/enable_motion/arm，未直接SDK控制。

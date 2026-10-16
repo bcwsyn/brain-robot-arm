@@ -1,0 +1,742 @@
+{
+  "baseline_commit": "bf18c2c",
+  "operator_quote": "同意",
+  "scope": "Original driver and adapter idle hold at freshly measured pose for 30s; no displaced target, trajectory, jog or gripper command",
+  "change_only": "Diagnostic wrapper event recording in place of .5s early-abort; production controls unchanged.",
+  "offline_tests": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "success": true,
+    "ROS_CAN_or_motion_access": false
+  },
+  "hold_completed": true,
+  "hold_elapsed_s": 30.001014556999507,
+  "hold_completed_with_original_watchdogs_and_fresh_end": true,
+  "execution_error": null,
+  "script_exit_rule_result": 0,
+  "hold_start_epoch": 1792131789.464592,
+  "hold_end_epoch": 1792131819.4656162,
+  "software_disarm_response_epoch": 1792131819.4776673,
+  "loop_feedback_age_gap_events": [],
+  "loop_open_gap_at_end": null,
+  "feedback_receipt_intervals_all_le_0_5s_during_hold": true,
+  "raw_reader_intervals_all_le_0_5s_during_hold": true,
+  "loop_observer_limit": "Loop age events alone may miss a shared scheduling pause; independent full ROS and raw receive intervals above remain authoritative for observed gaps.",
+  "command_summary": {
+    "samples": 1501,
+    "first_epoch": 1792131789.464521,
+    "last_epoch": 1792131819.4643369,
+    "q_spread_rad": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "largest_receipt_gaps_s": [
+      {
+        "gap_s": 0.023233890533447266,
+        "before": 1792131818.3840182,
+        "after": 1792131818.407252
+      },
+      {
+        "gap_s": 0.023223400115966797,
+        "before": 1792131817.0642858,
+        "after": 1792131817.0875092
+      },
+      {
+        "gap_s": 0.022943496704101562,
+        "before": 1792131806.4039614,
+        "after": 1792131806.426905
+      },
+      {
+        "gap_s": 0.02228569984436035,
+        "before": 1792131790.4241111,
+        "after": 1792131790.4463968
+      },
+      {
+        "gap_s": 0.021985292434692383,
+        "before": 1792131794.3638613,
+        "after": 1792131794.3858466
+      }
+    ],
+    "largest_monotonic_gaps_s": [
+      {
+        "gap_s": 0.023233792000610265,
+        "before": 8292.209441027,
+        "after": 8292.232674819
+      },
+      {
+        "gap_s": 0.023224597000080394,
+        "before": 8290.889708586,
+        "after": 8290.912933183
+      },
+      {
+        "gap_s": 0.022944072999962373,
+        "before": 8280.229384205,
+        "after": 8280.252328278
+      },
+      {
+        "gap_s": 0.022285885001110728,
+        "before": 8264.249534367,
+        "after": 8264.271820252
+      },
+      {
+        "gap_s": 0.02198589599902334,
+        "before": 8268.18928416,
+        "after": 8268.211270056
+      }
+    ]
+  },
+  "feedback_summary": {
+    "samples": 7259,
+    "first_epoch": 1792131788.414452,
+    "last_epoch": 1792131825.720473,
+    "q_spread_rad": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "largest_receipt_gaps_s": [
+      {
+        "gap_s": 1.0084364414215088,
+        "before": 1792131788.4370959,
+        "after": 1792131789.4455323
+      },
+      {
+        "gap_s": 0.017686128616333008,
+        "before": 1792131817.0808282,
+        "after": 1792131817.0985143
+      },
+      {
+        "gap_s": 0.016353130340576172,
+        "before": 1792131805.2454526,
+        "after": 1792131805.2618058
+      },
+      {
+        "gap_s": 0.014307498931884766,
+        "before": 1792131788.414452,
+        "after": 1792131788.4287596
+      },
+      {
+        "gap_s": 0.014003276824951172,
+        "before": 1792131789.460802,
+        "after": 1792131789.4748054
+      }
+    ],
+    "largest_monotonic_gaps_s": [
+      {
+        "gap_s": 1.0084363200003281,
+        "before": 8262.26251879,
+        "after": 8263.27095511
+      },
+      {
+        "gap_s": 0.017686378001599223,
+        "before": 8290.90625146,
+        "after": 8290.923937838
+      },
+      {
+        "gap_s": 0.016353211000023293,
+        "before": 8279.070875464,
+        "after": 8279.087228675
+      },
+      {
+        "gap_s": 0.014307231998827774,
+        "before": 8262.239875536,
+        "after": 8262.254182768
+      },
+      {
+        "gap_s": 0.01400296000065282,
+        "before": 8263.286225049,
+        "after": 8263.300228009
+      }
+    ]
+  },
+  "command_during_hold": {
+    "samples": 1500,
+    "first_epoch": 1792131789.4843109,
+    "last_epoch": 1792131819.4643369,
+    "q_spread_rad": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "largest_receipt_gaps_s": [
+      {
+        "gap_s": 0.023233890533447266,
+        "before": 1792131818.3840182,
+        "after": 1792131818.407252
+      },
+      {
+        "gap_s": 0.023223400115966797,
+        "before": 1792131817.0642858,
+        "after": 1792131817.0875092
+      },
+      {
+        "gap_s": 0.022943496704101562,
+        "before": 1792131806.4039614,
+        "after": 1792131806.426905
+      },
+      {
+        "gap_s": 0.02228569984436035,
+        "before": 1792131790.4241111,
+        "after": 1792131790.4463968
+      },
+      {
+        "gap_s": 0.021985292434692383,
+        "before": 1792131794.3638613,
+        "after": 1792131794.3858466
+      }
+    ],
+    "largest_monotonic_gaps_s": [
+      {
+        "gap_s": 0.023233792000610265,
+        "before": 8292.209441027,
+        "after": 8292.232674819
+      },
+      {
+        "gap_s": 0.023224597000080394,
+        "before": 8290.889708586,
+        "after": 8290.912933183
+      },
+      {
+        "gap_s": 0.022944072999962373,
+        "before": 8280.229384205,
+        "after": 8280.252328278
+      },
+      {
+        "gap_s": 0.022285885001110728,
+        "before": 8264.249534367,
+        "after": 8264.271820252
+      },
+      {
+        "gap_s": 0.02198589599902334,
+        "before": 8268.18928416,
+        "after": 8268.211270056
+      }
+    ]
+  },
+  "feedback_during_hold": {
+    "samples": 5999,
+    "first_epoch": 1792131789.4748054,
+    "last_epoch": 1792131819.4654934,
+    "q_spread_rad": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "largest_receipt_gaps_s": [
+      {
+        "gap_s": 0.017686128616333008,
+        "before": 1792131817.0808282,
+        "after": 1792131817.0985143
+      },
+      {
+        "gap_s": 0.016353130340576172,
+        "before": 1792131805.2454526,
+        "after": 1792131805.2618058
+      },
+      {
+        "gap_s": 0.010341405868530273,
+        "before": 1792131815.2966487,
+        "after": 1792131815.3069901
+      },
+      {
+        "gap_s": 0.009455680847167969,
+        "before": 1792131813.6755724,
+        "after": 1792131813.685028
+      },
+      {
+        "gap_s": 0.009193181991577148,
+        "before": 1792131814.9657328,
+        "after": 1792131814.974926
+      }
+    ],
+    "largest_monotonic_gaps_s": [
+      {
+        "gap_s": 0.017686378001599223,
+        "before": 8290.90625146,
+        "after": 8290.923937838
+      },
+      {
+        "gap_s": 0.016353211000023293,
+        "before": 8279.070875464,
+        "after": 8279.087228675
+      },
+      {
+        "gap_s": 0.010340939001252991,
+        "before": 8289.122072359,
+        "after": 8289.132413298
+      },
+      {
+        "gap_s": 0.009456118999878527,
+        "before": 8287.500995576,
+        "after": 8287.510451695
+      },
+      {
+        "gap_s": 0.009193920999678085,
+        "before": 8288.7911557,
+        "after": 8288.800349621
+      }
+    ]
+  },
+  "raw_frames": 126479,
+  "raw_ID_counts": {
+    "0x254": 5224,
+    "0x255": 5224,
+    "0x265": 1045,
+    "0x256": 5224,
+    "0x1c1": 2090,
+    "0x1c2": 1045,
+    "0x2a1": 10447,
+    "0x2a2": 10446,
+    "0x2a3": 10446,
+    "0x2a4": 10446,
+    "0x2a5": 10446,
+    "0x2a6": 10446,
+    "0x2a7": 10446,
+    "0x2a8": 10446,
+    "0x251": 5223,
+    "0x252": 5223,
+    "0x253": 5223,
+    "0x264": 1045,
+    "0x1c3": 1045,
+    "0x263": 1045,
+    "0x262": 1045,
+    "0x261": 1044,
+    "0x266": 1044,
+    "0x1c0": 1044,
+    "0x212": 52,
+    "0x473": 6,
+    "0x47c": 6,
+    "0x4af": 11,
+    "0x476": 2
+  },
+  "raw_largest_gaps_s": [
+    {
+      "gap_s": 0.19663596153259277,
+      "before": 1792131788.9425163,
+      "after": 1792131789.1391523
+    },
+    {
+      "gap_s": 0.19600224494934082,
+      "before": 1792131789.4706159,
+      "after": 1792131789.666618
+    },
+    {
+      "gap_s": 0.018254995346069336,
+      "before": 1792131805.2427173,
+      "after": 1792131805.2609723
+    },
+    {
+      "gap_s": 0.012054920196533203,
+      "before": 1792131817.0768402,
+      "after": 1792131817.088895
+    },
+    {
+      "gap_s": 0.01056814193725586,
+      "before": 1792131785.8172135,
+      "after": 1792131785.8277817
+    }
+  ],
+  "raw_hold_largest_gaps_s": [
+    {
+      "gap_s": 0.19600224494934082,
+      "before": 1792131789.4706159,
+      "after": 1792131789.666618
+    },
+    {
+      "gap_s": 0.018254995346069336,
+      "before": 1792131805.2427173,
+      "after": 1792131805.2609723
+    },
+    {
+      "gap_s": 0.012054920196533203,
+      "before": 1792131817.0768402,
+      "after": 1792131817.088895
+    },
+    {
+      "gap_s": 0.008437395095825195,
+      "before": 1792131791.436841,
+      "after": 1792131791.4452784
+    },
+    {
+      "gap_s": 0.007890701293945312,
+      "before": 1792131815.4168448,
+      "after": 1792131815.4247355
+    }
+  ],
+  "raw_feedback_ID_hold_gaps_s": {
+    "0x2a5": [
+      {
+        "gap_s": 0.19620704650878906,
+        "before": 1792131789.47046,
+        "after": 1792131789.666667
+      },
+      {
+        "gap_s": 0.019535303115844727,
+        "before": 1792131805.241488,
+        "after": 1792131805.2610233
+      },
+      {
+        "gap_s": 0.012481689453125,
+        "before": 1792131817.0765252,
+        "after": 1792131817.089007
+      },
+      {
+        "gap_s": 0.011291265487670898,
+        "before": 1792131818.396497,
+        "after": 1792131818.4077883
+      },
+      {
+        "gap_s": 0.009116411209106445,
+        "before": 1792131807.2973986,
+        "after": 1792131807.306515
+      }
+    ],
+    "0x2a6": [
+      {
+        "gap_s": 0.19622230529785156,
+        "before": 1792131789.4704645,
+        "after": 1792131789.6666868
+      },
+      {
+        "gap_s": 0.019524097442626953,
+        "before": 1792131805.241504,
+        "after": 1792131805.261028
+      },
+      {
+        "gap_s": 0.012421607971191406,
+        "before": 1792131817.0765972,
+        "after": 1792131817.0890188
+      },
+      {
+        "gap_s": 0.011049270629882812,
+        "before": 1792131818.396766,
+        "after": 1792131818.4078152
+      },
+      {
+        "gap_s": 0.009321451187133789,
+        "before": 1792131815.4166121,
+        "after": 1792131815.4259336
+      }
+    ],
+    "0x2a7": [
+      {
+        "gap_s": 0.19638681411743164,
+        "before": 1792131789.4704688,
+        "after": 1792131789.6668556
+      },
+      {
+        "gap_s": 0.019336938858032227,
+        "before": 1792131805.241696,
+        "after": 1792131805.2610328
+      },
+      {
+        "gap_s": 0.01234292984008789,
+        "before": 1792131817.076688,
+        "after": 1792131817.089031
+      },
+      {
+        "gap_s": 0.011040687561035156,
+        "before": 1792131818.3967798,
+        "after": 1792131818.4078205
+      },
+      {
+        "gap_s": 0.009837627410888672,
+        "before": 1792131807.297412,
+        "after": 1792131807.3072495
+      }
+    ],
+    "0x3a4": [],
+    "0x3a5": [],
+    "0x3a6": [],
+    "0x251": [
+      {
+        "gap_s": 0.20123052597045898,
+        "before": 1792131789.4704776,
+        "after": 1792131789.671708
+      },
+      {
+        "gap_s": 0.019179821014404297,
+        "before": 1792131805.2419004,
+        "after": 1792131805.2610803
+      },
+      {
+        "gap_s": 0.01709437370300293,
+        "before": 1792131817.07202,
+        "after": 1792131817.0891144
+      },
+      {
+        "gap_s": 0.015628814697265625,
+        "before": 1792131818.3922007,
+        "after": 1792131818.4078295
+      },
+      {
+        "gap_s": 0.015502214431762695,
+        "before": 1792131813.6923628,
+        "after": 1792131813.707865
+      }
+    ],
+    "0x256": [
+      {
+        "gap_s": 0.2019193172454834,
+        "before": 1792131789.4706085,
+        "after": 1792131789.6725278
+      },
+      {
+        "gap_s": 0.018624544143676758,
+        "before": 1792131805.2426019,
+        "after": 1792131805.2612264
+      },
+      {
+        "gap_s": 0.016473770141601562,
+        "before": 1792131817.072718,
+        "after": 1792131817.0891917
+      },
+      {
+        "gap_s": 0.015006542205810547,
+        "before": 1792131818.3928506,
+        "after": 1792131818.4078572
+      },
+      {
+        "gap_s": 0.014796972274780273,
+        "before": 1792131809.3626304,
+        "after": 1792131809.3774273
+      }
+    ]
+  },
+  "raw_format": "24 bytes: native standard uint64 userspace epoch_ns followed by Linux classic CAN frame16. Guest little-endian x86_64; not hardware/kernel timestamps.",
+  "CAN_RX_before": 2360697,
+  "CAN_RX_after": 2487698,
+  "CAN_TX_before": 2945,
+  "CAN_TX_after": 7465,
+  "CAN_end_state": "ERROR-ACTIVE",
+  "CAN_end_error_counters": {
+    "restarts": 0,
+    "bus_error": 0,
+    "arbitration_lost": 0,
+    "error_warning": 0,
+    "error_passive": 0,
+    "bus_off": 0
+  },
+  "kernel_new_lines": [],
+  "SDK_before": {
+    "rc": 2,
+    "quality": {
+      "samples": 100,
+      "fresh_samples": 99,
+      "span_s": 9.837589502334595,
+      "static_three_seconds_and_thirty_samples": false,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "original_static_subwindow": {
+      "indices": [
+        63,
+        100
+      ],
+      "samples": 37,
+      "quality": {
+        "samples": 37,
+        "fresh_samples": 37,
+        "span_s": 3.6129863262176514,
+        "static_three_seconds_and_thirty_samples": true,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "last_fresh": {
+      "epoch": 1792131785.6637955,
+      "sdk_receipt_stamps": {
+        "joint": "1792131785.6624103",
+        "high": "1792131785.658372",
+        "low": "1792131785.6581109",
+        "gripper": "1792131785.6625023"
+      },
+      "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+      "high_hz": 100.0,
+      "joint_hz": 200.0,
+      "q_mdeg": [
+        -8254,
+        51759,
+        -69720,
+        -3692,
+        67818,
+        5017
+      ],
+      "q_driver_rad": [
+        -0.143982776,
+        0.902883996,
+        -1.21619568,
+        -0.06440324800000001,
+        1.183017192,
+        0.08751654800000001
+      ],
+      "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+      "speed_millirad_s": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enabled": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "gripper_raw_micrometers": 99600,
+      "gripper_mm": 99.6,
+      "gripper_effort_raw": 4,
+      "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+      "fresh_after_passive_connection": true,
+      "physical_contact_verified_by_sdk": false
+    }
+  },
+  "SDK_after": {
+    "rc": 2,
+    "quality": {
+      "samples": 60,
+      "fresh_samples": 59,
+      "span_s": 5.81915807723999,
+      "static_three_seconds_and_thirty_samples": false,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "original_static_subwindow": {
+      "indices": [
+        28,
+        60
+      ],
+      "samples": 32,
+      "quality": {
+        "samples": 32,
+        "fresh_samples": 32,
+        "span_s": 3.110372543334961,
+        "static_three_seconds_and_thirty_samples": true,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "last_fresh": {
+      "epoch": 1792131825.5964668,
+      "sdk_receipt_stamps": {
+        "joint": "1792131825.5917528",
+        "high": "1792131825.5927455",
+        "low": "1792131825.592503",
+        "gripper": "1792131825.5919123"
+      },
+      "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+      "high_hz": 100.0,
+      "joint_hz": 200.0,
+      "q_mdeg": [
+        -8254,
+        51759,
+        -69720,
+        -3692,
+        67818,
+        5017
+      ],
+      "q_driver_rad": [
+        -0.143982776,
+        0.902883996,
+        -1.21619568,
+        -0.06440324800000001,
+        1.183017192,
+        0.08751654800000001
+      ],
+      "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+      "speed_millirad_s": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enabled": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "gripper_raw_micrometers": 99600,
+      "gripper_mm": 99.6,
+      "gripper_effort_raw": -2,
+      "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+      "fresh_after_passive_connection": true,
+      "physical_contact_verified_by_sdk": false
+    }
+  },
+  "SDK_q_before_after_identical": true,
+  "outgoing_ROS_gripper_frames": 0,
+  "observed_motion_inputs": {},
+  "no_wrapper_motion_publishers": true,
+  "all_owned_sources_exited": true,
+  "six_production_SHA_unchanged": true,
+  "driver_launch_SDK_enum_SHA_unchanged": {
+    "driver": {
+      "path": "/home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py",
+      "SHA256": "d607ec10854f231588fcdfc9f334c4766d5b8c4474e10fd72f79ef5723984b2e"
+    },
+    "installed_launch": {
+      "path": "/home/johnwick/piper_ws/src/brain_robot_ball_pick/launch/cube_visual_search.launch.py",
+      "SHA256": "2df0e7ed5db5fbcaec8806f16bc918646226b856761c7f08f613ab202d8d156d"
+    },
+    "SDK_CAN_enum": {
+      "path": "/home/johnwick/.local/lib/python3.10/site-packages/piper_sdk/piper_msgs/msg_v2/can_id.py",
+      "SHA256": "2cc2507b12aabaf3a1f62cb8bd4d22ef6f800dd0eadc790b004d4ce4b233405e"
+    }
+  },
+  "hardware_disable_reset_or_displaced_target_requested": false,
+  "causal_limit": "A bounded idle hold is not movement/calibration/camera/grasp verification or proof of a permanent transport cure. Userspace timestamps alone do not locate any gap to physical CAN, USB, guest scheduling or SDK/ROS.",
+  "next_scope": "Finish this specific hold and record. No automatic observation return, SEARCH, camera start, or additional board motions. Do not repeat the successful passive60 or J4.",
+  "calibration": "Old board candidates 2/10 unchanged; production TF, approach, detector gates and limits frozen.",
+  "Git_sync": "Local only; pre-existing divergent-main/history-review/publication-scope blocker unchanged."
+}
