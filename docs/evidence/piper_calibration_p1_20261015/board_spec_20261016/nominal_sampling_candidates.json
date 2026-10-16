@@ -1,0 +1,343 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "robot_moved": false,
+  "source_actual_q_is_historical_not_current": true,
+  "historical_source_stamps_ns": {
+    "rgb": "1792076130426084343",
+    "depth": "1792076130386335947",
+    "depth_info": "1792076130386335947",
+    "feedback": "1792076130412261888"
+  },
+  "same_actual_model_SHA256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "same_archived_start_FK_reproduced": true,
+  "original_joint_min_rad": [
+    -1.5,
+    -0.3,
+    -1.4,
+    -0.8,
+    -1.2,
+    -3.14159265359
+  ],
+  "original_joint_max_rad": [
+    1.5,
+    3.14159265359,
+    0.4,
+    0.8,
+    1.22108,
+    3.14159265359
+  ],
+  "do_not_apply_candidate_q_until_fresh_start_and_original_planning_checks": true,
+  "proposed_sequence": "start -> candidate -> start for every non-start candidate; board fixed, gripper unchanged",
+  "continuous_RGB_ID_tracking_needed_between_stopped_pose_samples": true,
+  "non_start_pose_limit_and_FK_candidates": [
+    {
+      "id": "start",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        0,
+        0,
+        0
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.07429399600000001,
+        1.216352676,
+        0.090307588
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0,
+        0,
+        0
+      ],
+      "gripper_base_FK_rotation_delta_deg": 0,
+      "rotation_vector_in_start_tool_rad": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "J4_plus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        6,
+        0,
+        0
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        0.030425759119659765,
+        1.216352676,
+        0.090307588
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0.001325088534092883,
+        0.008835638426568856,
+        -0.00018017214640214663
+      ],
+      "gripper_base_FK_rotation_delta_deg": 6,
+      "rotation_vector_in_start_tool_rad": [
+        -0.09781016582663118,
+        0.008856838962116722,
+        0.036344944309869974
+      ]
+    },
+    {
+      "id": "J4_minus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        -6,
+        0,
+        0
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.17901375111965978,
+        1.216352676,
+        0.090307588
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        -0.0016790334318980138,
+        -0.008715560827042591,
+        0.0010376291414919137
+      ],
+      "gripper_base_FK_rotation_delta_deg": 6.000000000000001,
+      "rotation_vector_in_start_tool_rad": [
+        0.09781016582663121,
+        -0.008856838962116748,
+        -0.03634494430986994
+      ]
+    },
+    {
+      "id": "J6_plus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        0,
+        0,
+        8
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.07429399600000001,
+        1.216352676,
+        0.22993392815954636
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0,
+        0,
+        0
+      ],
+      "gripper_base_FK_rotation_delta_deg": 8.000000000000002,
+      "rotation_vector_in_start_tool_rad": [
+        -8.701864385740364e-19,
+        5.569193206873833e-17,
+        0.1396263401595464
+      ]
+    },
+    {
+      "id": "J6_minus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        0,
+        0,
+        -8
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.07429399600000001,
+        1.216352676,
+        -0.04931875215954637
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0,
+        0,
+        0
+      ],
+      "gripper_base_FK_rotation_delta_deg": 8,
+      "rotation_vector_in_start_tool_rad": [
+        -1.4793169455758614e-17,
+        0,
+        -0.13962634015954636
+      ]
+    },
+    {
+      "id": "J5_minus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        0,
+        -4,
+        0
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.07429399600000001,
+        1.1465395059202268,
+        0.090307588
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0.0044406510808349675,
+        -0.0004464657285786072,
+        0.004519460573859657
+      ],
+      "gripper_base_FK_rotation_delta_deg": 4.0000000000000115,
+      "rotation_vector_in_start_tool_rad": [
+        -0.006296092928066361,
+        -0.06952868422717891,
+        2.564380926255105e-7
+      ]
+    },
+    {
+      "id": "J4plus_J5minus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        6,
+        -4,
+        0
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        0.030425759119659765,
+        1.1465395059202268,
+        0.090307588
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0.005728405556577831,
+        0.008140237567001933,
+        0.004344366989376902
+      ],
+      "gripper_base_FK_rotation_delta_deg": 7.210100610762419,
+      "rotation_vector_in_start_tool_rad": [
+        -0.10279725028200482,
+        -0.06072628640658704,
+        0.03975861956715589
+      ]
+    },
+    {
+      "id": "J4minus_J5minus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        -6,
+        -4,
+        0
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.17901375111965978,
+        1.1465395059202268,
+        0.090307588
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0.002808923707151273,
+        -0.00891647475942111,
+        0.005527853173433017
+      ],
+      "gripper_base_FK_rotation_delta_deg": 7.210076156995786,
+      "rotation_vector_in_start_tool_rad": [
+        0.09021657536394957,
+        -0.07820396024794846,
+        -0.03975810698183247
+      ]
+    },
+    {
+      "id": "J5minus_J6plus",
+      "role": "nominal_pose_fit",
+      "offset_J4_J5_J6_deg": [
+        0,
+        -8,
+        8
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.07429399600000001,
+        1.0767263358404537,
+        0.22993392815954636
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0.008562591535149933,
+        -0.0008176444344262616,
+        0.009337766376379342
+      ],
+      "gripper_base_FK_rotation_delta_deg": 11.30913022834338,
+      "rotation_vector_in_start_tool_rad": [
+        -0.02227973390317201,
+        -0.13795213332787995,
+        0.1393997912998795
+      ]
+    },
+    {
+      "id": "combined_holdout",
+      "role": "nominal_pose_holdout",
+      "offset_J4_J5_J6_deg": [
+        4,
+        -6,
+        -6
+      ],
+      "candidate_q_driver_rad": [
+        -0.14021487200000002,
+        0.9511341000000001,
+        -1.2685974560000002,
+        -0.004480825920226833,
+        1.1116329208803404,
+        -0.014412167119659786
+      ],
+      "within_original_task_joint_limits": true,
+      "gripper_base_FK_translation_delta_m": [
+        0.00742576411309559,
+        0.00498233190247032,
+        0.0066864918180490895
+      ],
+      "gripper_base_FK_rotation_delta_deg": 8.302947985044774,
+      "rotation_vector_in_start_tool_rad": [
+        -0.06808481921776502,
+        -0.10219041893142641,
+        -0.07695179850561278
+      ]
+    }
+  ],
+  "relative_rotation_axis_span_singular_values": [
+    0.2817672960807276,
+    0.18811547636316428,
+    0.14713225964657206
+  ],
+  "relative_translation_linear_system_singular_values": [
+    0.3384644662218891,
+    0.31755428426173166,
+    0.23864312024857526
+  ],
+  "nominal_holdout_excluded_from_excitation_check": true,
+  "relative_translation_linear_system_rank": 3,
+  "relative_translation_linear_system_condition": 1.4182871304621645,
+  "view_visibility_self_collision_table_clearance_and_path_feasibility_checked": false,
+  "candidate_model_variation_is_NOT_actual_arm_test_or_full_calibration_identifiability": true,
+  "original_cube_5plus1_protocol_replaced": false,
+  "new_board_motion_or_route_approved": false
+}
