@@ -1,0 +1,26 @@
+schema: p4_cube_center_v1
+target_kind: cube_center
+frame_id: base_link
+center_base_m:
+- 0.3482677775114298
+- 0.021727730386233116
+- 0.012961511835707373
+cube_edge_m: 0.029
+grasp_center_tool_m:
+- 0.027242073098933686
+- 0.02205352076305873
+- 0.11748141229617287
+provenance: CURRENT_5_NATIVE_DEPTH_FACE_FITS; ISOLATED_PREVIEW_ONLY_NOT_HARDWARE_APPROVED
+grasp_reference_provenance: pair02_clamped_RGB_annotated29mm_face_IPPE_branch0; CANDIDATE_NOT_TCP
+source_sha256:
+  /home/johnwick/brain_robot_logs/p4_reference_live_20261016.bc4clt/geometry_review/report.json: da1ed2839e09506d08a75fc9890250bf30071aad0f2d3071fc202e6c8f656784
+  /home/johnwick/brain_robot_logs/p4_reference_live_20261016.bc4clt/geometry_review/clamped_rgb_hypothesis_v2.json: 7bef2167f861c938c8f80d558f7e04cd23e966a5c9eee4c91296296ce23bbd18
+assumptions:
+- Rounded/blurred top-face corners are approximate image annotations.
+- Both planar branches retained; low pixel error does not certify actual TCP/metric
+  accuracy.
+- Old/current camera installation identity and physical contact depth are not independently
+  measured.
+- This independent image-only candidate does not authorize production TF/TCP or actual
+  motion.
+hardware_adoption_approved: false

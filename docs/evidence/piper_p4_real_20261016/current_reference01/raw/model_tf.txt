@@ -1,0 +1,29 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/.ros/log/2026-10-16-22-25-20-291844-johnwick-virtual-machine-25222
+[INFO] [launch]: Default logging verbosity is set to INFO
+warning: Using load_yaml() directly is deprecated. Use xacro.load_yaml() instead.
+[INFO] [robot_state_publisher-1]: process started with pid [25228]
+[INFO] [static_transform_publisher-2]: process started with pid [25230]
+[static_transform_publisher-2] [WARN] [1792160720.876946939] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-2] [INFO] [1792160721.081231807] [piper_camera_mount_tf]: Spinning until stopped - publishing transform
+[static_transform_publisher-2] translation: ('-0.041972', '0.063913', '0.032023')
+[static_transform_publisher-2] rotation: ('0.008335', '-0.595422', '-0.038289', '0.802457')
+[static_transform_publisher-2] from 'gripper_base' to 'camera_link'
+[robot_state_publisher-1] [INFO] [1792160721.142960135] [calibration_static_model]: got segment base_link
+[robot_state_publisher-1] [INFO] [1792160721.143923002] [calibration_static_model]: got segment gripper_base
+[robot_state_publisher-1] [INFO] [1792160721.144291129] [calibration_static_model]: got segment link1
+[robot_state_publisher-1] [INFO] [1792160721.144315623] [calibration_static_model]: got segment link2
+[robot_state_publisher-1] [INFO] [1792160721.144325017] [calibration_static_model]: got segment link3
+[robot_state_publisher-1] [INFO] [1792160721.144332518] [calibration_static_model]: got segment link4
+[robot_state_publisher-1] [INFO] [1792160721.144339861] [calibration_static_model]: got segment link5
+[robot_state_publisher-1] [INFO] [1792160721.144347267] [calibration_static_model]: got segment link6
+[robot_state_publisher-1] [INFO] [1792160721.144354612] [calibration_static_model]: got segment link7
+[robot_state_publisher-1] [INFO] [1792160721.144362132] [calibration_static_model]: got segment link8
+[robot_state_publisher-1] [INFO] [1792160721.144369310] [calibration_static_model]: got segment world
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [static_transform_publisher-2]: sending signal 'SIGINT' to process[static_transform_publisher-2]
+[INFO] [robot_state_publisher-1]: sending signal 'SIGINT' to process[robot_state_publisher-1]
+[static_transform_publisher-2] [INFO] [1792160747.802095405] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-1] [INFO] [1792160747.804051949] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-1] [INFO] [1792160747.808888495] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [static_transform_publisher-2]: process has died [pid 25230, exit code -2, cmd '/opt/ros/humble/lib/tf2_ros/static_transform_publisher -0.041971548734476324 0.06391288457018547 0.032022636009455124 -0.24293041679986016 -1.269534223956201 0.20008101038427822 gripper_base camera_link --ros-args -r __node:=piper_camera_mount_tf'].
+[INFO] [robot_state_publisher-1]: process has finished cleanly [pid 25228]

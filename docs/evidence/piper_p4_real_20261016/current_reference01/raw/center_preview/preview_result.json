@@ -1,0 +1,37 @@
+{
+  "domain": 78,
+  "synthetic_telemetry_only": true,
+  "hardware_execution": false,
+  "source_q_snapshot": [
+    -0.049872396000000006,
+    1.6527841120000002,
+    -1.009274952,
+    0.044953188000000005,
+    0.7789443760000001,
+    0.088894624
+  ],
+  "commands": {
+    "arm": 0,
+    "gripper": 0,
+    "joint_commands": 0,
+    "emergency_stop": 1
+  },
+  "states": [
+    "P4_WAITING_FOR_EXPLICIT_EXECUTE",
+    "P4_READY_FOR_EXPLICIT_EXECUTE",
+    "P4_FROZEN_TARGET_PLANNING",
+    "P4_PLAN_READY_NO_EXECUTION",
+    "FAULT_ESTOP"
+  ],
+  "legacy_state_matched_subscribers": 1,
+  "service_reply": "P4 sequence started from the explicitly frozen board/RGB target.",
+  "planning_commands_before_test_estop": {
+    "arm": 0,
+    "gripper": 0,
+    "joint_commands": 0,
+    "emergency_stop": 0
+  },
+  "test_injected_estop_messages": 1,
+  "execute_after_estop_rejected": true,
+  "passed": true
+}

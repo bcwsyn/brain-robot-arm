@@ -1,0 +1,1319 @@
+{
+  "baseline": "3e65b08",
+  "current_capture": "/home/johnwick/brain_robot_logs/p4_reference_live_20261016.bc4clt/capture",
+  "read_only": true,
+  "no_TF_TCP_limits_or_control_changed": true,
+  "original_center_estimator_reused": true,
+  "target_is_not_in_gripper": true,
+  "gripper_feedback_mm": 0.4,
+  "handeye_source_sha256": "3267a4711773c08d803a0969eff95f9ef43ef7b14fe5d3f963c1589ce8269f18",
+  "model_sha256": "0b41516e87e9bafd2a1e9b2821666ac1f24e5641131b8062134520aae0326d82",
+  "frames": [
+    {
+      "snapshot": 1,
+      "stamps_ns": {
+        "rgb": "1792160741916471290",
+        "depth": "1792160741901053681",
+        "depth_info": "1792160741901053681",
+        "feedback": "1792160741897874432"
+      },
+      "actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ],
+      "color_pixel_coverage": 0.8224880382775119,
+      "native_selected_points": 6425,
+      "rgb_bbox_xywh": [
+        123,
+        89,
+        51,
+        50
+      ],
+      "depth_surface_median_m": [
+        0.02107014797605696,
+        0.005241686925640403,
+        0.155
+      ],
+      "candidate_by_nominal_edge_mm": {
+        "29": {
+          "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+          "nominal_edge_m": 0.029,
+          "edge_is_not_confirmed_caliper_measurement": true,
+          "face_center_depth_m": [
+            0.020827827920066433,
+            0.0050004302053277844,
+            0.15485825285444665
+          ],
+          "cube_center_depth_m": [
+            0.022435944959412958,
+            0.003425259840730539,
+            0.16918245607522853
+          ],
+          "outward_normal_depth": [
+            -0.1109046234032087,
+            0.1086324389377411,
+            -0.9878760841918541
+          ],
+          "face_corners_depth_m": [
+            [
+              0.034239740721619484,
+              -0.010183037653253329,
+              0.15168289479731792
+            ],
+            [
+              0.005483496257231952,
+              -0.008601039584089233,
+              0.1550852008408043
+            ],
+            [
+              0.007415915118513385,
+              0.020183898063908898,
+              0.15803361091157536
+            ],
+            [
+              0.03617215958290092,
+              0.018601899994744802,
+              0.154631304868089
+            ]
+          ],
+          "plane_origin_depth_m": [
+            0.021197521873496144,
+            0.005416674590646758,
+            0.15486252148100746
+          ],
+          "measured_rectangle_center_depth_m": [
+            0.020823363820706483,
+            0.00483505991505056,
+            0.15484056896779136
+          ],
+          "measured_face_sides_m": [
+            0.02871580794453621,
+            0.028946485370397568
+          ],
+          "plane_inliers": 6401,
+          "plane_inlier_fraction": 0.9962645914396887,
+          "plane_threshold_m": 0.002,
+          "plane_rms_m": 0.0003333490262279624,
+          "plane_p95_m": 0.0006102432605726255,
+          "square_boundary_rms_m": 0.0008464122357528595,
+          "face_hull_fill_ratio": 0.9229809741990067,
+          "absolute_center_verified": false,
+          "assumptions": [
+            "Selected dominant plane is one full physical cube face.",
+            "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+            "A high-support candidate is not an approved calibration pair."
+          ],
+          "coordinate_frames": {
+            "depth": "camera_depth_optical_frame",
+            "color": "camera_color_optical_frame"
+          },
+          "cube_center_color_m": [
+            -0.00499385312309461,
+            0.002904096790137939,
+            0.1690018716661917
+          ],
+          "face_center_color_m": [
+            -0.006784130936114817,
+            0.004539419602099827,
+            0.15470604610167596
+          ],
+          "outward_normal_color": [
+            -0.12346743538070383,
+            0.11278088358357852,
+            -0.9859190044493635
+          ],
+          "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+          "C_to_D_roundtrip_error_m": 0.0
+        }
+      },
+      "rejected_by_nominal_edge_mm": {},
+      "raw_image_sha256": {
+        "rgb": "279f3ba996eaa89f6ba3f574649a914266678a986e6ce530c301bc96eeb2d8cf",
+        "depth": "9955118bdd0021a7719296a36275af34992b93d6c7e15ca6f3e72fdcc7fdebba"
+      },
+      "camera_center_verified": false,
+      "local_reference_projections": {
+        "nominal_tip": {
+          "color_m": [
+            0.027348525114496567,
+            0.011287430941308026,
+            0.11514128861064782
+          ],
+          "pixel": [
+            215.4669489384523,
+            130.8763435049469
+          ]
+        },
+        "manual02_candidate": {
+          "color_m": [
+            0.038798642506948436,
+            0.033974801411361166,
+            0.12178906105259418
+          ],
+          "pixel": [
+            235.24517114764842,
+            175.00487596282153
+          ]
+        }
+      },
+      "candidate_center_base_m": [
+        0.3482296996384983,
+        0.021778516425765195,
+        0.012923176515490298
+      ],
+      "candidate_center_tool_m_CURRENT_NOT_a_clamped_reference": [
+        0.008874567482835827,
+        0.029359785835794926,
+        0.19126636058283958
+      ],
+      "same_stamp_original_detector": {
+        "stamp_ns": 1792160741916471290,
+        "source_frame": "camera_depth_optical_frame",
+        "point_depth_m": [
+          0.021755711844621328,
+          0.004192607829426206,
+          0.155
+        ],
+        "point_color_m": [
+          -0.005863366656920565,
+          0.0037209851665619686,
+          0.15483252850211995
+        ],
+        "point_base_m": [
+          0.3484482260922141,
+          0.022588401606802314,
+          0.027117893077959143
+        ],
+        "base_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160741,
+              "nanosec": 916471290
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": 0.3650591611412263,
+              "y": 0.044095714779755935,
+              "z": 0.18131711900064515
+            },
+            "rotation": {
+              "x": -0.6616499150455672,
+              "y": 0.7491472249047482,
+              "z": 0.019832728042097816,
+              "w": -0.024586342471309683
+            }
+          }
+        },
+        "color_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160741,
+              "nanosec": 916471290
+            },
+            "frame_id": "camera_color_optical_frame"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": -0.029824850429398753,
+              "y": 0.0002287428112833223,
+              "z": 0.0001407688733962853
+            },
+            "rotation": {
+              "x": 0.0014449612294783927,
+              "y": 0.0069849456394336425,
+              "z": -0.005530618331314129,
+              "w": 0.9999592666115619
+            }
+          }
+        },
+        "base_from_gripper": {
+          "header": {
+            "stamp": {
+              "sec": 1792160741,
+              "nanosec": 916471290
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "gripper_base",
+          "transform": {
+            "translation": {
+              "x": 0.3071094195313801,
+              "y": -0.012451527685663976,
+              "z": 0.19909783189848718
+            },
+            "rotation": {
+              "x": 0.08282806307438094,
+              "y": 0.9894603329308169,
+              "z": 0.01984357019288062,
+              "w": 0.11710676430413282
+            }
+          }
+        },
+        "point_semantics": "Original detector center ray at measured median surface depth; not a calibrated cube geometric center/TCP."
+      },
+      "current_actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ]
+    },
+    {
+      "snapshot": 2,
+      "stamps_ns": {
+        "rgb": "1792160743116556600",
+        "depth": "1792160743100155771",
+        "depth_info": "1792160743100155771",
+        "feedback": "1792160743102899200"
+      },
+      "actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ],
+      "color_pixel_coverage": 0.8343765045739047,
+      "native_selected_points": 6528,
+      "rgb_bbox_xywh": [
+        123,
+        89,
+        52,
+        49
+      ],
+      "depth_surface_median_m": [
+        0.021206967118758625,
+        0.0055669559268777475,
+        0.155
+      ],
+      "candidate_by_nominal_edge_mm": {
+        "29": {
+          "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+          "nominal_edge_m": 0.029,
+          "edge_is_not_confirmed_caliper_measurement": true,
+          "face_center_depth_m": [
+            0.02138614002390999,
+            0.004752706218616021,
+            0.15476059394802905
+          ],
+          "cube_center_depth_m": [
+            0.02305700789824498,
+            0.0031835179692243625,
+            0.16907827004383755
+          ],
+          "outward_normal_depth": [
+            -0.11523226719551646,
+            0.10821987926839027,
+            -0.9874259376419665
+          ],
+          "face_corners_depth_m": [
+            [
+              0.03583100596713519,
+              0.01930734974948208,
+              0.15467004246172528
+            ],
+            [
+              0.03574797308850462,
+              -0.009520963532550324,
+              0.15152020772732086
+            ],
+            [
+              0.006941274080684793,
+              -0.009801937312250038,
+              0.1548511454343328
+            ],
+            [
+              0.007024306959315359,
+              0.019026375969782367,
+              0.1580009801687372
+            ]
+          ],
+          "plane_origin_depth_m": [
+            0.021292696627725097,
+            0.005617961981451183,
+            0.15486632903620837
+          ],
+          "measured_rectangle_center_depth_m": [
+            0.020807699965346878,
+            0.004793952277664894,
+            0.15483261818823213
+          ],
+          "measured_face_sides_m": [
+            0.028546156361699104,
+            0.02967107854783535
+          ],
+          "plane_inliers": 6516,
+          "plane_inlier_fraction": 0.9981617647058824,
+          "plane_threshold_m": 0.002,
+          "plane_rms_m": 0.00034773576818846597,
+          "plane_p95_m": 0.0006400690765689412,
+          "square_boundary_rms_m": 0.0009529503589067907,
+          "face_hull_fill_ratio": 0.9007658130433296,
+          "absolute_center_verified": false,
+          "assumptions": [
+            "Selected dominant plane is one full physical cube face.",
+            "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+            "A high-support candidate is not an approved calibration pair."
+          ],
+          "coordinate_frames": {
+            "depth": "camera_depth_optical_frame",
+            "color": "camera_color_optical_frame"
+          },
+          "cube_center_color_m": [
+            -0.004377021241117336,
+            0.0026558229446379494,
+            0.1688883305723563
+          ],
+          "face_center_color_m": [
+            -0.006230015141325769,
+            0.00428583747299794,
+            0.15459989223321144
+          ],
+          "outward_normal_color": [
+            -0.1277926827729957,
+            0.11241479505930972,
+            -0.9854095406306798
+          ],
+          "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+          "C_to_D_roundtrip_error_m": 0.0
+        }
+      },
+      "rejected_by_nominal_edge_mm": {},
+      "raw_image_sha256": {
+        "rgb": "55b6b75aebf91b525dd6490f53d35c0c27d57078cfd35cd08407eece77df3eb8",
+        "depth": "224c90a55123a2d31b1663439d5a9cb041d0a12fd9a4b6a71fa015bd55c81369"
+      },
+      "camera_center_verified": false,
+      "local_reference_projections": {
+        "nominal_tip": {
+          "color_m": [
+            0.027348525114496567,
+            0.011287430941308026,
+            0.11514128861064782
+          ],
+          "pixel": [
+            215.4669489384523,
+            130.8763435049469
+          ]
+        },
+        "manual02_candidate": {
+          "color_m": [
+            0.038798642506948436,
+            0.033974801411361166,
+            0.12178906105259418
+          ],
+          "pixel": [
+            235.24517114764842,
+            175.00487596282153
+          ]
+        }
+      },
+      "candidate_center_base_m": [
+        0.3483991526300322,
+        0.02113262412161529,
+        0.01301868498669817
+      ],
+      "candidate_center_tool_m_CURRENT_NOT_a_clamped_reference": [
+        0.00858139746772682,
+        0.02875585529970827,
+        0.1912005403519422
+      ],
+      "same_stamp_original_detector": {
+        "stamp_ns": 1792160743116556600,
+        "source_frame": "camera_depth_optical_frame",
+        "point_depth_m": [
+          0.021708053074195856,
+          0.004400808958993256,
+          0.155
+        ],
+        "point_color_m": [
+          -0.005908710790408101,
+          0.003929698871341568,
+          0.1548337805991219
+        ],
+        "point_base_m": [
+          0.3482479026774744,
+          0.02266143894333183,
+          0.027130348828886625
+        ],
+        "base_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160743,
+              "nanosec": 116556600
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": 0.3650591611412263,
+              "y": 0.044095714779755935,
+              "z": 0.18131711900064515
+            },
+            "rotation": {
+              "x": -0.6616499150455672,
+              "y": 0.7491472249047482,
+              "z": 0.019832728042097816,
+              "w": -0.024586342471309683
+            }
+          }
+        },
+        "color_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160743,
+              "nanosec": 116556600
+            },
+            "frame_id": "camera_color_optical_frame"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": -0.029824850429398753,
+              "y": 0.0002287428112833223,
+              "z": 0.0001407688733962853
+            },
+            "rotation": {
+              "x": 0.0014449612294783927,
+              "y": 0.0069849456394336425,
+              "z": -0.005530618331314129,
+              "w": 0.9999592666115619
+            }
+          }
+        },
+        "base_from_gripper": {
+          "header": {
+            "stamp": {
+              "sec": 1792160743,
+              "nanosec": 116556600
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "gripper_base",
+          "transform": {
+            "translation": {
+              "x": 0.3071094195313801,
+              "y": -0.012451527685663976,
+              "z": 0.19909783189848718
+            },
+            "rotation": {
+              "x": 0.08282806307438094,
+              "y": 0.9894603329308169,
+              "z": 0.01984357019288062,
+              "w": 0.11710676430413282
+            }
+          }
+        },
+        "point_semantics": "Original detector center ray at measured median surface depth; not a calibrated cube geometric center/TCP."
+      },
+      "current_actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ]
+    },
+    {
+      "snapshot": 3,
+      "stamps_ns": {
+        "rgb": "1792160744316438788",
+        "depth": "1792160744299038431",
+        "depth_info": "1792160744299038431",
+        "feedback": "1792160744307819008"
+      },
+      "actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ],
+      "color_pixel_coverage": 0.8295942720763723,
+      "native_selected_points": 6509,
+      "rgb_bbox_xywh": [
+        123,
+        89,
+        51,
+        50
+      ],
+      "depth_surface_median_m": [
+        0.02107014797605696,
+        0.005602871771567282,
+        0.155
+      ],
+      "candidate_by_nominal_edge_mm": {
+        "29": {
+          "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+          "nominal_edge_m": 0.029,
+          "edge_is_not_confirmed_caliper_measurement": true,
+          "face_center_depth_m": [
+            0.02075430616005231,
+            0.005140897958287883,
+            0.15488389263697344
+          ],
+          "cube_center_depth_m": [
+            0.022430238489487782,
+            0.0035978299679073284,
+            0.16920381554194106
+          ],
+          "outward_normal_depth": [
+            -0.11558153996106717,
+            0.10641848209521065,
+            -0.987580889997766
+          ],
+          "face_corners_depth_m": [
+            [
+              0.03433051034616703,
+              -0.009888824638565032,
+              0.15167544775532596
+            ],
+            [
+              0.005569801507241699,
+              -0.008637538854927709,
+              0.15517629207780437
+            ],
+            [
+              0.007178101973937586,
+              0.020170620555140798,
+              0.15809233751862092
+            ],
+            [
+              0.03593881081286292,
+              0.018919334771503475,
+              0.15459149319614252
+            ]
+          ],
+          "plane_origin_depth_m": [
+            0.02121082130092252,
+            0.005628072155628184,
+            0.15488296067847795
+          ],
+          "measured_rectangle_center_depth_m": [
+            0.020498689208806823,
+            0.00505902036122015,
+            0.15490498590789284
+          ],
+          "measured_face_sides_m": [
+            0.028944706544280052,
+            0.029266852885484695
+          ],
+          "plane_inliers": 6485,
+          "plane_inlier_fraction": 0.9963127976647719,
+          "plane_threshold_m": 0.002,
+          "plane_rms_m": 0.000360982482193408,
+          "plane_p95_m": 0.0006685727290000053,
+          "square_boundary_rms_m": 0.0008044835026578262,
+          "face_hull_fill_ratio": 0.9186925106474666,
+          "absolute_center_verified": false,
+          "assumptions": [
+            "Selected dominant plane is one full physical cube face.",
+            "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+            "A high-support candidate is not an approved calibration pair."
+          ],
+          "coordinate_frames": {
+            "depth": "camera_depth_optical_frame",
+            "color": "camera_color_optical_frame"
+          },
+          "cube_center_color_m": [
+            -0.004997348406989403,
+            0.0030766552614851644,
+            0.16902379412724966
+          ],
+          "face_center_color_m": [
+            -0.006855726746726042,
+            0.004680613819796494,
+            0.15473310657114359
+          ],
+          "outward_normal_color": [
+            -0.12816402343011324,
+            0.1106178316076779,
+            -0.9855646590418004
+          ],
+          "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+          "C_to_D_roundtrip_error_m": 0.0
+        }
+      },
+      "rejected_by_nominal_edge_mm": {},
+      "raw_image_sha256": {
+        "rgb": "c7a7a7a7cf632034b61448ed18fe85f9b48a5e0149d5fd708997fe370fecfcf0",
+        "depth": "de838e9d010a57f83559ca88218e411a07a6773f76c9e70e838fc45c74ff8362"
+      },
+      "camera_center_verified": false,
+      "local_reference_projections": {
+        "nominal_tip": {
+          "color_m": [
+            0.027348525114496567,
+            0.011287430941308026,
+            0.11514128861064782
+          ],
+          "pixel": [
+            215.4669489384523,
+            130.8763435049469
+          ]
+        },
+        "manual02_candidate": {
+          "color_m": [
+            0.038798642506948436,
+            0.033974801411361166,
+            0.12178906105259418
+          ],
+          "pixel": [
+            235.24517114764842,
+            175.00487596282153
+          ]
+        }
+      },
+      "candidate_center_base_m": [
+        0.348058146970749,
+        0.021805457508382885,
+        0.012912541780067233
+      ],
+      "candidate_center_tool_m_CURRENT_NOT_a_clamped_reference": [
+        0.009046031653631208,
+        0.0293583902091059,
+        0.19123691015497118
+      ],
+      "same_stamp_original_detector": {
+        "stamp_ns": 1792160744316438788,
+        "source_frame": "camera_depth_optical_frame",
+        "point_depth_m": [
+          0.021624439187627652,
+          0.004375105643818137,
+          0.155
+        ],
+        "point_color_m": [
+          -0.00599259622062023,
+          0.003904920383400179,
+          0.1548348776731835
+        ],
+        "point_base_m": [
+          0.34828366222251933,
+          0.022741232541989963,
+          0.027127863071577968
+        ],
+        "base_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160744,
+              "nanosec": 316438788
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": 0.3650591611412263,
+              "y": 0.044095714779755935,
+              "z": 0.18131711900064515
+            },
+            "rotation": {
+              "x": -0.6616499150455672,
+              "y": 0.7491472249047482,
+              "z": 0.019832728042097816,
+              "w": -0.024586342471309683
+            }
+          }
+        },
+        "color_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160744,
+              "nanosec": 316438788
+            },
+            "frame_id": "camera_color_optical_frame"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": -0.029824850429398753,
+              "y": 0.0002287428112833223,
+              "z": 0.0001407688733962853
+            },
+            "rotation": {
+              "x": 0.0014449612294783927,
+              "y": 0.0069849456394336425,
+              "z": -0.005530618331314129,
+              "w": 0.9999592666115619
+            }
+          }
+        },
+        "base_from_gripper": {
+          "header": {
+            "stamp": {
+              "sec": 1792160744,
+              "nanosec": 316438788
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "gripper_base",
+          "transform": {
+            "translation": {
+              "x": 0.3071094195313801,
+              "y": -0.012451527685663976,
+              "z": 0.19909783189848718
+            },
+            "rotation": {
+              "x": 0.08282806307438094,
+              "y": 0.9894603329308169,
+              "z": 0.01984357019288062,
+              "w": 0.11710676430413282
+            }
+          }
+        },
+        "point_semantics": "Original detector center ray at measured median surface depth; not a calibrated cube geometric center/TCP."
+      },
+      "current_actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ]
+    },
+    {
+      "snapshot": 4,
+      "stamps_ns": {
+        "rgb": "1792160744916432258",
+        "depth": "1792160744898415334",
+        "depth_info": "1792160744898415334",
+        "feedback": "1792160744907919616"
+      },
+      "actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ],
+      "color_pixel_coverage": 0.8432692307692308,
+      "native_selected_points": 6584,
+      "rgb_bbox_xywh": [
+        123,
+        89,
+        51,
+        50
+      ],
+      "depth_surface_median_m": [
+        0.02088169811752128,
+        0.005241686925640403,
+        0.155
+      ],
+      "candidate_by_nominal_edge_mm": {
+        "29": {
+          "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+          "nominal_edge_m": 0.029,
+          "edge_is_not_confirmed_caliper_measurement": true,
+          "face_center_depth_m": [
+            0.020991368499384225,
+            0.004957852063155596,
+            0.1548223236215487
+          ],
+          "cube_center_depth_m": [
+            0.022620657143421673,
+            0.0033663841120363572,
+            0.1691423322903649
+          ],
+          "outward_normal_depth": [
+            -0.11236473407154825,
+            0.10975641042201645,
+            -0.9875868047459444
+          ],
+          "face_corners_depth_m": [
+            [
+              0.034803827100759965,
+              -0.009853064612029375,
+              0.15160475705253895
+            ],
+            [
+              0.0060111540678714735,
+              -0.009044690804546994,
+              0.15497054245992203
+            ],
+            [
+              0.007178909898008486,
+              0.01976876873834057,
+              0.1580398901905585
+            ],
+            [
+              0.03597158293089697,
+              0.018960394930858188,
+              0.1546741047831754
+            ]
+          ],
+          "plane_origin_depth_m": [
+            0.021007276946424052,
+            0.0053503454779061255,
+            0.15486413373859134
+          ],
+          "measured_rectangle_center_depth_m": [
+            0.020664457799018307,
+            0.00483877676695237,
+            0.15484628501584524
+          ],
+          "measured_face_sides_m": [
+            0.02874884195625782,
+            0.02933274768292904
+          ],
+          "plane_inliers": 6580,
+          "plane_inlier_fraction": 0.9993924665856622,
+          "plane_threshold_m": 0.002,
+          "plane_rms_m": 0.0003380815591544313,
+          "plane_p95_m": 0.0006263536320282881,
+          "square_boundary_rms_m": 0.0005467374834752482,
+          "face_hull_fill_ratio": 0.9260336740103646,
+          "absolute_center_verified": false,
+          "assumptions": [
+            "Selected dominant plane is one full physical cube face.",
+            "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+            "A high-support candidate is not an approved calibration pair."
+          ],
+          "coordinate_frames": {
+            "depth": "camera_depth_optical_frame",
+            "color": "camera_color_optical_frame"
+          },
+          "cube_center_color_m": [
+            -0.0048103825188244645,
+            0.002843304627709509,
+            0.1689590031173219
+          ],
+          "face_center_color_m": [
+            -0.006621589454959463,
+            0.004495145262258662,
+            0.15466771360696638
+          ],
+          "outward_normal_color": [
+            -0.12491082318172413,
+            0.11392004376201051,
+            -0.9856061731279661
+          ],
+          "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+          "C_to_D_roundtrip_error_m": 2.7758963540648015e-17
+        }
+      },
+      "rejected_by_nominal_edge_mm": {},
+      "raw_image_sha256": {
+        "rgb": "aeb1073cf632f6d49c4f31707f77db72e36c9c92988ba68a1cf4ca18bd2323ab",
+        "depth": "6f72d513f56303bf20dd67d61674176ec8e170db2cebdc894dd3941e8c4c7825"
+      },
+      "camera_center_verified": false,
+      "local_reference_projections": {
+        "nominal_tip": {
+          "color_m": [
+            0.027348525114496567,
+            0.011287430941308026,
+            0.11514128861064782
+          ],
+          "pixel": [
+            215.4669489384523,
+            130.8763435049469
+          ]
+        },
+        "manual02_candidate": {
+          "color_m": [
+            0.038798642506948436,
+            0.033974801411361166,
+            0.12178906105259418
+          ],
+          "pixel": [
+            235.24517114764842,
+            175.00487596282153
+          ]
+        }
+      },
+      "candidate_center_base_m": [
+        0.3482677775114298,
+        0.021588055561168155,
+        0.012961511835707373
+      ],
+      "candidate_center_tool_m_CURRENT_NOT_a_clamped_reference": [
+        0.008797194808522486,
+        0.02918040172139705,
+        0.19123427209740518
+      ],
+      "same_stamp_original_detector": {
+        "stamp_ns": 1792160744916432258,
+        "source_frame": "camera_depth_optical_frame",
+        "point_depth_m": [
+          0.021703527762215936,
+          0.004337834481245609,
+          0.155
+        ],
+        "point_color_m": [
+          -0.005913933202402716,
+          0.003866778471218293,
+          0.15483366676858973
+        ],
+        "point_base_m": [
+          0.3483108284377944,
+          0.022658142581489578,
+          0.027126380708064057
+        ],
+        "base_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160744,
+              "nanosec": 916432258
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": 0.3650591611412263,
+              "y": 0.044095714779755935,
+              "z": 0.18131711900064515
+            },
+            "rotation": {
+              "x": -0.6616499150455672,
+              "y": 0.7491472249047482,
+              "z": 0.019832728042097816,
+              "w": -0.024586342471309683
+            }
+          }
+        },
+        "color_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160744,
+              "nanosec": 916432258
+            },
+            "frame_id": "camera_color_optical_frame"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": -0.029824850429398753,
+              "y": 0.0002287428112833223,
+              "z": 0.0001407688733962853
+            },
+            "rotation": {
+              "x": 0.0014449612294783927,
+              "y": 0.0069849456394336425,
+              "z": -0.005530618331314129,
+              "w": 0.9999592666115619
+            }
+          }
+        },
+        "base_from_gripper": {
+          "header": {
+            "stamp": {
+              "sec": 1792160744,
+              "nanosec": 916432258
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "gripper_base",
+          "transform": {
+            "translation": {
+              "x": 0.3071094195313801,
+              "y": -0.012451527685663976,
+              "z": 0.19909783189848718
+            },
+            "rotation": {
+              "x": 0.08282806307438094,
+              "y": 0.9894603329308169,
+              "z": 0.01984357019288062,
+              "w": 0.11710676430413282
+            }
+          }
+        },
+        "point_semantics": "Original detector center ray at measured median surface depth; not a calibrated cube geometric center/TCP."
+      },
+      "current_actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ]
+    },
+    {
+      "snapshot": 5,
+      "stamps_ns": {
+        "rgb": "1792160745716478670",
+        "depth": "1792160745695660869",
+        "depth_info": "1792160745695660869",
+        "feedback": "1792160745697828608"
+      },
+      "actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ],
+      "color_pixel_coverage": 0.840843720038351,
+      "native_selected_points": 6537,
+      "rgb_bbox_xywh": [
+        123,
+        89,
+        51,
+        50
+      ],
+      "depth_surface_median_m": [
+        0.02088169811752128,
+        0.005241686925640403,
+        0.155
+      ],
+      "candidate_by_nominal_edge_mm": {
+        "29": {
+          "method": "measured dominant plane + nominal square hull fit + inward half-edge normal",
+          "nominal_edge_m": 0.029,
+          "edge_is_not_confirmed_caliper_measurement": true,
+          "face_center_depth_m": [
+            0.0207814260654532,
+            0.004782000993022526,
+            0.1547788042956342
+          ],
+          "cube_center_depth_m": [
+            0.02245952205377446,
+            0.003201743766605294,
+            0.1690944174837703
+          ],
+          "outward_normal_depth": [
+            -0.11573075781525936,
+            0.1089832569942919,
+            -0.9872836681473174
+          ],
+          "face_corners_depth_m": [
+            [
+              0.03439040105339343,
+              -0.010209088183410164,
+              0.15152872043796833
+            ],
+            [
+              0.005626763829508191,
+              -0.009030052420607,
+              0.15503058398795933
+            ],
+            [
+              0.007172451077512973,
+              0.019773090169455214,
+              0.15802888815330007
+            ],
+            [
+              0.03593608830139821,
+              0.018594054406652055,
+              0.15452702460330908
+            ]
+          ],
+          "plane_origin_depth_m": [
+            0.021039590538021687,
+            0.005199891488834748,
+            0.15479467156636365
+          ],
+          "measured_rectangle_center_depth_m": [
+            0.020507510465857078,
+            0.004762241871026263,
+            0.1548087319115783
+          ],
+          "measured_face_sides_m": [
+            0.028848418965935707,
+            0.028920086100697517
+          ],
+          "plane_inliers": 6531,
+          "plane_inlier_fraction": 0.9990821477742083,
+          "plane_threshold_m": 0.002,
+          "plane_rms_m": 0.000349170732741029,
+          "plane_p95_m": 0.0006395544737655395,
+          "square_boundary_rms_m": 0.0005348269761513539,
+          "face_hull_fill_ratio": 0.9493033627025215,
+          "absolute_center_verified": false,
+          "assumptions": [
+            "Selected dominant plane is one full physical cube face.",
+            "Nominal edge is approximate; depth registration and boundary selection can be systematically biased.",
+            "A high-support candidate is not an approved calibration pair."
+          ],
+          "coordinate_frames": {
+            "depth": "camera_depth_optical_frame",
+            "color": "camera_color_optical_frame"
+          },
+          "cube_center_color_m": [
+            -0.0049739849781579235,
+            0.002680596241996303,
+            0.16891288365091034
+          ],
+          "face_center_color_m": [
+            -0.006834054405604712,
+            0.004321752705553416,
+            0.15462664022888373
+          ],
+          "outward_normal_color": [
+            -0.12828065016874424,
+            0.11318320438324922,
+            -0.9852581670363185
+          ],
+          "D_to_C_equation": "p_C = R_DC * p_D + t_DC; factory transform, not robot mounting TF",
+          "C_to_D_roundtrip_error_m": 4.336808689942018e-19
+        }
+      },
+      "rejected_by_nominal_edge_mm": {},
+      "raw_image_sha256": {
+        "rgb": "69752b56b23cd73e86110c5bda2e7da56028e05ae1864cced3e0a9846db51414",
+        "depth": "6d4dd6c8922191f875745abf305d9497400d159977ff6cecfacf064fa9d498a7"
+      },
+      "camera_center_verified": false,
+      "local_reference_projections": {
+        "nominal_tip": {
+          "color_m": [
+            0.027348525114496567,
+            0.011287430941308026,
+            0.11514128861064782
+          ],
+          "pixel": [
+            215.4669489384523,
+            130.8763435049469
+          ]
+        },
+        "manual02_candidate": {
+          "color_m": [
+            0.038798642506948436,
+            0.033974801411361166,
+            0.12178906105259418
+          ],
+          "pixel": [
+            235.24517114764842,
+            175.00487596282153
+          ]
+        }
+      },
+      "candidate_center_base_m": [
+        0.3484537117754646,
+        0.021727730386233116,
+        0.01299737520649627
+      ],
+      "candidate_center_tool_m_CURRENT_NOT_a_clamped_reference": [
+        0.008634261561597148,
+        0.02934976647780806,
+        0.19124589642515555
+      ],
+      "same_stamp_original_detector": {
+        "stamp_ns": 1792160745716478670,
+        "source_frame": "camera_depth_optical_frame",
+        "point_depth_m": [
+          0.021699629000677876,
+          0.004291465830099512,
+          0.155
+        ],
+        "point_color_m": [
+          -0.005918345154722667,
+          0.0038204558949912976,
+          0.15483359088015317
+        ],
+        "point_base_m": [
+          0.3483572310565572,
+          0.02265627782552052,
+          0.027123452943085685
+        ],
+        "base_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160745,
+              "nanosec": 716478670
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": 0.3650591611412263,
+              "y": 0.044095714779755935,
+              "z": 0.18131711900064515
+            },
+            "rotation": {
+              "x": -0.6616499150455672,
+              "y": 0.7491472249047482,
+              "z": 0.019832728042097816,
+              "w": -0.024586342471309683
+            }
+          }
+        },
+        "color_from_depth": {
+          "header": {
+            "stamp": {
+              "sec": 1792160745,
+              "nanosec": 716478670
+            },
+            "frame_id": "camera_color_optical_frame"
+          },
+          "child_frame_id": "camera_depth_optical_frame",
+          "transform": {
+            "translation": {
+              "x": -0.02982485042939878,
+              "y": 0.0002287428112833778,
+              "z": 0.00014076887339625754
+            },
+            "rotation": {
+              "x": 0.0014449612294783927,
+              "y": 0.0069849456394336425,
+              "z": -0.005530618331314129,
+              "w": 0.9999592666115619
+            }
+          }
+        },
+        "base_from_gripper": {
+          "header": {
+            "stamp": {
+              "sec": 1792160745,
+              "nanosec": 716478670
+            },
+            "frame_id": "base_link"
+          },
+          "child_frame_id": "gripper_base",
+          "transform": {
+            "translation": {
+              "x": 0.3071094195313801,
+              "y": -0.012451527685663948,
+              "z": 0.19909783189848712
+            },
+            "rotation": {
+              "x": 0.08282806307438094,
+              "y": 0.9894603329308169,
+              "z": 0.01984357019288062,
+              "w": 0.11710676430413282
+            }
+          }
+        },
+        "point_semantics": "Original detector center ray at measured median surface depth; not a calibrated cube geometric center/TCP."
+      },
+      "current_actual_q_rad": [
+        -0.049872396000000006,
+        1.6527841120000002,
+        -1.009274952,
+        0.044953188000000005,
+        0.7789443760000001,
+        0.088894624
+      ]
+    }
+  ],
+  "measured_face_center_candidates": 5,
+  "center_base_median_m": [
+    0.3482677775114298,
+    0.021727730386233116,
+    0.012961511835707373
+  ],
+  "limits": [
+    "A face-fit center is inferred from nominal29mm geometry, not directly measured interior.",
+    "A current cube location is not a new clamped local reference.",
+    "Historical local references remain unverified, no motion target exported."
+  ]
+}
