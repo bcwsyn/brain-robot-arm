@@ -1,0 +1,173 @@
+{
+  "baseline": "bdfc3cc",
+  "verified_epoch": 1792160377.9268787,
+  "deployed_not_physically_tested": true,
+  "physical_grasp_succeeded": false,
+  "this_turn_hardware_CAN_camera_or_motion_commands": false,
+  "git_publication": "local only; existing main divergence/history review unchanged",
+  "synchronized_sources": [
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp",
+      "sha256": "ba8819c456b29b57976181299c02ac7108f237eed51565c0aeb3a7d31adaec0d"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/CMakeLists.txt",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/CMakeLists.txt",
+      "sha256": "ea8d2e20f257f28436a1ec4ec11628b7fa6169a97890e2d892cb0bf1e954a91e"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/include/brain_robot_pick_place/target_directed_grasp.hpp",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/include/brain_robot_pick_place/target_directed_grasp.hpp",
+      "sha256": "919c8ffd5b06a5ade7d306e543c7d0c2632c761c4729c1551783210d6d7f9408"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/include/brain_robot_pick_place/gentle_gripper.hpp",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/include/brain_robot_pick_place/gentle_gripper.hpp",
+      "sha256": "9ccf3e5d8072c1931d87f319b5564c4b1ff041f70721fe2fd75fafea4290a01b"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/prepare_p4_center_target.py",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/prepare_p4_center_target.py",
+      "sha256": "b59b45f8e4ce633c2e59b6b56d10a389d2c0fe3c4459d565ccf936d03711e9ab"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp",
+      "sha256": "8a33d8c254b392b7a641722c1e8a08de447e250f472cb25a1a94017e673957a3"
+    },
+    {
+      "canonical": "brain_robot_arm/piper_ws/src/brain_robot_ball_pick/launch/cube_visual_search.launch.py",
+      "active": "/home/johnwick/piper_ws/src/brain_robot_ball_pick/launch/cube_visual_search.launch.py",
+      "sha256": "81d2be2490ccdcda952bcc7abf18f322b81eb1025f94616ceb2f2117f09a6a2d"
+    },
+    {
+      "canonical": "brain_robot_arm/scripts/start_brain_robot_cube_real.sh",
+      "active": "/home/johnwick/start_brain_robot_cube_real.sh",
+      "sha256": "7ea1e096bec0eaf86fd306b052722d96efc49e56cd8813e6847078907401389a"
+    },
+    {
+      "canonical": "brain_robot_arm/vendor/piper_ros/src/piper/piper/piper_ctrl_single_node.py",
+      "active": "/home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py",
+      "sha256": "3a79681fd372e04bfc2b16eac14595c318abfaa89af1ac35d98243eb1192e45a"
+    }
+  ],
+  "protected_files_unchanged": {
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "524f7c0ec64deba485c572c75739bdec936ee79304041c3dc3910f07835c52b9",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "additional_unchanged": {
+    "/home/johnwick/ros2_ws/src/astra_camera/src/ob_camera_node.cpp": "e916a45172dd6fc413a9652b61a438fe20049eda73ea5fbfd26865f5a080969b",
+    "/home/johnwick/ros2_ws/install/astra_camera/lib/libastra_camera.so": "7dfeab6f3d61e27355abb5fdeebcde4d84f59c463ac54d23201deab8ac384911"
+  },
+  "executor_binary_sha256": "eadc13348f060facf13f40e96b1f0022e33868756160263c1dd6e751c9d47f81",
+  "source_install_links": {
+    "/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/grasp_lift_executor": "/home/johnwick/piper_ws/build/brain_robot_pick_place/grasp_lift_executor",
+    "/home/johnwick/piper_ros/install/piper/lib/python3.10/site-packages/piper/piper_ctrl_single_node.py": "/home/johnwick/piper_ros/install/piper/lib/python3.10/site-packages/piper/piper_ctrl_single_node.py"
+  },
+  "tests": {
+    "final_focused_pytest.xml": {
+      "tests": 45,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "regression_pytest.xml": {
+      "tests": 136,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "canonical_geometry.xml": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "installed_center_gentle.xml": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "isolated_integrations": {
+    "empty": {
+      "passed": true,
+      "states": [
+        "P4_WAITING_FOR_EXPLICIT_EXECUTE",
+        "P4_READY_FOR_EXPLICIT_EXECUTE",
+        "P4_FROZEN_TARGET_PLANNING",
+        "P4_OPENING_GRIPPER",
+        "P4_PREGRASP_EXECUTING",
+        "P4_DESCENT_EXECUTING",
+        "CLOSING_GRIPPER",
+        "FAULT_P4_GENTLE_CLOSE_NO_CONFIRMED_CONTACT"
+      ],
+      "arm_trajectories": 2,
+      "gripper_commands": 744,
+      "last_opening_m": 0.025,
+      "joint_commands": 0,
+      "physical_grasp_succeeded": false
+    },
+    "object": {
+      "passed": true,
+      "states": [
+        "P4_READY_FOR_EXPLICIT_EXECUTE",
+        "P4_FROZEN_TARGET_PLANNING",
+        "P4_OPENING_GRIPPER",
+        "P4_PREGRASP_EXECUTING",
+        "P4_DESCENT_EXECUTING",
+        "CLOSING_GRIPPER",
+        "LIFTING",
+        "HOLDING"
+      ],
+      "arm_trajectories": 3,
+      "gripper_commands": 552,
+      "last_opening_m": 0.037,
+      "joint_commands": 0,
+      "physical_grasp_succeeded": false
+    }
+  },
+  "preview": {
+    "domain": 78,
+    "synthetic_telemetry_only": true,
+    "hardware_execution": false,
+    "source_q_snapshot": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071502956,
+      1.212288224,
+      0.088824848
+    ],
+    "commands": {
+      "arm": 0,
+      "gripper": 0,
+      "joint_commands": 0,
+      "emergency_stop": 1
+    },
+    "states": [
+      "P4_WAITING_FOR_EXPLICIT_EXECUTE",
+      "P4_READY_FOR_EXPLICIT_EXECUTE",
+      "P4_FROZEN_TARGET_PLANNING",
+      "P4_PLAN_READY_NO_EXECUTION",
+      "FAULT_ESTOP"
+    ],
+    "legacy_state_matched_subscribers": 1,
+    "service_reply": "P4 sequence started from the explicitly frozen board/RGB target.",
+    "planning_commands_before_test_estop": {
+      "arm": 0,
+      "gripper": 0,
+      "joint_commands": 0,
+      "emergency_stop": 0
+    },
+    "test_injected_estop_messages": 1,
+    "execute_after_estop_rejected": true,
+    "passed": true
+  },
+  "remaining_geometry_issue": "Old manual reference candidate projects outside visible clamped cube under current X; no validated current center/reference target for hardware yet.",
+  "all_owned_test_parents_exited": true
+}

@@ -1,0 +1,148 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/.ros/log/2026-10-16-22-16-33-883436-johnwick-virtual-machine-24259
+[INFO] [launch]: Default logging verbosity is set to INFO
+warning: Using load_yaml() directly is deprecated. Use xacro.load_yaml() instead.
+warning: Using load_yaml() directly is deprecated. Use xacro.load_yaml() instead.
+warning: Using load_yaml() directly is deprecated. Use xacro.load_yaml() instead.
+[INFO] [robot_state_publisher-1]: process started with pid [24269]
+[INFO] [move_group-2]: process started with pid [24271]
+[INFO] [grasp_lift_executor-3]: process started with pid [24273]
+[robot_state_publisher-1] [INFO] [1792160194.624944309] [robot_state_publisher]: got segment base_link
+[robot_state_publisher-1] [INFO] [1792160194.625086144] [robot_state_publisher]: got segment gripper_base
+[robot_state_publisher-1] [INFO] [1792160194.625098667] [robot_state_publisher]: got segment link1
+[robot_state_publisher-1] [INFO] [1792160194.625106812] [robot_state_publisher]: got segment link2
+[robot_state_publisher-1] [INFO] [1792160194.625114276] [robot_state_publisher]: got segment link3
+[robot_state_publisher-1] [INFO] [1792160194.625121497] [robot_state_publisher]: got segment link4
+[robot_state_publisher-1] [INFO] [1792160194.625128772] [robot_state_publisher]: got segment link5
+[robot_state_publisher-1] [INFO] [1792160194.625135942] [robot_state_publisher]: got segment link6
+[robot_state_publisher-1] [INFO] [1792160194.625143017] [robot_state_publisher]: got segment link7
+[robot_state_publisher-1] [INFO] [1792160194.625150222] [robot_state_publisher]: got segment link8
+[robot_state_publisher-1] [INFO] [1792160194.625157315] [robot_state_publisher]: got segment world
+[move_group-2] [INFO] [1792160194.661722314] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.0020227 seconds
+[move_group-2] [INFO] [1792160194.661817489] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[move_group-2] [INFO] [1792160194.661827518] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[grasp_lift_executor-3] [INFO] [1792160194.705390974] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00306986 seconds
+[grasp_lift_executor-3] [INFO] [1792160194.705504260] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[grasp_lift_executor-3] [INFO] [1792160194.705513532] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[move_group-2] [INFO] [1792160195.618450250] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-2] [INFO] [1792160195.618930798] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-2] [INFO] [1792160195.619791084] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-2] [INFO] [1792160195.620068352] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[move_group-2] [INFO] [1792160195.620082618] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-2] [INFO] [1792160195.620220221] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[move_group-2] [INFO] [1792160195.620229092] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-2] [INFO] [1792160195.620446766] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-2] [INFO] [1792160195.620659526] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[move_group-2] [WARN] [1792160195.621113681] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-2] [INFO] [1792160197.130831763] [moveit.ros.perception.pointcloud_octomap_updater]: Listening to '/brain_robot_vision/disabled_octomap_points' using message filter with target frame 'world '
+[move_group-2] [INFO] [1792160197.130879975] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'chomp'
+[move_group-2] [INFO] [1792160197.134390950] [moveit.ros_planning.planning_pipeline]: Using planning interface 'CHOMP'
+[move_group-2] [INFO] [1792160197.136806832] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.path_tolerance' was not set. Using default value: 0.100000
+[move_group-2] [INFO] [1792160197.136845511] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.resample_dt' was not set. Using default value: 0.100000
+[move_group-2] [INFO] [1792160197.136852547] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.min_angle_change' was not set. Using default value: 0.001000
+[move_group-2] [INFO] [1792160197.136874274] [moveit_ros.fix_workspace_bounds]: Param 'chomp.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-2] [INFO] [1792160197.136889221] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_bounds_error' was set to 0.100000
+[move_group-2] [INFO] [1792160197.136897101] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-2] [INFO] [1792160197.136909199] [moveit_ros.fix_start_state_collision]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-2] [INFO] [1792160197.136916446] [moveit_ros.fix_start_state_collision]: Param 'chomp.jiggle_fraction' was set to 0.050000
+[move_group-2] [INFO] [1792160197.136923213] [moveit_ros.fix_start_state_collision]: Param 'chomp.max_sampling_attempts' was not set. Using default value: 100
+[move_group-2] [INFO] [1792160197.136935578] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-2] [INFO] [1792160197.136941404] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-2] [INFO] [1792160197.136946630] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-2] [INFO] [1792160197.136951693] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-2] [INFO] [1792160197.136956788] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-2] [INFO] [1792160197.136961791] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-2] [INFO] [1792160197.139245257] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'pilz_industrial_motion_planner'
+[move_group-2] [INFO] [1792160197.141433244] [moveit.pilz_industrial_motion_planner.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-2] [INFO] [1792160197.145485840] [moveit.pilz_industrial_motion_planner]: Available plugins: pilz_industrial_motion_planner/PlanningContextLoaderCIRC pilz_industrial_motion_planner/PlanningContextLoaderLIN pilz_industrial_motion_planner/PlanningContextLoaderPTP 
+[move_group-2] [INFO] [1792160197.145517943] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderCIRC
+[move_group-2] [INFO] [1792160197.146890660] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [CIRC]
+[move_group-2] [INFO] [1792160197.146925408] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderLIN
+[move_group-2] [INFO] [1792160197.147656971] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [LIN]
+[move_group-2] [INFO] [1792160197.147689014] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderPTP
+[move_group-2] [INFO] [1792160197.148388579] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [PTP]
+[move_group-2] [INFO] [1792160197.148425931] [moveit.ros_planning.planning_pipeline]: Using planning interface 'Pilz Industrial Motion Planner'
+[move_group-2] [INFO] [1792160197.148897103] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-2] [INFO] [1792160197.159532203] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-2] [INFO] [1792160197.160838409] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.path_tolerance' was not set. Using default value: 0.100000
+[move_group-2] [INFO] [1792160197.160911189] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.resample_dt' was not set. Using default value: 0.100000
+[move_group-2] [INFO] [1792160197.160919133] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.min_angle_change' was not set. Using default value: 0.001000
+[move_group-2] [INFO] [1792160197.160941473] [moveit_ros.fix_workspace_bounds]: Param 'ompl.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-2] [INFO] [1792160197.160956407] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_bounds_error' was set to 0.100000
+[move_group-2] [INFO] [1792160197.160963337] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-2] [INFO] [1792160197.160990384] [moveit_ros.fix_start_state_collision]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-2] [INFO] [1792160197.160998919] [moveit_ros.fix_start_state_collision]: Param 'ompl.jiggle_fraction' was set to 0.050000
+[move_group-2] [INFO] [1792160197.161004951] [moveit_ros.fix_start_state_collision]: Param 'ompl.max_sampling_attempts' was not set. Using default value: 100
+[move_group-2] [INFO] [1792160197.161018938] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-2] [INFO] [1792160197.161050298] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-2] [INFO] [1792160197.161071338] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-2] [INFO] [1792160197.161077199] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-2] [INFO] [1792160197.161082203] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-2] [INFO] [1792160197.161087293] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-2] [INFO] [1792160197.192595626] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for arm_controller
+[move_group-2] [INFO] [1792160197.194235568] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for gripper_controller
+[move_group-2] [INFO] [1792160197.194739844] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-2] [INFO] [1792160197.195755848] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-2] [INFO] [1792160197.196614879] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-2] [INFO] [1792160197.196635302] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-2] [INFO] [1792160197.208769784] [move_group.move_group]: 
+[move_group-2] 
+[move_group-2] ********************************************************
+[move_group-2] * MoveGroup using: 
+[move_group-2] *     - ApplyPlanningSceneService
+[move_group-2] *     - ClearOctomapService
+[move_group-2] *     - CartesianPathService
+[move_group-2] *     - ExecuteTrajectoryAction
+[move_group-2] *     - GetPlanningSceneService
+[move_group-2] *     - KinematicsService
+[move_group-2] *     - MoveAction
+[move_group-2] *     - MotionPlanService
+[move_group-2] *     - QueryPlannersService
+[move_group-2] *     - StateValidationService
+[move_group-2] ********************************************************
+[move_group-2] 
+[move_group-2] [INFO] [1792160197.208907142] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-2] [INFO] [1792160197.208961624] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-2] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-2] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-2] [0m[92m
+[move_group-2] You can start planning now!
+[move_group-2] 
+[grasp_lift_executor-3] [INFO] [1792160197.215381143] [move_group_interface]: Ready to take commands for planning group arm.
+[grasp_lift_executor-3] [INFO] [1792160198.242700736] [grasp_lift_executor]: P4_FROZEN_BOARD_RGB target_kind=cube_center point=(0.350898497,0.048164544,0.006168084) edge=0.029000 plan_only=0 source=existing_measured_face_square_fit_inward_half_edge; STATIC_SNAPSHOT NOMINAL_HEIGHT_AND_TCP_NOT_EXTERNAL_METROLOGY
+[grasp_lift_executor-3] [INFO] [1792160198.246381735] [grasp_lift_executor]: Publishing real gripper open command 0.100000 m to 1 subscriber(s).
+[grasp_lift_executor-3] [INFO] [1792160200.248281637] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-2] [INFO] [1792160200.265872521] [moveit_move_group_default_capabilities.cartersian_path_service_capability]: Received request to compute Cartesian path
+[move_group-2] [INFO] [1792160200.268318258] [moveit_move_group_default_capabilities.cartersian_path_service_capability]: Attempting to follow 83 waypoints for link 'link6' using a step of 0.005000 m and jump threshold 0.000000 (in global reference frame)
+[move_group-2] [INFO] [1792160200.300886098] [moveit_move_group_default_capabilities.cartersian_path_service_capability]: Computed Cartesian path with 84 points (followed 100.000000% of requested trajectory)
+[grasp_lift_executor-3] [INFO] [1792160200.304094685] [grasp_lift_executor]: P4_PREGRASP Cartesian maximum adjacent joint step is 0.084975 rad.
+[grasp_lift_executor-3] [INFO] [1792160200.304148006] [grasp_lift_executor]: P4_PREGRASP Cartesian path has 22 trajectory points.
+[move_group-2] [INFO] [1792160200.304320508] [moveit_move_group_default_capabilities.cartersian_path_service_capability]: Received request to compute Cartesian path
+[move_group-2] [INFO] [1792160200.304398415] [moveit_move_group_default_capabilities.cartersian_path_service_capability]: Attempting to follow 5 waypoints for link 'link6' using a step of 0.005000 m and jump threshold 0.000000 (in global reference frame)
+[move_group-2] [INFO] [1792160200.304873442] [moveit_move_group_default_capabilities.cartersian_path_service_capability]: Computed Cartesian path with 6 points (followed 100.000000% of requested trajectory)
+[grasp_lift_executor-3] [INFO] [1792160200.305685791] [grasp_lift_executor]: P4_DESCENT Cartesian maximum adjacent joint step is 0.024492 rad.
+[grasp_lift_executor-3] [INFO] [1792160200.305757273] [grasp_lift_executor]: P4_DESCENT Cartesian path has 7 trajectory points.
+[grasp_lift_executor-3] [INFO] [1792160200.305899996] [grasp_lift_executor]: Real arm trajectory endpoint: duration_s=2.05948 joint1=0.114296 joint2=1.81981 joint3=-1.0934 joint4=0.08635 joint5=0.700605 joint6=0.187381.
+[grasp_lift_executor-3] [INFO] [1792160202.379964702] [grasp_lift_executor]: Real arm trajectory endpoint: duration_s=0.554956 joint1=0.118376 joint2=1.88242 joint3=-1.07899 joint4=0.0937356 joint5=0.623611 joint6=0.181267.
+[grasp_lift_executor-3] [INFO] [1792160202.944348715] [grasp_lift_executor]: GRASP_LANDING frame=base_link expected_tip=(0.3509,0.0482,0.0062) actual_tip=(0.3509,0.0482,0.0062) distance=0.0000 axial=0.0000 lateral=0.0000 angle=0.0000 attempt=0.
+[grasp_lift_executor-3] [ERROR] [1792160218.048927131] [grasp_lift_executor]: Grasp sequence stopped: P4_GENTLE_CLOSE_NO_CONFIRMED_CONTACT.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[grasp_lift_executor-3] [INFO] [1792160218.198427376] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[move_group-2] [INFO] [1792160218.198539896] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [grasp_lift_executor-3]: sending signal 'SIGINT' to process[grasp_lift_executor-3]
+[INFO] [move_group-2]: sending signal 'SIGINT' to process[move_group-2]
+[INFO] [robot_state_publisher-1]: sending signal 'SIGINT' to process[robot_state_publisher-1]
+[robot_state_publisher-1] [INFO] [1792160218.198599853] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[grasp_lift_executor-3] [INFO] [1792160218.205253174] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-1] [INFO] [1792160218.205833188] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [move_group-2]: process has died [pid 24271, exit code -2, cmd '/opt/ros/humble/lib/moveit_ros_move_group/move_group --ros-args --params-file /tmp/launch_params_vnd0wzlu --params-file /tmp/launch_params_fw9nogi7'].
+[move_group-2] [0m
+[INFO] [robot_state_publisher-1]: process has finished cleanly [pid 24269]
+[INFO] [grasp_lift_executor-3]: process has finished cleanly [pid 24273]

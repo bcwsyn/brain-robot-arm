@@ -57,7 +57,9 @@ def test_p4_overrides_are_narrow_and_preview_is_default(tmp_path):
     assert grasp['p4_plan_only'] is True
     assert grasp['auto_release_after_lift'] is False
     assert set(grasp) == {'p4_open_loop_enabled', 'p4_plan_only', 'p4_surface_base_m',
-                         'p4_cube_edge_m', 'p4_target_provenance', 'auto_release_after_lift'}
+                         'p4_cube_edge_m', 'p4_target_provenance', 'auto_release_after_lift',
+                         'gripper_feedback_topic'}
+    assert grasp['gripper_feedback_topic'] == '/piper/gripper_feedback'
 
 
 @pytest.mark.parametrize('changes', [dict(frame_id='camera_depth_optical_frame'),

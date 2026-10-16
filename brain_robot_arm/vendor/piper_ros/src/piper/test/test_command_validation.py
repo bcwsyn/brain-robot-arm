@@ -139,6 +139,51 @@ class TestAbsoluteJointStateValidation(unittest.TestCase):
                 self.assertFalse(fake._gripper_clear_pending)
                 self.assertEqual(calls, [])
 
+    def test_p4_handshake_preserves_actual_opening_and_never_targets_zero(self):
+        calls = []
+        logger = SimpleNamespace(info=lambda *_: None, warning=lambda *_: None, error=lambda *_: None)
+        fake = SimpleNamespace(
+            p4_gentle_gripper=True, _p4_gripper_sample=(10., None, .0796, .02, 0x40),
+            _p4_gripper_output_allowed=lambda: True,
+            piper=SimpleNamespace(JointCtrl=lambda *a: None, GripperCtrl=lambda *a: calls.append(a)),
+            gripper_exist=True, gripper_val_mutiple=1., _gripper_clear_pending=True,
+            get_logger=lambda: logger, GetEnableFlag=lambda: True,
+            _can_feedback_available=lambda: True, _set_joint_control_mode=lambda *_: None)
+        packet = SimpleNamespace(name=self.names+['gripper'], position=self.positions+[.08],
+                                 velocity=[], effort=[0.]*6+[.5])
+        method = driver_method('joint_callback', math=math, ARM_JOINT_NAMES=self.names,
+            validate_absolute_joint_state=validate_absolute_joint_state,
+            clip=lambda v, a, b: max(a, min(b, v)))
+        method(fake, packet)
+        self.assertEqual(calls, [(79600, 500, 0x02, 0), (79600, 500, 0x01, 0),
+                                 (80000., 500, 0x01, 0)])
+
+    def test_p4_gripper_frame_is_published_once_without_cache_restamping(self):
+        emitted, statuses = [], []
+        sample = (10., SimpleNamespace(sec=20, nanosec=30), .037, -.2, 0x40)
+        fake = SimpleNamespace(_p4_gripper_sample=sample, _p4_published_gripper_sample=None,
+            p4_gripper_pub=SimpleNamespace(publish=emitted.append),
+            p4_gripper_status_pub=SimpleNamespace(publish=statuses.append))
+        method = driver_method('_publish_p4_gripper_sample',
+            JointState=lambda: SimpleNamespace(header=SimpleNamespace()), UInt8=SimpleNamespace)
+        method(fake); method(fake)
+        self.assertEqual(len(emitted), 1)
+        self.assertIs(emitted[0].header.stamp, sample[1])
+        self.assertEqual(emitted[0].position, [.037])
+        self.assertEqual(emitted[0].effort, [-.2])
+        self.assertEqual(statuses[0].data, 0x40)
+
+    def test_p4_stale_gripper_or_fault_does_not_pass_output_check(self):
+        method = driver_method('_p4_gripper_output_allowed',
+            time=SimpleNamespace(monotonic=lambda: 10.))
+        fake = SimpleNamespace(_p4_gripper_sample=None)
+        self.assertFalse(method(fake))
+        for sample_time, status in [(9., 0x40), (10., 0x44), (10., 0x41)]:
+            fake._p4_gripper_sample = (sample_time, None, .037, .1, status)
+            self.assertFalse(method(fake))
+        fake._p4_gripper_sample = (9.9, None, .037, .1, 0x40)
+        self.assertTrue(method(fake))
+
     def test_ros_logger_calls_use_one_positional_message(self):
         source_path = (
             Path(__file__).resolve().parents[1] /

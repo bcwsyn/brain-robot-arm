@@ -1,4 +1,17 @@
-## 本轮只读记录（2026-10-16 21:53）：补齐中心目标＋夹爪组合方案，查清点云来源并复用已有中心代码
+## 本轮实现记录（2026-10-16 22:21）：中心接线＋P4缓闭已部署，隔离通过；旧夹持参考未通过同图核验
+
+- 基线bdfc3cc；用户“好的”批准组合局部范围。使用ROS2-PiPER技能核实际入口/参数/安装副本，使用手术式修改技能仅改原行为所有者，保留约846个无关脏路径，特别不动test_near_depth_wiring.py既有一行改动。没有新增基础运动程序或绕开adapter。
+- 原中心估计器复用：已有实测深度多点面/方形拟合与半边长内推输出，新增只读prepare_p4_center_target.py按每帧实际q和批准X转base；显式p4_cube_center_v1/C/c_G，不再附加旧表面11.6mm。new_pair07留出被导出器明确拒绝作参考，02单候选不平均、不冒充TCP；缺实测面中心则不造点。历史02导出用于隔离fixture，未用于当前实机。
+- 原P4几何新增CenterDirectedApproach，令工具原点t=C−R*c_G，同步靠近转向；落点核验用相同c_G。默认surface分支/闭环保持；生产TF/TCP、六轴限位、检测器、adapter、任务YAML、Astra源/库和物理模型SHA核对未变。没有下15/前15mm补偿或恢复Octomap。
+- P4夹爪：100mm张爪后尺寸宽松上界预闭合参考约56.23mm（sqrt(3)*29+6，非精确尺寸投影）、参考10mm/s转3mm/s，最多超前实际0.5mm；29mm块下界25mm不追0。实际开口低速＋较自由行程基线高0.12N·m且持续0.25s才是接触候选，不是外部抓持证明。P4接口力矩0.5N·m不等于指尖牛顿/杯子无损力。原驱动按真实0x2A8（原偏置ID先转换）发独立带戳反馈，禁止周期重戳旧缓存；握手0x02→0x01保留，P4改当前开口而非0，未写零点/刷固件。
+- 定向构建与部署到原home入口/源，最终installed执行器SHAeadc13348f060facf13f40e96b1f0022e33868756160263c1dd6e751c9d47f81，驱动3a79681fd372e04bfc2b16eac14595c318abfaa89af1ac35d98243eb1192e45a。实际driver find_spec为build/piper/piper_ctrl_single_node.py，与src同inode；初报告猜测的install/site-packages不存在，final_install_audit.json已更正。初多目标构建执行器成功但新test target无规则rc2，随后新调用构建/安装及新test成功；实际BUILD_TESTING=ON，不把它错记为关闭。
+- 验证：45定向Python＋136回归、6新C++＋14规范旧几何均通过（201项；另13安装旧几何是重叠检查不再加总）。bash -n/diff检查通过。域78实际执行器中心预览：预抓取/下降100%、22/7点、0臂/夹爪/关节输出，测试急停1且拒绝重开。最终二进制两合成反馈回路：空爪→25mm/FAULT_P4_GENTLE_CLOSE_NO_CONFIRMED_CONTACT，无LIFT；模拟37mm接触→LIFTING→HOLDING，均rc0/正常收尾，不是物理仿真/抓取成功。
+- 失败均保留：中心导出首CLI漏原FKhelper；初构建多目标rc2；首次loopback碰到链接中二进制暂缺；v2/v3开爪反馈NaN；v4读取证明仍订阅旧/joint_states_feedback、0执行。P4字典补gripper_feedback_topic后v5实际参数和订阅/piper/gripper_feedback通过；不是CAN/DDS问题，不重复底层。pytest普通沙箱缓存只读两警告，45项仍通过。
+- 同图核验已实际看原B图/叠图：02候选投影[235.245,175.005]px，可见紫色质心[170.390,200.688]px，位于原轮廓外27.897px；07验证图上仍外25.735px。名义tip也在外；可见质心不是3D中心，底部裁切，不能据质心距离给精确毫米修正。此为当前X＋旧安装相同假设下不一致，尚不能唯一归因TF/FK/参考点；不采用候选，不重拟合留出或把规划成功等同可抓。
+- 本轮0实体命令/0CAN或相机操作/0使能失能复位；隔离域内真实执行器输出和模拟输入分账。实体最近结果仍attempt01空抓，旧最后六轴保持使能不是本轮实时测量。全部自有控制/测试进程已退。原始日志（改扩展名.txt、字节不改）/JSON/XML/叠图/源备份共66文件约1.53MB已SHA回读；后续安装审计独立留档，二进制仅home备份，不提交Git/固件包。
+- 证据/命令/回退/下一步见 [center_gentle_impl01/README.md](evidence/piper_p4_real_20261016/center_gentle_impl01/README.md)。下一先核当前实际夹持参考/当前中心，再分别实测缓闭与原入口中心抓取，不再用旧fixture运动、不重复空抓/9＋1/CAN；需要实体操作才叫用户。Git仅本地，既有main分叉/历史发布审查不变。
+
+## 历史只读记录（2026-10-16 21:53）：补齐中心目标＋夹爪组合方案，查清点云来源并复用已有中心代码
 
 - 基线b3f66f2，用户指出不能只改夹爪，询问点云是否更准。本轮只读规范/实际代码/官方资料及纯离线测试，没有启动ROS、相机/CAN或发送实体命令，没有改靠近/检测器/TF/TCP/限位/夹爪控制。
 - cube_detector实际是cup_detector_node.cpp，现取轮廓质心/深度统计所得表面参考；P4的prepare_p4_board_target.py明确TOP SURFACE，执行器补11.6mm。已有test/estimate_calibration_cube_center.py实测点云平面/RANSAC/SVD/方形边界拟合及沿法线内推半边长的中心估计，本次P4未接入；不得把“已有”说成这次“已用”。

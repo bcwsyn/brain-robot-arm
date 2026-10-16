@@ -26,21 +26,36 @@ def _p4_overrides(environ):
     if plan_only not in ('0', '1'):
         raise RuntimeError('BRAIN_ROBOT_P4_PLAN_ONLY must be 0 or 1')
     target = _load_yaml(path)
-    surface = target.get('surface_base_m', [])
+    if not isinstance(target, dict):
+        raise RuntimeError('P4 target must be a mapping')
+    center = target.get('schema') == 'p4_cube_center_v1'
+    surface = target.get('center_base_m' if center else 'surface_base_m', [])
     edge = target.get('cube_edge_m')
-    if (target.get('schema') != 'p4_board_surface_v1' or target.get('frame_id') != 'base_link' or
+    if (target.get('schema') not in ('p4_board_surface_v1', 'p4_cube_center_v1') or
+            target.get('frame_id') != 'base_link' or
             len(surface) != 3 or not all(math.isfinite(float(v)) for v in surface) or
-            edge is None or not math.isfinite(float(edge)) or float(edge) <= 0 or
+            edge is None or not math.isfinite(float(edge)) or not .01 <= float(edge) <= .05 or
             not target.get('provenance')):
         raise RuntimeError('P4 target must identify a finite nominal board/RGB surface in base_link')
-    return {'stop_after_observe': True}, {
+    grasp = {
         'p4_open_loop_enabled': True,
         'p4_plan_only': plan_only == '1',
-        'p4_surface_base_m': [float(v) for v in surface],
         'p4_cube_edge_m': float(edge),
         'p4_target_provenance': str(target['provenance']),
         'auto_release_after_lift': False,
+        'gripper_feedback_topic': '/piper/gripper_feedback',
     }
+    if center:
+        local = target.get('grasp_center_tool_m', [])
+        if (target.get('target_kind') != 'cube_center' or len(local) != 3 or
+                not all(math.isfinite(float(v)) and abs(float(v)) <= .25 for v in local) or
+                not target.get('grasp_reference_provenance')):
+            raise RuntimeError('Center requires an explicit local jaw reference and provenance')
+        grasp.update(p4_target_kind='cube_center', p4_center_base_m=[float(v) for v in surface],
+                     p4_grasp_center_tool_m=[float(v) for v in local])
+    else:
+        grasp['p4_surface_base_m'] = [float(v) for v in surface]
+    return {'stop_after_observe': True}, grasp
 
 
 def _camera_mount_arguments(task_profile):
@@ -86,7 +101,8 @@ def generate_launch_description():
     p4_visual_args = ['--ros-args', '-p',
                       'visual_search_controller:stop_after_observe:=true'] if p4_visual else []
     p4_grasp_args = ['--ros-args', '-p',
-                     'grasp_lift_executor:auto_release_after_lift:=false'] if p4_grasp else []
+                     'grasp_lift_executor:auto_release_after_lift:=false', '-p',
+                     'grasp_lift_executor:gripper_feedback_topic:=/piper/gripper_feedback'] if p4_grasp else []
     grasp_parameters = task_profile['grasp_lift_executor']['ros__parameters']
     real_joint_mins = grasp_parameters['real_trajectory_joint_min']
     real_joint_maxs = grasp_parameters['real_trajectory_joint_max']
@@ -180,7 +196,9 @@ def generate_launch_description():
                  'max_velocity_rad_s': 0.189,
                  'trajectory_start_tolerance_rad': 0.10,
                  'trajectory_max_joint_step_rad': 0.35,
-                 'gripper_effort_nm': 1.0,
+                 # P4 stays within the original driver's existing lower bound.
+                 # This is nominal motor effort, NOT a calibrated safe cup force.
+                 'gripper_effort_nm': 0.5 if p4_grasp else 1.0,
                  # The vendor driver subscribes with queue depth one. Repeat
                  # the explicit frame for only 100 ms so a following arm-only
                  # frame cannot overwrite it before the callback runs.

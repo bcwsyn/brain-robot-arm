@@ -924,12 +924,15 @@ stop_stale_low_level_stack '/image_tools/cam2image([[:space:]]|$)' '低带宽 RG
 echo "[1/7] 检查并初始化实体 CAN/机械臂..."
 configure_can
 if ! node_exists /piper_ctrl_single_node; then
+  p4_gentle_driver=false
+  if [[ "$P4_OPEN_LOOP" == "1" ]]; then p4_gentle_driver=true; fi
   start_group piper_driver ros2 run piper piper_single_ctrl \
     --ros-args \
     --log-level WARN \
     -p can_port:=can0 \
     -p auto_enable:=false \
     -p gripper_exist:=true \
+    -p p4_gentle_gripper:="$p4_gentle_driver" \
     -r joint_states_single:=/joint_states \
     -r joint_ctrl_single:=/joint_commands
 else
@@ -938,6 +941,12 @@ fi
 wait_for topic /joint_states
 wait_for_joint_feedback /joint_states
 wait_for service /enable_srv
+if [[ "$P4_OPEN_LOOP" == "1" ]]; then
+  p4_driver_mode="$(timeout -k 2s 4s ros2 param get /piper_ctrl_single_node p4_gentle_gripper 2>&1)" ||
+    fail "P4需原驱动的新鲜夹爪回读/保持开口握手，当前复用驱动未确认。"
+  [[ "$p4_driver_mode" == *"Boolean value is: True"* || "$p4_driver_mode" == *"Boolean value is: true"* ]] ||
+    fail "当前驱动不是P4温和夹爪模式；不退回高速闭到零。"
+fi
 start_can_health_guard
 if command -v candump >/dev/null 2>&1; then
   # Passive evidence: correlate SDK calls with actual gripper control and

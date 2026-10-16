@@ -4,7 +4,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, UInt8
 import time
 import threading
 import argparse
@@ -36,6 +36,10 @@ class PiperRosNode(Node):
         self.declare_parameter('auto_enable', False)
         self.declare_parameter('gripper_exist', True)
         self.declare_parameter('gripper_val_mutiple', 1)
+        self.declare_parameter('p4_gentle_gripper', False)
+        self.p4_gentle_gripper = bool(self.get_parameter('p4_gentle_gripper').value)
+        self._p4_gripper_sample = None
+        self._p4_published_gripper_sample = None
 
         self.can_port = self.get_parameter('can_port').get_parameter_value().string_value
         self.auto_enable = self.get_parameter('auto_enable').get_parameter_value().bool_value
@@ -50,6 +54,9 @@ class PiperRosNode(Node):
         # Publishers
         self.joint_pub = self.create_publisher(JointState, 'joint_states_single', 1)
         self.joint_feedback_pub = self.create_publisher(JointState, 'joint_states_feedback', 1)
+        if self.p4_gentle_gripper:
+            self.p4_gripper_pub = self.create_publisher(JointState, '/piper/gripper_feedback', 10)
+            self.p4_gripper_status_pub = self.create_publisher(UInt8, '/piper/gripper_status', 10)
         self.joint_ctrl_pub = self.create_publisher(JointState, 'joint_ctrl', 1)
         self.arm_status_pub = self.create_publisher(PiperStatusMsg, 'arm_status', 1)
         self.end_pose_pub = self.create_publisher(Pose, 'end_pose', 1)
@@ -134,6 +141,34 @@ class PiperRosNode(Node):
                 data=message.data,
             )
         self.piper.ParseCANFrame(message)
+        if (getattr(self, 'p4_gentle_gripper', False) and message.arbitration_id == 0x2A8
+                and len(message.data) >= 7 and not message.is_error_frame
+                and not message.is_remote_frame):
+            # Immutable snapshot from THIS actual frame. Never re-stamp the SDK
+            # cache at the aggregate JointState publication rate.
+            data = bytes(message.data)
+            self._p4_gripper_sample = (
+                time.monotonic(), self.get_clock().now().to_msg(),
+                int.from_bytes(data[:4], 'big', signed=True)/1000000.,
+                int.from_bytes(data[4:6], 'big', signed=True)/1000., data[6])
+
+    def _publish_p4_gripper_sample(self):
+        sample = getattr(self, '_p4_gripper_sample', None)
+        if sample is None or sample[0] == self._p4_published_gripper_sample:
+            return
+        message = JointState()
+        message.header.stamp = sample[1]
+        message.name = ['gripper']
+        message.position = [sample[2]]
+        message.effort = [sample[3]]
+        self.p4_gripper_pub.publish(message)
+        self.p4_gripper_status_pub.publish(UInt8(data=sample[4]))
+        self._p4_published_gripper_sample = sample[0]
+
+    def _p4_gripper_output_allowed(self):
+        sample = getattr(self, '_p4_gripper_sample', None)
+        return (sample is not None and time.monotonic()-sample[0] <= .5
+                and 0 <= sample[2] <= .103 and not sample[4] & 0x3F)
 
     def _set_joint_control_mode(self, speed=50):
         """Select CAN joint control once per speed, not once per target."""
@@ -228,6 +263,8 @@ class PiperRosNode(Node):
             if self._can_feedback_available():
                 self.PublishArmState()
                 self.PublishArmJointAndGripper()
+                if self.p4_gentle_gripper:
+                    self._publish_p4_gripper_sample()
                 self.PublishArmCtrlAndGripper()
                 self.PublishArmEndPose()
 
@@ -463,6 +500,10 @@ class PiperRosNode(Node):
             # 夹爪只在命令明确包含 gripper 目标时发送；六轴观测轨迹
             # 不应在每个周期重复注入夹爪帧。
             if self.gripper_exist and 'gripper' in command_positions:
+                if (getattr(self, 'p4_gentle_gripper', False)
+                        and not self._p4_gripper_output_allowed()):
+                    self.get_logger().error('P4 gripper output held: stale/invalid/faulted actual frame')
+                    return
                 if len(joint_data.effort) >= 7:
                     gripper_effort = clip(joint_data.effort[6], 0.5, 3)
                     # self.get_logger().info(f"gripper_effort: {gripper_effort}")
@@ -472,14 +513,16 @@ class PiperRosNode(Node):
                         # self.get_logger().warning("Gripper effort is NaN, using default value.")
                         gripper_effort = 1000  # 设置默认值
                     if self._gripper_clear_pending:
+                        handshake_position = (round(self._p4_gripper_sample[2]*1000000)
+                            if getattr(self, 'p4_gentle_gripper', False) else 0)
                         self.get_logger().warning(
-                            f'Calling GripperCtrl handshake: angle=0 '
+                            f'Calling GripperCtrl handshake: angle={handshake_position} '
                             f'effort={gripper_effort} code=0x02 set_zero=0x00')
-                        self.piper.GripperCtrl(0, gripper_effort, 0x02, 0)
+                        self.piper.GripperCtrl(handshake_position, gripper_effort, 0x02, 0)
                         self.get_logger().warning(
-                            f'Calling GripperCtrl handshake: angle=0 '
+                            f'Calling GripperCtrl handshake: angle={handshake_position} '
                             f'effort={gripper_effort} code=0x01 set_zero=0x00')
-                        self.piper.GripperCtrl(0, gripper_effort, 0x01, 0)
+                        self.piper.GripperCtrl(handshake_position, gripper_effort, 0x01, 0)
                         self._gripper_clear_pending = False
                     self.get_logger().warning(
                         f'Calling GripperCtrl: angle={abs(joint_6)} '

@@ -140,6 +140,7 @@ install(PROGRAMS
   scripts/piper_jog_adapter.py
   scripts/depth_cube_probe.py
   scripts/prepare_p4_board_target.py
+  scripts/prepare_p4_center_target.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -158,6 +159,8 @@ if(BUILD_TESTING)
   target_link_libraries(rgbd_shape_geometry_test ${OpenCV_LIBRARIES})
   ament_add_gtest(grasp_geometry_test test/test_grasp_geometry.cpp)
   target_include_directories(grasp_geometry_test PRIVATE include)
+  ament_add_gtest(center_gentle_test test/test_center_gentle.cpp)
+  target_include_directories(center_gentle_test PRIVATE include)
   ament_add_gtest(visual_grasp_feedback_test test/test_visual_grasp_feedback.cpp)
   target_include_directories(visual_grasp_feedback_test PRIVATE include)
   ament_add_gtest(near_depth_tracking_test test/test_near_depth_tracking.cpp)

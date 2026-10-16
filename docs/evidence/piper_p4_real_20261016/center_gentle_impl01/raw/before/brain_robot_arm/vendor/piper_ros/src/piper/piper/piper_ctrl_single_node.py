@@ -1,0 +1,578 @@
+#!/usr/bin/env python3
+# -*-coding:utf8-*-
+# This file controls a single robotic arm node and handles the movement of the robotic arm with a gripper.
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Bool
+import time
+import threading
+import argparse
+import math
+from can import Message
+from piper_sdk import *
+from piper_sdk import C_PiperInterface_V2
+from piper_msgs.msg import PiperStatusMsg, PosCmd
+from piper_msgs.srv import Enable
+from geometry_msgs.msg import Pose, PoseStamped
+from scipy.spatial.transform import Rotation as R  # For Euler angle to quaternion conversion
+from numpy import clip
+from builtin_interfaces.msg import Time
+from piper.command_validation import ARM_JOINT_NAMES, validate_absolute_joint_state
+
+class PiperRosNode(Node):
+    """ROS2 node for the robotic arm"""
+
+    CAN_HIGH_SPEED_FEEDBACK_FRESH_S = 0.5
+    # S-V1.9-1 switches its aggregate feedback base from 0x2Ax to 0x3Ax
+    # during the first motion transition; captures show an ~18 s quiet window.
+    # During this bounded window output is suppressed, never continued blindly.
+    CAN_FEEDBACK_GRACE_S = 25.0
+
+    def __init__(self) -> None:
+        super().__init__('piper_ctrl_single_node')
+        # ROS parameters
+        self.declare_parameter('can_port', 'can0')
+        self.declare_parameter('auto_enable', False)
+        self.declare_parameter('gripper_exist', True)
+        self.declare_parameter('gripper_val_mutiple', 1)
+
+        self.can_port = self.get_parameter('can_port').get_parameter_value().string_value
+        self.auto_enable = self.get_parameter('auto_enable').get_parameter_value().bool_value
+        self.gripper_exist = self.get_parameter('gripper_exist').get_parameter_value().bool_value
+        self.gripper_val_mutiple = self.get_parameter('gripper_val_mutiple').get_parameter_value().integer_value
+        self.gripper_val_mutiple = max(0, min(self.gripper_val_mutiple, 10))
+
+        self.get_logger().info(f"can_port is {self.can_port}")
+        self.get_logger().info(f"auto_enable is {self.auto_enable}")
+        self.get_logger().info(f"gripper_exist is {self.gripper_exist}")
+        self.get_logger().info(f"gripper_val_mutiple is {self.gripper_val_mutiple}")
+        # Publishers
+        self.joint_pub = self.create_publisher(JointState, 'joint_states_single', 1)
+        self.joint_feedback_pub = self.create_publisher(JointState, 'joint_states_feedback', 1)
+        self.joint_ctrl_pub = self.create_publisher(JointState, 'joint_ctrl', 1)
+        self.arm_status_pub = self.create_publisher(PiperStatusMsg, 'arm_status', 1)
+        self.end_pose_pub = self.create_publisher(Pose, 'end_pose', 1)
+        self.end_pose_stamped_pub = self.create_publisher(PoseStamped, 'end_pose_stamped', 1)
+        # Service
+        self.motor_srv = self.create_service(Enable, 'enable_srv', self.handle_enable_service)
+        # Joint
+        self.joint_states = JointState()
+        self.joint_states.name = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'gripper']
+        self.joint_states.position = [0.0] * 7
+        self.joint_states.velocity = [0.0] * 7
+        self.joint_states.effort = [0.0] * 7
+
+        self.joint_states_feedback = JointState()
+        self.joint_states_feedback.name = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'gripper']
+        self.joint_states_feedback.position = [0.0] * 7
+        self.joint_states_feedback.velocity = [0.0] * 7
+        self.joint_states_feedback.effort = [0.0] * 7
+        # Joint ctrl
+        self.joint_ctrl = JointState()
+        self.joint_ctrl.name = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'gripper']
+        self.joint_ctrl.position = [0.0] * 7
+        self.joint_ctrl.velocity = [0.0] * 7
+        self.joint_ctrl.effort = [0.0] * 7
+        # Enable flag
+        self.__enable_flag = False
+        self._gripper_clear_pending = True
+        self._can_feedback_lost_at = None
+        self._can_feedback_loss_escalated = False
+        self._joint_mode_speed = None
+        # Create piper class and open CAN interface
+        # S-V1.9-1 firmware uses the V2 protocol. The USB gs_usb adapter is
+        # an external SocketCAN interface, so skip the SDK's built-in CAN
+        # hardware check and use the already configured can0 device.
+        self.piper = C_PiperInterface_V2(can_name=self.can_port, judge_flag=False)
+        # Use local receive time for the watchdog.  SocketCAN timestamps can
+        # lag while the VM/USB queue is busy even though high-speed frames are
+        # still arriving; the safety grace period below still trips when the
+        # frames actually stop.
+        self._last_high_speed_feedback_monotonic = None
+        # The official SDK documents that an uninitialized joint feedback
+        # message reads as all zeroes.  Do not publish a ROS JointState merely
+        # because a high-speed frame arrived: require a fresh V2 aggregate
+        # joint frame as well, otherwise MoveIt can plan from the SDK default.
+        self._last_joint_feedback_monotonic = None
+        # This controller emits its V2 aggregate feedback at 0x3A0..0x3A7.
+        # The stock SDK only decodes the equivalent 0x2A1..0x2A8 range, so
+        # pass a receive-only ID translation to its parser.  No CAN frame is
+        # sent and no persistent controller configuration is changed here.
+        # Install the shifted-ID parser before the SDK receive threads start.
+        # Installing it after ConnectPort() races the first 0x3A0..0x3A7
+        # burst and can leave the ROS node alive without usable joint state.
+        self.piper.GetCanBus().callback_function = self._parse_can_feedback
+        self.piper.ConnectPort()
+        # Start subscription thread
+        self.create_subscription(PosCmd, 'pos_cmd', self.pos_callback, 1)
+        self.create_subscription(JointState, 'joint_ctrl_single', self.joint_callback, 1)
+        self.create_subscription(Bool, 'enable_flag', self.enable_callback, 1)
+
+        self.publisher_thread = threading.Thread(target=self.publish_thread)
+        self.publisher_thread.start()
+
+    def GetEnableFlag(self):
+        return self.__enable_flag
+
+    def _parse_can_feedback(self, message):
+        """Decode the controller's shifted V2 feedback IDs without altering CAN."""
+        if 0x251 <= message.arbitration_id <= 0x256:
+            self._last_high_speed_feedback_monotonic = time.monotonic()
+        if (0x2A1 <= message.arbitration_id <= 0x2A8 or
+                0x3A0 <= message.arbitration_id <= 0x3A7):
+            self._last_joint_feedback_monotonic = time.monotonic()
+        if 0x3A0 <= message.arbitration_id <= 0x3A7:
+            message = Message(
+                timestamp=message.timestamp,
+                arbitration_id=message.arbitration_id - 0xFF,
+                is_extended_id=message.is_extended_id,
+                is_remote_frame=message.is_remote_frame,
+                is_error_frame=message.is_error_frame,
+                channel=message.channel,
+                dlc=message.dlc,
+                data=message.data,
+            )
+        self.piper.ParseCANFrame(message)
+
+    def _set_joint_control_mode(self, speed=50):
+        """Select CAN joint control once per speed, not once per target."""
+        speed = int(clip(speed, 1, 100))
+        if self._joint_mode_speed == speed:
+            return
+        self.piper.MotionCtrl_2(0x01, 0x01, speed, 0x00, 0x00, 0x01)
+        self._joint_mode_speed = speed
+
+    def _enable_for_joint_control(self, speed=50):
+        """Enable all motors before selecting CAN joint-control mode."""
+        if not self.piper.EnablePiper():
+            return False
+        self._set_joint_control_mode(speed)
+        return True
+
+    def _can_feedback_available(self):
+        """Return whether complete fresh CAN feedback is available within the safety grace period."""
+        feedback_age = None
+        if self._last_high_speed_feedback_monotonic is not None:
+            feedback_age = time.monotonic() - self._last_high_speed_feedback_monotonic
+        joint_age = None
+        if self._last_joint_feedback_monotonic is not None:
+            joint_age = time.monotonic() - self._last_joint_feedback_monotonic
+        feedback_is_fresh = (
+            feedback_age is not None and joint_age is not None and
+            feedback_age <= self.CAN_HIGH_SPEED_FEEDBACK_FRESH_S and
+            joint_age <= self.CAN_HIGH_SPEED_FEEDBACK_FRESH_S)
+        if feedback_is_fresh:
+            if self._can_feedback_lost_at is not None:
+                elapsed = time.monotonic() - self._can_feedback_lost_at
+                self.get_logger().warning(
+                    f"{self.can_port} feedback recovered after {elapsed:.2f}s")
+                self._can_feedback_lost_at = None
+                self._can_feedback_loss_escalated = False
+            return True
+
+        now = time.monotonic()
+        if self._can_feedback_lost_at is None:
+            self._can_feedback_lost_at = now
+            self.get_logger().warning(
+                f"{self.can_port} feedback lost; suppressing output for up to "
+                f"{self.CAN_FEEDBACK_GRACE_S:.1f}s")
+        elif (now - self._can_feedback_lost_at >= self.CAN_FEEDBACK_GRACE_S and
+              not self._can_feedback_loss_escalated):
+            # Do not tear down the ROS state/TF source on a delayed V2 feedback
+            # transition.  Command publication remains strictly suppressed by
+            # this method, so retaining the receive loop cannot move the arm;
+            # it lets a recovered CAN stream repopulate MoveIt with real joint
+            # states rather than forcing the whole visual stack to restart.
+            self._can_feedback_loss_escalated = True
+            self.get_logger().error(
+                f"{self.can_port} feedback absent for "
+                f"{self.CAN_FEEDBACK_GRACE_S:.1f}s; holding all output and "
+                "waiting for recovery (driver stays receive-only).")
+        return False
+
+    def publish_thread(self):
+        """Publish messages from the robotic arm
+        """
+        rate = self.create_rate(200)  # 200 Hz
+        enable_flag = False
+        # Set timeout (seconds)
+        timeout = 5
+        # Record the time before entering the loop
+        start_time = time.time()
+        elapsed_time_flag = False
+        while rclpy.ok():
+            if(self.auto_enable):
+                while not (enable_flag):
+                    elapsed_time = time.time() - start_time
+                    self.get_logger().info("--------------------")
+                    enable_flag = self._enable_for_joint_control(50)
+                    self.get_logger().info(f"Enable status:{enable_flag}")
+                    self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                    if(enable_flag):
+                        self.__enable_flag = True
+                    self.get_logger().info("--------------------")
+                    # Check if the timeout has been exceeded
+                    if elapsed_time > timeout:
+                        self.get_logger().info("Timeout....")
+                        elapsed_time_flag = True
+                        enable_flag = True
+                        break
+                    time.sleep(1)
+                    pass
+            if(elapsed_time_flag):
+                self.get_logger().info("Automatic enable timeout, exiting program")
+                if rclpy.ok():
+                    rclpy.shutdown()
+
+            if self._can_feedback_available():
+                self.PublishArmState()
+                self.PublishArmJointAndGripper()
+                self.PublishArmCtrlAndGripper()
+                self.PublishArmEndPose()
+
+            rate.sleep()
+
+    def PublishArmState(self):
+        arm_status = PiperStatusMsg()
+        arm_status.ctrl_mode = self.piper.GetArmStatus().arm_status.ctrl_mode
+        arm_status.arm_status = self.piper.GetArmStatus().arm_status.arm_status
+        arm_status.mode_feedback = self.piper.GetArmStatus().arm_status.mode_feed
+        arm_status.teach_status = self.piper.GetArmStatus().arm_status.teach_status
+        arm_status.motion_status = self.piper.GetArmStatus().arm_status.motion_status
+        arm_status.trajectory_num = self.piper.GetArmStatus().arm_status.trajectory_num
+        arm_status.err_code = self.piper.GetArmStatus().arm_status.err_code
+        arm_status.joint_1_angle_limit = self.piper.GetArmStatus().arm_status.err_status.joint_1_angle_limit
+        arm_status.joint_2_angle_limit = self.piper.GetArmStatus().arm_status.err_status.joint_2_angle_limit
+        arm_status.joint_3_angle_limit = self.piper.GetArmStatus().arm_status.err_status.joint_3_angle_limit
+        arm_status.joint_4_angle_limit = self.piper.GetArmStatus().arm_status.err_status.joint_4_angle_limit
+        arm_status.joint_5_angle_limit = self.piper.GetArmStatus().arm_status.err_status.joint_5_angle_limit
+        arm_status.joint_6_angle_limit = self.piper.GetArmStatus().arm_status.err_status.joint_6_angle_limit
+        arm_status.communication_status_joint_1 = self.piper.GetArmStatus().arm_status.err_status.communication_status_joint_1
+        arm_status.communication_status_joint_2 = self.piper.GetArmStatus().arm_status.err_status.communication_status_joint_2
+        arm_status.communication_status_joint_3 = self.piper.GetArmStatus().arm_status.err_status.communication_status_joint_3
+        arm_status.communication_status_joint_4 = self.piper.GetArmStatus().arm_status.err_status.communication_status_joint_4
+        arm_status.communication_status_joint_5 = self.piper.GetArmStatus().arm_status.err_status.communication_status_joint_5
+        arm_status.communication_status_joint_6 = self.piper.GetArmStatus().arm_status.err_status.communication_status_joint_6
+        self.arm_status_pub.publish(arm_status)
+
+    def float_to_ros_time(self, t: float) -> Time:
+        ros_time = Time()
+        ros_time.sec = int(t)
+        ros_time.nanosec = int((t - ros_time.sec) * 1e9)
+        return ros_time
+
+    def PublishArmJointAndGripper(self):
+        # The CAN/VM receive path can batch delayed frames.  Once both raw
+        # feedback families have passed _can_feedback_available(), stamp the
+        # ROS message at local receipt/publication time so MoveIt measures its
+        # freshness against the same clock rather than an old CAN timestamp.
+        self.joint_states.header.stamp = self.get_clock().now().to_msg()
+        # Here, you can set the joint positions to any value you want
+        # The raw data obtained is in degrees multiplied by 1000. To convert to radians, divide by 1000, multiply by π/180, and limit to 5 decimal places
+        joint_0: float = (self.piper.GetArmJointMsgs().joint_state.joint_1 / 1000) * 0.017444
+        joint_1: float = (self.piper.GetArmJointMsgs().joint_state.joint_2 / 1000) * 0.017444
+        joint_2: float = (self.piper.GetArmJointMsgs().joint_state.joint_3 / 1000) * 0.017444
+        joint_3: float = (self.piper.GetArmJointMsgs().joint_state.joint_4 / 1000) * 0.017444
+        joint_4: float = (self.piper.GetArmJointMsgs().joint_state.joint_5 / 1000) * 0.017444
+        joint_5: float = (self.piper.GetArmJointMsgs().joint_state.joint_6 / 1000) * 0.017444
+        joint_6: float = self.piper.GetArmGripperMsgs().gripper_state.grippers_angle / 1000000
+        vel_0: float = self.piper.GetArmHighSpdInfoMsgs().motor_1.motor_speed / 1000
+        vel_1: float = self.piper.GetArmHighSpdInfoMsgs().motor_2.motor_speed / 1000
+        vel_2: float = self.piper.GetArmHighSpdInfoMsgs().motor_3.motor_speed / 1000
+        vel_3: float = self.piper.GetArmHighSpdInfoMsgs().motor_4.motor_speed / 1000
+        vel_4: float = self.piper.GetArmHighSpdInfoMsgs().motor_5.motor_speed / 1000
+        vel_5: float = self.piper.GetArmHighSpdInfoMsgs().motor_6.motor_speed / 1000
+        effort_0:float = self.piper.GetArmHighSpdInfoMsgs().motor_1.effort/1000
+        effort_1:float = self.piper.GetArmHighSpdInfoMsgs().motor_2.effort/1000
+        effort_2:float = self.piper.GetArmHighSpdInfoMsgs().motor_3.effort/1000
+        effort_3:float = self.piper.GetArmHighSpdInfoMsgs().motor_4.effort/1000
+        effort_4:float = self.piper.GetArmHighSpdInfoMsgs().motor_5.effort/1000
+        effort_5:float = self.piper.GetArmHighSpdInfoMsgs().motor_6.effort/1000
+        effort_6:float = self.piper.GetArmGripperMsgs().gripper_state.grippers_effort/1000
+        self.joint_states.position = [joint_0,joint_1, joint_2, joint_3, joint_4, joint_5,joint_6]
+        self.joint_states.velocity = [vel_0, vel_1, vel_2, vel_3, vel_4, vel_5]
+        self.joint_states.effort = [effort_0, effort_1, effort_2, effort_3, effort_4, effort_5, effort_6]
+
+        self.joint_states_feedback.position = [joint_0,joint_1, joint_2, joint_3, joint_4, joint_5,joint_6]
+        self.joint_states_feedback.velocity = [vel_0, vel_1, vel_2, vel_3, vel_4, vel_5]
+        self.joint_states_feedback.effort = [effort_0, effort_1, effort_2, effort_3, effort_4, effort_5, effort_6]
+        self.joint_states_feedback.header.stamp = self.joint_states.header.stamp
+        # 发布所有消息
+        if any(abs(pos) > 3.5 for pos in self.joint_states_feedback.position):
+            self.get_logger().warn("Joint state abnormal: value exceeds ±3.5 rad")
+        else:
+            self.joint_feedback_pub.publish(self.joint_states_feedback)
+            self.joint_pub.publish(self.joint_states)
+
+    def PublishArmCtrlAndGripper(self):
+        # self.joint_ctrl.header.stamp = self.get_clock().now().to_msg()
+        new_time = max(self.piper.GetArmJointCtrl().time_stamp, self.piper.GetArmGripperCtrl().time_stamp)
+        self.joint_ctrl.header.stamp = self.float_to_ros_time(new_time)
+        joint_0: float = (self.piper.GetArmJointCtrl().joint_ctrl.joint_1/1000) * 0.017444
+        joint_1: float = (self.piper.GetArmJointCtrl().joint_ctrl.joint_2/1000) * 0.017444
+        joint_2: float = (self.piper.GetArmJointCtrl().joint_ctrl.joint_3/1000) * 0.017444
+        joint_3: float = (self.piper.GetArmJointCtrl().joint_ctrl.joint_4/1000) * 0.017444
+        joint_4: float = (self.piper.GetArmJointCtrl().joint_ctrl.joint_5/1000) * 0.017444
+        joint_5: float = (self.piper.GetArmJointCtrl().joint_ctrl.joint_6/1000) * 0.017444
+        joint_6: float = self.piper.GetArmGripperCtrl().gripper_ctrl.grippers_angle/1000000
+        self.joint_ctrl.position = [joint_0, joint_1, joint_2, joint_3, joint_4, joint_5, joint_6]  # Example values
+        if any(abs(pos) > 3.5 for pos in self.joint_ctrl.position):
+            self.get_logger().warn("Joint state abnormal: value exceeds ±3.5 rad")
+        else:
+            self.joint_ctrl_pub.publish(self.joint_ctrl)
+
+    def PublishArmEndPose(self):
+        new_time = self.piper.GetArmEndPoseMsgs().time_stamp
+        # End effector pose
+        endpos = Pose()
+        endpos.position.x = self.piper.GetArmEndPoseMsgs().end_pose.X_axis / 1000000
+        endpos.position.y = self.piper.GetArmEndPoseMsgs().end_pose.Y_axis / 1000000
+        endpos.position.z = self.piper.GetArmEndPoseMsgs().end_pose.Z_axis / 1000000
+        roll = self.piper.GetArmEndPoseMsgs().end_pose.RX_axis / 1000
+        pitch = self.piper.GetArmEndPoseMsgs().end_pose.RY_axis / 1000
+        yaw = self.piper.GetArmEndPoseMsgs().end_pose.RZ_axis / 1000
+        roll = math.radians(roll)
+        pitch = math.radians(pitch)
+        yaw = math.radians(yaw)
+        quaternion = R.from_euler('xyz', [roll, pitch, yaw]).as_quat()
+        endpos.orientation.x = quaternion[0]
+        endpos.orientation.y = quaternion[1]
+        endpos.orientation.z = quaternion[2]
+        endpos.orientation.w = quaternion[3]
+        self.end_pose_pub.publish(endpos)
+        #  时间戳的endpose
+        end_pos_stamp = PoseStamped()
+        end_pos_stamp.pose = endpos
+        end_pos_stamp.header.stamp = self.float_to_ros_time(new_time)
+        # end_pos_stamp.header.stamp = self.get_clock().now().to_msg()
+        self.end_pose_stamped_pub.publish(end_pos_stamp)
+
+    def pos_callback(self, pos_data):
+        """Callback function for subscribing to the end effector pose
+
+        Args:
+            pos_data (): The position data
+        """
+        factor = 180 / 3.1415926
+        self.get_logger().info(f"Received PosCmd:")
+        self.get_logger().info(f"x: {pos_data.x}")
+        self.get_logger().info(f"y: {pos_data.y}")
+        self.get_logger().info(f"z: {pos_data.z}")
+        self.get_logger().info(f"roll: {pos_data.roll}")
+        self.get_logger().info(f"pitch: {pos_data.pitch}")
+        self.get_logger().info(f"yaw: {pos_data.yaw}")
+        self.get_logger().info(f"gripper: {pos_data.gripper}")
+        self.get_logger().info(f"mode1: {pos_data.mode1}")
+        self.get_logger().info(f"mode2: {pos_data.mode2}")
+        x = round(pos_data.x*1000) * 1000
+        y = round(pos_data.y*1000) * 1000
+        z = round(pos_data.z*1000) * 1000
+        rx = round(pos_data.roll*1000*factor)
+        ry = round(pos_data.pitch*1000*factor)
+        rz = round(pos_data.yaw*1000*factor)
+        if self.GetEnableFlag() and self._can_feedback_available():
+            self.piper.MotionCtrl_2(0x01, 0x00, 50, 0x00, 0, 0x01)
+            self.piper.EndPoseCtrl(x, y, z, rx, ry, rz)
+            gripper = round(pos_data.gripper * 1000 * 1000)
+            if pos_data.gripper > 80000:
+                gripper = 80000
+            if pos_data.gripper < 0:
+                gripper = 0
+            if self.gripper_exist:
+                if self._gripper_clear_pending:
+                    # The vendor V2 sequence clears a stale gripper state
+                    # with 0x02, enables it with 0x01, then applies the first
+                    # explicit target.  This is one-shot; do not repeat it
+                    # on steady-state target frames.
+                    self.piper.GripperCtrl(0, 1000, 0x02, 0)
+                    self.piper.GripperCtrl(0, 1000, 0x01, 0)
+                    self._gripper_clear_pending = False
+                self.piper.GripperCtrl(abs(gripper), 1000, 0x01, 0)
+                self._gripper_clear_pending = False
+
+    def joint_callback(self, joint_data):
+        """Callback function for joint angles
+
+        Args:
+            joint_data (): The joint data
+        """
+        command_positions, rejection_reason = validate_absolute_joint_state(
+            joint_data.name, joint_data.position)
+        if rejection_reason is not None:
+            self.get_logger().warning(
+                f"Rejecting incomplete joint command before CAN output: {rejection_reason}")
+            return
+
+        factor = 57324.840764  # 1000*180/3.14
+        # self.get_logger().info(f"Received Joint States:")
+
+        # 创建一个字典来存储关节名称与位置的映射
+        joint_positions = {}
+        joint_6 = 0
+
+        # The SDK transmits all six absolute targets.  Validation above has
+        # proved every arm joint is present exactly once before conversion.
+        for joint_name in ARM_JOINT_NAMES:
+            self.get_logger().info(f"{joint_name}: {command_positions[joint_name]}")
+            joint_positions[joint_name] = round(command_positions[joint_name] * factor)
+
+        # 获取第7个关节的位置
+        if 'gripper' in command_positions:
+            joint_6 = round(command_positions['gripper'] * 1000 * 1000)
+            joint_6 = joint_6 * self.gripper_val_mutiple
+
+        # Evaluate both output gates once so an explicit gripper command can
+        # report exactly why it was forwarded or suppressed.
+        enable_flag = self.GetEnableFlag()
+        feedback_available = self._can_feedback_available()
+        explicit_gripper = 'gripper' in command_positions
+        if explicit_gripper:
+            self.get_logger().warning(
+                f'Explicit gripper frame received: angle={joint_6} '
+                f'effort_count={len(joint_data.effort)} enable={enable_flag} '
+                f'feedback_available={feedback_available}')
+
+        # 控制电机速度
+        if enable_flag and feedback_available:
+            if joint_data.velocity != []:
+                all_zeros = all(v == 0 for v in joint_data.velocity)
+            else:
+                all_zeros = True
+            if not all_zeros:
+                lens = len(joint_data.velocity)
+                if lens == 7:
+                    vel_all = clip(round(joint_data.velocity[6]), 1, 100)
+                    self.get_logger().info(f"vel_all: {vel_all}")
+                    self._set_joint_control_mode(vel_all)
+                else:
+                    self._set_joint_control_mode(100)
+            else:
+                self._set_joint_control_mode(100)
+
+            # 使用关节名称来动态控制关节
+            self.piper.JointCtrl(
+                joint_positions['joint1'],
+                joint_positions['joint2'],
+                joint_positions['joint3'],
+                joint_positions['joint4'],
+                joint_positions['joint5'],
+                joint_positions['joint6']
+            )
+
+            # 夹爪只在命令明确包含 gripper 目标时发送；六轴观测轨迹
+            # 不应在每个周期重复注入夹爪帧。
+            if self.gripper_exist and 'gripper' in command_positions:
+                if len(joint_data.effort) >= 7:
+                    gripper_effort = clip(joint_data.effort[6], 0.5, 3)
+                    # self.get_logger().info(f"gripper_effort: {gripper_effort}")
+                    if not math.isnan(gripper_effort):
+                        gripper_effort = round(gripper_effort * 1000)
+                    else:
+                        # self.get_logger().warning("Gripper effort is NaN, using default value.")
+                        gripper_effort = 1000  # 设置默认值
+                    if self._gripper_clear_pending:
+                        self.get_logger().warning(
+                            f'Calling GripperCtrl handshake: angle=0 '
+                            f'effort={gripper_effort} code=0x02 set_zero=0x00')
+                        self.piper.GripperCtrl(0, gripper_effort, 0x02, 0)
+                        self.get_logger().warning(
+                            f'Calling GripperCtrl handshake: angle=0 '
+                            f'effort={gripper_effort} code=0x01 set_zero=0x00')
+                        self.piper.GripperCtrl(0, gripper_effort, 0x01, 0)
+                        self._gripper_clear_pending = False
+                    self.get_logger().warning(
+                        f'Calling GripperCtrl: angle={abs(joint_6)} '
+                        f'effort={gripper_effort} code=0x01 set_zero=0x00')
+                    self.piper.GripperCtrl(abs(joint_6), gripper_effort, 0x01, 0)
+                else:
+                    self.get_logger().warning(
+                        f'Explicit gripper frame rejected: '
+                        f'effort_count={len(joint_data.effort)} is less than 7')
+        elif explicit_gripper:
+            self.get_logger().warning(
+                f'Explicit gripper frame suppressed by output gate: '
+                f'enable={enable_flag} feedback_available={feedback_available}')
+
+
+    def enable_callback(self, enable_flag: Bool):
+        """Callback function for enabling the robotic arm
+
+        Args:
+            enable_flag (): Boolean flag
+        """
+        self.get_logger().info(f"Received enable flag:")
+        self.get_logger().info(f"enable_flag: {enable_flag.data}")
+        if enable_flag.data:
+            self.__enable_flag = self._enable_for_joint_control(50)
+            if self.__enable_flag:
+                # Arm enable is not a jaw target. The first explicit gripper
+                # command already clears/enables with code 0x03 at its target.
+                self._gripper_clear_pending = True
+        else:
+            self.__enable_flag = False
+            self.piper.DisableArm(7)
+            if self.gripper_exist:
+                self.piper.GripperCtrl(0, 1000, 0x02, 0)
+
+    def handle_enable_service(self, req, resp):
+        """Handle enable service for the robotic arm"""
+        self.get_logger().info(f"Received request: {req.enable_request}")
+        enable_flag = False
+        loop_flag = False
+        # Set timeout duration (seconds)
+        timeout = 5
+        # Record the time before entering the loop
+        start_time = time.time()
+        while not loop_flag:
+            elapsed_time = time.time() - start_time
+            self.get_logger().info(f"--------------------")
+            enable_list = self.piper.GetArmEnableStatus()
+
+            if req.enable_request:
+                enable_flag = self._enable_for_joint_control(50)
+                # Do not interpret an uncalibrated jaw cache as a new target,
+                # especially not as zero when out of range. Explicit gripper
+                # commands handle the clear/enable sequence at their target.
+            else:
+                enable_flag = any(enable_list)
+                self.piper.DisableArm(7)
+                self.piper.GripperCtrl(0, 1000, 0x02, 0)
+
+            self.get_logger().info(f"Enable status: {enable_flag}")
+            self.__enable_flag = enable_flag
+            self._gripper_clear_pending = bool(enable_flag)
+            self.get_logger().info(f"--------------------")
+
+            if enable_flag == req.enable_request:
+                loop_flag = True
+                enable_flag = True
+            else:
+                loop_flag = False
+                enable_flag = False
+
+            # Check if timeout duration has been exceeded
+            if elapsed_time > timeout:
+                self.get_logger().info(f"Timeout...")
+                enable_flag = False
+                loop_flag = True
+                break
+
+            time.sleep(0.5)
+
+        resp.enable_response = enable_flag
+        self.get_logger().info(f"Returning response: {resp.enable_response}")
+        return resp
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    piper_single_node = PiperRosNode()
+    try:
+        rclpy.spin(piper_single_node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        piper_single_node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()

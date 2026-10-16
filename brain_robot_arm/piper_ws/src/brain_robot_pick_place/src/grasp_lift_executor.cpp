@@ -31,6 +31,7 @@
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <std_msgs/msg/u_int8.hpp>
 #include <std_srvs/srv/set_bool.hpp>
 #include <std_srvs/srv/trigger.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
@@ -41,6 +42,7 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 #include "brain_robot_pick_place/target_directed_grasp.hpp"
+#include "brain_robot_pick_place/gentle_gripper.hpp"
 
 #include "brain_robot_pick_place/grasp_geometry.hpp"
 #include "brain_robot_pick_place/target_model_wait.hpp"
@@ -352,6 +354,14 @@ public:
         latest_gripper_feedback_ = *message;
         gripper_feedback_received_time_ = std::chrono::steady_clock::now();
       });
+    if (p4_open_loop_enabled_) {
+      p4_gripper_status_subscription_ = create_subscription<std_msgs::msg::UInt8>(
+        "/piper/gripper_status", rclcpp::SensorDataQoS(),
+        [this](const std_msgs::msg::UInt8::SharedPtr message) {
+          std::lock_guard<std::mutex> lock(feedback_mutex_);
+          p4_gripper_status_ = message->data;
+        });
+    }
     emergency_stop_subscription_ = create_subscription<std_msgs::msg::Bool>(
       emergency_stop_topic_, rclcpp::QoS(10),
       [this](const std_msgs::msg::Bool::SharedPtr message) {
@@ -475,6 +485,9 @@ private:
     p4_open_loop_enabled_ = ParameterOr<bool>("p4_open_loop_enabled", false);
     p4_plan_only_ = ParameterOr<bool>("p4_plan_only", true);
     p4_surface_base_m_ = ParameterOr<std::vector<double>>("p4_surface_base_m", {});
+    p4_target_kind_ = ParameterOr<std::string>("p4_target_kind", "surface");
+    p4_center_base_m_ = ParameterOr<std::vector<double>>("p4_center_base_m", {});
+    p4_grasp_center_tool_m_ = ParameterOr<std::vector<double>>("p4_grasp_center_tool_m", {});
     p4_cube_edge_m_ = ParameterOr<double>("p4_cube_edge_m", 0.029);
     p4_target_provenance_ = ParameterOr<std::string>("p4_target_provenance", "");
     auto_execute_ = ParameterOr<bool>("auto_execute", true);
@@ -731,11 +744,18 @@ private:
       real_trajectory_limit_margin_rad_ >= 0.0 &&
       joint_state_wait_timeout_s_ > 0.0;
     if (p4_open_loop_enabled_) {
+      const auto finite3 = [](const auto & v) {
+          return v.size() == 3 &&
+                 std::all_of(v.begin(), v.end(), [](double x) {return std::isfinite(x);});
+        };
+      const bool target_ok = p4_target_kind_ == "surface" ? finite3(p4_surface_base_m_) :
+        p4_target_kind_ == "cube_center" && finite3(p4_center_base_m_) &&
+        finite3(p4_grasp_center_tool_m_) &&
+        std::all_of(p4_grasp_center_tool_m_.begin(), p4_grasp_center_tool_m_.end(),
+          [](double x) {return std::abs(x) <= .25;});
       configuration_ok_ = configuration_ok_ && !simulation_only_ &&
-        lift_reference_frame_ == "base_link" && p4_surface_base_m_.size() == 3 &&
-        std::all_of(p4_surface_base_m_.begin(), p4_surface_base_m_.end(),
-          [](double x) {return std::isfinite(x);}) &&
-        std::isfinite(p4_cube_edge_m_) && p4_cube_edge_m_ > 0.0 &&
+        lift_reference_frame_ == "base_link" && target_ok &&
+        std::isfinite(p4_cube_edge_m_) && p4_cube_edge_m_ >= .01 && p4_cube_edge_m_ <= .05 &&
         !p4_target_provenance_.empty();
     }
     if (!configuration_ok_) {
@@ -1049,10 +1069,12 @@ private:
     // The selected target is immutable in base_link. No ALIGN, depth handoff,
     // RGB recovery, or post-motion detector update is part of this baseline.
     PublishState("P4_FROZEN_TARGET_PLANNING");
+    const bool center_target = p4_target_kind_ == "cube_center";
+    const auto & target = center_target ? p4_center_base_m_ : p4_surface_base_m_;
     RCLCPP_INFO(get_logger(),
-      "P4_FROZEN_BOARD_RGB surface=(%.9f,%.9f,%.9f) edge=%.6f plan_only=%d source=%s "
+      "P4_FROZEN_BOARD_RGB target_kind=%s point=(%.9f,%.9f,%.9f) edge=%.6f plan_only=%d source=%s "
       "NOMINAL_HEIGHT_AND_TCP_NOT_EXTERNAL_METROLOGY",
-      p4_surface_base_m_[0], p4_surface_base_m_[1], p4_surface_base_m_[2],
+      p4_target_kind_.c_str(), target[0], target[1], target[2],
       p4_cube_edge_m_, p4_plan_only_, p4_target_provenance_.c_str());
     if (!p4_plan_only_) {
       if (!StopServo()) {Fail("P4_SERVO_STOP_FAILED"); return;}
@@ -1069,7 +1091,15 @@ private:
     if (!state || start.header.frame_id.empty()) {Fail("P4_START_UNAVAILABLE"); return;}
     std::vector<geometry_msgs::msg::Pose> pre, descent;
     try {
-      const auto path = grasp_geometry::TargetDirectedApproach(
+      const grasp_geometry::Point start_origin{
+        start.pose.position.x, start.pose.position.y, start.pose.position.z};
+      const grasp_geometry::Quaternion start_q{start.pose.orientation.x, start.pose.orientation.y,
+        start.pose.orientation.z, start.pose.orientation.w};
+      const auto path = center_target ? grasp_geometry::CenterDirectedApproach(
+        start_origin, start_q, {target[0], target[1], target[2]},
+        {p4_grasp_center_tool_m_[0], p4_grasp_center_tool_m_[1], p4_grasp_center_tool_m_[2]},
+        top_down_pregrasp_clearance_m_, cartesian_eef_step_m_, target_directed_downward_fraction_) :
+        grasp_geometry::TargetDirectedApproach(
         {start.pose.position.x, start.pose.position.y, start.pose.position.z},
         {start.pose.orientation.x, start.pose.orientation.y, start.pose.orientation.z,
           start.pose.orientation.w},
@@ -3341,7 +3371,11 @@ private:
     tf2::fromMsg(expected.pose, expected_transform);
     const auto expected_axis = tf2::quatRotate(
       expected_transform.getRotation(), tf2::Vector3(0.0, 0.0, 1.0));
-    const auto expected_tip = expected_transform * tf2::Vector3(0.0, 0.0, gripper_tip_offset_m_);
+    const tf2::Vector3 landing_reference =
+      p4_open_loop_enabled_ && p4_target_kind_ == "cube_center" ?
+      tf2::Vector3(p4_grasp_center_tool_m_[0], p4_grasp_center_tool_m_[1],
+        p4_grasp_center_tool_m_[2]) : tf2::Vector3(0.0, 0.0, gripper_tip_offset_m_);
+    const auto expected_tip = expected_transform * landing_reference;
     for (int attempt = 0; attempt < 2 && !cancel_requested_; ++attempt) {
       const auto state = FreshMeasuredState("GRASP_LANDING");
       if (!state) {
@@ -3374,7 +3408,7 @@ private:
       }
       tf2::Transform actual;
       tf2::fromMsg(measured.pose, actual);
-      const auto actual_tip = actual * tf2::Vector3(0.0, 0.0, gripper_tip_offset_m_);
+      const auto actual_tip = actual * landing_reference;
       const auto error = grasp_geometry::CompareTips(
         {actual_tip.x(), actual_tip.y(), actual_tip.z()},
         {expected_tip.x(), expected_tip.y(), expected_tip.z()},
@@ -3426,13 +3460,19 @@ private:
     const double gripper_before_close = LatestGripperPosition();
     PublishState("CLOSING_GRIPPER");
     PublishDiagnostic("GRIPPER_CLOSE_REQUESTED");
-    if (!CommandRealGripper(false) || cancel_requested_) {
+    if (p4_open_loop_enabled_ && !simulation_only_) {
+      if (!GentleCloseGripper() || cancel_requested_) {
+        Fail("P4_GENTLE_CLOSE_NO_CONFIRMED_CONTACT"); return;
+      }
+    } else if (!CommandRealGripper(false) || cancel_requested_) {
       Fail("CLOSE_GRIPPER_FAILED");
       return;
     }
     if (!simulation_only_) {
-      std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
-      if (!WaitForGripperCommand(
+      if (!p4_open_loop_enabled_) {
+        std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
+      }
+      if (!p4_open_loop_enabled_ && !WaitForGripperCommand(
           gripper_before_close, gripper_close_value_, true, "GRIPPER_CLOSE"))
       {
         Fail("GRIPPER_CLOSE_FEEDBACK_UNCONFIRMED");
@@ -3441,7 +3481,9 @@ private:
       // PiPER exposes position feedback, not a contact/force measurement. This
       // confirms jaw actuation before lifting; object retention remains an
       // entity-level result to validate on the real cube.
-      PublishDiagnostic("GRIPPER_CLOSE_FEEDBACK_CONFIRMED_NO_FORCE_SENSOR");
+      PublishDiagnostic(p4_open_loop_enabled_ ?
+        "P4_GRIPPER_CONTACT_CANDIDATE_NOT_OBJECT_RETENTION_PROOF" :
+        "GRIPPER_CLOSE_FEEDBACK_CONFIRMED_NO_FORCE_SENSOR");
 
       PublishState("LIFTING");
       auto lift_target = postgrasp_retreat;
@@ -4058,6 +4100,72 @@ private:
     MoveGroupInterface::Plan plan;
     return static_cast<bool>(gripper_->plan(plan)) && !cancel_requested_ &&
            static_cast<bool>(gripper_->execute(plan));
+  }
+
+  void CommandGripperOpening(double opening)
+  {
+    sensor_msgs::msg::JointState command;
+    command.header.stamp = now();
+    command.name = {"gripper"};
+    command.position = {opening};
+    gripper_command_publisher_->publish(command);
+  }
+
+  bool GentleCloseGripper()
+  {
+    const double initial = LatestGripperPosition();
+    if (!std::isfinite(initial) || initial < 0 || initial > .103) {return false;}
+    GentleGripper policy(p4_cube_edge_m_, initial);
+    const auto deadline = std::chrono::steady_clock::now() +
+      std::chrono::duration<double>(policy.Timeout(initial));
+    double last_stamp = -1., last_opening = initial;
+    bool contact = false;
+    bool processed_fresh_feedback = false;
+    while (rclcpp::ok() && !cancel_requested_ && std::chrono::steady_clock::now() < deadline) {
+      sensor_msgs::msg::JointState feedback;
+      double age;
+      int status;
+      {
+        std::lock_guard<std::mutex> lock(feedback_mutex_);
+        feedback = latest_gripper_feedback_;
+        status = p4_gripper_status_;
+        age = std::chrono::duration<double>(
+          std::chrono::steady_clock::now()-gripper_feedback_received_time_).count();
+      }
+      const double stamp = rclcpp::Time(feedback.header.stamp).seconds();
+      // This is the P4 driver topic emitted only on a real gripper CAN frame,
+      // NOT a periodically re-stamped aggregate JointState cache.
+      const double source_age = (now()-rclcpp::Time(feedback.header.stamp)).seconds();
+      if (age > .5 || source_age < -.05 || source_age > .5 ||
+        status < 0 || (status & 0x3F) || !(status & 0x40))
+      {
+        PublishDiagnostic("P4_GRIPPER_FEEDBACK_STALE_HOLD"); break;
+      }
+      if (stamp != last_stamp) {
+        const double opening = JointPosition(feedback, "gripper");
+        const auto it = std::find(feedback.name.begin(), feedback.name.end(), "gripper");
+        const auto index = static_cast<std::size_t>(std::distance(feedback.name.begin(), it));
+        const double effort = index < feedback.effort.size() ? feedback.effort[index] :
+          std::numeric_limits<double>::quiet_NaN();
+        const auto result = policy.Update(stamp, opening, effort);
+        if (result == GentleGripper::Result::INVALID) {break;}
+        processed_fresh_feedback = true;
+        last_stamp = stamp; last_opening = opening;
+        CommandGripperOpening(policy.Reference());
+        if (result == GentleGripper::Result::CONTACT_CANDIDATE) {contact = true; break;}
+        if (result == GentleGripper::Result::EMPTY) {
+          PublishDiagnostic("P4_GRIPPER_EMPTY_NO_LIFT"); break;
+        }
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    // A stopped publisher does not revoke the position latched by firmware.
+    // Replace it with a near-measured hold, never a remote zero endpoint.
+    if (!cancel_requested_ && processed_fresh_feedback && std::isfinite(last_opening)) {
+      CommandGripperOpening(std::clamp(last_opening-(contact ? .0002 : 0.), 0., .100));
+    }
+    PublishDiagnostic(contact ? "P4_GENTLE_CONTACT_CANDIDATE" : "P4_GENTLE_CLOSE_UNCONFIRMED_NO_LIFT");
+    return contact;
   }
 
   bool CommandRealGripper(bool open)
@@ -4987,6 +5095,8 @@ private:
   std::atomic_bool p4_emergency_stop_latched_{false};
   bool p4_plan_only_{true};
   std::vector<double> p4_surface_base_m_;
+  std::string p4_target_kind_{"surface"};
+  std::vector<double> p4_center_base_m_, p4_grasp_center_tool_m_;
   double p4_cube_edge_m_{0.029};
   std::string p4_target_provenance_;
   bool real_grasp_enabled_{false};
@@ -5221,6 +5331,8 @@ private:
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr depth_only_valid_subscription_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscription_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr gripper_feedback_subscription_;
+  rclcpp::Subscription<std_msgs::msg::UInt8>::SharedPtr p4_gripper_status_subscription_;
+  int p4_gripper_status_{-1};
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr emergency_stop_subscription_;
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr cup_follow_client_;
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr servo_stop_client_;

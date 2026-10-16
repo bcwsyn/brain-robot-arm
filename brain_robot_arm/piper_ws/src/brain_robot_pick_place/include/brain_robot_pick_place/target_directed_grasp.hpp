@@ -110,6 +110,58 @@ struct DirectedApproach
   std::vector<DirectedPose> descent;
 };
 
+// Explicit volume CENTER and local jaw capture reference. Unlike a surface
+// input, this has NO half-edge/insertion correction. Do not replace center_tool
+// with the nominal free fingertip or modify the production TCP to hide it.
+inline DirectedApproach CenterDirectedApproach(
+  const Point & start_origin, const Quaternion & start_orientation,
+  const Point & center, const Point & center_tool, double clearance, double step,
+  double downward_fraction)
+{
+  for (const auto & p : {start_origin, center, center_tool}) {
+    for (double v : p) {
+      if (!std::isfinite(v)) {throw std::invalid_argument("Non-finite center geometry");}
+    }
+  }
+  if (!(clearance > 0 && step >= .0001 && std::isfinite(clearance) &&
+    std::isfinite(step) && downward_fraction > 0 && downward_fraction <= 1.))
+  {
+    throw std::invalid_argument("Invalid center approach parameters");
+  }
+  const auto q0 = UnitQuaternion(start_orientation);
+  const auto aimed = AimTool(q0, {center[0]-start_origin[0],
+    center[1]-start_origin[1], center[2]-start_origin[2]});
+  const auto final = Slerp(aimed, AimTool(aimed, {0, 0, -1}), downward_fraction);
+  const auto axis = Rotate(final, {0, 0, 1});
+  const auto rotated = Rotate(q0, center_tool);
+  Point first{}, pre{};
+  for (std::size_t i = 0; i < 3; ++i) {
+    first[i] = start_origin[i] + rotated[i];
+    pre[i] = center[i] - clearance*axis[i];
+  }
+  DirectedApproach result;
+  const auto blend = [&](const Point & a, const Point & b,
+      const Quaternion & qa, const Quaternion & qb, std::vector<DirectedPose> & out) {
+      Point delta{b[0]-a[0], b[1]-a[1], b[2]-a[2]};
+      const double angle = QuaternionDistance(qa, qb);
+      const double bound = std::sqrt(Dot(delta, delta)) +
+        std::sqrt(Dot(center_tool, center_tool))*angle;
+      const auto count = static_cast<std::size_t>(std::max(1.,
+          std::ceil(std::max(bound/step, angle/.02))));
+      for (std::size_t i = 1; i <= count; ++i) {
+        const double s = double(i)/count;
+        const auto q = Slerp(qa, qb, s);
+        const auto offset = Rotate(q, center_tool);
+        Point origin{};
+        for (std::size_t k = 0; k < 3; ++k) {origin[k] = a[k]+s*delta[k]-offset[k];}
+        out.push_back({origin, q});
+      }
+    };
+  blend(first, pre, q0, final, result.pregrasp);
+  blend(pre, center, final, final, result.descent);
+  return result;
+}
+
 // A static visible surface is the same reference throughout this approach.
 // First aim the jaws, not the camera, without translating the wrist; then
 // smoothly swing toward the tabletop entry direction while closing the gap.
