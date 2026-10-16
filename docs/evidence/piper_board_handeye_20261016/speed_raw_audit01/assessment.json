@@ -1,0 +1,277 @@
+{
+  "read_only": true,
+  "ROS_nodes_or_device_commands_started": false,
+  "production_source_or_threshold_change": false,
+  "no_CAN_recovery": true,
+  "first_capture": {
+    "high_frames_per_joint": 1200,
+    "all_speeds_zero": true,
+    "aggregate_angles_unavailable_due_initial_3Ax_only_filter": true,
+    "not_a_proof_of_preceding_or_following_state": true
+  },
+  "concurrent_capture": {
+    "raw_frames": 27841,
+    "high_frames_per_joint": 1200,
+    "actual_feedback_family": "0x2A1..0x2A8; no 0x3Ax in this window",
+    "SDK_direct_speed_and_pos_decode_matches_every_raw_high_frame": true,
+    "actual_speed_pulses": [
+      {
+        "receipt_epoch_ns": "1792125008870960923",
+        "elapsed_s": 1.717190784999957,
+        "can_id": "0x255",
+        "data_hex": "001800000000011f",
+        "joint": 5,
+        "independent_speed_raw": 24,
+        "independent_motor_pos_raw": 287,
+        "SDK_speed_raw": 24,
+        "SDK_motor_pos_raw": 287
+      },
+      {
+        "receipt_epoch_ns": "1792125014651087858",
+        "elapsed_s": 7.497320513999966,
+        "can_id": "0x255",
+        "data_hex": "000d00000000011f",
+        "joint": 5,
+        "independent_speed_raw": 13,
+        "independent_motor_pos_raw": 287,
+        "SDK_speed_raw": 13,
+        "SDK_motor_pos_raw": 287
+      }
+    ],
+    "sampling_caveat": "10Hz SDK snapshots missed the brief CAN speed pulses; neither stream is replaced."
+  },
+  "SDK_full_window_quality": {
+    "samples": 60,
+    "fresh_samples": 59,
+    "span_s": 5.820650815963745,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      110,
+      0
+    ]
+  },
+  "passing_original_static_subwindows": 104,
+  "longest_original_static_subwindow": {
+    "start_index_inclusive": 0,
+    "end_index_exclusive": 44,
+    "original_quality": {
+      "samples": 44,
+      "fresh_samples": 43,
+      "span_s": 4.214578628540039,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "SDK_collect_return_code": 2,
+  "raw_collect_return_codes": [
+    0,
+    0
+  ],
+  "static_threshold_changed": false,
+  "previous_session_last_SDK": {
+    "epoch": 1792124183.6456969,
+    "sdk_receipt_stamps": {
+      "joint": "1792124183.6448984",
+      "high": "1792124183.6361895",
+      "low": "1792124183.6362236",
+      "gripper": "1792124183.6402524"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8038,
+      54525,
+      -72724,
+      0,
+      69717,
+      5238
+    ],
+    "q_driver_rad": [
+      -0.14021487200000002,
+      0.9511341000000001,
+      -1.2685974560000002,
+      0.0,
+      1.2161433480000001,
+      0.09137167200000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 76,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "this_session_last_fresh_SDK": {
+    "epoch": 1792125016.2342134,
+    "sdk_receipt_stamps": {
+      "joint": "1792125016.2311063",
+      "high": "1792125016.2314608",
+      "low": "1792125016.2314177",
+      "gripper": "1792125016.2311072"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8759,
+      -118,
+      173,
+      8404,
+      16488,
+      1733
+    ],
+    "q_driver_rad": [
+      -0.152791996,
+      -0.002058392,
+      0.003017812,
+      0.146599376,
+      0.287616672,
+      0.030230452000000005
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 0,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "q_change_mdeg_from_previous_session": [
+    -721,
+    -54643,
+    72897,
+    8404,
+    -53229,
+    -3505
+  ],
+  "raw_status": [
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019155240493",
+        "elapsed_s": 12.001479139999901,
+        "can_id": "0x2a1",
+        "data_hex": "0000000000000000"
+      },
+      "installed_SDK_decode_text": "Control Mode: STANDBY(0x0)\nArm Status: NORMAL(0x0)\nMode Feed: MOVE_P(0x0)\nTeach Status: DISABLED(0x0)\nMotion Status: REACH_TARGET_POS_SUCCESSFULLY(0x0)\nTrajectory Num: 0\nError Code: 0\nError Status: \n Joint 1 Angle Limit Status: False\n Joint 2 Angle Limit Status: False\n Joint 3 Angle Limit Status: False\n Joint 4 Angle Limit Status: False\n Joint 5 Angle Limit Status: False\n Joint 6 Angle Limit Status: False\n Joint 1 Communication Status: False\n Joint 2 Communication Status: False\n Joint 3 Communication Status: False\n Joint 4 Communication Status: False\n Joint 5 Communication Status: False\n Joint 6 Communication Status: False\n\n"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019151632991",
+        "elapsed_s": 11.99786287400002,
+        "can_id": "0x2a8",
+        "data_hex": "0001851000000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedBackGripper(\n  grippers_angle: 99600, 99.600,\n  grippers_effort: 0 \t 0.000,\n  status_code: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    homing_status: False\n\n)"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019114222155",
+        "elapsed_s": 11.960451227000021,
+        "can_id": "0x261",
+        "data_hex": "00e600231e000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedbackLowSpd(\n  can_id: 0x261,\n  vol: 230, 23.0V,\n  foc_temp: 35C,\n  motor_temp: 30C,\n  foc_status: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    collision_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    stall_status: False\n,\n  bus_current: 0, 0.0A\n)"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019151932210",
+        "elapsed_s": 11.998162437000019,
+        "can_id": "0x262",
+        "data_hex": "00e600221e000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedbackLowSpd(\n  can_id: 0x262,\n  vol: 230, 23.0V,\n  foc_temp: 34C,\n  motor_temp: 30C,\n  foc_status: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    collision_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    stall_status: False\n,\n  bus_current: 0, 0.0A\n)"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019142217106",
+        "elapsed_s": 11.988448193000067,
+        "can_id": "0x263",
+        "data_hex": "00f0002520000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedbackLowSpd(\n  can_id: 0x263,\n  vol: 240, 24.0V,\n  foc_temp: 37C,\n  motor_temp: 32C,\n  foc_status: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    collision_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    stall_status: False\n,\n  bus_current: 0, 0.0A\n)"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019131668238",
+        "elapsed_s": 11.977898471999879,
+        "can_id": "0x264",
+        "data_hex": "00e6002622000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedbackLowSpd(\n  can_id: 0x264,\n  vol: 230, 23.0V,\n  foc_temp: 38C,\n  motor_temp: 34C,\n  foc_status: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    collision_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    stall_status: False\n,\n  bus_current: 0, 0.0A\n)"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019121171871",
+        "elapsed_s": 11.967403838999871,
+        "can_id": "0x265",
+        "data_hex": "00e6002925000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedbackLowSpd(\n  can_id: 0x265,\n  vol: 230, 23.0V,\n  foc_temp: 41C,\n  motor_temp: 37C,\n  foc_status: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    collision_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    stall_status: False\n,\n  bus_current: 0, 0.0A\n)"
+    },
+    {
+      "raw": {
+        "receipt_epoch_ns": "1792125019114483783",
+        "elapsed_s": 11.960712967000063,
+        "can_id": "0x266",
+        "data_hex": "00e6002723000000"
+      },
+      "installed_SDK_decode_text": "ArmMsgFeedbackLowSpd(\n  can_id: 0x266,\n  vol: 230, 23.0V,\n  foc_temp: 39C,\n  motor_temp: 35C,\n  foc_status: \n    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    collision_status: False\n    driver_error_status: False\n    driver_enable_status: False\n    stall_status: False\n,\n  bus_current: 0, 0.0A\n)"
+    }
+  ],
+  "new_actual_blocker": "Six axes disabled and pose changed substantially from prior observation. Physical support and cause of transition unknown; no automatic enable or motion.",
+  "transition_not_observed_continuously": true,
+  "cannot_claim_what_disabled_arm_or_when": true,
+  "per_window_CAN_TX_packets_constant": 13,
+  "sample_protocol_not_continued": "No J4 motion, board still 2/10, no new camera/hand-eye result.",
+  "official_reference": "https://github.com/agilexrobotics/piper_sdk/blob/master/asserts/V2/INTERFACE_V2.MD",
+  "reference_scope": "Speed unit .001rad/s only; no vendor claim that these pulses are harmless or physical support confirmed.",
+  "next_manual_fact_needed": "Confirm actual reliable mechanical support and whether manual reset/power action occurred; no request to move/restart/enable.",
+  "manual_question_answer": null
+}
