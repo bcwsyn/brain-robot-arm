@@ -1,11 +1,14 @@
-"""Offline regression for the operator-measured lens/fingertip offset."""
+"""Historical fingertip prior and adopted color-optical mount regression."""
 import ast
 import importlib.util
 import math
+import json
 from pathlib import Path
 
+import numpy as np
 import pytest
 import yaml
+from scipy.spatial.transform import Rotation
 
 ROOT = Path(__file__).parents[2]
 PROFILE = ROOT / 'brain_robot_ball_pick/config/cube_task_real.yaml'
@@ -16,19 +19,40 @@ review = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(review)
 
 
-def test_measured_tip_matches_single_real_profile_translation():
+def test_historical_operator_tip_prior_is_preserved_not_reused_as_calibration():
     profile = yaml.safe_load(PROFILE.read_text(encoding='utf-8'))
     mount = profile['piper_camera_mount_tf']['ros__parameters']
     tip = profile['grasp_lift_executor']['ros__parameters']['gripper_tip_offset_m']
     expected = [0.0, 0.070, 0.105]
     assert mount['operator_tip_optical_m'] == expected
     assert mount['measurement_basis_confirmed'] is True
-    assert mount['rotation_calibrated'] is False
     assert mount['horizontal_offset_measured'] is False
-    assert review.translation_from_tip(expected, tip, mount['rotation_rpy_rad']) == pytest.approx(
-        mount['translation_m'], abs=1e-10)
-    assert review.tip_in_camera(mount['translation_m'], tip, mount['rotation_rpy_rad']) == pytest.approx(
+    historical_rpy = [0.0, -math.pi / 2, 0.0]
+    historical_translation = [-0.070, 0.0, 0.0308]
+    assert review.translation_from_tip(expected, tip, historical_rpy) == pytest.approx(
+        historical_translation, abs=1e-10)
+    assert review.tip_in_camera(historical_translation, tip, historical_rpy) == pytest.approx(
         expected, abs=1e-10)
+
+
+def test_adopted_mount_reproduces_approved_color_optical_handeye():
+    profile = yaml.safe_load(PROFILE.read_text(encoding='utf-8'))
+    mount = profile['piper_camera_mount_tf']['ros__parameters']
+    assert mount['rotation_calibrated'] is True
+    evidence = Path(__file__).resolve().parents[5] / 'docs/evidence/piper_board_handeye_20261016'
+    fit = json.loads((evidence / 'usb31_sampling01/full_ROI/handeye_fit_report.json').read_text())
+    expected = np.asarray(fit['T_gripperBase_colorOptical_candidate'])
+    configured = np.eye(4)
+    configured[:3, :3] = Rotation.from_euler('xyz', mount['rotation_rpy_rad']).as_matrix()
+    configured[:3, 3] = mount['translation_m']
+    # Exact observed Astra link<-color TF on CC1365304DG. This fixture is
+    # not the raw factory D->C array (which has a different translation).
+    internal = np.eye(4)
+    internal[:3, :3] = Rotation.from_quat([
+        -.5014292775745802, .49997495026646027,
+        -.4929993707056679, .5055149346764157]).as_matrix()
+    internal[:3, 3] = [.0001407688856124878, .029824851989746094, -.0002287428230047226]
+    assert configured @ internal == pytest.approx(expected, abs=1e-10)
 
 
 def test_old_mount_is_not_equivalent_to_operator_measurement():

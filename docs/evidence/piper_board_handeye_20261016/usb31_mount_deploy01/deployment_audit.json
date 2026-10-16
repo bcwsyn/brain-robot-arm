@@ -1,0 +1,82 @@
+{
+  "baseline_commit": "b7cbce0",
+  "epoch": 1792145907.5371928,
+  "allowed_configuration_keys": [
+    "piper_camera_mount_tf.ros__parameters.translation_m",
+    "piper_camera_mount_tf.ros__parameters.rotation_rpy_rad",
+    "piper_camera_mount_tf.ros__parameters.rotation_calibrated"
+  ],
+  "only_allowed_keys_changed": true,
+  "production_changed_paths": [
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml"
+  ],
+  "production_SHA_before": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "production_SHA_after": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "7811b755b04fb49f06f766cf5c5694cf9eefe0a079fd4e2fbf097081119a80bd",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "canonical_runtime_installed_bytes_identical": true,
+  "installed_symlink_target": "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml",
+  "rollback_backup_matches_git_b7cbce0": true,
+  "rollback_SHA256": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+  "rollback_not_executed_on_active_configuration": true,
+  "binary_build_required": false,
+  "build_reason": "YAML-only production change; installed launch consumes a symlink to the verified source.",
+  "regression_argv": [
+    "/usr/bin/python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_camera_mount_geometry.py",
+    "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_calibration_readonly_feedback.py",
+    "/mnt/hgfs/ub/docs/evidence/piper_board_handeye_20261016/usb31_sampling01/full_ROI/test_board_handeye_fit.py"
+  ],
+  "regression_rc": 0,
+  "regression_stdout": "....................................                                     [100%]\n36 passed in 0.50s\n",
+  "live_color_mount_verified": true,
+  "exact_image_stamp_samples": 5,
+  "max_color_X_translation_error_m": 1.962615573354719e-17,
+  "max_color_X_rotation_error_deg": 4.1530774773503475e-14,
+  "CAN_TX_before": 42154,
+  "CAN_TX_after": 42154,
+  "SDK_full_window_rc": 2,
+  "SDK_original_static_slice": {
+    "indices": [
+      25,
+      58
+    ],
+    "quality": {
+      "samples": 33,
+      "fresh_samples": 33,
+      "span_s": 3.2121260166168213,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "all_owned_sources_exited": true,
+  "full_RGBD_robot_geometry_validated": false,
+  "grasp_completed": false,
+  "remaining_issue": "Image-supported detector D->C and observed internal camera TF disagree by 59.65mm; do not start depth-driven grasp on this inconsistent chain.",
+  "internal_TF_or_detector_changed": false
+}

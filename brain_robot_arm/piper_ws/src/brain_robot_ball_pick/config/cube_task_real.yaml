@@ -1,16 +1,17 @@
 piper_camera_mount_tf:
   ros__parameters:
-    # Operator confirmed 2026-10-10: fingertip is about 70 mm image-down
-    # and 105 mm lens-forward, measured from the lens centre. Horizontal
-    # offset is unmeasured (assumed zero), and rotation remains uncalibrated.
-    # Existing mount rotation maps optical XYZ to tool [Y, -X, Z].
-    # origin = [0, 0, tip_offset] - R * measured_tip_optical.
-    translation_m: [-0.070, 0.0, 0.0308]
-    rotation_rpy_rad: [0.0, -1.5707963267948966, 0.0]
+    # Adopted 2026-10-16: board 9fit+1heldout COLOR-optical hand-eye X.
+    # Compose with the observed Astra camera_link<-color_optical TF:
+    # T_G_link = X_G_color * inverse(T_link_color). Do not reuse raw D/C
+    # array labels as a substitute for the actual internal TF direction.
+    # Evidence/rollback: docs/evidence/piper_board_handeye_20261016/usb31_mount_deploy01/.
+    translation_m: [-0.04512779376581344, 0.004441055999940165, 0.02867113711249619]
+    rotation_rpy_rad: [0.2000810103842787, -1.2695342239562017, -0.24293041679986027]
+    # Historical operator fingertip prior only; not the fitted mount equation.
     operator_tip_optical_m: [0.0, 0.070, 0.105]
     measurement_basis_confirmed: true
     horizontal_offset_measured: false
-    rotation_calibrated: false
+    rotation_calibrated: true
 
 visual_search_controller:
   ros__parameters:

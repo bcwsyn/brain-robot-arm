@@ -1,0 +1,423 @@
+piper_camera_mount_tf:
+  ros__parameters:
+    # Adopted 2026-10-16: board 9fit+1heldout COLOR-optical hand-eye X.
+    # Compose with the observed Astra camera_link<-color_optical TF:
+    # T_G_link = X_G_color * inverse(T_link_color). Do not reuse raw D/C
+    # array labels as a substitute for the actual internal TF direction.
+    # Evidence/rollback: docs/evidence/piper_board_handeye_20261016/usb31_mount_deploy01/.
+    translation_m: [-0.04512779376581344, 0.004441055999940165, 0.02867113711249619]
+    rotation_rpy_rad: [0.2000810103842787, -1.2695342239562017, -0.24293041679986027]
+    # Historical operator fingertip prior only; not the fitted mount equation.
+    operator_tip_optical_m: [0.0, 0.070, 0.105]
+    measurement_basis_confirmed: true
+    horizontal_offset_measured: false
+    rotation_calibrated: true
+
+visual_search_controller:
+  ros__parameters:
+    backend: piper
+    real_motion_enabled: true
+    observe_pose_calibrated: true
+    # Reuse the prepare/search sequence proven by the red-ball simulation.
+    # The observation target below is the operator's measured real pose.
+    # These rates are three times the previous
+    # configuration (0.135/0.108 rad/s; alignment limit 0.135 rad/s).
+    execute_prepare: true
+    skip_prepare: false
+    # One-shot physical observation positioning can stop here before SEARCH.
+    # The normal one-key task keeps the full search path enabled by default.
+    stop_after_observe: false
+    # Opt-in supervised runs may stop on a stable valid target before ALIGN.
+    # The normal one-key task keeps the complete search/align/grasp path.
+    stop_after_target_acquired: false
+    direct_grasp_after_align: true
+    # The depth probe has already proven a static base_link target across
+    # three frames. Hand that fixed 3-D model directly to the existing
+    # collision-checked pregrasp instead of chasing wrist-camera pixels and
+    # losing the target through self-induced parallax.
+    depth_only_direct_grasp_after_lock: true
+    freeze_grasp_tracking: true
+    level_align_enabled: false
+    use_sim_time: false
+    joint_names: [joint1, joint2, joint3, joint4, joint5, joint6]
+    # 2026-10-14: keep measured J1/J2/J3/J4/J6; operator selected J5=70 deg.
+    # Use the deployed driver's degrees*0.017444 feedback convention.
+    observe_joint_positions: [-0.141941828, 0.942464432, -1.269242884, -0.074433548, 1.22108, 0.089435388]
+    reset_joint_positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    horizontal_joint: joint1
+    vertical_joint: joint5
+    # B2: visual search/alignment may only command J1/J5. J2/J3 assistance
+    # and J4/J6 horizon locks can alter the wrist's forward position.
+    alignment_assist_enabled: false
+    alignment_assist_horizontal_joint: joint2
+    alignment_assist_vertical_joint: joint3
+    alignment_assist_horizontal_ratio: 0.20
+    alignment_assist_vertical_ratio: 0.20
+    alignment_assist_horizontal_sign: 1.0
+    alignment_assist_vertical_sign: 1.0
+    alignment_assist_speed_limit: 0.03
+    # Do not command J4/J6 during real visual search. ROS 2 parameters do not
+    # preserve an untyped YAML empty list, so use an explicit enable flag.
+    horizon_lock_enabled: false
+    horizontal_error_sign: -1.0
+    vertical_error_sign: 1.0
+    # Keep 0.15 rad clearance inside the adapter's J1 envelope. MoveIt/TOTG
+    # may generate intermediate samples infinitesimally beyond an exact goal bound.
+    horizontal_search_min: -1.35
+    horizontal_search_max: 1.35
+    vertical_search_min: -0.60
+    vertical_search_max: 0.95
+    search_bounds_relative_to_start: false
+    local_horizontal_range: 0.08
+    local_vertical_range: 0.12
+    # Let the stationary wrist image stabilize BEFORE any scan. Then visit
+    # both sides of a small centered scan, return to its measured center,
+    # and only then use the existing full-search bounds (never enlarge them).
+    initial_search_center_first: true
+    initial_search_hold_s: 2.0
+    # On loss, reproject the recent base_link target history into the current
+    # wrist-camera frame. This replaces the former fixed J1/J5 direction
+    # jump with at most two bounded prediction-guided reacquisition moves.
+    last_path_prediction_horizon_s: 0.25
+    last_path_prediction_max_speed_m_s: 0.40
+    last_path_reacquire_max_joint_step_rad: 0.60
+    last_path_reacquire_max_steps: 2
+    last_path_min_predicted_depth_m: 0.05
+    horizontal_search_speed: 0.135
+    vertical_search_speed: 0.108
+    joint_position_tolerance: 0.01
+    search_timeout_s: 75.0
+    local_search_timeout_s: 5.0
+    # Real search is executed as short MoveIt-planned segments. Each segment
+    # is collision-checked against the current planning scene before it is
+    # sent to piper_jog_adapter; no blind JointJog search is used on hardware.
+    search_planning_step_rad: 0.20
+    search_planning_time_s: 0.50
+    search_planning_attempts: 2
+    search_planning_velocity_scaling: 0.05
+    search_planning_acceleration_scaling: 0.05
+    # A segment must not park the physical arm at one angle.  Continue the
+    # sweep after this bounded target timeout only when six-axis feedback is
+    # fresh; stale feedback still faults and the driver watchdog stops output.
+    search_segment_timeout_s: 15.0
+    target_timeout_s: 0.60
+    # Hold the aligned pose through short wrist-camera detector flicker.
+    # Reversing immediately into LAST_PATH_REACQUIRE caused a retreat loop.
+    target_loss_grace_s: 2.0
+    # S-V1.9-1 feedback can pause for about 18 s during the 0x2Ax -> 0x3Ax
+    # transition.  The PiPER driver suppresses output during that window;
+    # keep SEARCH alive until the bounded transition completes.
+    joint_state_timeout_s: 25.0
+    # depth_cube_probe publishes true only after its geometry/workspace gate.
+    # Stop SEARCH immediately on that accepted base-frame sample before the
+    # moving wrist camera sweeps past the static cube.
+    target_acquire_frames: 1
+    align_stable_frames: 1
+    target_acquire_error_ratio: 0.05
+    grasp_reacquire_topic: /brain_robot_grasp/reacquire
+    horizontal_kp: 0.00675
+    vertical_kp: 0.00675
+    align_joint_speed_limit: 0.135
+    horizon_lock_kp: 0.25
+    horizon_lock_speed_limit: 0.081
+    horizon_lock_tolerance: 0.03
+    control_rate_hz: 20.0
+    prepare_velocity_scaling: 0.01
+    prepare_acceleration_scaling: 0.01
+    prepare_planning_time_s: 2.0
+    # The real adapter keeps the previously requested 1/5 speed.  Allow
+    # enough time to reach the fixed simulation observation pose from a
+    # manually recovered physical pose.
+    prepare_execution_timeout_s: 300.0
+    # Interpolate the direct current->observe path below the adapter jump gate.
+    prepare_max_joint_step_rad: 0.08
+    # The default real path now requires RGB purple/rectangle semantics plus
+    # the detector's stable metric-depth and physical-size gates. The former
+    # geometry-only stream remains available only through an explicit
+    # diagnostic override.
+    depth_only_target_enabled: false
+    depth_only_valid_topic: /brain_robot_vision/depth_candidate_valid
+    depth_only_point_topic: /brain_robot_vision/depth_candidate_point
+    depth_only_error_topic: /brain_robot_vision/depth_candidate_error
+    error_topic: /brain_robot_vision/pixel_error
+    target_valid_topic: /brain_robot_vision/target_valid
+    target_point_topic: /brain_robot_vision/target_point_camera
+    target_history_reference_frame: base_link
+    target_history_topic: /brain_robot_visual_control/target_history
+    # Must exceed target_loss_grace_s; otherwise the last-path recovery is
+    # guaranteed to discard its only base-frame target before it can run.
+    target_history_window_s: 5.0
+    joint_state_topic: /joint_states
+    # The physical camera is mounted on the gripper and this launch disables
+    # MoveIt's Octomap updater to prevent self-obstacle oscillation. Use the
+    # TF-gated cloud only as a fresh-scene heartbeat; target geometry still
+    # comes from the RGB-D detector topics above.
+    filtered_point_cloud_topic: /brain_robot_vision/tf_validated_points
+    # The wrist point cloud is intentionally not fed to Octomap. MoveIt still
+    # collision-checks against its current static scene; do not block search
+    # when the disabled wrist cloud has no fresh frame.
+    require_fresh_planning_scene: false
+    planning_scene_timeout_s: 2.5
+    joint_command_topic: /servo_node/delta_joint_cmds
+    servo_status_topic: /servo_node/status
+    servo_start_service: /servo_node/start_servo
+    servo_stop_service: /servo_node/stop_servo
+    emergency_stop_topic: /brain_robot_control/emergency_stop
+
+grasp_lift_executor:
+  ros__parameters:
+    # Real execution starts automatically when the visual controller reaches
+    # GRASP_READY. The execute service/key 6 remains available for a manual
+    # retry after a stopped sequence.
+    simulation_only: false
+    real_grasp_enabled: true
+    auto_execute: true
+    # Deterministic real-arm skeleton: aligned visual point -> pregrasp ->
+    # bounded approach -> close -> lift. Candidate search stays disabled until
+    # this single path completes on the physical arm.
+    candidate_grasp_enabled: false
+    candidate_grasp_order: [NONE]
+    # SDK unit: 0.001 mm. Current 0x47E read-back confirms 100 mm range,
+    # and the active ROS driver multiplier is 1. Adapter and loaded finger
+    # model share this range. Approach is gated
+    # on fresh feedback reaching this command within the existing 3 mm tolerance.
+    gripper_open_value: 100000
+    # A target-directed approach is forbidden unless the full bounded-open
+    # command is physically confirmed by fresh gripper feedback.
+    allow_open_feedback_unconfirmed_for_approach: false
+    # Command the bounded closed endpoint; feedback motion, rather than
+    # reaching zero through the cube, confirms that contact-closing occurred.
+    gripper_close_value: 0
+    gripper_settle_s: 2.0
+    # Fresh RGB-D face must fit the measured open jaws before closing; a
+    # planned endpoint/FK against the same locked model is insufficient.
+    fresh_jaw_capture_required: true
+    # Offline/opt-in NO-CLOSE preview, NOT enabled on the real default path.
+    # It checks direction only; it cannot certify physical jaw capture.
+    visual_microsteps_enabled: false
+    visual_microstep_m: 0.005
+    visual_microstep_angle_rad: 0.01745329252
+    visual_view_recovery_angle_rad: 0.01745329252
+    visual_view_recovery_steps: 3
+    visual_microstep_max_steps: 4
+    visual_target_association_m: 0.04
+    # Tolerate a short RGB-D outlier burst while keeping the locked target;
+    # persistent disagreement still triggers the association stop.
+    near_rgb_association_bad_frames: 5
+    # No invented jaw ROI: current contact projection lies outside raw RGB.
+    # Empty YAML arrays also cannot reliably retain the ROS double-array type.
+    visual_jaw_image_roi_confirmed: false
+    # After confirming the lift, return along the same collision-checked
+    # vertical path, release at the measured grasp pose, and retreat upward.
+    # No uncalibrated lateral transfer or automatic motor disable is used.
+    auto_release_after_lift: true
+    hold_after_lift_s: 1.0
+    # Side approach: keep the gripper base above the tabletop while the
+    # camera optical axis provides the horizontal standoff.
+    grasp_height_offset_m: 0.0
+    gripper_feedback_topic: /joint_states_feedback
+    gripper_feedback_timeout_s: 3.0
+    min_gripper_feedback_motion_rad: 0.001
+    gripper_position_tolerance_m: 0.003
+    prepare_on_grasp_ready: true
+    top_down_grasp_enabled: true
+    # Detector coordinates describe a visible cube surface, not its volume
+    # centre. Keep the pregrasp outside that surface, then put the fingertips
+    # just inside it with the same tilt/yaw. This size-derived insertion is a
+    # bounded tabletop-cube heuristic, not an independent TCP calibration.
+    top_down_pregrasp_clearance_m: 0.024
+    top_down_pregrasp_clearance_candidates_m: [0.024]
+    top_down_grasp_clearance_m: 0.0
+    top_down_surface_grasp_enabled: true
+    surface_insertion_fraction: 0.4
+    surface_insertion_max_m: 0.012
+    # Compare fresh measured-joint FK with the planned fingertip landing.
+    # Allow one <=20 mm fixed-orientation correction; never close far away.
+    grasp_landing_tolerance_m: 0.010
+    grasp_landing_orientation_tolerance_rad: 0.12
+    grasp_landing_max_correction_m: 0.020
+    # The generic trajectory gate is intentionally wider for transport. Before
+    # FK landing/close, require the descent endpoint itself to settle within 0.01 rad.
+    grasp_landing_feedback_tolerance_rad: 0.010
+    grasp_landing_feedback_timeout_s: 8.0
+    # Intermediate wrist yaw gives J6 a bounded alternative to the measured
+    # +/-0.814 rad plans that narrowly exceeded the unchanged +/-0.80 gate.
+    # This is the measured reachable tilted branch; neighboring values let
+    # the constrained planner avoid the exact J2/J6 boundary without leaving
+    # the base-side approach fan.
+    top_down_yaw_candidates: [0.0, 0.78539816339, -0.78539816339, 1.57079632679, -1.57079632679, 3.14159265359]
+    top_down_tilt_candidates: [0.35, 0.75, 0.90, 1.05]
+    real_pose_planning_pipeline: pilz_industrial_motion_planner
+    real_pose_planner_id: PTP
+    diagonal_side_grasp_enabled: true
+    diagonal_pregrasp_standoff_m: 0.17
+    diagonal_grasp_standoff_m: 0.045
+    diagonal_pregrasp_lift_m: 0.20
+    diagonal_grasp_lift_m: 0.10
+    diagonal_lateral_offset_m: 0.06
+    # The MoveIt arm group is declared as base_link -> link6; gripper_base
+    # is fixed at the same origin but lies outside that semantic chain.
+    end_effector_link: link6
+    gripper_tip_offset_m: 0.1358
+    gripper_touch_links: [link6, gripper_base, link7, link8]
+    use_sim_time: false
+    lift_reference_frame: base_link
+    camera_optical_frame: camera_depth_optical_frame
+    target_point_topic: /brain_robot_vision/target_point_camera
+    target_size_topic: /brain_robot_vision/target_size
+    depth_valid_topic: /brain_robot_vision/depth_valid
+    depth_only_target_enabled: false
+    depth_only_valid_topic: /brain_robot_vision/depth_candidate_valid
+    depth_only_point_topic: /brain_robot_vision/depth_candidate_point
+    depth_only_size_topic: /brain_robot_vision/depth_candidate_size
+    depth_only_error_topic: /brain_robot_vision/depth_candidate_error
+    adaptive_size_enabled: true
+    min_object_size_m: 0.01
+    max_object_size_m: 0.25
+    target_timeout_s: 0.60
+    # Static tabletop target: capture one base-frame model and never reacquire after lock.
+    static_target_lock: true
+    # Near-distance DEPTH loss does not imply loss of the RGB cube. Initial
+    # locking still requires RGB-D; predictions use actual image-time TF.
+    # These bounds apply since the last same-object measured-depth seed only.
+    # One reliable RGB-D lock, then program-driven ORIGINAL-RGB correction
+    # and actual-feedback segments. The integrated path derives its finite
+    # allowance from two checked plans and never refreshes the static lock.
+    near_depth_rgb_tracking_enabled: true
+    automatic_rgb_approach_enabled: true
+    near_depth_prediction_max_age_s: 30.0
+    near_depth_prediction_max_travel_m: 0.030
+    # Reuse the two-segment grasp path with the aligned tool attitude as the
+    # reference, plus the approved pitch change below; no preset enumeration.
+    # Frozen 2026-10-10 target: 79-point PTP + 9-point Cartesian path reviewed
+    # in isolated MoveIt. This is NOT yet a physically verified grasp.
+    # Approved variable attitude: jaws aim at the frozen target and swing
+    # continuously into the tabletop entry; do not freeze the ALIGN quaternion.
+    target_directed_grasp_enabled: true
+    # Swing halfway from the measured wrist-to-target ray toward world down.
+    # Geometry-derived slanted entry; full vertical entry failed unchanged IK limits.
+    target_directed_downward_fraction: 0.5
+    preserve_aligned_grasp_orientation: false
+    # Legacy rollback only (inactive in target-directed mode): 5-degree
+    # downward tool attitude change about measured positive
+    # J5 axis. MoveIt re-solves all joints around the same locked target.
+    # Set to 0.0 to restore the previous fixed aligned attitude.
+    aligned_grasp_pitch_down_rad: 0.08726646259971647
+    grasp_alignment_error_ratio: 0.05
+    # The planned pregrasp is followed by bounded Cartesian microsteps. Every
+    # step sees a fresh RGB-D target and measured joint feedback before continuing.
+    approach_microstep_m: 0.008
+    approach_max_steps: 20
+    approach_prediction_horizon_s: 0.08
+    approach_max_target_speed_m_s: 0.30
+    # Keep the measured point target exact while allowing the constrained
+    # planner to choose a nearby wrist attitude inside the adapter envelope.
+    # 0.20 rad preserves the selected top/diagonal approach direction.
+    grasp_orientation_tolerance: 0.20
+    # Reject any Cartesian path whose adjacent IK samples rotate one joint by
+    # more than 0.35 rad; this prevents branch flips before the adapter sees it.
+    cartesian_max_joint_step_rad: 0.35
+    trajectory_feedback_tolerance_rad: 0.04
+    # The physical adapter caps streamed trajectory steps at 0.189 rad/s;
+    # allow the official MoveIt-planned pregrasp to finish at that measured
+    # rate before declaring execution failure.
+    trajectory_feedback_timeout_s: 45.0
+    # J2/J6 use the controller's already-read-back S-V1.9-1 physical range;
+    # the former 1.40/0.80 software envelope made the measured tabletop cube
+    # unreachable. J1/J3/J4/J5 remain at the established task envelope.
+    # Candidate plans are still filtered against this exact range before
+    # publication; an invalid tilt/yaw is skipped instead of disarming the
+    # sole output path.
+    real_trajectory_joint_min: [-1.50, -0.30, -1.40, -0.80, -1.20, -3.14159265359]
+    # J5 positive bound matches the single verified firmware reply +70 deg
+    # and the deployed driver convention. Other joint bounds stay unchanged.
+    real_trajectory_joint_max: [1.50, 3.14159265359, 0.40, 0.80, 1.22108, 3.14159265359]
+    # Ask MoveIt to search inside the unchanged adapter envelope rather than
+    # planning through a wider URDF branch and rejecting it only afterwards.
+    real_trajectory_limit_margin_rad: 0.005
+    # Wait through the bounded S-V1.9-1 feedback gap before asking MoveIt for
+    # a pregrasp plan; never plan from a stale or zero-filled joint state.
+    joint_state_wait_timeout_s: 25.0
+    grasp_reacquire_topic: /brain_robot_grasp/reacquire
+    emergency_stop_topic: /brain_robot_control/emergency_stop
+
+active_scan_supervisor:
+  ros__parameters:
+    point_cloud_topic: /brain_robot_vision/tf_validated_points
+    # No Octomap is built for the wrist-mounted camera. Keep the gated cloud
+    # as diagnostic evidence only; it is never treated as robot-free geometry.
+    evidence_point_cloud_topic: /brain_robot_vision/tf_validated_points
+    joint_state_topic: /piper_moveit_joint_states
+    planning_scene_topic: /monitored_planning_scene
+    reference_frame: base_link
+    camera_optical_frame: camera_color_optical_frame
+    # MoveIt's self-filtered cloud currently arrives at about 1 Hz on the
+    # physical setup; allow normal transport jitter without declaring it stale.
+    map_timeout_s: 3.0
+    joint_state_timeout_s: 0.30
+    initial_observe_stable_frames: 3
+    voxel_size_m: 0.03
+    evidence_window_s: 10.0
+    max_evidence_points_per_frame: 3000
+
+pointcloud_tf_gate:
+  ros__parameters:
+    input_topic: /camera/depth/points
+    output_topic: /brain_robot_vision/tf_validated_points
+    reference_frame: base_link
+    # Validate the camera cloud against the base transform only. Requiring
+    # every finger TF at the camera timestamp rejected nearly every frame on
+    # S-V1.9-1 feedback gaps; this cloud is not passed to an Octomap updater.
+    required_frames: [base_link]
+    transform_timeout_s: 0.05
+
+depth_cube_probe:
+  ros__parameters:
+    # This stream feeds target validity/geometry only when depth-only mode is
+    # enabled; it never publishes a joint or gripper command.
+    depth_topic: /camera/depth/image_raw
+    camera_info_topic: /camera/depth/camera_info
+    frame_stride: 6
+    sample_stride: 8
+    border_px: 12
+    min_plane_samples: 500
+    plane_inlier_m: 0.006
+    min_height_m: 0.020
+    max_height_m: 0.070
+    min_area_px: 40
+    min_fill_ratio: 0.45
+    min_size_m: 0.025
+    max_size_m: 0.070
+    max_aspect_ratio: 1.45
+    # SEARCH is continuously moving. Entity replay showed the reachable cube
+    # at (0.336,-0.305,0.114)m for one frame before the next sweep sample left
+    # it; requiring three consecutive frames therefore made a real target
+    # impossible to lock. Plane protrusion, metric size, bounded base-frame
+    # workspace and fresh TF still all have to pass before this single frame.
+    required_stable_frames: 1
+    # The wrist camera moves during SEARCH, so pixel displacement is not
+    # evidence that the tabletop cube moved.  Accumulate stability in the
+    # fixed robot base frame; camera/gripper self-geometry consequently moves
+    # in base_link and cannot authorize a grasp as a static target.
+    stability_reference_frame: base_link
+    max_reference_delta_m: 0.025
+    transform_timeout_s: 0.05
+    # The single-threaded probe cannot receive a future joint TF while its
+    # image callback is blocked. Permit only a tightly bounded latest-TF
+    # fallback for normal camera/joint timestamp skew.
+    max_transform_age_s: 0.10
+    # Entity evidence separates the reachable tabletop cube near
+    # (0.33,-0.31,0.11)m from stable but unreachable geometry near x=0.09
+    # and background components beyond x=0.54. Select the largest geometry
+    # candidate inside this fixed base_link workspace, not the largest blob in
+    # the entire camera image.
+    workspace_min_x_m: 0.20
+    workspace_max_x_m: 0.45
+    workspace_min_y_m: -0.45
+    workspace_max_y_m: -0.15
+    workspace_min_z_m: 0.08
+    workspace_max_z_m: 0.20
+    # Retained for backward-compatible parameter parsing; base-frame
+    # stability above is authoritative for the real depth-only profile.
+    max_center_delta_px: 16.0
+    max_depth_delta_m: 0.030

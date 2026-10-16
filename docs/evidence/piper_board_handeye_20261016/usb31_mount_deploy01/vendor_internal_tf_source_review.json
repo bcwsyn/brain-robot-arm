@@ -1,0 +1,24 @@
+{
+  "read_only": true,
+  "physical_ground_truth_not_inferred_from_published_TF": true,
+  "sources": [
+    {
+      "path": "/home/johnwick/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/ob_camera_node.cpp",
+      "SHA256": "b9b5eaa380f8eb8ef714378a5e465092af81646aa255d35902aab0c235c620b1",
+      "lines_1_based": [
+        351,
+        429
+      ],
+      "excerpt": "\nvoid OBCameraNode::publishStaticTF(const rclcpp::Time& t, const std::vector<float>& trans,\n                                   const tf2::Quaternion& q, const std::string& from,\n                                   const std::string& to) {\n  CHECK_EQ(trans.size(), 3u);\n  geometry_msgs::msg::TransformStamped msg;\n  msg.header.stamp = t;\n  msg.header.frame_id = from;\n  msg.child_frame_id = to;\n  msg.transform.translation.x = trans.at(2) / 1000.0;\n  msg.transform.translation.y = -trans.at(0) / 1000.0;\n  msg.transform.translation.z = -trans.at(1) / 1000.0;\n  msg.transform.rotation.x = q.getX();\n  msg.transform.rotation.y = q.getY();\n  msg.transform.rotation.z = q.getZ();\n  msg.transform.rotation.w = q.getW();\n  static_tf_msgs_.push_back(msg);\n}\n\nvoid OBCameraNode::calcAndPublishStaticTransform() {\n  tf2::Quaternion quaternion_optical, zero_rot;\n  zero_rot.setRPY(0.0, 0.0, 0.0);\n  quaternion_optical.setRPY(-M_PI / 2, 0.0, -M_PI / 2);\n  std::vector<float> zero_trans = {0, 0, 0};\n\n  auto rotation = camera_params_->r2l_r;\n  auto transition = camera_params_->r2l_t;\n  auto Q = rotationMatrixToQuaternion(rotation);\n  for (int i = 0; i < 9; i++) {\n    if (std::isnan(rotation[i])) {\n      Q.setRPY(0, 0, 0);\n      break;\n    }\n  }\n  Q = quaternion_optical * Q * quaternion_optical.inverse();\n  std::vector<float> trans = {transition[0], transition[1], transition[2]};\n  if (std::isnan(transition[0]) || std::isnan(transition[1]) || std::isnan(transition[2])) {\n    trans[0] = 0;\n    trans[1] = 0;\n    trans[2] = 0;\n  }\n  rclcpp::Time tf_timestamp = node_->now();\n\n  publishStaticTF(tf_timestamp, trans, Q, frame_id_[DEPTH], frame_id_[COLOR]);\n  publishStaticTF(tf_timestamp, trans, Q, camera_link_frame_id_, frame_id_[COLOR]);\n  publishStaticTF(tf_timestamp, zero_trans, quaternion_optical, frame_id_[COLOR],\n                  optical_frame_id_[COLOR]);\n  publishStaticTF(tf_timestamp, zero_trans, quaternion_optical, frame_id_[DEPTH],\n                  optical_frame_id_[DEPTH]);\n  publishStaticTF(tf_timestamp, zero_trans, zero_rot, camera_link_frame_id_, frame_id_[DEPTH]);\n  auto ex_msg = obExtrinsicsToMsg(rotation, transition, \"depth_to_color_extrinsics\");\n  ex_msg.header.stamp = node_->now();\n  extrinsics_publisher_->publish(ex_msg);\n}\n\nvoid OBCameraNode::publishDynamicTransforms() {\n  RCLCPP_WARN(logger_, \"Publishing dynamic camera transforms (/tf) at %g Hz\", tf_publish_rate_);\n  static std::mutex mu;\n  std::unique_lock<std::mutex> lock(mu);\n  while (rclcpp::ok() && is_running_) {\n    tf_cv_.wait_for(lock, std::chrono::milliseconds((int)(1000.0 / tf_publish_rate_)),\n                    [this] { return (!(is_running_)); });\n    {\n      rclcpp::Time t = node_->now();\n      for (auto& msg : static_tf_msgs_) {\n        msg.header.stamp = t;\n      }\n      dynamic_tf_broadcaster_->sendTransform(static_tf_msgs_);\n    }\n  }\n}\n\nvoid OBCameraNode::publishStaticTransforms() {\n  calcAndPublishStaticTransform();\n  if (tf_publish_rate_ > 0) {\n    tf_thread_ = std::make_shared<std::thread>([this]() { publishDynamicTransforms(); });\n  } else {\n    static_tf_broadcaster_->sendTransform(static_tf_msgs_);\n  }"
+    },
+    {
+      "path": "/home/johnwick/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/utils.cpp",
+      "SHA256": "672897d4187cc3a60c3570c201716615575879ca260360c65689b9c8ab6e5686",
+      "lines_1_based": [
+        37,
+        47
+      ],
+      "excerpt": "tf2::Quaternion rotationMatrixToQuaternion(const float rotation[9]) {\n  Eigen::Matrix3f m;\n  // We need to be careful about the order, as RS2 rotation matrix is\n  // column-major, while Eigen::Matrix3f expects row-major.\n  m << rotation[0], rotation[3], rotation[6], rotation[1], rotation[4], rotation[7], rotation[2],\n      rotation[5], rotation[8];\n  Eigen::Quaternionf q(m);\n  return {q.x(), q.y(), q.z(), q.w()};\n}\n\nastra_camera_msgs::msg::Extrinsics obExtrinsicsToMsg(const float rotation[9],"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "read_only": true,
+  "epoch": 1792145379.9194667,
+  "motion_commands_sent": false,
+  "transforms": {
+    "camera_link<-camera_depth_optical_frame": {
+      "header": {
+        "stamp": {
+          "sec": 1792145381,
+          "nanosec": 770522523
+        },
+        "frame_id": "camera_link"
+      },
+      "child_frame_id": "camera_depth_optical_frame",
+      "transform": {
+        "translation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": -0.5,
+          "y": 0.4999999999999999,
+          "z": -0.5,
+          "w": 0.5000000000000001
+        }
+      }
+    },
+    "camera_link<-camera_color_optical_frame": {
+      "header": {
+        "stamp": {
+          "sec": 1792145381,
+          "nanosec": 770522523
+        },
+        "frame_id": "camera_link"
+      },
+      "child_frame_id": "camera_color_optical_frame",
+      "transform": {
+        "translation": {
+          "x": 0.0001407688856124878,
+          "y": 0.029824851989746094,
+          "z": -0.0002287428230047226
+        },
+        "rotation": {
+          "x": -0.5014292775745802,
+          "y": 0.49997495026646027,
+          "z": -0.4929993707056679,
+          "w": 0.5055149346764157
+        }
+      }
+    },
+    "camera_depth_optical_frame<-camera_color_optical_frame": {
+      "header": {
+        "stamp": {
+          "sec": 1792145381,
+          "nanosec": 770522523
+        },
+        "frame_id": "camera_depth_optical_frame"
+      },
+      "child_frame_id": "camera_color_optical_frame",
+      "transform": {
+        "translation": {
+          "x": -0.029824851989746094,
+          "y": 0.00022874282300472306,
+          "z": 0.0001407688856124951
+        },
+        "rotation": {
+          "x": -0.001444961229478487,
+          "y": -0.00698494563943378,
+          "z": 0.005530618331314076,
+          "w": 0.9999592666115619
+        }
+      }
+    },
+    "camera_color_optical_frame<-camera_depth_optical_frame": {
+      "header": {
+        "stamp": {
+          "sec": 1792145381,
+          "nanosec": 770522523
+        },
+        "frame_id": "camera_color_optical_frame"
+      },
+      "child_frame_id": "camera_depth_optical_frame",
+      "transform": {
+        "translation": {
+          "x": 0.029815618274146496,
+          "y": -0.0005575944690075574,
+          "z": -0.0005585075711284438
+        },
+        "rotation": {
+          "x": 0.001444961229478487,
+          "y": 0.00698494563943378,
+          "z": -0.005530618331314104,
+          "w": 0.9999592666115619
+        }
+      }
+    }
+  },
+  "error": null
+}
