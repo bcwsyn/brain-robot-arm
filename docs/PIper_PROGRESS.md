@@ -1,4 +1,14 @@
-## 本轮（2026-10-16 12:13）：获准推进离线修复与记录包回放完成，106测试通过，未部署/未运动
+## 本轮（2026-10-16 12:19）：已确认候选部署/限定J4测试；部署与原两条规划通过，原速度静止判据未过，未运动
+
+- 用户“确认”针对上一轮具体fef28d6+c6d35ec候选部署/仅原J4往返。两repo技能指导核对真正安装symlink与旧SHA，先保存a5074c61完整回退，再仅替换home adapter为规范5c1c1be2…；不是另写运动入口或改生产参数。规范源码本轮不变，其他脏树不纳入。
+- 普通沙箱netlink禁止且PID视图隔离，改用已授权escalated真实检查，未误判硬件。实际无控制源，can0 STOPPED/DOWN/RX0/TX0；sudo -n true通过，仅已有接口固定1Mbps/.75/queue1000/UP后ERROR-ACTIVE/RX持续，无USB/gs_usb重载/Reset/固件操作。根34GB可用，不清数据。
+- 原工具`collect_calibration_sdk.py --output .../sdk_preflight.json --duration-s 6`与有界`--duration-s 10`均rc2；分别59/58fresh与100/99fresh，六轴波动0，六true、99.6mm，q_mdeg[-8038,54525,-72724,0,69717,5238]。SDK偶发速度脉冲，按原summarize连续子窗核对最长22/2.1067s和28/2.7106s，无原3秒/30样本合格窗；两原始序列保留，不拿末速度0/角度稳定替代。不重复第三同条件窗口，不修改原阈值或宣称硬件故障。
+- 为完成不受影响的部署验证，复用原采样helpers的AST及原launch，driver auto_enable=false/原模型MoveIt/新adapter实际启动（无controller/Servo/grasp/相机）。读取motion_enabled=false及原.189/25/.2/.1和限位，原URDF SHA0b41516e…；当前实际q生成J4+6°及回当前起点，两条原MoveIt/checked_trajectory与状态检查通过。原ROS角度3秒静止通过，但不替代失败的SDK速度条件。世界为空不当物理间隙证明，未发布规划。
+- 原bag148反馈、0joint_commands、无arm_trajectory/gripper请求；未调用enable_srv/enable_motion/arm、未开闭/硬件失能/复位，**没有实机往返**。CAN控制窗RX333770→355082、TX0→13为driver初始化流量，不能称TX0。全部自有源退出：bag/nodes0、driver原2秒宽限后−9，原因未调查/原日志保留，独立进程核对无控制源。
+- `verify_deployed_without_motion.py`rc0只代表部署运行/规划；`package_validation.py`rc0核验16原件归档逐SHA回读，完整计划/SDK/旧adapter回退/授权与原始bag位于[deploy_j4_validation01](evidence/piper_board_handeye_20261016/deploy_j4_validation01/README.md)。另外四冻结源SHA不变，canonical和home同批准候选；原板/方块不混改，P1板仍2/10，无新图/手眼/TF或推送。
+- 下一只读核对速度字段/脉冲与关节角、时间的对应，厘清原静止判据后续用已有J4许可；不重复索部署/同一动作批准或让用户恢复正常接口，不擅自放宽门、不自动继续其余八姿态。候选保留已部署但源已退出，最后六true/99.6mm仅采集时事实。
+
+## 历史本轮（2026-10-16 12:13）：获准推进离线修复与记录包回放完成，106测试通过，未部署/未运动
 
 - 用户“同意”仅解冻轨迹推进、先离线修复回放，随后继续不改变权限。使用ros2-piper-debug与surgical-change，先检查脏树/实际部署SHA及原阻断，不改任何其他成员约840项既有变更；不启动ROS/CAN/相机/控制源，不新增物理读数。
 - 规范adapter只改`_apply_trajectory`（AST核对其余方法不变）：新鲜反馈下前次命令累计，复用原速度/边界；积分窗复用min(原command_timeout=.20,原joint_state_timeout=25)，过旧/未来反馈持实测不累计，长调度间隔/新轨迹/实际反馈跳变重锚。复用原0.10rad起点误差界封顶命令超前，未调参数/部署。命令及实际反馈均达原1e-4内部epsilon才清轨迹，调用者原0.04rad标准不改。原驱动0.5秒抑制/25秒宽限与其他生产源未变。

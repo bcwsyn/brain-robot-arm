@@ -1,0 +1,222 @@
+{
+  "operator_scope": "Deploy c6d35ec adapter candidate including prior fef28d6 takeover fix, preserve old deployed backup, validate only original bounded J4 out-and-back from fresh actual pose; no other sampling or grasp.",
+  "deployment_completed": true,
+  "candidate_runtime_started_disarmed": true,
+  "two_original_plans_passed": true,
+  "SDK_windows": [
+    {
+      "source": "sdk_preflight.json",
+      "original_full_window_quality": {
+        "samples": 59,
+        "fresh_samples": 58,
+        "span_s": 5.719975233078003,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_contiguous_original_static_subwindow": {
+        "samples": 22,
+        "fresh_samples": 22,
+        "span_s": 2.1067323684692383,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "speed_outside_original_1_millirad_s_count": 4,
+      "last_fresh_sample": {
+        "epoch": 1792124145.2967358,
+        "sdk_receipt_stamps": {
+          "joint": "1792124145.2955072",
+          "high": "1792124145.2964807",
+          "low": "1792124145.2963698",
+          "gripper": "1792124145.2958257"
+        },
+        "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+        "high_hz": 100.0,
+        "joint_hz": 200.0,
+        "q_mdeg": [
+          -8038,
+          54525,
+          -72724,
+          0,
+          69717,
+          5238
+        ],
+        "q_driver_rad": [
+          -0.14021487200000002,
+          0.9511341000000001,
+          -1.2685974560000002,
+          0.0,
+          1.2161433480000001,
+          0.09137167200000001
+        ],
+        "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+        "speed_millirad_s": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "gripper_raw_micrometers": 99600,
+        "gripper_mm": 99.6,
+        "gripper_effort_raw": 82,
+        "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+        "fresh_after_passive_connection": true,
+        "physical_contact_verified_by_sdk": false
+      }
+    },
+    {
+      "source": "sdk_preflight_10s.json",
+      "original_full_window_quality": {
+        "samples": 100,
+        "fresh_samples": 99,
+        "span_s": 9.83478856086731,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "longest_contiguous_original_static_subwindow": {
+        "samples": 28,
+        "fresh_samples": 28,
+        "span_s": 2.710637092590332,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "speed_outside_original_1_millirad_s_count": 6,
+      "last_fresh_sample": {
+        "epoch": 1792124183.6456969,
+        "sdk_receipt_stamps": {
+          "joint": "1792124183.6448984",
+          "high": "1792124183.6361895",
+          "low": "1792124183.6362236",
+          "gripper": "1792124183.6402524"
+        },
+        "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+        "high_hz": 100.0,
+        "joint_hz": 200.0,
+        "q_mdeg": [
+          -8038,
+          54525,
+          -72724,
+          0,
+          69717,
+          5238
+        ],
+        "q_driver_rad": [
+          -0.14021487200000002,
+          0.9511341000000001,
+          -1.2685974560000002,
+          0.0,
+          1.2161433480000001,
+          0.09137167200000001
+        ],
+        "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+        "speed_millirad_s": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "gripper_raw_micrometers": 99600,
+        "gripper_mm": 99.6,
+        "gripper_effort_raw": 76,
+        "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+        "fresh_after_passive_connection": true,
+        "physical_contact_verified_by_sdk": false
+      }
+    }
+  ],
+  "actual_J4_out_and_back_executed": false,
+  "reason": "Original passive SDK 3-second/30-sample speed+angle static window failed; no threshold change.",
+  "bag_message_counts": {
+    "/brain_robot_control/adapter_armed": 0,
+    "/joint_commands": 0,
+    "/joint_states_feedback": 148
+  },
+  "trajectory_and_gripper_absent_topics_counted_as_zero": true,
+  "driver_initialization_CAN_TX_delta": 13,
+  "CAN_TX_not_zero_despite_no_motion_commands": true,
+  "all_owned_sources_exited": true,
+  "exit_details": [
+    {
+      "source": "bag",
+      "exit_code": 0
+    },
+    {
+      "source": "original_nodes",
+      "exit_code": 0
+    },
+    {
+      "source": "driver",
+      "exit_code": -9
+    }
+  ],
+  "frozen_source_SHA_after": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "approved_candidate_paths_changed_from_old_baseline": [
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py"
+  ],
+  "board_pose_count_unchanged": 2,
+  "hand_eye_solved": false,
+  "production_TF_changed": false,
+  "physical_speed_pulse_cause_not_diagnosed": true,
+  "ROS_angle_only_static_pass_NOT_substituted_for_SDK_speed_check": true,
+  "next": "Read-only check speed-feedback pulses versus measured angle; keep existing limited J4 authorization, do not ask for same approval/restart or auto-continue other poses.",
+  "GitHub_pushed": false
+}
