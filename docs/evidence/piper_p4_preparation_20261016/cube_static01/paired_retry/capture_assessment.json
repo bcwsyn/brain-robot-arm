@@ -1,0 +1,244 @@
+{
+  "baseline_commit": "822416a",
+  "read_only": true,
+  "production_unchanged": true,
+  "raw_pairs_saved": 5,
+  "exact_stamp_debug_assets": 10,
+  "stamped_detector_RGBD_observations": 39,
+  "original_detector_qualified": 36,
+  "transformed_world_points": 38,
+  "exact_stamp_TF_timeouts": [],
+  "qualified_detector_base_median_m": [
+    0.36015438081902507,
+    -0.009884102249753501,
+    0.002938756722632496
+  ],
+  "qualified_detector_base_peak_to_peak_m": [
+    0.003205522979277009,
+    0.0006113660492445619,
+    0.008689910657237676
+  ],
+  "RGBD_coverage_range": [
+    0.13031914893617022,
+    0.19948186528497408
+  ],
+  "point_reference": "Detector center ray at observed median surface depth, NOT independently measured cube center.",
+  "fixed_board_diagnostic": {
+    "seed": 3,
+    "nominal_center_ray_base_median_m": [
+      0.3507644911657399,
+      -0.00950320535415225,
+      0.029676891479692324
+    ],
+    "temporal_peak_to_peak_m": [
+      0.00033284004009964674,
+      0.00019498900118730678,
+      0.00016145507669912407
+    ],
+    "detector_height_range_m": [
+      -0.011666930999549404,
+      -0.009596072779374569
+    ],
+    "not_absolute_reference_or_approved_control_target": true
+  },
+  "isolated_shared_geometry_landings": [
+    {
+      "label": "detector_surface_as_published",
+      "nominal_tip_base_m": [
+        0.36280483293158605,
+        -0.009666285358889627,
+        -0.008333121329294826
+      ],
+      "nominal_tip_height_above_local_board_m": -0.02271370388938107,
+      "both_stages_complete": true,
+      "original_bounds_pass": true,
+      "not_physical_clearance_or_capture_proof": true
+    },
+    {
+      "label": "board_29mm_top_centroid_ray_HYPOTHESIS",
+      "nominal_tip_base_m": [
+        0.34817487949981973,
+        -0.009137576708941254,
+        0.03325560153934812
+      ],
+      "nominal_tip_height_above_local_board_m": 0.01794455225846807,
+      "both_stages_complete": true,
+      "original_bounds_pass": true,
+      "not_physical_clearance_or_capture_proof": true
+    }
+  ],
+  "isolated_model_does_not_contain_live_table": true,
+  "MoveIt_child_cleanup_exit_code": -11,
+  "cleanup_note": "Planning parent and client returned 0, original MoveIt child crashed during SIGINT destructor; retained logs, not hidden as graceful exit or motion failure.",
+  "SDK_full_window_rc": 0,
+  "SDK_static_slice": {
+    "indices": [
+      1,
+      60
+    ],
+    "quality": {
+      "samples": 59,
+      "fresh_samples": 59,
+      "span_s": 5.8172607421875,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "last_feedback": {
+    "epoch": 1792153189.3509288,
+    "sdk_receipt_stamps": {
+      "joint": "1792153189.350062",
+      "high": "1792153189.3460355",
+      "low": "1792153189.345595",
+      "gripper": "1792153189.3500814"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4099,
+      69496,
+      5092
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071502956,
+      1.212288224,
+      0.088824848
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -3,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "CAN_final": {
+    "ifindex": 3,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "3-2:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 369311716,
+        "packets": 46173496,
+        "errors": 0,
+        "dropped": 297,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 42154,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "motion_commands_sent": false,
+  "grasp_executed": false,
+  "first_pair_capture_failed": true,
+  "one_original_backend_RGB_only_case_passed": true,
+  "alternative_backend_was_NOT_run": true,
+  "production_backend_changed": false,
+  "camera_root_cause_not_proven": true,
+  "paired_retry_success": true,
+  "next_change_requires_scope_approval": "P4 opt-in open-loop mode in original entry, using a reviewed RGB/board/nominal-size frozen point instead of the current low-support depth range; no production implementation or motion yet."
+}

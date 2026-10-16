@@ -1,0 +1,534 @@
+{
+  "epoch": 1792153016.4111302,
+  "receive_only": true,
+  "motion_commands_sent": false,
+  "latest_TF_fallback": false,
+  "world_points": [
+    {
+      "stamp_ns": 1792153029143259903,
+      "source_frame": "camera_depth_optical_frame",
+      "point_depth_m": [
+        -0.038743949793319785,
+        0.06335317784729085,
+        0.452
+      ],
+      "point_color_m": [
+        -0.061553725347463874,
+        0.06266442267417088,
+        0.4528148052013379
+      ],
+      "point_base_m": [
+        0.36000792183779423,
+        -0.010276134182714343,
+        0.002907485691918288
+      ],
+      "base_from_depth": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "base_link"
+        },
+        "child_frame_id": "camera_depth_optical_frame",
+        "transform": {
+          "translation": {
+            "x": 0.21104570436646058,
+            "y": 0.02269459640902783,
+            "z": 0.4348124607491728
+          },
+          "rotation": {
+            "x": -0.6065574597986356,
+            "y": 0.7576977760150434,
+            "z": -0.21137904240647087,
+            "w": 0.1153300854755912
+          }
+        }
+      },
+      "color_from_depth": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "child_frame_id": "camera_depth_optical_frame",
+        "transform": {
+          "translation": {
+            "x": -0.029824850429398753,
+            "y": 0.0002287428112832668,
+            "z": 0.00014076887339631305
+          },
+          "rotation": {
+            "x": 0.0014449612294785152,
+            "y": 0.006984945639433852,
+            "z": -0.005530618331314078,
+            "w": 0.9999592666115619
+          }
+        }
+      },
+      "base_from_gripper": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "base_link"
+        },
+        "child_frame_id": "gripper_base",
+        "transform": {
+          "translation": {
+            "x": 0.14513463850403932,
+            "y": -0.027196174029576907,
+            "z": 0.4286028427119308
+          },
+          "rotation": {
+            "x": 0.10851114202628119,
+            "y": 0.9196872565627571,
+            "z": -0.04608116584714433,
+            "w": 0.37453599069567367
+          }
+        }
+      },
+      "point_semantics": "Original detector center ray at measured median surface depth; not a calibrated cube geometric center/TCP."
+    }
+  ],
+  "exact_stamp_debug_assets": [],
+  "transform_timeouts": [],
+  "exception": "KeyboardInterrupt()",
+  "end_epoch": 1792153051.8218832,
+  "records": [
+    {
+      "topic": "raw_color_bbox",
+      "received_wall_ns": 1792153029180126636,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "polygon": {
+          "points": [
+            {
+              "x": 0.359375,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            },
+            {
+              "x": 0.359375,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "topic": "qualified_color_bbox",
+      "received_wall_ns": 1792153029180657773,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "polygon": {
+          "points": [
+            {
+              "x": 0.359375,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            },
+            {
+              "x": 0.359375,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "topic": "target_point_camera",
+      "received_wall_ns": 1792153029214857174,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_depth_optical_frame"
+        },
+        "point": {
+          "x": -0.038743949793319785,
+          "y": 0.06335317784729085,
+          "z": 0.452
+        }
+      }
+    },
+    {
+      "topic": "target_pixel",
+      "received_wall_ns": 1792153029222168124,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "point": {
+          "x": 285.0,
+          "y": 267.0,
+          "z": 0.452
+        }
+      }
+    },
+    {
+      "topic": "raw_target_projection",
+      "received_wall_ns": 1792153029222376059,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "point": {
+          "x": 0.38854759364627783,
+          "y": 0.5863304093567251,
+          "z": 0.45281480949280956
+        }
+      }
+    },
+    {
+      "topic": "target_size",
+      "received_wall_ns": 1792153029223952649,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_depth_optical_frame"
+        },
+        "vector": {
+          "x": 0.03711264488742367,
+          "y": 0.040845294207001955,
+          "z": 0.452
+        }
+      }
+    },
+    {
+      "topic": "target_valid",
+      "received_wall_ns": 1792153029224619834,
+      "message": {
+        "data": false
+      }
+    },
+    {
+      "topic": "rgbd_observation",
+      "received_wall_ns": 1792153029225828546,
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_depth_optical_frame"
+        },
+        "status": [
+          {
+            "level": "\u0001",
+            "name": "purple_cube_rgbd_observation/v2",
+            "message": "RGBD_NOT_QUALIFIED",
+            "hardware_id": "",
+            "values": [
+              {
+                "key": "qualified",
+                "value": "0"
+              },
+              {
+                "key": "x",
+                "value": "-0.038743949793319785"
+              },
+              {
+                "key": "y",
+                "value": "0.063353177847290845"
+              },
+              {
+                "key": "z",
+                "value": "0.45200000000000001"
+              },
+              {
+                "key": "color_center_covered",
+                "value": "0"
+              },
+              {
+                "key": "size_x",
+                "value": "0.037112644887423669"
+              },
+              {
+                "key": "size_y",
+                "value": "0.040845294207001955"
+              },
+              {
+                "key": "size_z",
+                "value": "0.45200000000000001"
+              },
+              {
+                "key": "samples",
+                "value": "153"
+              },
+              {
+                "key": "coverage",
+                "value": "0.16580310880829016"
+              },
+              {
+                "key": "span",
+                "value": "0.76363636363636367"
+              },
+              {
+                "key": "mad_m",
+                "value": "0.0040000000000000036"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "topic": "depth_valid",
+      "received_wall_ns": 1792153029225975777,
+      "message": {
+        "data": false
+      }
+    },
+    {
+      "topic": "depth_diagnostic",
+      "received_wall_ns": 1792153029226705969,
+      "message": {
+        "data": "DEPTH_REJECTED_WAITING_FOR_STABLE_FRAMES"
+      }
+    }
+  ],
+  "stamped_observations": {
+    "1792153029143259903": {
+      "raw_color_bbox": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "polygon": {
+          "points": [
+            {
+              "x": 0.359375,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            },
+            {
+              "x": 0.359375,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            }
+          ]
+        }
+      },
+      "qualified_color_bbox": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "polygon": {
+          "points": [
+            {
+              "x": 0.359375,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.5416666865348816,
+              "z": 0.0
+            },
+            {
+              "x": 0.421875,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            },
+            {
+              "x": 0.359375,
+              "y": 0.6333333253860474,
+              "z": 0.0
+            }
+          ]
+        }
+      },
+      "target_point_camera": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_depth_optical_frame"
+        },
+        "point": {
+          "x": -0.038743949793319785,
+          "y": 0.06335317784729085,
+          "z": 0.452
+        }
+      },
+      "target_pixel": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "point": {
+          "x": 285.0,
+          "y": 267.0,
+          "z": 0.452
+        }
+      },
+      "raw_target_projection": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_color_optical_frame"
+        },
+        "point": {
+          "x": 0.38854759364627783,
+          "y": 0.5863304093567251,
+          "z": 0.45281480949280956
+        }
+      },
+      "target_size": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_depth_optical_frame"
+        },
+        "vector": {
+          "x": 0.03711264488742367,
+          "y": 0.040845294207001955,
+          "z": 0.452
+        }
+      },
+      "rgbd_observation": {
+        "header": {
+          "stamp": {
+            "sec": 1792153029,
+            "nanosec": 143259903
+          },
+          "frame_id": "camera_depth_optical_frame"
+        },
+        "status": [
+          {
+            "level": "\u0001",
+            "name": "purple_cube_rgbd_observation/v2",
+            "message": "RGBD_NOT_QUALIFIED",
+            "hardware_id": "",
+            "values": [
+              {
+                "key": "qualified",
+                "value": "0"
+              },
+              {
+                "key": "x",
+                "value": "-0.038743949793319785"
+              },
+              {
+                "key": "y",
+                "value": "0.063353177847290845"
+              },
+              {
+                "key": "z",
+                "value": "0.45200000000000001"
+              },
+              {
+                "key": "color_center_covered",
+                "value": "0"
+              },
+              {
+                "key": "size_x",
+                "value": "0.037112644887423669"
+              },
+              {
+                "key": "size_y",
+                "value": "0.040845294207001955"
+              },
+              {
+                "key": "size_z",
+                "value": "0.45200000000000001"
+              },
+              {
+                "key": "samples",
+                "value": "153"
+              },
+              {
+                "key": "coverage",
+                "value": "0.16580310880829016"
+              },
+              {
+                "key": "span",
+                "value": "0.76363636363636367"
+              },
+              {
+                "key": "mad_m",
+                "value": "0.0040000000000000036"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
