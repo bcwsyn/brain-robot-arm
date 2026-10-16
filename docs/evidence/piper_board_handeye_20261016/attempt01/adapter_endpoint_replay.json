@@ -1,0 +1,19 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "CAN_accessed": false,
+  "adapter_modified": false,
+  "deployed_adapter_SHA256": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+  "exact_deployed_method_AST_reused": true,
+  "synthetic_feedback_stays_zero_NOT_hardware_deadband_measurement": true,
+  "desired_J4_rad": -0.074293996,
+  "simulated_dt_s": 0.02,
+  "original_max_velocity_rad_s": 0.189,
+  "calls": 50,
+  "output_min_rad": -0.00378,
+  "output_max_rad": -0.00378,
+  "output_at_50th_tick_rad": -0.00378,
+  "goal_still_unreached": true,
+  "conclusion": "With unchanged feedback the existing method reanchors every tick and never accumulates command beyond one step; actual actuator response to those small steps is not diagnosed by this replay.",
+  "proposed_next_work": "Request narrowly scoped adapter progress exception: offline compare bounded accumulation only during fresh feedback, preserve velocity/limits and reset the command anchor across feedback gaps; no deployment or motion yet."
+}

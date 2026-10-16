@@ -1,0 +1,113 @@
+{
+  "route_approved": true,
+  "runs": [
+    {
+      "run": 1,
+      "source": "/home/johnwick/brain_robot_logs/board_handeye_20261016.N2eAKe",
+      "error": "RuntimeError('Expected exactly original adapter trajectory subscriber')",
+      "sample_labels": [
+        "start"
+      ],
+      "trajectories_published": 0,
+      "raw_RGB_frames": 21,
+      "raw_RGB_bytes": 2424946,
+      "all_owned_sources_exited": true
+    },
+    {
+      "run": 2,
+      "source": "/home/johnwick/brain_robot_logs/board_handeye_20261016.1qwbf1",
+      "error": "RuntimeError('RGB stopped; no automatic restart')",
+      "sample_labels": [],
+      "trajectories_published": 0,
+      "raw_RGB_frames": 1,
+      "raw_RGB_bytes": 115156,
+      "all_owned_sources_exited": true
+    },
+    {
+      "run": 3,
+      "source": "/home/johnwick/brain_robot_logs/board_handeye_20261016.2dE1Aj",
+      "error": "TimeoutError('actual goal J4_plus_back')",
+      "sample_labels": [
+        "start",
+        "J4_plus"
+      ],
+      "trajectories_published": 2,
+      "raw_RGB_frames": 211,
+      "raw_RGB_bytes": 24032953,
+      "all_owned_sources_exited": true
+    }
+  ],
+  "qualified_pose_samples_current_session": 2,
+  "fit_pose_samples": 2,
+  "heldout_pose_samples": 0,
+  "9plus1_complete": false,
+  "hand_eye_solver_called": false,
+  "rank_one_relative_axis_translation_subproblem": 2,
+  "final_q_mdeg": [
+    -8038,
+    54525,
+    -72724,
+    0,
+    69729,
+    5177
+  ],
+  "final_q_driver_rad": [
+    -0.14021487200000002,
+    0.9511341000000001,
+    -1.2685974560000002,
+    0.0,
+    1.216352676,
+    0.090307588
+  ],
+  "final_enabled": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "final_gap_mm": 99.6,
+  "final_SDK_full_window_pass": false,
+  "returned_to_original_start": false,
+  "hardware_disabled": false,
+  "gripper_commands": 0,
+  "reset_or_firmware_or_CAN_recovery": false,
+  "controlled_plan_state_validity_passed": true,
+  "all_18_nominal_paths_original_MoveIt_passed": true,
+  "collision_world_ids": [],
+  "physical_table_clearance_NOT_proven_by_empty_scene": true,
+  "actual_continuous_RGB_frames": 211,
+  "actual_RGB_bytes": 24032953,
+  "fixed_interior_points": 35,
+  "flow_identity_error_reported": null,
+  "source_exit_details": [
+    {
+      "source": "color",
+      "exit_code": 0
+    },
+    {
+      "source": "depth",
+      "exit_code": 0
+    },
+    {
+      "source": "bag",
+      "exit_code": 0
+    },
+    {
+      "source": "original_nodes",
+      "exit_code": -9
+    },
+    {
+      "source": "driver",
+      "exit_code": -9
+    }
+  ],
+  "deployed_adapter_endpoint_AST_replay_passed": true,
+  "production_SHA_unchanged": true,
+  "candidate_adapter_deployed": false,
+  "runtime_files_SHA_verified": 328,
+  "portable_assets_SHA_verified": 15,
+  "next": "Need approval for a narrowly scoped ORIGINAL adapter trajectory-progress offline fix; preserve limits/velocity/feedback-gap protections; no deployment/motion authorized by this request.",
+  "GitHub_pushed": false
+}
