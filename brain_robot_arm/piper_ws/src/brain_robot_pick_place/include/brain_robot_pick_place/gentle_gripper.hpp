@@ -30,10 +30,13 @@ public:
   double Reference() const {return reference_;}
   double Minimum() const {return minimum_;}
   double Preclose() const {return preclose_;}
+  static constexpr double ReferenceLeadLimit() {return .002;}
   double Timeout(double initial) const
   {
-    return std::max(0., initial-preclose_)/.010 +
-           std::max(0., preclose_-minimum_)/.003 + 5.;
+    // Reference rates are not a measured device velocity. Allow a slower
+    // feedback-limited plant without removing the finite worker deadline.
+    return 2. * (std::max(0., initial-preclose_)/.010 +
+           std::max(0., preclose_-minimum_)/.003) + 5.;
   }
   Result Update(double stamp, double opening, double effort)
   {
@@ -74,9 +77,11 @@ public:
       if (stamp-empty_since_ >= .25) {return Result::EMPTY;}
     } else {empty_since_ = -1.;}
     const double rate = reference_ > preclose_ ? .010 : .003;
-    // Only a short reference lead is permitted. A stalled/slow device cannot
-    // accumulate a remote closed-endpoint command behind it.
-    reference_ = std::clamp(std::max({minimum_, reference_-rate*dt, opening-.0005}),
+    // Keep a bounded 2mm lead: the previous 0.5mm cap stalled the real jaw
+    // while feedback and command delivery remained live. This is not a
+    // calibrated device deadband, a force increase or an unbounded ramp.
+    reference_ = std::clamp(std::max({minimum_, reference_-rate*dt,
+      opening-ReferenceLeadLimit()}),
       0., .100);
     return Result::MOVING;
   }

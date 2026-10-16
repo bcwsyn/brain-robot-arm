@@ -1,4 +1,17 @@
-## 当前实体记录（2026-10-16 23:07）：仅夹爪入口实现与实测，缓闭在90.6mm停滞
+## 当前实体记录（2026-10-16 23:35）：2mm有界缓闭真到25.8mm后CAN停流，需宿主USB-CAN重连
+
+- 基线5ca2072；用户要求自主继续/只需实机操作时叫并读取新skill。已完整读三技能，先关联旧日志、复用已证据和原工具，不重做无关基础巡检。修改前已具体说明仅原缓闭参考0.5→2mm和有限时间；本轮不采用RGB夹紧任务参考、不改力或臂路径。
+- 旧数据关联2.332秒：888个参考中882在150ms窗口匹配同值转发，6未匹配，不称独立逐帧ACK；晚期driver462正常调用90.1–90.2mm，实际90.6–90.7mm。原适配器无小目标过滤，不再将其误称吞指令。实体死区/摩擦/位置环原因未唯一辨识。
+- 仅gentle_gripper.hpp及test_center_gentle.cpp变化：2mm参考超前、名义行程时间×2＋5秒（99.4mm起点34.4538秒），原10/3mm/s参考/.5N·m/25mm下界/持续接触/空夹到位/新鲜度均保留。默认入口/TF/TCP/检测/臂限位/adapter/driver不变。先模型失败（物理每步舍入停25.7mm）完整留存为负例，补连续状态/量化观测正例，不为通过改生产判据；最终8C++通过。旧策略在正例19.74秒71.86mm、新16.68秒25.22mm，不是实体拟合或实机成功。
+- 同步两个home副本、精确前件/binary备份；原executor＋原定向测试两个目标构建rc0/106.096秒，新binary61c8e5d185a0778960f591cd63dc35fa731db40e1f4989a6999db327d1996cf5，活动8C++/8Python入口回归通过。域78实际executor三合成回路通过/臂轨迹和joint_commands0/无抬升及急停后重开，48.378秒；stale原MoveIt收尾子-11/父rc0保留。其他原生产/配置SHA与5ca2072相同。
+- 实体只运行一次原/home/johnwick/start_brain_robot_cube_real.sh，显式仅夹爪模式、无臂目标。4秒紧邻SDK rc2照存，真实q/使能/限位与其速度质量分账；原[7/7]→张爪99.4mm→真缓闭25.8mm。15.331秒因P4_GRIPPER_FEEDBACK_STALE_HOLD停止，早于旧19.7秒和新34.45秒期限，证明推进不是延长期限伪装；但未确认到25mm或接触/空夹完成。最后参考25.0925mm/driver25092微米/.5N·m，实际<=26mm仅12帧/.110秒，不据此放宽原终点判断。
+- 原守护23:31:26报CAN_RX_STALLED_3S，随后软件急停/FAULT_ESTOP、入口rc1/wrapper rc2，自有源均退出；0臂轨迹/记录六q峰峰0，仍有当前姿态保持joint_commands，未观测/搜索/抬升/复位/DisableArm。最后新鲜夹爪源戳1792164682.931361538、25.8mm/effort−.101Nm；尝试近测保持被原driver feedback_available=False门拒绝，不能称已送到硬件。物理抓取成功仍0。
+- 实际9383夹爪帧/683目标、24快照/5,586,876图片bytes，8MiB上限；已查看启动及末段原RGB，两指开口确变小/方块仍在桌面，原16位depth不填洞。15帧status0是开爪首次清错握手，不是六轴失能。最后有效q同起点，不是停流后当前使能证明。
+- CAN if3/ERROR-ACTIVE，窗口RX72610070→72832932、TX58146→61475，errors0/旧dropped297不增，尾段总RX停止。随后唯一4秒被动SDK rc2/0fresh、同ifindex/RX增量0；新内核相关USB/gs_usb/xHCI错误0。不唯一归因硬件、用户动接口或磁盘；不以默认SDK q0/enablefalse判零位/掉电。依据历史guest reset/bounce/重载无效记录，本轮未重做。
+- **现已请求用户唯一手操作：VMware宿主仅断开/重连USB-CAN到VM，不动相机/机械臂、不重启/失能。** 恢复后新鲜被动反馈确认实际q/使能/末开口，从缓闭断点继续原最小核验，不重走观测/SEARCH、不用旧25.8mm续动。当前没有新鲜反馈，不自动再发动作或扩展RGB候选抓取。
+- 原件/命令/模型失败/最终SHA/回退：[gripper_response01](evidence/piper_p4_real_20261016/gripper_response01/README.md)，190原件8,180,673bytes无损gzip/逐件回读SHA，排除ELF/before备份、不删home原件。root p4_gripper_response_20261016.Uq8iDm；回退5ca2072明确两路径。实测101.780秒（SDK/startup/cleanup），至OPENING76.654秒/闭合至FAULT15.331秒，其他阶段未全独立计时，不造总提速。Git仅本地/原远端阻断不变，保留其他846项dirty。
+
+## 历史实体记录（2026-10-16 23:07）：仅夹爪入口实现与实测，缓闭在90.6mm停滞
 
 - 用户另行确认22:35原executor默认关闭夹爪入口/空载测试；与并行技能确认分开，控制基线4037724，eac0117/3b29acc技能和四文档内容完整保留。按ROS/PiPER、手术式和摘要技能沿真实入口/driver定位，最小修改，复用已有效测试，不重复CAN/TF/限位巡检。
 - 仅原executor/launch/一键script及3新测试。P4_GRIPPER_TEST_ONLY默认0，显式P4=1/PLAN_ONLY=0/AUTO1专用service，只张开→原缓闭，无臂目标/观测/搜索/新六轴姿态/抬升，普通execute拒绝；原张爪2秒settle保留。默认闭环/门/TF/TCP/六轴限位、任务/检测YAML、adapter/driver未改，gentle_gripper.hpp策略参数未改。

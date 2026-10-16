@@ -1,0 +1,28 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 8 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from CenterCapture
+[ RUN      ] CenterCapture.ActualLocalReferenceLandsAtCenterWithoutSurfaceInsertion
+[       OK ] CenterCapture.ActualLocalReferenceLandsAtCenterWithoutSurfaceInsertion (2 ms)
+[----------] 1 test from CenterCapture (2 ms total)
+
+[----------] 7 tests from GentleGripper
+[ RUN      ] GentleGripper.EmptyJawStopsAtSizeFloorNotZeroOrLift
+[       OK ] GentleGripper.EmptyJawStopsAtSizeFloorNotZeroOrLift (0 ms)
+[ RUN      ] GentleGripper.OnlyPersistentLoadedStopWithinSizeWindowIsContactCandidate
+[       OK ] GentleGripper.OnlyPersistentLoadedStopWithinSizeWindowIsContactCandidate (0 ms)
+[ RUN      ] GentleGripper.FreeMotionTorquePeaksDoNotProveContact
+[       OK ] GentleGripper.FreeMotionTorquePeaksDoNotProveContact (0 ms)
+[ RUN      ] GentleGripper.ARemoteStallCannotAccumulateAZeroReference
+[       OK ] GentleGripper.ARemoteStallCannotAccumulateAZeroReference (0 ms)
+[ RUN      ] GentleGripper.QuantizedStallCannotBecomeFalseContactOrEmpty
+[       OK ] GentleGripper.QuantizedStallCannotBecomeFalseContactOrEmpty (0 ms)
+[ RUN      ] GentleGripper.SlowPlantWithQuantizedFeedbackReachesFloorWithinTimeout
+[       OK ] GentleGripper.SlowPlantWithQuantizedFeedbackReachesFloorWithinTimeout (1 ms)
+[ RUN      ] GentleGripper.DuplicateOrNonfiniteFeedbackDoesNotAdvance
+[       OK ] GentleGripper.DuplicateOrNonfiniteFeedbackDoesNotAdvance (0 ms)
+[----------] 7 tests from GentleGripper (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 2 test suites ran. (3 ms total)
+[  PASSED  ] 8 tests.

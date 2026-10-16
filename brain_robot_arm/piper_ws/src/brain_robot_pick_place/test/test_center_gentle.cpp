@@ -73,8 +73,54 @@ TEST(GentleGripper, ARemoteStallCannotAccumulateAZeroReference)
   Policy policy(.029, .1);
   for (int i = 0; i < 100; ++i) {
     EXPECT_EQ(policy.Update(1+i*.02, .1, .8), Policy::Result::MOVING);
-    EXPECT_GE(policy.Reference(), .0995-1e-10);
+    EXPECT_GE(policy.Reference(), .1-Policy::ReferenceLeadLimit()-1e-10);
   }
+}
+
+TEST(GentleGripper, QuantizedStallCannotBecomeFalseContactOrEmpty)
+{
+  // Deliberately pessimistic synthetic plant: round physical travel itself.
+  // A residual stall must remain unconfirmed, not become synthetic success.
+  Policy policy(.029, .0994);
+  double actual = .0994;
+  auto result = Policy::Result::MOVING;
+  double elapsed = 0.;
+  for (; elapsed < policy.Timeout(.0994) && result == Policy::Result::MOVING;
+    elapsed += .02)
+  {
+    const double error = std::max(0., actual-policy.Reference()-.00015);
+    const double travel = std::min(.010*.02, 4.*error*.02);
+    actual = std::round((actual-travel)/.0001)*.0001;
+    result = policy.Update(1.+elapsed, actual, -.02);
+    EXPECT_GE(policy.Reference(), .025-1e-10);
+    EXPECT_LE(actual-policy.Reference(), Policy::ReferenceLeadLimit()+1e-10);
+  }
+  EXPECT_EQ(result, Policy::Result::MOVING);
+  EXPECT_GT(actual, .0253);
+  EXPECT_GE(elapsed, policy.Timeout(.0994));
+  EXPECT_LT(policy.Timeout(.1), 40.);
+}
+
+TEST(GentleGripper, SlowPlantWithQuantizedFeedbackReachesFloorWithinTimeout)
+{
+  // Synthetic first-order response with quantized SENSOR output. Physical
+  // state is continuous. This is not an identified real-device model.
+  Policy policy(.029, .0994);
+  double physical = .0994, measured = physical, elapsed = 0.;
+  auto result = Policy::Result::MOVING;
+  for (; elapsed < policy.Timeout(.0994) && result == Policy::Result::MOVING;
+    elapsed += .02)
+  {
+    const double error = std::max(0., physical-policy.Reference()-.00015);
+    physical -= std::min(.010*.02, 4.*error*.02);
+    measured = std::round(physical/.0001)*.0001;
+    result = policy.Update(1.+elapsed, measured, -.02);
+    EXPECT_GE(policy.Reference(), .025-1e-10);
+    EXPECT_LE(measured-policy.Reference(), Policy::ReferenceLeadLimit()+1e-10);
+  }
+  EXPECT_EQ(result, Policy::Result::EMPTY);
+  EXPECT_LE(measured, .0253);
+  EXPECT_LT(elapsed, policy.Timeout(.0994));
 }
 
 TEST(GentleGripper, DuplicateOrNonfiniteFeedbackDoesNotAdvance)

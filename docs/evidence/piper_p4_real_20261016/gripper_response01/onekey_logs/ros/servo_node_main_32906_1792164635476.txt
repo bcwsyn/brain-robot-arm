@@ -1,0 +1,17 @@
+[WARN] [1792164636.664490016] [moveit_servo.servo_node]: Intra-process communication is disabled, consider enabling it by adding: 
+extra_arguments=[{'use_intra_process_comms' : True}]
+to the Servo composable node in the launch file
+[INFO] [1792164637.064811690] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.0494294 seconds
+[INFO] [1792164637.064856730] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[INFO] [1792164637.064865043] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[INFO] [1792164641.074807855] [moveit_ros.current_state_monitor]: Listening to joint states on topic '/piper_moveit_joint_states'
+[INFO] [1792164641.088080515] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[INFO] [1792164641.088570865] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[INFO] [1792164641.098872677] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[INFO] [1792164641.098901792] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[INFO] [1792164641.104696084] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[INFO] [1792164641.115795108] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[WARN] [1792164641.116234523] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[ERROR] [1792164641.116249515] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[INFO] [1792164642.521654455] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on '/servo_node/publish_planning_scene'
+[INFO] [1792164690.058277378] [rclcpp]: signal_handler(SIGINT/SIGTERM)

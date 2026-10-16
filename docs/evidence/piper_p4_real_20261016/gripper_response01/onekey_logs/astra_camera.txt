@@ -1,0 +1,35 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/brain_robot_logs/p4_gripper_response_20261016.Uq8iDm/onekey_logs/ros/2026-10-16-23-30-23-819127-johnwick-virtual-machine-32733
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container-1]: process started with pid [32749]
+[component_container-1] [INFO] [1792164624.212935761] [astra_camera_container]: Load Library: /home/johnwick/ros2_ws/install/astra_camera/lib/libastra_camera.so
+[component_container-1] [INFO] [1792164624.536219863] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792164624.536311110] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792164624.701566859] [camera.camera]: init done.
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792164624.701963417] [camera.camera]: Waiting for device connection...
+[component_container-1] [INFO] [1792164624.703665123] [device_listener]: Found 1 devices
+[component_container-1] [INFO] [1792164624.703962624] [camera.camera]: Trying to open device: 2bc5/0657@3/6
+[component_container-1] [INFO] [1792164624.706965554] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792164624.706992898] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792164624.707002784] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyz' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792164624.765014278] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792164624.765051433] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792164624.765060581] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[component_container-1] [INFO] [1792164624.765068873] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyzrgb' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792164625.069100950] [camera.camera]: Device connected: Astra serial number: CC1365304DG
+[component_container-1] [INFO] [1792164625.069473822] [camera.camera]: starting device 
+[component_container-1] [INFO] [1792164625.349614776] [camera.camera]: ir is not enable
+[component_container-1] [INFO] [1792164625.349658451] [camera.camera]: color is not enable
+[component_container-1] [INFO] [1792164625.360036436] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [INFO] [1792164625.567353289] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [WARN] [1792164625.567386188] [camera.camera]: Publishing dynamic camera transforms (/tf) at 10 Hz
+[component_container-1] [INFO] [1792164625.693897575] [camera.camera]: SENSOR_DEPTH is started
+[component_container-1] [WARN] [1792164625.769169700] [camera.point_cloud_xyz]: [image_transport] Topics '/camera/depth/image_raw' and '/camera/depth/camera_info' do not appear to be synchronized. In the last 10s:
+[component_container-1] 	Image messages received:      1
+[component_container-1] 	CameraInfo messages received: 0
+[component_container-1] 	Synchronized pairs:           0
+[component_container-1] Warning: USB events thread - failed to set priority. This might cause loss of data...

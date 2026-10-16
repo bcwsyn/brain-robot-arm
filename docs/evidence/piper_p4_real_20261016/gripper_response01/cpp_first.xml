@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="7" failures="1" disabled="0" errors="0" time="0.003" timestamp="2026-10-16T23:25:33.958" name="AllTests">
+  <testsuite name="CenterCapture" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-10-16T23:25:33.958">
+    <testcase name="ActualLocalReferenceLandsAtCenterWithoutSurfaceInsertion" status="run" result="completed" time="0.001" timestamp="2026-10-16T23:25:33.958" classname="CenterCapture" />
+  </testsuite>
+  <testsuite name="GentleGripper" tests="6" failures="1" disabled="0" skipped="0" errors="0" time="0" timestamp="2026-10-16T23:25:33.960">
+    <testcase name="EmptyJawStopsAtSizeFloorNotZeroOrLift" status="run" result="completed" time="0" timestamp="2026-10-16T23:25:33.960" classname="GentleGripper" />
+    <testcase name="OnlyPersistentLoadedStopWithinSizeWindowIsContactCandidate" status="run" result="completed" time="0" timestamp="2026-10-16T23:25:33.960" classname="GentleGripper" />
+    <testcase name="FreeMotionTorquePeaksDoNotProveContact" status="run" result="completed" time="0" timestamp="2026-10-16T23:25:33.960" classname="GentleGripper" />
+    <testcase name="ARemoteStallCannotAccumulateAZeroReference" status="run" result="completed" time="0" timestamp="2026-10-16T23:25:33.960" classname="GentleGripper" />
+    <testcase name="QuantizedSlowPlantReachesFloorWithinFiniteTimeout" status="run" result="completed" time="0" timestamp="2026-10-16T23:25:33.960" classname="GentleGripper">
+      <failure message="/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp:99&#x0A;Expected equality of these values:&#x0A;  result&#x0A;    Which is: 4-byte object &lt;00-00 00-00&gt;&#x0A;  Policy::Result::EMPTY&#x0A;    Which is: 4-byte object &lt;02-00 00-00&gt;" type=""><![CDATA[/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp:99
+Expected equality of these values:
+  result
+    Which is: 4-byte object <00-00 00-00>
+  Policy::Result::EMPTY
+    Which is: 4-byte object <02-00 00-00>]]></failure>
+      <failure message="/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp:100&#x0A;Expected: (actual) &lt;= (.0253), actual: 0.0257 vs 0.0253" type=""><![CDATA[/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp:100
+Expected: (actual) <= (.0253), actual: 0.0257 vs 0.0253]]></failure>
+      <failure message="/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp:101&#x0A;Expected: (elapsed) &lt; (policy.Timeout(.0994)), actual: 34.46 vs 34.4538" type=""><![CDATA[/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp:101
+Expected: (elapsed) < (policy.Timeout(.0994)), actual: 34.46 vs 34.4538]]></failure>
+    </testcase>
+    <testcase name="DuplicateOrNonfiniteFeedbackDoesNotAdvance" status="run" result="completed" time="0" timestamp="2026-10-16T23:25:33.961" classname="GentleGripper" />
+  </testsuite>
+</testsuites>
