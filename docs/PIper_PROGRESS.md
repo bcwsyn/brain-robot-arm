@@ -1,4 +1,13 @@
-## 本轮完成记录（2026-10-16 21:44）：原一键P4闭爪抬升全链已实际执行，物理空抓；转入用户要求的夹爪温和接触研究
+## 本轮只读记录（2026-10-16 21:53）：补齐中心目标＋夹爪组合方案，查清点云来源并复用已有中心代码
+
+- 基线b3f66f2，用户指出不能只改夹爪，询问点云是否更准。本轮只读规范/实际代码/官方资料及纯离线测试，没有启动ROS、相机/CAN或发送实体命令，没有改靠近/检测器/TF/TCP/限位/夹爪控制。
+- cube_detector实际是cup_detector_node.cpp，现取轮廓质心/深度统计所得表面参考；P4的prepare_p4_board_target.py明确TOP SURFACE，执行器补11.6mm。已有test/estimate_calibration_cube_center.py实测点云平面/RANSAC/SVD/方形边界拟合及沿法线内推半边长的中心估计，本次P4未接入；不得把“已有”说成这次“已用”。
+- 原Astra point_cloud_xyz.cpp真实订阅depth/image_raw/Info，逐像素反投影XYZ、无效深度默认NaN；规范/home活动SHA均2e72b239…相同。Orbbec官方Depth Point Cloud和PCL平面分割资料支持多点拟合路线，但不证明消息换成点云就更准/能填真实深度；可见点均值亦非体积中心。当前弱支撑原图不重复同条件采/做旧无效实验，旧好帧只供回放不冒充当前坐标。
+- 组合局部提案：目标几何中心C↔实际两指夹持中心c_G，指定朝向R时t=C−R*c_G，不把名义自由末端/画面十字当接触区。显式center/surface语义防止新中心再补11.6/14.5mm，只拟限定P4接线，原MoveIt/adapter及冻结base点不变，不恢复Octomap/重锁。原手摆偏差12.738mm不平均冒充新TCP，15mm下/前先离线对照、单变量实机，不与减速/力矩同轮混改。夹爪尺寸预闭合＋开口渐变＋持续接触候选＋轻保持保留，还需检查原驱动一次性握手瞬时0目标；不未验证就删恢复握手。
+- 复用原test_cube_center_estimation.py/test_calibration_capture_review.py：25项通过、5.14秒，含斜面/离群点/缺失不造中心等；命令为PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /usr/bin/python3 -m pytest -q -p no:cacheprovider（上述两文件） --junitxml=/home/johnwick/brain_robot_logs/p4_center_plan_20261016.edpuyT/junit.xml。原件复制到docs/evidence/piper_p4_real_20261016/center_plan01_junit.xml；通过不等于当前方块中心精度或成功夹取。
+- 官方链接/完整范围/下一步见docs/evidence/piper_p4_real_20261016/center_and_gripper_plan01.md。执行器SHA仍ccbce261…、adapter5c1c1be2…，无新部署。最近实体仍上轮空抓，所有本轮动作离线；下一先确认组合控制局部范围，再同图中心/夹持候选核对与完整规划，夹爪空载有限验证，最后单变量实机。不继续只谈夹爪、不要求重摆/重启，不改生产TF/TCP/臂界限。Git仅本地、原分叉/发布审查阻断保持，无关修改不纳入。
+
+## 上轮完成记录（2026-10-16 21:44）：原一键P4闭爪抬升全链已实际执行，物理空抓；转入用户要求的夹爪温和接触研究
 
 - 接续681a715/本轮64f878c，原脚本 /home/johnwick/start_brain_robot_cube_real.sh 显式AUTO1/P4_OPEN_LOOP1/P4_PLAN_ONLY0、新冻结顶面[.345009256,−.009759589,.044174985]m，真实观测后STOPPED_BEFORE_SEARCH→张爪100mm→20点预抓取→9点下降→CLOSING→LIFTING→HOLDING。两段Cartesian完整100%，最大相邻步长.077658/.033308rad，均经原adapter；原FK落点距.9mm/角.0039rad通过。原入口rc0，HOLDING保持使能收尾，不自动释放/回零/失能。
 - **物理结果失败**：末夹爪约.4mm，原图方块仍在板面，闭合/抬升并未带起方块，成功计数0。不能把同模型FK吻合、服务success、HOLDING或rc0当成功；不重复未变条件空抓。真实订阅计数16295反馈、2061关节命令、7轨迹、2夹爪目标，73快照/24,597,392图片bytes/32MiB容量上限。最后原图0073/闭爪0062/抬升0064及原16位深度/同戳debug保留，邻近时间RGB-D不伪称硬件同步。
