@@ -1,4 +1,16 @@
-## 本轮（2026-10-16 18:20）：仅安装TF获准部署，彩色链静止实测通过；离线查明内部D/C消费不一致
+## 本轮（2026-10-16 18:50）：获准内部TF＋mount成对修正，定向构建及同五对原戳RGB-D/base核验通过
+
+- 起点e50224a；用户同意上一轮明确提出的局部内部TF解冻/同步mount/保持批准彩色X/离线及静止验证，随后要求自主推进、仅真实现场操作再叫。不再等同一许可。按ros2-piper-debug/surgical-change技能，查实际源码/安装库/CMake源目录后只改所有者，保留约840项无关脏改，不动生产靠近/门/TCP/限位或原入口。
+- 实际活动源 `/home/johnwick/ros2_ws/src/astra_camera/src/ob_camera_node.cpp`，`CMAKE_HOME_DIRECTORY`确认；不是home嵌套 `src/ros2_astra_camera/astra/src/astra_camera`旧副本。本轮仅活动＋规范源改TF平移为 `-R^T*t`，原旋转转换、工厂/extrinsic发布数组和轴映射不变；源码SHA b9b5eaa3…→e916a451…两份一致，非活动旧副本不覆盖。同步原mount XYZ[-.0419715487345,.0639128845702,.0320226360095]m/RPY[.200081010384,-1.269534223956,-.242930416800]rad，保持批准彩色X；配置实际/规范/installed符号链接SHA524f7c0e…，相对e502仅XYZ/RPY值改变。其余五生产SHA/模型0b41516e…不变，原始K/D/R/T getter逐项相同。
+- 先编译实际函数前缀＋原Eigen/TF2 helper，用真实factory及三种多轴/正负/零平移检验。首次新fixture漏原color_frame←color_optical边，4fail/9.77秒/rc1，未启动相机或机器人；仅修fixture后4通过，再完整41通过（最终5.22秒），原失败metadata保留，无新增运动门或修改物理阈值。预测mount来自实际float计算及原光学边，非手猜零点/J5。
+- `cmake --build /home/johnwick/ros2_ws/build/astra_camera --target astra_camera -j2` rc0、15.98秒，仅ob_camera_node.o＋链接；库SHA42775163…→7dfeab6f…，installed符号链接指向build，静止相机/proc/8982/maps确认实际加载新库。旧源/配置匹配Git e50224a、旧库仅本地home备份，回退须source＋binary＋mount成对；未在活动环境回退/重部署循环，不提交构建产物。
+- `/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c` 仅原只读SDK桥、模型RSP、原mount helper、原Astra/cam2image，一次相机14.322482秒/原采集5.575999秒，5/5原RGB-D/同帧Info/真实q/SHA齐全，原3秒静止等待拒绝15次不改门。验证器用**同5对归档图像各自原戳**查询G←C/base←C/C←D/G←D/base←D/base←G，不用latest，5/5通过。批准彩色X平移数值差max3.18e−17m；内部TF/未改配准差1.56044e−9m/1.36938e−7°、25个真实深度点两路base坐标差max1.43303e−8m，均仅浮点/链一致，不声称物理纳米/绝对精度。
+- 末SDK桥q_mdeg[-8254,53595,-72228,-4099,69496,5092]、六true/99.6mm。SDK整6秒rc2照存，原37fresh样本/3.612913秒静止子窗通过，不把短速度脉冲或初未fresh隐去。CAN RX31617157→31667893、TX42154→42154，ERROR-ACTIVE/错误及bus-off0/dropped297未增；健康链复用，不重载USB/驱动或做旧巡检。外层TF/核验/预览0，SDK rc2单列/其余0，所有自有源退出，最终实际进程检查无相机/控制/TF残留。0实体driver/adapter/Servo/任务/SEARCH/运动/开闭/使能失能/复位/固件操作。
+- 离线复用原pair01全30对，固定原440mm表面425—450mm范围、不调参/填洞；修正实发TF与未改检测器逐帧覆盖完全相同，旧实发TF全0，高支撑10帧中位76.89095%；全30与选择偏差公开，低覆盖20帧仍缺目标表面深度。已查看高/低支撑对照叠图、当前原RGB与原生深度显示：真实视野只有棋盘格/夹指，无紫色方块；深度存在，黑色0仍保留，不把原生视差当镜像。修正配准链不治愈材料/近距缺深度，不称全部旧抓取失败根因解决。
+- 参考Orbbec官方当前Astra源码/坐标TF文档（链接见证据页）；上游仍有原平移写法，未冒称上游已修或升级SDK。本机补丁依据本地工厂配准与影像/实发链检验，不推广为所有型号通用结论。
+- [internal_tf_pair01证据及接手](evidence/piper_board_handeye_20261016/internal_tf_pair01/README.md)：58原件1,893,399B/归档1,301,974B、48松散资产SHA回读通过；旧库/临时测试二进制排除，原件无删除，根33GB/共享130GB，无需清理。P3局部一致性已通过，9fit/独立留出2.836mm不变，未验证全局绝对精度/TCP/开环抓取。下一请用户仅放回紫色方块进当前完整可见区域，不动臂/支架；随后只读核目标基座坐标，再准备原入口P4，当前不自动AUTO1/运动。Git仅本地，既有共享main分叉/积压发布审查保持，非硬件故障。不重采9＋1/查CAN/J4/观测，不重复索本次许可。
+
+## 历史本轮（2026-10-16 18:20）：仅安装TF获准部署，彩色链静止实测通过；离线查明内部D/C消费不一致
 
 - 起点b7cbce0，用户确认采用既有彩色X/仅安装TF与静止核验，后要求自主推进。采用许可已执行，不再等待或重采9＋1。ros2-piper-debug/surgical-change两技能限定真实运行路径、原戳证据和最小修改；不碰其他约840项既有无关脏改。
 - 实际home/规范 `cube_task_real.yaml` 仅mount三键XYZ/RPY/rotation_calibrated变化，installed符号链接直接生效，新SHA7811b755…；其他五生产SHA/原入口/检测器/靠近/门/TCP/限位/模型不变。模型0b41516e…原样，6几何＋只读桥/手眼合计36测试通过；无C++变更/不虚报重编。旧配置双备份SHA7d0e…已和Git b7cbce0原字节核验，未在活动配置回退重部署。

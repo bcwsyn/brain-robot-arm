@@ -45,14 +45,33 @@ def test_adopted_mount_reproduces_approved_color_optical_handeye():
     configured = np.eye(4)
     configured[:3, :3] = Rotation.from_euler('xyz', mount['rotation_rpy_rad']).as_matrix()
     configured[:3, 3] = mount['translation_m']
-    # Exact observed Astra link<-color TF on CC1365304DG. This fixture is
-    # not the raw factory D->C array (which has a different translation).
+    # Compiled Astra link<-color fixture on CC1365304DG, including its
+    # paired -R^T*t fix and the unchanged optical rotation edge.
     internal = np.eye(4)
     internal[:3, :3] = Rotation.from_quat([
         -.5014292775745802, .49997495026646027,
         -.4929993707056679, .5055149346764157]).as_matrix()
-    internal[:3, 3] = [.0001407688856124878, .029824851989746094, -.0002287428230047226]
+    internal[:3, 3] = [.0002760803997516632, -.029824609756469726, -.00010136455297470093]
     assert configured @ internal == pytest.approx(expected, abs=1e-10)
+
+
+def test_paired_internal_transform_agrees_with_unchanged_detector_registration():
+    profile = yaml.safe_load((ROOT / 'brain_robot_ball_pick/config/cube_detector.yaml').read_text())
+    detector = profile['cube_detector']['ros__parameters']
+    internal = np.eye(4)
+    internal[:3, :3] = Rotation.from_quat([
+        -.5014292775745802, .49997495026646027,
+        -.4929993707056679, .5055149346764157]).as_matrix()
+    internal[:3, 3] = [.0002760803997516632, -.029824609756469726, -.00010136455297470093]
+    link_from_depth = np.eye(4)
+    link_from_depth[:3, :3] = Rotation.from_euler('xyz', [-math.pi / 2, 0, -math.pi / 2]).as_matrix()
+    color_from_depth = np.linalg.inv(internal) @ link_from_depth
+    # Factory arrays and the publisher's translation are float32; compare
+    # at their numerical precision, not at a physical movement tolerance.
+    assert color_from_depth[:3, :3] == pytest.approx(
+        np.asarray(detector['depth_to_color_rotation']).reshape(3, 3), abs=1e-7)
+    assert color_from_depth[:3, 3] == pytest.approx(
+        detector['depth_to_color_translation_m'], abs=2e-9)
 
 
 def test_old_mount_is_not_equivalent_to_operator_measurement():

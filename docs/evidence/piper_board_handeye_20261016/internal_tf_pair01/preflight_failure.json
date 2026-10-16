@@ -1,0 +1,9 @@
+{
+  "phase": "offline fixture before build/deployment",
+  "command": "pytest test_astra_internal_tf_geometry.py",
+  "return_code": 1,
+  "result": "4 failed in 9.77s",
+  "cause": "New test fixture compared camera_color_frame against camera_color_optical_frame; omitted the unchanged optical rotation edge after the actual compiled prefix.",
+  "correction": "Compose that existing optical edge in the fixture; no production threshold or motion rule changed.",
+  "camera_or_robot_started": false
+}

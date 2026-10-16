@@ -382,8 +382,15 @@ void OBCameraNode::calcAndPublishStaticTransform() {
       break;
     }
   }
+  // The raw arrays map depth optical points into color optical coordinates.
+  // rotationMatrixToQuaternion transposes R for the opposite TF edge; its
+  // translation must be inverted as well: t_color_to_depth = -R^T * t.
+  const auto inverse_translation = tf2::quatRotate(
+      Q, tf2::Vector3(-transition[0], -transition[1], -transition[2]));
   Q = quaternion_optical * Q * quaternion_optical.inverse();
-  std::vector<float> trans = {transition[0], transition[1], transition[2]};
+  std::vector<float> trans = {static_cast<float>(inverse_translation.x()),
+                              static_cast<float>(inverse_translation.y()),
+                              static_cast<float>(inverse_translation.z())};
   if (std::isnan(transition[0]) || std::isnan(transition[1]) || std::isnan(transition[2])) {
     trans[0] = 0;
     trans[1] = 0;

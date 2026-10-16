@@ -1,0 +1,181 @@
+{
+  "baseline_commit": "e50224a",
+  "epoch": 1792147671.8679063,
+  "approval": "User agreed to paired internal TF/mount correction, offline and static only.",
+  "production_changed_paths": [
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml"
+  ],
+  "production_SHA_before": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "7811b755b04fb49f06f766cf5c5694cf9eefe0a079fd4e2fbf097081119a80bd",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "production_SHA_after": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "524f7c0ec64deba485c572c75739bdec936ee79304041c3dc3910f07835c52b9",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "only_two_mount_values_changed": true,
+  "canonical_runtime_installed_mount_identical": true,
+  "canonical_active_Astra_source_identical": true,
+  "active_source": "/home/johnwick/ros2_ws/src/astra_camera/src/ob_camera_node.cpp",
+  "active_source_SHA256": "e916a45172dd6fc413a9652b61a438fe20049eda73ea5fbfd26865f5a080969b",
+  "before_active_source_SHA256": "b9b5eaa380f8eb8ef714378a5e465092af81646aa255d35902aab0c235c620b1",
+  "inactive_nested_clone_changed": false,
+  "inactive_nested_clone_path": "/home/johnwick/ros2_ws/src/ros2_astra_camera/astra/src/astra_camera/src/ob_camera_node.cpp",
+  "old_source_backup_matches_git_e50224a": true,
+  "old_mount_backup_matches_e50224a": true,
+  "binary_rollback_local_only": {
+    "path": "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/libastra_camera.before.so",
+    "SHA256": "42775163791283bb8e9a58af2d4e280e12fe5ec36b9590678c0b34af951ad8de",
+    "excluded_from_Git": true
+  },
+  "rollback_requires_source_binary_AND_mount_together": true,
+  "active_rollback_cycle_performed": false,
+  "factory_K_D_R_T_unchanged": true,
+  "detector_unchanged": true,
+  "approach_gates_TCP_limits_unchanged": true,
+  "regression_argv": [
+    "/usr/bin/python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_camera_mount_geometry.py",
+    "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_astra_internal_tf_geometry.py",
+    "brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/test_calibration_readonly_feedback.py",
+    "docs/evidence/piper_board_handeye_20261016/usb31_sampling01/full_ROI/test_board_handeye_fit.py"
+  ],
+  "regression_rc": 0,
+  "regression_stdout": ".........................................                                [100%]\n41 passed in 5.22s\n",
+  "same_archived_RGBD_pairs_verified": 5,
+  "live_verified": true,
+  "maximum_errors": {
+    "color_X": {
+      "translation_m": 3.179800655392251e-17,
+      "rotation_deg": 1.5721671249056862e-14,
+      "max_matrix_difference": 5.551115123125783e-16
+    },
+    "RGB_base_chain": {
+      "translation_m": 1.0385185452638061e-16,
+      "rotation_deg": 1.0402061858024807e-14,
+      "max_matrix_difference": 6.661338147750939e-16
+    },
+    "internal_color_from_depth": {
+      "translation_m": 1.560439185537262e-09,
+      "rotation_deg": 1.3693818696556408e-07,
+      "max_matrix_difference": 3.499115597271896e-08
+    },
+    "gripper_depth_chain": {
+      "translation_m": 1.560439212686123e-09,
+      "rotation_deg": 1.3693818675431216e-07,
+      "max_matrix_difference": 3.3340884941779336e-08
+    },
+    "depth_base_chain": {
+      "translation_m": 1.5604391946798295e-09,
+      "rotation_deg": 1.3693818790344078e-07,
+      "max_matrix_difference": 3.093848499613472e-08
+    }
+  },
+  "max_real_depth_point_path_difference_m": 1.433034465092896e-08,
+  "CAN_TX_before": 42154,
+  "CAN_TX_after": 42154,
+  "SDK_full_window_rc": 2,
+  "SDK_original_static_slice": {
+    "indices": [
+      23,
+      60
+    ],
+    "quality": {
+      "samples": 37,
+      "fresh_samples": 37,
+      "span_s": 3.6129133701324463,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "last_actual_feedback": {
+    "epoch": 1792147554.8218782,
+    "sdk_receipt_stamps": {
+      "joint": "1792147554.8201923",
+      "high": "1792147554.8161154",
+      "low": "1792147554.816082",
+      "gripper": "1792147554.820197"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 110.0,
+    "joint_hz": 210.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4099,
+      69496,
+      5092
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071502956,
+      1.212288224,
+      0.088824848
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": 5,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "camera_elapsed_s": 14.322481584000343,
+  "all_owned_sources_exited": true,
+  "motion_commands_sent": false,
+  "grasp_completed": false,
+  "physical_TCP_verified": false,
+  "global_absolute_accuracy_verified": false,
+  "current_view_cube_present": false,
+  "static_preview": {
+    "RGB_sha256": "645e971fc76ffdbb6ca80a8c97c236652c01510357650192886c51e109b0a6e9",
+    "depth_sha256": "2770e1be16b9f2522c33cc0b7059dfc14585c8d3f09bbb55ea1cb155a07eb05f",
+    "native_depth_valid_fraction": 0.8005625,
+    "display_limits_m": [
+      0.15,
+      1.0
+    ],
+    "zero_depth_not_filled": true
+  },
+  "next": "P3 local TF/registration consistency passes. Need operator to return the purple cube into the current complete static field of view before read-only target validation/P4 preparation. No automatic motion."
+}

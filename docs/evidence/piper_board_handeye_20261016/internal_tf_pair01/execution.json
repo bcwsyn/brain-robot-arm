@@ -1,0 +1,227 @@
+{
+  "baseline_commit": "a335162",
+  "role": "board_USB31_restored_readonly_preview",
+  "operator_camera_reconnected": true,
+  "operator_quote": "\u6211\u5df2\u6062\u590d",
+  "preview_only": true,
+  "formal_A": false,
+  "B_present": false,
+  "motion_commands_sent": false,
+  "camera_setters_called": false,
+  "CAN_recovery": false,
+  "automatic_reopen": false,
+  "events": [
+    {
+      "name": "sdk",
+      "pid": 8904,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/collect_calibration_sdk.py",
+        "--output",
+        "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/sdk.json",
+        "--duration-s",
+        "6"
+      ],
+      "epoch": 1792147534.3556585
+    },
+    {
+      "name": "bridge",
+      "pid": 8944,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/calibration_readonly_feedback.py",
+        "--duration-s",
+        "50",
+        "--output",
+        "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/feedback.json"
+      ],
+      "epoch": 1792147540.879452
+    },
+    {
+      "name": "ready",
+      "pid": 8945,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/wait_calibration_ready.py",
+        "--duration-s",
+        "15",
+        "--output",
+        "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/readiness.json",
+        "--listening",
+        "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/listening.json"
+      ],
+      "epoch": 1792147540.8856518
+    },
+    {
+      "name": "depth",
+      "pid": 8958,
+      "argv": [
+        "ros2",
+        "launch",
+        "astra_camera",
+        "astra.launch.py"
+      ],
+      "epoch": 1792147541.2402954
+    },
+    {
+      "name": "color",
+      "pid": 9005,
+      "argv": [
+        "/opt/ros/humble/lib/image_tools/cam2image",
+        "--ros-args",
+        "-p",
+        "burger_mode:=false",
+        "-p",
+        "device_id:=0",
+        "-p",
+        "frequency:=5.0",
+        "-p",
+        "width:=320",
+        "-p",
+        "height:=240",
+        "-p",
+        "frame_id:=camera_color_optical_frame",
+        "-r",
+        "image:=/camera/color/image_raw"
+      ],
+      "epoch": 1792147543.0742733
+    },
+    {
+      "name": "capture",
+      "pid": 9019,
+      "argv": [
+        "/usr/bin/python3",
+        "-c",
+        "import sys;sys.path.insert(0,'/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test');from pathlib import Path;from collect_static_rgbd import collect;sys.exit(collect(Path(sys.argv[1]),15.,5,settle_s=3.,stop_on_feedback_loss=True,max_bytes=4<<20))",
+        "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/capture"
+      ],
+      "epoch": 1792147547.2200358
+    },
+    {
+      "name": "factory",
+      "pid": 9059,
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/calibration_stage1_activated_20261014.kfNDAQ/capture_factory_metadata.py",
+        "/home/johnwick/brain_robot_logs/internal_tf_pair_20261016.VKGL5c/factory.json"
+      ],
+      "epoch": 1792147554.0676599
+    },
+    {
+      "name": "sdk",
+      "exit_code": 2,
+      "epoch": 1792147555.5596962
+    },
+    {
+      "name": "bridge",
+      "exit_code": 0,
+      "epoch": 1792147555.5597084
+    },
+    {
+      "name": "ready",
+      "exit_code": 0,
+      "epoch": 1792147555.559718
+    },
+    {
+      "name": "depth",
+      "exit_code": 0,
+      "epoch": 1792147555.559725
+    },
+    {
+      "name": "color",
+      "exit_code": 0,
+      "epoch": 1792147555.5598462
+    },
+    {
+      "name": "capture",
+      "exit_code": 0,
+      "epoch": 1792147555.559859
+    },
+    {
+      "name": "factory",
+      "exit_code": 0,
+      "epoch": 1792147555.5598974
+    }
+  ],
+  "error": null,
+  "SDK_full_window_rc": 2,
+  "actual_pre_sample": {
+    "epoch": 1792147540.502999,
+    "sdk_receipt_stamps": {
+      "joint": "1792147540.502317",
+      "high": "1792147540.4983017",
+      "low": "1792147540.4980543",
+      "gripper": "1792147540.5024261"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 210.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4099,
+      69496,
+      5092
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.071502956,
+      1.212288224,
+      0.088824848
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -4,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "original_static_slice": {
+    "indices": [
+      23,
+      60
+    ],
+    "quality": {
+      "samples": 37,
+      "fresh_samples": 37,
+      "span_s": 3.6129133701324463,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "camera_start_epoch": 1792147541.2374241,
+  "capture_rc": 0,
+  "saved_frames": 5,
+  "factory_rc": 0,
+  "all_owned_sources_exited": true,
+  "camera_elapsed_s": 14.322481584000343,
+  "within_35s_camera_bound": true
+}
