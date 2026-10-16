@@ -1,4 +1,13 @@
-## 本轮（2026-10-16 13:36）：宿主日志只读审阅完成，确认换口但故障窗无记录；提出待批准USB2.0隔离
+## 本轮（2026-10-16 13:39）：用户确认USB2.0单变量对照，停机前只读检查完成；待宿主UI操作
+
+- 起点e5dc619，用户“确认”已批准上轮虚拟USB兼容性临时2.0/可回退实验，不再待批准。两repo技能要求真实路径、最小动作，本轮仅读取ps/ip/lsusb/df并记录，不因授权自动关机/修改宿主或运动。
+- 原命令`ps -eo pid,stat,args`按已知控制源过滤，无piper_ctrl/adapter/visual_search/grasp/move_group/bag/cam2image（仅检查自身shell/rg）；`ip -details -statistics link show can0`rc0：if6 UP/ERROR-ACTIVE，1Mbps/.75/queue1000，RX156995/TX2101与上轮相同，错误/bus-off0。不是新流恢复/新鲜关节证据，未读SDK，不宣称当前q/使能已知。
+- `lsusb -d 1d50:606f`及`lsusb -t`rc0，USB003/012、guest3-1.2、xhci_hcd，EHCI/UHCI也存在但CAN尚未改路由。`df -h /`rc0，可用34GB/56%，无需清理。未bounce接口/USB reset/驱动重载/关机/enable/arm/轨迹/开闭/失能/Reset或开启相机。
+- [usb2_trial_authorization.json](evidence/piper_board_handeye_20261016/host_log_review01/usb2_trial_authorization.json)是本轮授权与重启后接力记录，当前试验仅获准、宿主设置尚未改变。WindowsVMware界面不在Ubuntu工具可访问范围，确需用户操作：先安排机械臂可靠支撑且不失能/断电/Reset，正常关Ubuntu、确认VM已关闭非挂起，VM设置→硬件→USB控制器，保存原兼容性值/截图供回退，仅选2.0，再开Ubuntu并连candleLight后回复完成；用户不用执行一键脚本或额外CAN命令。代理不擅自关VM，先Git留断点。
+- 重启后代理先读本授权，核实际CAN路由确已离开xHCI，不只看UI标签或枚举；新can0 DOWN可按既定受限参数激活，健康UP链路直接复用。先有界60秒纯接收时间线与被动SDK真实q/使能，无robot TX/运动/相机；保存/提交结果。通过只证明被动接收，带发送/原控制链验证另以明确范围安排，不立即回观测/跑一键。若仍停流，停止此分支并安排原兼容性回退/有区别诊断，不同条件重连运动循环。
+- 原宿主日志/生产/TF/门/限位均不改，旧板2/10，无新标定/抓取；只四规范文档及这份授权JSON，不纳入用户脏树/私有原日志。仅本地提交、未同步GitHub，既有分叉/历史审查/共享main写入范围阻断不变；授权试验不扩大成推送/自动合并或其他宿主变量修改。
+
+## 历史本轮（2026-10-16 13:36）：宿主日志只读审阅完成，确认换口但故障窗无记录；提出待批准USB2.0隔离
 
 - 用户已提供VMware文本，起点f6b197b；两repo技能约束只读/真实时间与设备身份/小范围记录，不启动设备或改生产。完整2748行319586字节输入经解析，源SHA857bb9ee74a0bf8083f3a2c09fd3c9c2a5cdcb38db91edff7088cc41211e068b，私有副本`/home/johnwick/brain_robot_logs/vmware_host_review_20261016.hs91D9/vmware.original.private.txt`与附件cmp rc0。原件含宿主账户/路径/IP/无关设备，未入Git；只提交白名单结构化事件/源行号SHA，不复制原始日志整行。
 - [host_log_review01](evidence/piper_board_handeye_20261016/host_log_review01/README.md)解析命令`review_vmware_log.py <private-original> review.json`rc0，合成UTC转换/窗口/设备映射/隐私测试通过、实际全报告重放相同。49事件/21类别路径状态变更包含null→连接，不当21次物理换口；Python AST/源hash/实际report隐私白名单/六生产SHA验证通过，无生产修改不构建或重复旧J4测试。

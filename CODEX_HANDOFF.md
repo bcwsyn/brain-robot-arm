@@ -1,4 +1,14 @@
-# 当前断点（2026-10-16 13:36）：宿主日志已审阅，换口被证实；待批准虚拟USB2.0隔离/VM停机安排
+# 当前断点（2026-10-16 13:39）：USB2.0对照已批准；等待宿主UI变更及VM正常停机，不等待同一授权
+
+用户“确认”承接上轮单变量虚拟USB2.0、可回退方案，**已经批准，不再重复问同一许可**。当前仅停机前只读检查：无PiPER/adapter/controller/MoveIt/抓取/相机/录包进程；can0 if6 UP/ERROR-ACTIVE，RX156995/TX2101与前次相同/错误0，USB003/012仍在xhci_hcd/3-1.2，存在EHCI/UHCI不表示CAN已走它们。没有新鲜q/使能，不把旧姿态/六true当当前；根34GB/56%无需清理。
+
+Windows宿主设置无法由当前Ubuntu会话直接改，故现在确需用户手动：机械臂可靠支撑，不失能/断电/Reset；正常关闭Ubuntu、VMware显示已关闭而非挂起；VM设置→硬件→USB控制器，保存原兼容性值/截图供回退，仅改2.0；启动Ubuntu、candleLight连VM并告知完成。代理尚未发shutdown、改.vmx、重连CAN或发任何运动，不自动关机导致未提交记录丢失，也不声称实体支撑已由软件确认。
+
+独立[批准及重启断点](docs/evidence/piper_board_handeye_20261016/host_log_review01/usb2_trial_authorization.json)记录当前事实和范围。重启后先读它及本交接，不重复索USB2.0许可：检查CAN实际USB路由已离开xHCI；若新can0 DOWN，仅既定1Mbps/.75/queue1000/UP，已有健康链路复用；做有界60秒纯接收和被动SDK新鲜q/使能，无robot TX/运动/相机。先保存/提交结果，不将纯接收稳定当带发送/运动稳定或自动跑一键。若仍停流，停止该试验分支，安排恢复原兼容性及有区别诊断，不同条件循环。
+
+生产六SHA/TF/门/限位冻结，旧板2/10、未标定/抓取；当前需要的是宿主操作，不是更多普通日志或反复换物理口。只本地Git，分叉/积压推送审查/共享main写入范围阻断保持；不推送原私有宿主日志。
+
+## 历史断点（2026-10-16 13:36）：宿主日志已审阅，换口被证实；待批准虚拟USB2.0隔离/VM停机安排
 
 用户已提供宿主日志，不能再以缺同一日志阻断或要求重复粘贴。2748行319586字节、SHA857bb9ee74a0bf8083f3a2c09fd3c9c2a5cdcb38db91edff7088cc41211e068b；原件私存home runtime，不提交其主机名/IP/Windows路径/无关序列号，规范只收白名单脱敏[分析](docs/evidence/piper_board_handeye_20261016/host_log_review01/README.md)、review.json及只读解析脚本。原cmp/SHA、UTC+8窗口、物理路径变化、隐私/全记录重放、六生产SHA通过。
 

@@ -1,0 +1,56 @@
+{
+  "recorded_at_local": "2026-10-16T13:39:49+08:00",
+  "baseline_commit": "e5dc619",
+  "operator_quote": "确认",
+  "context": "Approve the proposed one-variable, reversible virtual USB compatibility 2.0 trial; normal VM shutdown and physical support must be arranged.",
+  "trial_approved": true,
+  "host_setting_changed": false,
+  "VM_shutdown_requested_or_executed_by_agent": false,
+  "hardware_disable_power_cycle_reset_motion_or_gripper_commands": false,
+  "pre_shutdown_read_only_observation": {
+    "named_robot_control_or_camera_processes_seen_excluding_check_itself": 0,
+    "can_interface": "can0",
+    "ifindex": 6,
+    "CAN_state": "ERROR-ACTIVE",
+    "interface_flags": ["NOARP", "UP", "LOWER_UP", "ECHO"],
+    "bitrate": 1000000,
+    "sample_point": 0.75,
+    "txqueuelen": 1000,
+    "RX_packets": 156995,
+    "TX_packets": 2101,
+    "counters_unchanged_from_previous_record": true,
+    "errors_and_bus_off": 0,
+    "new_fresh_joint_or_enable_feedback_obtained": false,
+    "current_physical_pose_and_enable_status_known": false,
+    "USB_vendor_product": "1d50:606f",
+    "USB_address": "003/012",
+    "current_guest_controller": "xhci_hcd",
+    "current_guest_path": "3-1.2",
+    "EHCI_UHCI_also_present_but_not_current_CAN_route": true,
+    "root_filesystem": {"available_GB_approx": 34, "usage_percent": 56}
+  },
+  "manual_host_step": [
+    "Ensure the arm is reliably supported; do not disable, power-cycle, reset, or move it for this trial.",
+    "Normally shut down Ubuntu; ensure VMware reports powered off, not suspended. Agent has not executed shutdown.",
+    "On Windows VMware: VM Settings > Hardware > USB Controller. Save the original compatibility value or a screenshot for rollback.",
+    "Change only USB compatibility to 2.0; do not alter Hyper-V, VBS, quirks, drivers, firmware, or other VM hardware.",
+    "Start Ubuntu and connect candleLight USB-CAN to this VM. Tell the agent when completed; do not launch the robot one-key script."
+  ],
+  "post_restart_agent_plan": [
+    "Read latest canonical handoff and this approved trial; do not request the same approval again.",
+    "Check actual USB-CAN routing has left xHCI. A UI setting or mere USB enumeration is not proof.",
+    "If the new can0 is DOWN, use only the already approved 1Mbps/0.75/queue1000 activation; reuse a healthy UP link.",
+    "Record a bounded 60-second pure-receive timeline and fresh passive SDK joint/enable feedback, without robot TX or motion.",
+    "Record the result and commit. Passive stability is not active-transmission or motion validation; arrange only the existing, explicitly scoped control-chain validation after successful checks.",
+    "If the new path still stalls, stop that branch rather than repeat motion; arrange rollback to the exact original USB compatibility and a distinct diagnostic."
+  ],
+  "not_authorized_by_this_reply": [
+    "Production TF/TCP, motion logic, detector gates, limits or firmware changes",
+    "Hardware disable, power-off, ResetPiper, or MasterSlaveConfig",
+    "Unattended host changes without the required physical support and normal VM shutdown arrangement",
+    "Git force push, automatic divergent merge, or publication of raw private host logs"
+  ],
+  "remaining_blocker": "The Windows VMware USB setting is not accessible from the current Ubuntu agent; user must perform the host UI step after arranging physical support.",
+  "old_board_candidates": "2/10, unchanged",
+  "Git_sync": "Local only; previous divergent main, pending history review and shared-main publication scope blocker unchanged."
+}
