@@ -27,6 +27,10 @@ def make_adapter():
     adapter.positions = {name: 0.0 for name in adapter.joint_names}
     adapter.trajectory_start_tolerance = 0.10
     adapter.trajectory_max_joint_step = 0.35
+    adapter.command_timeout_s = .20
+    adapter.joint_state_timeout_s = 25.0
+    adapter.last_state_time = 100.0
+    adapter.targets = dict(adapter.positions)
     return adapter
 
 
@@ -340,13 +344,15 @@ def test_final_bounded_step_is_not_overwritten_by_idle_hold(monkeypatch, side, s
     samples = [(0.0, desired)] if single_point else [(0.0, desired), (.5, desired)]
     adapter._trajectory(make_trajectory(samples))
     monkeypatch.setattr(MODULE.time, 'monotonic', lambda: 101.0)
+    adapter.last_state_time = 101.0
     adapter._tick()
     assert emitted[-1].position[2] == bound
-    assert adapter.trajectory is None
+    assert adapter.trajectory is not None
     # Model a delivered final command and feedback, without simulating CAN.
     adapter.positions['joint3'] = bound
     adapter._tick()
     assert emitted[-1].position[2] == bound
+    assert adapter.trajectory is None
 
 
 def test_rearming_discards_old_trajectory_without_running_it(monkeypatch):
@@ -356,3 +362,120 @@ def test_rearming_discards_old_trajectory_without_running_it(monkeypatch):
     assert adapter.trajectory is None
     adapter._tick()
     assert list(emitted[-1].position) == [0.0] * 6
+
+
+def progress_adapter(monkeypatch, goal=-.074293996):
+    adapter, emitted = takeover_adapter(monkeypatch)
+    adapter.last_tick = 100.0
+    adapter._arm(None, SimpleNamespace())
+    end = [0.] * 6
+    end[3] = goal
+    adapter._trajectory(make_trajectory([(0., [0.] * 6), (.1, end)]))
+    return adapter, emitted
+
+
+def progress_tick(adapter, monkeypatch, now, fresh=True):
+    monkeypatch.setattr(MODULE.time, 'monotonic', lambda: now)
+    if fresh:
+        adapter.last_state_time = now
+    adapter._tick()
+
+
+def test_recorded_J4_goal_is_requested_with_continuing_fresh_zero_feedback(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch)
+    for step in range(1, 51):
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+    q = [m.position[3] for m in emitted]
+    assert min(q) == pytest.approx(-.074293996)
+    assert all(abs(b-a) <= .189*.02+1e-10 for a,b in zip([0.]+q, q))
+    # Sending the goal is not evidence that the actuator has reached it.
+    assert adapter.trajectory is not None
+    adapter.positions['joint4'] = -.074293996
+    progress_tick(adapter, monkeypatch, 101.02)
+    assert adapter.trajectory is None
+
+
+@pytest.mark.parametrize('goal', [-.3, .3])
+def test_fresh_but_nonmoving_feedback_has_bounded_command_lead(monkeypatch, goal):
+    adapter, emitted = progress_adapter(monkeypatch, goal)
+    for step in range(1, 201):
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+    assert max(abs(m.position[3]) for m in emitted) <= adapter.trajectory_start_tolerance+1e-12
+    assert emitted[-1].position[3] == pytest.approx(math.copysign(.1, goal))
+    assert adapter.trajectory is not None
+
+
+def test_feedback_pause_resets_accumulation_without_shortening_original_watchdog(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch, -.3)
+    for step in range(1, 6):
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+    assert emitted[-1].position[3] < -.01
+    progress_tick(adapter, monkeypatch, 100.32, fresh=False)
+    assert emitted[-1].position[3] == 0.
+    assert adapter.armed and adapter.trajectory is not None
+    for now in [101., 110., 118.]:
+        progress_tick(adapter, monkeypatch, now, fresh=False)
+        assert emitted[-1].position[3] == 0.
+    # Recover in the original 25s grace, one normal tick from actual feedback.
+    adapter.last_tick = 118.
+    progress_tick(adapter, monkeypatch, 118.02)
+    assert emitted[-1].position[3] == pytest.approx(-.189*.02)
+
+
+def test_event_loop_gap_resets_old_lead_even_when_feedback_arrives_first(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch, -.3)
+    for step in range(1, 6):
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+    adapter.last_state_time = 118.
+    adapter.last_tick = 117.98
+    progress_tick(adapter, monkeypatch, 118.)
+    assert emitted[-1].position[3] == pytest.approx(-.189*.02)
+
+
+def test_actual_feedback_jump_reanchors_instead_of_replaying_old_lead(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch, -.3)
+    for step in range(1, 6):
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+    adapter.positions['joint4'] = .25
+    progress_tick(adapter, monkeypatch, 100.12)
+    assert emitted[-1].position[3] == pytest.approx(.25-.189*.02)
+
+
+def test_new_trajectory_does_not_reuse_previous_command_accumulation(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch, -.3)
+    for step in range(1, 6):
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+    goal=[0.]*6;goal[3]=.05
+    adapter._trajectory(make_trajectory([(0., [0.]*6), (.1, goal)]))
+    progress_tick(adapter, monkeypatch, 100.12)
+    assert 0. < emitted[-1].position[3] <= .189*.02+1e-12
+
+
+def test_lagging_simulated_feedback_eventually_completes(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch, -.3)
+    for step in range(1, 501):
+        if emitted:
+            measured = adapter.positions['joint4']
+            adapter.positions['joint4'] += .15 * (emitted[-1].position[3] - measured)
+        progress_tick(adapter, monkeypatch, 100. + step * .02)
+        if adapter.trajectory is None:
+            break
+    assert adapter.trajectory is None
+    assert adapter.positions['joint4'] == pytest.approx(-.3, abs=1e-4)
+
+
+@pytest.mark.parametrize('state_age', [-.01, .201])
+def test_invalid_integration_age_holds_actual_without_consuming_trajectory(monkeypatch, state_age):
+    adapter, emitted = progress_adapter(monkeypatch)
+    adapter.last_state_time = 100.02 - state_age
+    progress_tick(adapter, monkeypatch, 100.02, fresh=False)
+    assert list(emitted[-1].position) == [0.] * 6
+    assert adapter.trajectory is not None
+
+
+def test_joint_state_timeout_remains_the_original_disarm_boundary(monkeypatch):
+    adapter, emitted = progress_adapter(monkeypatch)
+    adapter._state_fresh = lambda: MODULE.PiperJogAdapter._state_fresh(adapter)
+    progress_tick(adapter, monkeypatch, 126., fresh=False)
+    assert not adapter.armed
+    assert not emitted

@@ -1,0 +1,92 @@
+{
+  "offline_only": true,
+  "ROS_initialized": false,
+  "hardware_accessed": false,
+  "deployed_changed": false,
+  "changed_method_only": [
+    "_apply_trajectory"
+  ],
+  "original_evidence_files_SHA_verified": 57,
+  "archive_SHA256": "aad32a5b886080cf18f8bc514a6b714ffd75f4901b069fc84c483f9e0271efca",
+  "frozen_sources": {
+    "/home/johnwick/start_brain_robot_cube_real.sh": {
+      "before": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "after": "87039bdbac1323daacb7e599f3cae884aebab3b9282a519b4ef1a6a33124c2b0",
+      "authorized_candidate_exception": false
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": {
+      "before": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "after": "7d0e2c0d8336050de13a387d35bfb534b3577f8ac75f15883e9e6d403322e42a",
+      "authorized_candidate_exception": false
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": {
+      "before": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "after": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+      "authorized_candidate_exception": false
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": {
+      "before": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "after": "2144f2237150106a5e0e7e8d01a8112821b5e1f291396ce5e22e78f132281e33",
+      "authorized_candidate_exception": false
+    },
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "before": "47c8b7864c714de2ff85b9bea7ae722d57152c349fa235665f1b8830bf0c2b18",
+      "after": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+      "authorized_candidate_exception": true
+    },
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": {
+      "before": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+      "after": "a5074c614fcc1b7f57854e2693e689337577567dde0ca7765470df52fa1347d8",
+      "authorized_candidate_exception": false
+    }
+  },
+  "recorded_return_counterfactual": {
+    "deployed": {
+      "calls": 1480,
+      "goal_J4_rad": -0.07429399600000001,
+      "command_min_rad": -0.010214974189804077,
+      "command_max_rad": 0.0042126281261444095,
+      "last_command_rad": -0.0038550682067871093,
+      "trajectory_active_at_end": true,
+      "closest_command_to_goal_rad": 0.06407902181019594
+    },
+    "canonical_before": {
+      "calls": 1480,
+      "goal_J4_rad": -0.07429399600000001,
+      "command_min_rad": -0.010214974189804077,
+      "command_max_rad": 0.0042126281261444095,
+      "last_command_rad": -0.0038550682067871093,
+      "trajectory_active_at_end": true,
+      "closest_command_to_goal_rad": 0.06407902181019594
+    },
+    "candidate": {
+      "calls": 1480,
+      "goal_J4_rad": -0.07429399600000001,
+      "command_min_rad": -0.07429399600000001,
+      "command_max_rad": 0.030129189963013035,
+      "last_command_rad": -0.07429399600000001,
+      "trajectory_active_at_end": true,
+      "closest_command_to_goal_rad": 0.0
+    }
+  },
+  "synthetic_constant_feedback": {
+    "deployed": {
+      "last_command_rad": -0.00378,
+      "active": true
+    },
+    "canonical_before": {
+      "last_command_rad": -0.00378,
+      "active": true
+    },
+    "candidate": {
+      "last_command_rad": -0.074293996,
+      "active": true
+    }
+  },
+  "limitations": [
+    "Bag receipt time approximates callback time; not a bit-exact runtime replay.",
+    "Old actual feedback is held fixed; changed command does not prove physical response.",
+    "Candidate includes earlier fef28d6 takeover changes, not deployed or hardware verified.",
+    "Original arm sampling remains 2/10 poses; no new hand-eye solution."
+  ]
+}

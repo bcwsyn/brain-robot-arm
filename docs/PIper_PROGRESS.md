@@ -1,4 +1,13 @@
-## 本轮（2026-10-16 09:22）：获准板路线实测2/10，J4原回程推进未收敛，已停止输出并保留完整证据
+## 本轮（2026-10-16 12:13）：获准推进离线修复与记录包回放完成，106测试通过，未部署/未运动
+
+- 用户“同意”仅解冻轨迹推进、先离线修复回放，随后继续不改变权限。使用ros2-piper-debug与surgical-change，先检查脏树/实际部署SHA及原阻断，不改任何其他成员约840项既有变更；不启动ROS/CAN/相机/控制源，不新增物理读数。
+- 规范adapter只改`_apply_trajectory`（AST核对其余方法不变）：新鲜反馈下前次命令累计，复用原速度/边界；积分窗复用min(原command_timeout=.20,原joint_state_timeout=25)，过旧/未来反馈持实测不累计，长调度间隔/新轨迹/实际反馈跳变重锚。复用原0.10rad起点误差界封顶命令超前，未调参数/部署。命令及实际反馈均达原1e-4内部epsilon才清轨迹，调用者原0.04rad标准不改。原驱动0.5秒抑制/25秒宽限与其他生产源未变。
+- 初始新增测试红灯暴露旧推进；两个测试夹具问题（首tick时间、无关gripper警告字段）独立修正，不算产品失败。最终适配器88+原抓取回放18=106通过，rc0；新覆盖反馈空窗18秒恢复、超前封顶、事件循环停顿、反馈跳变、新轨迹、模拟滞后收敛、终点不退回持位与原失联停止等。
+- 原run03第二47点轨迹/原实际反馈/1480命令时间戳离线反事实：部署旧版与仓库20fcd30最近离目标仍0.064079rad；新候选能输出完整J4−0.074293996rad，但原反馈未到，轨迹仍active。50次恒0反馈20ms复现旧−0.00378、新−0.074294。bag接收时间仅近似回调、固定旧反馈不能证明新命令物理响应或碰撞间隙。
+- 命令：Humble环境`/usr/bin/python3 -m pytest -q -p no:cacheprovider .../test/test_piper_jog_adapter.py .../test/test_real_grasp_replay.py --junitxml=.../offline_progress_fix/pytest.xml`，rc0；`/usr/bin/python3 docs/evidence/piper_board_handeye_20261016/offline_progress_fix/replay.py`，rc0。详细命令、报告、源码哈希和限制见[offline_progress_fix](evidence/piper_board_handeye_20261016/offline_progress_fix/README.md)。旧57证据SHA通过；home实际a5074c61及另外四冻结源SHA不变，规范候选5c1c1be2…为本轮批准例外，仍含原fef28d6未部署接管修复。
+- 根34GB可用/56%、共享132GB，无必要删数据。原板实际仍2fit/0heldout，不新增姿态或手眼解/部署TF；本轮没有推送。下一仅待具体候选部署与限定J4往返验证授权（明确包含fef28d6、保留旧部署回退），不是再问已批准离线修改或板路线；未授权前不自动运动。
+
+## 历史本轮（2026-10-16 09:22）：获准板路线实测2/10，J4原回程推进未收敛，已停止输出并保留完整证据
 
 - 用户明确“同意”121d1ef板9fit+1heldout/限定腕部动作，路线/动作许可已获，不再问同一许可。按ros2-piper-debug/surgical-change先查实际状态：当天SDK100/99fresh/9.838s原静止通过、q同昨晚/六true/99.6mm；已有can0 ERROR-ACTIVE持续RX、无恢复，根33GB。原有界预览五RGB-D/工厂值成功、相机18.186s，板可见；原话题/CAN/相机参数不改。
 - 只用原launch的模型/MoveIt/adapter节点、原driver auto_enable=false，无Servo/controller/grasp。原18往返路径/当前和各候选状态检查均通过、URDF SHA0b41516e…、原范围/原0.04rad落点条件不变。当前世界无碰撞体/Octomap，不把模型检查当桌面间隙证明；无腕部云恢复。临时调用只通过原enable_srv同步本地门、enable_motion/arm、已规划arm_trajectory，不直接SDK关节运动或gripper输入。

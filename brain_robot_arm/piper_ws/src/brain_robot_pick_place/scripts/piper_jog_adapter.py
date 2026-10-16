@@ -401,22 +401,43 @@ class PiperJogAdapter(Node):
         points = self.trajectory.points
         elapsed = now - self.trajectory_start
         max_step = self.max_velocity * max(dt, 0.0)
+        # The driver retains its original feedback watchdog/grace. This shorter
+        # existing command horizon only governs integration of software targets:
+        # never accumulate through a missing-feedback or event-loop interval.
+        horizon = min(self.command_timeout_s, self.joint_state_timeout_s)
+        feedback_age = now - self.last_state_time
+        previous_apply = getattr(self, '_trajectory_last_apply', now)
+        reset_anchor = (
+            getattr(self, '_integrating_trajectory', None) is not self.trajectory
+            or not 0.0 <= now - previous_apply <= horizon)
+        self._trajectory_last_apply = now
+        if not 0.0 <= feedback_age <= horizon:
+            self.targets.update(self.positions)
+            self._integrating_trajectory = None
+            return True
+        self._integrating_trajectory = self.trajectory
 
         def limit_target(name, desired):
-            # Track the measured physical joint rather than only the previous
-            # software target.  During S-V1.9-1 feedback gaps the open-loop
-            # target can run ahead of the arm; when feedback resumes the arm
-            # then remains short of the trajectory endpoint.  Re-anchoring
-            # each bounded step to the latest measured position lets the
-            # trajectory converge without increasing speed or bypassing the
-            # feedback watchdog.
-            current = self.positions.get(name, self.targets.get(name, 0.0))
+            measured = self.positions[name]
+            current = self.targets.get(name, measured)
+            lead = self.trajectory_start_tolerance
+            if reset_anchor or abs(current - measured) > lead:
+                current = measured
             joint_index = self.joint_names.index(name)
             desired = max(self.joint_min[joint_index], min(self.joint_max[joint_index], desired))
+            # Reuse the accepted start-error bound as the maximum command lead.
+            # Fresh but stationary feedback must not permit unbounded run-ahead.
+            desired = max(measured - lead, min(measured + lead, desired))
             # Apply rate limiting last. Clipping the resulting step instead
             # could jump an already out-of-bounds measurement to the limit.
             delta = max(-max_step, min(max_step, desired - current))
             return current + delta
+
+        def at_endpoint(name, desired):
+            # Requesting the endpoint is not physical arrival. Keep sending it
+            # until feedback catches up, instead of reverting to idle hold.
+            return (abs(self.targets[name] - desired) <= 1e-4
+                    and abs(self.positions[name] - desired) <= 1e-4)
 
         def point_time(point):
             return float(point.time_from_start.sec) + float(point.time_from_start.nanosec) * 1e-9
@@ -427,7 +448,7 @@ class PiperJogAdapter(Node):
                 if index < len(point.positions):
                     desired = float(point.positions[index])
                     self.targets[name] = limit_target(name, desired)
-                    if abs(self.targets[name] - desired) > 1e-4:
+                    if not at_endpoint(name, desired):
                         complete = False
             return not complete
         if elapsed >= point_time(points[-1]):
@@ -437,7 +458,7 @@ class PiperJogAdapter(Node):
                 if index < len(point.positions):
                     desired = float(point.positions[index])
                     self.targets[name] = limit_target(name, desired)
-                    if abs(self.targets[name] - desired) > 1e-4:
+                    if not at_endpoint(name, desired):
                         complete = False
             return not complete
         previous = points[0]
