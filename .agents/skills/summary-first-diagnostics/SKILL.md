@@ -1,11 +1,19 @@
 ---
 name: summary-first-diagnostics
-description: Use when checking stream liveness, rates or freshness, or inspecting high-volume ROS/CAN, log, JSON or Git diagnostic output. Aggregate in the terminal and inspect summaries before targeted raw evidence; do not replace required instruction reading or full requested reviews.
+description: Reduce wall-clock time and redundant work in real-device diagnostics and high-volume ROS/CAN, log, JSON or Git inspection. Reuse valid evidence, plan discriminating bounded experiments, and aggregate before reading raw output. Preserve required instructions, freshness and full requested reviews.
 ---
 
 # Summary-first diagnostics
 
-Reduce data returned to the model, not the quality of evidence or the user's requested observation period. This skill does not authorize motion, recovery, configuration changes or deletion.
+Prioritize time to a verified task outcome over token savings. Reduce redundant experiments and data returned to the model, not evidence quality or required observation periods. This skill does not authorize motion, recovery, configuration changes or deletion.
+
+## Spend real-device time on progress
+
+- **Reuse with validity conditions.** Before repeating a test, consult its result and relevant source/deployed hashes, configuration and device/setup identity. Reuse only while its assumptions hold; state what changed or invalidated it. A successful parser/build/trajectory test can avoid unrelated retesting, but never substitutes for fresh joint/enable/target feedback. Reboot, reconnect, mount/scene changes or stale data can invalidate different parts independently.
+- **Make each attempt discriminate.** Briefly state the question, expected observable result, success condition, bounded window and failure branches before running. Prefer an existing proven path and the smallest authorized experiment that separates plausible causes. Do not repeat an identical failed attempt without new evidence or a changed condition; inspect its failure first. These notes belong in the existing work record, not another planning framework.
+- **Stay on the evidenced blocker.** Once a cause or failing owner is localized, use focused offline replay/tests before another real attempt. Build/test only affected components and dependencies where justified; do not restart CAN/TF/limits surveys, full builds or passed motion experiments without a reason. Offline success does not prove physical success.
+- **Reduce orchestration overhead.** Batch independent read-only inspections and complete coherent fixes within the approved scope. Reuse valid existing approvals rather than asking again; still obtain required approval before new code changes, motions or scope expansion. Keep one physical control owner; do not overlap competing probes or CPU-heavy analysis with timing-sensitive capture/control just to claim parallelism.
+- **Measure, then optimize.** Use existing logs or lightweight monotonic start/end timing for preparation, build/deploy, observation/wait, motion and analysis; mark unmeasured time unknown. Report total wall time, the dominant stage and what advanced or which hypothesis was eliminated. Overlapping stages are not additive. Do not rerun an experiment merely to fill missing timings or claim speedups without a comparable baseline. Shorten avoidable overhead, not required checks; this is not a new robot gate or mandatory instrumentation project.
 
 ## Workflow
 
