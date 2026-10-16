@@ -1,0 +1,255 @@
+{
+  "user_confirmed_host_reconnect": "已完成USB-CAN宿主侧重连",
+  "initial_feedback_restored": true,
+  "initial_interface": 5,
+  "initial_passive_SDK_quality": {
+    "samples": 60,
+    "fresh_samples": 60,
+    "span_s": 5.922186374664307,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "initial_last_complete_SDK": {
+    "epoch": 1792126530.5530636,
+    "sdk_receipt_stamps": {
+      "joint": "1792126530.5494926",
+      "high": "1792126530.5454535",
+      "low": "1792126530.5454922",
+      "gripper": "1792126530.549511"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8457,
+      31427,
+      -42366,
+      1001,
+      47816,
+      3713
+    ],
+    "q_driver_rad": [
+      -0.147523908,
+      0.5482125880000001,
+      -0.7390325040000001,
+      0.017461444,
+      0.8341023040000001,
+      0.06476957200000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -1,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "initial_whole_speed_window_failed_not_hidden": true,
+  "new_actual_pose_original_static_subwindow": {
+    "start": 0,
+    "end": 82,
+    "samples": 82,
+    "quality": {
+      "samples": 82,
+      "fresh_samples": 82,
+      "span_s": 8.129435062408447,
+      "static_three_seconds_and_thirty_samples": true,
+      "freshness_not_per_motor_verified": true,
+      "q_spread_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "old_near_zero_baseline_not_reused_for_changed_pose": true,
+  "observation_reached": false,
+  "board_sampling_started": false,
+  "old_board_pose_candidates": 2,
+  "required_new_cohort": 10,
+  "primary_failure": "CAN reception ceased during the original 8-point current-to-observe trajectory; original guards stopped output and software-disarmed.",
+  "wrapper_fault_recognition_worked": true,
+  "wrapper_error": "AssertionError()",
+  "bag_counts": {
+    "/brain_robot_grasp/arm_trajectory": 3,
+    "/brain_robot_visual_control/reason": 4,
+    "/brain_robot_visual_control/state": 4,
+    "/joint_states_feedback": 5285,
+    "/brain_robot_control/adapter_armed": 3,
+    "/joint_commands": 2126
+  },
+  "trajectories": [
+    {
+      "epoch": 1792126734.308689,
+      "points": 8,
+      "start": [
+        -0.147523908,
+        0.5482125880000001,
+        -0.7390325040000001,
+        0.017461444,
+        0.8341023040000001,
+        0.06476957200000001
+      ],
+      "goal": [
+        -0.141941828,
+        0.942464432,
+        -1.269242884,
+        -0.07443354800000002,
+        1.22108,
+        0.089435388
+      ],
+      "duration_s": 26.510519
+    },
+    {
+      "epoch": 1792126777.7049477,
+      "points": 2,
+      "start": [
+        -0.143982776,
+        0.811390216,
+        -1.093407364,
+        -0.04387166000000001,
+        1.091157088,
+        0.081585588
+      ],
+      "goal": [
+        -0.143982776,
+        0.811390216,
+        -1.093407364,
+        -0.04387166000000001,
+        1.091157088,
+        0.081585588
+      ],
+      "duration_s": 0.1
+    },
+    {
+      "epoch": 1792126778.0352786,
+      "points": 2,
+      "start": [
+        -0.143982776,
+        0.811390216,
+        -1.093407364,
+        -0.04387166000000001,
+        1.091157088,
+        0.081585588
+      ],
+      "goal": [
+        -0.143982776,
+        0.811390216,
+        -1.093407364,
+        -0.04387166000000001,
+        1.091157088,
+        0.081585588
+      ],
+      "duration_s": 0.1
+    }
+  ],
+  "reasons": [
+    {
+      "epoch": 1792126723.4663434,
+      "value": "WAITING_FOR_START"
+    },
+    {
+      "epoch": 1792126734.3068655,
+      "value": "START_AUTHORIZED"
+    },
+    {
+      "epoch": 1792126777.7618237,
+      "value": "PIPER_ADAPTER_DISARMED"
+    },
+    {
+      "epoch": 1792126778.0361252,
+      "value": "USER_STOP"
+    }
+  ],
+  "states": [
+    {
+      "epoch": 1792126723.4664235,
+      "value": "IDLE"
+    },
+    {
+      "epoch": 1792126734.3068776,
+      "value": "PREPARE"
+    },
+    {
+      "epoch": 1792126777.7618556,
+      "value": "FAULT"
+    },
+    {
+      "epoch": 1792126778.0356197,
+      "value": "STOPPED"
+    }
+  ],
+  "last_received_feedback_NOT_current_physical_state": {
+    "bag_epoch": 1792126752.676282,
+    "source_stamp_ns": "1792126752675791647",
+    "q": [
+      -0.143982776,
+      0.811390216,
+      -1.093407364,
+      -0.04387166000000001,
+      1.091157088,
+      0.081585588
+    ]
+  },
+  "last_feedback_after_trajectory_start_s": 18.367592811584473,
+  "maximum_observe_goal_error_at_last_received_feedback_rad": 0.17583552000000013,
+  "first_command_matches_arm_feedback": true,
+  "new_kernel_evidence": "2026-10-16 12:59:08 gs_usb 3-1.2:1.0 can0: Unexpected out of range echo id 343",
+  "kernel_version": "6.8.0-138-generic",
+  "USB_power": {
+    "/sys/bus/usb/devices/3-1.2/power/control": "on",
+    "/sys/bus/usb/devices/3-1.2/power/runtime_status": "active",
+    "/sys/bus/usb/devices/3-1.2/power/autosuspend_delay_ms": "-1000"
+  },
+  "autosuspend_already_disabled_no_write": true,
+  "post_fault_passive_frames_3s": 0,
+  "RX_fixed": 544487,
+  "TX_packets_fixed": 2643,
+  "bus_off_or_CAN_error_counter_increments_seen": false,
+  "one_new_echo_policy_recovery_done": true,
+  "recovery_UP_errno": "ENODEV",
+  "current_interface_state": "DOWN/STOPPED, netdev still listed",
+  "no_repeat_motion_USB_reset_module_reload_after_second_failure": true,
+  "hardware_disable_reset_or_gripper_commands": false,
+  "all_owned_sources_exited": true,
+  "production_sources_SHA_unchanged": true,
+  "current_enabled_or_pose_known_after_stall": false,
+  "official_fact": "Upstream Linux v6.8 gs_usb uses ten TX contexts; an echo343 is out of range and this receive callback logs/discards that echo and resubmits its URB.",
+  "inference_limits": "This proves an invalid USB-CAN echo was seen, not its origin or that this one echo caused all subsequent silence. Cannot distinguish adapter, host passthrough, kernel interaction, or physical link from this log alone. Upstream v6.8 is a reference, not a claimed exact source of Ubuntu 6.8.0-138 binary.",
+  "old_echo_marker_issue": "Persisted marker is Sep28 count1; current boot also count1. Count alone is not boot-aware. Production frozen, no marker/script change; current event recovery tracked in its own boot-ID report.",
+  "next_required_external_change": "Change the host USB-CAN data path (prefer a different direct physical port without an external hub), reconnect to this VM; do not move/power-cycle/disable the arm. No blind repeat of same host-only reconnect. Host VMware log can distinguish further.",
+  "official_sources": [
+    "https://raw.githubusercontent.com/torvalds/linux/v6.8/drivers/net/can/usb/gs_usb.c",
+    "https://github.com/candle-usb/candleLight_fw/blob/master/src/can_common.c",
+    "https://knowledge.broadcom.com/external/article/307966"
+  ],
+  "metadata_note": "invocation_changes.wrapper_only_fault_recognition mistakenly stores checklist replacement string; executed_return.py is authoritative and comparison proves only the terminal-fault wait plus printed checklist changed.",
+  "package_first_assertion_failure_not_hardware_failure": "Initial offline packaging expected one constant hold; bag contains two (fault and USER_STOP cleanup). Corrected only audit expectation after reading all three trajectories; raw bag unchanged."
+}
