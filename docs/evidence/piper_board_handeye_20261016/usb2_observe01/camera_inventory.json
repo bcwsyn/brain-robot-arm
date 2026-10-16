@@ -1,0 +1,33 @@
+{
+  "epoch": 1792132696.3392007,
+  "read_only": true,
+  "commands": [
+    {
+      "argv": [
+        "lsusb",
+        "-t"
+      ],
+      "rc": 0,
+      "stdout": "/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/6p, 480M\n/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M\n    |__ Port 1: Dev 3, If 0, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 2: Dev 2, If 0, Class=Hub, Driver=hub/7p, 12M\n        |__ Port 1: Dev 4, If 1, Class=Application Specific Interface, Driver=, 12M\n        |__ Port 1: Dev 4, If 0, Class=Vendor Specific Class, Driver=gs_usb, 12M\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "lsusb",
+        "-d",
+        "2bc5:"
+      ],
+      "rc": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "Orbbec_devices": [],
+  "video_nodes": [],
+  "matching_robot_or_camera_sources": [],
+  "camera_start_reset_motion_or_gripper_commands": false,
+  "camera_RGB_depth_passthrough_missing": true,
+  "host_manual_step_if_missing": "Only connect Orbbec/Dabai DC1 depth and RGB camera devices (2bc5:0657 and 2bc5:0557) to this VM through VMware removable devices; do not change USB compatibility, reconnect CAN, restart VM/arm, or move board.",
+  "camera_USB2_stream_compatibility_established": false,
+  "calibration_capture_started": false
+}

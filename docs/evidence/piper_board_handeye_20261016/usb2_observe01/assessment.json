@@ -1,0 +1,761 @@
+{
+  "baseline_commit": "4e44326",
+  "operator_quote": "好，你自行完成，等真的需要我实机操作的时候再叫我",
+  "scope": "Original observation return stopped before SEARCH, then camera inspection; no gripper or production edits",
+  "original_control_helpers_and_launch_unchanged": true,
+  "script_exit_code": 0,
+  "shutdown_child_audit": {
+    "wrapper_launch_and_driver_exit_code": 0,
+    "move_group_child_after_SIGINT_exit_code": -11,
+    "depth_cube_probe_child_after_SIGINT_exit_code": 1,
+    "depth_cube_probe_error": "rcl_shutdown already called on the given context",
+    "motion_reached_and_software_disarmed_before_shutdown": true,
+    "all_graceful_shutdown_claimed": false,
+    "source": "runtime_originals.tar.gz: visual.log, final process-has-died lines"
+  },
+  "observe_reached_stopped_before_search": true,
+  "stop_after_observe_readback": true,
+  "target_q_rad": [
+    -0.141941828,
+    0.942464432,
+    -1.269242884,
+    -0.074433548,
+    1.22108,
+    0.089435388
+  ],
+  "original_observe_tolerance_rad": 0.01,
+  "arrival_q_rad": [
+    -0.143982776,
+    0.933724988,
+    -1.259945232,
+    -0.07197394400000001,
+    1.213038316,
+    0.08931328000000001
+  ],
+  "arrival_maximum_goal_error_rad": 0.0092976520000001,
+  "actual_control_interval_s": 16.56582283973694,
+  "trajectory_nominal_duration_s": 20.0,
+  "goal_is_reached_with_original_tolerance_not_exact_nominal_final_point": true,
+  "trajectories": [
+    {
+      "epoch": 1792132638.1074731,
+      "points": 2,
+      "start_q": [
+        -0.143982776,
+        0.902883996,
+        -1.21619568,
+        -0.06440324800000001,
+        1.183017192,
+        0.08751654800000001
+      ],
+      "goal_q": [
+        -0.141941828,
+        0.942464432,
+        -1.269242884,
+        -0.074433548,
+        1.22108,
+        0.089435388
+      ],
+      "duration_s": 20.0
+    },
+    {
+      "epoch": 1792132654.6724725,
+      "points": 2,
+      "start_q": [
+        -0.143982776,
+        0.933724988,
+        -1.259945232,
+        -0.07197394400000001,
+        1.213038316,
+        0.08931328000000001
+      ],
+      "goal_q": [
+        -0.143982776,
+        0.933724988,
+        -1.259945232,
+        -0.07197394400000001,
+        1.213038316,
+        0.08931328000000001
+      ],
+      "duration_s": 0.1
+    }
+  ],
+  "bag_counts": {
+    "/brain_robot_visual_control/reason": 3,
+    "/brain_robot_visual_control/state": 3,
+    "/joint_states_feedback": 6677,
+    "/brain_robot_control/adapter_armed": 3,
+    "/joint_commands": 831,
+    "/brain_robot_grasp/arm_trajectory": 2
+  },
+  "reasons": [
+    {
+      "epoch": 1792132626.620945,
+      "value": "WAITING_FOR_START"
+    },
+    {
+      "epoch": 1792132638.1059673,
+      "value": "START_AUTHORIZED"
+    },
+    {
+      "epoch": 1792132654.673296,
+      "value": "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH"
+    }
+  ],
+  "states": [
+    {
+      "epoch": 1792132626.6226642,
+      "value": "IDLE"
+    },
+    {
+      "epoch": 1792132638.1057096,
+      "value": "PREPARE"
+    },
+    {
+      "epoch": 1792132654.673308,
+      "value": "STOPPED"
+    }
+  ],
+  "last_bag_feedback": {
+    "bag_epoch": 1792132661.1051016,
+    "source_stamp_ns": 1792132661104522984,
+    "q": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.08931328000000001
+    ]
+  },
+  "actual_end_SDK": {
+    "epoch": 1792132660.9353716,
+    "sdk_receipt_stamps": {
+      "joint": "1792132660.9336905",
+      "high": "1792132660.9346893",
+      "low": "1792132660.9344623",
+      "gripper": "1792132660.9341984"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -8254,
+      53595,
+      -72228,
+      -4126,
+      69528,
+      5120
+    ],
+    "q_driver_rad": [
+      -0.143982776,
+      0.9349111800000001,
+      -1.259945232,
+      -0.07197394400000001,
+      1.212846432,
+      0.08931328000000001
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 99600,
+    "gripper_mm": 99.6,
+    "gripper_effort_raw": -1,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "SDK_checks": {
+    "sdk_before": {
+      "whole_quality": {
+        "samples": 100,
+        "fresh_samples": 100,
+        "span_s": 9.935662031173706,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_static_subwindow": {
+        "i": 14,
+        "j": 47,
+        "n": 33,
+        "quality": {
+          "samples": 33,
+          "fresh_samples": 33,
+          "span_s": 3.213984251022339,
+          "static_three_seconds_and_thirty_samples": true,
+          "freshness_not_per_motor_verified": true,
+          "q_spread_mdeg": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "last_fresh": {
+        "epoch": 1792132624.3369334,
+        "sdk_receipt_stamps": {
+          "joint": "1792132624.334373",
+          "high": "1792132624.3303218",
+          "low": "1792132624.3304455",
+          "gripper": "1792132624.3344378"
+        },
+        "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+        "high_hz": 100.0,
+        "joint_hz": 200.0,
+        "q_mdeg": [
+          -8254,
+          51759,
+          -69720,
+          -3692,
+          67818,
+          5017
+        ],
+        "q_driver_rad": [
+          -0.143982776,
+          0.902883996,
+          -1.21619568,
+          -0.06440324800000001,
+          1.183017192,
+          0.08751654800000001
+        ],
+        "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+        "speed_millirad_s": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "gripper_raw_micrometers": 99600,
+        "gripper_mm": 99.6,
+        "gripper_effort_raw": 0,
+        "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+        "fresh_after_passive_connection": true,
+        "physical_contact_verified_by_sdk": false
+      },
+      "actual_exit_code": 2
+    },
+    "sdk_after_enable": {
+      "whole_quality": {
+        "samples": 60,
+        "fresh_samples": 59,
+        "span_s": 5.822706460952759,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_static_subwindow": {
+        "i": 1,
+        "j": 58,
+        "n": 57,
+        "quality": {
+          "samples": 57,
+          "fresh_samples": 57,
+          "span_s": 5.622160196304321,
+          "static_three_seconds_and_thirty_samples": true,
+          "freshness_not_per_motor_verified": true,
+          "q_spread_mdeg": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "last_fresh": {
+        "epoch": 1792132637.9156244,
+        "sdk_receipt_stamps": {
+          "joint": "1792132637.9114907",
+          "high": "1792132637.912433",
+          "low": "1792132637.9119349",
+          "gripper": "1792132637.9117296"
+        },
+        "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+        "high_hz": 100.0,
+        "joint_hz": 200.0,
+        "q_mdeg": [
+          -8254,
+          51759,
+          -69720,
+          -3692,
+          67818,
+          5017
+        ],
+        "q_driver_rad": [
+          -0.143982776,
+          0.902883996,
+          -1.21619568,
+          -0.06440324800000001,
+          1.183017192,
+          0.08751654800000001
+        ],
+        "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+        "speed_millirad_s": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "gripper_raw_micrometers": 99600,
+        "gripper_mm": 99.6,
+        "gripper_effort_raw": 4,
+        "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+        "fresh_after_passive_connection": true,
+        "physical_contact_verified_by_sdk": false
+      },
+      "actual_exit_code": 2
+    },
+    "sdk_at_observation": {
+      "whole_quality": {
+        "samples": 60,
+        "fresh_samples": 60,
+        "span_s": 5.918756723403931,
+        "static_three_seconds_and_thirty_samples": false,
+        "freshness_not_per_motor_verified": true,
+        "q_spread_mdeg": [
+          0,
+          0,
+          0,
+          0,
+          112,
+          0
+        ]
+      },
+      "original_static_subwindow": {
+        "i": 21,
+        "j": 60,
+        "n": 39,
+        "quality": {
+          "samples": 39,
+          "fresh_samples": 39,
+          "span_s": 3.8129374980926514,
+          "static_three_seconds_and_thirty_samples": true,
+          "freshness_not_per_motor_verified": true,
+          "q_spread_mdeg": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "last_fresh": {
+        "epoch": 1792132660.9353716,
+        "sdk_receipt_stamps": {
+          "joint": "1792132660.9336905",
+          "high": "1792132660.9346893",
+          "low": "1792132660.9344623",
+          "gripper": "1792132660.9341984"
+        },
+        "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+        "high_hz": 100.0,
+        "joint_hz": 200.0,
+        "q_mdeg": [
+          -8254,
+          53595,
+          -72228,
+          -4126,
+          69528,
+          5120
+        ],
+        "q_driver_rad": [
+          -0.143982776,
+          0.9349111800000001,
+          -1.259945232,
+          -0.07197394400000001,
+          1.212846432,
+          0.08931328000000001
+        ],
+        "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+        "speed_millirad_s": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "gripper_raw_micrometers": 99600,
+        "gripper_mm": 99.6,
+        "gripper_effort_raw": -1,
+        "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+        "fresh_after_passive_connection": true,
+        "physical_contact_verified_by_sdk": false
+      },
+      "actual_exit_code": 2
+    }
+  },
+  "motion_feedback_maximum_receipt_gaps_s": [
+    {
+      "gap_s": 0.013454198837280273,
+      "before": 1792132650.4095688,
+      "after": 1792132650.423023
+    },
+    {
+      "gap_s": 0.011850833892822266,
+      "before": 1792132641.7302172,
+      "after": 1792132641.742068
+    },
+    {
+      "gap_s": 0.011233091354370117,
+      "before": 1792132641.37,
+      "after": 1792132641.381233
+    },
+    {
+      "gap_s": 0.011085987091064453,
+      "before": 1792132642.317691,
+      "after": 1792132642.328777
+    },
+    {
+      "gap_s": 0.010131120681762695,
+      "before": 1792132650.1507444,
+      "after": 1792132650.1608756
+    }
+  ],
+  "raw_CAN_frames": 119793,
+  "raw_CAN_ID_counts": {
+    "2a1": 9894,
+    "2a2": 9894,
+    "2a3": 9894,
+    "2a4": 9894,
+    "2a5": 9894,
+    "2a6": 9894,
+    "2a7": 9894,
+    "2a8": 9894,
+    "251": 4947,
+    "261": 990,
+    "252": 4947,
+    "253": 4947,
+    "254": 4947,
+    "255": 4947,
+    "256": 4947,
+    "266": 990,
+    "1c0": 990,
+    "265": 990,
+    "1c1": 1979,
+    "1c2": 990,
+    "264": 989,
+    "1c3": 989,
+    "263": 989,
+    "262": 989,
+    "212": 50,
+    "473": 6,
+    "47c": 6,
+    "4af": 11,
+    "476": 1
+  },
+  "raw_nonframe_lines": [],
+  "raw_motion_largest_timestamp_gaps_s": [
+    {
+      "gap_s": 0.009250879287719727,
+      "before": 1792132648.194606,
+      "after": 1792132648.203857
+    },
+    {
+      "gap_s": 0.00898289680480957,
+      "before": 1792132641.368623,
+      "after": 1792132641.377606
+    },
+    {
+      "gap_s": 0.006264925003051758,
+      "before": 1792132639.074732,
+      "after": 1792132639.080997
+    },
+    {
+      "gap_s": 0.006193876266479492,
+      "before": 1792132650.908703,
+      "after": 1792132650.914897
+    },
+    {
+      "gap_s": 0.006166934967041016,
+      "before": 1792132642.558656,
+      "after": 1792132642.564823
+    }
+  ],
+  "raw_time_scope": "candump socket-provided timestamps, preserved as emitted; not asserted to be motor hardware timestamps.",
+  "CAN_before": {
+    "ifindex": 7,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "1-2.1:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 35111648,
+        "packets": 4389862,
+        "errors": 0,
+        "dropped": 0,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 7465,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "CAN_after": {
+    "ifindex": 7,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "1-2.1:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 36074688,
+        "packets": 4510267,
+        "errors": 0,
+        "dropped": 0,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 9974,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "kernel_new_lines": [],
+  "camera_inventory": {
+    "epoch": 1792132696.3392007,
+    "read_only": true,
+    "commands": [
+      {
+        "argv": [
+          "lsusb",
+          "-t"
+        ],
+        "rc": 0,
+        "stdout": "/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/6p, 480M\n/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M\n    |__ Port 1: Dev 3, If 0, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 2: Dev 2, If 0, Class=Hub, Driver=hub/7p, 12M\n        |__ Port 1: Dev 4, If 1, Class=Application Specific Interface, Driver=, 12M\n        |__ Port 1: Dev 4, If 0, Class=Vendor Specific Class, Driver=gs_usb, 12M\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "lsusb",
+          "-d",
+          "2bc5:"
+        ],
+        "rc": 1,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "Orbbec_devices": [],
+    "video_nodes": [],
+    "matching_robot_or_camera_sources": [],
+    "camera_start_reset_motion_or_gripper_commands": false,
+    "camera_RGB_depth_passthrough_missing": true,
+    "host_manual_step_if_missing": "Only connect Orbbec/Dabai DC1 depth and RGB camera devices (2bc5:0657 and 2bc5:0557) to this VM through VMware removable devices; do not change USB compatibility, reconnect CAN, restart VM/arm, or move board.",
+    "camera_USB2_stream_compatibility_established": false,
+    "calibration_capture_started": false
+  },
+  "camera_capture_started": false,
+  "new_board_reference_established": false,
+  "old_board_candidates": "2/10 unchanged",
+  "six_production_SHA_unchanged": true,
+  "all_owned_sources_exited": true,
+  "no_hardware_disable_reset_gripper_search_or_grasp": true,
+  "next_at_inventory_time_superseded": "At the original inventory time host camera connection was missing. User subsequently restored both camera links, confirmed in camera_usb2_preview01. Do not request the same reconnection again.",
+  "current_next": "Autonomously isolate zero RGB frames in the restored camera preview, without robot movement or production changes. See camera_usb2_preview01/README.md and current canonical handoff.",
+  "causal_limit": "This original observation return succeeded on the present UHCI path; not proof of permanent transport stability or xHCI root cause. Missing camera enumeration does not establish USB2 incompatibility.",
+  "Git_sync": "Local only; existing divergent-main/history-review/publication-scope blocker unchanged."
+}

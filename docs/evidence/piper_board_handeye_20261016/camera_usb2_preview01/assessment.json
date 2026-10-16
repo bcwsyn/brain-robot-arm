@@ -1,0 +1,90 @@
+{
+  "baseline_commit": "4e44326",
+  "operator_camera_restored": true,
+  "inventory": {
+    "epoch": 1792132948.204995,
+    "read_only": true,
+    "commands": [
+      {
+        "argv": [
+          "lsusb",
+          "-t"
+        ],
+        "rc": 0,
+        "stdout": "/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/6p, 480M\n    |__ Port 1: Dev 4, If 0, Class=Vendor Specific Class, Driver=, 480M\n    |__ Port 2: Dev 5, If 0, Class=Video, Driver=uvcvideo, 480M\n    |__ Port 2: Dev 5, If 1, Class=Video, Driver=uvcvideo, 480M\n/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M\n    |__ Port 1: Dev 3, If 0, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 2: Dev 2, If 0, Class=Hub, Driver=hub/7p, 12M\n        |__ Port 1: Dev 4, If 1, Class=Application Specific Interface, Driver=, 12M\n        |__ Port 1: Dev 4, If 0, Class=Vendor Specific Class, Driver=gs_usb, 12M\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "lsusb",
+          "-d",
+          "2bc5:"
+        ],
+        "rc": 0,
+        "stdout": "Bus 002 Device 005: ID 2bc5:0557 Orbbec 3D Technology International, Inc Dabai DC1\nBus 002 Device 004: ID 2bc5:0657 Orbbec 3D Technology International, Inc ORBBEC Depth Sensor\n",
+        "stderr": ""
+      }
+    ],
+    "Orbbec_devices": [
+      {
+        "sysfs": "/sys/devices/pci0000:00/0000:00:11.0/0000:02:03.0/usb2/2-1",
+        "idVendor": "2bc5",
+        "idProduct": "0657",
+        "product": "ORBBEC Depth Sensor",
+        "manufacturer": "Orbbec(R)",
+        "serial": null,
+        "speed": "480"
+      },
+      {
+        "sysfs": "/sys/devices/pci0000:00/0000:00:11.0/0000:02:03.0/usb2/2-2",
+        "idVendor": "2bc5",
+        "idProduct": "0557",
+        "product": "Dabai DC1",
+        "manufacturer": "Sonix Technology Co., Ltd.",
+        "serial": "CC1365304DG",
+        "speed": "480"
+      }
+    ],
+    "video_nodes": [
+      "/dev/video1",
+      "/dev/video0"
+    ],
+    "matching_robot_or_camera_sources": [],
+    "camera_start_reset_motion_or_gripper_commands": false,
+    "camera_RGB_depth_passthrough_missing": false,
+    "host_manual_step_if_missing": "Only connect Orbbec/Dabai DC1 depth and RGB camera devices (2bc5:0657 and 2bc5:0557) to this VM through VMware removable devices; do not change USB compatibility, reconnect CAN, restart VM/arm, or move board.",
+    "camera_USB2_stream_compatibility_established": false,
+    "calibration_capture_started": false
+  },
+  "original_preview_exit_code": 2,
+  "error": "TimeoutExpired(['/usr/bin/python3', '/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/test/wait_calibration_ready.py', '--duration-s', '15', '--output', '/home/johnwick/brain_robot_logs/board_usb2_preview_20261016.ueRDNB/readiness.json', '--listening', '/home/johnwick/brain_robot_logs/board_usb2_preview_20261016.ueRDNB/listening.json'], 11.869005396998546)",
+  "saved_frames": 0,
+  "readiness_received": {
+    "/joint_states_feedback": 695,
+    "/camera/depth/image_raw": 346,
+    "/camera/depth/camera_info": 346
+  },
+  "readiness_ready": false,
+  "original_preview_camera_elapsed_s": 16.98437861900129,
+  "CAN_before": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 5211800,
+    "tx": 9974
+  },
+  "CAN_after": {
+    "up": true,
+    "state": "ERROR-ACTIVE",
+    "rx": 5252891,
+    "tx": 9974
+  },
+  "motion_TX_increase": 0,
+  "all_owned_sources_exited": true,
+  "production_six_SHA_unchanged": true,
+  "established": "Both cameras enumerated on EHCI/480M and depth+camera_info+joint feedback were received. RGB source delivered zero frames in this bounded run.",
+  "not_established": "USB2 incompatibility, sensor hardware fault, DDS fault, or hand-eye accuracy. Wrapper readiness TimeoutExpired is retained separately from actual zero-RGB counts.",
+  "next": "Autonomously isolate original RGB/UVC startup and actual native capture format; no motion, new TF, thresholds, CAN recovery, host setting changes, or repeated same-condition full preview.",
+  "new_calibration_reference": false,
+  "old_board_candidates": "2/10 unchanged",
+  "Git_sync": "Local only; existing sync blocker unchanged."
+}

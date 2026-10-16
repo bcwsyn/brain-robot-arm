@@ -1,4 +1,14 @@
-# 当前断点（2026-10-16 14:24）：诊断包装器局部修复获准，原链当前姿态保持30秒完整通过
+# 当前断点（2026-10-16 14:45）：已实际到观测并停在SEARCH前；相机已连接，继续自主处理RGB零帧
+
+用户批准自主原观测返回/相机核查，随后明确恢复相机两路。原driver/adapter/controller沿原2点20秒轨迹，16.565823秒达到原0.01rad判据（最大偏差.009297652rad）→OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH。831命令/6677反馈，第二条轨迹仅恒定保持、0夹爪/未SEARCH；末SDK六true99.6mm、39fresh/3.812937秒原静止子窗通过，所有自有源退，无硬件Disable/Reset。原启动层exit0但MoveIt SIGINT析构−11、depth_probe重复shutdown退出1，详原日志，非本次运动失败。[观测完整证据](docs/evidence/piper_board_handeye_20261016/usb2_observe01/README.md)，23原件SHA归档，六生产源不变。
+
+初相机未枚举的inventory仅历史；用户后续恢复后已确认0657+0557、CC1365304DG、EHCI480M、video0/1，CAN仍UHCI，不再索相机重连或切USB兼容性。原只读5帧预览一次没有取到图：实际收到depth346/info346/feedback695、RGB0，wrapper等待超时后全退；TX不增，未发运动。[相机预览证据](docs/evidence/piper_board_handeye_20261016/camera_usb2_preview01/README.md)，18原件SHA保留。
+
+下一自主隔离RGB/UVC启动，不重复同条件全RGB-D/观测/保持/J4/CAN检查。只读`v4l2-ctl --all --list-formats-ext`见实际1632×1224 YUYV/5fps，而原cam2image意图320×2405fps；官方Humble源码cap.open在设置宽高之前，仅是待验证线索，不直接当根因或改生产。机械臂不再运动，不改TF/检测门/SDK/DDS/固件，不凭深度成功说相机整链正常。相机仍未成功保存图/建立新连续参考，旧板2/10，不混旧ID；仅真正需实体操作才叫用户。
+
+Git仅本地，未同步GitHub，既有分叉/积压审查/共享main范围阻断保持。下方等待返回/相机透传均过期。
+
+## 历史断点（2026-10-16 14:24）：诊断包装器局部修复获准，原链当前姿态保持30秒完整通过
 
 用户“同意”批准仅修测试包装器及一次30秒重测。已在新home测试副本将0.5秒短空窗终止改为事件记录；原driver输出抑制、adapter25秒超时、新鲜起点/限位/原服务均不改。5项纯离线测试通过，旧失败原件不覆盖。14:23:09.465—39.466原driver/adapter保持30.001015秒，1501六轴命令、7259总反馈（保持内5999），六q全部无变化；保持内独立ROS反馈最大17.686ms、raw读取最大196.002ms，无>0.5秒间隔，不能只据观察循环没记事件宣布连续性。
 

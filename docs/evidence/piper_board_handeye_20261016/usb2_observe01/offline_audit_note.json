@@ -1,0 +1,8 @@
+{
+  "first_package_run_exit_code": 1,
+  "reason": "Offline auditor omitted the controller's normal initial IDLE state from its expected state list.",
+  "independent_read_only_bag_state_sequence": ["IDLE", "PREPARE", "STOPPED"],
+  "actual_bag_reasons": ["WAITING_FOR_START", "START_AUTHORIZED", "OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH"],
+  "correction": "Accept verified initial IDLE as well as PREPARE and STOPPED; still reject SEARCH or any other state.",
+  "motion_repeated_or_production_or_raw_data_changed": false
+}

@@ -1,4 +1,14 @@
-## 本轮（2026-10-16 14:24）：仅诊断包装器修正已批准并完成，原链30秒保持实际通过
+## 本轮（2026-10-16 14:45）：原观测返回实测成功，相机透传已恢复；当前仅RGB零帧待自主隔离
+
+- 起点`4e44326`；用户批准自主沿原轨迹回观测/SEARCH前停、核相机，后续“已恢复相机两个链接”解除缺透传。按两repo技能复用原调用，仅新home根/元数据/冻结SHA路径及被动candump、前后状态记录；原全部控制helper AST与原launch字节一致，原driver/adapter/controller参数、限位/速度/TF/各门不动。健康UHCI/can0直接复用，不重做保持/J4/纯接收或恢复接口。
+- `/home/johnwick/brain_robot_logs/usb2_observe_20261016.CYJ9bI/executed_return.py`rc0，原stop_after_observe设/read true。原2点20秒轨迹，自实际q起16.565823秒→OBSERVE_POSE_REACHED_STOPPED_BEFORE_SEARCH→原恒定保持/软件disarm。实际最大关节误差.009297652rad≤原joint_position_tolerance=.01rad，是原到位容差而非恰好名义终点；标定须用实际q。bag831命令/6677反馈/2轨迹（1移动1保持），状态仅IDLE→PREPARE→STOPPED，无SEARCH/夹爪/抓取。
+- 原CAN全窗119793帧，运动内最大candump时间戳间隔9.251ms，TX7465→9974、RX持续增/错误0、无新内核行，未停流；末SDK六true/99.6mm，q_mdeg[-8254,53595,-72228,-4126,69528,5120]，原39fresh/3.812937秒静止子窗通过，三SDK整窗rc2均照存。末值非持续监测；所有自有源退，无硬件失能/Reset/开闭。启动层/driver/bag rc0，但MoveIt SIGINT收尾子进程−11、depth_probe重复shutdown退出1留证，不称全优雅退出、不跨范围修它们。
+- [usb2_observe01](evidence/piper_board_handeye_20261016/usb2_observe01/README.md)23原件约1.07MB SHA归档。离线初审rc1仅误排除正常初始IDLE，独立读bag确认IDLE/PREPARE/STOPPED后修审计预期，第二次rc0；未重测运动或篡改原数据。原控制helper/launch及六生产SHA核验不变。
+- 初只读相机inventory无Orbbec/video，仅历史。用户随后已恢复，guest确认2bc5:0657+0557、RGB serial CC1365304DG、EHCI480M/video0/1；不再要求同样连接/切3.1/重启机械臂。原只读`board_observe/executed_preview.py`复用新独立副本，metadata改为当前board_preview，无motion API；原SDK/被动桥→Astra depth→原cam2image320×2405→四源就绪，单轮相机16.984秒/rc2，全源退出。实际ready15.002秒收到695关节、346depth、346info，RGB0；wrapperTimeoutExpired(11.869秒)与真实零RGB分开记录，没有保存图/工厂查询/新板参考，不把枚举当采流通过。
+- [camera_usb2_preview01](evidence/piper_board_handeye_20261016/camera_usb2_preview01/README.md)18原件SHA归档、TX增0/接收增长，四采集源SHA前后一致，六生产SHA不改。继续自主定位原RGB/UVC，不重复同条件完整采集、不改DDS/门/TF/固件/VM设置。只读V4L当前native1632×1224 YUYV5（支持320×2405/640×480等），与原cam2image意图不同；官方Humble源码说明cap.open先于设置宽高，作为线索待隔离，不直接定罪USB2不兼容/硬件坏。
+- 官方主源：[ROS2 Humble cam2image](https://raw.githubusercontent.com/ros2/demos/humble/image_tools/src/cam2image.cpp)；原频率参数是发布定时器，不能直接当UVC传感器帧率实测。后续在全部采集源退出后做有限RGB/UVC独立核对，记录实际格式与读帧，不碰机械臂。旧板仍2/10，生产冻结，Git仅本地，既有同步分叉/审查/发布范围阻断保持。
+
+## 历史本轮（2026-10-16 14:24）：仅诊断包装器修正已批准并完成，原链30秒保持实际通过
 
 - 起点`bf18c2c`，用户“同意”批准仅将测试包装器短空窗改事件、原生产抑制/25秒不改并重测30秒。按两repo技能追原运行链/最小差异，先核无生产控制源、同UHCI/can0 if7 ERROR-ACTIVE、RX2258274/TX2945、错误0，未接口/USB恢复或重复纯接收，根34GB/56%不清理。约840项既有无关修改保留。
 - 新目录`/home/johnwick/brain_robot_logs/usb2_hold_retry_20261016.zfCy9F`；从上轮原件复制独立诊断副本，apply_patch仅替换保持循环age>.5硬断言为纯记录observe_feedback_gap，并补完整30秒/末端新鲜/是否有空窗分账，保留新鲜起点、原25秒回读/armed终态、原限位/到位与无外部输入检查。没有修改旧失败证据或生产源；`harness_change.diff`保留准确差异。`test_gap_observer.py`rc0，5项离线测试覆盖新鲜边界、旧.678/.868秒空窗不抛出、长空窗观察器不取代控制超时、多次/未恢复事件及原控制不变量，未访问ROS/CAN。
