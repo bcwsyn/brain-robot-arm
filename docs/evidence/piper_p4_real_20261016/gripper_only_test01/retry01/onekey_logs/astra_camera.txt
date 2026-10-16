@@ -1,0 +1,32 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/ros/2026-10-16-22-57-25-202170-johnwick-virtual-machine-29569
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container-1]: process started with pid [29585]
+[component_container-1] [INFO] [1792162645.590524901] [astra_camera_container]: Load Library: /home/johnwick/ros2_ws/install/astra_camera/lib/libastra_camera.so
+[component_container-1] [INFO] [1792162646.341111188] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792162646.341185988] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792162646.489315333] [camera.camera]: init done.
+[component_container-1] [INFO] [1792162646.489421462] [camera.camera]: Waiting for device connection...
+[component_container-1] [INFO] [1792162646.490664329] [device_listener]: Found 1 devices
+[component_container-1] [INFO] [1792162646.491020538] [camera.camera]: Trying to open device: 2bc5/0657@3/6
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792162646.495325694] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792162646.495357417] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792162646.495367462] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyz' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792162646.546523618] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792162646.546580607] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792162646.546590006] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[component_container-1] [INFO] [1792162646.546598458] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyzrgb' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792162646.825189991] [camera.camera]: Device connected: Astra serial number: CC1365304DG
+[component_container-1] [INFO] [1792162646.825526718] [camera.camera]: starting device 
+[component_container-1] [INFO] [1792162647.156037674] [camera.camera]: ir is not enable
+[component_container-1] [INFO] [1792162647.156085472] [camera.camera]: color is not enable
+[component_container-1] [INFO] [1792162647.180699565] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [INFO] [1792162647.413806394] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [WARN] [1792162647.414063677] [camera.camera]: Publishing dynamic camera transforms (/tf) at 10 Hz
+[component_container-1] [INFO] [1792162647.488569709] [camera.camera]: wait for device  connect... 
+[component_container-1] [INFO] [1792162647.516990722] [camera.camera]: SENSOR_DEPTH is started
+[component_container-1] Warning: USB events thread - failed to set priority. This might cause loss of data...

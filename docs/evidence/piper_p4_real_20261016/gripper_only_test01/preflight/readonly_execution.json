@@ -1,0 +1,264 @@
+{
+  "baseline": "4037724",
+  "epoch": 1792161984.5308547,
+  "current_readonly_reference_audit": true,
+  "physical_motion_gripper_enable_disable_reset_commands": 0,
+  "CAN_recovery": false,
+  "events": [
+    {
+      "label": "model_tf",
+      "argv": [
+        "ros2",
+        "launch",
+        "/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/preflight/static_mount.launch.py"
+      ],
+      "pid": 26737
+    },
+    {
+      "label": "target_observer",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/preflight/observe_target.py"
+      ],
+      "pid": 26738
+    },
+    {
+      "label": "original_detector",
+      "argv": [
+        "ros2",
+        "launch",
+        "brain_robot_ball_pick",
+        "cube_detector.launch.py"
+      ],
+      "pid": 26739
+    },
+    {
+      "label": "original_preview",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/preflight/executed_preview.py"
+      ],
+      "pid": 26740
+    }
+  ],
+  "source_SHA_before": {
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/src/grasp_lift_executor.cpp": "bf944e7baae57f83760722b4813351852673a865ffacdc344a87c02f307824d4",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/CMakeLists.txt": "ea8d2e20f257f28436a1ec4ec11628b7fa6169a97890e2d892cb0bf1e954a91e",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/include/brain_robot_pick_place/target_directed_grasp.hpp": "919c8ffd5b06a5ade7d306e543c7d0c2632c761c4729c1551783210d6d7f9408",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/include/brain_robot_pick_place/gentle_gripper.hpp": "9ccf3e5d8072c1931d87f319b5564c4b1ff041f70721fe2fd75fafea4290a01b",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/prepare_p4_center_target.py": "b59b45f8e4ce633c2e59b6b56d10a389d2c0fe3c4459d565ccf936d03711e9ab",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/test/test_center_gentle.cpp": "8a33d8c254b392b7a641722c1e8a08de447e250f472cb25a1a94017e673957a3",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/launch/cube_visual_search.launch.py": "5d4b191fc38539d145c7bdb46a11112ce15fe3843d1a447b2a53e2569af7d894",
+    "/home/johnwick/start_brain_robot_cube_real.sh": "e3f501a4e9b4a3cdb71d94fe90817211d48b07e6ead8fc074e98b6998784dfea",
+    "/home/johnwick/piper_ros/src/piper/piper/piper_ctrl_single_node.py": "3a79681fd372e04bfc2b16eac14595c318abfaa89af1ac35d98243eb1192e45a",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_task_real.yaml": "524f7c0ec64deba485c572c75739bdec936ee79304041c3dc3910f07835c52b9",
+    "/home/johnwick/piper_ws/src/brain_robot_ball_pick/config/cube_detector.yaml": "154938b0e22d22546cedceb56e2bb3484fd79988c5786d13aca5aa3bc48c6675",
+    "/mnt/hgfs/ub/brain_robot_arm/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172",
+    "/home/johnwick/piper_ws/src/brain_robot_pick_place/scripts/piper_jog_adapter.py": "5c1c1be24b4519705ae1e58a31e26085a9c1832cdd7626e93f6c6392b621a172"
+  },
+  "can_before": {
+    "ifindex": 3,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "3-2:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 531953244,
+        "packets": 66507887,
+        "errors": 0,
+        "dropped": 297,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 53100,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "preview_rc": 0,
+  "observer_rc": 0,
+  "cleanup": [
+    {
+      "label": "model_tf",
+      "rc": 0,
+      "forced": false
+    },
+    {
+      "label": "target_observer",
+      "rc": 0,
+      "forced": false
+    },
+    {
+      "label": "original_detector",
+      "rc": 0,
+      "forced": false
+    },
+    {
+      "label": "original_preview",
+      "rc": 0,
+      "forced": false
+    }
+  ],
+  "can_after": {
+    "ifindex": 3,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "3-2:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 532454960,
+        "packets": 66570614,
+        "errors": 0,
+        "dropped": 297,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 53100,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "end_epoch": 1792162011.9139984,
+  "all_owned_sources_exited": true,
+  "production_SHA_unchanged": true
+}

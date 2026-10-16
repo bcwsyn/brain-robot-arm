@@ -1,0 +1,62 @@
+==================================================
+ PiPER 实体紫色方块 RGB-D 视觉抓取（一键保护模式）
+ 自动启动 CAN、PiPER 驱动、相机、MoveIt、Servo 和检测器
+ DDS 使用 UDPv4（禁用易残留锁的 Fast DDS 共享内存传输）
+==================================================
+清理前根分区使用率：56%
+[1/4] 清理 ROS 日志...
+{"scope": "/home/johnwick/brain_robot_logs", "apply": true, "png_count": 100600, "png_bytes_before": 7065563937, "limit_mb": 8192, "planned_count": 0, "projected_bytes": 7065563937, "deleted_count": 0, "deleted_bytes": 0, "protected": "Canonical referenced basenames, <24h files, first/last3 and every1000th per stream", "warning": "Budget may remain exceeded when all remaining images are protected"}
+[2/4] 清理超大的轮转系统日志...
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal/f8eef60d0e2b451bafe90a21acecf50b.
+Vacuuming done, freed 0B of archived journals from /var/log/journal/f8eef60d0e2b451bafe90a21acecf50b.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[系统日志] 已通过受限免密维护助手完成。
+[3/4] systemd 日志已包含在上一步受限维护中（若已安装）。
+[4/4] 清理 apt 缓存...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+[apt] 已清理缓存。
+清理后根分区使用率：56%
+清理完成，当前低于 85% 阈值。
+[磁盘] 根分区可用 33705 MB（使用率 56%）。
+[1/7] 检查并初始化实体 CAN/机械臂...
+[CAN] 复用已处于 1 Mbps/0.75 且 RX 持续增长的 can0。
+[后台] piper_driver 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/piper_driver.log
+[CAN] 已启用运行期守护：3 秒 RX 停滞或新 gs_usb echo 异常将停止输出并保持使能。
+[后台] gripper_can 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/gripper_can.log
+[2/7] 检查并启动深度相机...
+[后台] astra_camera 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/astra_camera.log
+[等待] 等待 深度图像 首帧；收到真实图像后才继续启动...
+[就绪] 已收到 深度图像 首帧。
+[相机] 启动独立 V4L2 RGB（320x240@5 Hz），Astra UVC 保持关闭。
+[后台] rgb_camera 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/rgb_camera.log
+[等待] 等待 RGB 图像 首帧；收到真实图像后才继续启动...
+[就绪] 已收到 RGB 图像 首帧。
+[3/7] 启动紫色方块 RGB-D 检测...
+[后台] cube_detector 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/cube_detector.log
+[相机] 已启用无帧自动恢复；仅重启 RGB-D 输入，不影响机械臂控制栈。
+[4/7] 启动 MoveIt、Servo 和真机保护适配器...
+[后台] visual_stack 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/visual_stack.log
+[5/7] 检查完整 MoveIt 反馈和自体过滤 TF...
+[地图] 已验证相机到基座 TF；腕部相机的深度点云不写入 Octomap，避免夹爪自体障碍。
+[6/7] 打开识别窗口...
+[后台] debug_image_view 日志：/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/retry01/onekey_logs/debug_image_view.log
+[等待] 等待 调试图像 首帧；收到真实图像后才继续启动...
+[就绪] 已收到 调试图像 首帧。
+[7/7] 全部组件已就绪。
+
+[P4仅夹爪] 原位张开100mm→原缓闭策略；不观测、不搜索、不发六轴轨迹、不抬升。
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=True, message='Explicit gripper-only test started; no arm trajectory or lift.')
+[P4仅夹爪] data: FAULT_P4_GRIPPER_TEST_CLOSE_UNCONFIRMED ---；无抬升。
+
+[保护] 异常退出或运动已启动；停止控制输出并保持当前位置，不自动发起零点复位。
+[保护] 未发送 DisableArm；PiPER 保持使能，等待操作者确认。
+[关闭] 停止本脚本启动的视觉、相机和驱动进程...
+[完成] 一键流程已停止。

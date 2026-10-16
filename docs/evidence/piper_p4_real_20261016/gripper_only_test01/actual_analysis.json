@@ -1,0 +1,885 @@
+{
+  "baseline_control_commit": "4037724",
+  "HEAD_before_archive": "3b29acc75acf1afc8b2eedcce0c8a06029c4d1f3",
+  "first_attempt": {
+    "states": [
+      {
+        "receipt_epoch": 1792162426.5177493,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_WAITING_FOR_EXPLICIT_EXECUTE"
+        }
+      },
+      {
+        "receipt_epoch": 1792162440.9763906,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_READY_FOR_EXPLICIT_EXECUTE"
+        }
+      },
+      {
+        "receipt_epoch": 1792162462.227185,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_GRIPPER_TEST_OPENING"
+        }
+      },
+      {
+        "receipt_epoch": 1792162467.2572966,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "FAULT_P4_GRIPPER_TEST_OPEN_UNCONFIRMED"
+        }
+      }
+    ],
+    "diagnostics": [
+      {
+        "receipt_epoch": 1792162427.0875425,
+        "topic_key": "grasp_diagnostic",
+        "message": {
+          "data": "NEAR_RGB_FACTORY_CALIBRATION_FROM_RUNNING_DETECTOR"
+        }
+      },
+      {
+        "receipt_epoch": 1792162462.255666,
+        "topic_key": "grasp_diagnostic",
+        "message": {
+          "data": "GRIPPER_COMMAND_OPEN_100000"
+        }
+      }
+    ],
+    "topic_counts": {
+      "joint_states_feedback": 1352,
+      "joint_states": 1353,
+      "actual_gripper_frame": 10359,
+      "gripper_status": 10354,
+      "same_stamp_color_debug": 15,
+      "visual_state": 2,
+      "visual_reason": 2,
+      "grasp_state": 4,
+      "grasp_diagnostic": 2,
+      "model_states": 837,
+      "joint_commands": 576,
+      "gripper_command": 1,
+      "arm_trajectory": 1
+    },
+    "actual_gripper_first_mm": 0.4,
+    "actual_gripper_max_mm": 0.4,
+    "actual_gripper_last_mm": 0.4,
+    "joint_spread_rad_from_test_opening": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "arm_trajectory_count": 1,
+    "arm_trajectory_each_is_identical_position_hold": [
+      true
+    ],
+    "actual_status_counts": {
+      "64": 10354
+    },
+    "execution": {
+      "baseline": "4037724",
+      "original_entry": "/home/johnwick/start_brain_robot_cube_real.sh",
+      "actual_authorization": "User confirmed original-executor gripper-only endpoint and independent real open/slow-close test.",
+      "P4_GRIPPER_TEST_ONLY": true,
+      "arm_grasp_target_provided": false,
+      "start_epoch": 1792162374.387129,
+      "can_before": {
+        "ifindex": 3,
+        "ifname": "can0",
+        "flags": [
+          "NOARP",
+          "UP",
+          "LOWER_UP",
+          "ECHO"
+        ],
+        "mtu": 16,
+        "qdisc": "pfifo_fast",
+        "operstate": "UP",
+        "linkmode": "DEFAULT",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "can",
+        "promiscuity": 0,
+        "min_mtu": 0,
+        "max_mtu": 0,
+        "linkinfo": {
+          "info_kind": "can",
+          "info_data": {
+            "state": "ERROR-ACTIVE",
+            "restart_ms": 0,
+            "bittiming": {
+              "bitrate": 1000000,
+              "sample_point": 0.75,
+              "tq": 62,
+              "prop_seg": 5,
+              "phase_seg1": 6,
+              "phase_seg2": 4,
+              "sjw": 2
+            },
+            "bittiming_const": {
+              "name": "gs_usb",
+              "tseg1": {
+                "min": 1,
+                "max": 16
+              },
+              "tseg2": {
+                "min": 1,
+                "max": 8
+              },
+              "sjw": {
+                "min": 1,
+                "max": 4
+              },
+              "brp": {
+                "min": 1,
+                "max": 1024
+              },
+              "brp_inc": 1
+            },
+            "clock": 48000000
+          },
+          "info_xstats": {
+            "restarts": 0,
+            "bus_error": 0,
+            "arbitration_lost": 0,
+            "error_warning": 0,
+            "error_passive": 0,
+            "bus_off": 0
+          }
+        },
+        "num_tx_queues": 1,
+        "num_rx_queues": 1,
+        "gso_max_size": 65536,
+        "gso_max_segs": 65535,
+        "parentbus": "usb",
+        "parentdev": "3-2:1.0",
+        "stats64": {
+          "rx": {
+            "bytes": 539474808,
+            "packets": 67448276,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 53100,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "immediate_SDK_rc": 2,
+      "exception": "RuntimeError('Unexpected arm trajectory during gripper-only test')",
+      "end_epoch": 1792162478.0828307,
+      "can_after": {
+        "ifindex": 3,
+        "ifname": "can0",
+        "flags": [
+          "NOARP",
+          "UP",
+          "LOWER_UP",
+          "ECHO"
+        ],
+        "mtu": 16,
+        "qdisc": "pfifo_fast",
+        "operstate": "UP",
+        "linkmode": "DEFAULT",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "can",
+        "promiscuity": 0,
+        "min_mtu": 0,
+        "max_mtu": 0,
+        "linkinfo": {
+          "info_kind": "can",
+          "info_data": {
+            "state": "ERROR-ACTIVE",
+            "restart_ms": 0,
+            "bittiming": {
+              "bitrate": 1000000,
+              "sample_point": 0.75,
+              "tq": 62,
+              "prop_seg": 5,
+              "phase_seg1": 6,
+              "phase_seg2": 4,
+              "sjw": 2
+            },
+            "bittiming_const": {
+              "name": "gs_usb",
+              "tseg1": {
+                "min": 1,
+                "max": 16
+              },
+              "tseg2": {
+                "min": 1,
+                "max": 8
+              },
+              "sjw": {
+                "min": 1,
+                "max": 4
+              },
+              "brp": {
+                "min": 1,
+                "max": 1024
+              },
+              "brp_inc": 1
+            },
+            "clock": 48000000
+          },
+          "info_xstats": {
+            "restarts": 0,
+            "bus_error": 0,
+            "arbitration_lost": 0,
+            "error_warning": 0,
+            "error_passive": 0,
+            "bus_off": 0
+          }
+        },
+        "num_tx_queues": 1,
+        "num_rx_queues": 1,
+        "gso_max_size": 65536,
+        "gso_max_segs": 65535,
+        "parentbus": "usb",
+        "parentdev": "3-2:1.0",
+        "stats64": {
+          "rx": {
+            "bytes": 541442564,
+            "packets": 67694297,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 53113,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "jobs": [
+        {
+          "label": "recorder",
+          "pid": 27742,
+          "rc": 0
+        },
+        {
+          "label": "original_entry",
+          "pid": 27743,
+          "rc": 1
+        }
+      ]
+    },
+    "closing_two_second_bins": [],
+    "driver": {
+      "gripper_call_count": 0,
+      "nominal_effort_counts": [],
+      "last_calls": [],
+      "suppressed_by_output_gate": 45,
+      "not_direct_bus_transmit_confirmation": true
+    },
+    "CAN_receive_log": {
+      "id_counts": {
+        "2A1": 13504,
+        "2A2": 13504,
+        "2A3": 13504,
+        "2A4": 13504,
+        "2A5": 13504,
+        "2A6": 13504,
+        "2A7": 13504,
+        "2A8": 13507,
+        "1C0": 1350,
+        "251": 6752,
+        "261": 1350,
+        "252": 6752,
+        "253": 6752,
+        "254": 6752,
+        "255": 6751,
+        "256": 6752,
+        "266": 1350,
+        "1C1": 2699,
+        "1C2": 1350,
+        "265": 1350,
+        "1C3": 1351,
+        "264": 1351,
+        "263": 1352,
+        "262": 1349,
+        "212": 68
+      },
+      "observed_159": [],
+      "limitations": "Receive socket log, not independent TX acknowledgement; zero observed159 is inconclusive about local TX."
+    }
+  },
+  "retry01": {
+    "states": [
+      {
+        "receipt_epoch": 1792162660.3727543,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_WAITING_FOR_EXPLICIT_EXECUTE"
+        }
+      },
+      {
+        "receipt_epoch": 1792162670.2373927,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_READY_FOR_EXPLICIT_EXECUTE"
+        }
+      },
+      {
+        "receipt_epoch": 1792162691.151493,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_GRIPPER_TEST_OPENING"
+        }
+      },
+      {
+        "receipt_epoch": 1792162693.1449907,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "P4_GRIPPER_TEST_CLOSING"
+        }
+      },
+      {
+        "receipt_epoch": 1792162712.885979,
+        "topic_key": "grasp_state",
+        "message": {
+          "data": "FAULT_P4_GRIPPER_TEST_CLOSE_UNCONFIRMED"
+        }
+      }
+    ],
+    "diagnostics": [
+      {
+        "receipt_epoch": 1792162660.9303603,
+        "topic_key": "grasp_diagnostic",
+        "message": {
+          "data": "NEAR_RGB_FACTORY_CALIBRATION_FROM_RUNNING_DETECTOR"
+        }
+      },
+      {
+        "receipt_epoch": 1792162691.1672652,
+        "topic_key": "grasp_diagnostic",
+        "message": {
+          "data": "GRIPPER_COMMAND_OPEN_100000"
+        }
+      },
+      {
+        "receipt_epoch": 1792162693.1554291,
+        "topic_key": "grasp_diagnostic",
+        "message": {
+          "data": "P4_GRIPPER_TEST_OPEN_FEEDBACK_CONFIRMED before_m=0.000400 current_m=0.099400 target_m=0.100000"
+        }
+      },
+      {
+        "receipt_epoch": 1792162712.8846712,
+        "topic_key": "grasp_diagnostic",
+        "message": {
+          "data": "P4_GENTLE_CLOSE_UNCONFIRMED_NO_LIFT"
+        }
+      }
+    ],
+    "topic_counts": {
+      "joint_states": 1485,
+      "joint_states_feedback": 1482,
+      "actual_gripper_frame": 12639,
+      "gripper_status": 12629,
+      "same_stamp_debug": 6,
+      "visual_state": 1,
+      "visual_reason": 1,
+      "grasp_state": 5,
+      "model_states": 1036,
+      "grasp_diagnostic": 4,
+      "same_stamp_color_debug": 14,
+      "joint_commands": 1350,
+      "gripper_command": 892
+    },
+    "actual_gripper_first_mm": 0.4,
+    "actual_gripper_max_mm": 99.4,
+    "actual_gripper_last_mm": 90.6,
+    "joint_spread_rad_from_test_opening": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "arm_trajectory_count": 0,
+    "arm_trajectory_each_is_identical_position_hold": [],
+    "actual_status_counts": {
+      "64": 12621,
+      "0": 8
+    },
+    "execution": {
+      "baseline": "4037724",
+      "original_entry": "/home/johnwick/start_brain_robot_cube_real.sh",
+      "actual_authorization": "User confirmed original-executor gripper-only endpoint and independent real open/slow-close test.",
+      "P4_GRIPPER_TEST_ONLY": true,
+      "arm_grasp_target_provided": false,
+      "start_epoch": 1792162600.0761087,
+      "can_before": {
+        "ifindex": 3,
+        "ifname": "can0",
+        "flags": [
+          "NOARP",
+          "UP",
+          "LOWER_UP",
+          "ECHO"
+        ],
+        "mtu": 16,
+        "qdisc": "pfifo_fast",
+        "operstate": "UP",
+        "linkmode": "DEFAULT",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "can",
+        "promiscuity": 0,
+        "min_mtu": 0,
+        "max_mtu": 0,
+        "linkinfo": {
+          "info_kind": "can",
+          "info_data": {
+            "state": "ERROR-ACTIVE",
+            "restart_ms": 0,
+            "bittiming": {
+              "bitrate": 1000000,
+              "sample_point": 0.75,
+              "tq": 62,
+              "prop_seg": 5,
+              "phase_seg1": 6,
+              "phase_seg2": 4,
+              "sjw": 2
+            },
+            "bittiming_const": {
+              "name": "gs_usb",
+              "tseg1": {
+                "min": 1,
+                "max": 16
+              },
+              "tseg2": {
+                "min": 1,
+                "max": 8
+              },
+              "sjw": {
+                "min": 1,
+                "max": 4
+              },
+              "brp": {
+                "min": 1,
+                "max": 1024
+              },
+              "brp_inc": 1
+            },
+            "clock": 48000000
+          },
+          "info_xstats": {
+            "restarts": 0,
+            "bus_error": 0,
+            "arbitration_lost": 0,
+            "error_warning": 0,
+            "error_passive": 0,
+            "bus_off": 0
+          }
+        },
+        "num_tx_queues": 1,
+        "num_rx_queues": 1,
+        "gso_max_size": 65536,
+        "gso_max_segs": 65535,
+        "parentbus": "usb",
+        "parentdev": "3-2:1.0",
+        "stats64": {
+          "rx": {
+            "bytes": 543792128,
+            "packets": 67988053,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 53113,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "immediate_SDK_rc": 2,
+      "entry_rc": 1,
+      "end_epoch": 1792162721.4545004,
+      "can_after": {
+        "ifindex": 3,
+        "ifname": "can0",
+        "flags": [
+          "NOARP",
+          "UP",
+          "LOWER_UP",
+          "ECHO"
+        ],
+        "mtu": 16,
+        "qdisc": "pfifo_fast",
+        "operstate": "UP",
+        "linkmode": "DEFAULT",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "can",
+        "promiscuity": 0,
+        "min_mtu": 0,
+        "max_mtu": 0,
+        "linkinfo": {
+          "info_kind": "can",
+          "info_data": {
+            "state": "ERROR-ACTIVE",
+            "restart_ms": 0,
+            "bittiming": {
+              "bitrate": 1000000,
+              "sample_point": 0.75,
+              "tq": 62,
+              "prop_seg": 5,
+              "phase_seg1": 6,
+              "phase_seg2": 4,
+              "sjw": 2
+            },
+            "bittiming_const": {
+              "name": "gs_usb",
+              "tseg1": {
+                "min": 1,
+                "max": 16
+              },
+              "tseg2": {
+                "min": 1,
+                "max": 8
+              },
+              "sjw": {
+                "min": 1,
+                "max": 4
+              },
+              "brp": {
+                "min": 1,
+                "max": 1024
+              },
+              "brp_inc": 1
+            },
+            "clock": 48000000
+          },
+          "info_xstats": {
+            "restarts": 0,
+            "bus_error": 0,
+            "arbitration_lost": 0,
+            "error_warning": 0,
+            "error_passive": 0,
+            "bus_off": 0
+          }
+        },
+        "num_tx_queues": 1,
+        "num_rx_queues": 1,
+        "gso_max_size": 65536,
+        "gso_max_segs": 65535,
+        "parentbus": "usb",
+        "parentdev": "3-2:1.0",
+        "stats64": {
+          "rx": {
+            "bytes": 545843976,
+            "packets": 68244587,
+            "errors": 0,
+            "dropped": 297,
+            "over_errors": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": 0,
+            "packets": 58146,
+            "errors": 0,
+            "dropped": 0,
+            "carrier_errors": 0,
+            "collisions": 0
+          }
+        }
+      },
+      "jobs": [
+        {
+          "label": "recorder",
+          "pid": 29350,
+          "rc": 0
+        },
+        {
+          "label": "original_entry",
+          "pid": 29351,
+          "rc": 1
+        }
+      ]
+    },
+    "closing_two_second_bins": [
+      {
+        "start_after_closing_s": 0,
+        "actual_frames": 235,
+        "source_span_s": 1.9947724342346191,
+        "actual_first_last_mm": [
+          99.4,
+          97.69999999999999
+        ],
+        "reference_min_max_mm": [
+          97.19999999999999,
+          99.4
+        ],
+        "effort_min_max_Nm": [
+          -0.249,
+          0.149
+        ],
+        "max_receipt_minus_source_s": 0.03191113471984863
+      },
+      {
+        "start_after_closing_s": 2,
+        "actual_frames": 271,
+        "source_span_s": 1.9899096488952637,
+        "actual_first_last_mm": [
+          97.69999999999999,
+          95.5
+        ],
+        "reference_min_max_mm": [
+          95.0,
+          97.19999999999999
+        ],
+        "effort_min_max_Nm": [
+          -0.264,
+          -0.009
+        ],
+        "max_receipt_minus_source_s": 0.0767369270324707
+      },
+      {
+        "start_after_closing_s": 4,
+        "actual_frames": 332,
+        "source_span_s": 1.9936165809631348,
+        "actual_first_last_mm": [
+          95.5,
+          93.0
+        ],
+        "reference_min_max_mm": [
+          92.51161832809449,
+          95.0
+        ],
+        "effort_min_max_Nm": [
+          -0.256,
+          0.006
+        ],
+        "max_receipt_minus_source_s": 0.011043787002563477
+      },
+      {
+        "start_after_closing_s": 6,
+        "actual_frames": 319,
+        "source_span_s": 1.9887053966522217,
+        "actual_first_last_mm": [
+          93.0,
+          90.7
+        ],
+        "reference_min_max_mm": [
+          90.2,
+          92.5
+        ],
+        "effort_min_max_Nm": [
+          -0.258,
+          0.039
+        ],
+        "max_receipt_minus_source_s": 0.020252227783203125
+      },
+      {
+        "start_after_closing_s": 8,
+        "actual_frames": 285,
+        "source_span_s": 1.9915187358856201,
+        "actual_first_last_mm": [
+          90.7,
+          90.7
+        ],
+        "reference_min_max_mm": [
+          90.2,
+          90.2
+        ],
+        "effort_min_max_Nm": [
+          -0.238,
+          -0.105
+        ],
+        "max_receipt_minus_source_s": 0.03011298179626465
+      },
+      {
+        "start_after_closing_s": 10,
+        "actual_frames": 260,
+        "source_span_s": 1.9915542602539062,
+        "actual_first_last_mm": [
+          90.7,
+          90.6
+        ],
+        "reference_min_max_mm": [
+          90.1,
+          90.2
+        ],
+        "effort_min_max_Nm": [
+          -0.205,
+          -0.112
+        ],
+        "max_receipt_minus_source_s": 0.017494916915893555
+      },
+      {
+        "start_after_closing_s": 12,
+        "actual_frames": 283,
+        "source_span_s": 2.0038580894470215,
+        "actual_first_last_mm": [
+          90.6,
+          90.6
+        ],
+        "reference_min_max_mm": [
+          90.1,
+          90.1
+        ],
+        "effort_min_max_Nm": [
+          -0.178,
+          -0.142
+        ],
+        "max_receipt_minus_source_s": 0.02426624298095703
+      },
+      {
+        "start_after_closing_s": 14,
+        "actual_frames": 329,
+        "source_span_s": 1.9880247116088867,
+        "actual_first_last_mm": [
+          90.6,
+          90.6
+        ],
+        "reference_min_max_mm": [
+          90.1,
+          90.1
+        ],
+        "effort_min_max_Nm": [
+          -0.179,
+          -0.134
+        ],
+        "max_receipt_minus_source_s": 0.016660451889038086
+      },
+      {
+        "start_after_closing_s": 16,
+        "actual_frames": 291,
+        "source_span_s": 1.9454386234283447,
+        "actual_first_last_mm": [
+          90.6,
+          90.6
+        ],
+        "reference_min_max_mm": [
+          90.1,
+          90.1
+        ],
+        "effort_min_max_Nm": [
+          -0.186,
+          -0.138
+        ],
+        "max_receipt_minus_source_s": 0.016031503677368164
+      },
+      {
+        "start_after_closing_s": 18,
+        "actual_frames": 183,
+        "source_span_s": 1.7398197650909424,
+        "actual_first_last_mm": [
+          90.6,
+          90.6
+        ],
+        "reference_min_max_mm": [
+          90.1,
+          90.6
+        ],
+        "effort_min_max_Nm": [
+          -0.164,
+          -0.139
+        ],
+        "max_receipt_minus_source_s": 0.07194304466247559
+      }
+    ],
+    "closing_duration_s": 19.74098825454712,
+    "driver": {
+      "gripper_call_count": 1076,
+      "nominal_effort_counts": [
+        500
+      ],
+      "last_calls": [
+        [
+          "90600",
+          "500",
+          "0x01",
+          "0x00"
+        ],
+        [
+          "90600",
+          "500",
+          "0x01",
+          "0x00"
+        ],
+        [
+          "90600",
+          "500",
+          "0x01",
+          "0x00"
+        ],
+        [
+          "90600",
+          "500",
+          "0x01",
+          "0x00"
+        ],
+        [
+          "90600",
+          "500",
+          "0x01",
+          "0x00"
+        ]
+      ],
+      "suppressed_by_output_gate": 0,
+      "not_direct_bus_transmit_confirmation": true
+    },
+    "CAN_receive_log": {
+      "id_counts": {
+        "2A7": 14849,
+        "2A8": 14846,
+        "1C1": 2969,
+        "2A1": 14849,
+        "2A2": 14849,
+        "2A3": 14849,
+        "2A4": 14848,
+        "2A5": 14848,
+        "2A6": 14848,
+        "251": 7422,
+        "252": 7422,
+        "262": 1485,
+        "253": 7422,
+        "254": 7423,
+        "255": 7423,
+        "256": 7427,
+        "1C0": 1486,
+        "261": 1485,
+        "266": 1485,
+        "1C2": 1484,
+        "265": 1483,
+        "1C3": 1484,
+        "264": 1484,
+        "263": 1486,
+        "212": 75,
+        "476": 1
+      },
+      "observed_159": [],
+      "limitations": "Receive socket log, not independent TX acknowledgement; zero observed159 is inconclusive about local TX."
+    }
+  },
+  "physical_grasp_success": false,
+  "arm_target_candidate_adopted": false,
+  "no_new_physical_experiment_for_this_analysis": true
+}

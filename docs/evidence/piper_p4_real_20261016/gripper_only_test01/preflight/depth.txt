@@ -1,0 +1,64 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/.ros/log/2026-10-16-22-46-35-023963-johnwick-virtual-machine-26808
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container-1]: process started with pid [26828]
+[component_container-1] [INFO] [1792161995.413567586] [astra_camera_container]: Load Library: /home/johnwick/ros2_ws/install/astra_camera/lib/libastra_camera.so
+[component_container-1] [INFO] [1792161995.638935119] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792161995.639017840] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792161995.821562913] [camera.camera]: init done.
+[component_container-1] [INFO] [1792161995.821698635] [camera.camera]: Waiting for device connection...
+[component_container-1] [INFO] [1792161995.823380863] [device_listener]: Found 1 devices
+[component_container-1] [INFO] [1792161995.823660015] [camera.camera]: Trying to open device: 2bc5/0657@3/6
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792161995.827168145] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792161995.827198020] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792161995.827208017] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyz' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792161995.859288095] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::OBCameraNodeFactory>
+[component_container-1] [INFO] [1792161995.859340789] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzNode>
+[component_container-1] [INFO] [1792161995.859350163] [astra_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[component_container-1] [INFO] [1792161995.859358464] [astra_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<astra_camera::PointCloudXyzrgbNode>
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/point_cloud_xyzrgb' in container '/astra_camera_container'
+[component_container-1] [INFO] [1792161996.113669758] [camera.camera]: Device connected: Astra serial number: CC1365304DG
+[component_container-1] [INFO] [1792161996.113997491] [camera.camera]: starting device 
+[component_container-1] [INFO] [1792161996.445270155] [camera.camera]: ir is not enable
+[component_container-1] [INFO] [1792161996.445327889] [camera.camera]: color is not enable
+[component_container-1] [INFO] [1792161996.456622761] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [INFO] [1792161996.680024629] [camera.camera]: set depth video mode Resolution :640x400@30Hz
+[component_container-1] format PIXEL_FORMAT_DEPTH_1_MM
+[component_container-1] [WARN] [1792161996.680287781] [camera.camera]: Publishing dynamic camera transforms (/tf) at 10 Hz
+[component_container-1] [INFO] [1792161996.821162169] [camera.camera]: wait for device  connect... 
+[component_container-1] [INFO] [1792161996.852263465] [camera.camera]: SENSOR_DEPTH is started
+[component_container-1] Warning: USB events thread - failed to set priority. This might cause loss of data...
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [component_container-1]: sending signal 'SIGINT' to process[component_container-1]
+[INFO] [component_container-1]: process has finished cleanly [pid 26828]
+[component_container-1] [INFO] [1792162009.991962641] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[component_container-1] [INFO] [1792162010.423900182] [camera.camera]: Stopped stream depth
+[component_container-1] [ERROR] [1792162010.438697038] [camera.camera]: parameter 'camera_link_frame_id' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438741258] [camera.camera]: parameter 'camera_name' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438751218] [camera.camera]: parameter 'color_depth_synchronization' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438759380] [camera.camera]: parameter 'color_fps' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438777076] [camera.camera]: parameter 'color_height' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438785355] [camera.camera]: parameter 'color_roi.height' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438793368] [camera.camera]: parameter 'color_roi.width' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438801229] [camera.camera]: parameter 'color_roi.x' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438808971] [camera.camera]: parameter 'color_roi.y' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438816755] [camera.camera]: parameter 'color_width' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438824666] [camera.camera]: parameter 'depth_align' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438832436] [camera.camera]: parameter 'depth_fps' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438840345] [camera.camera]: parameter 'depth_height' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438848222] [camera.camera]: parameter 'depth_roi.height' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438855993] [camera.camera]: parameter 'depth_roi.width' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438863844] [camera.camera]: parameter 'depth_roi.x' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438871633] [camera.camera]: parameter 'depth_roi.y' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438879375] [camera.camera]: parameter 'depth_scale' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438887167] [camera.camera]: parameter 'depth_width' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438895431] [camera.camera]: parameter 'enable_color' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438903219] [camera.camera]: parameter 'enable_depth' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438911129] [camera.camera]: parameter 'enable_ir' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438918917] [camera.camera]: parameter 'ir_fps' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438926694] [camera.camera]: parameter 'ir_height' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438934693] [camera.camera]: parameter 'ir_width' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438942442] [camera.camera]: parameter 'publish_tf' has invalid type: cannot undeclare an statically typed parameter
+[component_container-1] [ERROR] [1792162010.438950422] [camera.camera]: parameter 'tf_publish_rate' has invalid type: cannot undeclare an statically typed parameter

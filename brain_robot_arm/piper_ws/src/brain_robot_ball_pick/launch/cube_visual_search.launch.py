@@ -19,12 +19,24 @@ def _p4_overrides(environ):
     """Explicit frozen target input, not an arbitrary production YAML overlay."""
     if environ.get('BRAIN_ROBOT_P4_OPEN_LOOP', '0').lower() not in ('1', 'true', 'yes'):
         return {}, {}
-    path = environ.get('BRAIN_ROBOT_P4_TARGET_CONFIG', '')
-    if not path:
-        raise RuntimeError('P4 requires BRAIN_ROBOT_P4_TARGET_CONFIG; no implicit/stale target')
     plan_only = environ.get('BRAIN_ROBOT_P4_PLAN_ONLY', '1')
     if plan_only not in ('0', '1'):
         raise RuntimeError('BRAIN_ROBOT_P4_PLAN_ONLY must be 0 or 1')
+    test_only = environ.get('BRAIN_ROBOT_P4_GRIPPER_TEST_ONLY', '0')
+    if test_only not in ('0', '1'):
+        raise RuntimeError('BRAIN_ROBOT_P4_GRIPPER_TEST_ONLY must be 0 or 1')
+    if test_only == '1':
+        if plan_only != '0':
+            raise RuntimeError('Gripper-only test requires explicit P4_PLAN_ONLY=0')
+        # No arm target is needed or accepted by this diagnostic-only mode.
+        return {'stop_after_observe': True}, {
+            'p4_open_loop_enabled': True, 'p4_plan_only': False,
+            'p4_gripper_test_only': True, 'p4_cube_edge_m': .029,
+            'p4_target_provenance': 'GRIPPER_ONLY_NO_ARM_TARGET',
+            'auto_release_after_lift': False, 'gripper_feedback_topic': '/piper/gripper_feedback'}
+    path = environ.get('BRAIN_ROBOT_P4_TARGET_CONFIG', '')
+    if not path:
+        raise RuntimeError('P4 requires BRAIN_ROBOT_P4_TARGET_CONFIG; no implicit/stale target')
     target = _load_yaml(path)
     if not isinstance(target, dict):
         raise RuntimeError('P4 target must be a mapping')

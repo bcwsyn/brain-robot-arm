@@ -1,0 +1,11 @@
+[INFO] [launch]: All log files can be found below /home/johnwick/.ros/log/2026-10-16-22-46-25-414180-johnwick-virtual-machine-26739
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [cup_detector_node-1]: process started with pid [26741]
+[cup_detector_node-1] [INFO] [1792161986.167444051] [cube_detector]: Reusable RGB-D PURPLE_CUBE detector: rgb=/camera/color/image_raw depth=/camera/depth/image_raw camera_info=/camera/depth/camera_info reliability=reliable
+[cup_detector_node-1] [INFO] [1792162001.245688767] [cube_detector]: RGB_DEPTH_SOFTWARE_ALIGNED source=320x240 depth=640x400 mapped=192476 mirror_x=false
+[cup_detector_node-1] [INFO] [1792162001.270701577] [cube_detector]: PURPLE_CUBE target LOST
+[cup_detector_node-1] [INFO] [1792162001.619845922] [cube_detector]: PURPLE_CUBE target DETECTED
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [cup_detector_node-1]: sending signal 'SIGINT' to process[cup_detector_node-1]
+[cup_detector_node-1] [INFO] [1792162011.518685364] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [cup_detector_node-1]: process has died [pid 26741, exit code -2, cmd '/home/johnwick/piper_ws/install/brain_robot_pick_place/lib/brain_robot_pick_place/cup_detector_node --ros-args -r __node:=cube_detector --params-file /home/johnwick/piper_ws/install/brain_robot_ball_pick/share/brain_robot_ball_pick/config/cube_detector.yaml'].

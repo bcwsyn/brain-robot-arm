@@ -17,6 +17,7 @@ STOP_AFTER_TARGET_ACQUIRED="${BRAIN_ROBOT_STOP_AFTER_TARGET_ACQUIRED:-0}"
 P4_OPEN_LOOP="${BRAIN_ROBOT_P4_OPEN_LOOP:-0}"
 P4_PLAN_ONLY="${BRAIN_ROBOT_P4_PLAN_ONLY:-1}"
 P4_TARGET_CONFIG="${BRAIN_ROBOT_P4_TARGET_CONFIG:-}"
+P4_GRIPPER_TEST_ONLY="${BRAIN_ROBOT_P4_GRIPPER_TEST_ONLY:-0}"
 PIDS=()
 LOG_GUARD_PID=""
 CAMERA_HEALTH_PID=""
@@ -40,14 +41,20 @@ export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILE"
 
 fail() { echo "[错误] $*" >&2; exit 1; }
 validate_p4_mode() {
+  [[ "$P4_GRIPPER_TEST_ONLY" == "0" || "$P4_GRIPPER_TEST_ONLY" == "1" ]] || fail "夹爪测试标志只接受0或1。"
+  if [[ "$P4_GRIPPER_TEST_ONLY" == "1" ]]; then
+    [[ "$P4_OPEN_LOOP" == "1" && "$P4_PLAN_ONLY" == "0" ]] || fail "仅夹爪测试需显式P4=1/PLAN_ONLY=0。"
+    [[ "$AUTO_START" == "1" || "$AUTO_START" == "true" || "$AUTO_START" == "yes" ]] || fail "仅夹爪测试不进入手动六轴菜单。"
+  fi
   [[ "$P4_OPEN_LOOP" == "0" ]] && return 0
   [[ "$P4_OPEN_LOOP" == "1" ]] || fail "P4_OPEN_LOOP 只接受0或1。"
   [[ "$P4_PLAN_ONLY" == "0" || "$P4_PLAN_ONLY" == "1" ]] || fail "P4_PLAN_ONLY 只接受0或1。"
-  [[ -r "$P4_TARGET_CONFIG" ]] || fail "P4需显式指定可读的冻结目标文件。"
+  [[ "$P4_GRIPPER_TEST_ONLY" == "1" || -r "$P4_TARGET_CONFIG" ]] || fail "P4需显式指定可读的冻结目标文件。"
   [[ "$DEPTH_ONLY_TARGET" == "0" && "$STOP_AFTER_TARGET_ACQUIRED" == "0" ]] ||
     fail "P4不可混用depth-only或只搜索模式。"
   export BRAIN_ROBOT_P4_OPEN_LOOP=1 BRAIN_ROBOT_P4_PLAN_ONLY="$P4_PLAN_ONLY"
   export BRAIN_ROBOT_P4_TARGET_CONFIG="$P4_TARGET_CONFIG"
+  export BRAIN_ROBOT_P4_GRIPPER_TEST_ONLY="$P4_GRIPPER_TEST_ONLY"
 }
 cleanup() {
   trap - EXIT
@@ -59,7 +66,9 @@ cleanup() {
     echo; echo "[保护] 异常退出或运动已启动；停止控制输出并保持当前位置，不自动发起零点复位。"
     # A fault/timeout must not create an unexpected long trajectory.  The
     # explicit 0 command remains the only zero-reset entry point.
-    timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
+    if [[ "$P4_GRIPPER_TEST_ONLY" != "1" ]]; then
+      timeout 5s ros2 service call /visual_search_controller/stop std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
+    fi
     timeout 5s ros2 service call /servo_node/stop_servo std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
     timeout 5s ros2 service call /piper_jog_adapter/disarm std_srvs/srv/Trigger "{}" >/dev/null 2>&1 || true
     echo "[保护] 未发送 DisableArm；PiPER 保持使能，等待操作者确认。"
@@ -876,6 +885,34 @@ wait_for_grasp_release_and_finalize() {
   return 1
 }
 
+run_p4_gripper_test() {
+  local result status service deadline
+  echo "[P4仅夹爪] 原位张开100mm→原缓闭策略；不观测、不搜索、不发六轴轨迹、不抬升。"
+  wait_for service /grasp_lift_executor/test_gentle_gripper
+  # The new driver process has its own enable latch, independent of measured
+  # motor-enable bits. Reuse the original true-enable/adapter handoff; this
+  # does not request a joint displacement, visual/start, reset or pose.
+  result=$(timeout -k 2s 6s ros2 service call /servo_node/stop_servo std_srvs/srv/Trigger '{}' 2>&1) || result=""
+  grep -Eq 'success=True' <<<"$result" || return 1
+  enable_physical_motion || return 1
+  result=$(timeout -k 2s 10s ros2 service call /grasp_lift_executor/test_gentle_gripper std_srvs/srv/Trigger '{}' 2>&1) || result=""
+  echo "$result"
+  grep -Eq 'success=True' <<<"$result" || return 1
+  deadline=$((SECONDS + 60))
+  while (( SECONDS < deadline )); do
+    status=$(timeout -k 2s 4s ros2 topic echo --once --qos-reliability reliable \
+      --qos-durability transient_local /brain_robot_grasp/state 2>&1) || status=""
+    if grep -Fq P4_GRIPPER_TEST_EMPTY_NO_LIFT <<<"$status"; then
+      echo "[P4仅夹爪] 到尺寸下界、判为空夹；不抬升、不回零、不失能。"; return 0
+    fi
+    if grep -Eq 'FAULT_|P4_GRIPPER_TEST_CONTACT_CANDIDATE_NO_LIFT' <<<"$status"; then
+      echo "[P4仅夹爪] ${status//$'\n'/ }；无抬升。" >&2; return 1
+    fi
+    sleep 1
+  done
+  echo "[P4仅夹爪] 超时，保持使能退出。" >&2; return 1
+}
+
 run_p4_sequence() {
   local result status deadline
   if [[ "$P4_PLAN_ONLY" == "1" ]]; then
@@ -1010,6 +1047,10 @@ else
 fi
 echo "[7/7] 全部组件已就绪。"
 echo
+if [[ "$P4_GRIPPER_TEST_ONLY" == "1" ]]; then
+  run_p4_gripper_test
+  exit $?
+fi
 if [[ "$STOP_AFTER_TARGET_ACQUIRED" == "1" || "$STOP_AFTER_TARGET_ACQUIRED" == "true" ||
   "$STOP_AFTER_TARGET_ACQUIRED" == "yes" ]]; then
   echo "[搜索诊断] 目标稳定有效后在 ALIGN 前停止；默认完整任务路径不变。"

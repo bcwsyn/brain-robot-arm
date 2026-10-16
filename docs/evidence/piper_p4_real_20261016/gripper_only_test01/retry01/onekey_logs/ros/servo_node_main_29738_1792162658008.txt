@@ -1,0 +1,18 @@
+[WARN] [1792162658.640070046] [moveit_servo.servo_node]: Intra-process communication is disabled, consider enabling it by adding: 
+extra_arguments=[{'use_intra_process_comms' : True}]
+to the Servo composable node in the launch file
+[INFO] [1792162658.855164333] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.100738 seconds
+[INFO] [1792162658.855200764] [moveit_robot_model.robot_model]: Loading robot model 'piper'...
+[INFO] [1792162658.855209305] [moveit_robot_model.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[INFO] [1792162662.718077588] [moveit_ros.current_state_monitor]: Listening to joint states on topic '/piper_moveit_joint_states'
+[INFO] [1792162662.726581371] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[INFO] [1792162662.726617863] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[INFO] [1792162662.727906550] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[INFO] [1792162662.727936351] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[INFO] [1792162662.728697174] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[INFO] [1792162662.729293651] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[WARN] [1792162662.735194407] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[ERROR] [1792162662.735227307] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[INFO] [1792162664.126569873] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on '/servo_node/publish_planning_scene'
+[INFO] [1792162669.130305799] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Failed to call service get_planning_scene, have you launched move_group or called psm.providePlanningSceneService()?
+[INFO] [1792162720.120887776] [rclcpp]: signal_handler(SIGINT/SIGTERM)

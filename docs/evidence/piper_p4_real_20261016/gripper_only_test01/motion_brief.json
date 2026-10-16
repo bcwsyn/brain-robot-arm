@@ -1,0 +1,111 @@
+{
+  "actual_feedback": {
+    "epoch": 1792162378.728419,
+    "sdk_receipt_stamps": {
+      "joint": "1792162378.7244503",
+      "high": "1792162378.7204514",
+      "low": "1792162378.720325",
+      "gripper": "1792162378.7246404"
+    },
+    "timestamp_scope": "SDK aggregate receipt times; no per-motor time is invented",
+    "high_hz": 100.0,
+    "joint_hz": 200.0,
+    "q_mdeg": [
+      -2859,
+      94748,
+      -57858,
+      2577,
+      44654,
+      5096
+    ],
+    "q_driver_rad": [
+      -0.049872396000000006,
+      1.6527841120000002,
+      -1.009274952,
+      0.044953188000000005,
+      0.7789443760000001,
+      0.088894624
+    ],
+    "driver_unit_conversion": "q_mdeg / 1000 * 0.017444; original deployed driver",
+    "speed_millirad_s": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "gripper_raw_micrometers": 400,
+    "gripper_mm": 0.4,
+    "gripper_effort_raw": -134,
+    "gripper_status": "    voltage_too_low : False\n    motor_overheating: False\n    driver_overcurrent: False\n    driver_overheating: False\n    sensor_status: False\n    driver_error_status: False\n    driver_enable_status: True\n    homing_status: False\n",
+    "fresh_after_passive_connection": true,
+    "physical_contact_verified_by_sdk": false
+  },
+  "SDK_full_quality": {
+    "samples": 40,
+    "fresh_samples": 39,
+    "span_s": 3.8147637844085693,
+    "static_three_seconds_and_thirty_samples": false,
+    "freshness_not_per_motor_verified": true,
+    "q_spread_mdeg": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "actual_entry": "/home/johnwick/start_brain_robot_cube_real.sh",
+  "arm_target_rad_UNCHANGED": [
+    -0.049872396000000006,
+    1.6527841120000002,
+    -1.009274952,
+    0.044953188000000005,
+    0.7789443760000001,
+    0.088894624
+  ],
+  "joint_min_rad": [
+    -1.5,
+    -0.3,
+    -1.4,
+    -0.8,
+    -1.2,
+    -3.14159265359
+  ],
+  "joint_max_rad": [
+    1.5,
+    3.14159265359,
+    0.4,
+    0.8,
+    1.22108,
+    3.14159265359
+  ],
+  "expected_moving_arm_joints": [],
+  "arm_velocity_acceleration_target": 0,
+  "retained_adapter_velocity_cap_rad_s": 0.189,
+  "retained_model_acceleration_rad_s2": 1.0,
+  "gripper_open_target_m": 0.1,
+  "gripper_empty_floor_m": 0.025,
+  "gripper_reference_rates_mm_s": [
+    10,
+    3
+  ],
+  "reference_lead_max_mm": 0.5,
+  "full_open_settle_s": 2,
+  "gripper_nominal_effort_Nm": 0.5,
+  "not_calibrated_fingertip_force": true,
+  "expected_test_duration_s": "~20-25 after startup; original worker bounded, outer entry240",
+  "stop_conditions": "original stale/fault/estop/timeout; no arm trajectory expected",
+  "stop_and_rollback": "stop original entry/adapter output, preserve enable; no reset, disable, or blind return",
+  "current_image_evidence": "/home/johnwick/brain_robot_logs/p4_gripper_only_20261016.CTeKXp/preflight/capture/observer.jsonl"
+}

@@ -1,3 +1,16 @@
+## 当前实体记录（2026-10-16 23:07）：仅夹爪入口实现与实测，缓闭在90.6mm停滞
+
+- 用户另行确认22:35原executor默认关闭夹爪入口/空载测试；与并行技能确认分开，控制基线4037724，eac0117/3b29acc技能和四文档内容完整保留。按ROS/PiPER、手术式和摘要技能沿真实入口/driver定位，最小修改，复用已有效测试，不重复CAN/TF/限位巡检。
+- 仅原executor/launch/一键script及3新测试。P4_GRIPPER_TEST_ONLY默认0，显式P4=1/PLAN_ONLY=0/AUTO1专用service，只张开→原缓闭，无臂目标/观测/搜索/新六轴姿态/抬升，普通execute拒绝；原张爪2秒settle保留。默认闭环/门/TF/TCP/六轴限位、任务/检测YAML、adapter/driver未改，gentle_gripper.hpp策略参数未改。
+- 单目标初编译rc0/106.52秒，补settle编译rc0；最终binary c3cf4eaac062300a590e14a20a70e396d4baee9b5c5bc3ac36fafd30e87867d1，三个活动源与规范SHA相同。41初定向、118后续回归、42最终定向分别通过，有重叠不相加。域78原executor三合成回路（25mm空/37mm候选/断反馈）通过、臂轨迹/joint_commands均0、无抬升/急停后不重开。非物理仿真；empty收尾MoveIt子-11/父rc0留存。
+- 首次真实0.4mm不动/OPEN_UNCONFIRMED：新分支漏原enable接管，driver逻辑enable=False但真实电机true，45帧被拦/正常GripperCtrl调用0。是本轮遗漏，不是CAN故障。首次cleanup发1条两点当前位置相同HOLD触发监督器，不是实体位移；仅测试模式跳过未启动visual stop，并复用原enable_physical_motion，未改驱动准入门。所有初始失败保留，非原样重试。
+- 重试同原入口真张爪99.4mm，缓闭99.4→97.7→95.5→93.0→90.7mm，约8秒后停在90.6–90.7mm，19.741秒超时FAULT_P4_GRIPPER_TEST_CLOSE_UNCONFIRMED/入口rc1。前段约1.1mm/s，不拿10/3mm/s参考当实际速度。末参考90.1mm/实际90.6mm（最大超前0.5mm），终止原函数改实测90.6mm保持；driver1076正常调用/无门拦，0.5N·m标称非指尖牛顿。未到25mm/未形成接触候选，0抬升，物理抓取成功仍0。
+- 重试夹爪12639帧/源戳持续，缓闭期status均64；8个status0在OPENING后0.425–0.525秒的原0x02/0x01首次清错握手窗口，不能说整个活动期始终使能，不是六轴DisableArm。OPENING后六q峰峰0、臂轨迹0，但有六轴当前姿态保持joint_commands，不写零ROS命令。ifindex3/ERROR-ACTIVE/RX67988053→68244587、TX53113→58146、errors0/旧dropped297不变，未重载CAN。接收candump未见159不代表没TX，保留可见性边界。原图方块仍在桌面。
+- 末被动SDK4秒rc0/39fresh/3.816秒，q峰峰0/速度0/六true，q[-.049872396,1.652784112,-1.009274952,.044953188,.778944376,.088894624]rad，夹爪90.6mm/使能/无故障；自有控制源退出，无DisableArm/复位/回观测。采前6秒SDK rc0、两次紧邻4秒SDK rc2均照存，q零波动不替代rc2或永久使能保证。
+- 实测窗口103.70/121.38秒（含SDK/startup/cleanup，非机械运动时间），第二次至OPENING约91.08秒/闭合19.741秒；最终三隔离合计48.43秒。整轮其他准备/分析/补编译未全计时，不造提速。根盘约56%/33GB，原入口journal清理0B，未额外删除原件，不把当前健康通信归因磁盘。
+- 原件/命令/回退：[gripper_only_test01](evidence/piper_p4_real_20261016/gripper_only_test01/README.md)，369原件16,419,621bytes，无损gzip解压SHA逐件核验，原RGB/16位depth保留，不提交ELF/before备份；home根p4_gripper_only_20261016.CTeKXp。既有test_near_depth_wiring.py及无关dirty不纳入，Git仅本地/既有远端阻断不变。
+- 下一仅离线复用真实响应核缓闭参考/超时，再提同一函数局部修复并按改前同意规则处理。短超前/实体响应组合已定位，但死区/摩擦/扭矩根因未唯一证实；不盲加力/改落点/重复同条件实体或基础巡检。无需现场重摆/重启；本轮未批准采用RGB-PnP参考抓取。默认靠近/门/TF/TCP冻结，下方旧“接口尚未实现”已历史。
+
 ## 工具效率修订（2026-10-16 23:03）：实机用时优先，减少无效实验而非只省输出
 
 - 基线eac0117，用户要求继续修改同一个技能。按skill-creator/surgical-change，只更新技能说明、同一离线审阅记录及四规范指引，不新增采集器/计时框架/运行门，不动原两技能或生产程序。

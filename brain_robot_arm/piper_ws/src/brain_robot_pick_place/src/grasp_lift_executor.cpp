@@ -390,6 +390,11 @@ public:
       "~/execute", [this](
         const std_srvs::srv::Trigger::Request::SharedPtr,
         std_srvs::srv::Trigger::Response::SharedPtr response) {
+        if (p4_gripper_test_only_) {
+          response->success = false;
+          response->message = "Gripper-only mode cannot start an arm/grasp sequence.";
+          return;
+        }
         std::string visual_state;
         {
           std::lock_guard<std::mutex> lock(state_mutex_);
@@ -432,6 +437,30 @@ public:
           "Real grasp sequence started from the camera target.";
       });
 
+    if (p4_open_loop_enabled_ && p4_gripper_test_only_) {
+      gripper_test_service_ = create_service<std_srvs::srv::Trigger>(
+        "~/test_gentle_gripper", [this](
+          const std_srvs::srv::Trigger::Request::SharedPtr,
+          std_srvs::srv::Trigger::Response::SharedPtr response) {
+          {
+            std::lock_guard<std::mutex> lock(state_mutex_);
+            if (worker_active_ || !configuration_ok_ || !arm_ || !planning_scene_ ||
+              !real_grasp_enabled_ || p4_plan_only_ || p4_emergency_stop_latched_ ||
+              last_visual_state_ == "FAULT")
+            {
+              response->success = false;
+              response->message = "Gripper test is busy, preview-only, stopped or not ready.";
+              return;
+            }
+            prepared_ = true;
+            grasp_requested_ = true;
+            cancel_requested_ = false;
+          }
+          StartWorker();
+          response->success = true;
+          response->message = "Explicit gripper-only test started; no arm trajectory or lift.";
+        });
+    }
     PublishSceneReady(false);
     PublishState(p4_open_loop_enabled_ ? "P4_WAITING_FOR_EXPLICIT_EXECUTE" : "WAITING_FOR_LEVEL_ALIGN");
   }
@@ -484,6 +513,7 @@ private:
     // Opt-in baseline only: no detector callback can replace this base-frame input.
     p4_open_loop_enabled_ = ParameterOr<bool>("p4_open_loop_enabled", false);
     p4_plan_only_ = ParameterOr<bool>("p4_plan_only", true);
+    p4_gripper_test_only_ = ParameterOr<bool>("p4_gripper_test_only", false);
     p4_surface_base_m_ = ParameterOr<std::vector<double>>("p4_surface_base_m", {});
     p4_target_kind_ = ParameterOr<std::string>("p4_target_kind", "surface");
     p4_center_base_m_ = ParameterOr<std::vector<double>>("p4_center_base_m", {});
@@ -748,11 +778,11 @@ private:
           return v.size() == 3 &&
                  std::all_of(v.begin(), v.end(), [](double x) {return std::isfinite(x);});
         };
-      const bool target_ok = p4_target_kind_ == "surface" ? finite3(p4_surface_base_m_) :
+      const bool target_ok = p4_gripper_test_only_ || (p4_target_kind_ == "surface" ? finite3(p4_surface_base_m_) :
         p4_target_kind_ == "cube_center" && finite3(p4_center_base_m_) &&
         finite3(p4_grasp_center_tool_m_) &&
         std::all_of(p4_grasp_center_tool_m_.begin(), p4_grasp_center_tool_m_.end(),
-          [](double x) {return std::abs(x) <= .25;});
+          [](double x) {return std::abs(x) <= .25;}));
       configuration_ok_ = configuration_ok_ && !simulation_only_ &&
         lift_reference_frame_ == "base_link" && target_ok &&
         std::isfinite(p4_cube_edge_m_) && p4_cube_edge_m_ >= .01 && p4_cube_edge_m_ <= .05 &&
@@ -875,7 +905,7 @@ private:
         grasp_requested = grasp_requested_;
       }
       if (prepared && grasp_requested && !cancel_requested_) {
-        PointGraspAndLift();
+        if (p4_gripper_test_only_) {P4GripperOnlyTest();} else {PointGraspAndLift();}
       }
       std::lock_guard<std::mutex> lock(state_mutex_);
       worker_active_ = false;
@@ -4111,8 +4141,47 @@ private:
     gripper_command_publisher_->publish(command);
   }
 
-  bool GentleCloseGripper()
+  void P4GripperOnlyTest()
   {
+    if (!p4_open_loop_enabled_ || !p4_gripper_test_only_ || p4_plan_only_ ||
+      simulation_only_ || !StopServo())
+    {
+      Fail("P4_GRIPPER_TEST_NOT_READY"); return;
+    }
+    const double before = LatestGripperPosition();
+    {
+      std::lock_guard<std::mutex> lock(feedback_mutex_);
+      const double age = (now()-rclcpp::Time(latest_gripper_feedback_.header.stamp)).seconds();
+      if (!std::isfinite(before) || before < 0 || before > .103 || age < -.05 || age > .5 ||
+        p4_gripper_status_ < 0 || (p4_gripper_status_ & 0x3F) || !(p4_gripper_status_ & 0x40))
+      {
+        Fail("P4_GRIPPER_TEST_FRESH_FEEDBACK_REQUIRED"); return;
+      }
+    }
+    PublishState("P4_GRIPPER_TEST_OPENING");
+    if (!CommandRealGripper(true) || cancel_requested_) {
+      Fail("P4_GRIPPER_TEST_OPEN_UNCONFIRMED"); return;
+    }
+    // Same full-open settle used by the original real grasp path. Merely
+    // entering the 3mm arrival tolerance must not immediately reverse opening.
+    std::this_thread::sleep_for(std::chrono::duration<double>(gripper_settle_s_));
+    if (cancel_requested_ ||
+      !WaitForGripperCommand(before, gripper_open_value_, false, "P4_GRIPPER_TEST_OPEN"))
+    {
+      Fail("P4_GRIPPER_TEST_OPEN_UNCONFIRMED"); return;
+    }
+    PublishState("P4_GRIPPER_TEST_CLOSING");
+    bool empty = false;
+    const bool contact = GentleCloseGripper(&empty);
+    if (cancel_requested_) {return;}
+    if (!empty && !contact) {Fail("P4_GRIPPER_TEST_CLOSE_UNCONFIRMED"); return;}
+    PublishState(contact ? "P4_GRIPPER_TEST_CONTACT_CANDIDATE_NO_LIFT" :
+      "P4_GRIPPER_TEST_EMPTY_NO_LIFT");
+  }
+
+  bool GentleCloseGripper(bool * empty = nullptr)
+  {
+    if (empty) {*empty = false;}
     const double initial = LatestGripperPosition();
     if (!std::isfinite(initial) || initial < 0 || initial > .103) {return false;}
     GentleGripper policy(p4_cube_edge_m_, initial);
@@ -4154,6 +4223,7 @@ private:
         CommandGripperOpening(policy.Reference());
         if (result == GentleGripper::Result::CONTACT_CANDIDATE) {contact = true; break;}
         if (result == GentleGripper::Result::EMPTY) {
+          if (empty) {*empty = true;}
           PublishDiagnostic("P4_GRIPPER_EMPTY_NO_LIFT"); break;
         }
       }
@@ -5094,6 +5164,7 @@ private:
   bool p4_open_loop_enabled_{false};
   std::atomic_bool p4_emergency_stop_latched_{false};
   bool p4_plan_only_{true};
+  bool p4_gripper_test_only_{false};
   std::vector<double> p4_surface_base_m_;
   std::string p4_target_kind_{"surface"};
   std::vector<double> p4_center_base_m_, p4_grasp_center_tool_m_;
@@ -5339,6 +5410,7 @@ private:
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr adapter_disarm_client_;
   rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr compute_ik_client_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr execute_service_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr gripper_test_service_;
   std::string last_visual_state_;
 };
 

@@ -1,0 +1,201 @@
+{
+  "baseline": "4037724",
+  "original_entry": "/home/johnwick/start_brain_robot_cube_real.sh",
+  "actual_authorization": "User confirmed original-executor gripper-only endpoint and independent real open/slow-close test.",
+  "P4_GRIPPER_TEST_ONLY": true,
+  "arm_grasp_target_provided": false,
+  "start_epoch": 1792162374.387129,
+  "can_before": {
+    "ifindex": 3,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "3-2:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 539474808,
+        "packets": 67448276,
+        "errors": 0,
+        "dropped": 297,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 53100,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "immediate_SDK_rc": 2,
+  "exception": "RuntimeError('Unexpected arm trajectory during gripper-only test')",
+  "end_epoch": 1792162478.0828307,
+  "can_after": {
+    "ifindex": 3,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 16,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "can",
+    "promiscuity": 0,
+    "min_mtu": 0,
+    "max_mtu": 0,
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "state": "ERROR-ACTIVE",
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 1000000,
+          "sample_point": 0.75,
+          "tq": 62,
+          "prop_seg": 5,
+          "phase_seg1": 6,
+          "phase_seg2": 4,
+          "sjw": 2
+        },
+        "bittiming_const": {
+          "name": "gs_usb",
+          "tseg1": {
+            "min": 1,
+            "max": 16
+          },
+          "tseg2": {
+            "min": 1,
+            "max": 8
+          },
+          "sjw": {
+            "min": 1,
+            "max": 4
+          },
+          "brp": {
+            "min": 1,
+            "max": 1024
+          },
+          "brp_inc": 1
+        },
+        "clock": 48000000
+      },
+      "info_xstats": {
+        "restarts": 0,
+        "bus_error": 0,
+        "arbitration_lost": 0,
+        "error_warning": 0,
+        "error_passive": 0,
+        "bus_off": 0
+      }
+    },
+    "num_tx_queues": 1,
+    "num_rx_queues": 1,
+    "gso_max_size": 65536,
+    "gso_max_segs": 65535,
+    "parentbus": "usb",
+    "parentdev": "3-2:1.0",
+    "stats64": {
+      "rx": {
+        "bytes": 541442564,
+        "packets": 67694297,
+        "errors": 0,
+        "dropped": 297,
+        "over_errors": 0,
+        "multicast": 0
+      },
+      "tx": {
+        "bytes": 0,
+        "packets": 53113,
+        "errors": 0,
+        "dropped": 0,
+        "carrier_errors": 0,
+        "collisions": 0
+      }
+    }
+  },
+  "jobs": [
+    {
+      "label": "recorder",
+      "pid": 27742,
+      "rc": 0
+    },
+    {
+      "label": "original_entry",
+      "pid": 27743,
+      "rc": 1
+    }
+  ]
+}
